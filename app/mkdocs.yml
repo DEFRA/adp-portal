@@ -1,0 +1,6 @@
+site_name: TestDocumentation
+nav:
+  - Home: index.md
+docs_dir: docs
+plugins:
+  - techdocs-core

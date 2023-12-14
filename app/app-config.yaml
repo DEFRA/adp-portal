@@ -11,7 +11,7 @@ app:
             title: GitHub Issues
 
 organization:
-  name: DEFRA
+  name: "Azure Development Platform: "
 
 permission:
   enabled: true
@@ -27,6 +27,9 @@ backend:
     origin: http://localhost:3000
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
+  reading:
+    allow:
+      - host: 'raw.githubusercontent.com'
   database:
     client: better-sqlite3
     connection: ':memory:'
@@ -36,18 +39,36 @@ backend:
   #    directory: 'tmp'
 
 proxy:
+  '/grafana/api':
+    target:  ${GRAFANA_ENDPOINT}
+    headers:
+      Authorization: Bearer ${GRAFANA_TOKEN}
+
+grafana:
+  domain:  ${GRAFANA_ENDPOINT}
+  unifiedAlerting: false
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
 # and an external cloud storage when deploying TechDocs for production use-case.
 # https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
 techdocs:
-  builder: 'local' # Alternatives - 'external'
+  builder: 'local' # Options - 'local' or 'external'
   generator:
-    runIn: 'docker' # Alternatives - 'local'
+    runIn: 'local'
+    mkdocs:
+      omitTechdocsCorePlugin: false
+      defaultPlugins: ['techdocs-core']
   publisher:
-    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
-
+    type: 'azureBlobStorage'
+    azureBlobStorage:
+      containerName: 'adp-wiki-techdocs'
+      credentials:
+        accountName: ${TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_NAME}
+        accountKey: ${TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_KEY}
+  cache:
+    ttl: 3600000
+    readTimeout: 500
 integrations:
   azure:
     - host: dev.azure.com
@@ -90,6 +111,11 @@ auth:
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
+azureDevOps:
+  host: dev.azure.com
+  token: ${ADO_PAT}
+  organization: ${ADO_ORGANIZATION}
+
 catalog:
   import:
     entityFilename: catalog-info.yaml
@@ -111,9 +137,10 @@ catalog:
           timeout: { minutes: 5 }
       #defra:
       #  organization: 'defra'
-      #  catalogPath: '**/catalog-info.yml'
+      #  catalogPath: '/catalog-info.yaml'
       #  filters:
-      #    branch: 'main'
+      #    branch: 'master'
+      #    repository: '(ffc-.+|adp-.+)'
       #  schedule:
       #    frequency: { minutes: 30 }
       #    timeout: { minutes: 5 }

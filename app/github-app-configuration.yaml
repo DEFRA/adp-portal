@@ -4,6 +4,5 @@ webhookUrl: https://smee.io/
 clientId: ${GITHUB_CLIENT_ID}
 clientSecret: ${GITHUB_CLIENT_SECRET}
 webhookSecret: ThisIsRequiredButNotUsed
-privateKey:
-  $file: defra-backstage.private-key.pem
+privateKey: ${GITHUB_PRIVATE_KEY}
 

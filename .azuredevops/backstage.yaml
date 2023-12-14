@@ -1,0 +1,126 @@
+type: Microsoft.App/containerApps
+identity:
+  type: 'UserAssigned'
+  userAssignedIdentities: {
+     {{userAssignedIdentity}}
+  }
+properties:
+  managedEnvironmentId: {{managedEnvironmentId}}
+  configuration:
+    ingress:
+      external: true
+      allowInsecure: false
+      targetPort: 7007
+      traffic:
+        - latestRevision: true
+          weight: 100
+      transport: Auto
+    registries:
+      - server: {{acrName}}.azurecr.io
+        identity: {{userAssignedIdentity}}
+    secrets:
+      - name: github-app-id
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/GITHUB-APP-ID
+        identity: {{userAssignedIdentity}}      
+      - name: github-client-id
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/GITHUB-CLIENT-ID
+        identity: {{userAssignedIdentity}}
+      - name: github-client-secret
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/GITHUB-CLIENT-SECRET
+        identity: {{userAssignedIdentity}}
+      - name: authm-client-id
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/AUTH-MICROSOFT-CLIENT-ID
+        identity: {{userAssignedIdentity}}
+      - name: authm-client-secret
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/AUTH-MICROSOFT-CLIENT-SECRET
+        identity: {{userAssignedIdentity}}
+      - name: authm-tenant-id
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/AUTH-MICROSOFT-TENANT-ID
+        identity: {{userAssignedIdentity}}        
+      - name: backend-secret
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/BACKSTAGE-BACKEND-SECRET
+        identity: {{userAssignedIdentity}}
+      - name: postgres-host
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/POSTGRES-HOST
+        identity: {{userAssignedIdentity}}
+      - name: postgres-user
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/POSTGRES-USER
+        identity: {{userAssignedIdentity}}
+      - name: postgres-password
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/POSTGRES-PASSWORD
+        identity: {{userAssignedIdentity}}
+      - name: github-private-key
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/GITHUB-PRIVATE-KEY
+        identity: {{userAssignedIdentity}}
+      - name: ado-pat
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADO-PAT
+        identity: {{userAssignedIdentity}}
+      - name: ado-organization
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADO-ORGANIZATION
+        identity: {{userAssignedIdentity}}
+      - name: grafana-token
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/GRAFANA-TOKEN
+        identity: {{userAssignedIdentity}}
+      - name: grafana-endpoint
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/GRAFANA-ENDPOINT
+        identity: {{userAssignedIdentity}}
+      - name: app-base-url
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/APP-BASE-URL
+        identity: {{userAssignedIdentity}}
+      - name: blobstorage-name
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TECHDOCS-AZURE-BLOB-STORAGE-ACCOUNT-NAME
+        identity: {{userAssignedIdentity}}
+      - name: blobstorage-key
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TECHDOCS-AZURE-BLOB-STORAGE-ACCOUNT-KEY
+        identity: {{userAssignedIdentity}}
+  template:
+    containers:
+      - image: {{acrName}}.azurecr.io/image/{{imageRepoName}}:{{appVersion}}
+        name: {{imageRepoName}}
+        env:
+          - name: POSTGRES_PORT
+            value: 5432
+          - name: APP_BASE_URL
+            secretRef: app-base-url
+          - name: APP_BACKEND_BASE_URL
+            secretRef: app-base-url
+          - name: GITHUB_APP_ID
+            secretRef: github-app-id
+          - name: GITHUB_CLIENT_ID
+            secretRef: github-client-id
+          - name: GITHUB_CLIENT_SECRET
+            secretRef: github-client-secret
+          - name: AUTH_MICROSOFT_CLIENT_ID
+            secretRef: authm-client-id
+          - name: AUTH_MICROSOFT_CLIENT_SECRET
+            secretRef: authm-client-secret
+          - name: AUTH_MICROSOFT_TENANT_ID
+            secretRef: authm-tenant-id
+          - name: BACKSTAGE_BACKEND_SECRET
+            secretRef: backend-secret
+          - name: POSTGRES_HOST
+            secretRef: postgres-host
+          - name: POSTGRES_USER
+            secretRef: postgres-user
+          - name: POSTGRES_PASSWORD
+            secretRef: postgres-password
+          - name: GITHUB_PRIVATE_KEY
+            secretRef: github-private-key
+          - name: ADO_PAT
+            secretRef: ado-pat
+          - name: ADO_ORGANIZATION
+            secretRef: ado-organization
+          - name: GRAFANA_TOKEN
+            secretRef: grafana-token
+          - name: GRAFANA_ENDPOINT
+            secretRef: grafana-endpoint
+          - name: TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_NAME
+            secretRef: blobstorage-name
+          - name: TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_KEY
+            secretRef: blobstorage-key
+        resources:
+          cpu: 0.5
+          memory: 1Gi
+    scale:
+      minReplicas: 1
+      maxReplicas: 3

@@ -53,5 +53,4 @@ site
 *.sqlite
 *.private-key.pem
 env.sh
-app/defra-backstage.private-key.pem:PG$Secure
-app/defra-backstage.private-key.pem:Zone.Identifier
+rsaprivkey.txt

@@ -1,0 +1,56 @@
+parameters:
+  - name: deployFromFeature
+    displayName: "Deploy from Feature Branch"
+    type: boolean
+    default: false
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - test-output/*
+      - bin/*
+      - obj/*
+  drafts: false
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - "main"
+  paths:
+    exclude:
+      - test-output/*
+      - bin/*
+      - obj/*
+
+resources:
+  repositories:
+    - repository: DEFRA-ADPPipelineCommon
+      name: DEFRA/adp-pipeline-common
+      endpoint: DEFRA
+      type: github
+      ref: refs/heads/main
+
+extends:
+  template: /pipelines/common-portal-app-build.yaml@DEFRA-ADPPipelineCommon
+  parameters:
+    serviceName: "backstage"
+    deployFromFeature: ${{ parameters.deployFromFeature }}
+    appBuildConfig:
+      imageRepoName: "backstage"
+    appDeployConfig:
+      filepath: ".azuredevops/backstage.yaml"  
+      variableGroups: 
+        - adp-portal-ssv3
+      variables:        
+        - ADO-ORGANIZATION
+        - ADO-PAT
+        - BACKSTAGE-BACKEND-SECRET
+        - GITHUB-APP-ID
+        - GITHUB-CLIENT-ID
+        - GITHUB-CLIENT-SECRET
+        - GITHUB-PRIVATE-KEY
+        - GRAFANA-ENDPOINT
+        - GRAFANA-TOKEN

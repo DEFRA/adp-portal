@@ -54,9 +54,22 @@ import {
   RELATION_PART_OF,
   RELATION_PROVIDES_API,
 } from '@backstage/catalog-model';
+import {
+  EntityAzurePipelinesContent,
+  isAzurePipelinesAvailable,
+} from '@backstage/plugin-azure-devops';
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
+
+import {
+  EntityGrafanaDashboardsCard,
+  EntityGrafanaAlertsCard,
+} from '@k-phoen/backstage-plugin-grafana';
+import { EntityGithubPullRequestsContent } from '@roadiehq/backstage-plugin-github-pull-requests';
+
+import { EntityTeamPullRequestsCard } from '@backstage/plugin-github-pull-requests-board';
+import { EntityTeamPullRequestsContent } from '@backstage/plugin-github-pull-requests-board';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -70,6 +83,10 @@ const cicdContent = (
   // This is an example of how you can implement your company's logic in entity page.
   // You can for example enforce that all components of type 'service' should use GitHubActions
   <EntitySwitch>
+    <EntitySwitch.Case if={isAzurePipelinesAvailable}>
+      <EntityAzurePipelinesContent defaultLimit={25} />
+    </EntitySwitch.Case>
+
     <EntitySwitch.Case if={isGithubActionsAvailable}>
       <EntityGithubActionsContent />
     </EntitySwitch.Case>
@@ -140,6 +157,25 @@ const overviewContent = (
   </Grid>
 );
 
+const grafanaContent = (
+  <Grid container spacing={3} alignItems='stretch'>
+    <Grid item md={6}>
+      <EntityGrafanaDashboardsCard />
+    </Grid>
+    <Grid item md={6}>
+      <EntityGrafanaAlertsCard />
+    </Grid>
+  </Grid>
+)
+
+const pullRequest = (
+  <Grid container spacing={3} alignItems='stretch'>
+    <Grid item md={12}>
+      < EntityGithubPullRequestsContent />
+    </Grid>
+  </Grid>
+)
+
 const serviceEntityPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
@@ -148,6 +184,14 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
       {cicdContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/pull-requests" title="Pull Requests">
+      {pullRequest}
+    </EntityLayout.Route>
+    
+    <EntityLayout.Route path="/grafana" title="Grafana">
+      {grafanaContent}
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/api" title="API">
@@ -188,6 +232,10 @@ const websiteEntityPage = (
       {cicdContent}
     </EntityLayout.Route>
 
+    <EntityLayout.Route path="/grafana" title="Grafana">
+      {grafanaContent}
+    </EntityLayout.Route>
+
     <EntityLayout.Route path="/dependencies" title="Dependencies">
       <Grid container spacing={3} alignItems="stretch">
         <Grid item md={6}>
@@ -226,19 +274,19 @@ const defaultEntityPage = (
 
 const componentPage = (
   <EntitySwitch>
-    <EntitySwitch.Case if={isComponentType('service')}>
-      {serviceEntityPage}
-    </EntitySwitch.Case>
-
     <EntitySwitch.Case if={isComponentType('backend')}>
       {serviceEntityPage}
     </EntitySwitch.Case>
 
-    <EntitySwitch.Case if={isComponentType('website')}>
-      {websiteEntityPage}
+    <EntitySwitch.Case if={isComponentType('service')}>
+      {serviceEntityPage}
     </EntitySwitch.Case>
 
     <EntitySwitch.Case if={isComponentType('frontend')}>
+      {websiteEntityPage}
+    </EntitySwitch.Case>
+
+    <EntitySwitch.Case if={isComponentType('website')}>
       {websiteEntityPage}
     </EntitySwitch.Case>
 
@@ -311,7 +359,13 @@ const groupPage = (
         <Grid item xs={12}>
           <EntityMembersListCard />
         </Grid>
+        <Grid item xs={12}>
+          <EntityTeamPullRequestsCard />
+        </Grid>
       </Grid>
+    </EntityLayout.Route>
+    <EntityLayout.Route path="/pull-requests" title="Pull Requests">
+      <EntityTeamPullRequestsContent />
     </EntityLayout.Route>
   </EntityLayout>
 );
