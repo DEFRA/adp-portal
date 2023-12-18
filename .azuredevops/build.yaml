@@ -39,7 +39,7 @@ extends:
     serviceName: "backstage"
     deployFromFeature: ${{ parameters.deployFromFeature }}
     appBuildConfig:
-      imageRepoName: "backstage"
+      imageRepoName: "adp-portal"
     appDeployConfig:
       filepath: ".azuredevops/backstage.yaml"  
       variableGroups: 
