@@ -31,7 +31,7 @@ resources:
       name: DEFRA/adp-pipeline-common
       endpoint: DEFRA
       type: github
-      ref: refs/heads/feature/jc/sonar-coverage
+      ref: refs/heads/main
 
 extends:
   template: /pipelines/common-portal-app-build.yaml@DEFRA-ADPPipelineCommon
