@@ -74,3 +74,18 @@ proxy:
 
 grafana:
   domain: ${GRAFANA_ENDPOINT}
+
+techdocs:
+  builder: 'external'
+  generator:
+    runIn: 'local'
+    mkdocs:
+      omitTechdocsCorePlugin: false
+      defaultPlugins: ['techdocs-core']
+  publisher:
+    type: 'azureBlobStorage'
+    azureBlobStorage:
+      containerName: 'adp-wiki-techdocs'
+      credentials:
+        accountName: ${TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_NAME}
+        accountKey: ${TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_KEY}

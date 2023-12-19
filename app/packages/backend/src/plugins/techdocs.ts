@@ -8,6 +8,7 @@ import {
 import Docker from 'dockerode';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
+import { AnnotationBasedBuildStrategy } from './techdocs/AnnotationBasedBuildStrategy';
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -38,8 +39,9 @@ export default async function createPlugin(
 
   // checks if the publisher is working and logs the result
   await publisher.getReadiness();
-
+  const docsBuildStrategy = new AnnotationBasedBuildStrategy();
   return await createRouter({
+    docsBuildStrategy,
     preparers,
     generators,
     publisher,
