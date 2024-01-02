@@ -2,12 +2,12 @@ app:
   title: ADP Portal
   baseUrl: http://localhost:3000
   support:
-    url: https://github.com/defra-adp-sandpit/adp-portal/issues
+    url: https://github.com/defra/adp-portal/issues
     items:
       - title: Issues
         icon: github
         links:
-          - url: https://github.com/defra-adp-sandpit/adp-portal/issues
+          - url: https://github.com/defra/adp-portal/issues
             title: GitHub Issues
 
 organization:
@@ -140,9 +140,9 @@ catalog:
   # Locations configured to import static data into the catalog
   locations:
     - type: url
-      target: https://github.com/defra-adp-sandpit/adp-software-templates/blob/main/catalog-model/defra-org.yaml
+      target: https://github.com/defra/adp-software-templates/blob/main/catalog-model/defra-org.yaml
       rules:
         - allow: [User, Group]
 
     - type: url
-      target: https://github.com/defra-adp-sandpit/adp-software-templates/blob/main/catalog-model/all.yaml
+      target: https://github.com/defra/adp-software-templates/blob/main/catalog-model/all.yaml
