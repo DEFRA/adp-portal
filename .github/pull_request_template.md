@@ -18,6 +18,7 @@ If this PR closes an issue, add '<AB#213700>' somewhere in the PR summary. As a 
 - [ ] Description covers all the changes in the PR
 - [ ] This PR contains documentation
 - [ ] This PR contains tests
+- [ ] Version number in [package.json](https://github.com/DEFRA/adp-portal/blob/main/app/package.json#L3) has been updated
 
 
 # **How does this PR make you feel**:

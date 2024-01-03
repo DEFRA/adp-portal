@@ -67,6 +67,12 @@ properties:
       - name: app-base-url
         keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/APP-BASE-URL
         identity: {{userAssignedIdentity}}
+      - name: blobstorage-name
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TECHDOCS-AZURE-BLOB-STORAGE-ACCOUNT-NAME
+        identity: {{userAssignedIdentity}}
+      - name: blobstorage-key
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TECHDOCS-AZURE-BLOB-STORAGE-ACCOUNT-KEY
+        identity: {{userAssignedIdentity}}
   template:
     containers:
       - image: {{acrName}}.azurecr.io/image/{{imageRepoName}}:{{appVersion}}
@@ -108,6 +114,10 @@ properties:
             secretRef: grafana-token
           - name: GRAFANA_ENDPOINT
             secretRef: grafana-endpoint
+          - name: TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_NAME
+            secretRef: blobstorage-name
+          - name: TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_KEY
+            secretRef: blobstorage-key
         resources:
           cpu: 0.5
           memory: 1Gi

@@ -39,21 +39,18 @@ extends:
     serviceName: "backstage"
     deployFromFeature: ${{ parameters.deployFromFeature }}
     appBuildConfig:
-      imageRepoName: "backstage"
+      imageRepoName: "adp-portal"
     appDeployConfig:
       filepath: ".azuredevops/backstage.yaml"  
       variableGroups: 
         - adp-portal-ssv3
       variables:        
-        - APP-BASE-URL
         - ADO-ORGANIZATION
         - ADO-PAT
-        - AUTH-MICROSOFT-CLIENT-ID
-        - AUTH-MICROSOFT-CLIENT-SECRET
-        - AUTH-MICROSOFT-TENANT-ID
         - BACKSTAGE-BACKEND-SECRET
         - GITHUB-APP-ID
         - GITHUB-CLIENT-ID
         - GITHUB-CLIENT-SECRET
         - GITHUB-PRIVATE-KEY
         - GRAFANA-ENDPOINT
+        - GRAFANA-TOKEN

@@ -1,0 +1,38 @@
+pr:
+  branches:
+    include:
+      - none
+  paths:
+    exclude:
+      - test-output/*
+      - bin/*
+      - obj/*
+  drafts: false
+
+resources:
+  repositories:
+    - repository: DEFRA-ADPPipelineCommon
+      name: DEFRA/adp-pipeline-common
+      endpoint: DEFRA
+      type: github
+      ref: refs/heads/main
+
+    - repository: techdocs-wiki
+      name: defra-adp-sandpit/techdocs-wiki
+      endpoint: defra-adp-sandpit
+      type: github
+      ref: refs/heads/main
+      trigger:
+        batch: true
+        branches:
+          include:
+            - "*"
+
+extends:
+  template: /pipelines/common-techdocs-publish.yaml@DEFRA-ADPPipelineCommon
+  parameters:
+    WikiRepoName: "techdocs-wiki"
+    EntityName: 'default/component/adp-portal'
+    DocsPath: '' #docs in root folder
+
+    

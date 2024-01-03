@@ -9,6 +9,9 @@ integrations:
         - $include: github-app-configuration.yaml
 
 backend:
+  auth:
+    keys:
+      - secret: ${BACKSTAGE_BACKEND_SECRET}
   # Note that the baseUrl should be the URL that the browser and other clients
   # should use when communicating with the backend, i.e. it needs to be
   # reachable not just from within the backend host, but from all of your
@@ -45,9 +48,9 @@ catalog:
         clientId: ${AUTH_MICROSOFT_CLIENT_ID}
         clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
         userGroupMember:
-          filter: "displayName eq 'AG-Azure-CDO-ADP-PlatformEngineers'"
+          filter: "displayName eq 'AG-Azure-CDO-ADP-PlatformEngineers' or displayName eq 'AAG-Users-ADP-Portal'"
         group:
-          filter: "displayName eq 'AG-Azure-CDO-ADP-PlatformEngineers'"
+          filter: "displayName eq 'AG-Azure-CDO-ADP-PlatformEngineers' or displayName eq 'AAG-Users-ADP-Portal'"
         schedule:
           frequency: { minutes: 60 }
           timeout: { minutes: 10 }
@@ -71,3 +74,18 @@ proxy:
 
 grafana:
   domain: ${GRAFANA_ENDPOINT}
+
+techdocs:
+  builder: 'external'
+  generator:
+    runIn: 'local'
+    mkdocs:
+      omitTechdocsCorePlugin: false
+      defaultPlugins: ['techdocs-core']
+  publisher:
+    type: 'azureBlobStorage'
+    azureBlobStorage:
+      containerName: 'adp-wiki-techdocs'
+      credentials:
+        accountName: ${TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_NAME}
+        accountKey: ${TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_KEY}

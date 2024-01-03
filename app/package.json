@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "1.0.7",
+  "version": "1.0.20",
   "private": true,
   "engines": {
     "node": "16 || 18"
@@ -17,6 +17,7 @@
     "clean": "backstage-cli repo clean",
     "test": "backstage-cli repo test",
     "test:all": "backstage-cli repo test --coverage",
+    "test:cobertura": "backstage-cli repo test --coverage --coverageReporters=cobertura",
     "fix": "backstage-cli repo fix",
     "lint": "backstage-cli repo lint --since origin/main",
     "lint:all": "backstage-cli repo lint",
@@ -50,6 +51,18 @@
     ],
     "*.{json,md}": [
       "prettier --write"
+    ]
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/packages/backend/src/plugins/",
+      "/packages/backend/src/index.ts",
+      "/packages/app/src/apis.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/packages/backend/src/plugins/",
+      "/packages/backend/src/index.ts",
+      "/packages/app/src/apis.ts"
     ]
   }
 }
