@@ -56,11 +56,13 @@
   "jest": {
     "testPathIgnorePatterns": [
       "/packages/backend/src/plugins/",
-      "/packages/backend/src/index.ts"
+      "/packages/backend/src/index.ts",
+      "/packages/app/src/apis.ts"
     ],
     "coveragePathIgnorePatterns": [
       "/packages/backend/src/plugins/",
-      "/packages/backend/src/index.ts"
+      "/packages/backend/src/index.ts",
+      "/packages/app/src/apis.ts"
     ]
   }
 }

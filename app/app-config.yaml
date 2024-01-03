@@ -146,3 +146,6 @@ catalog:
 
     - type: url
       target: https://github.com/defra/adp-software-templates/blob/main/catalog-model/all.yaml
+
+techRadar: 
+  data: https://raw.githubusercontent.com/defra-adp-sandpit/adp-software-templates/main/tech-radars/development-tech-radar

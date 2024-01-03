@@ -1,4 +1,4 @@
-import { AnnotationBasedBuildStrategy } from './plugins/techdocs/AnnotationBasedBuildStrategy';
+import { AnnotationBasedBuildStrategy } from './AnnotationBasedBuildStrategy';
 
 describe('AnnotationBasedBuildStrategy', () => {
   const entity = {
