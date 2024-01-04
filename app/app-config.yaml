@@ -14,7 +14,7 @@ organization:
   name: "Azure Development Platform: "
 
 permission:
-  enabled: true
+  enabled: false
 
 backend:
 
