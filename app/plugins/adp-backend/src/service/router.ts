@@ -65,7 +65,7 @@ export async function createRouter(
       throw new InputError('Invalid payload');
     }
 
-    let author = await getCurrentUsername(identity, req);
+    const author = await getCurrentUsername(identity, req);
     const deliveryProgramme = await deliveryProgrammesStore.add(
       req.body,
       author,
@@ -78,7 +78,7 @@ export async function createRouter(
       throw new InputError('Invalid payload');
     }
 
-    let author = await getCurrentUsername(identity, req);
+    const author = await getCurrentUsername(identity, req);
     const deliveryProgramme = await deliveryProgrammesStore.update(
       req.body,
       author,

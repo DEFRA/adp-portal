@@ -33,7 +33,7 @@ import { PluginEnvironment } from './types';
 import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 import azureDevOps from './plugins/azure-devops';
-import adpDataModel from './plugins/adp';
+import adp from './plugins/adp';
 
 function makeCreateEnv(config: Config) {
   const root = getRootLogger();
@@ -90,7 +90,7 @@ async function main() {
   const appEnv = useHotMemoize(module, () => createEnv('app'));
   const azureDevOpsEnv = useHotMemoize(module, () => createEnv('azure-devops'));
   const permissionEnv = useHotMemoize(module, () => createEnv('permission'));
-  const adpDataModelEnv = useHotMemoize(module, () => createEnv('adpDataModel'));
+  const adpEnv = useHotMemoize(module, () => createEnv('adp'));
 
   const apiRouter = Router();
   apiRouter.use('/catalog', await catalog(catalogEnv));
@@ -101,7 +101,7 @@ async function main() {
   apiRouter.use('/search', await search(searchEnv));
   apiRouter.use('/azure-devops', await azureDevOps(azureDevOpsEnv));
   apiRouter.use('/permission', await permission(permissionEnv));
-  apiRouter.use('/adp', await adpDataModel(adpDataModelEnv));
+  apiRouter.use('/adp', await adp(adpEnv));
 
   // Add backends ABOVE this line; this 404 handler is the catch-all fallback
   apiRouter.use(notFoundHandler());

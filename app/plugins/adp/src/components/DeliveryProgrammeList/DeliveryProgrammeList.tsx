@@ -68,7 +68,7 @@ export function DeliveryProgrammesTable({ deliveryProgrammes, onEdit }: Delivery
 
   return (
     <Table
-      title="DeliveryProgrammes"
+      title="Delivery Programmes"
       options={{ search: false, paging: false }}
       columns={columns}
       data={deliveryProgrammes}

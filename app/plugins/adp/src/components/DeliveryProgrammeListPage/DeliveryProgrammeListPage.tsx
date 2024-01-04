@@ -1,9 +1,7 @@
 import React, { useReducer, useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import useAsync from 'react-use/lib/useAsync';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import {
-  Typography,
   Grid,
   TextField,
   Button,
@@ -18,10 +16,12 @@ import {
   Page,
   Content,
   ContentHeader,
-  HeaderLabel,
   SupportButton,
 } from '@backstage/core-components';
-import { DeliveryProgramme, DeliveryProgrammeList } from '../DeliveryProgrammeList';
+import {
+  DeliveryProgramme,
+  DeliveryProgrammeList,
+} from '../DeliveryProgrammeList';
 import {
   alertApiRef,
   discoveryApiRef,
@@ -93,14 +93,12 @@ export const DeliveryProgrammeListPage = () => {
   return (
     <Page themeId="tool">
       <Header
-        title="Delivery Programmes!"
-        subtitle="Just a CRU deliveryProgramme list plugin {entity.metadata.name}"
+        title="ADP Data"
+        subtitle="Manage organization data within the Azure Developer Platform"
       >
-        <HeaderLabel label="Owner" value="Team X" />
-        <HeaderLabel label="Lifecycle" value="Alpha" />
       </Header>
       <Content>
-        <ContentHeader title="Delivery Programmes List">
+        <ContentHeader title="Delivery Programmes">
           <SupportButton>A description of your plugin goes here.</SupportButton>
         </ContentHeader>
         <Grid container spacing={3} direction="column">
@@ -154,7 +152,7 @@ function EditModal({
   onCancel,
   onSubmit,
   onClose,
-  open
+  open,
 }: {
   deliveryProgramme?: DeliveryProgramme;
   onSubmit(t: DeliveryProgramme): any;
@@ -163,7 +161,7 @@ function EditModal({
   onClose: () => void;
 }) {
   const defaultValues = {
-    ...deliveryProgramme
+    ...deliveryProgramme,
   };
 
   const {
@@ -174,8 +172,7 @@ function EditModal({
   } = useForm({ defaultValues });
 
   const [saving, saveDeliveryProgramme] = useAsyncFn(
-    formValues =>
-    onSubmit({ ...formValues }),
+    formValues => onSubmit({ ...formValues }),
     [onSubmit],
   );
 
@@ -188,13 +185,15 @@ function EditModal({
 
   return (
     <Dialog fullWidth maxWidth="xs" onClose={closeDialog} open={open}>
-      <DialogTitle id="form-dialog-title">Edit Delivery Programme Details</DialogTitle>
+      <DialogTitle id="form-dialog-title">
+        Edit Delivery Programme Details
+      </DialogTitle>
       <DialogContent>
-      <Controller
+        <Controller
           name="name"
           control={control}
           rules={{
-            required: true
+            required: true,
           }}
           render={({ field }) => (
             <TextField
@@ -215,7 +214,7 @@ function EditModal({
           name="title"
           control={control}
           rules={{
-            required: true
+            required: true,
           }}
           render={({ field }) => (
             <TextField
@@ -264,7 +263,7 @@ function EditModal({
               fullWidth
             />
           )}
-        />            
+        />
         <Controller
           name="description"
           control={control}
@@ -281,16 +280,13 @@ function EditModal({
               type="text"
             />
           )}
-        />  
+        />
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={onCancel}>
           Cancel
         </Button>
-        <Button
-          onClick={handleSubmit(saveDeliveryProgramme)}
-          color="primary"
-        >
+        <Button onClick={handleSubmit(saveDeliveryProgramme)} color="primary">
           Save
         </Button>
       </DialogActions>
