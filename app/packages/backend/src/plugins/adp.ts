@@ -6,6 +6,7 @@ import { PluginEnvironment } from '../types';
 export default async function createPlugin({
   logger,
   discovery,
+  database,
 }: PluginEnvironment): Promise<Router> {
   return await createRouter({
     logger,
@@ -13,5 +14,6 @@ export default async function createPlugin({
       discovery,
       issuer: await discovery.getExternalBaseUrl('auth'),
     }),
+    database,
   });
 }

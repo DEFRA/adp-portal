@@ -5,6 +5,7 @@ import ExtensionIcon from '@material-ui/icons/Extension';
 import MapIcon from '@material-ui/icons/MyLocation';
 import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
+import BusinessIcon from '@material-ui/icons/Business';
 import LogoFull from './LogoFull';
 import LogoIcon from './LogoIcon';
 import {
@@ -73,6 +74,7 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarDivider />
         <SidebarScrollWrapper>
           <SidebarItem icon={MapIcon} to="tech-radar" text="Tech Radar" />
+          <SidebarItem icon={BusinessIcon} to="adp" text='ADP Data' />
         </SidebarScrollWrapper>
       </SidebarGroup>
       <SidebarSpace />
