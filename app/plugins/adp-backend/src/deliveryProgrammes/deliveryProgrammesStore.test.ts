@@ -1,8 +1,8 @@
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
 import { AdpDatabase } from '../database/adpDatabase';
 import { DeliveryProgrammesStore } from './deliveryProgrammesStore';
-import { DeliveryProgramme } from '../types';
 import { NotFoundError } from '@backstage/errors';
+import { DeliveryProgramme } from '../types';
 
 describe('deliveryProgrammesStore', () => {
   const databases = TestDatabases.create();

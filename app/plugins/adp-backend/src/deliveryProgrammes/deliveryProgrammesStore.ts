@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
-import { DeliveryProgramme } from '../types';
 import { NotFoundError } from '@backstage/errors';
+import { DeliveryProgramme } from '../types';
 
 const TABLE_NAME = 'delivery_programmes';
 type Row = {

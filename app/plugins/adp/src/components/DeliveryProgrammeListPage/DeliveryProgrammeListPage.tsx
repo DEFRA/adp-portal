@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Typography,
 } from '@material-ui/core';
 import {
   Header,

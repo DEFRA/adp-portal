@@ -1,7 +1,7 @@
 export type DeliveryProgramme = {
   name: string;
   title: string;
-  armLengthBody: string;  //arm-length-body
+  armsLengthBody: string;
   deliveryProgrammeCode: number;
   description?: string;
   id: string;

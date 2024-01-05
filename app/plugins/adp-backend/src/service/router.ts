@@ -27,7 +27,7 @@ export async function createRouter(
   // Seed test data
   deliveryProgrammesStore.add(
     {
-      name: 'europe-trade',
+      name: 'europe-trade-dynamic',
       title: 'Europe & Trade (EUTD)',
       armsLengthBody: 'Animal & Plant Health Agency (APHA)',
       deliveryProgrammeCode: 100,
@@ -38,7 +38,7 @@ export async function createRouter(
   );
   deliveryProgrammesStore.add(
     {
-      name: 'fisheries',
+      name: 'fisheries-dynamic',
       title: 'Fisheries',
       armsLengthBody: 'Marine Management Organisation (MMO)',
       deliveryProgrammeCode: 200,
