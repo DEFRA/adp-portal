@@ -1,0 +1,2 @@
+
+export { AdpDbModelEntityProvider } from './AdpDbModelEntityProvider';

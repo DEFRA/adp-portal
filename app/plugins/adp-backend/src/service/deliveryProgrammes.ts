@@ -40,5 +40,3 @@ export function getAllDeliveryProgrammes(filter?: DeliveryProgrammeFilters) {
     .filter(value => matches(value, filter))
     .sort((a, b) => b.timestamp - a.timestamp);
 }
-
-

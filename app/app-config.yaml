@@ -108,14 +108,14 @@ catalog:
   # Assumes a catalog-info.yml file is present in the root of the repo.
   providers:
     github:
-      adpSandpit:
-        organization: 'defra-adp-sandpit'
-        catalogPath: '/catalog-info.yaml'
-        filters:
-          branch: 'main'
-        schedule:
-          frequency: { minutes: 30 }
-          timeout: { minutes: 5 }
+      # adpSandpit:
+      #   organization: 'defra-adp-sandpit'
+      #   catalogPath: '/catalog-info.yaml'
+      #   filters:
+      #     branch: 'main'
+      #   schedule:
+      #     frequency: { minutes: 30 }
+      #     timeout: { minutes: 5 }
       defra:
         organization: 'defra'
         catalogPath: '/catalog-info.yaml'
