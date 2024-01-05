@@ -8,7 +8,7 @@ import {
 import Docker from 'dockerode';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
-import { AnnotationBasedBuildStrategy } from './techdocs/AnnotationBasedBuildStrategy';
+import { AnnotationBasedBuildStrategy } from '../techdocs/AnnotationBasedBuildStrategy';
 
 export default async function createPlugin(
   env: PluginEnvironment,
