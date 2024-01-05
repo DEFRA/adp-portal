@@ -1981,7 +1981,7 @@
     core-js-pure "^3.30.2"
     regenerator-runtime "^0.14.0"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.1", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.15.4", "@babel/runtime@^7.18.3", "@babel/runtime@^7.18.6", "@babel/runtime@^7.20.6", "@babel/runtime@^7.21.0", "@babel/runtime@^7.23.2", "@babel/runtime@^7.23.6", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.0", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.1", "@babel/runtime@^7.11.0", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.15.4", "@babel/runtime@^7.18.3", "@babel/runtime@^7.18.6", "@babel/runtime@^7.20.6", "@babel/runtime@^7.21.0", "@babel/runtime@^7.23.2", "@babel/runtime@^7.23.6", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.0", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
   version "7.23.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.7.tgz#dd7c88deeb218a0f8bd34d5db1aa242e0f203193"
   integrity sha512-w06OXVOFso7LcbzMiDGt+3X7Rh7Ho8MmgPoWU3rarH+8upf+wSU/grlGbWzQyr3DkdN6ZeuMFjpdwW0Q+HxobA==
@@ -3980,6 +3980,18 @@
     "@codemirror/state" "^6.4.0"
     "@codemirror/view" "^6.0.0"
     "@lezer/common" "^1.1.0"
+
+"@codemirror/language@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/language/-/language-6.0.0.tgz#f590558447c01f430fb3ef3297c41b8cd3ae9190"
+  integrity sha512-rtjk5ifyMzOna1c7PBu7J1VCt0PvA5wy3o8eMVnxMKb7z8KA7JFecvD04dSn14vj/bBaAbqRsGed5OjtofEnLA==
+  dependencies:
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+    "@lezer/common" "^1.0.0"
+    "@lezer/highlight" "^1.0.0"
+    "@lezer/lr" "^1.0.0"
+    style-mod "^4.0.0"
 
 "@codemirror/language@^6.0.0":
   version "6.10.0"
@@ -8171,9 +8183,9 @@
   integrity sha512-rfT93uj5s0PRL7EzccGMs3brplhcrghnDoV26NqKhCAS1hVo+WdNsPvE/yb6ilfr5hi2MEk6d5EWJTKdxg8jVw==
 
 "@types/aws-lambda@^8.10.83":
-  version "8.10.130"
-  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.130.tgz#d4a44201f0e47c8320a5868d845ad654f3b4adc2"
-  integrity sha512-HxTfLeGvD1wTJqIGwcBCpNmHKenja+We1e0cuzeIDFfbEj3ixnlTInyPR/81zAe0Ss/Ip12rFK6XNeMLVucOSg==
+  version "8.10.131"
+  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.131.tgz#76fcd36e6a4a4666c7ea7503bf0e3e86c0a9cdb2"
+  integrity sha512-IWmFpqnVDvskYWnNSiu/qlRn80XlIOU0Gy5rKCl/NjhnI95pV8qIHs6L5b+bpHhyzuOSzjLgBcwgFSXrC1nZWA==
 
 "@types/babel__core@^7.1.14":
   version "7.20.5"
@@ -8684,7 +8696,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.13.1 || ^17.0.0", "@types/react@^17":
+"@types/react@*", "@types/react@^16.13.1 || ^17.0.0", "@types/react@^17", "@types/react@^17.0.0":
   version "17.0.74"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.74.tgz#ea93059a55e5cfc7a76e7712fe8db5317dd29ee3"
   integrity sha512-nBtFGaeTMzpiL/p73xbmCi00SiCQZDTJUk9ZuHOLtil3nI+y7l269LHkHIAYpav99ZwGnPJzuJsJpfLXjiQ52g==
@@ -9511,8 +9523,6 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     "@material-ui/core" "^4.12.2"
     "@material-ui/icons" "^4.9.1"
     "@roadiehq/backstage-plugin-github-pull-requests" "^2.5.19"
-    css-loader "^6.8.1"
-    file-loader "^6.2.0"
     govuk-frontend "^4.7.0"
     history "^5.0.0"
     react "^17.0.2"
@@ -12284,9 +12294,9 @@ ejs@^3.1.7:
     jake "^10.8.5"
 
 electron-to-chromium@^1.4.601:
-  version "1.4.620"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.620.tgz#a6481e0703f8df1e6821063fb43c9b818a7a2ef4"
-  integrity sha512-a2fcSHOHrqBJsPNXtf6ZCEZpXrFCcbK1FBxfX3txoqWzNgtEDG1f3M59M98iwxhRW4iMKESnSjbJ310/rkrp0g==
+  version "1.4.622"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.622.tgz#925d8b2264abbcbe264a9a6290d97b9e5a1af205"
+  integrity sha512-GZ47DEy0Gm2Z8RVG092CkFvX7SdotG57c4YZOe8W8qD4rOmk3plgeNmiLVRHP/Liqj1wRiY3uUUod9vb9hnxZA==
 
 elliptic@^6.5.3, elliptic@^6.5.4:
   version "6.5.4"
@@ -19609,9 +19619,9 @@ postcss-value-parser@^4.1.0, postcss-value-parser@^4.2.0:
   integrity sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==
 
 postcss@^8.1.0, postcss@^8.4.21:
-  version "8.4.32"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.32.tgz#1dac6ac51ab19adb21b8b34fd2d93a86440ef6c9"
-  integrity sha512-D/kj5JNu6oo2EIy+XL/26JEDTlIbB8hw85G8StOE6L74RQAVVP5rej6wxCNqyMbR4RkPfqvezVbPw81Ngd6Kcw==
+  version "8.4.33"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.33.tgz#1378e859c9f69bf6f638b990a0212f43e2aaa742"
+  integrity sha512-Kkpbhhdjw2qQs2O2DGX+8m5OVqEcbB9HRBvuYM9pgrjEFUg30A9LmXNlTAUj4S9kgtGyrMbTzVjH7E+s5Re2yg==
   dependencies:
     nanoid "^3.3.7"
     picocolors "^1.0.0"
@@ -23368,9 +23378,9 @@ web-encoding@^1.1.5:
     "@zxing/text-encoding" "0.9.0"
 
 web-streams-polyfill@^3.0.3:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/web-streams-polyfill/-/web-streams-polyfill-3.3.0.tgz#d16f2dc29e1f23179771697c05b24ff3d157cb3c"
-  integrity sha512-qGPA+g7LsFEF3dXQDJdZUSUBEuCONtE303GrFblnE+5BGTIim+h8CcOmYzylo/4in2GcdpirP/fBkM3/J6kWoQ==
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/web-streams-polyfill/-/web-streams-polyfill-3.3.2.tgz#32e26522e05128203a7de59519be3c648004343b"
+  integrity sha512-3pRGuxRF5gpuZc0W+EpwQRmCD7gRqcDOMt688KmdlDAgAyaB1XlN0zq2njfDNm44XVdIouE7pZ6GzbdyH47uIQ==
 
 web-tree-sitter@=0.20.3:
   version "0.20.3"
@@ -23462,7 +23472,7 @@ webpack-sources@^3.2.3:
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.2.3.tgz#2d4daab8451fd4b240cc27055ff6a0c2ccea0cde"
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
 
-webpack@^5.70.0:
+webpack@^5.0.0, webpack@^5.70.0:
   version "5.89.0"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.89.0.tgz#56b8bf9a34356e93a6625770006490bf3a7f32dc"
   integrity sha512-qyfIC10pOr70V+jkmud8tMfajraGCZMBWJtrmuBymQKCrLTRejBI8STDp1MCyZu/QTdZSeacCQYpYNQVOzX5kw==
