@@ -17,7 +17,6 @@ permission:
   enabled: false
 
 backend:
-
   baseUrl: http://localhost:7007
   listen:
     port: 7007
@@ -33,10 +32,6 @@ backend:
   database:
     client: better-sqlite3
     connection: ':memory:'
-  #database:
-  #  client: better-sqlite3
-  #  connection:
-  #    directory: 'tmp'
 
 proxy:
   '/grafana/api':
@@ -58,10 +53,10 @@ techdocs:
       defaultPlugins: ['techdocs-core']
   publisher:
     type: 'local'
-
   cache:
     ttl: 3600000
     readTimeout: 500
+
 integrations:
   azure:
     - host: dev.azure.com
@@ -148,4 +143,4 @@ catalog:
       target: https://github.com/defra/adp-software-templates/blob/main/catalog-model/all.yaml
 
 techRadar: 
-  data: https://raw.githubusercontent.com/defra-adp-sandpit/adp-software-templates/main/tech-radars/development-tech-radar
+  data: https://raw.githubusercontent.com/defra/adp-software-templates/main/tech-radars/development-tech-radar.json
