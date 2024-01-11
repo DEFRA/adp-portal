@@ -8658,7 +8658,7 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.7.tgz#50ae4353eaaddc04044279812f52c8c65857dbcb"
   integrity sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==
 
-"@types/react-dom@*", "@types/react-dom@<18.0.0", "@types/react-dom@^17":
+"@types/react-dom@*", "@types/react-dom@<18.0.0":
   version "17.0.25"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-17.0.25.tgz#e0e5b3571e1069625b3a3da2b279379aa33a0cb5"
   integrity sha512-urx7A7UxkZQmThYA4So0NelOVjx3V4rNFVJwp0WZlbIK5eM4rNJDiN3R/E9ix0MBh6kAEojk/9YL+Te6D9zHNA==
@@ -9935,6 +9935,14 @@ azure-devops-node-api@^11.0.1:
   version "11.2.0"
   resolved "https://registry.yarnpkg.com/azure-devops-node-api/-/azure-devops-node-api-11.2.0.tgz#bf04edbef60313117a0507415eed4790a420ad6b"
   integrity sha512-XdiGPhrpaT5J8wdERRKs5g8E0Zy1pvOYTli7z9E8nmOn3YGp4FhtjhrOyFmX/8veWCwdI69mCHKJw6l+4J/bHA==
+  dependencies:
+    tunnel "0.0.6"
+    typed-rest-client "^1.8.4"
+
+azure-devops-node-api@^12.1.0:
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/azure-devops-node-api/-/azure-devops-node-api-12.1.0.tgz#38e25339e6be7b75ddd9034d165a7a7482ab5fee"
+  integrity sha512-VY+G45eNKVJfMIO0uyZfbi4PzUR8JHEfsHQjEUAXUGRkYhhBbhGHjy8cpiyYFxLXc3a4PL5cqgqqV/YD1SaCXg==
   dependencies:
     tunnel "0.0.6"
     typed-rest-client "^1.8.4"

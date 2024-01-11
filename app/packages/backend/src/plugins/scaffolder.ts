@@ -1,10 +1,19 @@
 import { CatalogClient } from '@backstage/catalog-client';
-import { createBuiltinActions, createRouter } from '@backstage/plugin-scaffolder-backend';
+import {
+  createBuiltinActions,
+  createRouter,
+} from '@backstage/plugin-scaffolder-backend';
 import { Router } from 'express';
 import type { PluginEnvironment } from '../types';
-import { ScmIntegrations } from "@backstage/integration";
-import { createAzurePipelineAction, permitAzurePipelineAction, runAzurePipelineAction } from "@antoniobergas/scaffolder-backend-module-azure-pipelines";
-import { createAcmeExampleAction } from '@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions';
+import { ScmIntegrations } from '@backstage/integration';
+import {
+  createAzurePipelineAction,
+  permitAzurePipelineAction,
+  runAzurePipelineAction,
+} from '@antoniobergas/scaffolder-backend-module-azure-pipelines';
+import {
+  getServiceConnectionAction,
+} from '@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions';
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -19,7 +28,7 @@ export default async function createPlugin(
     integrations,
     catalogClient,
     config: env.config,
-    reader: env.reader
+    reader: env.reader,
   });
 
   const actions = [
@@ -27,7 +36,10 @@ export default async function createPlugin(
     createAzurePipelineAction({ integrations }),
     permitAzurePipelineAction({ integrations }),
     runAzurePipelineAction({ integrations }),
-    createAcmeExampleAction()
+    getServiceConnectionAction({
+      integrations: integrations,
+      config: env.config,
+    }),
   ];
 
   return await createRouter({
@@ -38,6 +50,6 @@ export default async function createPlugin(
     catalogClient,
     identity: env.identity,
     permissions: env.permissions,
-    actions: actions
+    actions: actions,
   });
 }
