@@ -49,6 +49,7 @@ import {
 } from '@backstage/theme';
 
 import styles from 'style-loader!css-loader?{"modules": {"auto": true}}!sass-loader?{"sassOptions": {"quietDeps": true}}!./style.module.scss';
+import { AdpPage } from '@internal/plugin-adp';
 
 const lightTheme = createUnifiedTheme({
   palette: {
@@ -236,6 +237,7 @@ const routes = (
         <ReportIssue />
       </TechDocsAddons>
     </Route>
+    <Route path="/adp" element={<AdpPage />} />
   </FlatRoutes>
 );
 

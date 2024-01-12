@@ -2563,7 +2563,7 @@
     "@backstage/types" "^1.1.1"
     lodash "^4.17.21"
 
-"@backstage/core-app-api@^1.11.2":
+"@backstage/core-app-api@^1.11.0", "@backstage/core-app-api@^1.11.2":
   version "1.11.2"
   resolved "https://registry.yarnpkg.com/@backstage/core-app-api/-/core-app-api-1.11.2.tgz#02e0f697b7594854a5c0c32e8f2d973971107590"
   integrity sha512-ullzDYxavKYs4Xywp7Jsh2sppeUWZY5UGibEVJfcfDuJaaBL7I4KaZMlEPykkCXYfusK8PNPlz1IJJQDzDvbzw==
@@ -2636,7 +2636,7 @@
     zen-observable "^0.10.0"
     zod "~3.18.0"
 
-"@backstage/core-components@^0.13.8", "@backstage/core-components@^0.13.9":
+"@backstage/core-components@^0.13.6", "@backstage/core-components@^0.13.8", "@backstage/core-components@^0.13.9":
   version "0.13.9"
   resolved "https://registry.yarnpkg.com/@backstage/core-components/-/core-components-0.13.9.tgz#0b1a499412bd63ce0c24c8f6c8949ede17a7fee7"
   integrity sha512-BgiXiYoMf1K41uVqZhQ/wWcHfrlvbQC/VmDX6a4xJbKJHlcd5L0LSwXGg3i1FxEN05IyWpKXq2VicAXSaGeeEA==
@@ -2694,6 +2694,24 @@
     "@types/react" "^16.13.1 || ^17.0.0"
     history "^5.0.0"
     i18next "^22.4.15"
+
+"@backstage/dev-utils@^1.0.22":
+  version "1.0.25"
+  resolved "https://registry.yarnpkg.com/@backstage/dev-utils/-/dev-utils-1.0.25.tgz#32e5b09dd242ca1ebd21baf2afad44445397ee9f"
+  integrity sha512-7Bw2F2vLF0mCeiTC3KTdJ6+u26Q3omJtYMegLT5TCe57bvwDTSHjeLO4JO0CgmPyNTE6AJ2vjSRgSfSO+DMgNg==
+  dependencies:
+    "@backstage/app-defaults" "^1.4.6"
+    "@backstage/catalog-model" "^1.4.3"
+    "@backstage/core-app-api" "^1.11.2"
+    "@backstage/core-components" "^0.13.9"
+    "@backstage/core-plugin-api" "^1.8.1"
+    "@backstage/integration-react" "^1.1.22"
+    "@backstage/plugin-catalog-react" "^1.9.2"
+    "@backstage/theme" "^0.5.0"
+    "@material-ui/core" "^4.12.2"
+    "@material-ui/icons" "^4.9.1"
+    "@types/react" "^16.13.1 || ^17.0.0"
+    react-use "^17.2.4"
 
 "@backstage/e2e-test-utils@^0.1.0":
   version "0.1.0"
@@ -4030,7 +4048,7 @@
   dependencies:
     cross-fetch "^4.0.0"
 
-"@backstage/test-utils@^1.4.6":
+"@backstage/test-utils@^1.4.4", "@backstage/test-utils@^1.4.6":
   version "1.4.6"
   resolved "https://registry.yarnpkg.com/@backstage/test-utils/-/test-utils-1.4.6.tgz#09fa814ee72fce418db17861b228f6d9d7679f86"
   integrity sha512-zHLQzTODCvkJcznm4/ZkXMmldHbmW316VUKAkOy0kJUnO/VyidZuoB+KYGo/2lScXxJBfkBBscZiIQQpiGlOgQ==
@@ -4055,6 +4073,15 @@
   integrity sha512-W9smhIlQZ0jHOCNnRsWbNIhQ2QEmophCFxN89uxQcOILwP5p3YoRsa8S8Lz1yFDMfWiS7gLEk2cpl6RybBVgwQ==
   dependencies:
     "@material-ui/core" "^4.12.2"
+
+"@backstage/theme@^0.4.3":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@backstage/theme/-/theme-0.4.4.tgz#807735b58a5e1b2a0cdb50fc05ad83656f2f66cb"
+  integrity sha512-Mvs0FrEnQtyO2dVNPyo1wjkNHbN3vefIdj4V27SFiX9W9sj+R1b4rzFACF6xjVzfdV9oo9HdsL59CMnFlDxz4Q==
+  dependencies:
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "@mui/material" "^5.12.2"
 
 "@backstage/theme@^0.5.0":
   version "0.5.0"
@@ -9941,6 +9968,7 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     "@backstage/plugin-techdocs-react" "^1.1.14"
     "@backstage/plugin-user-settings" "^0.7.14"
     "@backstage/theme" "^0.5.0"
+    "@internal/plugin-adp" "^0.1.0"
     "@k-phoen/backstage-plugin-grafana" "^0.1.22"
     "@material-ui/core" "^4.12.2"
     "@material-ui/icons" "^4.9.1"
@@ -20670,6 +20698,11 @@ react-hook-form@^7.12.2:
   version "7.49.2"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.49.2.tgz#6fb2742e1308020f26cb1915c7012b6c07b11ade"
   integrity sha512-TZcnSc17+LPPVpMRIDNVITY6w20deMdNi6iehTFLV1x8SqThXGwu93HjlUVU09pzFgZH7qZOvLMM7UYf2ShAHA==
+
+react-hook-form@^7.49.3:
+  version "7.49.3"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.49.3.tgz#576a4567f8a774830812f4855e89f5da5830435c"
+  integrity sha512-foD6r3juidAT1cOZzpmD/gOKt7fRsDhXXZ0y28+Al1CHgX+AY1qIN9VSIIItXRq1dN68QrRwl1ORFlwjBaAqeQ==
 
 react-idle-timer@5.6.2:
   version "5.6.2"
