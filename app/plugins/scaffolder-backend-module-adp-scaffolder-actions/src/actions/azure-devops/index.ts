@@ -1,1 +1,2 @@
-export * from './getServiceConnection'; 
+export * from './getServiceConnection';
+export * from './createPipeline';

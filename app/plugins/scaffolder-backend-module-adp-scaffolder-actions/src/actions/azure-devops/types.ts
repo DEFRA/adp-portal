@@ -14,3 +14,15 @@ export type ServiceEndpoint = {
   isReady: boolean;
   owner: string;
 };
+
+export type Pipeline = {
+  folder: string;
+  id: number;
+  name: string;
+  url: string;
+  _links: {
+    web: {
+      href: string;
+    };
+  };
+};
