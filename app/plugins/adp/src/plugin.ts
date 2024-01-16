@@ -17,3 +17,12 @@ export const AdpPage = adpPlugin.provide(
     mountPoint: rootRouteRef,
   }),
 );
+
+export const AlbPage = adpPlugin.provide(
+  createRoutableExtension({
+    name: 'AlbPage',
+    component: () =>
+      import('./components/ALB/CreateAlbForm').then(m => m.CreateAlbComponent),
+    mountPoint: rootRouteRef,
+  }),
+);
