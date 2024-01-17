@@ -78,4 +78,58 @@ describe('adp:azure:pipeline:run', () => {
       /Could not get response from resource/,
     );
   });
+
+  it.each([101, 301, 418, 500])(
+    'should throw if a non-success status code is returned when creating the pipeline run',
+    async statusCode => {
+      mockClientImpl.create.mockImplementation(() => ({
+        statusCode: statusCode,
+      }));
+
+      await expect(action.handler(mockContext)).rejects.toThrow(
+        /Could not get response from resource/,
+      );
+    },
+  );
+
+  it('should throw if a pipeline run is not created', async () => {
+    mockClientImpl.create.mockImplementation(() => ({
+      statusCode: 200,
+      result: null,
+    }));
+
+    await expect(action.handler(mockContext)).rejects.toThrow(
+      /Unable to run pipeline/,
+    );
+  });
+
+  it('should call the Azure Pipeline API with the correct values', async () => {
+    mockClientImpl.create.mockImplementation(() => ({
+      statusCode: 200,
+      result: {
+        _links: {
+          web: {
+            href: 'http://dev.azure.com/link/to/pipeline'
+          }
+        },
+        url: 'http://dev.azure.com/link/to/pipeline',
+        id: 1234,
+        name: 'pipeline-name',
+      },
+    }));
+
+    await action.handler(mockContext);
+
+    expect(RestClient).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('dev.azure.com'),
+      expect.any(Array),
+    );
+
+    expect(mockClientImpl.create).toHaveBeenCalledWith(
+      expect.stringContaining(mockContext.input.project),
+      expect.any(Object),
+      expect.any(Object),
+    );
+  });
 });

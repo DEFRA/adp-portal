@@ -26,3 +26,25 @@ export type Pipeline = {
     };
   };
 };
+
+export type PipelineRun = {
+  _links: {
+    web: {
+      href: string;
+    }
+  },
+  templateParameters: object,
+  pipeline: {
+    url: string;
+    id: number;
+    revision: number;
+    name: string;
+    folder: string;
+  },
+  state: string;
+  createdDate: Date;
+  url: string;
+  id: number;
+  name: string;
+  resources: object;
+}
