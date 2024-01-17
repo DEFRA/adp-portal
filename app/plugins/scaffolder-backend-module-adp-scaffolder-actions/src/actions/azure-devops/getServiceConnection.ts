@@ -28,7 +28,7 @@ export function getServiceConnectionAction(options: {
 
   return createTemplateAction<GetServiceConnectionOptions>({
     id: 'adp:azure:serviceconnection:get',
-    description: 'Gets a service connection from an ADO project',
+    description: 'Gets a service connection from an Azure DevOps project',
     schema: {
       input: {
         required: ['project', 'serviceConnectionName'],

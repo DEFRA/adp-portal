@@ -7,11 +7,13 @@ import { Router } from 'express';
 import type { PluginEnvironment } from '../types';
 import { ScmIntegrations } from '@backstage/integration';
 import {
-  createAzurePipelineAction,
   permitAzurePipelineAction,
 } from '@antoniobergas/scaffolder-backend-module-azure-pipelines';
-import { getServiceConnectionAction } from '@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions';
-import { runPipelineAction } from '@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions/src/actions/azure-devops/runPipeline';
+import {
+  createPipelineAction,
+  getServiceConnectionAction,
+  runPipelineAction,
+} from '@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions';
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -31,8 +33,11 @@ export default async function createPlugin(
 
   const actions = [
     ...builtInActions,
-    createAzurePipelineAction({ integrations }),
     permitAzurePipelineAction({ integrations }),
+    createPipelineAction({
+      integrations: integrations,
+      config: env.config,
+    }),
     getServiceConnectionAction({
       integrations: integrations,
       config: env.config,

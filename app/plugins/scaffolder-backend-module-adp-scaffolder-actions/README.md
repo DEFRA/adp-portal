@@ -8,5 +8,6 @@ Details about actions (inputs, outputs, and how to use them) are available in [t
 - Azure DevOps
   - Get Service Connection
   - Run pipeline
+  - Create Pipeline
 
 _This plugin was created through the Backstage CLI_
