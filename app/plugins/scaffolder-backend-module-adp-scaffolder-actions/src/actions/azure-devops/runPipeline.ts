@@ -10,7 +10,8 @@ import {
   getPersonalAccessTokenHandler,
 } from 'azure-devops-node-api';
 import { IRequestOptions, RestClient } from 'typed-rest-client';
-import { PipelineRun } from './types';
+import { Build, BuildStatus, PipelineRun } from './types';
+import { Logger } from 'winston';
 
 type RunPipelineOptions = {
   pipelineApiVersion?: string;
@@ -34,6 +35,9 @@ type RunPipelineRequest = {
     };
   };
 };
+
+/** Interval for polling the Get Build endpoint */
+const GET_BUILD_INTERVAL = 5000;
 
 export function runPipelineAction(options: {
   integrations: ScmIntegrationRegistry;
@@ -164,9 +168,26 @@ export function runPipelineAction(options: {
         );
       }
 
-      ctx.logger.info(`Started build: ${pipelineRun._links.web.href}`);
+      ctx.logger.info(`Started pipeline run: ${pipelineRun._links.web.href}`);
       ctx.output('buildId', pipelineRun.id);
       ctx.output('pipelineRunUrl', pipelineRun._links.web.href);
+
+      const isPipelineRunComplete = await checkPipelineStatus(
+        restClient,
+        encodedOrganization,
+        encodedProject,
+        pipelineRun.id,
+        ctx.input.buildApiVersion,
+        ctx.logger,
+      );
+
+      if (isPipelineRunComplete) {
+        ctx.logger.info('Pipeline run successfully completed');
+      } else {
+        ctx.logger.warn(
+          `Pipeline run could not complete. Check ${pipelineRun._links.web.href}`,
+        );
+      }
     },
   });
 }
@@ -216,4 +237,57 @@ async function runPipeline(
   const pipelineRun = runPipelineResponse.result;
 
   return pipelineRun;
+}
+
+async function checkPipelineStatus(
+  client: RestClient,
+  organization: string,
+  project: string,
+  runId: number,
+  apiVersion: string = '7.2-preview.7',
+  logger: Logger,
+): Promise<boolean> {
+  logger.info(
+    `Calling Azure DevOps REST API. Getting build ${runId} in project ${project}`,
+  );
+
+  const requestOptions: IRequestOptions = {
+    acceptHeader: 'application/json',
+  };
+  const resource = `/${organization}/${project}/_apis/build/builds/${runId}?api-version=${apiVersion}`;
+
+  const getBuildResponse = await client.get<Build>(resource, requestOptions);
+
+  if (
+    !getBuildResponse?.result ||
+    getBuildResponse.statusCode < 200 ||
+    getBuildResponse.statusCode > 299
+  ) {
+    const message = getBuildResponse?.statusCode
+      ? `Could not get response from resource ${resource}. Status code ${getBuildResponse.statusCode}`
+      : `Could not get response from resource ${resource}.`;
+    throw new ServiceUnavailableError(message);
+  }
+
+  const build = getBuildResponse.result;
+  if (build.status === BuildStatus.Completed) {
+    return true;
+  } else if (
+    build.status === BuildStatus.InProgress ||
+    build.status === BuildStatus.NotStarted
+  ) {
+    // If pipeline is still running or hasn't started, wait and check again.
+    logger.info(`Build in progress. Waiting ${GET_BUILD_INTERVAL / 1000} seconds...`)
+    await new Promise(resolve => setTimeout(resolve, GET_BUILD_INTERVAL));
+    return checkPipelineStatus(
+      client,
+      organization,
+      project,
+      runId,
+      apiVersion,
+      logger,
+    );
+  } else {
+    return false;
+  }
 }
