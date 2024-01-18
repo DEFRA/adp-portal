@@ -33,7 +33,7 @@ import { createApp } from '@backstage/app-defaults';
 import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
-import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
+import { catalogEntityCreatePermission, catalogLocationCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 
 import { microsoftAuthApiRef } from '@backstage/core-plugin-api';
 import { SignInPage } from '@backstage/core-components';
@@ -202,7 +202,15 @@ const routes = (
     >
       {entityPage}
     </Route>
-    <Route path="/create" element={<ScaffolderPage />} />
+    {/* <Route path="/create" element={<ScaffolderPage />} /> */}
+    <Route
+      path="/create"
+      element={
+        <RequirePermission permission={catalogEntityCreatePermission}>
+          <ScaffolderPage />
+        </RequirePermission>
+      }
+    />
     <Route path="/api-docs" element={<ApiExplorerPage />} />
     <Route
       path="/tech-radar"
@@ -215,7 +223,7 @@ const routes = (
     <Route
       path="/catalog-import"
       element={
-        <RequirePermission permission={catalogEntityCreatePermission}>
+        <RequirePermission permission={catalogLocationCreatePermission}>
           <CatalogImportPage />
         </RequirePermission>
       }
