@@ -19,6 +19,7 @@
     "build": "backstage-cli package build",
     "lint": "backstage-cli package lint",
     "test": "backstage-cli package test",
+    "test:coverage": "backstage-cli package test --coverage",
     "clean": "backstage-cli package clean",
     "prepack": "backstage-cli package prepack",
     "postpack": "backstage-cli package postpack"
@@ -29,11 +30,14 @@
     "@backstage/integration": "^1.8.0",
     "@backstage/plugin-scaffolder-node": "^0.2.9",
     "azure-devops-node-api": "^12.1.0",
-    "typed-rest-client": "^1.8.11"
+    "typed-rest-client": "^1.8.11",
+    "octokit": "^3.1.2"
   },
   "devDependencies": {
     "@backstage/backend-common": "^0.20.0",
-    "@backstage/cli": "^0.25.0"
+    "@backstage/cli": "^0.25.0",
+    "@octokit/types": "^12.4.0",
+    "@backstage/types": "^1.1.1"
   },
   "files": [
     "dist"

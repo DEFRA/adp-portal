@@ -92,6 +92,10 @@ azureDevOps:
   token: ${ADO_PAT}
   organization: ${ADO_ORGANIZATION}
 
+github:
+  host: github.com
+  organization: ${GITHUB_ORGANIZATION}
+
 catalog:
   import:
     entityFilename: catalog-info.yaml

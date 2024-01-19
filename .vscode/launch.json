@@ -15,6 +15,21 @@
         "internalConsoleOptions": "neverOpen",
         "program": "node_modules/.bin/backstage-cli",
         "cwd": "${workspaceFolder}/app"
+      },
+      {
+        "type": "node",
+        "name": "Debug Jest tests - Custom Actions",
+        "request": "launch",
+        "args": [
+          "repo",
+          "test",
+          "--runInBand",
+          "--watchAll=false"
+        ],
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "program": "node_modules/.bin/backstage-cli",
+        "cwd": "${workspaceFolder}/app/plugins/scaffolder-backend-module-adp-scaffolder-actions"
       }
     ]
 }
