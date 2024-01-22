@@ -1,5 +1,5 @@
 import { Config } from '@backstage/config';
-import { InputError } from '@backstage/errors';
+import { InputError, ServiceUnavailableError } from '@backstage/errors';
 import {
   DefaultAzureDevOpsCredentialsProvider,
   ScmIntegrationRegistry,
@@ -17,13 +17,13 @@ type PermitPipelineOptions = {
   organization?: string;
   project: string;
   pipelineId: number;
-  resources: [
-    {
-      resourceType: string;
-      resourceId: string;
-      authorized: boolean;
-    },
-  ];
+  resources: ResourceOptions[];
+};
+
+type ResourceOptions = {
+  resourceType: string;
+  resourceId: string;
+  authorized: boolean;
 };
 
 type PermitPipelineRequest = {
@@ -161,8 +161,13 @@ export function permitPipelineAction(options: {
         requestOptions,
       );
 
+      if (!permitPipelineResponse) {
+        throw new ServiceUnavailableError(
+          `Could not get response from resource ${resource}`,
+        );
+      }
+
       if (
-        !permitPipelineResponse ||
         permitPipelineResponse.statusCode < 200 ||
         permitPipelineResponse.statusCode > 299
       ) {
