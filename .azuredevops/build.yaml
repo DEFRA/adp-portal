@@ -44,6 +44,7 @@ extends:
       filepath: ".azuredevops/backstage.yaml"  
       variableGroups: 
         - adp-portal-ssv3
+        - adp-portal-ssv5
       variables:        
         - ADO-ORGANIZATION
         - ADO-PAT
