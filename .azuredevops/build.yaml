@@ -34,7 +34,7 @@ resources:
       ref: refs/heads/main
 
 extends:
-  template: /pipelines/common-portal-app-build.yaml@DEFRA-ADPPipelineCommon
+  template: /pipelines/common-aca-app-build.yaml@DEFRA-ADPPipelineCommon
   parameters:
     serviceName: "backstage"
     deployFromFeature: ${{ parameters.deployFromFeature }}
