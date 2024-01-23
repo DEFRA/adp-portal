@@ -24,7 +24,7 @@ import {
   createCatalogConditionalDecision,
 } from '@backstage/plugin-catalog-backend/alpha';
 
-import {RbacUtilities} from '../rbacUtilites'
+import { RbacUtilities } from '../rbacUtilites'
 import { Logger } from 'winston';
 
 export class AdpPortalPermissionPolicy implements PermissionPolicy {

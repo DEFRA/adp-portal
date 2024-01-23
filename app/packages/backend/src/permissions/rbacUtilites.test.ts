@@ -9,6 +9,8 @@ const { mockLogger,
 
 const sut = new RbacUtilities(mockLogger, mockRbacGroups);
 
+
+
 describe('rbacUtilites.isInPlatformAdminGroup', () => {
 
   it.each([

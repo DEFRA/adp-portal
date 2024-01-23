@@ -16,13 +16,43 @@ import { RbacUtilities } from '../rbacUtilites'
 
 import { RbacTestData } from '../mocks/rbacTestData'
 
-describe('adpPortalPermissionPolicy', () => {
+const { mockLogger,
+  mockRbacGroups,
+  mockPlatformAdminUserResponse,
+  mockProgrammeAdminUserUserResponse,
+  mockAdpPortalUserResponse } = RbacTestData
 
-  const { mockLogger,
-    mockRbacGroups,
-    mockPlatformAdminUserResponse,
-    mockProgrammeAdminUserUserResponse,
-    mockAdpPortalUserResponse } = RbacTestData
+jest.mock('@backstage/backend-common', () => ({
+  getVoidLogger: jest.fn().mockReturnValue({
+    info: jest.fn(),
+    error: jest.fn(),
+  }),
+}));
+jest.mock('winston', () => ({
+  Logger: jest.fn().mockReturnValue({
+    info: jest.fn(),
+    debug: jest.fn(),
+    error: jest.fn(),
+  }),
+}));
+
+describe('adpPortalPermissionPolicy: Platform Admin User', () => {
+
+  jest.mock('../rbacUtilites', () => {
+    return {
+      ...jest.requireActual('../rbacUtilites'),
+      RbacUtilities: {
+        isInPlatformAdminGroup: jest.fn().mockResolvedValue(false),
+        isInProgrammeAdminGroup: jest.fn().mockResolvedValue(false),
+        isInAdpUserGroup: jest.fn().mockResolvedValue(false),
+      }
+    };
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
 
   it.each([
     { permission: catalogEntityReadPermission, expected: AuthorizeResult.ALLOW },
@@ -43,6 +73,23 @@ describe('adpPortalPermissionPolicy', () => {
     },
   );
 
+});
+
+describe('adpPortalPermissionPolicy: Programme Admin User', () => {
+
+  jest.mock('../rbacUtilites', () => {
+    return {
+      isInPlatformAdminGroup: jest.fn().mockReturnValue(false),
+      isInProgrammeAdminGroup: jest.fn().mockReturnValue(true),
+      isInAdpUserGroup: jest.fn().mockReturnValue(false),
+    };
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
+
   it.each([
     { permission: catalogEntityReadPermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogLocationReadPermission, expected: AuthorizeResult.ALLOW },
@@ -61,6 +108,23 @@ describe('adpPortalPermissionPolicy', () => {
       expect(policyResult.result).toBe(expected);
     },
   );
+
+});
+
+describe('adpPortalPermissionPolicy: ADP Platform User', () => {
+
+  jest.mock('../rbacUtilites', () => {
+    return {
+      isInPlatformAdminGroup: jest.fn().mockReturnValue(false),
+      isInProgrammeAdminGroup: jest.fn().mockReturnValue(false),
+      isInAdpUserGroup: jest.fn().mockReturnValue(true),
+    };
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
 
   it.each([
     { permission: catalogEntityReadPermission, expected: AuthorizeResult.ALLOW },

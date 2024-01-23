@@ -1,9 +1,9 @@
-import { getVoidLogger } from '@backstage/backend-common';
 import { RbacGroups } from '../types'
 import { BackstageIdentityResponse } from '@backstage/core-plugin-api'
 
 export class RbacTestData {
-  public static readonly mockLogger = getVoidLogger();
+
+  public static mockLogger: any = { child: jest.fn(), info: jest.fn(), error: jest.fn(), debug: jest.fn() };
 
   public static readonly  mockRbacGroups: RbacGroups = {
     platformAdminsGroup: "Test-PlatformAdminsGroup",

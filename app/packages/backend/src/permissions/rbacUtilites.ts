@@ -28,19 +28,19 @@ export class RbacUtilities {
     this.logger.debug(`platformAdminsGroup=${this.platformAdminsGroup} | programmeAdminGroup=${this.programmeAdminGroup} | adpPortalUsersGroup= ${this.adpPortalUsersGroup}`)
   }
 
-  public isInPlatformAdminGroup = (user: BackstageIdentityResponse): boolean => {
+  public isInPlatformAdminGroup (user: BackstageIdentityResponse): boolean {
     return [this.platformAdminsGroup,].some(group =>
       user?.identity.ownershipEntityRefs.includes(group),
     );
   }
 
-  public isInProgrammeAdminGroup = (user: BackstageIdentityResponse): boolean => {
+  public isInProgrammeAdminGroup (user: BackstageIdentityResponse): boolean {
     return [this.programmeAdminGroup,].some(group =>
       user?.identity.ownershipEntityRefs.includes(group),
     );
   }
 
-  public isInAdpUserGroup = (user: BackstageIdentityResponse): boolean => {
+  public isInAdpUserGroup (user: BackstageIdentityResponse): boolean {
     return [this.adpPortalUsersGroup,].some(group =>
       user?.identity.ownershipEntityRefs.includes(group),
     );

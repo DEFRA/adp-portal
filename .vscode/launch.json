@@ -15,6 +15,26 @@
         "internalConsoleOptions": "neverOpen",
         "program": "node_modules/.bin/backstage-cli",
         "cwd": "${workspaceFolder}/app"
+      },
+      {
+        "type": "node",
+        "name": "Debug Backend tests",
+        "request": "launch",
+        "args": [
+          "repo",
+          "test",
+          "--runInBand",
+          "--watchAll=false",
+          "--coverage"
+        ],
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "program": "node_modules/.bin/backstage-cli",
+        "cwd": "${workspaceFolder}/app/packages/backend",
+        "sourceMapPathOverrides": {
+          "/mnt/c/*": "/__vscode-remote-uri__/mnt/c/*",
+        },
+      
       }
     ]
 }
