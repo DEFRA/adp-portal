@@ -184,7 +184,7 @@ export function createPipelineAction(options: {
         folder: ctx.input.folder,
         name: ctx.input.pipelineName,
         configuration: {
-          path: ctx.input.yamlPath || '/azure-pipelines.yaml',
+          path: ctx.input.yamlPath ?? '/azure-pipelines.yaml',
           type: 'yaml',
           repository: {
             fullName: ctx.input.repositoryName,

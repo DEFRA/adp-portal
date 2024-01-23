@@ -177,8 +177,8 @@ export function runPipelineAction(options: {
         encodedOrganization,
         encodedProject,
         pipelineRun.id,
-        ctx.input.buildApiVersion,
         ctx.logger,
+        ctx.input.buildApiVersion,
       );
 
       if (isPipelineRunComplete) {
@@ -244,8 +244,8 @@ async function checkPipelineStatus(
   organization: string,
   project: string,
   runId: number,
-  apiVersion: string = '7.2-preview.7',
   logger: Logger,
+  apiVersion: string = '7.2-preview.7',
 ): Promise<boolean> {
   logger.info(
     `Calling Azure DevOps REST API. Getting build ${runId} in project ${project}`,
@@ -284,8 +284,8 @@ async function checkPipelineStatus(
       organization,
       project,
       runId,
-      apiVersion,
       logger,
+      apiVersion,
     );
   } else {
     return false;

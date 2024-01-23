@@ -56,8 +56,7 @@ export function addGithubTeamToRepoAction(options: {
       },
     },
     async handler(ctx) {
-      const { teamNames, repoName, orgName, owner, permission } =
-        ctx.input;
+      const { teamNames, repoName, orgName, owner, permission } = ctx.input;
 
       const credentialsProvider =
         DefaultGithubCredentialsProvider.fromIntegrations(integrations);
@@ -109,7 +108,7 @@ async function checkTeamExists(
   octokit: Octokit,
   organization: string,
   githubTeamName: string,
-  ctx,
+  ctx: any,
 ) {
   let isTeamExists: boolean = false;
   try {
@@ -124,7 +123,7 @@ async function checkTeamExists(
       isTeamExists = true;
     }
   } catch (error) {
-    if ((error as unknown as RequestError).status === 404) {
+    if ((error as RequestError).status === 404) {
       ctx.logger.info(`GitHub team ${githubTeamName} doesn't exist in the org`);
     } else {
       ctx.logger.error(`Error in getting GitHub team: ${error}`);
@@ -141,7 +140,7 @@ async function addTeamToRepo(
   owner: string,
   team: string,
   permission: string,
-  ctx,
+  ctx: any,
 ) {
   try {
     let teamAdded = await octokit.rest.teams.addOrUpdateRepoPermissionsInOrg({
