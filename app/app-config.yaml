@@ -78,7 +78,7 @@ rbac:
 auth:
 
   keys:
-    - secret: ${BACKEND_SECRET}
+    - secret: ${BACKEND_PLUGINS_SECRET}
 
   environment: sandpit
   providers:
