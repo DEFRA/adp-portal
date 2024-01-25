@@ -10,8 +10,43 @@ import {
 } from 'azure-devops-node-api';
 import { IRequestOptions, IRestResponse, RestClient } from 'typed-rest-client';
 import { Logger } from 'winston';
-import { ServiceEndpointResponse } from './types';
+import {
+  Pipeline,
+  ResourceOptions,
+  ResourcePipelinePermissions,
+  ServiceEndpointResponse,
+} from './types';
 import { IRequestHandler } from 'typed-rest-client/Interfaces';
+
+type CreatePipelineRequest = {
+  folder: string;
+  name: string;
+  configuration: {
+    type: string;
+    path: string;
+    repository: {
+      fullName: string;
+      connection: {
+        id: string;
+      };
+      type: string;
+    };
+  };
+};
+
+type PermitPipelineRequest = {
+  pipelines: [
+    {
+      id: number;
+      authorized: boolean;
+    },
+  ];
+  resource: {
+    id: string;
+    name?: string;
+    type: string;
+  };
+};
 
 export class AzureDevOpsApi {
   private readonly restClient: RestClient;
@@ -92,6 +127,90 @@ export class AzureDevOpsApi {
     );
 
     return serviceConnectionResponse.result!;
+  }
+
+  public async createPipeline(
+    organization: string,
+    project: string,
+    pipelineName: string,
+    folder: string,
+    repositoryName: string,
+    serviceConnectionId: string,
+    yamlPath: string,
+    apiVersion = '7.2-preview.1',
+  ): Promise<Pipeline> {
+    const encodedOrganization = encodeURIComponent(organization);
+    const encodedProject = encodeURIComponent(project);
+    const resource = `/${encodedOrganization}/${encodedProject}/_apis/pipelines?api-version=${apiVersion}`;
+    const body: CreatePipelineRequest = {
+      folder: folder,
+      name: pipelineName,
+      configuration: {
+        path: yamlPath,
+        type: 'yaml',
+        repository: {
+          fullName: repositoryName,
+          type: 'github',
+          connection: {
+            id: serviceConnectionId,
+          },
+        },
+      },
+    };
+
+    this.logger.info(
+      `Calling Azure DevOps REST API. Creating pipeline ${pipelineName} in project ${project}`,
+    );
+
+    const createPipelineResponse = await this.restClient.create<Pipeline>(
+      resource,
+      body,
+      this.requestOptions,
+    );
+
+    this.handleResponse<Pipeline>(resource, createPipelineResponse);
+
+    return createPipelineResponse.result!;
+  }
+
+  public async permitPipeline(
+    organization: string,
+    project: string,
+    pipelineId: number,
+    pipelineResources: ResourceOptions[],
+    apiVersion = '7.2-preview.1',
+  ): Promise<ResourcePipelinePermissions[]> {
+    const encodedOrganization = encodeURIComponent(organization);
+    const encodedProject = encodeURIComponent(project);
+
+    const resource = `/${encodedOrganization}/${encodedProject}/_apis/pipelines/pipelinepermissions?api-version=${apiVersion}`;
+    const body: PermitPipelineRequest[] =
+      pipelineResources.map<PermitPipelineRequest>(res => ({
+        pipelines: [
+          {
+            id: pipelineId,
+            authorized: res.authorized,
+          },
+        ],
+        resource: {
+          id: res.resourceId,
+          type: res.resourceType,
+        },
+      }));
+
+      this.logger.info(
+        `Calling Azure DevOps REST API. Permitting resources for pipeline ${pipelineId} in project ${project}`,
+      );
+
+      const permitPipelineResponse = await this.restClient.update<ResourcePipelinePermissions[]>(
+        resource,
+        body,
+        this.requestOptions,
+      );
+
+      this.handleResponse<ResourcePipelinePermissions[]>(resource, permitPipelineResponse);
+
+      return permitPipelineResponse.result!;
   }
 
   private handleResponse<T>(resource: string, response: IRestResponse<T>) {
