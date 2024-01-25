@@ -118,7 +118,7 @@ async function checkTeamExists(
   octokit: Octokit,
   organization: string,
   githubTeamName: string,
-  ctx,
+  ctx: any,
 ) {
   let teamCreated;
   try {
@@ -147,7 +147,7 @@ async function createTeam(
   githubTeamName: string,
   githubTeamDescription: string,
   visibility: 'secret' | 'closed',
-  ctx,
+  ctx: any,
 ) {
   let teamCreated;
   try {
@@ -177,7 +177,7 @@ async function addUsersToTeam(
   organization: string,
   githubTeamName: string,
   usernames: string[],
-  ctx,
+  ctx: any,
 ) {
   await Promise.all(
     usernames.map(async user => {
