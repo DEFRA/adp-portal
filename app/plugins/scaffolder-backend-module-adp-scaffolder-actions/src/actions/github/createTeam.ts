@@ -1,7 +1,4 @@
-import {
-  ActionContext,
-  createTemplateAction,
-} from '@backstage/plugin-scaffolder-node';
+import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import {
   ScmIntegrationRegistry,
   DefaultGithubCredentialsProvider,
@@ -47,7 +44,7 @@ export function createGithubTeamAction(options: {
           },
           users: {
             title: 'List of usernames to be added to the GitHub team',
-            description: 'Schema for github org name',
+            description: 'Schema for github users',
             type: 'string',
           },
           visibility: {

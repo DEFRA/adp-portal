@@ -3,7 +3,7 @@ import {
   ScmIntegrations,
   DefaultGithubCredentialsProvider,
 } from '@backstage/integration';
-import { createGithubTeamAction } from './github-team';
+import { createGithubTeamAction } from './createTeam';
 import { getVoidLogger } from '@backstage/backend-common';
 import { PassThrough } from 'stream';
 import { Octokit } from 'octokit';

@@ -1,1 +1,2 @@
-export { createGithubTeamAction } from './github-team'
+export { createGithubTeamAction } from './createTeam';
+export { addGithubTeamToRepoAction } from './addTeamToRepo';

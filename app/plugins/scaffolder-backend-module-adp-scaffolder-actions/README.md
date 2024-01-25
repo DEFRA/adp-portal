@@ -13,5 +13,6 @@ Details about actions (inputs, outputs, and how to use them) are available in [t
 
 - GitHub
   - Create GitHub Team
+  - Add GitHub Team to Repository
   
 _This plugin was created through the Backstage CLI_
