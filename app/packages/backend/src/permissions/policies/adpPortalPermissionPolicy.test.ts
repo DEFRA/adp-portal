@@ -95,7 +95,7 @@ describe('adpPortalPermissionPolicy: Programme Admin User', () => {
     { permission: catalogLocationReadPermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogEntityRefreshPermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogEntityCreatePermission, expected: AuthorizeResult.ALLOW },
-    { permission: catalogEntityDeletePermission, expected: AuthorizeResult.CONDITIONAL },
+    { permission: catalogEntityDeletePermission, expected: AuthorizeResult.DENY },
     { permission: catalogLocationCreatePermission, expected: AuthorizeResult.DENY },
     { permission: catalogLocationDeletePermission, expected: AuthorizeResult.DENY },
   ])(
@@ -131,7 +131,7 @@ describe('adpPortalPermissionPolicy: ADP Platform User', () => {
     { permission: catalogLocationReadPermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogEntityRefreshPermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogEntityCreatePermission, expected: AuthorizeResult.DENY },
-    { permission: catalogEntityDeletePermission, expected: AuthorizeResult.CONDITIONAL },
+    { permission: catalogEntityDeletePermission, expected: AuthorizeResult.DENY },
     { permission: catalogLocationCreatePermission, expected: AuthorizeResult.DENY },
     { permission: catalogLocationDeletePermission, expected: AuthorizeResult.DENY },
   ])(

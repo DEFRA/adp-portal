@@ -67,15 +67,6 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       return { result: AuthorizeResult.ALLOW };
     }
 
-    if ( isPermission(request.permission, catalogEntityDeletePermission)) {
-      return createCatalogConditionalDecision(
-        request.permission,
-        catalogConditions.isEntityOwner({
-          claims: user?.identity.ownershipEntityRefs ?? [],
-        }),
-      );
-    }
-
     return { result: AuthorizeResult.DENY };
   }
 }
