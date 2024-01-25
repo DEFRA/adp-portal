@@ -1,6 +1,6 @@
 /***/
 /**
- * The adp-scaffolder-actions module for @backstage/plugin-scaffolder-backend.
+ * Custom ADP-specific scaffolder actions for @backstage/plugin-scaffolder-backend.
  *
  * @packageDocumentation
  */
