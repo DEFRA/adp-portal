@@ -53,6 +53,11 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       return { result: AuthorizeResult.ALLOW };
     }
 
+    if ( isPermission(request.permission, catalogEntityCreatePermission) && 
+          user != null && this.rbacUtilites.isInProgrammeAdminGroup(user)) {
+      return { result: AuthorizeResult.ALLOW };
+    }
+
     if (
       isPermission(request.permission, catalogEntityReadPermission) ||
       isPermission(request.permission, catalogLocationReadPermission) ||
@@ -62,8 +67,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       return { result: AuthorizeResult.ALLOW };
     }
 
-    if (isPermission(request.permission, catalogEntityCreatePermission) ||
-    isPermission(request.permission, catalogEntityDeletePermission)) {
+    if ( isPermission(request.permission, catalogEntityDeletePermission)) {
       return createCatalogConditionalDecision(
         request.permission,
         catalogConditions.isEntityOwner({
