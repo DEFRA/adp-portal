@@ -73,6 +73,18 @@ properties:
       - name: blobstorage-key
         keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TECHDOCS-AZURE-BLOB-STORAGE-ACCOUNT-KEY
         identity: {{userAssignedIdentity}}
+      - name: adp-portal-platform-admins-group
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP-PORTAL-PLATFORM-ADMINS-GROUP
+        identity: {{userAssignedIdentity}}
+      - name: adp-portal-programme-admins-group
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP-PORTAL-PROGRAMME-ADMINS-GROUP
+        identity: {{userAssignedIdentity}}
+      - name: adp-portal-users-group
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP-PORTAL-USERS-GROUP
+        identity: {{userAssignedIdentity}}
+      - name: backend-plugins-secret
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/BACKEND-PLUGINS-SECRET
+        identity: {{userAssignedIdentity}}
   template:
     containers:
       - image: {{acrName}}.azurecr.io/image/{{imageRepoName}}:{{appVersion}}
@@ -86,6 +98,14 @@ properties:
             secretRef: app-base-url
           - name: GITHUB_APP_ID
             secretRef: github-app-id
+          - name: ADP_PORTAL_PLATFORM_ADMINS_GROUP
+            secretRef: adp-portal-platform-admins-group
+          - name: ADP_PORTAL_PROGRAMME_ADMINS_GROUP
+            secretRef: adp-portal-programme-admins-group
+          - name: ADP_PORTAL_USERS_GROUP
+            secretRef: adp-portal-users-group
+          - name: BACKEND_PLUGINS_SECRET
+            secretRef: backend-plugins-secret
           - name: GITHUB_CLIENT_ID
             secretRef: github-client-id
           - name: GITHUB_CLIENT_SECRET

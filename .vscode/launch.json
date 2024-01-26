@@ -24,7 +24,8 @@
           "repo",
           "test",
           "--runInBand",
-          "--watchAll=false"
+          "--watchAll=false",
+          "--coverage"
         ],
         "console": "integratedTerminal",
         "internalConsoleOptions": "neverOpen",

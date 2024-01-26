@@ -11,10 +11,10 @@ app:
             title: GitHub Issues
 
 organization:
-  name: "Azure Development Platform: "
+  name: 'Azure Development Platform: '
 
 permission:
-  enabled: false
+  enabled: true
 
 backend:
   baseUrl: http://localhost:7007
@@ -35,12 +35,12 @@ backend:
 
 proxy:
   '/grafana/api':
-    target:  ${GRAFANA_ENDPOINT}
+    target: ${GRAFANA_ENDPOINT}
     headers:
       Authorization: Bearer ${GRAFANA_TOKEN}
 
 grafana:
-  domain:  ${GRAFANA_ENDPOINT}
+  domain: ${GRAFANA_ENDPOINT}
   unifiedAlerting: false
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
@@ -64,13 +64,22 @@ integrations:
         - clientId: ${AUTH_MICROSOFT_CLIENT_ID}
           clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
           tenantId: ${AUTH_MICROSOFT_TENANT_ID}
-          
+
   github:
     - host: github.com
       apps:
         - $include: github-app-configuration.yaml
 
+rbac:
+  platformAdminsGroup: ${ADP_PORTAL_PLATFORM_ADMINS_GROUP}
+  programmeAdminGroup: ${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}
+  adpPortalUsersGroup: ${ADP_PORTAL_USERS_GROUP}
+
 auth:
+
+  keys:
+    - secret: ${BACKEND_PLUGINS_SECRET}
+
   environment: sandpit
   providers:
     microsoft:
@@ -78,7 +87,7 @@ auth:
         clientId: ${AUTH_MICROSOFT_CLIENT_ID}
         clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
         tenantId: ${AUTH_MICROSOFT_TENANT_ID}
-    
+
     github:
       sandpit:
         clientId: ${GITHUB_CLIENT_ID}
@@ -101,41 +110,47 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location, Template, Domain, Group]
-  
+    - allow:
+        [Component, System, API, Resource, Location, Template, Domain, Group]
+
   # Providers configured to scan repos in the specified organizations for components to add to the catalog.
   # Assumes a catalog-info.yml file is present in the root of the repo.
   providers:
     github:
-      adpSandpit:
-        organization: 'defra-adp-sandpit'
+      # adpSandpit:
+      #   organization: 'defra-adp-sandpit'
+      #   catalogPath: '/catalog-info.yaml'
+      #   filters:
+      #     branch: 'main'
+      #   schedule:
+      #     frequency: { minutes: 30 }
+      #     timeout: { minutes: 5 }
+      defra:
+        organization: 'defra'
         catalogPath: '/catalog-info.yaml'
         filters:
-          branch: 'main'
+          branch: 'master'
+          repository: '(ffc-.+|adp-.+)'
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 5 }
-      #defra:
-      #  organization: 'defra'
-      #  catalogPath: '/catalog-info.yaml'
-      #  filters:
-      #    branch: 'master'
-      #    repository: '(ffc-.+|adp-.+)'
-      #  schedule:
-      #    frequency: { minutes: 30 }
-      #    timeout: { minutes: 5 }
 
     microsoftGraphOrg:
       default:
         tenantId: ${AUTH_MICROSOFT_TENANT_ID}
+        queryMode: basic
+        user:
+          select: ['id', 'mail', 'displayName', 'description']
         userGroupMember:
-          filter: "displayName eq 'AG-Azure-CDO-ADP-PlatformEngineers'"
+          filter: "displayName in ('${ADP_PORTAL_PLATFORM_ADMINS_GROUP}', '${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}')"
         group:
-          filter: "displayName eq 'AG-Azure-CDO-ADP-PlatformEngineers'"
+          filter: "displayName in ('${ADP_PORTAL_PLATFORM_ADMINS_GROUP}', '${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}')"
         schedule:
-          frequency: { minutes: 60 }
-          timeout: { minutes: 10 }
+          frequency: { hours: 1 }
+          timeout: { minutes: 50 }
+          initialDelay: { seconds: 15}
 
+# 'all users'
   # Locations configured to import static data into the catalog
   locations:
     - type: url
