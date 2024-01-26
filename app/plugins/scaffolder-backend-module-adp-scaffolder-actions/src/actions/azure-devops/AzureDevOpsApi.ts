@@ -11,7 +11,9 @@ import {
 import { IRequestOptions, IRestResponse, RestClient } from 'typed-rest-client';
 import { Logger } from 'winston';
 import {
+  Build,
   Pipeline,
+  PipelineRun,
   ResourceOptions,
   ResourcePipelinePermissions,
   ServiceEndpointResponse,
@@ -45,6 +47,18 @@ type PermitPipelineRequest = {
     id: string;
     name?: string;
     type: string;
+  };
+};
+
+type RunPipelineRequest = {
+  templateParameters?: Record<string, string>;
+  yamlOverrides?: object;
+  resources: {
+    repositories: {
+      self: {
+        refName: string;
+      };
+    };
   };
 };
 
@@ -121,7 +135,7 @@ export class AzureDevOpsApi {
         this.requestOptions,
       );
 
-    this.handleResponse<ServiceEndpointResponse>(
+    this.ensureSuccessfulResponse<ServiceEndpointResponse>(
       resource,
       serviceConnectionResponse,
     );
@@ -168,7 +182,7 @@ export class AzureDevOpsApi {
       this.requestOptions,
     );
 
-    this.handleResponse<Pipeline>(resource, createPipelineResponse);
+    this.ensureSuccessfulResponse<Pipeline>(resource, createPipelineResponse);
 
     return createPipelineResponse.result!;
   }
@@ -198,22 +212,89 @@ export class AzureDevOpsApi {
         },
       }));
 
-      this.logger.info(
-        `Calling Azure DevOps REST API. Permitting resources for pipeline ${pipelineId} in project ${project}`,
-      );
+    this.logger.info(
+      `Calling Azure DevOps REST API. Permitting resources for pipeline ${pipelineId} in project ${project}`,
+    );
 
-      const permitPipelineResponse = await this.restClient.update<ResourcePipelinePermissions[]>(
-        resource,
-        body,
-        this.requestOptions,
-      );
+    const permitPipelineResponse = await this.restClient.update<
+      ResourcePipelinePermissions[]
+    >(resource, body, this.requestOptions);
 
-      this.handleResponse<ResourcePipelinePermissions[]>(resource, permitPipelineResponse);
+    this.ensureSuccessfulResponse<ResourcePipelinePermissions[]>(
+      resource,
+      permitPipelineResponse,
+    );
 
-      return permitPipelineResponse.result!;
+    return permitPipelineResponse.result!;
   }
 
-  private handleResponse<T>(resource: string, response: IRestResponse<T>) {
+  public async runPipeline(
+    organization: string,
+    project: string,
+    pipelineId: number,
+    parameters?: Record<string, string>,
+    branch: string = 'main',
+    apiVersion: string = '7.2-preview.1',
+  ): Promise<PipelineRun> {
+    const encodedOrganization = encodeURIComponent(organization);
+    const encodedProject = encodeURIComponent(project);
+
+    const resource = `/${encodedOrganization}/${encodedProject}/_apis/pipelines/${pipelineId}/runs?api-version=${apiVersion}`;
+    const body: RunPipelineRequest = {
+      resources: {
+        repositories: {
+          self: {
+            refName: `refs/heads/${branch}`,
+          },
+        },
+      },
+      templateParameters: parameters,
+    };
+
+    this.logger.info(
+      `Calling Azure DevOps REST API. Running pipeline  ${pipelineId} in project ${project}`,
+    );
+
+    const runPipelineResponse = await this.restClient.create<PipelineRun>(
+      resource,
+      body,
+      this.requestOptions,
+    );
+
+    this.ensureSuccessfulResponse<PipelineRun>(resource, runPipelineResponse);
+
+    return runPipelineResponse.result!;
+  }
+
+  public async getBuild(
+    organization: string,
+    project: string,
+    runId: number,
+    apiVersion: string = '7.2-preview.7',
+  ): Promise<Build> {
+    const encodedOrganization = encodeURIComponent(organization);
+    const encodedProject = encodeURIComponent(project);
+
+    const resource = `/${encodedOrganization}/${encodedProject}/_apis/build/builds/${runId}?api-version=${apiVersion}`;
+
+    const getBuildResponse = await this.restClient.get<Build>(
+      resource,
+      this.requestOptions,
+    );
+
+    this.logger.info(
+      `Calling Azure DevOps REST API. Getting build ${runId} in project ${project}`,
+    );
+
+    this.ensureSuccessfulResponse<Build>(resource, getBuildResponse);
+
+    return getBuildResponse.result!;
+  }
+
+  private ensureSuccessfulResponse<T>(
+    resource: string,
+    response: IRestResponse<T>,
+  ) {
     if (
       !response?.result ||
       response.statusCode < 200 ||

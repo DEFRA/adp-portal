@@ -74,7 +74,7 @@ export type Build = {
   url: string;
   reason: string;
   status: BuildStatus;
-  result: BuildResult;
+  result?: BuildResult;
 };
 
 export type Resource = {

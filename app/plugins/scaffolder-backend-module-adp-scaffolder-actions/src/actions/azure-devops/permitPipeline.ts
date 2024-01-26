@@ -95,11 +95,9 @@ export function permitPipelineAction(options: {
         throw new InputError('Unable to permit pipeline resources');
       }
 
-      permittedResources.forEach(res => {
-        ctx.logger.info(
-          `Updated resource permissions for ${res.resource.name} in pipeline ${ctx.input.pipelineId}`,
-        );
-      });
+      ctx.logger.info(
+        `Updated resource permissions in pipeline ${ctx.input.pipelineId}`,
+      );
     },
   });
 }

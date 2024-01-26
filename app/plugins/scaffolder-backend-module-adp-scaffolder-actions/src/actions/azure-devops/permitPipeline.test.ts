@@ -96,7 +96,7 @@ describe('adp:azure:pipeline:permit', () => {
 
     expect(loggerSpy).toHaveBeenCalled();
     expect(mockContext.logger.info).toHaveBeenLastCalledWith(
-      'Updated resource permissions for service-connection in pipeline 1234',
+      'Updated resource permissions in pipeline 1234',
     );
   });
 });

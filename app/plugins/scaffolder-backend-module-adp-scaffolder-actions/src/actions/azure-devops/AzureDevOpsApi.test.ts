@@ -3,6 +3,7 @@ import { ScmIntegrations } from '@backstage/integration';
 import { RestClient } from 'typed-rest-client';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
 import { getVoidLogger } from '@backstage/backend-common';
+import { BuildResult, BuildStatus } from './types';
 
 jest.mock('azure-devops-node-api', () => ({
   getHandlerFromToken: jest.fn().mockReturnValue(() => {}),
@@ -239,7 +240,7 @@ describe('AzureDevOpsApi:createPipeline', () => {
     );
   });
 
-  it('should return the created pipeline in the API response', async () => {
+  it('should return the created pipeline from the API response', async () => {
     const expectedPipeline = {
       _links: {
         web: {
@@ -300,16 +301,13 @@ describe('AzureDevOpsApi:permitPipeline', () => {
       );
 
       await expect(
-        adoApi.permitPipeline(
-          'org',
-          'project',
-          1234,
-          [{
+        adoApi.permitPipeline('org', 'project', 1234, [
+          {
             authorized: true,
             resourceId: '5678',
-            resourceType: 'endpoint'
-          }]
-        ),
+            resourceType: 'endpoint',
+          },
+        ]),
       ).rejects.toThrow(/Could not get response from resource/);
     },
   );
@@ -327,11 +325,13 @@ describe('AzureDevOpsApi:permitPipeline', () => {
       { logger: getVoidLogger() },
     );
 
-    await adoApi.permitPipeline('org', 'project', 1234, [{
-      authorized: true,
-      resourceId: '5678',
-      resourceType: 'endpoint'
-    }]);
+    await adoApi.permitPipeline('org', 'project', 1234, [
+      {
+        authorized: true,
+        resourceId: '5678',
+        resourceType: 'endpoint',
+      },
+    ]);
 
     expect(RestClient).toHaveBeenCalledWith(
       expect.any(String),
@@ -344,5 +344,202 @@ describe('AzureDevOpsApi:permitPipeline', () => {
       expect.any(Object),
       expect.any(Object),
     );
+  });
+});
+
+describe('AzureDevOpsApi:runPipeline', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it.each([101, 301, 418, 500])(
+    'should throw if a non-success status code %d is returned',
+    async statusCode => {
+      mockRestClient.create.mockImplementation(() => ({
+        statusCode: statusCode,
+      }));
+
+      const adoApi = await AzureDevOpsApi.fromIntegrations(
+        integrations,
+        config,
+        { server: 'dev.azure.com', organization: 'org' },
+        { logger: getVoidLogger() },
+      );
+
+      await expect(adoApi.runPipeline('org', 'project', 1234)).rejects.toThrow(
+        /Could not get response from resource/,
+      );
+    },
+  );
+
+  it('should call the Azure Pipeline API with the correct values', async () => {
+    mockRestClient.create.mockImplementation(() => ({
+      statusCode: 200,
+      result: {
+        _links: {
+          web: {
+            href: 'http://dev.azure.com/link/to/build',
+          },
+        },
+        url: 'http://dev.azure.com/link/to/build',
+        id: 1234,
+        name: 'pipeline-name',
+      },
+    }));
+
+    const adoApi = await AzureDevOpsApi.fromIntegrations(
+      integrations,
+      config,
+      { server: 'dev.azure.com', organization: 'org' },
+      { logger: getVoidLogger() },
+    );
+
+    await adoApi.runPipeline('org', 'project', 1234);
+
+    expect(RestClient).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('dev.azure.com'),
+      expect.any(Array),
+    );
+
+    expect(mockRestClient.create).toHaveBeenCalledWith(
+      expect.stringContaining('project'),
+      expect.any(Object),
+      expect.any(Object),
+    );
+  });
+
+  it('should return the pipeline run from the API response', async () => {
+    const expectedPipelineRun = {
+      _links: {
+        web: {
+          href: 'http://dev.azure.com/link/to/pipeline/run',
+        },
+      },
+      url: 'http://dev.azure.com/link/to/pipeline/run',
+      id: 1234,
+      name: 'run-name',
+      state: 'inProgress',
+      createdDate: '2024-01-26T12:06:00.1728415Z',
+      templateParameters: {},
+      resources: {},
+      pipeline: {
+        url: 'http://dev.azure.com/link/to/pipeline',
+        id: 5678,
+        revision: 2,
+        name: 'pipeline-name',
+        folder: 'path/to/pipeline',
+      },
+    };
+
+    mockRestClient.create.mockImplementation(() => ({
+      statusCode: 200,
+      result: expectedPipelineRun,
+    }));
+
+    const adoApi = await AzureDevOpsApi.fromIntegrations(
+      integrations,
+      config,
+      { server: 'dev.azure.com', organization: 'org' },
+      { logger: getVoidLogger() },
+    );
+
+    const pipeline = await adoApi.runPipeline(
+      'org',
+      'project',
+      expectedPipelineRun.pipeline.id,
+    );
+
+    expect(pipeline).toBeDefined();
+    expect(pipeline).toEqual(expectedPipelineRun);
+  });
+});
+
+describe('AzureDevOpsApi:getBuild', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it.each([101, 301, 418, 500])(
+    'should throw if a non-success status code %d is returned',
+    async statusCode => {
+      mockRestClient.get.mockImplementation(() => ({
+        statusCode: statusCode,
+      }));
+
+      const adoApi = await AzureDevOpsApi.fromIntegrations(
+        integrations,
+        config,
+        { server: 'dev.azure.com', organization: 'org' },
+        { logger: getVoidLogger() },
+      );
+
+      await expect(adoApi.getBuild('org', 'project', 1234)).rejects.toThrow(
+        /Could not get response from resource/,
+      );
+    },
+  );
+
+  it('should call the Azure Pipeline API with the correct values', async () => {
+    mockRestClient.get.mockImplementation(() => ({
+      statusCode: 200,
+      result: {
+        id: 1234,
+        buildNumber: '1234.1',
+        url: 'http://dev.azure.com/link/to/pipeline/run',
+        reason: 'manual',
+        status: BuildStatus.InProgress,
+        result: BuildResult.None,
+      },
+    }));
+
+    const adoApi = await AzureDevOpsApi.fromIntegrations(
+      integrations,
+      config,
+      { server: 'dev.azure.com', organization: 'org' },
+      { logger: getVoidLogger() },
+    );
+
+    await adoApi.runPipeline('org', 'project', 1234);
+
+    expect(RestClient).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('dev.azure.com'),
+      expect.any(Array),
+    );
+
+    expect(mockRestClient.create).toHaveBeenCalledWith(
+      expect.stringContaining('project'),
+      expect.any(Object),
+      expect.any(Object),
+    );
+  });
+
+  it('should return the pipeline run from the API response', async () => {
+    const expectedPipelineRun = {
+      id: 1234,
+      buildNumber: '1234.1',
+      url: 'http://dev.azure.com/link/to/pipeline/run',
+      reason: 'manual',
+      status: BuildStatus.InProgress,
+      result: BuildResult.None,
+    };
+
+    mockRestClient.get.mockImplementation(() => ({
+      statusCode: 200,
+      result: expectedPipelineRun,
+    }));
+
+    const adoApi = await AzureDevOpsApi.fromIntegrations(
+      integrations,
+      config,
+      { server: 'dev.azure.com', organization: 'org' },
+      { logger: getVoidLogger() },
+    );
+
+    const pipeline = await adoApi.getBuild('org', 'project', 1234);
+
+    expect(pipeline).toBeDefined();
+    expect(pipeline).toEqual(expectedPipelineRun);
   });
 });
