@@ -14,15 +14,9 @@ import {
   catalogEntityReadPermission,
   catalogLocationReadPermission,
   catalogEntityRefreshPermission,
-  catalogEntityDeletePermission,
   catalogEntityCreatePermission,
   catalogLocationCreatePermission,
 } from '@backstage/plugin-catalog-common/alpha';
-
-import {
-  catalogConditions,
-  createCatalogConditionalDecision,
-} from '@backstage/plugin-catalog-backend/alpha';
 
 import { RbacUtilities } from '../rbacUtilites'
 import { Logger } from 'winston';
@@ -40,7 +34,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
   ): Promise<PolicyDecision> {
 
 
-    this.logger.debug(
+    this.logger.info(
       `User: identity.type - ${user?.identity.type} User: identity.userEntityRef - ${user?.identity.userEntityRef} User: identity.ownershipEntityRefs.length - ${user?.identity.ownershipEntityRefs.length} Request: type - ${request.permission.type}; name - ${request.permission.name}; action - ${request.permission.attributes.action}`,
     );
 
@@ -50,11 +44,13 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
 
     // exempting admins from permission checks
     if (user != null && this.rbacUtilites.isInPlatformAdminGroup(user)) {
+      this.logger.info(`This is a platform admin user with the ad group`);
       return { result: AuthorizeResult.ALLOW };
     }
 
     if ( isPermission(request.permission, catalogEntityCreatePermission) && 
           user != null && this.rbacUtilites.isInProgrammeAdminGroup(user)) {
+      this.logger.info("This is a programme admin user with the ad group: permission catalogEntityCreatePermission");
       return { result: AuthorizeResult.ALLOW };
     }
 
