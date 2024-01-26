@@ -74,7 +74,7 @@ properties:
         keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TECHDOCS-AZURE-BLOB-STORAGE-ACCOUNT-KEY
         identity: {{userAssignedIdentity}}
       - name: adp-portal-platform-admins-group
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP-PORTAL-PROGRAMME-ADMINS-GROUP
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP-PORTAL-PLATFORM-ADMINS-GROUP
         identity: {{userAssignedIdentity}}
       - name: adp-portal-programme-admins-group
         keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP-PORTAL-PROGRAMME-ADMINS-GROUP
