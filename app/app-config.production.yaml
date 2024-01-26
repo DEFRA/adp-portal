@@ -3,6 +3,15 @@ app:
   baseUrl: ${APP_BASE_URL}
 
 integrations:
+  azure:
+    - host: dev.azure.com
+      credentials:
+        - organizations:
+            - defragovuk
+          personalAccessToken: ${ADO_PAT}
+        - clientId: ${AUTH_MICROSOFT_CLIENT_ID}
+          clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
+          tenantId: ${AUTH_MICROSOFT_TENANT_ID}
   github:
     - host: github.com
       apps:
