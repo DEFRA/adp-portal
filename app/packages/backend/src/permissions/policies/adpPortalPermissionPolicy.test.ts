@@ -36,18 +36,14 @@ jest.mock('winston', () => ({
   }),
 }));
 
-describe('adpPortalPermissionPolicy: Platform Admin User', () => {
 
-  jest.mock('../rbacUtilites', () => {
-    return {
-      ...jest.requireActual('../rbacUtilites'),
-      RbacUtilities: {
-        isInPlatformAdminGroup: jest.fn().mockResolvedValue(false),
-        isInProgrammeAdminGroup: jest.fn().mockResolvedValue(false),
-        isInAdpUserGroup: jest.fn().mockResolvedValue(false),
-      }
-    };
-  });
+jest.mock('../rbacUtilites');
+
+const isInPlatformAdminGroupSpy = jest.spyOn(RbacUtilities.prototype, 'isInPlatformAdminGroup');
+const isIsInProgrammeAdminGroupSpy = jest.spyOn(RbacUtilities.prototype, 'isInProgrammeAdminGroup');
+const isIsInAdpUserGroupSpy = jest.spyOn(RbacUtilities.prototype, 'isInAdpUserGroup');
+
+describe('adpPortalPermissionPolicy: Platform Admin User', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -60,15 +56,26 @@ describe('adpPortalPermissionPolicy: Platform Admin User', () => {
     { permission: catalogEntityRefreshPermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogEntityCreatePermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogEntityDeletePermission, expected: AuthorizeResult.ALLOW },
-    { permission: catalogLocationCreatePermission, expected: AuthorizeResult.DENY },
+    { permission: catalogLocationCreatePermission, expected: AuthorizeResult.DENY, skipVerifyFunctionWasCalled: true },
     { permission: catalogLocationDeletePermission, expected: AuthorizeResult.ALLOW },
   ])(
     'should allow access for permission $permission.name for the ADP Platform Admin Role',
-    async ({ permission, expected }) => {
-      const policy = new AdpPortalPermissionPolicy(new RbacUtilities(mockLogger, mockRbacGroups), mockLogger);
+    async ({ permission, expected, skipVerifyFunctionWasCalled }) => {
+
+      isInPlatformAdminGroupSpy.mockReturnValue(true)
+      isIsInProgrammeAdminGroupSpy.mockReturnValue(false)
+      isIsInAdpUserGroupSpy.mockReturnValue(false)
+      
+      let mockRbacUtilities = new RbacUtilities(mockLogger, mockRbacGroups);
+      const policy = new AdpPortalPermissionPolicy(mockRbacUtilities, mockLogger);
       const request: PolicyQuery = { permission: permission };
 
       let policyResult = await policy.handle(request, mockPlatformAdminUserResponse);
+
+      if (!skipVerifyFunctionWasCalled) {
+        expect(isInPlatformAdminGroupSpy).toHaveBeenCalled;
+        expect(isInPlatformAdminGroupSpy).toHaveBeenCalledWith(mockPlatformAdminUserResponse);
+      }
       expect(policyResult.result).toBe(expected);
     },
   );
@@ -76,14 +83,6 @@ describe('adpPortalPermissionPolicy: Platform Admin User', () => {
 });
 
 describe('adpPortalPermissionPolicy: Programme Admin User', () => {
-
-  jest.mock('../rbacUtilites', () => {
-    return {
-      isInPlatformAdminGroup: jest.fn().mockReturnValue(false),
-      isInProgrammeAdminGroup: jest.fn().mockReturnValue(true),
-      isInAdpUserGroup: jest.fn().mockReturnValue(false),
-    };
-  });
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -101,25 +100,25 @@ describe('adpPortalPermissionPolicy: Programme Admin User', () => {
   ])(
     'should allow access for permission $permission.name for the Programme Admin Role',
     async ({ permission, expected }) => {
-      const policy = new AdpPortalPermissionPolicy(new RbacUtilities(mockLogger, mockRbacGroups), mockLogger);
+      
+      isInPlatformAdminGroupSpy.mockReturnValue(false)
+      isIsInProgrammeAdminGroupSpy.mockReturnValue(true)
+      isIsInAdpUserGroupSpy.mockReturnValue(false)
+      
+      let mockRbacUtilities = new RbacUtilities(mockLogger, mockRbacGroups);
+      const policy = new AdpPortalPermissionPolicy(mockRbacUtilities, mockLogger);
       const request: PolicyQuery = { permission: permission };
 
       let policyResult = await policy.handle(request, mockProgrammeAdminUserUserResponse);
+
       expect(policyResult.result).toBe(expected);
+
     },
   );
 
 });
 
 describe('adpPortalPermissionPolicy: ADP Platform User', () => {
-
-  jest.mock('../rbacUtilites', () => {
-    return {
-      isInPlatformAdminGroup: jest.fn().mockReturnValue(false),
-      isInProgrammeAdminGroup: jest.fn().mockReturnValue(false),
-      isInAdpUserGroup: jest.fn().mockReturnValue(true),
-    };
-  });
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -132,15 +131,22 @@ describe('adpPortalPermissionPolicy: ADP Platform User', () => {
     { permission: catalogEntityRefreshPermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogEntityCreatePermission, expected: AuthorizeResult.DENY },
     { permission: catalogEntityDeletePermission, expected: AuthorizeResult.DENY },
-    { permission: catalogLocationCreatePermission, expected: AuthorizeResult.DENY },
+    { permission: catalogLocationCreatePermission, expected: AuthorizeResult.DENY  },
     { permission: catalogLocationDeletePermission, expected: AuthorizeResult.DENY },
   ])(
     'should allow access for permission $permission.name for the ADP Portal User Role',
     async ({ permission, expected }) => {
-      const policy = new AdpPortalPermissionPolicy(new RbacUtilities(mockLogger, mockRbacGroups), mockLogger);
+      
+      isInPlatformAdminGroupSpy.mockReturnValue(false)
+      isIsInProgrammeAdminGroupSpy.mockReturnValue(false)
+      isIsInAdpUserGroupSpy.mockReturnValue(true)
+      
+      let mockRbacUtilities = new RbacUtilities(mockLogger, mockRbacGroups);
+      const policy = new AdpPortalPermissionPolicy(mockRbacUtilities, mockLogger);
       const request: PolicyQuery = { permission: permission };
 
       let policyResult = await policy.handle(request, mockAdpPortalUserResponse);
+
       expect(policyResult.result).toBe(expected);
     },
   );
