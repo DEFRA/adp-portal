@@ -83,7 +83,10 @@ describe('AzureDevOpsApi:getServiceConnections', () => {
       );
 
       await expect(
-        adoApi.getServiceConnections('org', 'project', 'service-connection'),
+        adoApi.getServiceConnections(
+          { organization: 'org', project: 'project' },
+          'service-connection',
+        ),
       ).rejects.toThrow(/Could not get response from resource/);
     },
   );
@@ -109,7 +112,10 @@ describe('AzureDevOpsApi:getServiceConnections', () => {
       { logger: getVoidLogger() },
     );
 
-    await adoApi.getServiceConnections('org', 'project', 'service-connection');
+    await adoApi.getServiceConnections(
+      { organization: 'org', project: 'project' },
+      'service-connection',
+    );
 
     expect(RestClient).toHaveBeenCalledWith(
       expect.any(String),
@@ -148,8 +154,7 @@ describe('AzureDevOpsApi:getServiceConnections', () => {
     );
 
     const serviceConnections = await adoApi.getServiceConnections(
-      'org',
-      'project',
+      { organization: 'org', project: 'project' },
       'service-connection',
     );
 
@@ -181,8 +186,7 @@ describe('AzureDevOpsApi:createPipeline', () => {
 
       await expect(
         adoApi.createPipeline(
-          'org',
-          'project',
+          { organization: 'org', project: 'project' },
           'pipeline',
           'folder',
           'repo',
@@ -217,9 +221,8 @@ describe('AzureDevOpsApi:createPipeline', () => {
       { logger: getVoidLogger() },
     );
 
-    await await adoApi.createPipeline(
-      'org',
-      'project',
+    await adoApi.createPipeline(
+      { organization: 'org', project: 'project' },
       'test-pipeline',
       'path/to/pipeline',
       'repo-name',
@@ -267,8 +270,7 @@ describe('AzureDevOpsApi:createPipeline', () => {
     );
 
     const pipeline = await adoApi.createPipeline(
-      'org',
-      'project',
+      { organization: 'org', project: 'project' },
       expectedPipeline.name,
       expectedPipeline.folder,
       'repo-name',
@@ -301,13 +303,17 @@ describe('AzureDevOpsApi:permitPipeline', () => {
       );
 
       await expect(
-        adoApi.permitPipeline('org', 'project', 1234, [
-          {
-            authorized: true,
-            resourceId: '5678',
-            resourceType: 'endpoint',
-          },
-        ]),
+        adoApi.permitPipeline(
+          { organization: 'org', project: 'project' },
+          1234,
+          [
+            {
+              authorized: true,
+              resourceId: '5678',
+              resourceType: 'endpoint',
+            },
+          ],
+        ),
       ).rejects.toThrow(/Could not get response from resource/);
     },
   );
@@ -325,13 +331,17 @@ describe('AzureDevOpsApi:permitPipeline', () => {
       { logger: getVoidLogger() },
     );
 
-    await adoApi.permitPipeline('org', 'project', 1234, [
-      {
-        authorized: true,
-        resourceId: '5678',
-        resourceType: 'endpoint',
-      },
-    ]);
+    await adoApi.permitPipeline(
+      { organization: 'org', project: 'project' },
+      1234,
+      [
+        {
+          authorized: true,
+          resourceId: '5678',
+          resourceType: 'endpoint',
+        },
+      ],
+    );
 
     expect(RestClient).toHaveBeenCalledWith(
       expect.any(String),
@@ -366,9 +376,9 @@ describe('AzureDevOpsApi:runPipeline', () => {
         { logger: getVoidLogger() },
       );
 
-      await expect(adoApi.runPipeline('org', 'project', 1234)).rejects.toThrow(
-        /Could not get response from resource/,
-      );
+      await expect(
+        adoApi.runPipeline({ organization: 'org', project: 'project' }, 1234),
+      ).rejects.toThrow(/Could not get response from resource/);
     },
   );
 
@@ -394,7 +404,7 @@ describe('AzureDevOpsApi:runPipeline', () => {
       { logger: getVoidLogger() },
     );
 
-    await adoApi.runPipeline('org', 'project', 1234);
+    await adoApi.runPipeline({ organization: 'org', project: 'project' }, 1234);
 
     expect(RestClient).toHaveBeenCalledWith(
       expect.any(String),
@@ -445,8 +455,7 @@ describe('AzureDevOpsApi:runPipeline', () => {
     );
 
     const pipeline = await adoApi.runPipeline(
-      'org',
-      'project',
+      { organization: 'org', project: 'project' },
       expectedPipelineRun.pipeline.id,
     );
 
@@ -474,9 +483,9 @@ describe('AzureDevOpsApi:getBuild', () => {
         { logger: getVoidLogger() },
       );
 
-      await expect(adoApi.getBuild('org', 'project', 1234)).rejects.toThrow(
-        /Could not get response from resource/,
-      );
+      await expect(
+        adoApi.getBuild({ organization: 'org', project: 'project' }, 1234),
+      ).rejects.toThrow(/Could not get response from resource/);
     },
   );
 
@@ -500,7 +509,7 @@ describe('AzureDevOpsApi:getBuild', () => {
       { logger: getVoidLogger() },
     );
 
-    await adoApi.runPipeline('org', 'project', 1234);
+    await adoApi.runPipeline({ organization: 'org', project: 'project' }, 1234);
 
     expect(RestClient).toHaveBeenCalledWith(
       expect.any(String),
@@ -537,7 +546,10 @@ describe('AzureDevOpsApi:getBuild', () => {
       { logger: getVoidLogger() },
     );
 
-    const pipeline = await adoApi.getBuild('org', 'project', 1234);
+    const pipeline = await adoApi.getBuild(
+      { organization: 'org', project: 'project' },
+      1234,
+    );
 
     expect(pipeline).toBeDefined();
     expect(pipeline).toEqual(expectedPipelineRun);

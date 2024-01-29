@@ -71,8 +71,7 @@ export function getServiceConnectionAction(options: {
     },
 
     async handler(ctx) {
-      const server =
-        ctx.input.server ?? config.getString('azureDevOps.host');
+      const server = ctx.input.server ?? config.getString('azureDevOps.host');
       const organization =
         ctx.input.organization ?? config.getString('azureDevOps.organization');
 
@@ -83,8 +82,7 @@ export function getServiceConnectionAction(options: {
         { logger: ctx.logger },
       );
       const serviceConnections = await adoApi.getServiceConnections(
-        organization,
-        ctx.input.project,
+        { organization, project: ctx.input.project },
         ctx.input.serviceConnectionName,
         ctx.input.serviceEndpointApiVersion,
       );

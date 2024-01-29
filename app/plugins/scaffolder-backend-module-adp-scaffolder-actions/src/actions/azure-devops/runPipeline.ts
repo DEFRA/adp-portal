@@ -106,8 +106,7 @@ export function runPipelineAction(options: {
       );
 
       const pipelineRun = await adoApi.runPipeline(
-        organization,
-        ctx.input.project,
+        { organization, project: ctx.input.project },
         ctx.input.pipelineId,
         ctx.input.pipelineParameters as Record<string, string>,
         ctx.input.branch,
@@ -152,7 +151,11 @@ async function checkPipelineStatus(
   logger: Logger,
   apiVersion?: string,
 ): Promise<boolean> {
-  const build = await adoApi.getBuild(organization, project, runId, apiVersion);
+  const build = await adoApi.getBuild(
+    { organization, project },
+    runId,
+    apiVersion,
+  );
 
   if (
     build.status === BuildStatus.Completed ||

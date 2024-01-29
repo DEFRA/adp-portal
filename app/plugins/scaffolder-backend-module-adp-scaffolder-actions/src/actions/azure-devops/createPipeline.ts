@@ -1,8 +1,6 @@
 import { Config } from '@backstage/config';
 import { InputError } from '@backstage/errors';
-import {
-  ScmIntegrationRegistry,
-} from '@backstage/integration';
+import { ScmIntegrationRegistry } from '@backstage/integration';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
 
@@ -123,8 +121,7 @@ export function createPipelineAction(options: {
       );
 
       const pipeline = await adoApi.createPipeline(
-        organization,
-        ctx.input.project,
+        { organization, project: ctx.input.project },
         ctx.input.pipelineName,
         ctx.input.folder,
         ctx.input.repositoryName,

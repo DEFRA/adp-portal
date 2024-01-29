@@ -116,17 +116,16 @@ export class AzureDevOpsApi {
   }
 
   public async getServiceConnections(
-    organization: string,
-    project: string,
+    adoOptions: {organization: string, project: string},
     serviceConnectionNames: string,
     apiVersion = '7.2-preview.4',
   ): Promise<ServiceEndpointResponse> {
-    const encodedOrganization = encodeURIComponent(organization);
-    const encodedProject = encodeURIComponent(project);
+    const encodedOrganization = encodeURIComponent(adoOptions.organization);
+    const encodedProject = encodeURIComponent(adoOptions.project);
     const resource = `/${encodedOrganization}/${encodedProject}/_apis/serviceendpoint/endpoints?endpointNames=${serviceConnectionNames}&api-version=${apiVersion}`;
 
     this.logger.info(
-      `Calling Azure DevOps REST API. Getting service connection ${serviceConnectionNames} in project ${project}`,
+      `Calling Azure DevOps REST API. Getting service connection ${serviceConnectionNames} in project ${adoOptions.project}`,
     );
 
     const serviceConnectionResponse =
@@ -144,8 +143,7 @@ export class AzureDevOpsApi {
   }
 
   public async createPipeline(
-    organization: string,
-    project: string,
+    adoOptions: {organization: string, project: string},
     pipelineName: string,
     folder: string,
     repositoryName: string,
@@ -153,8 +151,8 @@ export class AzureDevOpsApi {
     yamlPath: string,
     apiVersion = '7.2-preview.1',
   ): Promise<Pipeline> {
-    const encodedOrganization = encodeURIComponent(organization);
-    const encodedProject = encodeURIComponent(project);
+    const encodedOrganization = encodeURIComponent(adoOptions.organization);
+    const encodedProject = encodeURIComponent(adoOptions.project);
     const resource = `/${encodedOrganization}/${encodedProject}/_apis/pipelines?api-version=${apiVersion}`;
     const body: CreatePipelineRequest = {
       folder: folder,
@@ -173,7 +171,7 @@ export class AzureDevOpsApi {
     };
 
     this.logger.info(
-      `Calling Azure DevOps REST API. Creating pipeline ${pipelineName} in project ${project}`,
+      `Calling Azure DevOps REST API. Creating pipeline ${pipelineName} in project ${adoOptions.project}`,
     );
 
     const createPipelineResponse = await this.restClient.create<Pipeline>(
@@ -188,14 +186,13 @@ export class AzureDevOpsApi {
   }
 
   public async permitPipeline(
-    organization: string,
-    project: string,
+    adoOptions: {organization: string, project: string},
     pipelineId: number,
     pipelineResources: ResourceOptions[],
     apiVersion = '7.2-preview.1',
   ): Promise<ResourcePipelinePermissions[]> {
-    const encodedOrganization = encodeURIComponent(organization);
-    const encodedProject = encodeURIComponent(project);
+    const encodedOrganization = encodeURIComponent(adoOptions.organization);
+    const encodedProject = encodeURIComponent(adoOptions.project);
 
     const resource = `/${encodedOrganization}/${encodedProject}/_apis/pipelines/pipelinepermissions?api-version=${apiVersion}`;
     const body: PermitPipelineRequest[] =
@@ -213,7 +210,7 @@ export class AzureDevOpsApi {
       }));
 
     this.logger.info(
-      `Calling Azure DevOps REST API. Permitting resources for pipeline ${pipelineId} in project ${project}`,
+      `Calling Azure DevOps REST API. Permitting resources for pipeline ${pipelineId} in project ${adoOptions.project}`,
     );
 
     const permitPipelineResponse = await this.restClient.update<
@@ -229,15 +226,14 @@ export class AzureDevOpsApi {
   }
 
   public async runPipeline(
-    organization: string,
-    project: string,
+    adoOptions: {organization: string, project: string},
     pipelineId: number,
     parameters?: Record<string, string>,
     branch: string = 'main',
     apiVersion: string = '7.2-preview.1',
   ): Promise<PipelineRun> {
-    const encodedOrganization = encodeURIComponent(organization);
-    const encodedProject = encodeURIComponent(project);
+    const encodedOrganization = encodeURIComponent(adoOptions.organization);
+    const encodedProject = encodeURIComponent(adoOptions.project);
 
     const resource = `/${encodedOrganization}/${encodedProject}/_apis/pipelines/${pipelineId}/runs?api-version=${apiVersion}`;
     const body: RunPipelineRequest = {
@@ -252,7 +248,7 @@ export class AzureDevOpsApi {
     };
 
     this.logger.info(
-      `Calling Azure DevOps REST API. Running pipeline  ${pipelineId} in project ${project}`,
+      `Calling Azure DevOps REST API. Running pipeline  ${pipelineId} in project ${adoOptions.project}`,
     );
 
     const runPipelineResponse = await this.restClient.create<PipelineRun>(
@@ -267,13 +263,12 @@ export class AzureDevOpsApi {
   }
 
   public async getBuild(
-    organization: string,
-    project: string,
+    adoOptions: {organization: string, project: string},
     runId: number,
     apiVersion: string = '7.2-preview.7',
   ): Promise<Build> {
-    const encodedOrganization = encodeURIComponent(organization);
-    const encodedProject = encodeURIComponent(project);
+    const encodedOrganization = encodeURIComponent(adoOptions.organization);
+    const encodedProject = encodeURIComponent(adoOptions.project);
 
     const resource = `/${encodedOrganization}/${encodedProject}/_apis/build/builds/${runId}?api-version=${apiVersion}`;
 
@@ -283,7 +278,7 @@ export class AzureDevOpsApi {
     );
 
     this.logger.info(
-      `Calling Azure DevOps REST API. Getting build ${runId} in project ${project}`,
+      `Calling Azure DevOps REST API. Getting build ${runId} in project ${adoOptions.project}`,
     );
 
     this.ensureSuccessfulResponse<Build>(resource, getBuildResponse);
