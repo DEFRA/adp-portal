@@ -9,8 +9,6 @@ const { mockLogger,
 
 const sut = new RbacUtilities(mockLogger, mockRbacGroups);
 
-
-
 describe('rbacUtilites.isInPlatformAdminGroup', () => {
 
   it.each([
@@ -51,8 +49,7 @@ describe('rbacUtilites.isInProgrammeAdminGroup', () => {
 });
 
 describe('rbacUtilites.isInAdpUserGroup', () => {
-
-
+  
   it.each([
     {group: mockRbacGroups.platformAdminsGroup, backstageIdentityResponse: mockPlatformAdminUserResponse, expected: false },
     {group: mockRbacGroups.programmeAdminGroup, backstageIdentityResponse: mockProgrammeAdminUserUserResponse, expected: false },
