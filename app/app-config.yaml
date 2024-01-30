@@ -142,9 +142,9 @@ catalog:
         user:
           select: ['id', 'mail', 'displayName', 'description']
         userGroupMember:
-          filter: "displayName in ('${ADP_PORTAL_PLATFORM_ADMINS_GROUP}', '${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}')"
+          filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or displayName eq '${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}'"
         group:
-          filter: "displayName in ('${ADP_PORTAL_PLATFORM_ADMINS_GROUP}', '${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}')"
+          filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or displayName eq '${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}'"
         schedule:
           frequency: { hours: 1 }
           timeout: { minutes: 50 }
