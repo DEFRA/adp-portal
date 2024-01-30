@@ -6,7 +6,6 @@ import {
 import { Router } from 'express';
 import type { PluginEnvironment } from '../types';
 import { ScmIntegrations } from '@backstage/integration';
-import { permitAzurePipelineAction } from '@antoniobergas/scaffolder-backend-module-azure-pipelines';
 import {
   createPipelineAction,
   getServiceConnectionAction,

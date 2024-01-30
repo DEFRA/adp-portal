@@ -1,16 +1,8 @@
 import { Config } from '@backstage/config';
-import {
-  DefaultAzureDevOpsCredentialsProvider,
-  ScmIntegrationRegistry,
-} from '@backstage/integration';
+import { ScmIntegrationRegistry } from '@backstage/integration';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
-import {
-  getHandlerFromToken,
-  getPersonalAccessTokenHandler,
-} from 'azure-devops-node-api';
-import { InputError, ServiceUnavailableError } from '@backstage/errors';
-import { IRequestOptions, RestClient } from 'typed-rest-client';
-import { ServiceEndpointResponse } from './types';
+import { InputError } from '@backstage/errors';
+import { AzureDevOpsApi } from './AzureDevOpsApi';
 
 type GetServiceConnectionOptions = {
   serviceEndpointApiVersion?: string;
@@ -79,79 +71,25 @@ export function getServiceConnectionAction(options: {
     },
 
     async handler(ctx) {
-      const {
-        server,
-        organization,
-        project,
-        serviceConnectionName,
-        serviceEndpointApiVersion,
-      } = ctx.input;
+      const server = ctx.input.server ?? config.getString('azureDevOps.host');
+      const organization =
+        ctx.input.organization ?? config.getString('azureDevOps.organization');
 
-      const apiVersion = serviceEndpointApiVersion ?? '7.2-preview.4';
-      const validServer = server ?? config.getString('azureDevOps.host');
-      const validOrganization =
-        organization ?? config.getString('azureDevOps.organization');
-
-      const encodedOrganization = encodeURIComponent(validOrganization);
-      const encodedProject = encodeURIComponent(project);
-
-      const url = `https://${validServer}/${encodedOrganization}`;
-
-      const credentialsProvider =
-        DefaultAzureDevOpsCredentialsProvider.fromIntegrations(integrations);
-      const credentials = await credentialsProvider.getCredentials({
-        url: url,
-      });
-
-      if (credentials === undefined) {
-        throw new InputError(
-          `No credentials provided for ${url}. Check your integrations config.`,
-        );
-      }
-
-      let authHandler;
-      if (!credentials || credentials.type === 'pat') {
-        const token = config.getString('azureDevOps.token');
-        authHandler = getPersonalAccessTokenHandler(token);
-      } else {
-        authHandler = getHandlerFromToken(credentials.token);
-      }
-
-      ctx.logger.info(
-        `Calling Azure DevOps REST API. Getting service connection ${serviceConnectionName} in project ${project}`,
+      const adoApi = await AzureDevOpsApi.fromIntegrations(
+        integrations,
+        config,
+        { organization: organization, server: server },
+        { logger: ctx.logger },
+      );
+      const serviceConnections = await adoApi.getServiceConnections(
+        { organization, project: ctx.input.project },
+        ctx.input.serviceConnectionName,
+        ctx.input.serviceEndpointApiVersion,
       );
 
-      const restClient = new RestClient(
-        'backstage-scaffolder',
-        `https://${validServer}`,
-        [authHandler],
-      );
-      const requestOptions: IRequestOptions = {
-        acceptHeader: 'application/json',
-      };
-      const resource = `/${encodedOrganization}/${encodedProject}/_apis/serviceendpoint/endpoints?endpointNames=${serviceConnectionName}&api-version=${apiVersion}`;
-
-      ctx.logger.debug(`Calling resource ${resource} at host ${validServer}`);
-
-      const serviceConnectionResponse =
-        await restClient.get<ServiceEndpointResponse>(resource, requestOptions);
-
-      if (
-        !serviceConnectionResponse?.result ||
-        serviceConnectionResponse.statusCode < 200 ||
-        serviceConnectionResponse.statusCode > 299
-      ) {
-        const message = serviceConnectionResponse?.statusCode
-          ? `Could not get response from resource ${resource}. Status code ${serviceConnectionResponse.statusCode}`
-          : `Could not get response from resource ${resource}.`;
-        throw new ServiceUnavailableError(message);
-      }
-
-      const serviceConnections = serviceConnectionResponse.result;
-
-      if (serviceConnections.count < 1) {
+      if (!serviceConnections || serviceConnections.count < 1) {
         throw new InputError(
-          `Unable to find service connection named ${serviceConnectionName} in project ${project}`,
+          `Unable to find service connection named ${ctx.input.serviceConnectionName} in project ${ctx.input.project}`,
         );
       }
 

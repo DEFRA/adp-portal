@@ -3,16 +3,8 @@ import { ScmIntegrations } from '@backstage/integration';
 import { runPipelineAction } from './runPipeline';
 import { getVoidLogger } from '@backstage/backend-common';
 import { PassThrough } from 'stream';
-import { RestClient } from 'typed-rest-client';
-
-jest.mock('azure-devops-node-api', () => ({
-  getHandlerFromToken: jest.fn().mockReturnValue(() => {}),
-  getPersonalAccessTokenHandler: jest.fn().mockReturnValue(() => {}),
-}));
-
-jest.mock('typed-rest-client', () => ({
-  RestClient: jest.fn(),
-}));
+import { AzureDevOpsApi } from './AzureDevOpsApi';
+import { BuildResult, BuildStatus } from './types';
 
 describe('adp:azure:pipeline:run', () => {
   beforeEach(() => {
@@ -53,254 +45,183 @@ describe('adp:azure:pipeline:run', () => {
     createTemporaryDirectory: jest.fn(),
   };
 
-  const mockClientImpl = {
-    get: jest.fn(),
-    create: jest.fn(),
-  };
-  (RestClient as unknown as jest.Mock).mockImplementation(() => mockClientImpl);
+  it('should throw if no response is returned from the API', async () => {
+    const runSpy = jest
+      .spyOn(AzureDevOpsApi.prototype, 'runPipeline')
+      .mockResolvedValue(undefined!);
 
-  it('should throw if there is no integration config provided', async () => {
-    await expect(
-      action.handler({
-        ...mockContext,
-        input: {
-          server: 'test.azure.com',
-          organization: 'another-test-org',
-          project: 'test-project',
-          pipelineId: 1234,
-        },
-      }),
-    ).rejects.toThrow(/No credentials provided/);
-  });
-
-  it('should throw if no response is returned', async () => {
-    await expect(action.handler(mockContext)).rejects.toThrow(
-      /Could not get response from resource/,
-    );
-  });
-
-  it.each([101, 301, 418, 500])(
-    'should throw if a non-success status code is returned when creating the pipeline run',
-    async statusCode => {
-      mockClientImpl.create.mockImplementation(() => ({
-        statusCode: statusCode,
-      }));
-
-      await expect(action.handler(mockContext)).rejects.toThrow(
-        /Could not get response from resource/,
-      );
-    },
-  );
-
-  it('should throw if a pipeline run is not created', async () => {
-    mockClientImpl.create.mockImplementation(() => ({
-      statusCode: 200,
-      result: null,
-    }));
-
+    expect(runSpy).not.toHaveBeenCalled();
     await expect(action.handler(mockContext)).rejects.toThrow(
       /Unable to run pipeline/,
     );
   });
 
-  it('should call the Azure Pipeline API with the correct values', async () => {
-    mockClientImpl.create.mockImplementation(() => ({
-      statusCode: 200,
-      result: {
-        _links: {
-          web: {
-            href: 'http://dev.azure.com/link/to/build',
-          },
-        },
-        url: 'http://dev.azure.com/link/to/build',
-        id: 1234,
-        name: 'pipeline-name',
-      },
-    }));
-    mockClientImpl.get.mockImplementation(() => ({
-      statusCode: 200,
-      result: {
-        id: 1234,
-        buildNumber: '0.1.1-1234-0',
-        reason: 'manual',
-        status: 'completed',
-        url: 'http://dev.azure.com/link/to/build',
-      },
-    }));
-
-    await action.handler(mockContext);
-
-    expect(RestClient).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.stringContaining('dev.azure.com'),
-      expect.any(Array),
-    );
-
-    expect(mockClientImpl.create).toHaveBeenCalledWith(
-      expect.stringContaining(mockContext.input.project),
-      expect.any(Object),
-      expect.any(Object),
-    );
-  });
-
   it('should store the build ID in the action context output', async () => {
-    mockClientImpl.create.mockImplementation(() => ({
-      statusCode: 200,
-      result: {
-        _links: {
-          web: {
-            href: 'http://dev.azure.com/link/to/build',
-          },
+    const runSpy = jest.spyOn(AzureDevOpsApi.prototype, 'runPipeline').mockResolvedValue({
+      _links: {
+        web: {
+          href: 'http://dev.azure.com/link/to/build',
         },
-        url: 'http://dev.azure.com/link/to/build',
-        id: 1234,
-        name: 'pipeline-name',
       },
-    }));
-    mockClientImpl.get.mockImplementation(() => ({
-      statusCode: 200,
-      result: {
-        id: 1234,
-        buildNumber: '0.1.1-1234-0',
-        reason: 'manual',
-        status: 'completed',
+      url: 'http://dev.azure.com/link/to/build',
+      id: 1234,
+      name: 'pipeline-name',
+      templateParameters: {},
+      pipeline: {
         url: 'http://dev.azure.com/link/to/build',
+        id: 5678,
+        name: 'pipeline',
+        revision: 1,
+        folder: '/path/to/pipeline',
       },
-    }));
+      state: 'inProgress',
+      createdDate: new Date('2024-01-26T12:06:00.1728415Z'),
+      resources: {},
+    });
+
+    const getSpy = jest.spyOn(AzureDevOpsApi.prototype, 'getBuild').mockResolvedValue({
+      id: 1234,
+      buildNumber: '1234.1',
+      url: 'http://dev.azure.com/link/to/pipeline/run',
+      reason: 'manual',
+      status: BuildStatus.InProgress,
+      result: BuildResult.None,
+    });
 
     await action.handler(mockContext);
 
+    expect(runSpy).toHaveBeenCalled();
+    expect(getSpy).toHaveBeenCalled();
     expect(mockContext.output).toHaveBeenCalledWith('buildId', 1234);
   });
 
   it('should store the pipeline run URL in the action context output', async () => {
-    mockClientImpl.create.mockImplementation(() => ({
-      statusCode: 200,
-      result: {
-        _links: {
-          web: {
-            href: 'http://dev.azure.com/link/to/build',
-          },
+    const runSpy = jest.spyOn(AzureDevOpsApi.prototype, 'runPipeline').mockResolvedValue({
+      _links: {
+        web: {
+          href: 'http://dev.azure.com/link/to/build',
         },
-        url: 'http://dev.azure.com/link/to/build',
-        id: 1234,
-        name: 'pipeline-name',
       },
-    }));
-    mockClientImpl.get.mockImplementation(() => ({
-      statusCode: 200,
-      result: {
-        id: 1234,
-        buildNumber: '0.1.1-1234-0',
-        reason: 'manual',
-        status: 'completed',
+      url: 'http://dev.azure.com/link/to/build',
+      id: 1234,
+      name: 'pipeline-name',
+      templateParameters: {},
+      pipeline: {
         url: 'http://dev.azure.com/link/to/build',
+        id: 5678,
+        name: 'pipeline',
+        revision: 1,
+        folder: '/path/to/pipeline',
       },
-    }));
+      state: 'inProgress',
+      createdDate: new Date('2024-01-26T12:06:00.1728415Z'),
+      resources: {},
+    });
+
+    const getSpy = jest.spyOn(AzureDevOpsApi.prototype, 'getBuild').mockResolvedValue({
+      id: 1234,
+      buildNumber: '1234.1',
+      url: 'http://dev.azure.com/link/to/pipeline/run',
+      reason: 'manual',
+      status: BuildStatus.InProgress,
+      result: BuildResult.None,
+    });
 
     await action.handler(mockContext);
 
+    expect(runSpy).toHaveBeenCalled();
+    expect(getSpy).toHaveBeenCalled();
     expect(mockContext.output).toHaveBeenCalledWith(
       'pipelineRunUrl',
       'http://dev.azure.com/link/to/build',
     );
   });
 
-  it('should call the Azure Build API with the correct values', async () => {
-    mockClientImpl.create.mockImplementation(() => ({
-      statusCode: 200,
-      result: {
-        _links: {
-          web: {
-            href: 'http://dev.azure.com/link/to/build',
-          },
-        },
-        url: 'http://dev.azure.com/link/to/build',
-        id: 1234,
-        name: 'pipeline-name',
-      },
-    }));
-    mockClientImpl.get.mockImplementation(() => ({
-      statusCode: 200,
-      result: {
-        id: 1234,
-        buildNumber: '0.1.1-1234-0',
-        reason: 'manual',
-        status: 'completed',
-        url: 'http://dev.azure.com/link/to/build',
-      },
-    }));
-
-    await action.handler(mockContext);
-
-    expect(mockClientImpl.get).toHaveBeenCalledWith(
-      expect.stringContaining(mockContext.input.project),
-      expect.any(Object),
-    );
-    expect(mockClientImpl.get).toHaveBeenCalledWith(
-      expect.stringContaining('1234'),
-      expect.any(Object),
-    );
-  });
-
   it('should log an info message if the build completes successfully', async () => {
-    mockClientImpl.create.mockImplementation(() => ({
-      statusCode: 200,
-      result: {
-        _links: {
-          web: {
-            href: 'http://dev.azure.com/link/to/build',
-          },
+    const runSpy = jest.spyOn(AzureDevOpsApi.prototype, 'runPipeline').mockResolvedValue({
+      _links: {
+        web: {
+          href: 'http://dev.azure.com/link/to/build',
         },
-        url: 'http://dev.azure.com/link/to/build',
-        id: 1234,
-        name: 'pipeline-name',
       },
-    }));
-    mockClientImpl.get.mockImplementation(() => ({
-      statusCode: 200,
-      result: {
-        id: 1234,
-        buildNumber: '0.1.1-1234-0',
-        reason: 'manual',
-        status: 'completed',
+      url: 'http://dev.azure.com/link/to/build',
+      id: 1234,
+      name: 'pipeline-name',
+      templateParameters: {},
+      pipeline: {
         url: 'http://dev.azure.com/link/to/build',
+        id: 5678,
+        name: 'pipeline',
+        revision: 1,
+        folder: '/path/to/pipeline',
       },
-    }));
+      state: 'inProgress',
+      createdDate: new Date('2024-01-26T12:06:00.1728415Z'),
+      resources: {},
+    });
+
+    const getSpy = jest.spyOn(AzureDevOpsApi.prototype, 'getBuild').mockResolvedValue({
+      id: 1234,
+      buildNumber: '1234.1',
+      url: 'http://dev.azure.com/link/to/pipeline/run',
+      reason: 'manual',
+      status: BuildStatus.InProgress,
+      result: BuildResult.None,
+    });
 
     const loggerSpy = jest.spyOn(mockContext.logger, 'info');
 
     await action.handler(mockContext);
 
+    expect(runSpy).toHaveBeenCalled();
+    expect(getSpy).toHaveBeenCalled();
     expect(loggerSpy).toHaveBeenCalled();
     expect(mockContext.logger.info).toHaveBeenLastCalledWith(
-      'Pipeline run successfully completed',
+      'Pipeline run started',
     );
   });
 
-  it.each([101, 301, 418, 500])(
-    'should throw if a non-success status code is returned when getting the pipeline status',
-    async statusCode => {
-      mockClientImpl.create.mockImplementation(() => ({
-        statusCode: 200,
-        result: {
-          _links: {
-            web: {
-              href: 'http://dev.azure.com/link/to/build',
-            },
-          },
-          url: 'http://dev.azure.com/link/to/build',
-          id: 1234,
-          name: 'pipeline-name',
+  it('should log a warning message if there is an issue with the build', async () => {
+    const runSpy = jest.spyOn(AzureDevOpsApi.prototype, 'runPipeline').mockResolvedValue({
+      _links: {
+        web: {
+          href: 'http://dev.azure.com/link/to/build',
         },
-      }));
-      mockClientImpl.get.mockImplementation(() => ({
-        statusCode: statusCode,
-      }));
+      },
+      url: 'http://dev.azure.com/link/to/build',
+      id: 1234,
+      name: 'pipeline-name',
+      templateParameters: {},
+      pipeline: {
+        url: 'http://dev.azure.com/link/to/build',
+        id: 5678,
+        name: 'pipeline',
+        revision: 1,
+        folder: '/path/to/pipeline',
+      },
+      state: 'inProgress',
+      createdDate: new Date('2024-01-26T12:06:00.1728415Z'),
+      resources: {},
+    });
 
-      await expect(action.handler(mockContext)).rejects.toThrow(
-        /Could not get response from resource/,
-      );
-    },
-  );
+    const getSpy = jest.spyOn(AzureDevOpsApi.prototype, 'getBuild').mockResolvedValue({
+      id: 1234,
+      buildNumber: '1234.1',
+      url: 'http://dev.azure.com/link/to/pipeline/run',
+      reason: 'manual',
+      status: BuildStatus.Failed,
+      result: BuildResult.None,
+    });
+
+    const loggerSpy = jest.spyOn(mockContext.logger, 'warn');
+
+    await action.handler(mockContext);
+
+    expect(runSpy).toHaveBeenCalled();
+    expect(getSpy).toHaveBeenCalled();
+    expect(loggerSpy).toHaveBeenCalled();
+    expect(mockContext.logger.warn).toHaveBeenLastCalledWith(
+      expect.stringContaining('Pipeline run could not start'),
+    );
+  });
 });

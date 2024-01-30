@@ -1,15 +1,9 @@
 import { Config } from '@backstage/config';
-import { InputError, ServiceUnavailableError } from '@backstage/errors';
-import {
-  DefaultAzureDevOpsCredentialsProvider,
-  ScmIntegrationRegistry,
-} from '@backstage/integration';
+import { InputError } from '@backstage/errors';
+import { ScmIntegrationRegistry } from '@backstage/integration';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
-import {
-  getHandlerFromToken,
-  getPersonalAccessTokenHandler,
-} from 'azure-devops-node-api';
-import { IRequestOptions, RestClient } from 'typed-rest-client';
+import { ResourceOptions } from './types';
+import { AzureDevOpsApi } from './AzureDevOpsApi';
 
 type PermitPipelineOptions = {
   pipelineApiVersion?: string;
@@ -18,26 +12,6 @@ type PermitPipelineOptions = {
   project: string;
   pipelineId: number;
   resources: ResourceOptions[];
-};
-
-type ResourceOptions = {
-  resourceType: string;
-  resourceId: string;
-  authorized: boolean;
-};
-
-type PermitPipelineRequest = {
-  pipelines: [
-    {
-      id: number;
-      authorized: boolean;
-    },
-  ];
-  resource: {
-    id: string;
-    name?: string;
-    type: string;
-  };
 };
 
 export function permitPipelineAction(options: {
@@ -96,88 +70,31 @@ export function permitPipelineAction(options: {
     },
 
     async handler(ctx) {
-      const apiVersion = ctx.input.pipelineApiVersion ?? '7.2-preview.1';
       const server = ctx.input.server ?? config.getString('azureDevOps.host');
       const organization =
         ctx.input.organization ?? config.getString('azureDevOps.organization');
 
-      const encodedOrganization = encodeURIComponent(organization);
-      const encodedProject = encodeURIComponent(ctx.input.project);
+      const adoApi = await AzureDevOpsApi.fromIntegrations(
+        integrations,
+        config,
+        { organization: organization, server: server },
+        { logger: ctx.logger },
+      );
 
-      const url = `https://${server}/${encodedOrganization}`;
+      const permittedResources = await adoApi.permitPipeline(
+        { organization, project: ctx.input.project },
+        ctx.input.pipelineId,
+        ctx.input.resources,
+        ctx.input.pipelineApiVersion,
+      );
 
-      const credentialsProvider =
-        DefaultAzureDevOpsCredentialsProvider.fromIntegrations(integrations);
-      const credentials = await credentialsProvider.getCredentials({
-        url: url,
-      });
-
-      if (credentials === undefined) {
-        throw new InputError(
-          `No credentials provided for ${url}. Check your integrations config.`,
-        );
-      }
-
-      let authHandler;
-      if (!credentials || credentials.type === 'pat') {
-        const token = config.getString('azureDevOps.token');
-        authHandler = getPersonalAccessTokenHandler(token);
-      } else {
-        authHandler = getHandlerFromToken(credentials.token);
+      if (!permittedResources) {
+        throw new InputError('Unable to permit pipeline resources');
       }
 
       ctx.logger.info(
-        `Calling Azure DevOps REST API. Permitting resources for pipeline ${ctx.input.pipelineId} in project ${ctx.input.project}`,
+        `Updated resource permissions in pipeline ${ctx.input.pipelineId}`,
       );
-
-      const restClient = new RestClient(
-        'backstage-scaffolder',
-        `https://${server}`,
-        [authHandler],
-      );
-      const requestOptions: IRequestOptions = {
-        acceptHeader: 'application/json',
-      };
-      const resource = `/${encodedOrganization}/${encodedProject}/_apis/pipelines/pipelinepermissions?api-version=${apiVersion}`;
-      const body: PermitPipelineRequest[] =
-        ctx.input.resources.map<PermitPipelineRequest>(res => ({
-          pipelines: [
-            {
-              id: ctx.input.pipelineId,
-              authorized: res.authorized,
-            },
-          ],
-          resource: {
-            id: res.resourceId,
-            type: res.resourceType,
-          },
-        }));
-
-      ctx.logger.debug(`Calling resource ${resource} at host ${server}`);
-
-      const permitPipelineResponse = await restClient.update(
-        resource,
-        body,
-        requestOptions,
-      );
-
-      if (!permitPipelineResponse) {
-        throw new ServiceUnavailableError(
-          `Could not get response from resource ${resource}`,
-        );
-      }
-
-      if (
-        permitPipelineResponse.statusCode < 200 ||
-        permitPipelineResponse.statusCode > 299
-      ) {
-        const message = permitPipelineResponse?.statusCode
-          ? `Could not set pipeline permissions. Status code ${permitPipelineResponse.statusCode}`
-          : `Could not set pipeline permissions.`;
-        ctx.logger.warn(message);
-      } else {
-        ctx.logger.info('Successfully changed pipeline permissions');
-      }
     },
   });
 }

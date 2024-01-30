@@ -50,14 +50,14 @@ export type PipelineRun = {
 };
 
 export enum BuildStatus {
-  All = "all",
-  Cancelling = "cancelling",
-  Completed = "completed",
-  Failed = "failed",
-  InProgress = "inProgress",
-  None = "none",
-  NotStarted = "notStarted",
-  Postponed = "postponed",
+  All = 'all',
+  Cancelling = 'cancelling',
+  Completed = 'completed',
+  Failed = 'failed',
+  InProgress = 'inProgress',
+  None = 'none',
+  NotStarted = 'notStarted',
+  Postponed = 'postponed',
 }
 
 export enum BuildResult {
@@ -74,5 +74,36 @@ export type Build = {
   url: string;
   reason: string;
   status: BuildStatus;
-  result: BuildResult;
+  result?: BuildResult;
+};
+
+export type Resource = {
+  id: string;
+  name: string;
+  type: string;
+};
+
+export type Permission = {
+  authorized: boolean;
+  authorizedBy: object;
+  authorizedOn: string;
+};
+
+export type PipelinePermission = {
+  authorized: boolean;
+  authorizedBy: object;
+  authorizedOn: string;
+  id: number;
+};
+
+export type ResourcePipelinePermissions = {
+  allPipelines: Permission;
+  pipelines: PipelinePermission[];
+  resource: Resource;
+};
+
+export type ResourceOptions = {
+  resourceType: string;
+  resourceId: string;
+  authorized: boolean;
 };

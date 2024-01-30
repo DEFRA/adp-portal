@@ -1,17 +1,10 @@
 import { Config } from '@backstage/config';
-import { InputError, ServiceUnavailableError } from '@backstage/errors';
-import {
-  DefaultAzureDevOpsCredentialsProvider,
-  ScmIntegrationRegistry,
-} from '@backstage/integration';
+import { InputError } from '@backstage/errors';
+import { ScmIntegrationRegistry } from '@backstage/integration';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
-import {
-  getHandlerFromToken,
-  getPersonalAccessTokenHandler,
-} from 'azure-devops-node-api';
-import { IRequestOptions, RestClient } from 'typed-rest-client';
-import { Build, BuildStatus, PipelineRun } from './types';
+import { BuildStatus } from './types';
 import { Logger } from 'winston';
+import { AzureDevOpsApi } from './AzureDevOpsApi';
 
 type RunPipelineOptions = {
   pipelineApiVersion?: string;
@@ -22,18 +15,6 @@ type RunPipelineOptions = {
   pipelineId: number;
   branch?: string;
   pipelineParameters?: object;
-};
-
-type RunPipelineRequest = {
-  templateParameters?: Record<string, string>;
-  yamlOverrides?: object;
-  resources: {
-    repositories: {
-      self: {
-        refName: string;
-      };
-    };
-  };
 };
 
 /** Interval for polling the Get Build endpoint */
@@ -117,45 +98,15 @@ export function runPipelineAction(options: {
       const organization =
         ctx.input.organization ?? config.getString('azureDevOps.organization');
 
-      const encodedOrganization = encodeURIComponent(organization);
-      const encodedProject = encodeURIComponent(ctx.input.project);
-
-      const url = `https://${server}/${encodedOrganization}`;
-
-      const credentialsProvider =
-        DefaultAzureDevOpsCredentialsProvider.fromIntegrations(integrations);
-      const credentials = await credentialsProvider.getCredentials({
-        url: url,
-      });
-
-      if (credentials === undefined) {
-        throw new InputError(
-          `No credentials provided for ${url}. Check your integrations config.`,
-        );
-      }
-
-      let authHandler;
-      if (!credentials || credentials.type === 'pat') {
-        const token = config.getString('azureDevOps.token');
-        authHandler = getPersonalAccessTokenHandler(token);
-      } else {
-        authHandler = getHandlerFromToken(credentials.token);
-      }
-
-      const restClient = new RestClient(
-        'backstage-scaffolder',
-        `https://${server}`,
-        [authHandler],
+      const adoApi = await AzureDevOpsApi.fromIntegrations(
+        integrations,
+        config,
+        { organization: organization, server: server },
+        { logger: ctx.logger },
       );
 
-      ctx.logger.info(
-        `Calling Azure DevOps REST API. Running pipeline ${ctx.input.pipelineId} in project ${ctx.input.project}`,
-      );
-
-      const pipelineRun = await runPipeline(
-        restClient,
-        encodedOrganization,
-        encodedProject,
+      const pipelineRun = await adoApi.runPipeline(
+        { organization, project: ctx.input.project },
         ctx.input.pipelineId,
         ctx.input.pipelineParameters as Record<string, string>,
         ctx.input.branch,
@@ -173,119 +124,57 @@ export function runPipelineAction(options: {
       ctx.output('pipelineRunUrl', pipelineRun._links.web.href);
 
       const isPipelineRunComplete = await checkPipelineStatus(
-        restClient,
-        encodedOrganization,
-        encodedProject,
+        adoApi,
+        organization,
+        ctx.input.project,
         pipelineRun.id,
-        ctx.input.buildApiVersion,
         ctx.logger,
+        ctx.input.buildApiVersion,
       );
 
       if (isPipelineRunComplete) {
-        ctx.logger.info('Pipeline run successfully completed');
+        ctx.logger.info('Pipeline run started');
       } else {
         ctx.logger.warn(
-          `Pipeline run could not complete. Check ${pipelineRun._links.web.href}`,
+          `Pipeline run could not start. Check ${pipelineRun._links.web.href}`,
         );
       }
     },
   });
 }
 
-async function runPipeline(
-  client: RestClient,
-  organization: string,
-  project: string,
-  pipelineId: number,
-  parameters?: Record<string, string>,
-  branch: string = 'main',
-  apiVersion: string = '7.2-preview.1',
-): Promise<PipelineRun | null> {
-  const requestOptions: IRequestOptions = {
-    acceptHeader: 'application/json',
-  };
-
-  const resource = `/${organization}/${project}/_apis/pipelines/${pipelineId}/runs?api-version=${apiVersion}`;
-  const body: RunPipelineRequest = {
-    resources: {
-      repositories: {
-        self: {
-          refName: `refs/heads/${branch}`,
-        },
-      },
-    },
-    templateParameters: parameters,
-  };
-
-  const runPipelineResponse = await client.create<PipelineRun>(
-    resource,
-    body,
-    requestOptions,
-  );
-
-  if (
-    !runPipelineResponse ||
-    runPipelineResponse.statusCode < 200 ||
-    runPipelineResponse.statusCode > 299
-  ) {
-    const message = runPipelineResponse?.statusCode
-      ? `Could not get response from resource ${resource}. Status code ${runPipelineResponse.statusCode}`
-      : `Could not get response from resource ${resource}.`;
-    throw new ServiceUnavailableError(message);
-  }
-
-  const pipelineRun = runPipelineResponse.result;
-
-  return pipelineRun;
-}
-
 async function checkPipelineStatus(
-  client: RestClient,
+  adoApi: AzureDevOpsApi,
   organization: string,
   project: string,
   runId: number,
-  apiVersion: string = '7.2-preview.7',
   logger: Logger,
+  apiVersion?: string,
 ): Promise<boolean> {
-  logger.info(
-    `Calling Azure DevOps REST API. Getting build ${runId} in project ${project}`,
+  const build = await adoApi.getBuild(
+    { organization, project },
+    runId,
+    apiVersion,
   );
 
-  const requestOptions: IRequestOptions = {
-    acceptHeader: 'application/json',
-  };
-  const resource = `/${organization}/${project}/_apis/build/builds/${runId}?api-version=${apiVersion}`;
-
-  const getBuildResponse = await client.get<Build>(resource, requestOptions);
-
   if (
-    !getBuildResponse?.result ||
-    getBuildResponse.statusCode < 200 ||
-    getBuildResponse.statusCode > 299
+    build.status === BuildStatus.Completed ||
+    build.status === BuildStatus.InProgress
   ) {
-    const message = getBuildResponse?.statusCode
-      ? `Could not get response from resource ${resource}. Status code ${getBuildResponse.statusCode}`
-      : `Could not get response from resource ${resource}.`;
-    throw new ServiceUnavailableError(message);
-  }
-
-  const build = getBuildResponse.result;
-  if (build.status === BuildStatus.Completed) {
     return true;
-  } else if (
-    build.status === BuildStatus.InProgress ||
-    build.status === BuildStatus.NotStarted
-  ) {
-    // If pipeline is still running or hasn't started, wait and check again.
-    logger.info(`Build in progress. Waiting ${GET_BUILD_INTERVAL / 1000} seconds...`)
+  } else if (build.status === BuildStatus.NotStarted) {
+    // If pipeline hasn't started, wait and check again.
+    logger.info(
+      `Build not yet started. Waiting ${GET_BUILD_INTERVAL / 1000} seconds...`,
+    );
     await new Promise(resolve => setTimeout(resolve, GET_BUILD_INTERVAL));
     return checkPipelineStatus(
-      client,
+      adoApi,
       organization,
       project,
       runId,
-      apiVersion,
       logger,
+      apiVersion,
     );
   } else {
     return false;
