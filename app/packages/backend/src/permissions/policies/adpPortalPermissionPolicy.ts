@@ -38,10 +38,6 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       `User: identity.type - ${user?.identity.type} User: identity.userEntityRef - ${user?.identity.userEntityRef} User: identity.ownershipEntityRefs.length - ${user?.identity.ownershipEntityRefs.length} Request: type - ${request.permission.type}; name - ${request.permission.name}; action - ${request.permission.attributes.action}`,
     );
 
-    if (isPermission(request.permission, catalogLocationCreatePermission)) {
-      return { result: AuthorizeResult.DENY };  // disable importing entities using the UI
-    }
-
     // exempting admins from permission checks
     if (user != null && this.rbacUtilites.isInPlatformAdminGroup(user)) {
       this.logger.info(`This is a platform admin user with the ad group`);
@@ -58,7 +54,8 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       isPermission(request.permission, catalogEntityReadPermission) ||
       isPermission(request.permission, catalogLocationReadPermission) ||
       isPermission(request.permission, catalogEntityRefreshPermission) ||
-      isPermission(request.permission, catalogLocationReadPermission)
+      isPermission(request.permission, catalogLocationReadPermission) ||
+      isPermission(request.permission, catalogLocationCreatePermission)
     ) {
       return { result: AuthorizeResult.ALLOW };
     }

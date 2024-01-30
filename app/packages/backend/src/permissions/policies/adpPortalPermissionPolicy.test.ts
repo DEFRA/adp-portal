@@ -56,26 +56,24 @@ describe('adpPortalPermissionPolicy: Platform Admin User', () => {
     { permission: catalogEntityRefreshPermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogEntityCreatePermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogEntityDeletePermission, expected: AuthorizeResult.ALLOW },
-    { permission: catalogLocationCreatePermission, expected: AuthorizeResult.DENY, skipVerifyFunctionWasCalled: true },
+    { permission: catalogLocationCreatePermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogLocationDeletePermission, expected: AuthorizeResult.ALLOW },
   ])(
     'should allow access for permission $permission.name for the ADP Platform Admin Role',
-    async ({ permission, expected, skipVerifyFunctionWasCalled }) => {
+    async ({ permission, expected }) => {
 
       isInPlatformAdminGroupSpy.mockReturnValue(true)
       isIsInProgrammeAdminGroupSpy.mockReturnValue(false)
       isIsInAdpUserGroupSpy.mockReturnValue(false)
-      
+
       let mockRbacUtilities = new RbacUtilities(mockLogger, mockRbacGroups);
       const policy = new AdpPortalPermissionPolicy(mockRbacUtilities, mockLogger);
       const request: PolicyQuery = { permission: permission };
 
       let policyResult = await policy.handle(request, mockPlatformAdminUserResponse);
 
-      if (!skipVerifyFunctionWasCalled) {
-        expect(isInPlatformAdminGroupSpy).toHaveBeenCalled;
-        expect(isInPlatformAdminGroupSpy).toHaveBeenCalledWith(mockPlatformAdminUserResponse);
-      }
+      expect(isInPlatformAdminGroupSpy).toHaveBeenCalled;
+      expect(isInPlatformAdminGroupSpy).toHaveBeenCalledWith(mockPlatformAdminUserResponse);
       expect(policyResult.result).toBe(expected);
     },
   );
@@ -95,16 +93,16 @@ describe('adpPortalPermissionPolicy: Programme Admin User', () => {
     { permission: catalogEntityRefreshPermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogEntityCreatePermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogEntityDeletePermission, expected: AuthorizeResult.DENY },
-    { permission: catalogLocationCreatePermission, expected: AuthorizeResult.DENY },
+    { permission: catalogLocationCreatePermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogLocationDeletePermission, expected: AuthorizeResult.DENY },
   ])(
     'should allow access for permission $permission.name for the Programme Admin Role',
     async ({ permission, expected }) => {
-      
+
       isInPlatformAdminGroupSpy.mockReturnValue(false)
       isIsInProgrammeAdminGroupSpy.mockReturnValue(true)
       isIsInAdpUserGroupSpy.mockReturnValue(false)
-      
+
       let mockRbacUtilities = new RbacUtilities(mockLogger, mockRbacGroups);
       const policy = new AdpPortalPermissionPolicy(mockRbacUtilities, mockLogger);
       const request: PolicyQuery = { permission: permission };
@@ -131,16 +129,16 @@ describe('adpPortalPermissionPolicy: ADP Platform User', () => {
     { permission: catalogEntityRefreshPermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogEntityCreatePermission, expected: AuthorizeResult.DENY },
     { permission: catalogEntityDeletePermission, expected: AuthorizeResult.DENY },
-    { permission: catalogLocationCreatePermission, expected: AuthorizeResult.DENY  },
+    { permission: catalogLocationCreatePermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogLocationDeletePermission, expected: AuthorizeResult.DENY },
   ])(
     'should allow access for permission $permission.name for the ADP Portal User Role',
     async ({ permission, expected }) => {
-      
+
       isInPlatformAdminGroupSpy.mockReturnValue(false)
       isIsInProgrammeAdminGroupSpy.mockReturnValue(false)
       isIsInAdpUserGroupSpy.mockReturnValue(true)
-      
+
       let mockRbacUtilities = new RbacUtilities(mockLogger, mockRbacGroups);
       const policy = new AdpPortalPermissionPolicy(mockRbacUtilities, mockLogger);
       const request: PolicyQuery = { permission: permission };
