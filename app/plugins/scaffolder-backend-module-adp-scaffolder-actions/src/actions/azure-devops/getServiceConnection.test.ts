@@ -46,27 +46,29 @@ describe('adp:azure:serviceconnection:get', () => {
   };
 
   it('should throw if no response is returned from the API', async () => {
-    jest
+    const getSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'getServiceConnections')
       .mockResolvedValue(undefined!);
 
+    expect(getSpy).not.toHaveBeenCalled();
     await expect(action.handler(mockContext)).rejects.toThrow(
       /Unable to find service connection/,
     );
   });
 
   it('should throw if an empty response is returned from the API', async () => {
-    jest
+    const getSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'getServiceConnections')
       .mockResolvedValue({ count: 0, value: [] });
 
+    expect(getSpy).not.toHaveBeenCalled();
     await expect(action.handler(mockContext)).rejects.toThrow(
       /Unable to find service connection/,
     );
   });
 
   it('should store the service connection ID in the action context output', async () => {
-    jest
+    const getSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'getServiceConnections')
       .mockResolvedValue({
         count: 1,
@@ -87,6 +89,7 @@ describe('adp:azure:serviceconnection:get', () => {
 
     await action.handler(mockContext);
 
+    expect(getSpy).toHaveBeenCalled();
     expect(mockContext.output).toHaveBeenCalledWith(
       'serviceConnectionId',
       '12345',

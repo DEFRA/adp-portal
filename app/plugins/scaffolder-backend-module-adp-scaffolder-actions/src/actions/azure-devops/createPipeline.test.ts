@@ -50,35 +50,39 @@ describe('adp:azure:pipeline:create', () => {
   };
 
   it('should throw if no response is returned from the API', async () => {
-    jest
+    const createSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'createPipeline')
       .mockResolvedValue(undefined!);
 
+    expect(createSpy).not.toHaveBeenCalled();
     await expect(action.handler(mockContext)).rejects.toThrow(
       /Unable to create new pipeline/,
     );
   });
 
   it('should store the pipeline ID in the action context output', async () => {
-    jest.spyOn(AzureDevOpsApi.prototype, 'createPipeline').mockResolvedValue({
-      _links: {
-        web: {
-          href: 'http://dev.azure.com/link/to/pipeline',
+    const createSpy = jest
+      .spyOn(AzureDevOpsApi.prototype, 'createPipeline')
+      .mockResolvedValue({
+        _links: {
+          web: {
+            href: 'http://dev.azure.com/link/to/pipeline',
+          },
         },
-      },
-      url: 'http://dev.azure.com/link/to/pipeline',
-      id: 1234,
-      name: 'pipeline-name',
-      folder: 'folder\\path',
-    });
+        url: 'http://dev.azure.com/link/to/pipeline',
+        id: 1234,
+        name: 'pipeline-name',
+        folder: 'folder\\path',
+      });
 
     await action.handler(mockContext);
 
+    expect(createSpy).toHaveBeenCalled();
     expect(mockContext.output).toHaveBeenCalledWith('pipelineId', 1234);
   });
 
   it('should store the pipeline URL in the action context output', async () => {
-    jest.spyOn(AzureDevOpsApi.prototype, 'createPipeline').mockResolvedValue({
+    const createSpy = jest.spyOn(AzureDevOpsApi.prototype, 'createPipeline').mockResolvedValue({
       _links: {
         web: {
           href: 'http://dev.azure.com/link/to/pipeline',
@@ -92,6 +96,7 @@ describe('adp:azure:pipeline:create', () => {
 
     await action.handler(mockContext);
 
+    expect(createSpy).toHaveBeenCalled();
     expect(mockContext.output).toHaveBeenCalledWith(
       'pipelineUrl',
       'http://dev.azure.com/link/to/pipeline',

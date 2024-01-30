@@ -57,17 +57,18 @@ describe('adp:azure:pipeline:permit', () => {
   };
 
   it('should throw if no response is returned from the API', async () => {
-    jest
+    const permitSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'permitPipeline')
       .mockResolvedValue(undefined!);
 
+    expect(permitSpy).not.toHaveBeenCalled();
     await expect(action.handler(mockContext)).rejects.toThrow(
       /Unable to permit pipeline resources/,
     );
   });
 
   it('should log an info message if the pipeline resources have been permitted', async () => {
-    jest.spyOn(AzureDevOpsApi.prototype, 'permitPipeline').mockResolvedValue([
+    const permitSpy = jest.spyOn(AzureDevOpsApi.prototype, 'permitPipeline').mockResolvedValue([
       {
         resource: {
           id: '1234',
@@ -94,6 +95,7 @@ describe('adp:azure:pipeline:permit', () => {
 
     await action.handler(mockContext);
 
+    expect(permitSpy).toHaveBeenCalled();
     expect(loggerSpy).toHaveBeenCalled();
     expect(mockContext.logger.info).toHaveBeenLastCalledWith(
       'Updated resource permissions in pipeline 1234',
