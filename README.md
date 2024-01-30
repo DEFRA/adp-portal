@@ -59,3 +59,27 @@ Run the following commands from the `/app` directory:
 yarn install
 yarn dev
 ```
+
+
+## Feature Requests
+
+If you have an idea for a new feature or an improvement to an existing feature, please follow these steps:
+
+1. Check if the feature has already been requested by searching the project's issue tracker.
+2. If the feature hasn't been requested, create a new issue and provide a clear description of the proposed feature and why it would be beneficial.
+
+## Pull Requests
+
+If you're ready to submit your code changes, please follow these steps specified in the [pull_request_template](../.github/pull_request_template.md)
+
+## Code Style Guidelines
+
+To maintain a consistent code style throughout the project, please adhere to the following guidelines:
+
+1. Use descriptive variable and function names.
+2. Follow the existing code formatting and indentation style.
+3. Write clear and concise comments to explain complex code logic.
+
+## License
+
+Include information about the project's license and any relevant copyright notices.

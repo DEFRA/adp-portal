@@ -25,7 +25,7 @@ export class RbacUtilities {
     this.programmeAdminGroup = `${this.groupPrefix}${rbacGroups.programmeAdminGroup.toLowerCase()}`
     this.adpPortalUsersGroup = `${this.groupPrefix}${rbacGroups.adpPortalUsersGroup.toLowerCase()}`
     
-    this.logger.info(`platformAdminsGroup=${this.platformAdminsGroup} | programmeAdminGroup=${this.programmeAdminGroup} | adpPortalUsersGroup= ${this.adpPortalUsersGroup}`)
+    this.logger.debug(`platformAdminsGroup=${this.platformAdminsGroup} | programmeAdminGroup=${this.programmeAdminGroup} | adpPortalUsersGroup= ${this.adpPortalUsersGroup}`)
   }
 
   public isInPlatformAdminGroup (user: BackstageIdentityResponse): boolean {

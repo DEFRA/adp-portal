@@ -34,7 +34,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
   ): Promise<PolicyDecision> {
 
 
-    this.logger.info(
+    this.logger.debug(
       `User: identity.type - ${user?.identity.type} User: identity.userEntityRef - ${user?.identity.userEntityRef} User: identity.ownershipEntityRefs.length - ${user?.identity.ownershipEntityRefs.length} Request: type - ${request.permission.type}; name - ${request.permission.name}; action - ${request.permission.attributes.action}`,
     );
 
