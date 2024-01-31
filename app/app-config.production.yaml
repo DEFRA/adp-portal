@@ -2,6 +2,53 @@ app:
   # Should be the same as backend.baseUrl when using the `app-backend` plugin.
   baseUrl: ${APP_BASE_URL}
 
+kubernetes:
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - name: ${SND1_CLUSTER_NAME}
+          url: ${SND1_CLUSTER_API_SERVER_ADDRESS}
+          authProvider: azure
+          skipTLSVerify: true
+          skipMetricsLookup: true
+        - name: ${SND2_CLUSTER_NAME}
+          url: ${SND2_CLUSTER_API_SERVER_ADDRESS}
+          authProvider: azure
+          skipTLSVerify: true
+          skipMetricsLookup: true
+        - name: ${SND3_CLUSTER_NAME}
+          url: ${SND3_CLUSTER_API_SERVER_ADDRESS}
+          authProvider: azure
+          skipTLSVerify: true
+          skipMetricsLookup: true
+        # - name: ${DEV1_CLUSTER_NAME}
+        #   url: ${DEV1_CLUSTER_API_SERVER_ADDRESS}
+        #   authProvider: azure
+        #   skipTLSVerify: true
+        #   skipMetricsLookup: true
+        # - name: ${TST1_CLUSTER_NAME}
+        #   url: ${TST1_CLUSTER_API_SERVER_ADDRESS}
+        #   authProvider: azure
+        #   skipTLSVerify: true
+        #   skipMetricsLookup: true
+        # - name: ${TST2_CLUSTER_NAME}
+        #   url: ${TST2_CLUSTER_API_SERVER_ADDRESS}
+        #   authProvider: azure
+        #   skipTLSVerify: true
+        #   skipMetricsLookup: true        
+        # - name: ${PRE1_CLUSTER_NAME}
+        #   url: ${PRE1_CLUSTER_API_SERVER_ADDRESS}
+        #   authProvider: azure
+        #   skipTLSVerify: true
+        #   skipMetricsLookup: true
+        # - name: ${PRD1_CLUSTER_NAME}
+        #   url: ${PRD1_CLUSTER_API_SERVER_ADDRESS}
+        #   authProvider: azure
+        #   skipTLSVerify: true
+        #   skipMetricsLookup: true          
+
 integrations:
   azure:
     - host: dev.azure.com
@@ -57,9 +104,9 @@ catalog:
         clientId: ${AUTH_MICROSOFT_CLIENT_ID}
         clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
         userGroupMember:
-          filter: "displayName eq 'AG-Azure-CDO-ADP-PlatformEngineers' or displayName eq 'AAG-Users-ADP-Portal'"
+          filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or displayName eq '${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}'"
         group:
-          filter: "displayName eq 'AG-Azure-CDO-ADP-PlatformEngineers' or displayName eq 'AAG-Users-ADP-Portal'"
+          filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or displayName eq '${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}'"
         schedule:
           frequency: { minutes: 60 }
           timeout: { minutes: 10 }

@@ -42,10 +42,10 @@ extends:
       imageRepoName: "adp-portal"
     appDeployConfig:
       filepath: ".azuredevops/backstage.yaml"  
-      variableGroups: 
+      variableGroups:
         - adp-portal-ssv3
         - adp-portal-ssv5
-      variables:        
+      variables:      
         - ADO-ORGANIZATION
         - ADO-PAT
         - ADP-PORTAL-PLATFORM-ADMINS-GROUP
@@ -59,4 +59,19 @@ extends:
         - GITHUB-PRIVATE-KEY
         - GRAFANA-ENDPOINT
         - GRAFANA-TOKEN
-
+        - SND1-CLUSTER-NAME
+        - SND1-CLUSTER-API-SERVER-ADDRESS
+        - SND2-CLUSTER-NAME
+        - SND2-CLUSTER-API-SERVER-ADDRESS
+        - SND3-CLUSTER-NAME
+        - SND3-CLUSTER-API-SERVER-ADDRESS
+        - DEV1-CLUSTER-NAME
+        - DEV1-CLUSTER-API-SERVER-ADDRESS
+        - TST1-CLUSTER-NAME
+        - TST1-CLUSTER-API-SERVER-ADDRESS
+        - TST2-CLUSTER-NAME
+        - TST2-CLUSTER-API-SERVER-ADDRESS
+        - PRE1-CLUSTER-NAME
+        - PRE1-CLUSTER-API-SERVER-ADDRESS
+        - PRD1-CLUSTER-NAME
+        - PRD1-CLUSTER-API-SERVER-ADDRESS

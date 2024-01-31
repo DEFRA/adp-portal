@@ -32,6 +32,9 @@ backend:
   database:
     client: better-sqlite3
     connection: ':memory:'
+  auth:
+    keys:
+    - secret: ${BACKEND_PLUGINS_SECRET}
 
 proxy:
   '/grafana/api':
@@ -57,6 +60,28 @@ techdocs:
     ttl: 3600000
     readTimeout: 500
 
+kubernetes:
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - name: ${SND1_CLUSTER_NAME}
+          url: ${SND1_CLUSTER_API_SERVER_ADDRESS}
+          authProvider: azure
+          skipTLSVerify: true
+          skipMetricsLookup: true
+        - name: ${SND2_CLUSTER_NAME}
+          url: ${SND2_CLUSTER_API_SERVER_ADDRESS}
+          authProvider: azure
+          skipTLSVerify: true
+          skipMetricsLookup: true
+        - name: ${SND3_CLUSTER_NAME}
+          url: ${SND3_CLUSTER_API_SERVER_ADDRESS}
+          authProvider: azure
+          skipTLSVerify: true
+          skipMetricsLookup: true
+
 integrations:
   azure:
     - host: dev.azure.com
@@ -75,10 +100,10 @@ rbac:
   programmeAdminGroup: ${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}
   adpPortalUsersGroup: ${ADP_PORTAL_USERS_GROUP}
 
-auth:
 
+auth:
   keys:
-    - secret: ${BACKEND_PLUGINS_SECRET}
+  - secret: ${BACKEND_PLUGINS_SECRET}
 
   environment: sandpit
   providers:

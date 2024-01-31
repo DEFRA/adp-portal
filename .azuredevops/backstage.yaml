@@ -85,6 +85,54 @@ properties:
       - name: backend-plugins-secret
         keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/BACKEND-PLUGINS-SECRET
         identity: {{userAssignedIdentity}}
+      - name: snd1-cluster-name
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/SND1-CLUSTER-NAME
+        identity: {{userAssignedIdentity}}
+      - name: snd1-cluster-api-server-address
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/SND1-CLUSTER-API-SERVER-ADDRESS
+        identity: {{userAssignedIdentity}}
+      - name: snd2-cluster-name
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/SND2-CLUSTER-NAME
+        identity: {{userAssignedIdentity}}
+      - name: snd2-cluster-api-server-address
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/SND2-CLUSTER-API-SERVER-ADDRESS
+        identity: {{userAssignedIdentity}}
+      - name: snd3-cluster-name
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/SND3-CLUSTER-NAME
+        identity: {{userAssignedIdentity}}
+      - name: snd3-cluster-api-server-address
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/SND3-CLUSTER-API-SERVER-ADDRESS
+        identity: {{userAssignedIdentity}}
+      - name: dev1-cluster-name
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/DEV1-CLUSTER-NAME
+        identity: {{userAssignedIdentity}}
+      - name: dev1-cluster-api-server-address
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/DEV1-CLUSTER-API-SERVER-ADDRESS
+        identity: {{userAssignedIdentity}}
+      - name: tst1-cluster-name
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TST1-CLUSTER-NAME
+        identity: {{userAssignedIdentity}}
+      - name: tst1-cluster-api-server-address
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TST1-CLUSTER-API-SERVER-ADDRESS
+        identity: {{userAssignedIdentity}}
+      - name: tst2-cluster-name
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TST2-CLUSTER-NAME
+        identity: {{userAssignedIdentity}}
+      - name: tst2-cluster-api-server-address
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TST2-CLUSTER-API-SERVER-ADDRESS
+        identity: {{userAssignedIdentity}}
+      - name: pre1-cluster-name
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/PRE1-CLUSTER-NAME
+        identity: {{userAssignedIdentity}}
+      - name: pre1-cluster-api-server-address
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/PRE1-CLUSTER-API-SERVER-ADDRESS
+        identity: {{userAssignedIdentity}}
+      - name: prd1-cluster-name
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-NAME
+        identity: {{userAssignedIdentity}}
+      - name: prd1-cluster-api-server-address
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-API-SERVER-ADDRESS
+        identity: {{userAssignedIdentity}}        
   template:
     containers:
       - image: {{acrName}}.azurecr.io/image/{{imageRepoName}}:{{appVersion}}
@@ -138,6 +186,39 @@ properties:
             secretRef: blobstorage-name
           - name: TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_KEY
             secretRef: blobstorage-key
+          - name: SND1_CLUSTER_NAME
+            secretRef: snd1-cluster-name
+          - name: SND1_CLUSTER_API_SERVER_ADDRESS
+            secretRef: snd1-cluster-api-server-address
+          - name: SND2_CLUSTER_NAME
+            secretRef: snd2-cluster-name
+          - name: SND2_CLUSTER_API_SERVER_ADDRESS
+            secretRef: snd2-cluster-api-server-address
+          - name: SND3_CLUSTER_NAME
+            secretRef: snd3-cluster-name
+          - name: SND3_CLUSTER_API_SERVER_ADDRESS
+            secretRef: snd3-cluster-api-server-address
+          - name: DEV1_CLUSTER_NAME
+            secretRef: dev1-cluster-name
+          - name: DEV1_CLUSTER_API_SERVER_ADDRESS
+            secretRef: dev1-cluster-api-server-address
+          - name: TST1_CLUSTER_NAME
+            secretRef: tst1-cluster-name
+          - name: TST1_CLUSTER_API_SERVER_ADDRESS
+            secretRef: tst1-cluster-api-server-address
+          - name: TST2_CLUSTER_NAME
+            secretRef: tst2-cluster-name
+          - name: TST2_CLUSTER_API_SERVER_ADDRESS
+            secretRef: tst2-cluster-api-server-address
+          - name: PRE1_CLUSTER_NAME
+            secretRef: pre1-cluster-name
+          - name: PRE1_CLUSTER_API_SERVER_ADDRESS
+            secretRef: pre1-cluster-api-server-address
+          - name: PRD1_CLUSTER_NAME
+            secretRef: prd1-cluster-name
+          - name: PRD1_CLUSTER_API_SERVER_ADDRESS
+            secretRef: prd1-cluster-api-server-address
+            
         resources:
           cpu: 0.5
           memory: 1Gi
