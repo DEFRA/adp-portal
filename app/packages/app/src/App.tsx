@@ -6,10 +6,7 @@ import {
   CatalogIndexPage,
   catalogPlugin,
 } from '@backstage/plugin-catalog';
-import {
-  CatalogImportPage,
-  catalogImportPlugin,
-} from '@backstage/plugin-catalog-import';
+import { CatalogImportPage } from '@backstage/plugin-catalog-import';
 import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
 import { orgPlugin } from '@backstage/plugin-org';
 import { SearchPage } from '@backstage/plugin-search';
@@ -171,7 +168,7 @@ const app = createApp({
       variant: 'light',
       icon: <LightIcon />,
       Provider: ({ children }) => (
-        <UnifiedThemeProvider theme={lightTheme} children={children} />
+        <UnifiedThemeProvider theme={lightTheme}>{children}</UnifiedThemeProvider>
       ),
     },
     {
@@ -180,7 +177,7 @@ const app = createApp({
       variant: 'dark',
       icon: <NightIcon />,
       Provider: ({ children }) => (
-        <UnifiedThemeProvider theme={darkTheme} children={children} />
+        <UnifiedThemeProvider theme={darkTheme}>{children}</UnifiedThemeProvider>
       ),
     },
   ],
@@ -190,11 +187,8 @@ const app = createApp({
       viewTechDoc: techdocsPlugin.routes.docRoot,
       createFromTemplate: scaffolderPlugin.routes.selectedTemplate,
     });
-    bind(apiDocsPlugin.externalRoutes, {
-      registerApi: catalogImportPlugin.routes.importPage,
-    });
+    bind(apiDocsPlugin.externalRoutes, {});
     bind(scaffolderPlugin.externalRoutes, {
-      registerComponent: catalogImportPlugin.routes.importPage,
       viewTechDoc: techdocsPlugin.routes.docRoot,
     });
     bind(orgPlugin.externalRoutes, {
