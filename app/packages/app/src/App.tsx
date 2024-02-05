@@ -168,7 +168,9 @@ const app = createApp({
       variant: 'light',
       icon: <LightIcon />,
       Provider: ({ children }) => (
-        <UnifiedThemeProvider theme={lightTheme}>{children}</UnifiedThemeProvider>
+        <UnifiedThemeProvider theme={lightTheme}>
+          {children}
+        </UnifiedThemeProvider>
       ),
     },
     {
@@ -177,7 +179,9 @@ const app = createApp({
       variant: 'dark',
       icon: <NightIcon />,
       Provider: ({ children }) => (
-        <UnifiedThemeProvider theme={darkTheme}>{children}</UnifiedThemeProvider>
+        <UnifiedThemeProvider theme={darkTheme}>
+          {children}
+        </UnifiedThemeProvider>
       ),
     },
   ],
