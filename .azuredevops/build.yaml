@@ -18,7 +18,7 @@ trigger:
   batch: true
   branches:
     include:
-      - "main"
+      - "*"
   paths:
     exclude:
       - test-output/*
@@ -34,12 +34,18 @@ resources:
       ref: refs/heads/main
 
 extends:
-  template: /pipelines/common-portal-app-build.yaml@DEFRA-ADPPipelineCommon
+  template: /pipelines/common-aca-app-build.yaml@DEFRA-ADPPipelineCommon
   parameters:
-    serviceName: "backstage"
     deployFromFeature: ${{ parameters.deployFromFeature }}
+    privateAgentName: ''
+    containerAppName: 'ssvadpinfca3401'
     appBuildConfig:
+      appFrameworkType: "nodejs"  
+      projectPath: "./package.json"
       imageRepoName: "adp-portal"
+      appPath: "/app"
+      dockerfilePath: "./packages/backend/Dockerfile"
+      snykPolicyFilePath: "./packages/backend/.snyk"
     appDeployConfig:
       filepath: ".azuredevops/backstage.yaml"  
       variableGroups: 
