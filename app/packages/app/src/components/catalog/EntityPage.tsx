@@ -73,10 +73,9 @@ import { EntityTeamPullRequestsContent } from '@backstage/plugin-github-pull-req
 import { EntityKubernetesContent, isKubernetesAvailable  } from '@backstage/plugin-kubernetes';
 import {
   EntityFluxHelmReleasesCard,
-  EntityFluxGitRepositoriesCard,
-  EntityFluxOCIRepositoriesCard,
   EntityFluxHelmRepositoriesCard,
   EntityFluxKustomizationsCard,
+  EntityFluxImagePoliciesCard,
 } from '@weaveworksoss/backstage-plugin-flux';
 
 const techdocsContent = (
@@ -161,22 +160,6 @@ const overviewContent = (
     <Grid item md={8} xs={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
     </Grid>
-    {/* <Grid item md={8} xs={12}>
-      <EntityFluxHelmReleasesCard />
-    </Grid>
-    <Grid item md={8} xs={12}>
-      <EntityFluxGitRepositoriesCard />
-    </Grid>
-    <Grid item md={8} xs={12}>
-      <EntityFluxKustomizationsCard />
-    </Grid> */}
-
-    {/* <EntitySwitch>
-      <EntitySwitch.Case if={isKubernetesAvailable}>
-        <EntityFluxHelmReleasesCard />
-      </EntitySwitch.Case>
-    </EntitySwitch> */}
-
   </Grid>
   
 );
@@ -244,25 +227,19 @@ const serviceEntityPage = (
       {techdocsContent}
     </EntityLayout.Route>
 
-    <EntityLayout.Route path="/kubernetes" title="Kubernetes">
-      <EntityKubernetesContent refreshIntervalMs={30000} />
-    </EntityLayout.Route>
-
     <EntityLayout.Route path="/releases" title="Deployments" if={isKubernetesAvailable}>
-    <Grid container spacing={3} alignItems="stretch">
+      <Grid container spacing={3} alignItems="stretch">
         <Grid item md={12}>
           <EntityFluxHelmReleasesCard />
         </Grid>
         <Grid item md={12}>
-          <EntityFluxHelmRepositoriesCard />
-        </Grid>
-        <Grid item md={12}>
-          <EntityFluxGitRepositoriesCard />
-        </Grid>
-        <Grid item md={12}>
-          <EntityFluxOCIRepositoriesCard />
+          <EntityFluxKustomizationsCard />
         </Grid>
       </Grid>
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/kubernetes" title="Kubernetes" if={isKubernetesAvailable}>
+      <EntityKubernetesContent refreshIntervalMs={30000} />
     </EntityLayout.Route>
 
   </EntityLayout>
@@ -412,6 +389,25 @@ const groupPage = (
     </EntityLayout.Route>
     <EntityLayout.Route path="/pull-requests" title="Pull Requests">
       <EntityTeamPullRequestsContent />
+    </EntityLayout.Route>
+    <EntityLayout.Route path="/releases" title="Deployments" if={isKubernetesAvailable}>
+      <Grid container spacing={3} alignItems="stretch">
+        <Grid item md={12}>
+          <EntityFluxHelmReleasesCard  />
+        </Grid>
+        <Grid item md={12} >
+          <EntityFluxHelmRepositoriesCard />
+        </Grid>
+        <Grid item md={12} >
+          <EntityFluxImagePoliciesCard />
+        </Grid> 
+        <Grid item md={12}>
+          <EntityFluxKustomizationsCard />
+        </Grid>       
+      </Grid>
+    </EntityLayout.Route>
+    <EntityLayout.Route path="/kubernetes" title="Kubernetes" if={isKubernetesAvailable}>
+      <EntityKubernetesContent refreshIntervalMs={30000} />
     </EntityLayout.Route>
   </EntityLayout>
 );

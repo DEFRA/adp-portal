@@ -1,0 +1,58 @@
+
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: ffc-demo
+  description: FFC-Demo Team
+  annotations:
+    grafana/dashboard-selector: "folderTitle == 'Managed Prometheus'"
+    backstage.io/techdocs-entity: component:default/adp-documentation
+    backstage.io/kubernetes-label-selector: 'backstage.io/kubernetes-team=ffc-demo'
+spec:
+  type: team
+  profile:
+    # Intentional no displayName for testing
+    email: ffc-ffd@example.com
+    picture: https://api.dicebear.com/7.x/identicon/svg?seed=Fluffy&backgroundType=solid,gradientLinear&backgroundColor=ffd5dc,b6e3f4
+  parent: farming-countryside-programme
+  children: []
+
+---
+
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: ffc-ffd
+  description: FFC FFD Team
+  annotations:
+    grafana/dashboard-selector: "folderTitle == 'Managed Prometheus'"
+    backstage.io/techdocs-entity: component:default/adp-documentation
+    backstage.io/kubernetes-label-selector: 'backstage.io/kubernetes-team=ffc-ffd'
+spec:
+  type: team
+  profile:
+    # Intentional no displayName for testing
+    email: ffc-ffd@example.com
+    picture: https://api.dicebear.com/7.x/identicon/svg?seed=Fluffy&backgroundType=solid,gradientLinear&backgroundColor=ffd5dc,b6e3f4
+  parent: farming-countryside-programme
+  children: []
+
+---
+
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: eutd-trade-exports-ai
+  description: EU Trade (AI) Team
+  annotations:
+    grafana/dashboard-selector: "folderTitle == 'Managed Prometheus'"
+    backstage.io/techdocs-entity: component:default/adp-documentation
+    backstage.io/kubernetes-label-selector: 'backstage.io/kubernetes-team=eutd-trade-exports-ai'
+spec:
+  type: team
+  profile:
+    # Intentional no displayName for testing
+    email: eutd-trade-exports-ai@example.com
+    picture: https://api.dicebear.com/7.x/identicon/svg?seed=Fluffy&backgroundType=solid,gradientLinear&backgroundColor=ffd5dc,b6e3f4
+  parent: eutd-projects
+  children: []
