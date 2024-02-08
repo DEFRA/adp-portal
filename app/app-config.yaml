@@ -176,9 +176,9 @@ catalog:
         schedule:
           frequency: { hours: 1 }
           timeout: { minutes: 50 }
-          initialDelay: { seconds: 15}
+          initialDelay: { seconds: 15 }
 
-# 'all users'
+  # 'all users'
   # Locations configured to import static data into the catalog
   locations:
     - type: url
@@ -194,3 +194,6 @@ catalog:
       
 techRadar: 
   data: https://raw.githubusercontent.com/defra/adp-software-templates/main/tech-radars/development-tech-radar.json
+
+adGroup:
+  adminsGroup: ${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}

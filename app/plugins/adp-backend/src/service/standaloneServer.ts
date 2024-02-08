@@ -1,7 +1,14 @@
-import { createServiceBuilder } from '@backstage/backend-common';
+import {
+  DatabaseManager,
+  HostDiscovery,
+  createServiceBuilder,
+  loadBackendConfig,
+} from '@backstage/backend-common';
 import { Server } from 'http';
 import { Logger } from 'winston';
 import { createRouter } from './router';
+import { ConfigReader } from '@backstage/config';
+import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 
 export interface ServerOptions {
   port: number;
@@ -14,8 +21,27 @@ export async function startStandaloneServer(
 ): Promise<Server> {
   const logger = options.logger.child({ service: 'adp-backend' });
   logger.debug('Starting application server...');
+
+  const config = await loadBackendConfig({ logger, argv: process.argv });
+  const discovery = HostDiscovery.fromConfig(config);
+  const database = DatabaseManager.fromConfig(
+    new ConfigReader({
+      backend: {
+        database: {
+          client: 'better-sqlite3',
+          connection: ':memory:',
+        },
+      },
+    }),
+  ).forPlugin('adp-plugin');
+
   const router = await createRouter({
     logger,
+    identity: DefaultIdentityClient.create({
+      discovery,
+      issuer: await discovery.getExternalBaseUrl('auth'),
+    }),
+    database,
   });
 
   let service = createServiceBuilder(module)

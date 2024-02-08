@@ -29,6 +29,7 @@ import proxy from './plugins/proxy';
 import techdocs from './plugins/techdocs';
 import search from './plugins/search';
 import permission from './plugins/permission';
+import adp from './plugins/adp';
 import { PluginEnvironment } from './types';
 import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
@@ -91,6 +92,7 @@ async function main() {
   const azureDevOpsEnv = useHotMemoize(module, () => createEnv('azure-devops'));
   const kubernetesEnv = useHotMemoize(module, () => createEnv('kubernetes'));
   const permissionEnv = useHotMemoize(module, () => createEnv('permission'));
+  const adpEnv = useHotMemoize(module, () => createEnv('adp'));
 
   const apiRouter = Router();
   apiRouter.use('/catalog', await catalog(catalogEnv));
@@ -102,6 +104,7 @@ async function main() {
   apiRouter.use('/azure-devops', await azureDevOps(azureDevOpsEnv));
   apiRouter.use('/kubernetes', await kubernetes(kubernetesEnv));
   apiRouter.use('/permission', await permission(permissionEnv));
+  apiRouter.use('/adp', await adp(adpEnv));
 
   // Add backends ABOVE this line; this 404 handler is the catch-all fallback
   apiRouter.use(notFoundHandler());
