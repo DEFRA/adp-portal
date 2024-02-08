@@ -229,11 +229,16 @@ const routes = (
     <Route path="/api-docs" element={<ApiExplorerPage />} />
     <Route
       path="/tech-radar"
-      element={<TechRadarPage width={1500} height={800}
-        title='Azure Development Platform: Tech Radar'
-        subtitle="Supported technologies for DEFRA's Azure Developer Platform"
-        pageTitle='ADP Tech Radar' id='dev'
+      element={
+        <TechRadarPage
+          width={1500}
+          height={800}
+          title="Azure Development Platform: Tech Radar"
+          subtitle="Supported technologies for DEFRA's Azure Developer Platform"
+          pageTitle="ADP Tech Radar"
+          id="dev"
         />
+      }
     />
     <Route
       path="/catalog-import"
