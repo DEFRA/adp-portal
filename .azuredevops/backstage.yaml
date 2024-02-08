@@ -164,6 +164,15 @@ properties:
             secretRef: authm-client-secret
           - name: AUTH_MICROSOFT_TENANT_ID
             secretRef: authm-tenant-id
+          
+          # Required for the Backstage Flux and Kubernetes Plugins
+          - name: AZURE_CLIENT_ID
+            secretRef: authm-client-id
+          - name: AZURE_CLIENT_SECRET
+            secretRef: authm-client-secret
+          - name: AZURE_TENANT_ID
+            secretRef: authm-tenant-id
+
           - name: BACKSTAGE_BACKEND_SECRET
             secretRef: backend-secret
           - name: POSTGRES_HOST
