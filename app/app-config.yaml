@@ -124,12 +124,21 @@ catalog:
       #   schedule:
       #     frequency: { minutes: 30 }
       #     timeout: { minutes: 5 }
-      defra:
+      defraMaster:
         organization: 'defra'
         catalogPath: '/catalog-info.yaml'
         filters:
           branch: 'master'
-          repository: '(ffc-.+|adp-.+)'
+          repository: '^(ffc-.+|adp-.+|fcp-.+)'
+        schedule:
+          frequency: { minutes: 30 }
+          timeout: { minutes: 5 }
+      defraMain:
+        organization: 'defra'
+        catalogPath: '/catalog-info.yaml'
+        filters:
+          branch: 'main'
+          repository: '^(ffc-.+|adp-.+|fcp-.+)'
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 5 }
