@@ -68,8 +68,7 @@ import {
 } from '@k-phoen/backstage-plugin-grafana';
 import { EntityGithubPullRequestsContent } from '@roadiehq/backstage-plugin-github-pull-requests';
 
-import { EntityTeamPullRequestsCard } from '@backstage/plugin-github-pull-requests-board';
-import { EntityTeamPullRequestsContent } from '@backstage/plugin-github-pull-requests-board';
+import { EntityTeamPullRequestsCard, EntityTeamPullRequestsContent } from '@backstage/plugin-github-pull-requests-board';
 import { EntityKubernetesContent, isKubernetesAvailable  } from '@backstage/plugin-kubernetes';
 import {
   EntityFluxHelmReleasesCard,
@@ -270,6 +269,21 @@ const websiteEntityPage = (
 
     <EntityLayout.Route path="/docs" title="Docs">
       {techdocsContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/releases" title="Deployments" if={isKubernetesAvailable}>
+      <Grid container spacing={3} alignItems="stretch">
+        <Grid item md={12}>
+          <EntityFluxHelmReleasesCard />
+        </Grid>
+        <Grid item md={12}>
+          <EntityFluxKustomizationsCard />
+        </Grid>
+      </Grid>
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/kubernetes" title="Kubernetes" if={isKubernetesAvailable}>
+      <EntityKubernetesContent refreshIntervalMs={30000} />
     </EntityLayout.Route>
   </EntityLayout>
 );

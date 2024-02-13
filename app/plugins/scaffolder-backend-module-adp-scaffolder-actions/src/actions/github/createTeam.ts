@@ -132,9 +132,9 @@ async function checkTeamExists(
       );
       teamCreated = true;
     }
-  } catch (error) {
+  } catch (error: unknown) {
     ctx.logger.error(`Error in getting GitHub team: ${error}`);
-    if ((error as unknown as RequestError).status === 404) {
+    if ((error as RequestError).status === 404) {
       teamCreated = false;
     }
   }
