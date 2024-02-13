@@ -160,7 +160,7 @@ catalog:
           branch: 'master'
           repository: '^(ffc-.+|adp-.+|fcp-.+)'
         schedule:
-          frequency: { minutes: 30 }
+          frequency: { minutes: 60 }
           timeout: { minutes: 5 }
       # defraMain:
       #   organization: 'defra'
