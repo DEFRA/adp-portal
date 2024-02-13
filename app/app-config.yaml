@@ -162,15 +162,15 @@ catalog:
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 5 }
-      defraMain:
-        organization: 'defra'
-        catalogPath: '/catalog-info.yaml'
-        filters:
-          branch: 'main'
-          repository: '^(ffc-.+|adp-.+|fcp-.+)'
-        schedule:
-          frequency: { minutes: 30 }
-          timeout: { minutes: 5 }
+      # defraMain:
+      #   organization: 'defra'
+      #   catalogPath: '/catalog-info.yaml'
+      #   filters:
+      #     branch: 'main'
+      #     repository: '^(ffc-.+|adp-.+|fcp-.+)'
+      #   schedule:
+      #     frequency: { minutes: 30 }
+      #     timeout: { minutes: 5 }
 
     microsoftGraphOrg:
       default:
