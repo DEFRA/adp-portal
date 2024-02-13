@@ -43,8 +43,6 @@ export class AdpDbModelEntityProvider implements EntityProvider {
       throw new Error('Either schedule or scheduler must be provided.');
     }
 
-    //TODO fix: create correct arg for options.scheduler
-
     const providerConfig = {
       frequency: { minutes: 10 },
       timeout: { minutes: 15 },
