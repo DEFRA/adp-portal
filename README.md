@@ -1,5 +1,5 @@
-# adp-portal
-The Azure Development Platform Portal built using [Backstage](https://backstage.io/).
+# Azure Developer Portal
+Welcome to the Azure Devoper Portal (ADP) repository. The portal is built using [Backstage](https://backstage.io/).
 
 ## Getting started
 
@@ -16,41 +16,67 @@ The Azure Development Platform Portal built using [Backstage](https://backstage.
 See the [Backstage Getting Started documentation](https://backstage.io/docs/getting-started/#prerequisites) for the full list of prerequisites.
 
 ### Integrations
-Backstage integrates with GitHub to import and create repository data, and Azure AD for authentication. To get these integrations working locally, you will need to create a GitHub app and an App Registration in Azure AD. Update and run the following script to set the credentials required to run the application:
+The portal is integrated with various 3rd party services. Connections to these services are managed through the environment variables below:
+
+* GitHub (via a GitHub app)
+* Entra ID/Azure/ADO/Microsoft Graph (via an App Registration). ADO also uses a PAT token in some (very limited) scenarios.
+* Azure Managed Grafana
+* Azure Blob Storage (for TechDocs)
+* AKS
+
+### Environment Variables
+The application requires the following environment variables to be set. We recommend creating an *env.sh* file in the root of your repo (this is ignored by Git) and pasting the variables in to this file. Before running the application, run `. ./env.sh` from the root of your repo.
 
 ```sh
-export GITHUB_APP_ID=<REPLACE>
-export GITHUB_CLIENT_ID=<REPLACE>
-export GITHUB_CLIENT_SECRET=<REPLACE>
+export GITHUB_APP_ID=""
+export GITHUB_CLIENT_ID=""
+export GITHUB_CLIENT_SECRET=""
+export GITHUB_PRIVATE_KEY=""
 
-export AUTH_MICROSOFT_CLIENT_ID=<REPLACE>
-export AUTH_MICROSOFT_CLIENT_SECRET=<REPLACE>
-export AUTH_MICROSOFT_TENANT_ID=<REPLACE>
+export AUTH_MICROSOFT_CLIENT_ID=""
+export AUTH_MICROSOFT_CLIENT_SECRET=""
+export AUTH_MICROSOFT_TENANT_ID=""
+
+export BACKSTAGE_BACKEND_SECRET=""
+
+export ADO_PAT=""
+export ADO_ORGANIZATION=""
+
+export GRAFANA_TOKEN=""
+export GRAFANA_ENDPOINT=""
+
+export TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_NAME=""
+export TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_KEY=""
+
+export ADP_PORTAL_PLATFORM_ADMINS_GROUP=""
+export ADP_PORTAL_PROGRAMME_ADMINS_GROUP=""
+export ADP_PORTAL_USERS_GROUP=""
+
+export SND1_CLUSTER_NAME=""
+export SND1_CLUSTER_API_SERVER_ADDRESS=""
+export SND2_CLUSTER_NAME=""
+export SND2_CLUSTER_API_SERVER_ADDRESS=""
+export SND3_CLUSTER_NAME=""
+export SND3_CLUSTER_API_SERVER_ADDRESS=""
 ```
 
-The GitHub integration also requires a private key. Generate and copy this from your GitHub app to the path specified in [github-app-configuration.yaml](app/github-app-configuration.yaml).
-To use github private key as a string value, use the following script : 
-``` 
-#Powershell
+To convert a GitHub private key into a format that can be used in the `GITHUB_PRIVATE_KEY` environment variable use one of the following scripts:
+
+**Powershell**
+```powershell
 $rsaprivkey = (Get-Content "private-key.pem" | Out-String) -replace "`r`n", "\n"
-
-or
-
-#Shell 
-awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' private-key.pem > rsaprivkey.txt
-
 ```
 
-The ADO dashboard plugin requires a Personal Access Token (PAT) with build permissions. Currently this cannot be configured to use a Managed Identity.
+**Shell**
+```sh
+awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' private-key.pem > rsaprivkey.txt
+```
 
 ### Techdocs
-
 A hybrid strategy is implemented for techdocs which means documentation can be generated on the fly by out of the box generator or using an external pipeline. 
 All generated documenations are stored in Azure blob storage.
 
 For more info please refer : [Ref](./app/packages/backend/src/plugins/techdocs/Techdocs.md)
-
-
 
 ### Running locally
 Run the following commands from the `/app` directory:
@@ -60,6 +86,8 @@ yarn install
 yarn dev
 ```
 
+### Configuration
+If you want to override any settings in `./app/app-config.yaml`, create a local configuration file named `app-config.local.yaml` and define your overrides here.
 
 ## Feature Requests
 

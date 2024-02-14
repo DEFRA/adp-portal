@@ -145,23 +145,24 @@ catalog:
   # Assumes a catalog-info.yml file is present in the root of the repo.
   providers:
     github:
-      # adpSandpit:
-      #   organization: 'defra-adp-sandpit'
-      #   catalogPath: '/catalog-info.yaml'
-      #   filters:
-      #     branch: 'main'
-      #   schedule:
-      #     frequency: { minutes: 30 }
-      #     timeout: { minutes: 5 }
-      defraMaster:
-        organization: 'defra'
+      adpSandpit:
+        organization: 'defra-adp-sandpit'
         catalogPath: '/catalog-info.yaml'
         filters:
-          branch: 'master'
-          repository: '^(ffc-.+|adp-.+|fcp-.+)'
+          repository: '^(adp-portal-.+|techdocs-.+)'
         schedule:
-          frequency: { minutes: 60 }
+          frequency: { minutes: 30 }
           timeout: { minutes: 5 }
+      # IMPORTANT: To use defraMaster or defraMain, copy the config in to your app-config.local.yaml file.
+      # defraMaster:
+      #   organization: 'defra'
+      #   catalogPath: '/catalog-info.yaml'
+      #   filters:
+      #     branch: 'master'
+      #     repository: '^(ffc-.+|adp-.+|fcp-.+)'
+      #   schedule:
+      #     frequency: { minutes: 60 }
+      #     timeout: { minutes: 5 }
       # defraMain:
       #   organization: 'defra'
       #   catalogPath: '/catalog-info.yaml'
