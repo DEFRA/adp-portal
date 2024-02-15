@@ -16,6 +16,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
     apt-get install -y --no-install-recommends python3 g++ build-essential && \
+    apt-get clean && \
     yarn config set python /usr/bin/python3
 
 # Install sqlite3 dependencies. You can skip this if you don't use sqlite3 in the image,
@@ -23,12 +24,14 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
-    apt-get install -y --no-install-recommends libsqlite3-dev
+    apt-get install -y --no-install-recommends libsqlite3-dev && \
+    apt-get clean
 
-RUN apt-get update && apt-get install -y python3 python3-pip python3-venv
+RUN apt-get update && apt-get install -y python3 python3-pip python3-venv && \
+    apt-get clean
 
 ENV VIRTUAL_ENV=/opt/venv
-RUN python3 -m venv $VIRTUAL_ENV
+RUN python3 -m venv "$VIRTUAL_ENV"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN pip3 install mkdocs-techdocs-core
@@ -47,7 +50,7 @@ ENV NODE_ENV production
 # Copy repo skeleton first, to avoid unnecessary docker cache invalidation.
 # The skeleton contains the package.json of each package in the monorepo,
 # and along with yarn.lock and the root package.json, that's enough to run yarn install.
-COPY --chown=node:node yarn.lock package.json packages/backend/dist/skeleton.tar.gz ./
+COPY --chown=node:node --chmod=644 yarn.lock package.json packages/backend/dist/skeleton.tar.gz ./
 RUN tar xzf skeleton.tar.gz && rm skeleton.tar.gz
 
 RUN yarn config set "strict-ssl" false
@@ -56,7 +59,7 @@ RUN --mount=type=cache,target=/home/node/.cache/yarn,sharing=locked,uid=1000,gid
     yarn install --frozen-lockfile --production --network-timeout 300000
 
 # Then copy the rest of the backend bundle, along with any other files we might want.
-COPY --chown=node:node packages/backend/dist/bundle.tar.gz app-config*.yaml *configuration.yaml ./
+COPY --chown=node:node --chmod=644 packages/backend/dist/bundle.tar.gz app-config*.yaml *configuration.yaml ./
 RUN tar xzf bundle.tar.gz && rm bundle.tar.gz
 
 CMD ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
