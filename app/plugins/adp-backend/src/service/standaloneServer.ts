@@ -42,6 +42,7 @@ export async function startStandaloneServer(
       issuer: await discovery.getExternalBaseUrl('auth'),
     }),
     database,
+    config: config
   });
 
   let service = createServiceBuilder(module)
