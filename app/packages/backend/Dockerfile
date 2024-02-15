@@ -27,7 +27,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get install -y --no-install-recommends libsqlite3-dev && \
     apt-get clean
 
-RUN apt-get update && apt-get install -y python3 python3-pip python3-venv && \
+RUN apt-get update && apt-get install -y --no-install-recommends python3 python3-pip python3-venv && \
     apt-get clean
 
 ENV VIRTUAL_ENV=/opt/venv
@@ -56,7 +56,7 @@ RUN tar xzf skeleton.tar.gz && rm skeleton.tar.gz
 RUN yarn config set "strict-ssl" false
 
 RUN --mount=type=cache,target=/home/node/.cache/yarn,sharing=locked,uid=1000,gid=1000 \
-    yarn install --frozen-lockfile --production --network-timeout 300000
+    yarn install --frozen-lockfile --production --network-timeout 300000 --ignore-scripts
 
 # Then copy the rest of the backend bundle, along with any other files we might want.
 COPY --chown=node:node --chmod=644 packages/backend/dist/bundle.tar.gz app-config*.yaml *configuration.yaml ./
