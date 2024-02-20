@@ -39,10 +39,15 @@ import {
   catalogLocationCreatePermission,
 } from '@backstage/plugin-catalog-common/alpha';
 
-import { microsoftAuthApiRef } from '@backstage/core-plugin-api';
+import { IconComponent, microsoftAuthApiRef } from '@backstage/core-plugin-api';
 
 import LightIcon from '@material-ui/icons/WbSunnyRounded';
 import NightIcon from '@material-ui/icons/Brightness2Rounded';
+import LinearScaleIcon from '@material-ui/icons/LinearScale';
+import PolicyIcon from '@material-ui/icons/Policy';
+import WebIcon from '@material-ui/icons/Web';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import CloudIcon from '@material-ui/icons/Cloud';
 
 import {
   UnifiedThemeProvider,
@@ -201,6 +206,13 @@ const app = createApp({
     bind(orgPlugin.externalRoutes, {
       catalogIndex: catalogPlugin.routes.catalogIndex,
     });
+  },
+  icons: {
+    pipeline: LinearScaleIcon as IconComponent,
+    policy: PolicyIcon as IconComponent,
+    project: WebIcon as IconComponent,
+    check: CheckCircleOutlineIcon as IconComponent,
+    cloud: CloudIcon as IconComponent,
   },
 });
 
