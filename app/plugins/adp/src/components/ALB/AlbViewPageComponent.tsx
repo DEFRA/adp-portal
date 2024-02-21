@@ -17,7 +17,10 @@ import {
   alertApiRef,
   errorApiRef,
 } from '@backstage/core-plugin-api';
-import { ArmsLengthBody , adpProgrammmeCreatePermission  } from '@internal/plugin-adp-common';
+import {
+  ArmsLengthBody,
+  adpProgrammmeCreatePermission,
+} from '@internal/plugin-adp-common';
 import { ArmsLengthBodyClient } from './api/AlbClient';
 import { ArmsLengthBodyApi } from './api/AlbApi';
 import CreateAlb from './CreateAlb';
@@ -40,7 +43,7 @@ export const AlbViewPageComponent = () => {
     fetchApi,
   );
 
-  const { isUserAllowed } = usePermission({
+  const { allowed } = usePermission({
     permission: adpProgrammmeCreatePermission,
   });
 
@@ -139,14 +142,15 @@ export const AlbViewPageComponent = () => {
     {
       title: '',
       highlight: true,
-      render: rowData => {
+      render: (rowData: {}) => {
+        const alb = rowData as ArmsLengthBody;
         return (
-          isUserAllowed && (
+          allowed && (
             <Button
               variant="contained"
               color="default"
               onClick={() => handleEdit(rowData)}
-              data-testid={`alb-edit-button-${rowData.id}`}
+              data-testid={`alb-edit-button-${alb.id}`}
             >
               Edit
             </Button>
@@ -175,7 +179,7 @@ export const AlbViewPageComponent = () => {
         </Typography>
         <DefaultTable data={tableData} columns={columns} title="View all" />
 
-        {isModalOpen && isUserAllowed && (
+        {isModalOpen && allowed && (
           <ActionsModal
             open={isModalOpen}
             onClose={handleCloseModal}

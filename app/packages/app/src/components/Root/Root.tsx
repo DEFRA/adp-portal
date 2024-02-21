@@ -28,8 +28,6 @@ import {
   Link,
 } from '@backstage/core-components';
 
-import { FluxIcon } from '@weaveworksoss/backstage-plugin-flux';
-
 const useSidebarLogoStyles = makeStyles({
   root: {
     width: sidebarConfig.drawerWidthClosed,
@@ -73,13 +71,13 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarItem icon={LibraryBooks} to="docs" text="Docs" />
 
         <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
-        
+
         {/* End global nav */}
         <SidebarDivider />
         <SidebarScrollWrapper>
           {/* <SidebarItem icon={FluxIcon} to="flux-runtime" text="Flux Runtime" /> */}
           <SidebarItem icon={MapIcon} to="tech-radar" text="Tech Radar" />
-          <SidebarItem icon={BusinessIcon} to="adp" text='ADP Data' />
+          <SidebarItem icon={BusinessIcon} to="adp" text="ADP Data" />
         </SidebarScrollWrapper>
       </SidebarGroup>
       <SidebarSpace />

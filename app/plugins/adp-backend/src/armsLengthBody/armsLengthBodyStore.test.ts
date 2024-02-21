@@ -21,7 +21,7 @@ describe('armsLengthBodyStore', () => {
   it.each(databases.eachSupportedId())(
     'should create a new ALB',
     async databaseId => {
-      const { knex, store } = await createDatabase(databaseId);
+      const { store } = await createDatabase(databaseId);
       const expectedALB: Omit<ArmsLengthBody, 'id' | 'timestamp'> = {
         creator: 'john',
         owner: 'john',

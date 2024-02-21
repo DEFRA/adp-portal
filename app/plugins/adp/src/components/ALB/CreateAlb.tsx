@@ -12,8 +12,10 @@ import { ArmsLengthBodyClient } from './api/AlbClient';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { albFormFields } from './AlbFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
-import { adpProgrammmeCreatePermission, ArmsLengthBody } from '@internal/plugin-adp-common';
-
+import {
+  adpProgrammmeCreatePermission,
+  ArmsLengthBody,
+} from '@internal/plugin-adp-common';
 
 interface CreateAlbProps {
   refetchArmsLengthBody: () => void;
@@ -29,9 +31,8 @@ const CreateAlb: React.FC<CreateAlbProps> = ({ refetchArmsLengthBody }) => {
 
   const albClient = new ArmsLengthBodyClient(discoveryApi, fetchApi);
 
-
-  const { isUserAllowed } = usePermission({
-    permission: adpProgrammmeCreatePermission,  
+  const { allowed } = usePermission({
+    permission: adpProgrammmeCreatePermission,
   });
 
   const handleOpenModal = () => {
@@ -63,20 +64,19 @@ const CreateAlb: React.FC<CreateAlbProps> = ({ refetchArmsLengthBody }) => {
   };
 
   return (
-
     <>
-    {isUserAllowed && (
-      <Button
-        variant="contained"
-        size="large"
-        color="primary"
-        startIcon={<AddBoxIcon />}
-        onClick={handleOpenModal}
-        data-testid="create-alb-button"
-      >
-        Add ALB
-      </Button>
-    )}
+      {allowed && (
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          startIcon={<AddBoxIcon />}
+          onClick={handleOpenModal}
+          data-testid="create-alb-button"
+        >
+          Add ALB
+        </Button>
+      )}
       {isModalOpen && (
         <ActionsModal
           open={isModalOpen}

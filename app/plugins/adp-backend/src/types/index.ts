@@ -1,1 +1,1 @@
-export type { ArmsLengthBody } from '@internal/adp-common';
+export type { ArmsLengthBody } from '@internal/plugin-adp-common';
