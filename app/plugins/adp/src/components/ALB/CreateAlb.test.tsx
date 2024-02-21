@@ -26,7 +26,7 @@ const permissionApi: Partial<PermissionApi> = { authorize: mockAuthorize };
 
 jest.mock('@backstage/plugin-permission-react', () => ({
   ...jest.requireActual('@backstage/plugin-permission-react'),
-  usePermission: jest.fn().mockReturnValue({ isUserAllowed: true }),
+  usePermission: jest.fn().mockReturnValue({ allowed: true }),
 }));
 
 const mockGetArmsLengthBodies = jest.fn();

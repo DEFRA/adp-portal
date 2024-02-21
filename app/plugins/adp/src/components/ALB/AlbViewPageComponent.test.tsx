@@ -12,13 +12,13 @@ import {
 import {
   PermissionApi,
   permissionApiRef,
- usePermission } from '@backstage/plugin-permission-react';
+  usePermission,
+} from '@backstage/plugin-permission-react';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 const mockErrorApi = { post: jest.fn() };
 const mockDiscoveryApi = { getBaseUrl: jest.fn() };
 const mockFetchApi = { fetch: jest.fn() };
 const mockAlertApi = { post: jest.fn() };
-
 
 const mockAuthorize = jest
   .fn()
@@ -26,8 +26,8 @@ const mockAuthorize = jest
 const permissionApi: Partial<PermissionApi> = { authorize: mockAuthorize };
 
 jest.mock('@backstage/plugin-permission-react', () => ({
-  ...jest.requireActual('@backstage/plugin-permission-react'), 
-  usePermission: jest.fn().mockReturnValue({ isUserAllowed: true }), 
+  ...jest.requireActual('@backstage/plugin-permission-react'),
+  usePermission: jest.fn().mockReturnValue({ allowed: true }),
 }));
 
 const mockTableData = [
@@ -63,22 +63,21 @@ describe('AlbViewPageComponent', () => {
     mockGetArmsLengthBodies.mockClear();
     mockUpdateArmsLengthBody.mockClear();
     mockAuthorize.mockClear();
-    (usePermission as jest.Mock).mockReturnValue({ isUserAllowed: true });
+    (usePermission as jest.Mock).mockReturnValue({ allowed: true });
   });
 
   const element = (
-      <TestApiProvider
-        apis={[
-          [alertApiRef, mockAlertApi],
-          [errorApiRef, mockErrorApi],
-          [discoveryApiRef, mockDiscoveryApi],
-          [fetchApiRef, mockFetchApi],
-          [permissionApiRef, permissionApi],
-        ]}
-      >
-        <AlbViewPageComponent />
-      </TestApiProvider>
-   
+    <TestApiProvider
+      apis={[
+        [alertApiRef, mockAlertApi],
+        [errorApiRef, mockErrorApi],
+        [discoveryApiRef, mockDiscoveryApi],
+        [fetchApiRef, mockFetchApi],
+        [permissionApiRef, permissionApi],
+      ]}
+    >
+      <AlbViewPageComponent />
+    </TestApiProvider>
   );
   const render = async () => renderInTestApp(element);
 
