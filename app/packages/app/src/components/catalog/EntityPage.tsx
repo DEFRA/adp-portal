@@ -253,6 +253,10 @@ const websiteEntityPage = (
       {cicdContent}
     </EntityLayout.Route>
 
+    <EntityLayout.Route path="/pull-requests" title="Pull Requests">
+      {pullRequest}
+    </EntityLayout.Route>
+
     <EntityLayout.Route path="/grafana" title="Grafana">
       {grafanaContent}
     </EntityLayout.Route>
