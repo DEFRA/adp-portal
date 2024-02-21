@@ -116,7 +116,7 @@ catalog:
         organization: 'defra'
         catalogPath: '/catalog-info.yaml'
         filters:
-          repository: '^(ffc-.+|adp-.+|fcp-.+|mcu-.+|est-.+)'
+          repository: '^(ffc-.+|adp-.+|fcp-.+|mcu-.+|est-.+|rpa-.+)'
         schedule:
           frequency: { minutes: 60 }
           timeout: { minutes: 5 }
