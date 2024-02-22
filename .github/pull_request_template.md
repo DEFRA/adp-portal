@@ -20,6 +20,11 @@ If this PR closes an issue, add '<AB#213700>' somewhere in the PR summary. As a 
 - [ ] This PR contains tests
 - [ ] Version number in [package.json](https://github.com/DEFRA/adp-portal/blob/main/app/package.json#L3) has been updated
 
+# Mandatory check
+Have you updated any related templates, repositories or dependencies for new changes?
+
+- [ ] ADP Software Templates? - https://github.com/DEFRA/adp-software-templates
+- [ ] ADP Portal Web API? https://github.com/DEFRA/adp-portal-api
 
 # **How does this PR make you feel**:
 ![gif]([https://giphy.com/)
