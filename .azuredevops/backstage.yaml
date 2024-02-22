@@ -134,7 +134,7 @@ properties:
         keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-API-SERVER-ADDRESS
         identity: {{userAssignedIdentity}}
       - name: adp-portal-api-endpoint
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP_PORTAL_API_ENDPOINT
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP-PORTAL-API-ENDPOINT
         identity: {{userAssignedIdentity}}
   template:
     containers:

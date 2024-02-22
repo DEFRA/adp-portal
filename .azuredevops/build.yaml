@@ -54,7 +54,7 @@ extends:
       variables:      
         - ADO-ORGANIZATION
         - ADO-PAT
-        - ADP_PORTAL_API_ENDPOINT
+        - ADP-PORTAL-API-ENDPOINT
         - ADP-PORTAL-PLATFORM-ADMINS-GROUP
         - ADP-PORTAL-PROGRAMME-ADMINS-GROUP
         - ADP-PORTAL-USERS-GROUP
