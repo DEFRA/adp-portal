@@ -21,7 +21,7 @@ If this PR closes an issue, add '<AB#213700>' somewhere in the PR summary. As a 
 - [ ] Version number in [package.json](https://github.com/DEFRA/adp-portal/blob/main/app/package.json#L3) has been updated
 
 # Dependency check (tick or delete)
-Have you updated any related templates, repositories or dependencies for new changes? We must ensure any things like Software Templates are updated to include the latest changes to be scaffolded for all services where applicable.
+Have you updated any related templates, repositories or dependencies for new changes? We must ensure any dependencies like Software Templates are updated to include the latest changes to be scaffolded for all services where applicable.
 
 - [ ] ADP Software Templates? - https://github.com/DEFRA/adp-software-templates
 - [ ] ADP Portal Web API? https://github.com/DEFRA/adp-portal-api
