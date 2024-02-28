@@ -13,8 +13,8 @@ import {
   runPipelineAction,
   createGithubTeamAction,
   addGithubTeamToRepoAction,
-
 } from '@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions';
+import { createHttpBackstageAction } from '@roadiehq/scaffolder-backend-module-http-request';
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -58,7 +58,7 @@ export default async function createPlugin(
       integrations: integrations,
       config: env.config,
     }),
-
+    createHttpBackstageAction({ discovery: env.discovery }),
   ];
 
   return await createRouter({

@@ -132,7 +132,10 @@ properties:
         identity: {{userAssignedIdentity}}
       - name: prd1-cluster-api-server-address
         keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-API-SERVER-ADDRESS
-        identity: {{userAssignedIdentity}}        
+        identity: {{userAssignedIdentity}}
+      - name: adp-portal-api-endpoint
+        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP-PORTAL-API-ENDPOINT
+        identity: {{userAssignedIdentity}}
   template:
     containers:
       - image: {{acrName}}.azurecr.io/image/{{imageRepoName}}:{{appVersion}}
@@ -150,6 +153,8 @@ properties:
             secretRef: adp-portal-platform-admins-group
           - name: ADP_PORTAL_PROGRAMME_ADMINS_GROUP
             secretRef: adp-portal-programme-admins-group
+          - name: ADP_PORTAL_API_ENDPOINT
+            secretRef: adp-portal-api-endpoint
           - name: ADP_PORTAL_USERS_GROUP
             secretRef: adp-portal-users-group
           - name: BACKEND_PLUGINS_SECRET

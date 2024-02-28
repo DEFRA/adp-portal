@@ -122,10 +122,13 @@ catalog:
           timeout: { minutes: 5 }
           
 proxy:
-  '/grafana/api':
-    target: ${GRAFANA_ENDPOINT}
-    headers:
-      Authorization: Bearer ${GRAFANA_TOKEN}
+  endpoints:
+    '/grafana/api':
+      target: ${GRAFANA_ENDPOINT}
+      headers:
+        Authorization: Bearer ${GRAFANA_TOKEN}
+
+    '/adp-portal-api': '${ADP_PORTAL_API_ENDPOINT}'
 
 grafana:
   domain: ${GRAFANA_ENDPOINT}

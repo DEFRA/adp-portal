@@ -29,7 +29,7 @@
     "@backstage/config": "^1.1.1",
     "@backstage/errors": "^1.2.3",
     "@backstage/integration": "^1.8.0",
-    "@backstage/plugin-scaffolder-node": "^0.2.9",
+    "@backstage/plugin-scaffolder-node": "^0.3.0",
     "azure-devops-node-api": "^12.1.0",
     "typed-rest-client": "^1.8.11",
     "octokit": "^3.1.2"
