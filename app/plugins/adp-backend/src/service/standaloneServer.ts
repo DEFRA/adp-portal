@@ -6,9 +6,11 @@ import {
 } from '@backstage/backend-common';
 import { Server } from 'http';
 import { Logger } from 'winston';
-import { createRouter } from './router';
 import { ConfigReader } from '@backstage/config';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
+import { createAlbRouter } from './armsLengthBodyRouter';
+import { createProgrammeRouter } from './deliveryProgrammeRouter';
+import { Router } from 'express';
 
 export interface ServerOptions {
   port: number;
@@ -35,7 +37,7 @@ export async function startStandaloneServer(
     }),
   ).forPlugin('adp-plugin');
 
-  const router = await createRouter({
+  const armsLengthBodyRouter = await createAlbRouter({
     logger,
     identity: DefaultIdentityClient.create({
       discovery,
@@ -45,9 +47,22 @@ export async function startStandaloneServer(
     config,
   });
 
+  const deliveryProgrammeRouter = await createProgrammeRouter({
+    logger,
+    identity: DefaultIdentityClient.create({
+      discovery,
+      issuer: await discovery.getExternalBaseUrl('auth'),
+    }),
+    database,
+  });
+  
+  const router = Router();
+  router.use(armsLengthBodyRouter);
+  router.use(deliveryProgrammeRouter);
+
   let service = createServiceBuilder(module)
     .setPort(options.port)
-    .addRouter('/adp', router);
+    .addRouter('/api/adp', router);
   if (options.enableCors) {
     service = service.enableCors({ origin: 'http://localhost:3000' });
   }
@@ -59,3 +74,4 @@ export async function startStandaloneServer(
 }
 
 module.hot?.accept();
+

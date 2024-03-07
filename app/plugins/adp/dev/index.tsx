@@ -1,6 +1,6 @@
 import React from 'react';
 import { createDevApp } from '@backstage/dev-utils';
-import { adpPlugin, AdpPage } from '../src/plugin';
+import { adpPlugin, AdpPage, AlbViewPage } from '../src/plugin';
 
 createDevApp()
   .registerPlugin(adpPlugin)
@@ -8,5 +8,9 @@ createDevApp()
     element: <AdpPage />,
     title: 'Root Page',
     path: '/adp'
+  }).addPage({
+    element: <AlbViewPage />,
+    title: 'ALB View Page',
+    path: '/alb'
   })
   .render();
