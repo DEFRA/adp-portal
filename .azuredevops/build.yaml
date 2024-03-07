@@ -39,7 +39,7 @@ extends:
   parameters:
     deployFromFeature: ${{ parameters.deployFromFeature }}
     privateAgentName: ''
-    containerAppName: 'ssvadpinfca3402-portal-web'
+    containerAppName: 'ssvadpinfca3403-portal-web'
     appName: 'adp-portal'
     appBuildConfig:
       appFrameworkType: "nodejs"  
