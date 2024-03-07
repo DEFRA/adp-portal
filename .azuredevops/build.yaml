@@ -31,14 +31,16 @@ resources:
       name: DEFRA/adp-pipeline-common
       endpoint: DEFRA
       type: github
-      ref: refs/heads/main
+      #ref: refs/heads/main
+      ref: sm/304334-ContainerAppsImprovement
 
 extends:
   template: /pipelines/common-aca-app-build.yaml@DEFRA-ADPPipelineCommon
   parameters:
     deployFromFeature: ${{ parameters.deployFromFeature }}
     privateAgentName: ''
-    containerAppName: 'ssvadpinfca3401-portal-web'
+    containerAppName: 'ssvadpinfca3402-portal-web'
+    appName: 'adp-portal'
     appBuildConfig:
       appFrameworkType: "nodejs"  
       projectPath: "./package.json"
@@ -49,7 +51,7 @@ extends:
     appDeployConfig:
       filepath: ".azuredevops/backstage.yaml"  
       variableGroups:
-        - adp-portal-ssv3
+        - adp-portal-2-ssv3
         - adp-portal-ssv5
       variables:      
         - ADO-ORGANIZATION
