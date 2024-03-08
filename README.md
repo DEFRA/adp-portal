@@ -74,7 +74,7 @@ awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' private-key.pem > rsaprivkey.txt
 
 ### Techdocs
 A hybrid strategy is implemented for techdocs which means documentation can be generated on the fly by out of the box generator or using an external pipeline. 
-All generated documenations are stored in Azure blob storage.
+All generated documentation are stored in Azure blob storage.
 
 For more info please refer : [Ref](./app/packages/backend/src/plugins/techdocs/Techdocs.md)
 
@@ -88,6 +88,17 @@ yarn dev
 
 ### Configuration
 If you want to override any settings in `./app/app-config.yaml`, create a local configuration file named `app-config.local.yaml` and define your overrides here.
+
+### Mac 
+You need to have the [azure cli](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-macos) installed and the [azure development](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd?tabs=winget-windows%2Cbrew-mac%2Cscript-linux&pivots=os-mac) client installed
+
+Login into both az, and azd before running the server.
+
+```shell
+az login --tenant XXXXX.azure.com
+az auth login --tenant-id <your tenant id>
+```
+You must run the application in the same browser session, that the authentication ran in. If you use a "private window", new session, it will not have access to the required cookies to complete authentication, and you will get a 'user not found' error message
 
 ## Feature Requests
 
