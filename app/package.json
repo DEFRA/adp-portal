@@ -25,7 +25,8 @@
     "lint": "backstage-cli repo lint --since origin/main",
     "lint:all": "backstage-cli repo lint",
     "prettier:check": "prettier --check .",
-    "new": "backstage-cli new --scope internal"
+    "new": "backstage-cli new --scope internal",
+    "adp-plugin": "concurrently \"LEGACY_BACKEND_START=true  yarn workspace @internal/plugin-adp-backend start \" \"yarn workspace @internal/plugin-adp start\" "
   },
   "workspaces": {
     "packages": [
