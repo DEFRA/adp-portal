@@ -56,17 +56,43 @@ export async function startStandaloneServer(
     database,
     discovery
   });
-
+  /**
+   * {"items":[{"id":"1ee66309-f209-49ae-b30d-1f99c0395bb8","result":"ALLOW"}]}
+   * id is the same as in the payload
+   *
+   * {
+   *   "items": [
+   *     {
+   *       "id": "1ee66309-f209-49ae-b30d-1f99c0395bb8",
+   *       "permission": {
+   *         "type": "basic",
+   *         "name": "adp.programme.create",
+   *         "attributes": {
+   *           "action": "create"
+   *         }
+   *       }
+   *     }
+   *   ]
+   * }
+   */
   const router = Router();
   router.use(armsLengthBodyRouter);
   router.use(deliveryProgrammeRouter);
 
+  let r = Router()
+  r.post('/permission/authorize"', (req, response) => {
+    logger.info('PONG!');
+    let input_id = req.body.items[0].id
+    response.json({"items":[{"id": input_id,"result":"ALLOW"}]});
+  });
+
   let service = createServiceBuilder(module)
     .setPort(options.port)
-    .addRouter('/api/adp', router);
-  if (options.enableCors) {
+    .addRouter('/api/adp', router)
+    .addRouter("/api",r);
+ // if (options.enableCors) {
     service = service.enableCors({ origin: 'http://localhost:3000' });
-  }
+//  }
 
   return await service.start().catch(err => {
     logger.error(err);
