@@ -1,17 +1,18 @@
-import { defaultGroupTransformer } from './AlbTransformers';
+import { defaultAlbGroupTransformer } from './AlbTransformers';
 
-describe('defaultGroupTransformer', () => {
+describe('defaultAlbGroupTransformer', () => {
   it('should transform valid ArmsLengthBody to GroupEntity', async () => {
     const armsLengthBody = {
       creator: 'ADP',
       owner: 'ADP',
       title: 'Environment Agency',
       name: 'environment-agency',
-      short_name: 'EA',
+      alias: 'EA',
       description: 'testDescription',
       url: 'https://www.example.uk/',
       id: '1234',
-      timestamp: new Date(),
+      created_at: new Date(),
+      updated_at: new Date(),
     };
 
     const expectedGroupEntity = {
@@ -38,7 +39,7 @@ describe('defaultGroupTransformer', () => {
       },
     };
 
-    const result = await defaultGroupTransformer(armsLengthBody);
+    const result = await defaultAlbGroupTransformer(armsLengthBody);
     expect(result).toEqual(expectedGroupEntity);
   });
 });

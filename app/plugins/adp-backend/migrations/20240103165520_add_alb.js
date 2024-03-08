@@ -62,4 +62,3 @@ exports.up = async function up(knex) {
 exports.down = async function down(knex) {
   return knex.schema.dropTable('arms_length_body');
 };
-

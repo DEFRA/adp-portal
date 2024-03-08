@@ -37,10 +37,13 @@ backend:
     - secret: ${BACKEND_PLUGINS_SECRET}
 
 proxy:
-  '/grafana/api':
-    target: ${GRAFANA_ENDPOINT}
-    headers:
-      Authorization: Bearer ${GRAFANA_TOKEN}
+  endpoints:
+    '/grafana/api':
+      target: ${GRAFANA_ENDPOINT}
+      headers:
+        Authorization: Bearer ${GRAFANA_TOKEN}
+
+    '/adp-portal-api': '${ADP_PORTAL_API_ENDPOINT}'
 
 grafana:
   domain: ${GRAFANA_ENDPOINT}
@@ -182,6 +185,3 @@ catalog:
       
 techRadar: 
   data: https://raw.githubusercontent.com/defra/adp-software-templates/main/tech-radars/development-tech-radar.json
-
-adGroup:
-  adminsGroup: ${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}

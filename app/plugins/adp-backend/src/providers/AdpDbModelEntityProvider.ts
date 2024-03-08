@@ -6,10 +6,12 @@ import { PluginTaskScheduler, TaskRunner } from '@backstage/backend-tasks';
 import { Entity, GroupEntity } from '@backstage/catalog-model';
 import { Logger } from 'winston';
 import * as uuid from 'uuid';
-import { defaultGroupTransformer } from './AlbTransformers';
+import { defaultAlbGroupTransformer } from './AlbTransformers';
 import { ArmsLengthBodyStore } from '../armsLengthBody/armsLengthBodyStore';
+import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
 import { AdpDatabase } from '../database/adpDatabase';
 import { PluginDatabaseManager } from '@backstage/backend-common';
+import { defaultProgrammeGroupTransformer } from './deliveryProgrammeTransformers';
 
 /**
  * An entity provider that adds the ADP Data Model entities to the catalog.
@@ -121,8 +123,9 @@ export class AdpDbModelEntityProvider implements EntityProvider {
 
     const { markReadComplete } = this.trackProgress(logger);
 
-    const entities = await this.readArmsLengthBodies(logger, database);
-
+    const albEntities = await this.readArmsLengthBodies(logger, database);
+    const programmeEntities = await this.readDeliveryProgrammes(logger,database)
+    const entities = {...albEntities, ...programmeEntities}
     const { markCommitComplete } = markReadComplete(entities);
 
     await this.connection.applyMutation({
@@ -152,7 +155,31 @@ export class AdpDbModelEntityProvider implements EntityProvider {
     logger.info(`Discovered ${armsLengthBodies.length} Arms Length Body`);
 
     for (const armsLengthBody of armsLengthBodies) {
-      const entity = await defaultGroupTransformer(armsLengthBody);
+      const entity = await defaultAlbGroupTransformer(armsLengthBody);
+      if (entity) {
+        entities.push(entity);
+      }
+    }
+
+    return entities;
+  }
+
+  
+  private async readDeliveryProgrammes(logger: Logger, database: PluginDatabaseManager): Promise<GroupEntity[]> {
+    logger.info('Discovering All Arms Length Body');
+    const adpDatabase = AdpDatabase.create(database);
+    const deliveryProgrammesStore = new DeliveryProgrammeStore(
+      await adpDatabase.get(),
+    );
+
+    const deliveryProgrammes = await deliveryProgrammesStore.getAll();
+
+    const entities: GroupEntity[] = [];
+
+    logger.info(`Discovered ${deliveryProgrammes.length} Arms Length Body`);
+
+    for (const deliveryProgramme of deliveryProgrammes) {
+      const entity = await defaultProgrammeGroupTransformer(deliveryProgramme);
       if (entity) {
         entities.push(entity);
       }

@@ -11,6 +11,11 @@ import {
 import {
   AuthorizeResult
 } from '@backstage/plugin-permission-common';
+import {
+  actionExecutePermission,
+  templateParameterReadPermission,
+  templateStepReadPermission,
+} from '@backstage/plugin-scaffolder-common/alpha';
 import { AdpPortalPermissionPolicy } from './adpPortalPermissionPolicy';
 import { RbacUtilities } from '../rbacUtilites'
 
@@ -97,6 +102,9 @@ describe('adpPortalPermissionPolicy: Programme Admin User', () => {
     { permission: catalogLocationCreatePermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogLocationDeletePermission, expected: AuthorizeResult.DENY },
     { permission: adpProgrammmeCreatePermission, expected: AuthorizeResult.ALLOW },
+    { permission: actionExecutePermission, expected: AuthorizeResult.ALLOW },
+    { permission: templateParameterReadPermission, expected: AuthorizeResult.ALLOW },
+    { permission: templateStepReadPermission, expected: AuthorizeResult.ALLOW },
   ])(
     'should allow access for permission $permission.name for the Programme Admin Role',
     async ({ permission, expected }) => {
@@ -134,6 +142,9 @@ describe('adpPortalPermissionPolicy: ADP Platform User', () => {
     { permission: catalogLocationCreatePermission, expected: AuthorizeResult.ALLOW },
     { permission: catalogLocationDeletePermission, expected: AuthorizeResult.DENY },
     { permission: adpProgrammmeCreatePermission, expected: AuthorizeResult.DENY },
+    { permission: actionExecutePermission, expected: AuthorizeResult.DENY },
+    { permission: templateParameterReadPermission, expected: AuthorizeResult.DENY },
+    { permission: templateStepReadPermission, expected: AuthorizeResult.DENY },
   ])(
     'should allow access for permission $permission.name for the ADP Portal User Role',
     async ({ permission, expected }) => {
