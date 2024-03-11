@@ -2,7 +2,7 @@ import { Config } from '@backstage/config';
 import { InputError } from '@backstage/errors';
 import { ScmIntegrationRegistry } from '@backstage/integration';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
-import { ResourceOptions } from './types';
+import { AuthorizedResources, ResourceOptions } from './types';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
 
 type PermitPipelineOptions = {
@@ -11,7 +11,7 @@ type PermitPipelineOptions = {
   organization?: string;
   project: string;
   pipelineId: number;
-  resources: ResourceOptions[];
+  resources: AuthorizedResources;
 };
 
 export function permitPipelineAction(options: {
@@ -59,10 +59,10 @@ export function permitPipelineAction(options: {
               'The ID of the pipeline requesting access to the resource',
           },
           resources: {
-            type: 'array(object)',
+            type: 'object',
             title: 'Resources',
             description:
-              'A collection of resources to authorize. Required properties: resourceId (string), resourceType (string), authorized (boolean)',
+              'An object containing the resources to authorise. Required format {"serviceConnectionIds": [], "variableGroupIds": [], "agentQueueIds": [], "environmentIds": []}',
           },
         },
       },
@@ -74,6 +74,44 @@ export function permitPipelineAction(options: {
       const organization =
         ctx.input.organization ?? config.getString('azureDevOps.organization');
 
+      const serviceConnections =
+        ctx.input.resources.serviceConnectionIds?.map<ResourceOptions>(
+          serviceConnection => ({
+            resourceId: serviceConnection,
+            resourceType: 'endpoint',
+            authorized: true,
+          }),
+        ) ?? [];
+      const environments =
+        ctx.input.resources.environmentIds?.map<ResourceOptions>(
+          environment => ({
+            resourceId: environment.toString(),
+            resourceType: 'environment',
+            authorized: true,
+          }),
+        ) ?? [];
+      const variableGroups =
+        ctx.input.resources.variableGroupIds?.map<ResourceOptions>(
+          variableGroup => ({
+            resourceId: variableGroup.toString(),
+            resourceType: 'variablegroup',
+            authorized: true,
+          }),
+        ) ?? [];
+      const agentQueues =
+        ctx.input.resources.agentQueueIds?.map<ResourceOptions>(agentQueue => ({
+          resourceId: agentQueue.toString(),
+          resourceType: 'queue',
+          authorized: true,
+        })) ?? [];
+
+      const resources = [
+        ...serviceConnections,
+        ...environments,
+        ...variableGroups,
+        ...agentQueues
+      ];
+
       const adoApi = await AzureDevOpsApi.fromIntegrations(
         integrations,
         config,
@@ -84,7 +122,7 @@ export function permitPipelineAction(options: {
       const permittedResources = await adoApi.permitPipeline(
         { organization, project: ctx.input.project },
         ctx.input.pipelineId,
-        ctx.input.resources,
+        resources,
         ctx.input.pipelineApiVersion,
       );
 
