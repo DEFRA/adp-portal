@@ -40,7 +40,8 @@ export async function createRouter(
 
   const getAllArmsLengthBodies = await armsLengthBodiesStore.getAll();
 
-  if (getAllArmsLengthBodies.length == 0) {
+  // TODO: Migrate seed data to Knex seed files
+  if (process.env.NODE_ENV === 'development' && getAllArmsLengthBodies.length == 0) {
     armsLengthBodiesStore.add(
       {
         creator: 'ADP',
@@ -48,10 +49,11 @@ export async function createRouter(
         title: 'Environment Agency',
         short_name: 'EA',
         name: 'environment-agency',
-        description: '',
+        description: 'We work to create better places for people and wildlife, and support sustainable development.',
+        url: 'https://www.gov.uk/government/organisations/environment-agency'
       },
-      'Seed',
-      'Seed',
+      'ADP',
+      'ADP',
     );
     armsLengthBodiesStore.add(
       {
@@ -60,10 +62,10 @@ export async function createRouter(
         title: 'Animal and Plant Health',
         short_name: 'APHA',
         name: 'animal-and-plant-health',
-        description: '',
+        description: 'We work to safeguard animal and plant health for the benefit of people, the environment and the economy.',
       },
-      'Seed',
-      'Seed',
+      'ADP',
+      'ADP',
     );
     armsLengthBodiesStore.add(
       {
@@ -72,10 +74,10 @@ export async function createRouter(
         title: 'Rural Payments Agency',
         short_name: 'RPA',
         name: 'rural-payments-agency',
-        description: '',
+        description: 'We pay out over £2 billion each year to support a thriving farming and food sector, supporting agricultural and rural communities to create a better place to live.',
       },
-      'Seed',
-      'Seed',
+      'ADP',
+      'ADP',
     );
     armsLengthBodiesStore.add(
       {
@@ -84,10 +86,10 @@ export async function createRouter(
         title: 'Natural England',
         short_name: 'NE',
         name: 'natural-england',
-        description: '',
+        description: 'We\'re the government\'s adviser for the natural environment in England. We help to protect and restore our natural world.',
       },
-      'Seed',
-      'Seed',
+      'ADP',
+      'ADP',
     );
     armsLengthBodiesStore.add(
       {
@@ -96,10 +98,10 @@ export async function createRouter(
         title: 'Marine and Maritime',
         short_name: 'MMO',
         name: 'marine-and-maritime',
-        description: '',
+        description: 'The Marine Management Organisation (MMO) was created in 2009 by the Marine and Coastal Access Act.',
       },
-      'Seed',
-      'Seed',
+      'ADP',
+      'ADP',
     );
   }
 
