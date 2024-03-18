@@ -31,8 +31,7 @@ resources:
       name: DEFRA/adp-pipeline-common
       endpoint: DEFRA
       type: github
-      #ref: refs/heads/main
-      ref: sm/304334-ContainerAppsImprovement
+      ref: refs/heads/main
 
 extends:
   template: /pipelines/common-aca-app-build.yaml@DEFRA-ADPPipelineCommon
