@@ -59,9 +59,9 @@ export async function createRouter(
       {
         creator: 'ADP',
         owner: 'ADP',
-        title: 'Animal and Plant Health',
+        title: 'Animal and Plant Health Agency',
         short_name: 'APHA',
-        name: 'animal-and-plant-health',
+        name: 'animal-and-plant-health-agency',
         description: 'We work to safeguard animal and plant health for the benefit of people, the environment and the economy.',
       },
       'ADP',
@@ -95,9 +95,9 @@ export async function createRouter(
       {
         creator: 'ADP',
         owner: 'ADP',
-        title: 'Marine and Maritime',
+        title: 'Marine Management Organisation',
         short_name: 'MMO',
-        name: 'marine-and-maritime',
+        name: 'marine-management-organisation',
         description: 'The Marine Management Organisation (MMO) was created in 2009 by the Marine and Coastal Access Act.',
       },
       'ADP',

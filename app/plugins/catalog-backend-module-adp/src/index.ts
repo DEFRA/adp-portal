@@ -6,3 +6,4 @@
  */
 
 export { catalogModuleAdp as default } from './module';
+export { AdpDatabaseEntityProvider } from './providers';

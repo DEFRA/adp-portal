@@ -4,8 +4,7 @@ import { Router } from 'express';
 import { PluginEnvironment } from '../types';
 import { MicrosoftGraphOrgEntityProvider } from '@backstage/plugin-catalog-backend-module-msgraph';
 import { GithubEntityProvider } from '@backstage/plugin-catalog-backend-module-github';
-import { AdpDbModelEntityProvider } from '@internal/plugin-adp-backend';
-import { AdpDatabaseEntityProvider } from '../providers/AdpDatabaseEntityProvider';
+import { AdpDatabaseEntityProvider } from '@internal/plugin-catalog-backend-module-adp';
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -28,9 +27,12 @@ export default async function createPlugin(
     }),
   );
 
-  // builder.addEntityProvider(
-  //   AdpDatabaseEntityProvider.create({logger: env.logger})
-  // );
+  builder.addEntityProvider(
+    AdpDatabaseEntityProvider.create(env.discovery, {
+      logger: env.logger,
+      scheduler: env.scheduler,
+    }),
+  );
 
   // builder.addEntityProvider(
   //   AdpDbModelEntityProvider.fromOptions({
