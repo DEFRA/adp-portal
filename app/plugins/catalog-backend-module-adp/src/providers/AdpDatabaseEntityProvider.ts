@@ -9,7 +9,7 @@ import { DiscoveryService } from '@backstage/backend-plugin-api';
 import { Entity, GroupEntity } from '@backstage/catalog-model';
 import fetch from 'node-fetch';
 import { ArmsLengthBody } from '@internal/plugin-adp-common';
-import { armsLengthBodyGroupTransformer } from '../transformers/armsLengthBodyGroupTransformer';
+import { armsLengthBodyGroupTransformer } from '../transformers';
 
 export class AdpDatabaseEntityProvider implements EntityProvider {
   private readonly logger: Logger;
@@ -111,7 +111,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
         entity: entity,
       })),
     });
-    
+
     markCommitComplete(entities);
   }
 
@@ -130,7 +130,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
       );
     }
 
-    const armsLengthBodies = await response.json() as ArmsLengthBody[];
+    const armsLengthBodies = (await response.json()) as ArmsLengthBody[];
     const entities: GroupEntity[] = [];
 
     logger.info(`Discovered ${armsLengthBodies.length} Arms Length Bodies`);
