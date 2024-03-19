@@ -13,16 +13,7 @@ import { PluginDatabaseManager } from '@backstage/backend-common';
 
 /**
  * An entity provider that adds the ADP Data Model entities to the catalog.
- *
- * @remarks
- *
- * Installation:
- *
- * Add it to the catalog builder in your
- * `packages/backend/src/plugins/catalog.ts`.
- *
  **/
-
 export class AdpDbModelEntityProvider implements EntityProvider {
   private readonly logger: Logger;
   private connection?: EntityProviderConnection;
@@ -68,8 +59,7 @@ export class AdpDbModelEntityProvider implements EntityProvider {
   }
 
   getProviderName(): string {
-    // Simply a string identifying your provider
-    return 'AdpDbModelEntityProvider';
+    return AdpDbModelEntityProvider.name;
   }
 
   // Called by Backstage when the catalog builder is connecting
@@ -139,7 +129,7 @@ export class AdpDbModelEntityProvider implements EntityProvider {
     logger: Logger,
     database: PluginDatabaseManager,
   ): Promise<GroupEntity[]> {
-    logger.info('Discovering All Arms Length Body');
+    logger.info('Discovering all Arms Length Bodies');
     const adpDatabase = AdpDatabase.create(database);
     const armsLengthBodiesStore = new ArmsLengthBodyStore(
       await adpDatabase.get(),
@@ -149,7 +139,7 @@ export class AdpDbModelEntityProvider implements EntityProvider {
 
     const entities: GroupEntity[] = [];
 
-    logger.info(`Discovered ${armsLengthBodies.length} Arms Length Body`);
+    logger.info(`Discovered ${armsLengthBodies.length} Arms Length Bodies`);
 
     for (const armsLengthBody of armsLengthBodies) {
       const entity = await defaultGroupTransformer(armsLengthBody);

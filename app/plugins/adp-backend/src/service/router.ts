@@ -41,7 +41,7 @@ export async function createRouter(
   const getAllArmsLengthBodies = await armsLengthBodiesStore.getAll();
 
   // TODO: Migrate seed data to Knex seed files
-  if (process.env.NODE_ENV === 'development' && getAllArmsLengthBodies.length == 0) {
+  if (getAllArmsLengthBodies.length == 0) {
     armsLengthBodiesStore.add(
       {
         creator: 'ADP',

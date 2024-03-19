@@ -5,5 +5,5 @@
  * @packageDocumentation
  */
 
-export { catalogModuleAdp as default } from './module';
+export { catalogModuleAdpEntityProvider as default } from './module';
 export { AdpDatabaseEntityProvider } from './providers';

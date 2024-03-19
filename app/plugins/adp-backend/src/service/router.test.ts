@@ -111,7 +111,7 @@ describe('createRouter', () => {
   describe('POST /armsLengthBody', () => {
     it('returns 406 when ALB Name already exists', async () => {
       const expectedALB = {
-        title: 'Marine and Maritime',
+        title: 'Marine Management Organisation',
         short_name: 'ALB',
         description: 'This is an example ALB',
       };
@@ -166,7 +166,7 @@ describe('createRouter', () => {
 
     it('returns 406', async () => {
       const expectedALB = {
-        title: 'Marine and Maritime',
+        title: 'Marine Management Organisation',
       };
       const response = await request(app)
         .post('/armsLengthBody')

@@ -34,14 +34,6 @@ export default async function createPlugin(
     }),
   );
 
-  // builder.addEntityProvider(
-  //   AdpDbModelEntityProvider.fromOptions({
-  //     logger: env.logger,
-  //     database: env.database,
-  //     scheduler: env.scheduler
-  //   })
-  // );
-
   const { processingEngine, router } = await builder.build();
   await processingEngine.start();
   return router;

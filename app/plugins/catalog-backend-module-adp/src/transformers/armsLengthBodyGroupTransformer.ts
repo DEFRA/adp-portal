@@ -17,8 +17,7 @@ export const armsLengthBodyGroupTransformer: ArmsLengthBodyGroupTransformer =
         tags: [],
         annotations: {
           'backstage.io/managed-by-location': `adp:arms-length-body\\${armsLengthBody.name}`,
-          'backstage.io/managed-by-origin-location':
-            '`adp:arms-length-body\\${armsLengthBody.name}`',
+          'backstage.io/managed-by-origin-location': `adp:arms-length-body\\${armsLengthBody.name}`,
         },
         links: [],
       },
