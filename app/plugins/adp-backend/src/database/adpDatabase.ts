@@ -8,7 +8,10 @@ const migrationsDir = resolvePackagePath(
   '@internal/plugin-adp-backend',
   'migrations',
 );
-
+const seedDir = resolvePackagePath(
+  '@internal/plugin-adp-backend',
+  'seeds',
+);
 export class AdpDatabase {
   readonly database: PluginDatabaseManager;
   promise: Promise<Knex> | undefined;
@@ -24,6 +27,9 @@ export class AdpDatabase {
   static async runMigrations(knex: Knex): Promise<void> {
     await knex.migrate.latest({
       directory: migrationsDir,
+    });
+    await knex.seed.run({
+      directory: seedDir,
     });
   }
 

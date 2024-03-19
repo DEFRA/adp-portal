@@ -10,7 +10,9 @@ import { ConfigReader } from '@backstage/config';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 import { createAlbRouter } from './armsLengthBodyRouter';
 import { createProgrammeRouter } from './deliveryProgrammeRouter';
-import { Router } from 'express';
+import  Router from 'express-promise-router';
+import express from "express";
+import { errorHandler } from '@backstage/backend-common';
 
 export interface ServerOptions {
   port: number;
@@ -31,10 +33,13 @@ export async function startStandaloneServer(
       backend: {
         database: {
           client: 'better-sqlite3',
-          connection: ':memory:',
+          connection: {
+            directory: "."
+          }
         },
       },
     }),
+
   ).forPlugin('adp-plugin');
 
   const armsLengthBodyRouter = await createAlbRouter({
@@ -75,24 +80,38 @@ export async function startStandaloneServer(
    *   ]
    * }
    */
-  const router = Router();
+  const router = express.Router();
   router.use(armsLengthBodyRouter);
   router.use(deliveryProgrammeRouter);
 
-  let r = Router()
-  r.post('/permission/authorize"', (req, response) => {
-    logger.info('PONG!');
-    let input_id = req.body.items[0].id
-    response.json({"items":[{"id": input_id,"result":"ALLOW"}]});
-  });
+  const r = express.Router()
+
+  let internal_route = () => {
+    const auth_route = Router();
+    auth_route.use(express.json());
+    logger.info("Creating route")
+    auth_route.post('/authorize', async(req, response) => {
+      logger.info('PONG!');
+      console.log("PONG", req )
+      let input_id = req.body.items[0].id
+      response.json({"items": [{"id": input_id, "result": "ALLOW"}]});
+    })
+    auth_route.use(errorHandler())
+    return  auth_route
+  }
+
+  r.use( internal_route())
 
   let service = createServiceBuilder(module)
     .setPort(options.port)
     .addRouter('/api/adp', router)
-    .addRouter("/api",r);
+    .addRouter("/api/permission",r);
  // if (options.enableCors) {
     service = service.enableCors({ origin: 'http://localhost:3000' });
 //  }
+
+  logger.info("Router", r)
+  logger.info("Service", service)
 
   return await service.start().catch(err => {
     logger.error(err);
