@@ -3,6 +3,10 @@ parameters:
     displayName: "Deploy from Feature Branch"
     type: boolean
     default: false
+  - name: deployConfigOnly
+    displayName: "Deploy App Config"
+    type: boolean
+    default: false
 pr:
   branches:
     include:
@@ -37,8 +41,10 @@ extends:
   template: /pipelines/common-aca-app-build.yaml@DEFRA-ADPPipelineCommon
   parameters:
     deployFromFeature: ${{ parameters.deployFromFeature }}
+    programmeName: "adp"
+    appName: 'adp-portal-web'
     privateAgentName: ''
-    containerAppName: 'ssvadpinfca3401-portal-web'
+    deployConfigOnly: ${{ parameters.deployConfigOnly }}
     appBuildConfig:
       appFrameworkType: "nodejs"  
       projectPath: "./package.json"
@@ -49,36 +55,4 @@ extends:
     appDeployConfig:
       filepath: ".azuredevops/backstage.yaml"  
       variableGroups:
-        - adp-portal-ssv3
-        - adp-portal-ssv5
-      variables:      
-        - ADO-ORGANIZATION
-        - ADO-PAT
-        - ADP-PORTAL-API-ENDPOINT
-        - ADP-PORTAL-PLATFORM-ADMINS-GROUP
-        - ADP-PORTAL-PROGRAMME-ADMINS-GROUP
-        - ADP-PORTAL-USERS-GROUP
-        - BACKSTAGE-BACKEND-SECRET
-        - BACKEND-PLUGINS-SECRET
-        - GITHUB-APP-ID
-        - GITHUB-CLIENT-ID
-        - GITHUB-CLIENT-SECRET
-        - GITHUB-PRIVATE-KEY
-        - GRAFANA-ENDPOINT
-        - GRAFANA-TOKEN
-        - SND1-CLUSTER-NAME
-        - SND1-CLUSTER-API-SERVER-ADDRESS
-        - SND2-CLUSTER-NAME
-        - SND2-CLUSTER-API-SERVER-ADDRESS
-        - SND3-CLUSTER-NAME
-        - SND3-CLUSTER-API-SERVER-ADDRESS
-        - DEV1-CLUSTER-NAME
-        - DEV1-CLUSTER-API-SERVER-ADDRESS
-        - TST1-CLUSTER-NAME
-        - TST1-CLUSTER-API-SERVER-ADDRESS
-        - TST2-CLUSTER-NAME
-        - TST2-CLUSTER-API-SERVER-ADDRESS
-        - PRE1-CLUSTER-NAME
-        - PRE1-CLUSTER-API-SERVER-ADDRESS
-        - PRD1-CLUSTER-NAME
-        - PRD1-CLUSTER-API-SERVER-ADDRESS
+        - adp-portal-web-<environment>

@@ -22,6 +22,7 @@ import {
   getCurrentUsername,
 } from '../utils';
 import { ProgrammeManagerStore } from '../deliveryProgramme/deliveryProgrammeManagerStore';
+import { Entity } from '@backstage/catalog-model';
 
 export interface ProgrammeRouterOptions {
   logger: Logger;
@@ -67,19 +68,21 @@ export async function createProgrammeRouter(
     if (programmeManager && deliveryProgramme !== null) {
       deliveryProgramme.programme_managers = programmeManager;
       res.json(deliveryProgramme);
-    } 
+    }
   });
 
   router.get('/catalogEntities', async (_req, res) => {
-    const response = await catalog.getEntities({
+    const catalogApiResponse = await catalog.getEntities({
       filter: {
         kind: 'User',
-        'relations.memberOf':
-          'group:default/ag-azure-cdo-adp-platformengineers',
       },
-      fields: ['metadata'],
+      fields: [
+        'metadata.name',
+        'metadata.annotations.graph.microsoft.com/user-id',
+        'metadata.annotations.microsoft.com/email',
+      ],
     });
-    res.json(response);
+    res.json(catalogApiResponse);
   });
 
   router.post('/deliveryProgramme', async (req, res) => {
@@ -107,16 +110,30 @@ export async function createProgrammeRouter(
 
         const programmeManagers = req.body.programme_managers;
         if (programmeManagers !== undefined) {
+          const catalogEntities = await catalog.getEntities({
+            filter: {
+              kind: 'User',
+            },
+            fields: [
+              'metadata.name',
+              'metadata.annotations.graph.microsoft.com/user-id',
+              'metadata.annotations.microsoft.com/email',
+            ],
+          });
+
+          const catalogEntity: Entity[] = catalogEntities.items;
+
           addProgrammeManager(
             programmeManagers,
             deliveryProgramme.id,
             deliveryProgramme,
             programmeManagersStore,
+            catalogEntity,
           );
         } else {
           req.body.programme_managers = [];
         }
-        res.json(deliveryProgramme);
+        res.status(201).json(deliveryProgramme);
       }
     } catch (error) {
       throw new InputError('Error');
@@ -128,16 +145,16 @@ export async function createProgrammeRouter(
       if (!isDeliveryProgrammeUpdateRequest(req.body)) {
         throw new InputError('Invalid payload');
       }
-      const data: DeliveryProgramme[] = await deliveryProgrammesStore.getAll();
 
-      const currentData = data.find(object => object.id === req.body.id);
+      const allProgrammes = await deliveryProgrammesStore.getAll()
+      const currentData = await deliveryProgrammesStore.get(req.body.id);
       const updatedTitle = req.body?.title;
-      const currentTitle = currentData?.title;
+      const currentTitle = currentData!.title;
       const isTitleChanged = updatedTitle && currentTitle !== updatedTitle;
 
       if (isTitleChanged) {
         const isDuplicate: boolean = await checkForDuplicateTitle(
-          data,
+          allProgrammes,
           updatedTitle,
         );
         if (isDuplicate) {
@@ -170,12 +187,25 @@ export async function createProgrammeRouter(
             updatedManagers.push(updatedManager);
           }
         }
+        const catalogEntities = await catalog.getEntities({
+          filter: {
+            kind: 'User',
+          },
+          fields: [
+            'metadata.name',
+            'metadata.annotations.graph.microsoft.com/user-id',
+            'metadata.annotations.microsoft.com/email',
+          ],
+        });
+
+        const catalogEntity: Entity[] = catalogEntities.items;
 
         addProgrammeManager(
           updatedManagers,
           deliveryProgramme.id,
           deliveryProgramme,
           programmeManagersStore,
+          catalogEntity,
         );
 
         const removedManagers: ProgrammeManager[] = [];
@@ -197,8 +227,7 @@ export async function createProgrammeRouter(
           programmeManagersStore,
         );
       }
-
-      res.json(deliveryProgramme);
+      res.status(204).json(deliveryProgramme);
     } catch (error) {
       throw new InputError('Error');
     }

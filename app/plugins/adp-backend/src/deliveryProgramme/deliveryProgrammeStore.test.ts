@@ -18,6 +18,7 @@ import {
 import {
   expectedProgrammeDataWithName,
   expectedProgrammeDataWithoutManager,
+  exampleCatalog,
 } from './programmeTestData';
 import { ProgrammeManagerStore } from './deliveryProgrammeManagerStore';
 
@@ -29,6 +30,7 @@ describe('DeliveryProgrammeStore', () => {
     await AdpDatabase.runMigrations(knex);
     const programmeStore = new DeliveryProgrammeStore(knex);
     const managerStore = new ProgrammeManagerStore(knex);
+
     return { knex, programmeStore, managerStore };
   }
 
@@ -50,21 +52,20 @@ describe('DeliveryProgrammeStore', () => {
         'id' | 'created_at' | 'updated_at' | 'programme_managers'
       > = {
         ...expectedProgrammeDataWithName,
-        arms_length_body: albId,
+        arms_length_body_id: albId,
       };
       const newManagers: Omit<
         ProgrammeManager,
-        'id' | 'delivery_programme_id'
+        'id' | 'delivery_programme_id' | 'email' | 'name'
       >[] = [
         {
-          aad_entity_ref_id: 'test id 1',
-          email: 'test1@email.com',
-          name: 'test 1',
+          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
         },
         {
-          aad_entity_ref_id: 'test id 2',
-          email: 'test2@email.com',
-          name: 'test 2',
+          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73422',
+        },
+        {
+          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73423',
         },
       ];
       const addResult = await programmeStore.add(expectedProgrammeId, 'test');
@@ -78,29 +79,30 @@ describe('DeliveryProgrammeStore', () => {
         addResult.id,
         addResult,
         managerStore,
+        exampleCatalog,
       );
       const allManagers = await managerStore.getAll();
-      expect(allManagers.length).toBe(2);
+      expect(allManagers.length).toBe(3);
       expect(
         allManagers.some(
           (manager: { aad_entity_ref_id: string }) =>
-            manager.aad_entity_ref_id === 'test id 1',
+            manager.aad_entity_ref_id ===
+            'a9dc2414-0626-43d2-993d-a53aac4d73421',
         ),
       ).toBeTruthy();
       expect(
         allManagers.some(
           (manager: { aad_entity_ref_id: string }) =>
-            manager.aad_entity_ref_id === 'test id 2',
+            manager.aad_entity_ref_id ===
+            'a9dc2414-0626-43d2-993d-a53aac4d73422',
         ),
       ).toBeTruthy();
       const updatedManagers: Omit<
         ProgrammeManager,
-        'id' | 'delivery_programme_id'
+        'id' | 'delivery_programme_id' | 'email' | 'name'
       >[] = [
         {
-          aad_entity_ref_id: 'test id 1',
-          email: 'test1@email.com',
-          name: 'test 1',
+          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
         },
       ];
       await deleteProgrammeManager(
@@ -112,13 +114,15 @@ describe('DeliveryProgrammeStore', () => {
       expect(
         allManagersAfterDelete.some(
           (manager: { aad_entity_ref_id: string }) =>
-            manager.aad_entity_ref_id === 'test id 1',
+            manager.aad_entity_ref_id ===
+            'a9dc2414-0626-43d2-993d-a53aac4d73421',
         ),
       ).toBeFalsy();
       expect(
         allManagersAfterDelete.some(
           (manager: { aad_entity_ref_id: string }) =>
-            manager.aad_entity_ref_id === 'test id 2',
+            manager.aad_entity_ref_id ===
+            'a9dc2414-0626-43d2-993d-a53aac4d73422',
         ),
       ).toBeTruthy();
     },
@@ -137,7 +141,7 @@ describe('DeliveryProgrammeStore', () => {
       const expectedProgramme = [
         {
           ...expectedProgrammeDataWithoutManager,
-          arms_length_body: albId,
+          arms_length_body_id: albId,
         },
       ];
       await knex('delivery_programme').insert(expectedProgramme);
@@ -159,7 +163,7 @@ describe('DeliveryProgrammeStore', () => {
       const expectedProgramme = [
         {
           ...expectedProgrammeDataWithoutManager,
-          arms_length_body: albId,
+          arms_length_body_id: albId,
         },
       ];
       const insertProgrammeId = await knex('delivery_programme').insert(
@@ -192,7 +196,7 @@ describe('DeliveryProgrammeStore', () => {
       const expectedProgramme = [
         {
           ...expectedProgrammeDataWithoutManager,
-          arms_length_body: albId,
+          arms_length_body_id: albId,
         },
       ];
       await knex('delivery_programme').insert(expectedProgramme);
@@ -215,7 +219,7 @@ describe('DeliveryProgrammeStore', () => {
       const expectedProgramme = [
         {
           ...expectedProgrammeDataWithoutManager,
-          arms_length_body: albId,
+          arms_length_body_id: albId,
         },
       ];
       const insertProgrammeId = await knex('delivery_programme').insert(
@@ -257,7 +261,7 @@ describe('DeliveryProgrammeStore', () => {
       const expectedProgramme = [
         {
           ...expectedProgrammeDataWithoutManager,
-          arms_length_body: albId,
+          arms_length_body_id: albId,
         },
       ];
       await knex('delivery_programme').insert(expectedProgramme);
@@ -291,7 +295,7 @@ describe('DeliveryProgrammeStore', () => {
       const albId = insertAlbId[1].id;
       const updateWithoutId = {
         ...expectedProgrammeDataWithoutManager,
-        arms_length_body: albId,
+        arms_length_body_id: albId,
       };
       await expect(
         async () =>

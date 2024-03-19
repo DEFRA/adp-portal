@@ -25,11 +25,11 @@ exports.up = async function up(knex) {
       .nullable()
       .comment('Finance code of Delivery Programme');
     table
-      .uuid('arms_length_body')
+      .uuid('arms_length_body_id')
       .notNullable()
       .comment('ID of the ALB owning the delivery programme');
     table
-      .foreign('arms_length_body').references('id').inTable('arms_length_body')
+      .foreign('arms_length_body_id').references('id').inTable('arms_length_body')
     table
       .string('delivery_programme_code')
       .notNullable()

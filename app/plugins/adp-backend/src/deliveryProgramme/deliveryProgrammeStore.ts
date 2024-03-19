@@ -11,7 +11,7 @@ type Row = {
   alias?: string;
   description: string;
   finance_code?: string;
-  arms_length_body: string;
+  arms_length_body_id: string;
   delivery_programme_code: string;
   url?: string;
   updated_by?: string;
@@ -32,7 +32,7 @@ export class DeliveryProgrammeStore {
         'alias',
         'description',
         'finance_code',
-        'arms_length_body',
+        'arms_length_body_id',
         'delivery_programme_code',
         'url',
         'created_at',
@@ -48,7 +48,7 @@ export class DeliveryProgrammeStore {
       alias: row?.alias,
       description: row.description,
       finance_code: row?.finance_code,
-      arms_length_body: row.arms_length_body,
+      arms_length_body_id: row.arms_length_body_id,
       delivery_programme_code: row.delivery_programme_code,
       url: row?.url,
       created_at: new Date(row.created_at),
@@ -66,7 +66,7 @@ export class DeliveryProgrammeStore {
         'alias',
         'description',
         'finance_code',
-        'arms_length_body',
+        'arms_length_body_id',
         'delivery_programme_code',
         'url',
         'created_at',
@@ -83,7 +83,7 @@ export class DeliveryProgrammeStore {
           alias: row?.alias,
           description: row.description,
           finance_code: row?.finance_code,
-          arms_length_body: row.arms_length_body,
+          arms_length_body_id: row.arms_length_body_id,
           delivery_programme_code: row.delivery_programme_code,
           url: row?.url,
           created_at: new Date(row.created_at),
@@ -106,7 +106,7 @@ export class DeliveryProgrammeStore {
         alias: deliveryProgramme?.alias,
         description: deliveryProgramme.description,
         finance_code: deliveryProgramme?.finance_code,
-        arms_length_body: deliveryProgramme.arms_length_body,
+        arms_length_body_id: deliveryProgramme.arms_length_body_id,
         delivery_programme_code: deliveryProgramme.delivery_programme_code,
         url: deliveryProgramme?.url,
         updated_by: author,
@@ -152,7 +152,7 @@ export class DeliveryProgrammeStore {
     };
 
     if (updatedData.programme_managers) {
-      delete updatedData.programme_managers
+      delete updatedData.programme_managers;
     }
 
     if (Object.keys(updatedData).length === 0) {

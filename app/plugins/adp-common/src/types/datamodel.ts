@@ -21,7 +21,7 @@ export type DeliveryProgramme = {
     alias?: string;
     description: string;
     finance_code?: string;
-    arms_length_body: string;
+    arms_length_body_id: string;
     delivery_programme_code: string;
     url?: string;
 }

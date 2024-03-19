@@ -8,7 +8,7 @@ describe('defaultProgrammeGroupTransformer', () => {
       alias: 'Test Alias',
       description: 'Test description',
       finance_code: 'Test finance_code',
-      arms_length_body: '05aa36b6-c7a2-4c35-820e-c31d20011f47',
+      arms_length_body_id: '05aa36b6-c7a2-4c35-820e-c31d20011f47',
       delivery_programme_code: 'Test delivery_programme_code',
       url: 'https://www.example.uk/',
       name: 'test-title-1',

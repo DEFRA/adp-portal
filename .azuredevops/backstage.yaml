@@ -20,121 +20,121 @@ properties:
         identity: {{userAssignedIdentity}}
     secrets:
       - name: github-app-id
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/GITHUB-APP-ID
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-APP-ID
         identity: {{userAssignedIdentity}}      
       - name: github-client-id
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/GITHUB-CLIENT-ID
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-CLIENT-ID
         identity: {{userAssignedIdentity}}
       - name: github-client-secret
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/GITHUB-CLIENT-SECRET
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-CLIENT-SECRET
         identity: {{userAssignedIdentity}}
       - name: authm-client-id
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/AUTH-MICROSOFT-CLIENT-ID
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/AUTH-MICROSOFT-CLIENT-ID
         identity: {{userAssignedIdentity}}
       - name: authm-client-secret
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/AUTH-MICROSOFT-CLIENT-SECRET
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/AUTH-MICROSOFT-CLIENT-SECRET
         identity: {{userAssignedIdentity}}
       - name: authm-tenant-id
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/AUTH-MICROSOFT-TENANT-ID
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/AUTH-MICROSOFT-TENANT-ID
         identity: {{userAssignedIdentity}}        
       - name: backend-secret
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/BACKSTAGE-BACKEND-SECRET
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/BACKSTAGE-BACKEND-SECRET
         identity: {{userAssignedIdentity}}
       - name: postgres-host
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/POSTGRES-HOST
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/POSTGRES-HOST
         identity: {{userAssignedIdentity}}
       - name: postgres-user
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/POSTGRES-USER
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/POSTGRES-USER
         identity: {{userAssignedIdentity}}
       - name: postgres-password
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/POSTGRES-PASSWORD
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/POSTGRES-PASSWORD
         identity: {{userAssignedIdentity}}
       - name: github-private-key
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/GITHUB-PRIVATE-KEY
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-PRIVATE-KEY
         identity: {{userAssignedIdentity}}
       - name: ado-pat
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADO-PAT
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADO-PAT
         identity: {{userAssignedIdentity}}
       - name: ado-organization
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADO-ORGANIZATION
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADO-ORGANIZATION
         identity: {{userAssignedIdentity}}
       - name: grafana-token
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/GRAFANA-TOKEN
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GRAFANA-TOKEN
         identity: {{userAssignedIdentity}}
       - name: grafana-endpoint
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/GRAFANA-ENDPOINT
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GRAFANA-ENDPOINT
         identity: {{userAssignedIdentity}}
       - name: app-base-url
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/APP-BASE-URL
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/APP-BASE-URL
         identity: {{userAssignedIdentity}}
       - name: blobstorage-name
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TECHDOCS-AZURE-BLOB-STORAGE-ACCOUNT-NAME
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/TECHDOCS-AZURE-BLOB-STORAGE-ACCOUNT-NAME
         identity: {{userAssignedIdentity}}
       - name: blobstorage-key
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TECHDOCS-AZURE-BLOB-STORAGE-ACCOUNT-KEY
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/TECHDOCS-AZURE-BLOB-STORAGE-ACCOUNT-KEY
         identity: {{userAssignedIdentity}}
       - name: adp-portal-platform-admins-group
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP-PORTAL-PLATFORM-ADMINS-GROUP
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-PLATFORM-ADMINS-GROUP
         identity: {{userAssignedIdentity}}
       - name: adp-portal-programme-admins-group
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP-PORTAL-PROGRAMME-ADMINS-GROUP
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-PROGRAMME-ADMINS-GROUP
         identity: {{userAssignedIdentity}}
       - name: adp-portal-users-group
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP-PORTAL-USERS-GROUP
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-USERS-GROUP
         identity: {{userAssignedIdentity}}
       - name: backend-plugins-secret
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/BACKEND-PLUGINS-SECRET
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/BACKEND-PLUGINS-SECRET
         identity: {{userAssignedIdentity}}
       - name: snd1-cluster-name
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/SND1-CLUSTER-NAME
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SND1-CLUSTER-NAME
         identity: {{userAssignedIdentity}}
       - name: snd1-cluster-api-server-address
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/SND1-CLUSTER-API-SERVER-ADDRESS
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SND1-CLUSTER-API-SERVER-ADDRESS
         identity: {{userAssignedIdentity}}
       - name: snd2-cluster-name
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/SND2-CLUSTER-NAME
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SND2-CLUSTER-NAME
         identity: {{userAssignedIdentity}}
       - name: snd2-cluster-api-server-address
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/SND2-CLUSTER-API-SERVER-ADDRESS
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SND2-CLUSTER-API-SERVER-ADDRESS
         identity: {{userAssignedIdentity}}
       - name: snd3-cluster-name
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/SND3-CLUSTER-NAME
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SND3-CLUSTER-NAME
         identity: {{userAssignedIdentity}}
       - name: snd3-cluster-api-server-address
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/SND3-CLUSTER-API-SERVER-ADDRESS
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SND3-CLUSTER-API-SERVER-ADDRESS
         identity: {{userAssignedIdentity}}
       - name: dev1-cluster-name
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/DEV1-CLUSTER-NAME
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/DEV1-CLUSTER-NAME
         identity: {{userAssignedIdentity}}
       - name: dev1-cluster-api-server-address
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/DEV1-CLUSTER-API-SERVER-ADDRESS
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/DEV1-CLUSTER-API-SERVER-ADDRESS
         identity: {{userAssignedIdentity}}
       - name: tst1-cluster-name
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TST1-CLUSTER-NAME
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/TST1-CLUSTER-NAME
         identity: {{userAssignedIdentity}}
       - name: tst1-cluster-api-server-address
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TST1-CLUSTER-API-SERVER-ADDRESS
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/TST1-CLUSTER-API-SERVER-ADDRESS
         identity: {{userAssignedIdentity}}
       - name: tst2-cluster-name
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TST2-CLUSTER-NAME
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/TST2-CLUSTER-NAME
         identity: {{userAssignedIdentity}}
       - name: tst2-cluster-api-server-address
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/TST2-CLUSTER-API-SERVER-ADDRESS
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/TST2-CLUSTER-API-SERVER-ADDRESS
         identity: {{userAssignedIdentity}}
       - name: pre1-cluster-name
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/PRE1-CLUSTER-NAME
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/PRE1-CLUSTER-NAME
         identity: {{userAssignedIdentity}}
       - name: pre1-cluster-api-server-address
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/PRE1-CLUSTER-API-SERVER-ADDRESS
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/PRE1-CLUSTER-API-SERVER-ADDRESS
         identity: {{userAssignedIdentity}}
       - name: prd1-cluster-name
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-NAME
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-NAME
         identity: {{userAssignedIdentity}}
       - name: prd1-cluster-api-server-address
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-API-SERVER-ADDRESS
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-API-SERVER-ADDRESS
         identity: {{userAssignedIdentity}}
       - name: adp-portal-api-endpoint
-        keyVaultUrl: https://{{keyvaultName}}.vault.azure.net/secrets/ADP-PORTAL-API-ENDPOINT
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-API-ENDPOINT
         identity: {{userAssignedIdentity}}
   template:
     containers:
