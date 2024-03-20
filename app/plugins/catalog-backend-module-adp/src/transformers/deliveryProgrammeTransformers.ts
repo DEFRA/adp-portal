@@ -1,6 +1,6 @@
 import { GroupEntity } from '@backstage/catalog-model';
 import { DeliveryProgramme } from '@internal/plugin-adp-common';
-import { createTransformerTitle } from '../utils';
+import { createTransformerTitle } from './utils';
 
 export type GroupTransformer = (
   deliveryProgramme: DeliveryProgramme,

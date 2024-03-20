@@ -1,6 +1,6 @@
 import { GroupEntity } from '@backstage/catalog-model';
 import { ArmsLengthBody } from '@internal/plugin-adp-common';
-import { createTitle } from './utils';
+import { createTransformerTitle } from './utils';
 
 export type ArmsLengthBodyGroupTransformer = (
   armsLengthBody: ArmsLengthBody,
@@ -13,7 +13,7 @@ export const armsLengthBodyGroupTransformer: ArmsLengthBodyGroupTransformer =
       kind: 'Group',
       metadata: {
         name: armsLengthBody.name,
-        title: createTitle(armsLengthBody.title, armsLengthBody.short_name),
+        title: createTransformerTitle(armsLengthBody.title, armsLengthBody.alias),
         tags: [],
         annotations: {
           'backstage.io/managed-by-location': `adp:arms-length-body\\${armsLengthBody.name}`,
