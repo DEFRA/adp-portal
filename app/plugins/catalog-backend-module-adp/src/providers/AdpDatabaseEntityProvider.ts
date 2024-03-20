@@ -30,7 +30,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     }
 
     const defaultSchedule = {
-      frequency: { minutes: 1 },
+      frequency: { minutes: 15 },
       timeout: { minutes: 15 },
       initialDelay: { seconds: 5 },
     };
@@ -102,6 +102,11 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
 
     const entities = await this.readArmsLengthBodies(logger);
 
+    // TODO: Integrate with delivery programmes. Complete in work item 345478
+    // const albEntities = await this.readArmsLengthBodies(logger, database);
+    // const programmeEntities = await this.readDeliveryProgrammes(logger,database)
+    // const entities = {...albEntities, ...programmeEntities}
+
     const { markCommitComplete } = markReadComplete(entities);
 
     await this.connection.applyMutation({
@@ -144,6 +149,33 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
 
     return entities;
   }
+
+  // TODO: Integrate as part of work item 345478
+  // private async readDeliveryProgrammes(
+  //   logger: Logger,
+  //   database: PluginDatabaseManager,
+  // ): Promise<GroupEntity[]> {
+  //   logger.info('Discovering All Arms Length Body');
+  //   const adpDatabase = AdpDatabase.create(database);
+  //   const deliveryProgrammesStore = new DeliveryProgrammeStore(
+  //     await adpDatabase.get(),
+  //   );
+
+  //   const deliveryProgrammes = await deliveryProgrammesStore.getAll();
+
+  //   const entities: GroupEntity[] = [];
+
+  //   logger.info(`Discovered ${deliveryProgrammes.length} Arms Length Body`);
+
+  //   for (const deliveryProgramme of deliveryProgrammes) {
+  //     const entity = await defaultProgrammeGroupTransformer(deliveryProgramme);
+  //     if (entity) {
+  //       entities.push(entity);
+  //     }
+  //   }
+
+  //   return entities;
+  // }
 
   private trackProgress(logger: Logger) {
     let timestamp = Date.now();
