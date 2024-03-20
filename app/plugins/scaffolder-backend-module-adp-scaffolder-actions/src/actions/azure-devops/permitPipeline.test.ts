@@ -4,7 +4,6 @@ import { permitPipelineAction } from './permitPipeline';
 import { getVoidLogger } from '@backstage/backend-common';
 import { PassThrough } from 'stream';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
-import { createMockActionContext } from '@backstage/plugin-scaffolder-node-test-utils';
 
 describe('adp:azure:pipeline:permit', () => {
   beforeEach(() => {

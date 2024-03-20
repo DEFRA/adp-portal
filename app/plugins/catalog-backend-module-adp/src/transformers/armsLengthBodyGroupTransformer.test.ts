@@ -7,11 +7,12 @@ describe('armsLengthBodyGroupTransformer', () => {
       owner: 'ADP',
       title: 'Environment Agency',
       name: 'environment-agency',
-      short_name: 'EA',
+      alias: 'EA',
       description: 'testDescription',
       url: 'https://www.example.uk/',
       id: '1234',
-      timestamp: new Date(),
+      created_at: new Date(),
+      updated_at: new Date(),
     };
 
     const expectedGroupEntity = {

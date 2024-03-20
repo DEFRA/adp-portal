@@ -5,8 +5,12 @@ import {
   PartialArmsLengthBody,
 } from './armsLengthBodyStore';
 import { NotFoundError } from '@backstage/errors';
-import { ArmsLengthBody } from '../types';
 import { createName } from '../utils';
+import {
+  expectedAlb,
+  expectedAlbs,
+  expectedAlbsWithName,
+} from './albTestData';
 
 describe('armsLengthBodyStore', () => {
   const databases = TestDatabases.create();
@@ -22,21 +26,13 @@ describe('armsLengthBodyStore', () => {
     'should create a new ALB',
     async databaseId => {
       const { store } = await createDatabase(databaseId);
-      const expectedALB: Omit<ArmsLengthBody, 'id' | 'timestamp'> = {
-        creator: 'john',
-        owner: 'john',
-        title: 'ALB Example',
-        short_name: 'ALB',
-        description: 'This is an example ALB',
-        url: 'http://www.example.com/index.html',
-        name: 'alb-example',
-      };
 
-      const addResult = await store.add(expectedALB, 'test', 'test group');
+      const addResult = await store.add(expectedAlb, 'test', 'test group');
 
-      expect(addResult.name).toEqual(createName(expectedALB.title));
+      expect(addResult.name).toEqual(createName(expectedAlb.title));
       expect(addResult.id).toBeDefined();
-      expect(addResult.timestamp).toBeDefined();
+      expect(addResult.created_at).toBeDefined();
+      expect(addResult.updated_at).toBeDefined();
     },
   );
 
@@ -45,37 +41,7 @@ describe('armsLengthBodyStore', () => {
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
 
-      await knex('arms_length_body').insert([
-        {
-          creator: 'john',
-          owner: 'john',
-          title: 'ALB Example 1',
-          short_name: 'ALB 1',
-          description: 'This is an example ALB 1',
-          url: 'http://www.example.com/index.html',
-          name: 'alb-example-1',
-          updated_by: 'john',
-        },
-        {
-          creator: 'john',
-          owner: 'johnD',
-          title: 'ALB Example 2',
-          short_name: 'ALB 2',
-          description: 'This is an example ALB 2',
-          name: 'alb-example-2',
-          updated_by: 'john',
-        },
-        {
-          creator: 'john',
-          owner: 'john',
-          title: 'ALB Example 3',
-          short_name: 'ALB 3',
-          description: 'This is an example ALB 3',
-          url: 'http://www.example.com/index.html',
-          name: 'alb-example-4',
-          updated_by: 'john',
-        },
-      ]);
+      await knex('arms_length_body').insert(expectedAlbs);
 
       const getAllResult = await store.getAll();
       expect(getAllResult).toHaveLength(3);
@@ -88,38 +54,7 @@ describe('armsLengthBodyStore', () => {
       const { knex, store } = await createDatabase(databaseId);
 
       const insertedIds = await knex('arms_length_body').insert(
-        [
-          {
-            creator: 'john',
-            owner: 'john',
-            title: 'ALB Example 1',
-            short_name: 'ALB 1',
-            description: 'This is an example ALB 1',
-            url: 'http://www.example.com/index.html',
-            updated_by: 'john',
-            name: 'alb-example-1',
-          },
-          {
-            creator: 'john',
-            owner: 'johnD',
-            title: 'ALB Example 2',
-            short_name: 'ALB 2',
-            description: 'This is an example ALB 2',
-            url: 'http://www.example.com/index.html',
-            updated_by: 'john',
-            name: 'alb-example-2',
-          },
-          {
-            creator: 'john',
-            owner: 'john',
-            title: 'ALB Example 3',
-            short_name: 'ALB 3',
-            description: 'This is an example ALB 3',
-            url: 'http://www.example.com/index.html',
-            updated_by: 'john',
-            name: 'alb-example-3',
-          },
-        ],
+        expectedAlbsWithName,
         ['id'],
       );
 
@@ -129,7 +64,7 @@ describe('armsLengthBodyStore', () => {
 
       expect(getResult).toBeDefined();
       expect(getResult?.title).toBe('ALB Example 2');
-      expect(getResult?.short_name).toBe('ALB 2');
+      expect(getResult?.alias).toBe('ALB 2');
       expect(getResult?.description).toBe('This is an example ALB 2');
       expect(getResult?.creator).toBe('john');
       expect(getResult?.owner).toBe('johnD');
@@ -142,26 +77,7 @@ describe('armsLengthBodyStore', () => {
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
 
-      await knex('arms_length_body').insert([
-        {
-          creator: 'john',
-          owner: 'john',
-          title: 'ALB Example 1',
-          short_name: 'ALB 1',
-          description: 'This is an example ALB 1',
-          updated_by: 'john',
-          name: 'alb-example-1',
-        },
-        {
-          creator: 'john',
-          owner: 'johnD',
-          title: 'ALB Example 2',
-          short_name: 'ALB 2',
-          description: 'This is an example ALB 2',
-          updated_by: 'john',
-          name: 'alb-example-2',
-        },
-      ]);
+      await knex('arms_length_body').insert(expectedAlbsWithName);
 
       const getResult = await store.get('12345');
 
@@ -175,26 +91,7 @@ describe('armsLengthBodyStore', () => {
       const { knex, store } = await createDatabase(databaseId);
 
       const insertedIds = await knex('arms_length_body').insert(
-        [
-          {
-            creator: 'john',
-            owner: 'john',
-            title: 'ALB Example 1',
-            short_name: 'ALB 1',
-            description: 'This is an example ALB 1',
-            updated_by: 'john',
-            name: 'alb-example-1',
-          },
-          {
-            creator: 'john',
-            owner: 'johnD',
-            title: 'ALB Example 2',
-            short_name: 'ALB 2',
-            description: 'This is an example ALB 2',
-            updated_by: 'john',
-            name: 'alb-example-2',
-          },
-        ],
+        expectedAlbsWithName,
         ['id'],
       );
 
@@ -203,55 +100,26 @@ describe('armsLengthBodyStore', () => {
       const expectedUpdate: PartialArmsLengthBody = {
         id: test2Id,
         title: 'ALB Example',
-        short_name: 'ALB',
+        alias: 'ALB',
         description: 'This is an example ALB 2',
         url: 'http://www.example.com/index.html',
-        timestamp: new Date(2023, 12, 31, 15, 0, 0),
       };
 
       const updateResult = await store.update(expectedUpdate, 'test@test.com');
 
       expect(updateResult).toBeDefined();
       expect(updateResult.title).toBe(expectedUpdate.title);
-      expect(updateResult.short_name).toBe(expectedUpdate.short_name);
+      expect(updateResult.alias).toBe(expectedUpdate.alias);
       expect(updateResult.url).toBe(expectedUpdate.url);
     },
   );
-
+  
   it.each(databases.eachSupportedId())(
     'should not update a non-existent ALB',
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
 
-      await knex('arms_length_body').insert([
-        {
-          creator: 'john',
-          owner: 'john',
-          title: 'ALB Example 1',
-          short_name: 'ALB 1',
-          description: 'This is an example ALB 1',
-          updated_by: 'john',
-          name: 'alb-example-1',
-        },
-        {
-          creator: 'john',
-          owner: 'johnD',
-          title: 'ALB Example 2',
-          short_name: 'ALB 2',
-          description: 'This is an example ALB 2',
-          updated_by: 'john',
-          name: 'alb-example-2',
-        },
-        {
-          creator: 'john',
-          owner: 'john',
-          title: 'ALB Example 3',
-          short_name: 'ALB 3',
-          description: 'This is an example ALB 3',
-          updated_by: 'john',
-          name: 'alb-example-3',
-        },
-      ]);
+      await knex('arms_length_body').insert(expectedAlbsWithName);
 
       await expect(
         async () =>
@@ -261,12 +129,33 @@ describe('armsLengthBodyStore', () => {
               creator: 'n/a',
               owner: 'n/a',
               title: 'Non-existent ALB',
-              short_name: 'Non-existent ALB',
+              alias: 'Non-existent ALB',
               name: 'non-existent-alb',
               description: 'n/a',
             },
             'test@test.com',
           ),
+      ).rejects.toThrow(NotFoundError);
+    },
+  );
+
+  it.each(databases.eachSupportedId())(
+    'should throw an error if existing ALB id is undefined',
+    async databaseId => {
+      const { knex, store } = await createDatabase(databaseId);
+
+      await knex('arms_length_body').insert(expectedAlbsWithName);
+      await store.getAll();
+      const updateWithoutId = {
+        creator: 'n/a',
+        owner: 'n/a',
+        title: 'Non-existent ALB',
+        alias: 'Non-existent ALB',
+        name: 'non-existent-alb',
+        description: 'n/a',
+      };
+      await expect(
+        async () => await store.update(updateWithoutId, 'test@test.com'),
       ).rejects.toThrow(NotFoundError);
     },
   );

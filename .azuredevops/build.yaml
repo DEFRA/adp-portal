@@ -42,9 +42,8 @@ extends:
   parameters:
     deployFromFeature: ${{ parameters.deployFromFeature }}
     programmeName: "adp"
-    appName: 'adp-portal'
+    appName: 'adp-portal-web'
     privateAgentName: ''
-    containerAppName: 'ssvadpinfca3401-portal-web'
     deployConfigOnly: ${{ parameters.deployConfigOnly }}
     appBuildConfig:
       appFrameworkType: "nodejs"  
@@ -56,4 +55,4 @@ extends:
     appDeployConfig:
       filepath: ".azuredevops/backstage.yaml"  
       variableGroups:
-        - adp-portal-<environment>
+        - adp-portal-web-<environment>

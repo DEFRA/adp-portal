@@ -6,8 +6,4 @@
  */
 
 export * from './permissions';
-
-export type {
-    ArmsLengthBody, 
-
-} from './types/datamodel'
+export * from './types/datamodel'
