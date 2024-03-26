@@ -7,7 +7,7 @@ import express from 'express';
 import request from 'supertest';
 import { createAlbRouter } from './armsLengthBodyRouter';
 import { ConfigReader } from '@backstage/config';
-import { getCurrentUsername , checkForDuplicateTitle, getOwner} from '../utils';
+import { getCurrentUsername, checkForDuplicateTitle, getOwner } from '../utils';
 
 describe('createRouter', () => {
   let app: express.Express;
@@ -67,10 +67,17 @@ describe('createRouter', () => {
     });
   });
 
+  describe('GET /armsLengthBodyNames', () => {
+    it('returns ok', async () => {
+      const response = await request(app).get('/armsLengthBodyNames');
+      expect(response.status).toEqual(200);
+    });
+  });
+
   describe('POST /armsLengthBody', () => {
     it('returns ok', async () => {
       mockIdentityApi.getIdentity.mockResolvedValue({
-        identity: { userEntityRef: 'user:default/johndoe'},
+        identity: { userEntityRef: 'user:default/johndoe' },
       });
       const creator = await getCurrentUsername(
         mockIdentityApi,
@@ -84,6 +91,7 @@ describe('createRouter', () => {
         alias: 'ALB',
         description: 'This is an example ALB',
       };
+
       const getExistingData = await request(app).get('/armsLengthBody');
       const checkDuplicate = await checkForDuplicateTitle(
         getExistingData.body,
@@ -94,7 +102,9 @@ describe('createRouter', () => {
         .send(expectedALB);
       expect(response.status).toEqual(201);
       expect(checkDuplicate).toBe(false);
-    },6000);
+      const getAlbById = await request(app).get(`/armsLengthBody/${response.body.id}`);
+      expect(getAlbById.status).toEqual(200);
+    }, 6000);
 
     it('returns Error', async () => {
       const invalidALB = {
@@ -105,7 +115,7 @@ describe('createRouter', () => {
         .post('/armsLengthBody')
         .send(invalidALB);
       expect(response.status).toEqual(400);
-    },6000);
+    }, 6000);
   });
 
   describe('POST /armsLengthBody', () => {
@@ -120,7 +130,7 @@ describe('createRouter', () => {
         .send(expectedALB);
       expect(response.status).toEqual(406);
       expect(response.text).toEqual('{"error":"ALB title already exists"}');
-    },6000);
+    }, 6000);
   });
 
   describe('PATCH /armsLengthBody', () => {
@@ -156,7 +166,7 @@ describe('createRouter', () => {
       const patchRequest = await request(app)
         .patch('/armsLengthBody')
         .send(updatedALB);
-      expect(patchRequest.status).toEqual(204);
+      expect(patchRequest.status).toEqual(200);
       const getUpdatedtData = await request(app).get('/armsLengthBody');
       const updatedData = getUpdatedtData.body.find(
         (e: { title: string }) => e.title === 'Test ALB updated',

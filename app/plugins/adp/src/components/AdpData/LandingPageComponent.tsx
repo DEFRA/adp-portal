@@ -38,7 +38,7 @@ export const LandingPageComponent = () => (
           cardTitle="Delivery Programmes"
           cardSubTitle="ADP"
           cardText="Delivery Programmes coordinate and oversee multiple related delivery teams or projects to realise outcomes and benefits related to a strategic objective set by DEFRA or an Arms Length Body. Each delivery programme may contain multiple delivery teams."
-          pathToView="/"
+          pathToView="/deliveryprogramme"
         />
         <CardTemplate
           cardTitle="Delivery Team"

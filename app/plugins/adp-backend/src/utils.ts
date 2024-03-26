@@ -42,18 +42,6 @@ export function getOwner(options: AlbRouterOptions): string {
   return owner;
 }
 
-export type catalogType = [
-  {
-    metadata: {
-      name: string;
-      annotations: {
-        'microsoft.com/email': string;
-        'graph.microsoft.com/user-id': string;
-      };
-    };
-  },
-];
-
 export async function addProgrammeManager(
   programmeManagers: ProgrammeManager[],
   deliveryProgrammeId: string,
@@ -102,28 +90,32 @@ export async function getProgrammeManagerDetails(
   aad_entity_ref_id: string,
   catalog: Entity[],
 ) {
-  const findManagerById = catalog.find(
-    object =>
-      object.metadata.annotations!['graph.microsoft.com/user-id'] ===
-      aad_entity_ref_id,
-  );
+  const findManagerById = catalog.find(object => {
+    const userId = object.metadata.annotations!['graph.microsoft.com/user-id'];
+    return userId === aad_entity_ref_id;
+  });
+
+  interface ICatalog {
+    apiVersion: string;
+    kind: string;
+    metadata: {
+      name: string;
+      annotations: {
+        'graph.microsoft.com/user-id': string;
+        'microsoft.com/email': string;
+      };
+    };
+    spec: {
+      profile: {
+        displayName: string;
+      };
+    };
+  }
+
   if (findManagerById !== undefined) {
-    const metadataName = findManagerById.metadata.name;
-    const name = metadataName
-      .replace(/^user:default\//, '')
-      .replace(/_defra.*$/, '')
-      .replace(/[\._]/g, ' ')
-      .replace(/onmicrosoft.*$/, '')
-      .trim();
-
-    const managerName = name
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-
-    const managerEmail =
-      findManagerById.metadata.annotations!['microsoft.com/email'];
-
+    const managerById = findManagerById as ICatalog;
+    const managerName = managerById.spec.profile.displayName;
+    const managerEmail = managerById.metadata.annotations['microsoft.com/email'];
     return { name: managerName, email: managerEmail };
   } else {
     throw new NotFoundError(`Could not find Programme Managers details`);

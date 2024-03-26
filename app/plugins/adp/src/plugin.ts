@@ -26,3 +26,13 @@ export const AlbViewPage = adpPlugin.provide(
     mountPoint: rootRouteRef,
   }),
 );
+
+export const DeliveryProgrammeViewPage = adpPlugin.provide(
+  createRoutableExtension({
+    name: 'DeliveryProgrammeViewPage',
+    component: () =>
+      import('./components/DeliveryProgramme/DeliveryProgrammeViewPageComponent').then(m => m.DeliveryProgrammeViewPageComponent),
+    mountPoint: rootRouteRef,
+  }),
+);
+

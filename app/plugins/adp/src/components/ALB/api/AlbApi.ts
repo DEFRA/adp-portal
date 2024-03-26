@@ -9,4 +9,5 @@ export interface ArmsLengthBodyApi {
   getArmsLengthBodies(): Promise<ArmsLengthBody[]>;
   updateArmsLengthBody(data: any): Promise<ArmsLengthBody[]>;
   createArmsLengthBody(data: any): Promise<ArmsLengthBody[]>;
+  getArmsLengthBodyNames(): Promise<Record<string,string>>
 }

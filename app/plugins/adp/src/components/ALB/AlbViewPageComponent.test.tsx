@@ -34,18 +34,20 @@ const mockTableData = [
   {
     id: '1',
     title: 'ALB 1',
-    short_name: 'ALB1',
+    alias: 'ALB1',
     description: 'Description 1',
     url: 'http://alb1.com',
-    timestamp: '2021-01-01T00:00:00Z',
+    created_at: '2021-01-01T00:00:00Z',
+    updated_at: '2021-01-01T00:00:00Z',
   },
   {
     id: '2',
     title: 'ALB 2',
-    short_name: 'ALB2',
+    alias: 'ALB2',
     description: 'Description 2',
     url: 'http://alb2.com',
-    timestamp: '2021-01-02T00:00:00Z',
+    created_at: '2021-01-02T00:00:00Z',
+    updated_at: '2021-01-02T00:00:00Z',
   },
 ];
 
@@ -106,7 +108,9 @@ describe('AlbViewPageComponent', () => {
       expect(
         rendered.findByText('Arms Length Bodies'),
       ).resolves.toBeInTheDocument();
-      expect(mockErrorApi.post).toHaveBeenCalledTimes(1);
+      expect(mockErrorApi.post).toHaveBeenCalledWith(
+        expect.objectContaining({ message: 'Cannot fetch ALB' }),
+      );
     });
   });
 
@@ -130,7 +134,7 @@ describe('AlbViewPageComponent', () => {
     });
 
     act(() => {
-      fireEvent.click(rendered.getByTestId('edit-modal-cancel-button'));
+      fireEvent.click(rendered.getByTestId('actions-modal-cancel-button'));
     });
 
     await waitFor(() => {
@@ -157,18 +161,20 @@ describe('AlbViewPageComponent', () => {
       {
         id: '1',
         title: 'ALB 1 edited',
-        short_name: 'ALB1',
+        alias: 'ALB1',
         description: 'Description 1',
         url: 'http://alb1.com',
-        timestamp: '2021-01-01T00:00:00Z',
+        created_at: '2021-01-01T00:00:00Z',
+        updated_at: '2021-01-01T00:00:00Z',
       },
       {
         id: '2',
         title: 'ALB 2',
-        short_name: 'ALB2',
+        alias: 'ALB2',
         description: 'Description 2',
         url: 'http://alb2.com',
-        timestamp: '2021-01-02T00:00:00Z',
+        created_at: '2021-01-02T00:00:00Z',
+        updated_at: '2021-01-02T00:00:00Z',
       },
     ];
     mockUpdateArmsLengthBody.mockResolvedValue(updatedTableData);
@@ -184,7 +190,7 @@ describe('AlbViewPageComponent', () => {
     });
 
     act(() => {
-      fireEvent.click(rendered.getByTestId('edit-modal-update-button'));
+      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
     });
     mockGetArmsLengthBodies.mockResolvedValue(updatedTableData);
 
@@ -200,18 +206,18 @@ describe('AlbViewPageComponent', () => {
       {
         id: '1',
         title: 'ALB 2',
-        short_name: 'ALB1',
+        alias: 'ALB1',
         description: 'Description 1',
         url: 'http://alb1.com',
-        timestamp: '2021-01-01T00:00:00Z',
+        created_at: '2021-01-01T00:00:00Z',
       },
       {
         id: '2',
         title: 'ALB 2',
-        short_name: 'ALB2',
+        alias: 'ALB2',
         description: 'Description 2',
         url: 'http://alb2.com',
-        timestamp: '2021-01-02T00:00:00Z',
+        created_at: '2021-01-02T00:00:00Z',
       },
     ];
     mockUpdateArmsLengthBody.mockResolvedValue(updatedTableData);
@@ -227,7 +233,7 @@ describe('AlbViewPageComponent', () => {
     });
 
     act(() => {
-      fireEvent.click(rendered.getByTestId('edit-modal-update-button'));
+      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
     });
     mockGetArmsLengthBodies.mockResolvedValue(updatedTableData);
 
@@ -244,18 +250,18 @@ describe('AlbViewPageComponent', () => {
       {
         id: '1',
         title: 'ALB 1',
-        short_name: 'ALB1',
+        alias: 'ALB1',
         description: 'Description 1',
         url: 'http://alb1.com',
-        timestamp: '2021-01-01T00:00:00Z',
+        created_at: '2021-01-01T00:00:00Z',
       },
       {
         id: '2',
         title: 'ALB 2',
-        short_name: 'ALB2',
+        alias: 'ALB2',
         description: 'Description 2',
         url: 'http://alb2.com',
-        timestamp: '2021-01-02T00:00:00Z',
+        created_at: '2021-01-02T00:00:00Z',
       },
     ];
     mockUpdateArmsLengthBody.mockRejectedValue(new Error('Update failed'));
@@ -271,7 +277,7 @@ describe('AlbViewPageComponent', () => {
     });
 
     act(() => {
-      fireEvent.click(rendered.getByTestId('edit-modal-update-button'));
+      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
     });
     mockGetArmsLengthBodies.mockResolvedValue(updatedTableData);
 

@@ -101,7 +101,7 @@ export async function createAlbRouter(
 
   const router = Router();
   router.use(express.json());
-  
+
   router.get('/health', (_, response) => {
     logger.info('PONG!');
     response.json({ status: 'ok' });
@@ -115,6 +115,18 @@ export async function createAlbRouter(
   router.get('/armsLengthBody/:id', async (_req, res) => {
     const data = await armsLengthBodiesStore.get(_req.params.id);
     res.json(data);
+  });
+
+  router.get('/armsLengthBodyNames', async (_req, res) => {
+    const armsLengthBodies = await armsLengthBodiesStore.getAll();
+    const armsLengthBodiesNames = armsLengthBodies.reduce<
+      Record<string, string>
+    >((acc, alb) => {
+      acc[alb.id] = alb.title;
+      return acc;
+    }, {});
+
+    res.json(armsLengthBodiesNames);
   });
 
   router.post('/armsLengthBody', async (req, res) => {
@@ -146,12 +158,16 @@ export async function createAlbRouter(
 
   router.patch('/armsLengthBody', async (req, res) => {
     try {
-      if (!isArmsLengthBodyUpdateRequest(req.body)) {
+      const requestBody = { ...req.body };
+      delete requestBody.tableData;
+
+      if (!isArmsLengthBodyUpdateRequest(requestBody)) {
         throw new InputError('Invalid payload');
       }
-      const allArmsLengthBodies: ArmsLengthBody[] = await armsLengthBodiesStore.getAll();
-      const currentData = await armsLengthBodiesStore.get(req.body.id)
-      const updatedTitle = req.body?.title;
+      const allArmsLengthBodies: ArmsLengthBody[] =
+        await armsLengthBodiesStore.getAll();
+      const currentData = await armsLengthBodiesStore.get(requestBody.id);
+      const updatedTitle = requestBody?.title;
       const currentTitle = currentData?.title;
       const isTitleChanged = updatedTitle && currentTitle !== updatedTitle;
 
@@ -167,10 +183,10 @@ export async function createAlbRouter(
       }
       const creator = await getCurrentUsername(identity, req);
       const armsLengthBody = await armsLengthBodiesStore.update(
-        req.body,
+        requestBody,
         creator,
       );
-      res.status(204).json(armsLengthBody);
+      res.status(200).json(armsLengthBody);
     } catch (error) {
       throw new InputError('Error');
     }

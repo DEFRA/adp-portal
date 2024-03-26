@@ -14,9 +14,9 @@ export const albFormFields = [
       },
     },
     {
-      label: 'Short Name',
-      name: 'short_name',
-      helperText: 'Optional - a short form name to identify the body',
+      label: 'Alias',
+      name: 'alias',
+      helperText: 'Optional - an alias to identify the body',
     },
     {
       label: 'Website',

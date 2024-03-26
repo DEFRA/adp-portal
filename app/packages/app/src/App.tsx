@@ -61,6 +61,8 @@ import { FluxRuntimePage } from '@weaveworksoss/backstage-plugin-flux';
 import styles from 'style-loader!css-loader?{"modules": {"auto": true}}!sass-loader?{"sassOptions": {"quietDeps": true}}!./style.module.scss';
 import { AdpPage } from '@internal/plugin-adp';
 import { AlbViewPageComponent } from '@internal/plugin-adp/src/components/ALB/AlbViewPageComponent';
+import { DeliveryProgrammeViewPageComponent } from '@internal/plugin-adp/src/components/DeliveryProgramme/DeliveryProgrammeViewPageComponent';
+
 
 const lightTheme = createUnifiedTheme({
   palette: {
@@ -221,6 +223,7 @@ const routes = (
     <Route path="/" element={<Navigate to="catalog" />} />
     <Route path="/catalog" element={<CatalogIndexPage />} />
     <Route path="/alb" element={<AlbViewPageComponent />} />
+    <Route path="/deliveryprogramme" element={<DeliveryProgrammeViewPageComponent />} />
     <Route
       path="/catalog/:namespace/:kind/:name"
       element={<CatalogEntityPage />}

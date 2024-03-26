@@ -18,7 +18,6 @@ type Row = {
   updated_at: Date;
 };
 
-
 export type PartialArmsLengthBody = Partial<ArmsLengthBody>;
 
 export class ArmsLengthBodyStore {
@@ -38,7 +37,7 @@ export class ArmsLengthBodyStore {
         'updated_at',
       )
       .orderBy('created_at');
- 
+
     return ArmsLengthBodies.map(row => ({
       creator: row.creator,
       owner: row.owner,
@@ -49,10 +48,12 @@ export class ArmsLengthBodyStore {
       name: row.name,
       id: row.id,
       created_at: new Date(row.created_at),
-      updated_at: row.updated_at,
+      updated_at: row.updated_at
+      ? new Date(row?.updated_at)
+      : new Date(row.created_at),
     }));
   }
- 
+
   async get(id: string): Promise<ArmsLengthBody | null> {
     const row = await this.client<Row>(TABLE_NAME)
       .where('id', id)
@@ -69,7 +70,7 @@ export class ArmsLengthBodyStore {
         'updated_at',
       )
       .first();
- 
+
     return row
       ? {
           creator: row.creator,
@@ -82,10 +83,12 @@ export class ArmsLengthBodyStore {
           id: row.id,
           created_at: new Date(row.created_at),
           updated_at: row.updated_at
+          ? new Date(row?.updated_at)
+          : new Date(row.created_at),
         }
       : null;
   }
- 
+
   async add(
     armsLengthBody: Omit<ArmsLengthBody, 'id' | 'created_at' | 'updated_at'>,
     creator: string,
@@ -104,13 +107,13 @@ export class ArmsLengthBodyStore {
       },
       ['id', 'created_at', 'updated_at'],
     );
- 
+
     if (insertResult.length < 1) {
       throw new Error(
         `Could not insert Arms Length Body ${armsLengthBody.title}`,
       );
     }
-    
+
     return {
       ...armsLengthBody,
       id: insertResult[0].id,
@@ -118,12 +121,11 @@ export class ArmsLengthBodyStore {
       updated_at: new Date(insertResult[0].updated_at),
     };
   }
- 
+
   async update(
     armsLengthBody: Omit<PartialArmsLengthBody, 'updated_at'>,
     updatedBy: string,
   ): Promise<ArmsLengthBody> {
-
     if (armsLengthBody.id === undefined) {
       throw new NotFoundError(
         `Could not find Arms Length Body with ID ${armsLengthBody.id}`,
@@ -137,9 +139,8 @@ export class ArmsLengthBodyStore {
         `Could not find Arms Length Body with ID ${armsLengthBody.id}`,
       );
     }
- 
-    const updated = new Date();
 
+    const updated = new Date();
 
     const updatedData: Partial<ArmsLengthBody> = { ...armsLengthBody };
 
@@ -158,4 +159,3 @@ export class ArmsLengthBodyStore {
     return { ...existingALB, ...updatedData, updated_at: updated };
   }
 }
- 

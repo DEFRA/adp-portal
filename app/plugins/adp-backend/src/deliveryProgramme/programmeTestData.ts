@@ -53,7 +53,7 @@ export const expectedProgrammeDataWithoutManager = {
   name: 'test-title-expectedprogrammewithoutmanager',
 };
 
-export const exampleCatalog: Entity[] = [
+export const catalogTestData: Entity[] = [
   {
     apiVersion: 'backstage.io/v1alpha1',
     kind: 'Component',
@@ -64,6 +64,11 @@ export const exampleCatalog: Entity[] = [
         'graph.microsoft.com/user-id': 'a9dc2414-0626-43d2-993d-a53aac4d73421',
       },
     },
+    spec: {
+      profile: {
+        displayName: 'test1'
+      }
+    }
   },
   {
     apiVersion: 'backstage.io/v1alpha1',
@@ -75,6 +80,11 @@ export const exampleCatalog: Entity[] = [
         'graph.microsoft.com/user-id': 'a9dc2414-0626-43d2-993d-a53aac4d73422',
       },
     },
+    spec: {
+      profile: {
+        displayName: 'test2'
+      }
+    }
   },
   {
     apiVersion: 'backstage.io/v1alpha1',
@@ -86,6 +96,11 @@ export const exampleCatalog: Entity[] = [
         'graph.microsoft.com/user-id': 'a9dc2414-0626-43d2-993d-a53aac4d73423',
       },
     },
+    spec: {
+      profile: {
+        displayName: 'test3'
+      }
+    }
   },
   {
     apiVersion: 'backstage.io/v1alpha1',
@@ -97,5 +112,10 @@ export const exampleCatalog: Entity[] = [
         'graph.microsoft.com/user-id': 'a9dc2414-0626-43d2-993d-a53aac4d73424',
       },
     },
+    spec: {
+      profile: {
+        displayName: 'test4'
+      }
+    }
   }
 ];
