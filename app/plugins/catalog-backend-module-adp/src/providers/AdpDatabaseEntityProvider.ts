@@ -186,7 +186,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
       logger.info(
         `Read ${
           entities?.length ?? 0
-        } in ${readDuration} seconds. Committing...`,
+        } ADP entities in ${readDuration} seconds. Committing...`,
       );
       return { markCommitComplete };
     }
@@ -194,7 +194,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     function markCommitComplete(entities: Entity[]) {
       const commitDuration = ((Date.now() - timestamp) / 1000).toFixed(1);
       logger.info(
-        `Committed ${entities?.length ?? 0} in ${commitDuration} seconds.`,
+        `Committed ${entities?.length ?? 0} ADP entities in ${commitDuration} seconds.`,
       );
     }
 

@@ -34,7 +34,6 @@ export async function createAlbRouter(
 
   const getAllArmsLengthBodies = await armsLengthBodiesStore.getAll();
 
-  // TODO: Migrate seed data to Knex seed files
   if (getAllArmsLengthBodies.length == 0) {
     armsLengthBodiesStore.add(
       {
