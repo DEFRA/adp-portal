@@ -37,7 +37,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
 
     // exempting admins from permission checks as they're allowed to do everything
     if (user != null && this.rbacUtilites.isInPlatformAdminGroup(user)) {
-      this.logger.info(`This is a platform admin user with the ad group`);
+      this.logger.debug(`This is a platform admin user with the ad group`);
       return { result: AuthorizeResult.ALLOW };
     }
 
@@ -50,7 +50,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       user != null &&
       this.rbacUtilites.isInProgrammeAdminGroup(user)
     ) {
-      this.logger.info(
+      this.logger.debug(
         'This is a programme admin user with the ad group: permission catalogEntityCreatePermission',
       );
       return { result: AuthorizeResult.ALLOW };
@@ -62,7 +62,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       user != null &&
       this.rbacUtilites.isInProgrammeAdminGroup(user)
     ) {
-      this.logger.info(
+      this.logger.debug(
         'This is a programme admin user with the ad group: permission adpProgrammeCreatePermission',
       );
       return { result: AuthorizeResult.ALLOW };

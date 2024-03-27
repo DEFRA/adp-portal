@@ -1,6 +1,6 @@
-import { defaultAlbGroupTransformer } from './AlbTransformers';
+import { armsLengthBodyGroupTransformer } from './armsLengthBodyGroupTransformer';
 
-describe('defaultAlbGroupTransformer', () => {
+describe('armsLengthBodyGroupTransformer', () => {
   it('should transform valid ArmsLengthBody to GroupEntity', async () => {
     const armsLengthBody = {
       creator: 'ADP',
@@ -27,11 +27,9 @@ describe('defaultAlbGroupTransformer', () => {
           'backstage.io/managed-by-location':
             'adp:arms-length-body\\environment-agency',
           'backstage.io/managed-by-origin-location':
-            '`adp:arms-length-body\\${armsLengthBody.name}`',
+            'adp:arms-length-body\\environment-agency',
         },
-        links: [
-          {url: 'https://www.example.uk/'}
-        ]
+        links: [{ url: 'https://www.example.uk/' }],
       },
       spec: {
         type: 'arms-length-body',
@@ -39,7 +37,7 @@ describe('defaultAlbGroupTransformer', () => {
       },
     };
 
-    const result = await defaultAlbGroupTransformer(armsLengthBody);
+    const result = await armsLengthBodyGroupTransformer(armsLengthBody);
     expect(result).toEqual(expectedGroupEntity);
   });
 });

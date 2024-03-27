@@ -42,22 +42,23 @@ export async function createAlbRouter(
         title: 'Environment Agency',
         alias: 'EA',
         name: 'environment-agency',
-        description: '',
+        description: 'We work to create better places for people and wildlife, and support sustainable development.',
+        url: 'https://www.gov.uk/government/organisations/environment-agency'
       },
-      'Seed',
-      'Seed',
+      'ADP',
+      'ADP',
     );
     armsLengthBodiesStore.add(
       {
         creator: 'ADP',
         owner: 'ADP',
-        title: 'Animal and Plant Health',
+        title: 'Animal and Plant Health Agency',
         alias: 'APHA',
-        name: 'animal-and-plant-health',
-        description: '',
+        name: 'animal-and-plant-health-agency',
+        description: 'We work to safeguard animal and plant health for the benefit of people, the environment and the economy.',
       },
-      'Seed',
-      'Seed',
+      'ADP',
+      'ADP',
     );
     armsLengthBodiesStore.add(
       {
@@ -66,10 +67,10 @@ export async function createAlbRouter(
         title: 'Rural Payments Agency',
         alias: 'RPA',
         name: 'rural-payments-agency',
-        description: '',
+        description: 'We pay out over £2 billion each year to support a thriving farming and food sector, supporting agricultural and rural communities to create a better place to live.',
       },
-      'Seed',
-      'Seed',
+      'ADP',
+      'ADP',
     );
     armsLengthBodiesStore.add(
       {
@@ -78,22 +79,22 @@ export async function createAlbRouter(
         title: 'Natural England',
         alias: 'NE',
         name: 'natural-england',
-        description: '',
+        description: 'We\'re the government\'s adviser for the natural environment in England. We help to protect and restore our natural world.',
       },
-      'Seed',
-      'Seed',
+      'ADP',
+      'ADP',
     );
     armsLengthBodiesStore.add(
       {
         creator: 'ADP',
         owner: 'ADP',
-        title: 'Marine and Maritime',
+        title: 'Marine Management Organisation',
         alias: 'MMO',
-        name: 'marine-and-maritime',
-        description: '',
+        name: 'marine-management-organisation',
+        description: 'The Marine Management Organisation (MMO) was created in 2009 by the Marine and Coastal Access Act.',
       },
-      'Seed',
-      'Seed',
+      'ADP',
+      'ADP',
     );
   }
 

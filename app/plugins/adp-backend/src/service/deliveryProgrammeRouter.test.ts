@@ -15,19 +15,10 @@ import {
   expectedProgrammeDataWithManager,
 } from '../deliveryProgramme/programmeTestData';
 import { albRequiredFields } from '../armsLengthBody/albTestData';
-import {
-  CatalogRequestOptions,
-  GetEntitiesRequest,
-} from '@backstage/catalog-client';
 
-let catalogRequestOptions: CatalogRequestOptions;
 jest.mock('@backstage/catalog-client', () => ({
   CatalogClient: jest.fn().mockImplementation(() => ({
-    getEntities: async (
-      request: GetEntitiesRequest,
-      options: CatalogRequestOptions,
-    ) => {
-      catalogRequestOptions = options;
+    getEntities: async () => {
       return {
         items: catalogTestData,
       };

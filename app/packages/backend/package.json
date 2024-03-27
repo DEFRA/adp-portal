@@ -41,6 +41,7 @@
     "@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions": "^0.1.0",
     "@internal/plugin-adp-backend": "^0.1.0",
     "@internal/plugin-adp-common": "^0.1.0",
+    "@internal/plugin-catalog-backend-module-adp": "^0.1.0",
     "@roadiehq/scaffolder-backend-module-http-request": "^4.1.4",
     "app": "link:../app",
     "better-sqlite3": "^9.0.0",
