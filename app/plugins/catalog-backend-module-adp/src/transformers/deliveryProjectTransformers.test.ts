@@ -1,7 +1,7 @@
-import { defaultProjectGroupTransformer } from './deliveryProjectTransformer';
+import { deliveryProjectGroupTransformer } from './deliveryProjectTransformer';
 
-describe('defaultProjectGroupTransformer', () => {
-  it('should transform valid DeliveryProject to GroupEntity', async () => {
+describe('deliveryProjectGroupTransformer', () => {
+  it('should transform a valid DeliveryProject to a GroupEntity', async () => {
     const deliveryProject = {
       title: 'Test title 1',
       alias: 'Test Alias',
@@ -27,8 +27,7 @@ describe('defaultProjectGroupTransformer', () => {
         annotations: {
           'backstage.io/managed-by-location':
             'adp:delivery-project\\test-title-1',
-          'backstage.io/managed-by-origin-location':
-            '`adp:delivery-project\\${deliveryProject.name}`',
+          'backstage.io/managed-by-origin-location': `adp:delivery-project\\${deliveryProject.name}`,
         },
         links: [{ url: 'https://www.example.uk/' }],
       },
@@ -38,7 +37,7 @@ describe('defaultProjectGroupTransformer', () => {
       },
     };
 
-    const result = await defaultProjectGroupTransformer(deliveryProject);
+    const result = await deliveryProjectGroupTransformer(deliveryProject);
     expect(result).toEqual(expectedGroupEntity);
   });
 });

@@ -13,7 +13,10 @@ export const armsLengthBodyGroupTransformer: ArmsLengthBodyGroupTransformer =
       kind: 'Group',
       metadata: {
         name: armsLengthBody.name,
-        title: createTransformerTitle(armsLengthBody.title, armsLengthBody.alias),
+        title: createTransformerTitle(
+          armsLengthBody.title,
+          armsLengthBody.alias,
+        ),
         tags: [],
         annotations: {
           'backstage.io/managed-by-location': `adp:arms-length-body\\${armsLengthBody.name}`,

@@ -7,23 +7,12 @@ import express from 'express';
 import request from 'supertest';
 import { createProjectRouter } from './deliveryProjectRouter';
 import { ConfigReader } from '@backstage/config';
-import {
-  expectedProjectDataWithName,
-} from '../deliveryProject/projectTestData';
-import {
-  CatalogRequestOptions,
-  GetEntitiesRequest,
-} from '@backstage/catalog-client';
+import { expectedProjectDataWithName } from '../deliveryProject/projectTestData';
 import { InputError } from '@backstage/errors';
 
-let catalogRequestOptions: CatalogRequestOptions;
 jest.mock('@backstage/catalog-client', () => ({
   CatalogClient: jest.fn().mockImplementation(() => ({
-    getEntities: async (
-      request: GetEntitiesRequest,
-      options: CatalogRequestOptions,
-    ) => {
-      catalogRequestOptions = options;
+    getEntities: async () => {
       return {
         items: [
           {

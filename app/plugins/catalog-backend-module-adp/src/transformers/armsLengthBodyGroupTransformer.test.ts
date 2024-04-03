@@ -1,7 +1,7 @@
 import { armsLengthBodyGroupTransformer } from './armsLengthBodyGroupTransformer';
 
 describe('armsLengthBodyGroupTransformer', () => {
-  it('should transform valid ArmsLengthBody to GroupEntity', async () => {
+  it('should transform a valid ArmsLengthBody to a GroupEntity', async () => {
     const armsLengthBody = {
       creator: 'ADP',
       owner: 'ADP',

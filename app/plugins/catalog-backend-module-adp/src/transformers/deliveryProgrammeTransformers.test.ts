@@ -1,7 +1,7 @@
-import { defaultProgrammeGroupTransformer } from './deliveryProgrammeTransformers';
+import { deliveryProgrammeGroupTransformer } from './deliveryProgrammeTransformers';
 
-describe('defaultProgrammeGroupTransformer', () => {
-  it('should transform valid ArmsLengthBody to GroupEntity', async () => {
+describe('deliveryProgrammeGroupTransformer', () => {
+  it('should transform a valid ArmsLengthBody to a GroupEntity', async () => {
     const deliveryProgramme = {
       programme_managers: [],
       title: 'Test title 1',
@@ -29,7 +29,7 @@ describe('defaultProgrammeGroupTransformer', () => {
           'backstage.io/managed-by-location':
             'adp:delivery-programme\\test-title-1',
           'backstage.io/managed-by-origin-location':
-            '`adp:delivery-programme\\${deliveryProgramme.name}`',
+            `adp:delivery-programme\\${deliveryProgramme.name}`,
         },
         links: [{ url: 'https://www.example.uk/' }],
       },
@@ -39,7 +39,7 @@ describe('defaultProgrammeGroupTransformer', () => {
       },
     };
 
-    const result = await defaultProgrammeGroupTransformer(deliveryProgramme);
+    const result = await deliveryProgrammeGroupTransformer(deliveryProgramme);
     expect(result).toEqual(expectedGroupEntity);
   });
 });
