@@ -29,7 +29,7 @@ describe('deliveryProgrammeGroupTransformer', () => {
           'backstage.io/managed-by-location':
             'adp:delivery-programme\\test-title-1',
           'backstage.io/managed-by-origin-location':
-            `adp:delivery-programme\\${deliveryProgramme.name}`,
+            `adp:delivery-programme\\test-title-1`,
         },
         links: [{ url: 'https://www.example.uk/' }],
       },
