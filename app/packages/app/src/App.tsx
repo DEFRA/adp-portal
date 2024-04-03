@@ -62,7 +62,7 @@ import styles from 'style-loader!css-loader?{"modules": {"auto": true}}!sass-loa
 import { AdpPage } from '@internal/plugin-adp';
 import { AlbViewPageComponent } from '@internal/plugin-adp/src/components/ALB/AlbViewPageComponent';
 import { DeliveryProgrammeViewPageComponent } from '@internal/plugin-adp/src/components/DeliveryProgramme/DeliveryProgrammeViewPageComponent';
-
+import { DeliveryProjectViewPageComponent } from '@internal/plugin-adp/src/components/DeliveryProject/DeliveryProjectViewPageComponent';
 
 const lightTheme = createUnifiedTheme({
   palette: {
@@ -224,6 +224,7 @@ const routes = (
     <Route path="/catalog" element={<CatalogIndexPage />} />
     <Route path="/alb" element={<AlbViewPageComponent />} />
     <Route path="/deliveryprogramme" element={<DeliveryProgrammeViewPageComponent />} />
+    <Route path="/deliveryproject" element={<DeliveryProjectViewPageComponent />} />
     <Route
       path="/catalog/:namespace/:kind/:name"
       element={<CatalogEntityPage />}

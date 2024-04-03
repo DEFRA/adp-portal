@@ -101,6 +101,7 @@ export const ActionsModal: FC<ActionsModalProps> = ({
       helperText={errors[field.name]?.message ?? field.helperText}
       multiline={field.multiline}
       maxRows={field.maxRows}
+      data-testid={field.name}
     />
   );
 
@@ -152,9 +153,14 @@ export const ActionsModal: FC<ActionsModalProps> = ({
       }
       error={!!errors[field.name]}
       helperText={errors[field.name]?.message ?? field.helperText}
+      data-testid={field.name}
     >
       {field.options?.map((option: any) => (
-        <MenuItem key={option.value} value={option.value}>
+        <MenuItem
+          key={option.value}
+          value={option.value}
+          data-testid={'select-option-' + field.name + '-' + option.value}
+        >
           {option.label}
         </MenuItem>
       ))}

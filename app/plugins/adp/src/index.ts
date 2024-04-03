@@ -1,1 +1,7 @@
-export { adpPlugin, AdpPage, AlbViewPage } from './plugin';
+export {
+  adpPlugin,
+  AdpPage,
+  AlbViewPage,
+  DeliveryProjectViewPage,
+  DeliveryProgrammeViewPage,
+} from './plugin';

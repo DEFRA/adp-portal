@@ -1,36 +1,51 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "type": "node",
-        "name": "Debug Jest tests",
-        "request": "launch",
-        "args": [
-          "repo",
-          "test",
-          "--runInBand",
-          "--watchAll=false"
-        ],
-        "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen",
-        "program": "node_modules/.bin/backstage-cli",
-        "cwd": "${workspaceFolder}/app"
-      },
-      {
-        "type": "node",
-        "name": "Debug Jest tests - Custom Actions",
-        "request": "launch",
-        "args": [
-          "repo",
-          "test",
-          "--runInBand",
-          "--watchAll=false",
-          "--coverage"
-        ],
-        "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen",
-        "program": "node_modules/.bin/backstage-cli",
-        "cwd": "${workspaceFolder}/app/plugins/scaffolder-backend-module-adp-scaffolder-actions"
-      }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "name": "Debug Jest tests",
+      "request": "launch",
+      "args": [
+        "repo",
+        "test",
+        "--runInBand",
+        "--watchAll=false"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "program": "node_modules/.bin/backstage-cli",
+      "cwd": "${workspaceFolder}/app"
+    },
+    {
+      "type": "node",
+      "name": "Debug Jest tests-adp",
+      "request": "launch",
+      "args": [
+        "repo",
+        "test",
+        "--runInBand",
+        "--watchAll=false"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "program": "node_modules/.bin/backstage-cli",
+      "cwd": "${workspaceFolder}/app/plugins/adp"
+    },
+    {
+      "type": "node",
+      "name": "Debug Jest tests - Custom Actions",
+      "request": "launch",
+      "args": [
+        "repo",
+        "test",
+        "--runInBand",
+        "--watchAll=false",
+        "--coverage"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "program": "node_modules/.bin/backstage-cli",
+      "cwd": "${workspaceFolder}/app/plugins/scaffolder-backend-module-adp-scaffolder-actions"
+    }
+  ]
 }

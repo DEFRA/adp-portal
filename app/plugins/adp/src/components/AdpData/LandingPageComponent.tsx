@@ -44,7 +44,7 @@ export const LandingPageComponent = () => (
           cardTitle="Delivery Team"
           cardSubTitle="ADP"
           cardText="Delivery Teams are responsible for creating and maintaining platform services to realise benefits and outcomes for delivery programmes through the Azure Developer Platform. Each delivery team must be part of a delivery programme and team members are able to scaffold platform services through this portal."
-          pathToView="/"
+          pathToView="/deliveryproject"
         />
       </ItemCardGrid>
     </Content>

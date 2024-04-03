@@ -6,4 +6,6 @@
  */
 
 export * from './permissions';
-export * from './types/datamodel'
+
+export type * from './types/datamodel';
+export type * from './types/delivery-project';

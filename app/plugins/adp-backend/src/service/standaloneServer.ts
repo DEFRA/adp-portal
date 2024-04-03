@@ -11,6 +11,7 @@ import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 import { createAlbRouter } from './armsLengthBodyRouter';
 import { createProgrammeRouter } from './deliveryProgrammeRouter';
 import { Router } from 'express';
+import { createProjectRouter } from './deliveryProjectRouter';
 
 export interface ServerOptions {
   port: number;
@@ -54,12 +55,22 @@ export async function startStandaloneServer(
       issuer: await discovery.getExternalBaseUrl('auth'),
     }),
     database,
-    discovery
+    discovery,
   });
-  
+
+  const deliveryProjectRouter = await createProjectRouter({
+    logger,
+    identity: DefaultIdentityClient.create({
+      discovery,
+      issuer: await discovery.getExternalBaseUrl('auth'),
+    }),
+    database,
+  });
+
   const router = Router();
   router.use(armsLengthBodyRouter);
   router.use(deliveryProgrammeRouter);
+  router.use(deliveryProjectRouter);
 
   let service = createServiceBuilder(module)
     .setPort(options.port)

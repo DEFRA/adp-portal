@@ -2,6 +2,7 @@ import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 import {
   createAlbRouter,
   createProgrammeRouter,
+  createProjectRouter,
 } from '@internal/plugin-adp-backend';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
@@ -28,12 +29,21 @@ export default async function createPlugin({
       issuer: await discovery.getExternalBaseUrl('auth'),
     }),
     database,
-    discovery
+    discovery,
+  });
+  const deliveryProjectRouter = await createProjectRouter({
+    logger,
+    identity: DefaultIdentityClient.create({
+      discovery,
+      issuer: await discovery.getExternalBaseUrl('auth'),
+    }),
+    database,
   });
 
   const combinedRouter = Router();
   combinedRouter.use(armsLengthBodyRouter);
   combinedRouter.use(deliveryProgrammeRouter);
+  combinedRouter.use(deliveryProjectRouter);
 
   return combinedRouter;
 }

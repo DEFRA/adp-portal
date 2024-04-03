@@ -1,6 +1,7 @@
 import {
   ArmsLengthBody,
   DeliveryProgramme,
+  DeliveryProject,
   ProgrammeManager,
 } from '@internal/plugin-adp-common';
 import { IdentityApi } from '@backstage/plugin-auth-node';
@@ -16,7 +17,7 @@ export function createName(name: string) {
 }
 
 export async function checkForDuplicateTitle(
-  store: DeliveryProgramme[] | ArmsLengthBody[],
+  store: DeliveryProgramme[] | ArmsLengthBody[] | DeliveryProject[],
   title: string,
 ): Promise<boolean> {
   title = title.trim().toLowerCase();
