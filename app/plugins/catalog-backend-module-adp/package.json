@@ -29,7 +29,7 @@
     "@backstage/backend-tasks": "^0.5.18",
     "@backstage/catalog-model": "^1.4.4",
     "@backstage/plugin-catalog-node": "^1.7.3",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.6.7",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
