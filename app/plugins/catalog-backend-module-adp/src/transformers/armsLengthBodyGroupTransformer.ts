@@ -26,7 +26,7 @@ export const armsLengthBodyGroupTransformer: ArmsLengthBodyGroupTransformer =
       },
       spec: {
         type: 'arms-length-body',
-        children: [],
+        children: armsLengthBody.children,
       },
     };
 

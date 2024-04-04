@@ -16,6 +16,7 @@ import {
   getCurrentUsername,
   getOwner,
 } from '../utils/utils';
+import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
 
 export interface AlbRouterOptions {
   logger: Logger;
@@ -35,6 +36,9 @@ export async function createAlbRouter(
   const armsLengthBodiesStore = new ArmsLengthBodyStore(
     await adpDatabase.get(),
   );
+  const deliveryProgrammStore = new DeliveryProgrammeStore(
+    await adpDatabase.get(),
+  );
 
   const getAllArmsLengthBodies = await armsLengthBodiesStore.getAll();
 
@@ -46,8 +50,10 @@ export async function createAlbRouter(
         title: 'Environment Agency',
         alias: 'EA',
         name: 'environment-agency',
-        description: 'We work to create better places for people and wildlife, and support sustainable development.',
-        url: 'https://www.gov.uk/government/organisations/environment-agency'
+        description:
+          'We work to create better places for people and wildlife, and support sustainable development.',
+        url: 'https://www.gov.uk/government/organisations/environment-agency',
+        children: [],
       },
       'ADP',
       'ADP',
@@ -59,7 +65,9 @@ export async function createAlbRouter(
         title: 'Animal and Plant Health Agency',
         alias: 'APHA',
         name: 'animal-and-plant-health-agency',
-        description: 'We work to safeguard animal and plant health for the benefit of people, the environment and the economy.',
+        description:
+          'We work to safeguard animal and plant health for the benefit of people, the environment and the economy.',
+        children: [],
       },
       'ADP',
       'ADP',
@@ -71,7 +79,9 @@ export async function createAlbRouter(
         title: 'Rural Payments Agency',
         alias: 'RPA',
         name: 'rural-payments-agency',
-        description: 'We pay out over £2 billion each year to support a thriving farming and food sector, supporting agricultural and rural communities to create a better place to live.',
+        description:
+          'We pay out over £2 billion each year to support a thriving farming and food sector, supporting agricultural and rural communities to create a better place to live.',
+        children: [],
       },
       'ADP',
       'ADP',
@@ -83,7 +93,9 @@ export async function createAlbRouter(
         title: 'Natural England',
         alias: 'NE',
         name: 'natural-england',
-        description: 'We\'re the government\'s adviser for the natural environment in England. We help to protect and restore our natural world.',
+        description:
+          "We're the government's adviser for the natural environment in England. We help to protect and restore our natural world.",
+        children: [],
       },
       'ADP',
       'ADP',
@@ -95,7 +107,9 @@ export async function createAlbRouter(
         title: 'Marine Management Organisation',
         alias: 'MMO',
         name: 'marine-management-organisation',
-        description: 'The Marine Management Organisation (MMO) was created in 2009 by the Marine and Coastal Access Act.',
+        description:
+          'The Marine Management Organisation (MMO) was created in 2009 by the Marine and Coastal Access Act.',
+        children: [],
       },
       'ADP',
       'ADP',
@@ -112,8 +126,20 @@ export async function createAlbRouter(
 
   router.get('/armsLengthBody', async (_req, res) => {
     try {
-      const data = await armsLengthBodiesStore.getAll();
-      res.json(data);
+      const albData = await armsLengthBodiesStore.getAll();
+      const programmeData = await deliveryProgrammStore.getAll();
+
+      for (const alb of albData) {
+        let albChildren = [];
+        for (const programme of programmeData) {
+          if (programme.arms_length_body_id === alb.id) {
+            albChildren.push(programme.name);
+            alb.children = albChildren;
+          }
+        }
+      }
+
+      res.json(albData);
     } catch (error) {
       const errMsg = (error as Error).message;
       logger.error('Error in retrieving arms length bodies: ', errMsg);

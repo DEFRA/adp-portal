@@ -13,6 +13,7 @@ describe('armsLengthBodyGroupTransformer', () => {
       id: '1234',
       created_at: new Date(),
       updated_at: new Date(),
+      children: ['test']
     };
 
     const expectedGroupEntity = {
@@ -33,7 +34,7 @@ describe('armsLengthBodyGroupTransformer', () => {
       },
       spec: {
         type: 'arms-length-body',
-        children: [],
+        children: ['test'],
       },
     };
 
