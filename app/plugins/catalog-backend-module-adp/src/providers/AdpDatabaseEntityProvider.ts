@@ -109,12 +109,15 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     const albEntities = await this.readArmsLengthBodies(logger);
     const programmeEntities = await this.readDeliveryProgrammes(logger);
     const projectEntities = await this.readDeliveryProjects(logger);
+
     const entities = {
       ...albEntities,
       ...programmeEntities,
       ...projectEntities,
     };
 
+    console.log('albEntities', albEntities)
+    console.log('entities', entities)
     const { markCommitComplete } = markReadComplete(entities);
 
     await this.connection.applyMutation({

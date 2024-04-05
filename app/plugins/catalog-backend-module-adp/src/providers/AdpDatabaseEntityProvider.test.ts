@@ -94,7 +94,8 @@ describe('AdbDatabaseEntityProvider', () => {
       json: jest.fn().mockResolvedValue([
         {
           id: '1111',
-          timestamp: new Date(),
+          created_at: new Date(),
+          updated_at: new Date(),
           creator: 'test@test.com',
           owner: 'test@test.com',
           name: 'test-alb-1',
@@ -102,11 +103,12 @@ describe('AdbDatabaseEntityProvider', () => {
           description: 'Test description 1',
           url: 'https://test1.com',
           title: 'Test ALB 1',
-          children: ['test-title-1']
+          children: ['test-title-1'],
         },
         {
           id: '2222',
-          timestamp: new Date(),
+          created_at: new Date(),
+          updated_at: new Date(),
           creator: 'test@test.com',
           owner: 'test@test.com',
           name: 'test-alb-2',
@@ -114,7 +116,7 @@ describe('AdbDatabaseEntityProvider', () => {
           description: 'Test description 2',
           url: 'https://test2.com',
           title: 'Test ALB 2',
-          children: ['test-title-2']
+          children: ['test-title-2'],
         },
         {
           programme_managers: [],
@@ -127,7 +129,9 @@ describe('AdbDatabaseEntityProvider', () => {
           url: 'https://www.example.uk/',
           name: 'test-title-1',
           id: '123',
-          children: ['test-title-1']
+          children: ['test-title-1'],
+          created_at: new Date(),
+          updated_at: new Date(),
         },
         {
           programme_managers: [],
@@ -140,7 +144,9 @@ describe('AdbDatabaseEntityProvider', () => {
           url: 'https://www.example.uk/',
           name: 'test-title-1',
           id: '1234',
-          children: ['test-title-2']
+          children: ['test-title-2'],
+          created_at: new Date(),
+          updated_at: new Date(),
         },
         {
           title: 'Test title 1',
@@ -152,7 +158,9 @@ describe('AdbDatabaseEntityProvider', () => {
           url: 'https://www.example.uk/',
           name: 'test-title-1',
           id: '123',
-          children: []
+          children: [],
+          created_at: new Date(),
+          updated_at: new Date(),
         },
         {
           title: 'Test title 2',
@@ -164,8 +172,10 @@ describe('AdbDatabaseEntityProvider', () => {
           url: 'https://www.example.uk/',
           name: 'test-title-1',
           id: '1234',
-          children: []
-        }
+          children: [],
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
       ]),
       ok: jest.fn().mockImplementation(() => true),
     } as unknown as Response);
@@ -243,8 +253,7 @@ describe('AdbDatabaseEntityProvider', () => {
             annotations: {
               'backstage.io/managed-by-location':
                 'adp:delivery-programme\\test-title-1',
-              'backstage.io/managed-by-origin-location':
-                `adp:delivery-programme\\test-title-1`,
+              'backstage.io/managed-by-origin-location': `adp:delivery-programme\\test-title-1`,
             },
             links: [{ url: 'https://www.example.uk/' }],
           },
@@ -267,8 +276,7 @@ describe('AdbDatabaseEntityProvider', () => {
             annotations: {
               'backstage.io/managed-by-location':
                 'adp:delivery-programme\\test-title-2',
-              'backstage.io/managed-by-origin-location':
-                `adp:delivery-programme\\test-title-2`,
+              'backstage.io/managed-by-origin-location': `adp:delivery-programme\\test-title-2`,
             },
             links: [{ url: 'https://www.example.uk/' }],
           },
