@@ -6,19 +6,19 @@ import {
 } from './deliveryProjectStore';
 import { NotFoundError } from '@backstage/errors';
 import { DeliveryProject } from '@internal/plugin-adp-common';
-import {
-  expectedProjectDataWithName,
-} from './projectTestData';
-import { expectedProgrammeDataWithoutManager } from '../deliveryProgramme/programmeTestData';
-import { expectedAlbWithName } from '../armsLengthBody/albTestData';
+import { expectedProjectDataWithName } from '../testData/projectTestData';
+import { expectedProgrammeDataWithoutManager } from '../testData/programmeTestData';
+import { expectedAlbWithName } from '../testData/albTestData';
 
 describe('DeliveryProjectStore', () => {
   const databases = TestDatabases.create();
 
   async function createDatabase(databaseId: TestDatabaseId) {
     const knex = await databases.init(databaseId);
-    await AdpDatabase.runMigrations(knex);
-    const projectStore = new DeliveryProjectStore(knex);
+    const db = AdpDatabase.create({
+      getClient: () => Promise.resolve(knex),
+    });
+    const projectStore = new DeliveryProjectStore(await db.get());
 
     return { knex, projectStore: projectStore };
   }
@@ -82,7 +82,7 @@ describe('DeliveryProjectStore', () => {
         {
           ...expectedProjectDataWithName,
           delivery_programme_id: programmeId,
-          updated_by: 'test'
+          updated_by: 'test',
         },
       ];
       await knex('delivery_project').insert(expectedProject);
@@ -147,7 +147,7 @@ describe('DeliveryProjectStore', () => {
         {
           ...expectedProjectDataWithName,
           delivery_programme_id: programmeId,
-          updated_by: 'test'
+          updated_by: 'test',
         },
       ];
       await knex('delivery_project').insert(expectedProject);
@@ -180,7 +180,7 @@ describe('DeliveryProjectStore', () => {
         {
           ...expectedProjectDataWithName,
           delivery_programme_id: programmeId,
-          updated_by: 'test'
+          updated_by: 'test',
         },
       ];
       const insertProjectId = await knex('delivery_project').insert(
@@ -226,7 +226,7 @@ describe('DeliveryProjectStore', () => {
         {
           ...expectedProjectDataWithName,
           delivery_programme_id: programmeId,
-          updated_by: 'test'
+          updated_by: 'test',
         },
       ];
       await knex('delivery_project').insert(expectedProject, ['id']);
@@ -264,7 +264,7 @@ describe('DeliveryProjectStore', () => {
         {
           ...expectedProjectDataWithName,
           delivery_programme_id: programmeId,
-          updated_by: 'test'
+          updated_by: 'test',
         },
       ];
       await knex('delivery_project').insert(expectedProject, ['id']);

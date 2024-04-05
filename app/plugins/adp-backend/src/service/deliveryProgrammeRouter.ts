@@ -15,7 +15,7 @@ import {
   DeliveryProgramme,
   ProgrammeManager,
 } from '@internal/plugin-adp-common';
-import { checkForDuplicateTitle, getCurrentUsername } from '../utils/utils';
+import { checkForDuplicateTitle, getCurrentUsername } from '../utils/index';
 import { ProgrammeManagerStore } from '../deliveryProgramme/deliveryProgrammeManagerStore';
 import { Entity } from '@backstage/catalog-model';
 import {
@@ -70,9 +70,9 @@ export async function createProgrammeRouter(
       }
       res.json(programmeData);
     } catch (error) {
-      const errMsg = (error as Error).message;
-      logger.error('Error in retrieving delivery programmes: ', errMsg);
-      throw new InputError(errMsg);
+      const deliveryProgramError  = (error as Error);
+      logger.error('Error in retrieving delivery programmes: ', deliveryProgramError );
+      throw new InputError(deliveryProgramError.message);
     }
   });
 
@@ -81,9 +81,9 @@ export async function createProgrammeRouter(
       const data = await programmeManagersStore.getAll();
       res.json(data);
     } catch (error) {
-      const errMsg = (error as Error).message;
-      logger.error('Error in retrieving programme managers: ', errMsg);
-      throw new InputError(errMsg);
+      const deliveryProgramError = (error as Error);
+      logger.error('Error in retrieving programme managers: ', deliveryProgramError);
+      throw new InputError(deliveryProgramError.message);
     }
   });
 
@@ -98,9 +98,9 @@ export async function createProgrammeRouter(
         res.json(deliveryProgramme);
       }
     } catch (error) {
-      const errMsg = (error as Error).message;
-      logger.error('Error in retrieving delivery programme: ', errMsg);
-      throw new InputError(errMsg);
+      const deliveryProgramError = (error as Error);
+      logger.error('Error in retrieving delivery programme: ', deliveryProgramError);
+      throw new InputError(deliveryProgramError.message);
     }
   });
 
@@ -119,9 +119,9 @@ export async function createProgrammeRouter(
       });
       res.json(catalogApiResponse);
     } catch (error) {
-      const errMsg = (error as Error).message;
-      logger.error('Error in retrieving catalog entities: ', errMsg);
-      throw new InputError(errMsg);
+      const deliveryProgramError = (error as Error);
+      logger.error('Error in retrieving catalog entities: ', deliveryProgramError);
+      throw new InputError(deliveryProgramError.message);
     }
   });
 
@@ -176,9 +176,9 @@ export async function createProgrammeRouter(
         res.status(201).json(deliveryProgramme);
       }
     } catch (error) {
-      const errMsg = (error as Error).message;
-      logger.error('Error in creating a delivery programme: ', errMsg);
-      throw new InputError(errMsg);
+      const deliveryProgramError = (error as Error);
+      logger.error('Error in creating a delivery programme: ', deliveryProgramError);
+      throw new InputError(deliveryProgramError.message);
     }
   });
 
@@ -278,9 +278,9 @@ export async function createProgrammeRouter(
       }
       res.status(200).json(deliveryProgramme);
     } catch (error) {
-      const errMsg = (error as Error).message;
-      logger.error('Error in updating a delivery project: ', errMsg);
-      throw new InputError(errMsg);
+      const deliveryProgramError = (error as Error);
+      logger.error('Error in updating a delivery project: ', deliveryProgramError);
+      throw new InputError(deliveryProgramError.message);
     }
   });
 

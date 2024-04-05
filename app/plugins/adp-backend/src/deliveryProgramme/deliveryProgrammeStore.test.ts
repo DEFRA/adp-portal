@@ -5,8 +5,8 @@ import {
   PartialDeliveryProgramme,
 } from './deliveryProgrammeStore';
 import { NotFoundError } from '@backstage/errors';
-import { createName } from '../utils/utils';
-import { expectedAlbWithName } from '../armsLengthBody/albTestData';
+import { createName } from '../utils/index';
+import { expectedAlbWithName } from '../testData/albTestData';
 import {
   DeliveryProgramme,
   ProgrammeManager,
@@ -14,22 +14,24 @@ import {
 import {
   expectedProgrammeDataWithName,
   expectedProgrammeDataWithoutManager,
-  catalogTestData,
-} from './programmeTestData';
+} from '../testData/programmeTestData'
 import { ProgrammeManagerStore } from './deliveryProgrammeManagerStore';
 import {
   addProgrammeManager,
   deleteProgrammeManager,
 } from '../service-utils/deliveryProgrammeUtils';
+import { catalogTestData } from '../testData/catalogEntityTestData';
 
 describe('DeliveryProgrammeStore', () => {
   const databases = TestDatabases.create();
 
   async function createDatabase(databaseId: TestDatabaseId) {
     const knex = await databases.init(databaseId);
-    await AdpDatabase.runMigrations(knex);
-    const programmeStore = new DeliveryProgrammeStore(knex);
-    const managerStore = new ProgrammeManagerStore(knex);
+    const db = AdpDatabase.create({
+      getClient: () => Promise.resolve(knex),
+    });
+    const programmeStore = new DeliveryProgrammeStore(await db.get());
+    const managerStore = new ProgrammeManagerStore(await db.get());
 
     return { knex, programmeStore, managerStore };
   }
@@ -131,21 +133,9 @@ describe('DeliveryProgrammeStore', () => {
   it.each(databases.eachSupportedId())(
     'should get all Delivery Programmes from the database',
     async databaseId => {
-      const { knex, programmeStore } = await createDatabase(databaseId);
-      const insertAlbId = await knex('arms_length_body').insert(
-        expectedAlbWithName,
-        ['id'],
-      );
-      const albId = insertAlbId[0].id;
-      const expectedProgramme = [
-        {
-          ...expectedProgrammeDataWithoutManager,
-          arms_length_body_id: albId,
-        },
-      ];
-      await knex('delivery_programme').insert(expectedProgramme);
+      const { programmeStore } = await createDatabase(databaseId);
       const getAllResult = await programmeStore.getAll();
-      expect(getAllResult).toHaveLength(1);
+      expect(getAllResult).toHaveLength(7);
     },
   );
 

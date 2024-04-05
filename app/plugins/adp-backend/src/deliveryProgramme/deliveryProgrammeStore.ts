@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 import { NotFoundError } from '@backstage/errors';
 import { DeliveryProgramme } from '@internal/plugin-adp-common';
-import { createName } from '../utils/utils';
+import { createName } from '../utils/index';
 
 const TABLE_NAME = 'delivery_programme';
 type Row = {

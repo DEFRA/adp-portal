@@ -2,7 +2,7 @@ import {
   createName,
   getCurrentUsername,
   checkForDuplicateTitle,
-} from './utils';
+} from './index';
 import express from 'express';
 
 describe('createName', () => {

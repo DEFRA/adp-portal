@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 import { NotFoundError } from '@backstage/errors';
 import { ArmsLengthBody } from '@internal/plugin-adp-common';
-import { createName } from '../utils/utils';
+import { createName } from '../utils/index';
 
 const TABLE_NAME = 'arms_length_body';
 type Row = {

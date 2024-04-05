@@ -7,7 +7,7 @@ import express from 'express';
 import request from 'supertest';
 import { createAlbRouter } from './armsLengthBodyRouter';
 import { ConfigReader } from '@backstage/config';
-import { expectedAlbWithName } from '../armsLengthBody/albTestData';
+import { expectedAlbWithName } from '../testData/albTestData';
 import { InputError } from '@backstage/errors';
 
 let mockGetAll: jest.Mock;

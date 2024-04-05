@@ -5,16 +5,18 @@ import {
   PartialArmsLengthBody,
 } from './armsLengthBodyStore';
 import { NotFoundError } from '@backstage/errors';
-import { createName } from '../utils/utils';
-import { expectedAlbWithName } from './albTestData';
+import { createName } from '../utils/index';
+import { expectedAlbWithName } from '../testData/albTestData';
 
 describe('armsLengthBodyStore', () => {
   const databases = TestDatabases.create();
 
   async function createDatabase(databaseId: TestDatabaseId) {
     const knex = await databases.init(databaseId);
-    await AdpDatabase.runMigrations(knex);
-    const store = new ArmsLengthBodyStore(knex);
+    const db = AdpDatabase.create({
+      getClient: () => Promise.resolve(knex),
+    });
+    const store = new ArmsLengthBodyStore(await db.get());
     return { knex, store };
   }
 
@@ -37,10 +39,10 @@ describe('armsLengthBodyStore', () => {
   it.each(databases.eachSupportedId())(
     'should get all ALBs from the database',
     async databaseId => {
-      const { knex, store } = await createDatabase(databaseId);
-      await knex('arms_length_body').insert(expectedAlbWithName);
+      const { store } = await createDatabase(databaseId);
+
       const getAllResult = await store.getAll();
-      expect(getAllResult).toHaveLength(1);
+      expect(getAllResult).toHaveLength(6); // 6 records are seeded
     },
   );
 

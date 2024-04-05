@@ -1,5 +1,5 @@
 import { NotFoundError } from '@backstage/errors';
-import { catalogTestData } from '../deliveryProgramme/programmeTestData';
+import { catalogTestData } from '../testData/catalogEntityTestData';
 import { getProgrammeManagerDetails } from './deliveryProgrammeUtils';
 
 describe('getProgrammeManagerDetails', () => {

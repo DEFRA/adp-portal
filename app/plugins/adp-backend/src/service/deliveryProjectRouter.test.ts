@@ -7,9 +7,9 @@ import express from 'express';
 import request from 'supertest';
 import { createProjectRouter } from './deliveryProjectRouter';
 import { ConfigReader } from '@backstage/config';
-import { expectedProjectDataWithName } from '../deliveryProject/projectTestData';
+import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { InputError } from '@backstage/errors';
-import { catalogTestData } from '../deliveryProgramme/programmeTestData';
+import { catalogTestData } from '../testData/catalogEntityTestData';
 
 jest.mock('@backstage/catalog-client', () => ({
   CatalogClient: jest.fn().mockImplementation(() => ({

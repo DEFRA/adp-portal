@@ -8,12 +8,12 @@ import request from 'supertest';
 import { createProgrammeRouter } from './deliveryProgrammeRouter';
 import { ConfigReader } from '@backstage/config';
 import {
-  catalogTestData,
   expectedProgrammeDataWithManager,
   programmeManagerList,
   expectedProgrammeDataWithName,
-} from '../deliveryProgramme/programmeTestData';
+} from '../testData/programmeTestData';
 import { InputError } from '@backstage/errors';
+import { catalogTestData } from '../testData/catalogEntityTestData';
 
 let mockGetAllProgrammes: jest.Mock;
 let mockGetProgramme: jest.Mock;
