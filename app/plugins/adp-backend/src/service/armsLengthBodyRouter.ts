@@ -16,6 +16,7 @@ import {
   getCurrentUsername,
   getOwner,
 } from '../utils/index';
+import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
 
 export interface AlbRouterOptions {
   logger: Logger;
@@ -35,7 +36,10 @@ export async function createAlbRouter(
   const armsLengthBodiesStore = new ArmsLengthBodyStore(
     await adpDatabase.get(),
   );
-
+  const deliveryProgrammesStore = new DeliveryProgrammeStore(
+    await adpDatabase.get(),
+  );
+  
   const router = Router();
   router.use(express.json());
 
@@ -47,7 +51,7 @@ export async function createAlbRouter(
   router.get('/armsLengthBody', async (_req, res) => {
     try {
       const albData = await armsLengthBodiesStore.getAll();
-      const programmeData = await deliveryProgrammStore.getAll();
+      const programmeData = await deliveryProgrammesStore.getAll();
 
       for (const alb of albData) {
         let albChildren = [];
