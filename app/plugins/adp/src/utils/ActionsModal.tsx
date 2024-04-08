@@ -9,12 +9,12 @@ import {
   TextField,
   MenuItem,
 } from '@material-ui/core';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm, useFormContext } from 'react-hook-form';
 
 import SelectedChipsRenderer from './SelectedChipsRenderer';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 
-interface ActionsModalProps {
+export interface ActionsModalProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (data: any) => Promise<void>;
@@ -38,6 +38,8 @@ interface ActionsModalProps {
     select?: boolean;
     multiple?: boolean;
     options?: { label: string; value: string }[];
+    disabled?: boolean;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   }[];
 }
 
@@ -50,14 +52,15 @@ export const ActionsModal: FC<ActionsModalProps> = ({
   mode,
   fields,
 }) => {
+  const formContext = useFormContext();
+  const formMethods = formContext || useForm({ defaultValues: initialValues });
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
-    defaultValues: initialValues,
-  });
+    control,
+  } = formMethods;
   const errorApi = useApi(alertApiRef);
 
   const onFormSubmit = async (data: any) => {
@@ -71,37 +74,51 @@ export const ActionsModal: FC<ActionsModalProps> = ({
     }
   };
 
-  const renderTextField = (field: any) => (
-    <TextField
-      key={field.name}
-      id={field.name}
-      label={field.label}
-      variant="outlined"
-      fullWidth
-      margin="dense"
-      {...register(field.name, {
-        required: field.validations?.required
+  const renderTextField = (txtField: any) => (
+    <Controller
+      name={txtField.name}
+      control={control}
+      defaultValue={initialValues[txtField.name] || ''}
+      rules={{
+        required: txtField.validations?.required
           ? 'This field is required'
           : undefined,
-        maxLength: field.validations?.maxLength
+        maxLength: txtField.validations?.maxLength
           ? {
-              value: field.validations.maxLength,
-              message: `Maximum length is ${field.validations.maxLength} characters`,
+              value: txtField.validations.maxLength,
+              message: `Maximum length is ${txtField.validations.maxLength} characters`,
             }
           : undefined,
-        pattern: field.validations?.pattern
+        pattern: txtField.validations?.pattern
           ? {
-              value: field.validations.pattern.value,
-              message: field.validations.pattern.message,
+              value: txtField.validations.pattern.value,
+              message: txtField.validations.pattern.message,
             }
           : undefined,
-      })}
-      defaultValue={initialValues[field.name] || ''}
-      error={!!errors[field.name]}
-      helperText={errors[field.name]?.message ?? field.helperText}
-      multiline={field.multiline}
-      maxRows={field.maxRows}
-      data-testid={field.name}
+      }}
+      render={({ field }) => (
+        <TextField
+          key={txtField.name}
+          id={txtField.name}
+          label={txtField.label}
+          variant="outlined"
+          fullWidth
+          margin="dense"
+          {...field}
+          error={!!errors[txtField.name]}
+          helperText={errors[txtField.name]?.message ?? txtField.helperText}
+          multiline={txtField.multiline}
+          maxRows={txtField.maxRows}
+          data-testid={txtField.name}
+          onChange={e => {
+            field.onChange(e);
+            if (txtField.onChange) {
+              txtField.onChange(e);
+            }
+          }}
+          disabled={txtField.disabled}
+        />
+      )}
     />
   );
 
@@ -151,9 +168,11 @@ export const ActionsModal: FC<ActionsModalProps> = ({
             : []
           : initialValues[field.name] || ''
       }
+      disabled={field.disabled}
       error={!!errors[field.name]}
       helperText={errors[field.name]?.message ?? field.helperText}
       data-testid={field.name}
+      onChange={field.onChange}
     >
       {field.options?.map((option: any) => (
         <MenuItem
@@ -168,7 +187,13 @@ export const ActionsModal: FC<ActionsModalProps> = ({
   );
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={() => {
+        reset(initialValues);
+        onClose();
+      }}
+    >
       <DialogTitle>{`${mode === 'edit' ? 'Edit' : 'Create'}: ${
         initialValues.title || ''
       }`}</DialogTitle>

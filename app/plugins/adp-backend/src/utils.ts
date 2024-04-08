@@ -121,7 +121,8 @@ export async function getProgrammeManagerDetails(
   if (findManagerById !== undefined) {
     const managerById = findManagerById as ICatalog;
     const managerName = managerById.spec.profile.displayName;
-    const managerEmail = managerById.metadata.annotations['microsoft.com/email'];
+    const managerEmail =
+      managerById.metadata.annotations['microsoft.com/email'];
     return { name: managerName, email: managerEmail };
   } else {
     throw new NotFoundError(`Could not find Programme Managers details`);

@@ -42,9 +42,10 @@ proxy:
       target: ${GRAFANA_ENDPOINT}
       headers:
         Authorization: Bearer ${GRAFANA_TOKEN}
-
-    '/adp-portal-api': '${ADP_PORTAL_API_ENDPOINT}'
-
+    '/adp-portal-api': 
+      target: ${ADP_PORTAL_API_ENDPOINT}
+      changeOrigin: true
+      
 grafana:
   domain: ${GRAFANA_ENDPOINT}
   unifiedAlerting: false

@@ -1,5 +1,8 @@
 import { DeliveryProgrammeApi } from './DeliveryProgrammeApi';
-import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import {
+  DeliveryProgramme,
+  ProgrammeManager,
+} from '@internal/plugin-adp-common';
 
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
@@ -15,6 +18,10 @@ export class DeliveryProgrammeClient implements DeliveryProgrammeApi {
 
   private async getApiUrl(): Promise<string> {
     return `${await this.discoveryApi.getBaseUrl('adp')}/deliveryProgramme`;
+  }
+
+  private async getManagerApiUrl(): Promise<string> {
+    return `${await this.discoveryApi.getBaseUrl('adp')}/programmeManager`;
   }
 
   async getDeliveryProgrammes(): Promise<DeliveryProgramme[]> {
@@ -44,15 +51,14 @@ export class DeliveryProgrammeClient implements DeliveryProgrammeApi {
           ...programme,
 
           arms_length_body_id_name:
-            albNamesMapping[programme.arms_length_body_id] || 'Unknown ALB Name',
+            albNamesMapping[programme.arms_length_body_id] ||
+            'Unknown ALB Name',
         }),
       );
 
       return deliveryProgrammesWithNames;
     } catch (error) {
-      throw new Error(
-        `Failed to fetch Delivery Programmes`,
-      );
+      throw new Error(`Failed to fetch Delivery Programmes`);
     }
   }
 
@@ -102,6 +108,19 @@ export class DeliveryProgrammeClient implements DeliveryProgrammeApi {
       return await response.json();
     } catch (error) {
       throw new Error(`Failed to fetch Delivery Programme by ID`);
+    }
+  }
+
+  async getProgrammeManagers(): Promise<ProgrammeManager[]> {
+    try {
+      const url = await this.getManagerApiUrl();
+      const response = await this.fetchApi.fetch(url);
+      if (!response.ok) {
+        throw await ResponseError.fromResponse(response);
+      }
+      return await response.json();
+    } catch (error) {
+      throw new Error(`Failed to fetch Delivery Programme Managers`);
     }
   }
 }

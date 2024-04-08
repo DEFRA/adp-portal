@@ -14,15 +14,16 @@ export const defaultProjectGroupTransformer: GroupTransformer = async (
     kind: 'Group',
     metadata: {
       name: deliveryProject.name,
-      title: createTransformerTitle(deliveryProject.title, deliveryProject.alias),
+      title: createTransformerTitle(
+        deliveryProject.title,
+        deliveryProject.alias,
+      ),
       description: deliveryProject?.description,
       tags: [],
       annotations: {
         'backstage.io/managed-by-location': `adp:delivery-project\\${deliveryProject.name}`,
-        'backstage.io/managed-by-origin-location':
-          `adp:delivery-project\\${deliveryProject.name}`,
+        'backstage.io/managed-by-origin-location': `adp:delivery-project\\${deliveryProject.name}`,
       },
-      links: [{ url: deliveryProject.url ? deliveryProject.url : '' }],
     },
     spec: {
       type: 'delivery-project',

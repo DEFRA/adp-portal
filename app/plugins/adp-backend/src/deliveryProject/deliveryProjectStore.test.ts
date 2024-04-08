@@ -121,7 +121,7 @@ describe('DeliveryProjectStore', () => {
       expect(getResult?.title).toBe(createdProject.title);
       expect(getResult?.alias).toBe(createdProject.alias);
       expect(getResult?.description).toBe(createdProject.description);
-      expect(getResult?.url).toBe(createdProject.url);
+      expect(getResult?.namespace).toBe(createdProject.namespace);
     },
   );
 
