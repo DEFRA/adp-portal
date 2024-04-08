@@ -6,6 +6,6 @@ export const expectedAlbWithName = {
   description: 'This is an example ALB 1',
   url: 'http://www.example.com/index.html',
   updated_by: 'john',
-  name: 'alb-example-1',
+  name: 'alb-example-1'
 };
 

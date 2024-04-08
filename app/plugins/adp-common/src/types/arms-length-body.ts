@@ -10,5 +10,6 @@ export type ArmsLengthBody = {
     url?: string;
     title: string
     updated_by?: string;
+    children?: string[];
 }
 

@@ -8,8 +8,14 @@ import * as uuid from 'uuid';
 import { DiscoveryService } from '@backstage/backend-plugin-api';
 import { Entity, GroupEntity } from '@backstage/catalog-model';
 import fetch from 'node-fetch';
-import { ArmsLengthBody } from '@internal/plugin-adp-common';
+import {
+  ArmsLengthBody,
+  DeliveryProgramme,
+  DeliveryProject,
+} from '@internal/plugin-adp-common';
 import { armsLengthBodyGroupTransformer } from '../transformers';
+import { deliveryProgrammeGroupTransformer } from '../transformers/deliveryProgrammeTransformers';
+import { deliveryProjectGroupTransformer } from '../transformers/deliveryProjectTransformer';
 
 export class AdpDatabaseEntityProvider implements EntityProvider {
   private readonly logger: Logger;
@@ -100,15 +106,18 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
 
     const { markReadComplete } = this.trackProgress(logger);
 
-    const entities = await this.readArmsLengthBodies(logger);
+    const albEntities = await this.readArmsLengthBodies(logger);
+    const programmeEntities = await this.readDeliveryProgrammes(logger);
+    const projectEntities = await this.readDeliveryProjects(logger);
 
-    // TODO: Integrate with delivery programmes. Complete in work item 345478
-    // TODO: Integrate with delivery projects. Complete in work item 351609
-    // const albEntities = await this.readArmsLengthBodies(logger, database);
-    // const programmeEntities = await this.readDeliveryProgrammes(logger,database);
-    // const projectEntities = await this.readDeliveryProjects(logger, database);
-    // const entities = {...albEntities, ...programmeEntities, ...projectEntities};
+    const entities = {
+      ...albEntities,
+      ...programmeEntities,
+      ...projectEntities,
+    };
 
+    console.log('albEntities', albEntities)
+    console.log('entities', entities)
     const { markCommitComplete } = markReadComplete(entities);
 
     await this.connection.applyMutation({
@@ -152,59 +161,65 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     return entities;
   }
 
-  // TODO: Integrate as part of work item 345478
-  // private async readDeliveryProgrammes(
-  //   logger: Logger,
-  //   database: PluginDatabaseManager,
-  // ): Promise<GroupEntity[]> {
-  //   logger.info('Discovering All Arms Length Body');
-  //   const adpDatabase = AdpDatabase.create(database);
-  //   const deliveryProgrammesStore = new DeliveryProgrammeStore(
-  //     await adpDatabase.get(),
-  //   );
+  private async readDeliveryProgrammes(logger: Logger): Promise<GroupEntity[]> {
+    logger.info('Discovering All Delivery Programmes');
+    const baseUrl = await this.discovery.getBaseUrl('adp');
+    const endpoint = `${baseUrl}/deliveryProgramme`;
 
-  //   const deliveryProgrammes = await deliveryProgrammesStore.getAll();
+    const response = await fetch(endpoint, {
+      method: 'GET',
+    });
 
-  //   const entities: GroupEntity[] = [];
+    if (!response.ok) {
+      throw new Error(
+        `Unexpected response from ADP plugin, GET /deliveryProgramme. Expected 200 but got ${response.status} - ${response.statusText}`,
+      );
+    }
 
-  //   logger.info(`Discovered ${deliveryProgrammes.length} Arms Length Body`);
+    const deliveryProgrammes = (await response.json()) as DeliveryProgramme[];
+    const entities: GroupEntity[] = [];
 
-  //   for (const deliveryProgramme of deliveryProgrammes) {
-  //     const entity = await defaultProgrammeGroupTransformer(deliveryProgramme);
-  //     if (entity) {
-  //       entities.push(entity);
-  //     }
-  //   }
+    logger.info(`Discovered ${deliveryProgrammes.length} Delivery Programmes`);
 
-  //   return entities;
-  // }
+    for (const deliveryProgramme of deliveryProgrammes) {
+      const entity = await deliveryProgrammeGroupTransformer(deliveryProgramme);
+      if (entity) {
+        entities.push(entity);
+      }
+    }
 
-  // TODO: Integrate as part of work item 351609
-  // private async readDeliveryProjects(
-  //   logger: Logger,
-  //   database: PluginDatabaseManager,
-  // ): Promise<GroupEntity[]> {
-  //   logger.info('Discovering All Delivery Projects');
-  //   const adpDatabase = AdpDatabase.create(database);
-  //   const deliveryProjectsStore = new DeliveryProjectStore(
-  //     await adpDatabase.get(),
-  //   );
+    return entities;
+  }
 
-  //   const deliveryProjects = await deliveryProjectsStore.getAll();
+  private async readDeliveryProjects(logger: Logger): Promise<GroupEntity[]> {
+    logger.info('Discovering All Delivery Projects');
+    const baseUrl = await this.discovery.getBaseUrl('adp');
+    const endpoint = `${baseUrl}/deliveryProject`;
 
-  //   const entities: GroupEntity[] = [];
+    const response = await fetch(endpoint, {
+      method: 'GET',
+    });
 
-  //   logger.info(`Discovered ${deliveryProjects.length} Delivery Projects`);
+    if (!response.ok) {
+      throw new Error(
+        `Unexpected response from ADP plugin, GET /deliveryProject. Expected 200 but got ${response.status} - ${response.statusText}`,
+      );
+    }
 
-  //   for (const project of deliveryProjects) {
-  //     const entity = await defaultProjectGroupTransformer(project);
-  //     if (entity) {
-  //       entities.push(entity);
-  //     }
-  //   }
+    const deliveryProjects = (await response.json()) as DeliveryProject[];
+    const entities: GroupEntity[] = [];
 
-  //   return entities;
-  // }
+    logger.info(`Discovered ${deliveryProjects.length} Delivery Programmes`);
+
+    for (const deliveryProject of deliveryProjects) {
+      const entity = await deliveryProjectGroupTransformer(deliveryProject);
+      if (entity) {
+        entities.push(entity);
+      }
+    }
+
+    return entities;
+  }
 
   private trackProgress(logger: Logger) {
     let timestamp = Date.now();
@@ -223,7 +238,9 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     function markCommitComplete(entities: Entity[]) {
       const commitDuration = ((Date.now() - timestamp) / 1000).toFixed(1);
       logger.info(
-        `Committed ${entities?.length ?? 0} ADP entities in ${commitDuration} seconds.`,
+        `Committed ${
+          entities?.length ?? 0
+        } ADP entities in ${commitDuration} seconds.`,
       );
     }
 

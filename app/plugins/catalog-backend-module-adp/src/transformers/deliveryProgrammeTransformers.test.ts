@@ -15,6 +15,7 @@ describe('deliveryProgrammeGroupTransformer', () => {
       id: '1234',
       created_at: new Date(),
       updated_at: new Date(),
+      children: []
     };
 
     const expectedGroupEntity = {
