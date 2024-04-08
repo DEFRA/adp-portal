@@ -108,7 +108,7 @@ catalog:
         group:
           filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or displayName eq '${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}'"
         schedule:
-          frequency: { minutes: 60 }
+          frequency: { minutes: 10 }
           timeout: { minutes: 10 }
 
     github:

@@ -10,7 +10,7 @@ import {
   PartialDeliveryProject,
 } from '../deliveryProject/deliveryProjectStore';
 import { DeliveryProject } from '@internal/plugin-adp-common';
-import { checkForDuplicateTitle, getCurrentUsername } from '../utils';
+import { checkForDuplicateTitle, getCurrentUsername } from '../utils/index';
 
 export interface ProjectRouterOptions {
   logger: Logger;
@@ -35,9 +35,9 @@ export async function createProjectRouter(
       const data = await deliveryProjectStore.getAll();
       res.json(data);
     } catch (error) {
-      const errMsg = (error as Error).message;
-      logger.error('Error in retrieving delivery projects: ', errMsg);
-      throw new InputError(errMsg);
+      const deliveryProjectError = (error as Error);
+      logger.error('Error in retrieving delivery projects: ', deliveryProjectError);
+      throw new InputError(deliveryProjectError.message);
     }
   });
 
@@ -46,9 +46,9 @@ export async function createProjectRouter(
       const deliveryProject = await deliveryProjectStore.get(_req.params.id);
       res.json(deliveryProject);
     } catch (error) {
-      const errMsg = (error as Error).message;
-      logger.error('Error in retrieving a delivery project: ', errMsg);
-      throw new InputError(errMsg);
+      const deliveryProjectError = (error as Error);
+      logger.error('Error in retrieving a delivery project: ', deliveryProjectError);
+      throw new InputError(deliveryProjectError.message);
     }
   });
 
@@ -77,9 +77,9 @@ export async function createProjectRouter(
         res.status(201).json(deliveryProject);
       }
     } catch (error) {
-      const errMsg = (error as Error).message;
-      logger.error('Error in creating a delivery project: ', errMsg);
-      throw new InputError(errMsg);
+      const deliveryProjectError = (error as Error);
+      logger.error('Error in creating a delivery project: ', deliveryProjectError);
+      throw new InputError(deliveryProjectError.message);
     }
   });
 
@@ -118,9 +118,9 @@ export async function createProjectRouter(
       );
       res.status(201).json(deliveryProject);
     } catch (error) {
-      const errMsg = (error as Error).message;
-      logger.error('Error in updating a delivery project: ', errMsg);
-      throw new InputError(errMsg);
+      const deliveryProjectError = (error as Error);
+      logger.error('Error in updating a delivery project: ', deliveryProjectError);
+      throw new InputError(deliveryProjectError.message);
     }
   });
   router.use(errorHandler());

@@ -15,14 +15,13 @@ import {
   DeliveryProgramme,
   ProgrammeManager,
 } from '@internal/plugin-adp-common';
-import {
-  addProgrammeManager,
-  checkForDuplicateTitle,
-  deleteProgrammeManager,
-  getCurrentUsername,
-} from '../utils';
+import { checkForDuplicateTitle, getCurrentUsername } from '../utils/index';
 import { ProgrammeManagerStore } from '../deliveryProgramme/deliveryProgrammeManagerStore';
 import { Entity } from '@backstage/catalog-model';
+import {
+  addProgrammeManager,
+  deleteProgrammeManager,
+} from '../service-utils/deliveryProgrammeUtils';
 
 export interface ProgrammeRouterOptions {
   logger: Logger;
@@ -53,37 +52,63 @@ export async function createProgrammeRouter(
   });
 
   router.get('/deliveryProgramme', async (_req, res) => {
-    const data = await deliveryProgrammesStore.getAll();
-    res.json(data);
+    try {
+      const data = await deliveryProgrammesStore.getAll();
+      res.json(data);
+    } catch (error) {
+      const deliveryProgramError  = (error as Error);
+      logger.error('Error in retrieving delivery programmes: ', deliveryProgramError );
+      throw new InputError(deliveryProgramError.message);
+    }
   });
 
   router.get('/programmeManager', async (_req, res) => {
-    const data = await programmeManagersStore.getAll();
-    res.json(data);
+    try {
+      const data = await programmeManagersStore.getAll();
+      res.json(data);
+    } catch (error) {
+      const deliveryProgramError = (error as Error);
+      logger.error('Error in retrieving programme managers: ', deliveryProgramError);
+      throw new InputError(deliveryProgramError.message);
+    }
   });
 
   router.get('/deliveryProgramme/:id', async (_req, res) => {
-    const deliveryProgramme = await deliveryProgrammesStore.get(_req.params.id);
-    const programmeManager = await programmeManagersStore.get(_req.params.id);
-    if (programmeManager && deliveryProgramme !== null) {
-      deliveryProgramme.programme_managers = programmeManager;
-      res.json(deliveryProgramme);
+    try {
+      const deliveryProgramme = await deliveryProgrammesStore.get(
+        _req.params.id,
+      );
+      const programmeManager = await programmeManagersStore.get(_req.params.id);
+      if (programmeManager && deliveryProgramme !== null) {
+        deliveryProgramme.programme_managers = programmeManager;
+        res.json(deliveryProgramme);
+      }
+    } catch (error) {
+      const deliveryProgramError = (error as Error);
+      logger.error('Error in retrieving delivery programme: ', deliveryProgramError);
+      throw new InputError(deliveryProgramError.message);
     }
   });
 
   router.get('/catalogEntities', async (_req, res) => {
-    const catalogApiResponse = await catalog.getEntities({
-      filter: {
-        kind: 'User',
-      },
-      fields: [
-        'metadata.name',
-        'metadata.annotations.graph.microsoft.com/user-id',
-        'metadata.annotations.microsoft.com/email',
-        'spec.profile.displayName',
-      ],
-    });
-    res.json(catalogApiResponse);
+    try {
+      const catalogApiResponse = await catalog.getEntities({
+        filter: {
+          kind: 'User',
+        },
+        fields: [
+          'metadata.name',
+          'metadata.annotations.graph.microsoft.com/user-id',
+          'metadata.annotations.microsoft.com/email',
+          'spec.profile.displayName',
+        ],
+      });
+      res.json(catalogApiResponse);
+    } catch (error) {
+      const deliveryProgramError = (error as Error);
+      logger.error('Error in retrieving catalog entities: ', deliveryProgramError);
+      throw new InputError(deliveryProgramError.message);
+    }
   });
 
   router.post('/deliveryProgramme', async (req, res) => {
@@ -108,7 +133,6 @@ export async function createProgrammeRouter(
           req.body,
           author,
         );
-
         const programmeManagers = req.body.programme_managers;
         if (programmeManagers !== undefined) {
           const catalogEntities = await catalog.getEntities({
@@ -138,7 +162,9 @@ export async function createProgrammeRouter(
         res.status(201).json(deliveryProgramme);
       }
     } catch (error) {
-      throw new InputError('Error');
+      const deliveryProgramError = (error as Error);
+      logger.error('Error in creating a delivery programme: ', deliveryProgramError);
+      throw new InputError(deliveryProgramError.message);
     }
   });
 
@@ -151,8 +177,13 @@ export async function createProgrammeRouter(
         throw new InputError('Invalid payload');
       }
 
-      const allProgrammes = await deliveryProgrammesStore.getAll();
-      const currentData = await deliveryProgrammesStore.get(requestBody.id);
+      const allProgrammes: DeliveryProgramme[] =
+        await deliveryProgrammesStore.getAll();
+
+      const currentData = allProgrammes.find(
+        programme => programme.id === req.body.id,
+      );
+
       const updatedTitle = requestBody?.title;
       const currentTitle = currentData!.title;
       const isTitleChanged = updatedTitle && currentTitle !== updatedTitle;
@@ -174,7 +205,6 @@ export async function createProgrammeRouter(
         requestBody,
         author,
       );
-      
       const programmeManagers = req.body.programme_managers;
       if (programmeManagers !== undefined) {
         const existingProgrammeManagers = await programmeManagersStore.get(
@@ -234,22 +264,24 @@ export async function createProgrammeRouter(
       }
       res.status(200).json(deliveryProgramme);
     } catch (error) {
-      throw new InputError('Error');
+      const deliveryProgramError = (error as Error);
+      logger.error('Error in updating a delivery project: ', deliveryProgramError);
+      throw new InputError(deliveryProgramError.message);
     }
   });
 
   router.use(errorHandler());
   return router;
+}
 
-  function isDeliveryProgrammeCreateRequest(
-    request: Omit<DeliveryProgramme, 'id' | 'created_at'>,
-  ) {
-    return typeof request?.title === 'string';
-  }
+function isDeliveryProgrammeCreateRequest(
+  request: Omit<DeliveryProgramme, 'id' | 'created_at'>,
+) {
+  return typeof request?.title === 'string';
+}
 
-  function isDeliveryProgrammeUpdateRequest(
-    request: Omit<PartialDeliveryProgramme, 'updated_at'>,
-  ) {
-    return typeof request?.id === 'string';
-  }
+function isDeliveryProgrammeUpdateRequest(
+  request: Omit<PartialDeliveryProgramme, 'updated_at'>,
+) {
+  return typeof request?.id === 'string';
 }

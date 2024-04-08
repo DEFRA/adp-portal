@@ -1,13 +1,9 @@
 import {
   createName,
-  createTransformerTitle,
   getCurrentUsername,
   checkForDuplicateTitle,
-  getProgrammeManagerDetails,
-} from './utils';
+} from './index';
 import express from 'express';
-import { NotFoundError } from '@backstage/errors';
-import { catalogTestData } from './deliveryProgramme/programmeTestData';
 
 describe('createName', () => {
   it('replaces spaces with dashes and converts to lowercase', () => {
@@ -26,20 +22,6 @@ describe('createName', () => {
     const input = 'Example   Name With  Spaces';
     const expected = 'example-name-with-spaces';
     expect(createName(input)).toBe(expected);
-  });
-});
-
-describe('createTransformerTitle', () => {
-  it('returns the title as is if no alias is provided', () => {
-    const title = 'Example Title';
-    expect(createTransformerTitle(title)).toBe(title);
-  });
-
-  it('puts the alias in brackets if provided', () => {
-    const title = 'Example Title';
-    const shortName = 'ET';
-    const expected = 'Example Title (ET)';
-    expect(createTransformerTitle(title, shortName)).toBe(expected);
   });
 });
 
@@ -96,22 +78,3 @@ describe('getCurrentUsername', () => {
   });
 });
 
-describe('getProgrammeManagerDetails', () => {
-  it('returns the programme manager details', async () => {
-    await expect(
-      getProgrammeManagerDetails(
-        'a9dc2414-0626-43d2-993d-a53aac4d73421',
-        catalogTestData,
-      ),
-    ).resolves.toEqual({ email: 'test1.test@onmicrosoft.com', name: 'test1' });
-  });
-
-  it('returns error if name is not found', async () => {
-    expect(
-      getProgrammeManagerDetails(
-        'a9dc2414-0626-43d2-993d-a53aac4d7341',
-        catalogTestData,
-      ),
-    ).rejects.toThrow(NotFoundError);
-  });
-});

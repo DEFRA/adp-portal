@@ -1,16 +1,3 @@
-export type ArmsLengthBody = {
-    id: string;
-    created_at: Date;
-    updated_at: Date;
-    creator: string;
-    owner: string;
-    readonly name: string;
-    alias?: string;
-    description: string;
-    url?: string;
-    title: string
-}
-
 export type DeliveryProgramme = {
     id: string; 
     created_at: Date;
@@ -24,6 +11,7 @@ export type DeliveryProgramme = {
     arms_length_body_id: string;
     delivery_programme_code: string;
     url?: string;
+    updated_by?: string;
 }
 
 export type ProgrammeManager = {

@@ -1,15 +1,14 @@
-import { defaultProgrammeGroupTransformer } from './deliveryProgrammeTransformers';
+import { deliveryProjectGroupTransformer } from './deliveryProjectTransformer';
 
-describe('defaultProgrammeGroupTransformer', () => {
-  it('should transform valid ArmsLengthBody to GroupEntity', async () => {
-    const deliveryProgramme = {
-      programme_managers: [],
+describe('deliveryProjectGroupTransformer', () => {
+  it('should transform a valid DeliveryProject to a GroupEntity', async () => {
+    const deliveryProject = {
       title: 'Test title 1',
       alias: 'Test Alias',
       description: 'Test description',
       finance_code: 'Test finance_code',
-      arms_length_body_id: '05aa36b6-c7a2-4c35-820e-c31d20011f47',
-      delivery_programme_code: 'Test delivery_programme_code',
+      delivery_programme_id: '05aa36b6-c7a2-4c35-820e-c31d20011f47',
+      delivery_project_code: 'Test delivery_project_code',
       url: 'https://www.example.uk/',
       name: 'test-title-1',
       id: '1234',
@@ -27,19 +26,18 @@ describe('defaultProgrammeGroupTransformer', () => {
         tags: [],
         annotations: {
           'backstage.io/managed-by-location':
-            'adp:delivery-programme\\test-title-1',
-          'backstage.io/managed-by-origin-location':
-            '`adp:delivery-programme\\${deliveryProgramme.name}`',
+            'adp:delivery-project\\test-title-1',
+          'backstage.io/managed-by-origin-location': `adp:delivery-project\\test-title-1`,
         },
         links: [{ url: 'https://www.example.uk/' }],
       },
       spec: {
-        type: 'delivery-programme',
+        type: 'delivery-project',
         children: [],
       },
     };
 
-    const result = await defaultProgrammeGroupTransformer(deliveryProgramme);
+    const result = await deliveryProjectGroupTransformer(deliveryProject);
     expect(result).toEqual(expectedGroupEntity);
   });
 });

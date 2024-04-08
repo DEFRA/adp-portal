@@ -7,66 +7,15 @@ import express from 'express';
 import request from 'supertest';
 import { createProjectRouter } from './deliveryProjectRouter';
 import { ConfigReader } from '@backstage/config';
-import {
-  expectedProjectDataWithName,
-} from '../deliveryProject/projectTestData';
-import {
-  CatalogRequestOptions,
-  GetEntitiesRequest,
-} from '@backstage/catalog-client';
+import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { InputError } from '@backstage/errors';
+import { catalogTestData } from '../testData/catalogEntityTestData';
 
-let catalogRequestOptions: CatalogRequestOptions;
 jest.mock('@backstage/catalog-client', () => ({
   CatalogClient: jest.fn().mockImplementation(() => ({
-    getEntities: async (
-      request: GetEntitiesRequest,
-      options: CatalogRequestOptions,
-    ) => {
-      catalogRequestOptions = options;
+    getEntities: async () => {
       return {
-        items: [
-          {
-            metadata: {
-              name: 'test1.test.onmicrosoft.com',
-              annotations: {
-                'microsoft.com/email': 'test1.test@onmicrosoft.com',
-                'graph.microsoft.com/user-id':
-                  'a9dc2414-0626-43d2-993d-a53aac4d73421',
-              },
-            },
-          },
-          {
-            metadata: {
-              name: 'test2.test.onmicrosoft.com',
-              annotations: {
-                'microsoft.com/email': 'test2.test@onmicrosoft.com',
-                'graph.microsoft.com/user-id':
-                  'a9dc2414-0626-43d2-993d-a53aac4d73422',
-              },
-            },
-          },
-          {
-            metadata: {
-              name: 'test3.test.onmicrosoft.com',
-              annotations: {
-                'microsoft.com/email': 'test3.test@onmicrosoft.com',
-                'graph.microsoft.com/user-id':
-                  'a9dc2414-0626-43d2-993d-a53aac4d73423',
-              },
-            },
-          },
-          {
-            metadata: {
-              name: 'test4.test.onmicrosoft.com',
-              annotations: {
-                'microsoft.com/email': 'test4.test@onmicrosoft.com',
-                'graph.microsoft.com/user-id':
-                  'a9dc2414-0626-43d2-993d-a53aac4d73424',
-              },
-            },
-          },
-        ],
+        items: catalogTestData
       };
     },
   })),

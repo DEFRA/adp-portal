@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, waitFor, act, getByRole } from '@testing-library/react';
+import { fireEvent, waitFor, act } from '@testing-library/react';
 import CreateDeliveryProgramme from './CreateDeliveryProgramme';
 import {
   alertApiRef,

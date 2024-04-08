@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 import { NotFoundError } from '@backstage/errors';
 import { ArmsLengthBody } from '@internal/plugin-adp-common';
-import { createName } from '../utils';
+import { createName } from '../utils/index';
 
 const TABLE_NAME = 'arms_length_body';
 type Row = {
@@ -35,6 +35,7 @@ export class ArmsLengthBodyStore {
         'id',
         'created_at',
         'updated_at',
+        'updated_by',
       )
       .orderBy('created_at');
 
@@ -51,6 +52,7 @@ export class ArmsLengthBodyStore {
       updated_at: row.updated_at
       ? new Date(row?.updated_at)
       : new Date(row.created_at),
+      updated_by: row?.updated_by,
     }));
   }
 
@@ -68,6 +70,7 @@ export class ArmsLengthBodyStore {
         'id',
         'created_at',
         'updated_at',
+        'updated_by',
       )
       .first();
 
@@ -85,6 +88,7 @@ export class ArmsLengthBodyStore {
           updated_at: row.updated_at
           ? new Date(row?.updated_at)
           : new Date(row.created_at),
+          updated_by: row?.updated_by,
         }
       : null;
   }

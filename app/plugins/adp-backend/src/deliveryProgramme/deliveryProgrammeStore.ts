@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 import { NotFoundError } from '@backstage/errors';
 import { DeliveryProgramme } from '@internal/plugin-adp-common';
-import { createName } from '../utils';
+import { createName } from '../utils/index';
 
 const TABLE_NAME = 'delivery_programme';
 type Row = {
@@ -37,6 +37,7 @@ export class DeliveryProgrammeStore {
         'url',
         'created_at',
         'updated_at',
+        'updated_by',
       )
       .orderBy('created_at');
 
@@ -53,6 +54,7 @@ export class DeliveryProgrammeStore {
       url: row?.url,
       created_at: new Date(row.created_at),
       updated_at: row.updated_at,
+      updated_by: row?.updated_by,
     }));
   }
 
@@ -71,6 +73,7 @@ export class DeliveryProgrammeStore {
         'url',
         'created_at',
         'updated_at',
+        'updated_by',
       )
       .first();
 
@@ -88,6 +91,7 @@ export class DeliveryProgrammeStore {
           url: row?.url,
           created_at: new Date(row.created_at),
           updated_at: row.updated_at,
+          updated_by: row?.updated_by,
         }
       : null;
   }
@@ -158,6 +162,7 @@ export class DeliveryProgrammeStore {
     if (Object.keys(updatedData).length === 0) {
       return existingProgramme;
     }
+    
     await this.client<Row>(TABLE_NAME)
       .where('id', deliveryProgramme.id)
       .update({
