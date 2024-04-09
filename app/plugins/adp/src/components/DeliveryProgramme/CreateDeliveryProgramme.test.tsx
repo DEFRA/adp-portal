@@ -115,8 +115,6 @@ describe('Create Delivery Programme', () => {
 
     const rendered = await render();
 
-    console.log(rendered)
-
     fireEvent.click(rendered.getByTestId('create-delivery-programme-button'));
 
     fireEvent.change(rendered.getByLabelText('Title'), {
@@ -149,7 +147,6 @@ describe('Create Delivery Programme', () => {
     fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
 
     mockGetDeliveryProgrammes.mockResolvedValue(updatedTableData);
-    console.log(updatedTableData)
 
     await waitFor(() => {
       expect(mockCreateDeliveryProgramme).toHaveBeenCalledWith({
@@ -173,11 +170,13 @@ describe('Create Delivery Programme', () => {
   it('Add Delivery Programme Creation fails and triggers error handling', async () => {
     mockCreateDeliveryProgramme.mockRejectedValue(new Error('Creation Failed'));
 
-
     mockGetDeliveryProgrammes.mockResolvedValue([
-      { title: 'Existing Programme', delivery_programme_code: 'ExistingCode', id: '123' }
+      {
+        title: 'Existing Programme',
+        delivery_programme_code: 'ExistingCode',
+        id: '123',
+      },
     ]);
-  
 
     const rendered = await render();
 
@@ -213,30 +212,34 @@ describe('Create Delivery Programme', () => {
     fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
 
     await waitFor(() => {
-      expect(mockCreateDeliveryProgramme).toHaveBeenCalled()
+      expect(mockCreateDeliveryProgramme).toHaveBeenCalled();
       expect(mockErrorApi.post).toHaveBeenCalledWith(expect.any(Error));
 
       expect(mockAlertApi.post).toHaveBeenCalledWith({
         display: 'permanent',
-        message:
-          "Creation Failed",
+        message: 'Creation Failed',
         severity: 'error',
-  
-      })
+      });
     });
   });
 
   it('should show an error if the programme title is not unique', async () => {
-    mockGetDeliveryProgrammes.mockResolvedValue([{ title: 'Existing Programme', id: 'existing-id', delivery_programme_code: '1234' }]);
-  
+    mockGetDeliveryProgrammes.mockResolvedValue([
+      {
+        title: 'Existing Programme',
+        id: 'existing-id',
+        delivery_programme_code: '1234',
+      },
+    ]);
+
     const rendered = await render();
-  
+
     fireEvent.click(rendered.getByTestId('create-delivery-programme-button'));
-  
+
     fireEvent.change(rendered.getByLabelText('Title'), {
-      target: { value: 'Existing Programme' }, 
+      target: { value: 'Existing Programme' },
     });
-  
+
     fireEvent.change(rendered.getByLabelText('Alias'), {
       target: { value: 'Alias for Delivery Programme' },
     });
@@ -259,31 +262,36 @@ describe('Create Delivery Programme', () => {
         target: { value: 'Description for Delivery Programme' },
       },
     );
-  
-    fireEvent.click(rendered.getByTestId('actions-modal-update-button')); 
-  
+
+    fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
+
     await waitFor(() => {
       expect(mockCreateDeliveryProgramme).not.toHaveBeenCalled();
-      expect(mockAlertApi.post).toHaveBeenCalled()
-      });
+      expect(mockAlertApi.post).toHaveBeenCalled();
     });
-  
+  });
 
   it('should show an error if the delivery programme code is not unique', async () => {
-    mockGetDeliveryProgrammes.mockResolvedValue([{ title: 'Some Programme', id: 'existing-id', delivery_programme_code: 'ExistingCode' }]);
-  
+    mockGetDeliveryProgrammes.mockResolvedValue([
+      {
+        title: 'Some Programme',
+        id: 'existing-id',
+        delivery_programme_code: 'ExistingCode',
+      },
+    ]);
+
     const rendered = await render();
-  
+
     fireEvent.click(rendered.getByTestId('create-delivery-programme-button'));
 
     fireEvent.change(rendered.getByLabelText('Title'), {
-      target: { value: 'Unique Programme' }, 
+      target: { value: 'Unique Programme' },
     });
-  
+
     fireEvent.change(rendered.getByLabelText('Delivery Programme Code'), {
-      target: { value: 'ExistingCode' }, 
+      target: { value: 'ExistingCode' },
     });
-  
+
     fireEvent.change(rendered.getByLabelText('Alias'), {
       target: { value: 'Alias for Delivery Programme' },
     });
@@ -302,18 +310,17 @@ describe('Create Delivery Programme', () => {
         target: { value: 'Description for Delivery Programme' },
       },
     );
-  
-    fireEvent.click(rendered.getByTestId('actions-modal-update-button')); 
-  
+
+    fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
+
     await waitFor(() => {
       expect(mockCreateDeliveryProgramme).not.toHaveBeenCalled();
       expect(mockAlertApi.post).toHaveBeenCalledWith({
         display: 'permanent',
-        message: "The delivery programme code 'ExistingCode' is already in use. Please choose a different code.",
+        message:
+          "The delivery programme code 'ExistingCode' is already in use. Please choose a different code.",
         severity: 'error',
       });
     });
   });
-  
-})
-
+});

@@ -18,7 +18,10 @@ import {
   useProgrammeManagersList,
 } from '../../hooks/useProgrammeManagersList';
 import { DeliveryProgrammeFormFields } from './DeliveryProgrammeFormFields';
-import { isCodeUnique, isNameUnique } from '../../utils/DeliveryProgramme/DeliveryProgrammeUtils';
+import {
+  isCodeUnique,
+  isNameUnique,
+} from '../../utils/DeliveryProgramme/DeliveryProgrammeUtils';
 
 interface CreateDeliveryProgrammeProps {
   refetchDeliveryProgramme: () => void;

@@ -31,6 +31,10 @@ import {
   useProgrammeManagersList,
 } from '../../hooks/useProgrammeManagersList';
 import { usePermission } from '@backstage/plugin-permission-react';
+import {
+  isCodeUnique,
+  isNameUnique,
+} from '../../utils/DeliveryProgramme/DeliveryProgrammeUtils';
 
 export const DeliveryProgrammeViewPageComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -85,23 +89,10 @@ export const DeliveryProgrammeViewPageComponent = () => {
     setIsModalOpen(false);
   };
 
-  const isNameUnique = (title: string, id: string) => {
-    return !tableData.some(
-      item =>
-        item.title.toLowerCase() === title.toLowerCase() && item.id !== id,
-    );
-  };
-
-
-  const isCodeUnique = (delivery_programme_code: string, id: string) => {
-    return !tableData.some(
-      item => 
-        item.delivery_programme_code.toLowerCase() === delivery_programme_code.toLowerCase() && item.id !== id,
-    )
-  }
-
   const handleUpdate = async (deliveryProgramme: DeliveryProgramme) => {
-    if (!isNameUnique(deliveryProgramme.title, deliveryProgramme.id) ) {
+    if (
+      !isNameUnique(tableData, deliveryProgramme.title, deliveryProgramme.id)
+    ) {
       setIsModalOpen(true);
 
       alertApi.post({
@@ -113,15 +104,21 @@ export const DeliveryProgrammeViewPageComponent = () => {
       return;
     }
 
-    if (!isCodeUnique(deliveryProgramme.delivery_programme_code, deliveryProgramme.id)) {
+    if (
+      !isCodeUnique(
+        tableData,
+        deliveryProgramme.delivery_programme_code,
+        deliveryProgramme.id,
+      )
+    ) {
       setIsModalOpen(true);
-  
+
       alertApi.post({
         message: `The delivery programme code '${deliveryProgramme.delivery_programme_code}' is already in use. Please choose a different code.`,
         severity: 'error',
         display: 'permanent',
       });
-  
+
       return;
     }
 
