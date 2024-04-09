@@ -10,26 +10,26 @@ import {
   PartialDeliveryProject,
 } from '../deliveryProject/deliveryProjectStore';
 import { DeliveryProject } from '@internal/plugin-adp-common';
-import {
-  checkForDuplicateProjectCode,
-  checkForDuplicateTitle,
-  getCurrentUsername,
-} from '../utils/index';
-
+import { checkForDuplicateProjectCode, checkForDuplicateTitle, getCurrentUsername } from '../utils/index';
+import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
+import { FluxConfigApi } from '../deliveryProject/fluxConfigApi';
+import { Config } from '@backstage/config';
 export interface ProjectRouterOptions {
   logger: Logger;
   identity: IdentityApi;
   database: PluginDatabaseManager;
+  config: Config;
 }
 
 export async function createProjectRouter(
   options: ProjectRouterOptions,
 ): Promise<express.Router> {
-  const { logger, identity, database } = options;
+  const { logger, identity, database, config } = options;
   const adpDatabase = AdpDatabase.create(database);
-  const deliveryProjectStore = new DeliveryProjectStore(
-    await adpDatabase.get(),
-  );
+  const connection = await adpDatabase.get();
+  const deliveryProjectStore = new DeliveryProjectStore(connection);
+  const deliveryProgrammeStore = new DeliveryProgrammeStore(connection);
+  const fluxConfigApi = new FluxConfigApi(config, deliveryProgrammeStore);
 
   const router = Router();
   router.use(express.json());
@@ -91,6 +91,9 @@ export async function createProjectRouter(
           req.body,
           author,
         );
+
+        await fluxConfigApi.createFluxConfig(deliveryProject);
+
         res.status(201).json(deliveryProject);
       }
     } catch (error) {

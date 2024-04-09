@@ -128,7 +128,7 @@ export class DeliveryProjectStore {
         team_type: DeliveryProject.team_type,
         service_owner: DeliveryProject.service_owner,
       },
-      ['id', 'created_at', 'updated_at'],
+      ['id', 'created_at', 'updated_at', 'name'],
     );
 
     if (insertResult.length < 1) {
@@ -143,6 +143,7 @@ export class DeliveryProjectStore {
       name: createName(DeliveryProject.title),
       created_at: new Date(insertResult[0].created_at),
       updated_at: new Date(insertResult[0].updated_at),
+      name: insertResult[0].name
     };
   }
 
