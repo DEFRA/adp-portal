@@ -227,6 +227,8 @@ describe('createRouter', () => {
 
       const expectedProgramme = {
         ...expectedProgrammeDataWithManager,
+        title: 'new title',
+        delivery_programme_code: 'new code',
         arms_length_body_id: '1',
       };
       expectedProgramme.title = 'new title';

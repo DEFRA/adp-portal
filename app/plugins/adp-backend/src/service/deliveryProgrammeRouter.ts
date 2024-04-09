@@ -15,7 +15,11 @@ import {
   DeliveryProgramme,
   ProgrammeManager,
 } from '@internal/plugin-adp-common';
-import { checkForDuplicateTitle, getCurrentUsername } from '../utils/index';
+import {
+  checkForDuplicateProgrammeCode,
+  checkForDuplicateTitle,
+  getCurrentUsername,
+} from '../utils/index';
 import { ProgrammeManagerStore } from '../deliveryProgramme/deliveryProgrammeManagerStore';
 import { Entity } from '@backstage/catalog-model';
 import {
@@ -56,8 +60,11 @@ export async function createProgrammeRouter(
       const data = await deliveryProgrammesStore.getAll();
       res.json(data);
     } catch (error) {
-      const deliveryProgramError  = (error as Error);
-      logger.error('Error in retrieving delivery programmes: ', deliveryProgramError );
+      const deliveryProgramError = error as Error;
+      logger.error(
+        'Error in retrieving delivery programmes: ',
+        deliveryProgramError,
+      );
       throw new InputError(deliveryProgramError.message);
     }
   });
@@ -67,8 +74,11 @@ export async function createProgrammeRouter(
       const data = await programmeManagersStore.getAll();
       res.json(data);
     } catch (error) {
-      const deliveryProgramError = (error as Error);
-      logger.error('Error in retrieving programme managers: ', deliveryProgramError);
+      const deliveryProgramError = error as Error;
+      logger.error(
+        'Error in retrieving programme managers: ',
+        deliveryProgramError,
+      );
       throw new InputError(deliveryProgramError.message);
     }
   });
@@ -84,8 +94,11 @@ export async function createProgrammeRouter(
         res.json(deliveryProgramme);
       }
     } catch (error) {
-      const deliveryProgramError = (error as Error);
-      logger.error('Error in retrieving delivery programme: ', deliveryProgramError);
+      const deliveryProgramError = error as Error;
+      logger.error(
+        'Error in retrieving delivery programme: ',
+        deliveryProgramError,
+      );
       throw new InputError(deliveryProgramError.message);
     }
   });
@@ -105,8 +118,11 @@ export async function createProgrammeRouter(
       });
       res.json(catalogApiResponse);
     } catch (error) {
-      const deliveryProgramError = (error as Error);
-      logger.error('Error in retrieving catalog entities: ', deliveryProgramError);
+      const deliveryProgramError = error as Error;
+      logger.error(
+        'Error in retrieving catalog entities: ',
+        deliveryProgramError,
+      );
       throw new InputError(deliveryProgramError.message);
     }
   });
@@ -119,51 +135,69 @@ export async function createProgrammeRouter(
 
       const data: DeliveryProgramme[] = await deliveryProgrammesStore.getAll();
 
-      const isDuplicate: boolean = await checkForDuplicateTitle(
+      
+      const isDuplicateTitle: boolean = await checkForDuplicateTitle(
         data,
         req.body.title,
       );
-      if (isDuplicate) {
+
+      
+      const isDuplicateCode: boolean = await checkForDuplicateProgrammeCode(
+        data,
+        req.body.delivery_programme_code,
+      );
+
+      if (isDuplicateTitle) {
         res
           .status(406)
           .json({ error: 'Delivery Programme title already exists' });
-      } else {
-        const author = await getCurrentUsername(identity, req);
-        const deliveryProgramme = await deliveryProgrammesStore.add(
-          req.body,
-          author,
-        );
-        const programmeManagers = req.body.programme_managers;
-        if (programmeManagers !== undefined) {
-          const catalogEntities = await catalog.getEntities({
-            filter: {
-              kind: 'User',
-            },
-            fields: [
-              'metadata.name',
-              'metadata.annotations.graph.microsoft.com/user-id',
-              'metadata.annotations.microsoft.com/email',
-              'spec.profile.displayName',
-            ],
-          });
-
-          const catalogEntity: Entity[] = catalogEntities.items;
-
-          addProgrammeManager(
-            programmeManagers,
-            deliveryProgramme.id,
-            deliveryProgramme,
-            programmeManagersStore,
-            catalogEntity,
-          );
-        } else {
-          req.body.programme_managers = [];
-        }
-        res.status(201).json(deliveryProgramme);
+        return; 
       }
+
+      if (isDuplicateCode) {
+        res
+          .status(406)
+          .json({ error: 'Delivery Programme code already exists' });
+        return; 
+      }
+      const author = await getCurrentUsername(identity, req);
+      const deliveryProgramme = await deliveryProgrammesStore.add(
+        req.body,
+        author,
+      );
+      const programmeManagers = req.body.programme_managers;
+      if (programmeManagers !== undefined) {
+        const catalogEntities = await catalog.getEntities({
+          filter: {
+            kind: 'User',
+          },
+          fields: [
+            'metadata.name',
+            'metadata.annotations.graph.microsoft.com/user-id',
+            'metadata.annotations.microsoft.com/email',
+            'spec.profile.displayName',
+          ],
+        });
+
+        const catalogEntity: Entity[] = catalogEntities.items;
+
+        addProgrammeManager(
+          programmeManagers,
+          deliveryProgramme.id,
+          deliveryProgramme,
+          programmeManagersStore,
+          catalogEntity,
+        );
+      } else {
+        req.body.programme_managers = [];
+      }
+      res.status(201).json(deliveryProgramme);
     } catch (error) {
-      const deliveryProgramError = (error as Error);
-      logger.error('Error in creating a delivery programme: ', deliveryProgramError);
+      const deliveryProgramError = error as Error;
+      logger.error(
+        'Error in creating a delivery programme: ',
+        deliveryProgramError,
+      );
       throw new InputError(deliveryProgramError.message);
     }
   });
@@ -185,20 +219,22 @@ export async function createProgrammeRouter(
       );
 
       const updatedTitle = requestBody?.title;
-      const currentTitle = currentData!.title;
-      const isTitleChanged = updatedTitle && currentTitle !== updatedTitle;
-      if (isTitleChanged) {
-        const isDuplicate: boolean = await checkForDuplicateTitle(
-          allProgrammes,
-          updatedTitle,
-        );
-        if (isDuplicate) {
-          res
-            .status(406)
-            .json({ error: 'Delivery Programme title already exists' });
-          return;
+      const updatedCode = requestBody?.delivery_programme_code;
+    
+      if (updatedTitle && updatedTitle !== currentData!.title) {
+        const isDuplicateTitle = await checkForDuplicateTitle(allProgrammes, updatedTitle);
+        if (isDuplicateTitle) {
+          return res.status(406).json({ error: 'Delivery Programme title already exists' });
         }
       }
+  
+      if (updatedCode && updatedCode !== currentData!.delivery_programme_code) {
+        const isDuplicateCode = await checkForDuplicateProgrammeCode(allProgrammes, updatedCode);
+        if (isDuplicateCode) {
+          return res.status(406).json({ error: 'Delivery Programme code already exists' });
+        }
+      }
+
 
       const author = await getCurrentUsername(identity, req);
       const deliveryProgramme = await deliveryProgrammesStore.update(
@@ -264,8 +300,11 @@ export async function createProgrammeRouter(
       }
       res.status(200).json(deliveryProgramme);
     } catch (error) {
-      const deliveryProgramError = (error as Error);
-      logger.error('Error in updating a delivery project: ', deliveryProgramError);
+      const deliveryProgramError = error as Error;
+      logger.error(
+        'Error in updating a delivery project: ',
+        deliveryProgramError,
+      );
       throw new InputError(deliveryProgramError.message);
     }
   });
