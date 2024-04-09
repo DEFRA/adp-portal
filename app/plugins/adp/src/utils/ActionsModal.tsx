@@ -74,9 +74,10 @@ export const ActionsModal: FC<ActionsModalProps> = ({
     }
   };
 
-  const renderTextField = (txtField: any) => (
+  const renderTextField = (txtField: any, index: number) => (
     <Controller
       name={txtField.name}
+      key={`${txtField.name}-${index}`}
       control={control}
       defaultValue={initialValues[txtField.name] || ''}
       rules={{
@@ -98,7 +99,7 @@ export const ActionsModal: FC<ActionsModalProps> = ({
       }}
       render={({ field }) => (
         <TextField
-          key={txtField.name}
+          key={`${txtField.name}-${index}`}
           id={txtField.name}
           label={txtField.label}
           variant="outlined"
@@ -122,9 +123,9 @@ export const ActionsModal: FC<ActionsModalProps> = ({
     />
   );
 
-  const renderSelectField = (field: any) => (
+  const renderSelectField = (field: any, index: number) => (
     <TextField
-      key={field.name}
+      key={`${field.name}-${index}`}
       id={field.name}
       label={field.label}
       variant="outlined"
@@ -199,8 +200,10 @@ export const ActionsModal: FC<ActionsModalProps> = ({
       }`}</DialogTitle>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <DialogContent>
-          {fields.map(field =>
-            field.select ? renderSelectField(field) : renderTextField(field),
+          {fields.map((field, index) =>
+            field.select
+              ? renderSelectField(field, index)
+              : renderTextField(field, index),
           )}
         </DialogContent>
         <DialogActions>

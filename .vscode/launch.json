@@ -33,12 +33,30 @@
         "repo",
         "test",
         "--runInBand",
-        "--watchAll=false"
+        "--watchAll=false",
+        // "--coverage=true",
+        "--testPathPattern=/src/components/DeliveryProject/CreateDeliveryProject.test.tsx"
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "program": "node_modules/.bin/backstage-cli",
       "cwd": "${workspaceFolder}/app/plugins/adp"
+    },
+    {
+      "type": "node",
+      "name": "Debug Jest tests-adp-backend",
+      "request": "launch",
+      "args": [
+        "repo",
+        "test",
+        "--runInBand",
+        "--watchAll=false",
+        "--coverage=true"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "program": "node_modules/.bin/backstage-cli",
+      "cwd": "${workspaceFolder}/app/plugins/adp-backend"
     },
     {
       "type": "node",

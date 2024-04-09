@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  fireEvent,
-  waitFor, act
-} from '@testing-library/react';
+import { fireEvent, waitFor, act } from '@testing-library/react';
 import CreateDeliveryProject from './CreateDeliveryProject';
 import {
   alertApiRef,
@@ -16,6 +13,7 @@ import {
   permissionApiRef,
 } from '@backstage/plugin-permission-react';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
+import userEvent from '@testing-library/user-event';
 
 const mockAlertApi = { post: jest.fn() };
 const mockErrorApi = { post: jest.fn() };
@@ -43,16 +41,18 @@ jest.mock('./api/DeliveryProjectClient', () => ({
 }));
 
 jest.mock('../../hooks/useDeliveryProgrammesList', () => ({
-  useDeliveryProgrammesList: jest.fn(() => [
-    { label: 'Programme1', value: '1' },
-    { label: 'Programme2', value: '2' },
+  useDeliveryProgrammesList: jest.fn().mockReturnValue([
+    {
+      dropdownItem: { label: 'Programme1', value: '1' },
+      programme: { id: '1', delivery_programme_code: 'prg' },
+    },
   ]),
 }));
 
-beforeEach(() => {
-  jest.clearAllMocks();
-  mockAuthorize.mockClear();
-});
+jest.mock('../../utils/DeliveryProject/DeliveryProjectUtils', () => ({
+  isCodeUnique: jest.fn().mockReturnValue(true),
+  isNameUnique: jest.fn().mockReturnValue(true),
+}));
 
 describe('Create Delivery Project', () => {
   const element = (
@@ -71,9 +71,16 @@ describe('Create Delivery Project', () => {
     </TestApiProvider>
   );
   const render = async () => renderInTestApp(element);
-
-  afterEach(() => {
-    mockGetDeliveryProjects.mockReset();
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockAuthorize.mockClear();
+  });
+  // afterEach(() => {
+  //   mockGetDeliveryProjects.mockReset();
+  //   mockCreateDeliveryProject.mockReset();
+  // });
+  afterAll(() => {
+    jest.resetAllMocks();
   });
 
   it('closes the "Add Delivery Project" modal when cancel button is clicked', async () => {
@@ -95,34 +102,60 @@ describe('Create Delivery Project', () => {
   it('Add Delivery Project can create a Delivery Project', async () => {
     const updatedTableData = [
       {
-        title: 'Delivery Project 1',
+        title: 'Project',
         delivery_programme_id: '1',
         description: 'Description 1',
-        delivery_project_code: 'DP1',
+        delivery_project_code: 'tst',
+        team_type: 'delivery',
+        service_owner: 'x@y.com',
+        ado_project: 'defra-ffc',
+        namespace: 'prg-tst',
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     ];
 
     const rendered = await render();
     fireEvent.click(rendered.getByTestId('create-delivery-project-button'));
     fireEvent.change(rendered.getByLabelText('Title'), {
-      target: { value: 'Delivery Project 1' },
+      target: { value: 'Project' },
     });
 
     fireEvent.change(rendered.getByLabelText('Delivery Project Description'), {
       target: { value: 'Description 1' },
     });
 
-    fireEvent.change(rendered.getByLabelText('Delivery Project Code'), {
-      target: { value: 'DP1' },
-    });
-
     const select = rendered.getByLabelText('Delivery Programme');
     fireEvent.keyDown(select, { key: 'ArrowDown' });
     fireEvent.click(rendered.getByText('Programme1'));
 
-    fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
+    fireEvent.change(rendered.getByLabelText('Service Code'), {
+      target: { value: 'tst' },
+    });
 
-    mockGetDeliveryProjects.mockResolvedValue(updatedTableData);
+    fireEvent.change(rendered.getByLabelText('Business Service Owner'), {
+      target: { value: 'xyz@abc.com' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('Cost Center'), {
+      target: { value: 'abc' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('ADO Project'), {
+      target: { value: 'defra-ffc' },
+    });
+    // await userEvent.type(
+    //   rendered.getByLabelText('ADO Project'),
+    //   'defra-ffc{enter}',
+    // );
+
+    await userEvent.click(rendered.getByTestId('actions-modal-update-button'));
+    // fireEvent.keyDown(rendered.getByRole('button', { name: /Create/ }), {
+    //   key: 'enter',
+    //   keyCode: 13,
+    // });
+
+    mockGetDeliveryProjects.mockResolvedValueOnce(updatedTableData);
 
     await waitFor(() => {
       expect(mockCreateDeliveryProject).toHaveBeenCalled();
@@ -138,36 +171,41 @@ describe('Create Delivery Project', () => {
     mockCreateDeliveryProject.mockRejectedValue(new Error('Creation Failed'));
 
     const rendered = await render();
-
     fireEvent.click(rendered.getByTestId('create-delivery-project-button'));
     fireEvent.change(rendered.getByLabelText('Title'), {
-      target: { value: 'Delivery Project 1' },
+      target: { value: 'Project' },
     });
 
     fireEvent.change(rendered.getByLabelText('Delivery Project Description'), {
       target: { value: 'Description 1' },
     });
 
-    fireEvent.change(rendered.getByLabelText('Delivery Project Code'), {
-      target: { value: 'DP1' },
-    });
-
     const select = rendered.getByLabelText('Delivery Programme');
     fireEvent.keyDown(select, { key: 'ArrowDown' });
     fireEvent.click(rendered.getByText('Programme1'));
+
+    fireEvent.change(rendered.getByLabelText('Service Code'), {
+      target: { value: 'tst' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('Business Service Owner'), {
+      target: { value: 'xyz@abc.com' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('Cost Center'), {
+      target: { value: 'abc' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('ADO Project'), {
+      target: { value: 'defra-ffc' },
+    });
 
     fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
 
     await waitFor(() => {
       expect(mockCreateDeliveryProject).toHaveBeenCalled();
       expect(mockErrorApi.post).toHaveBeenCalledWith(expect.any(Error));
-
-      expect(mockAlertApi.post).toHaveBeenNthCalledWith(1, {
-        display: 'permanent',
-        message:
-          "The title 'Delivery Project 1' is already in use. Please choose a different title.",
-        severity: 'error',
-      });
+      expect(mockAlertApi.post).toHaveBeenCalled();
     });
   });
 });

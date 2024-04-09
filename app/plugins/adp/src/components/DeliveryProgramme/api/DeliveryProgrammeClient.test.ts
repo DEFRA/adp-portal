@@ -7,7 +7,7 @@ jest.mock('@backstage/core-plugin-api', () => ({
   })),
 }));
 
-describe('armsLengthBodyClient', () => {
+describe('deliveryProgrammeClient', () => {
   let client: DeliveryProgrammeClient;
   let discoveryApi: { getBaseUrl: any };
   let fetchApi: { fetch: any };
@@ -31,7 +31,7 @@ describe('armsLengthBodyClient', () => {
         alb1: 'ALB Name 1',
         alb2: 'ALB Name 2',
       };
-  
+
       fetchApi.fetch
         .mockResolvedValueOnce({
           ok: true,
@@ -41,18 +41,30 @@ describe('armsLengthBodyClient', () => {
           ok: true,
           json: jest.fn().mockResolvedValue(mockAlbNamesMapping),
         });
-  
+
       const result = await client.getDeliveryProgrammes();
-  
+
       const expected = [
-        { ...mockDeliveryProgrammes[0], arms_length_body_id_name: 'ALB Name 1' },
-        { ...mockDeliveryProgrammes[1], arms_length_body_id_name: 'ALB Name 2' },
+        {
+          ...mockDeliveryProgrammes[0],
+          arms_length_body_id_name: 'ALB Name 1',
+        },
+        {
+          ...mockDeliveryProgrammes[1],
+          arms_length_body_id_name: 'ALB Name 2',
+        },
       ];
-  
+
       expect(result).toEqual(expected);
       expect(discoveryApi.getBaseUrl).toHaveBeenCalledWith('adp');
-      expect(fetchApi.fetch).toHaveBeenNthCalledWith(1, 'http://localhost/deliveryProgramme');
-      expect(fetchApi.fetch).toHaveBeenNthCalledWith(2, 'http://localhost/armslengthbodynames');
+      expect(fetchApi.fetch).toHaveBeenNthCalledWith(
+        1,
+        'http://localhost/deliveryProgramme',
+      );
+      expect(fetchApi.fetch).toHaveBeenNthCalledWith(
+        2,
+        'http://localhost/armslengthbodynames',
+      );
     });
 
     it('throws an error when the fetch fails', async () => {
@@ -135,34 +147,58 @@ describe('armsLengthBodyClient', () => {
   });
   describe('getDeliveryProgrammeById', () => {
     it('fetches a delivery programme by ID successfully', async () => {
-
       const mockProgramme = { id: '1', name: 'Test Programme' };
       fetchApi.fetch.mockResolvedValue({
         ok: true,
         json: jest.fn().mockResolvedValue(mockProgramme),
       });
-  
-   
+
       const result = await client.getDeliveryProgrammeById('1');
       expect(result).toEqual(mockProgramme);
       expect(discoveryApi.getBaseUrl).toHaveBeenCalledWith('adp');
-     
-      expect(fetchApi.fetch).toHaveBeenCalledWith('http://localhost/deliveryProgramme/1');
+
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProgramme/1',
+      );
     });
-  
+
     it('throws an error when fetching a delivery programme by ID fails', async () => {
-  
       fetchApi.fetch.mockResolvedValue({
         ok: false,
         status: 404,
         statusText: 'Not Found',
         json: jest.fn().mockResolvedValue({ error: 'Programme not found' }),
       });
-  
 
-      await expect(client.getDeliveryProgrammeById('nonexistent-id')).rejects.toThrow('Failed to fetch Delivery Programme by ID');
+      await expect(
+        client.getDeliveryProgrammeById('nonexistent-id'),
+      ).rejects.toThrow('Failed to fetch Delivery Programme by ID');
     });
   });
-  
- 
+
+  describe('getProgrammeManagers', () => {
+    it('fetches programme managers successfully', async () => {
+      const mockProgrammeManagers = [
+        { id: '1', name: '<NAME>' },
+        { id: '2', name: '<NAME>' },
+      ];
+      fetchApi.fetch.mockResolvedValue({
+        ok: true,
+        json: jest.fn().mockResolvedValue(mockProgrammeManagers),
+      });
+      const result = await client.getProgrammeManagers();
+      expect(result).toEqual(mockProgrammeManagers);
+    });
+    it('throws error when fetch errors out', async () => {
+      fetchApi.fetch.mockResolvedValue({
+        ok: false,
+        status: 404,
+        statusText: 'Not Found',
+        json: jest.fn().mockResolvedValue({ error: 'unknown error' }),
+      });
+      await expect(client.getProgrammeManagers()).rejects.toThrow(
+        'Failed to fetch Delivery Programme Managers',
+      );
+    });
+  });
 });

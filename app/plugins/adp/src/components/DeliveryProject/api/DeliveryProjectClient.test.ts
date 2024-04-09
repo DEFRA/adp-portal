@@ -1,3 +1,4 @@
+import { DeliveryProgrammeClient } from '../../DeliveryProgramme/api';
 import { DeliveryProjectClient } from './DeliveryProjectClient';
 
 jest.mock('@backstage/core-plugin-api', () => ({
@@ -108,17 +109,52 @@ describe('deliveryProjectClient', () => {
 
   describe('create delivery project', () => {
     it('creates a delivery project successfully', async () => {
-      const newData = { name: 'New Body' };
-      const mockResponseData = [{ id: 1, name: 'New Body' }];
+      const newData = { name: 'New Body', delivery_programme_id: '1' };
+      const mockCreateProjectResponse = {
+        id: 1,
+        name: 'New Body',
+        namespace: 'adp-dmo',
+      };
+      jest
+        .spyOn(DeliveryProgrammeClient.prototype, 'getDeliveryProgrammeById')
+        .mockImplementation(() =>
+          Promise.resolve({
+            id: '1',
+            name: 'Programme 1',
+            arms_length_body_id: 'alb1',
+            programme_managers: [
+              {
+                email: 'x@y.com',
+                aad_entity_ref_id: 'id',
+                delivery_programme_id: '1',
+                id: 'm1',
+                name: 'manager',
+              },
+            ],
+            created_at: new Date(),
+            updated_at: new Date(),
+            updated_by: 'author',
+            delivery_programme_code: 'prog1',
+            description: 'Description',
+            title: 'Title',
+            finance_code: 'fincode',
+          }),
+        );
 
-      fetchApi.fetch.mockResolvedValue({
-        ok: true,
-        json: jest.fn().mockResolvedValue(mockResponseData),
-      });
+      fetchApi.fetch
+        .mockResolvedValueOnce({
+          ok: true,
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: jest.fn().mockResolvedValueOnce(mockCreateProjectResponse),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+        });
 
       const result = await client.createDeliveryProject(newData);
-      expect(result).toEqual(mockResponseData);
-
+      expect(result).toEqual(mockCreateProjectResponse);
       expect(fetchApi.fetch).toHaveBeenCalledWith(expect.any(String), {
         method: 'POST',
         headers: {
@@ -128,17 +164,82 @@ describe('deliveryProjectClient', () => {
       });
     });
 
-    it('throws an error when the creation fails', async () => {
+    it('throws an error when ado project doesnt exists', async () => {
+      const newData = { name: 'New Body' };
+      fetchApi.fetch.mockResolvedValueOnce({
+        ok: false,
+      });
+      await expect(client.createDeliveryProject(newData)).rejects.toThrow(
+        'Failed to create Delivery Project',
+      );
+    });
+
+    it('throws an error when the ado project check fails', async () => {
       const newData = { name: 'New Body' };
       const errorMessage = 'Failed to create Delivery Project';
-      fetchApi.fetch.mockResolvedValue({
-        ok: false,
-        status: 400,
-        statusText: 'Bad Request',
-        json: jest.fn().mockResolvedValue({ error: errorMessage }),
-      });
+      fetchApi.fetch.mockRejectedValue('Unknown error');
+      await expect(client.createDeliveryProject(newData)).rejects.toThrow(
+        errorMessage,
+      );
+    });
 
-      await expect(client.createDeliveryProject(newData)).rejects.toThrow();
+    it('throws an error when createEntraIdGroupsForProject fetchapi returns not ok', async () => {
+      const newData = { name: 'New Body', delivery_programme_id: '1' };
+      const mockCreateProjectResponse = {
+        id: 1,
+        name: 'New Body',
+        namespace: 'adp-dmo',
+      };
+      jest
+        .spyOn(DeliveryProgrammeClient.prototype, 'getDeliveryProgrammeById')
+        .mockImplementation(() =>
+          Promise.resolve({
+            id: '1',
+            name: 'Programme 1',
+            arms_length_body_id: 'alb1',
+            programme_managers: [
+              {
+                email: 'x@y.com',
+                aad_entity_ref_id: 'id',
+                delivery_programme_id: '1',
+                id: 'm1',
+                name: 'manager',
+              },
+            ],
+            created_at: new Date(),
+            updated_at: new Date(),
+            updated_by: 'author',
+            delivery_programme_code: 'prog1',
+            description: 'Description',
+            title: 'Title',
+            finance_code: 'fincode',
+          }),
+        );
+
+      fetchApi.fetch
+        .mockResolvedValueOnce({
+          ok: true,
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: jest.fn().mockResolvedValueOnce(mockCreateProjectResponse),
+        })
+        .mockResolvedValueOnce({
+          ok: false,
+        });
+
+      await expect(client.createDeliveryProject(newData)).rejects.toThrow(
+        'Failed to create Delivery Project',
+      );
+    });
+
+    it('throws an error when createEntraIdGroupsForProject fetchapi throws error', async () => {
+      const newData = { name: 'New Body' };
+      const errorMessage = 'Failed to create Delivery Project';
+      fetchApi.fetch.mockRejectedValue('Unknown error');
+      await expect(client.createDeliveryProject(newData)).rejects.toThrow(
+        errorMessage,
+      );
     });
   });
   describe('getDeliveryProjectById', () => {

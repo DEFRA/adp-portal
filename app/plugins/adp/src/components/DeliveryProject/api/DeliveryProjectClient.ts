@@ -91,11 +91,13 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
         };
         await this.createEntraIdGroupsForProject(
           adGroupPayload,
-          createdProject.name.toUpperCase(),
+          createdProject.namespace.toUpperCase(),
         );
         return respJson;
       } else {
-        throw new Error('Ado project does not exist');
+        throw new Error(
+          'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
+        );
       }
     } catch (error) {
       throw new Error(`Failed to create Delivery Project`);
@@ -138,7 +140,7 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
     }
   }
 
-  async createEntraIdGroupsForProject(
+  private async createEntraIdGroupsForProject(
     data: any,
     projectName: string,
   ): Promise<void> {
