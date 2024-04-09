@@ -45,8 +45,10 @@ export const DeliveryProgrammeFormFields = [
   {
     label: 'Delivery Programme Code',
     name: 'delivery_programme_code',
+    helperText: 'This must be unique',
     validations: {
       required: true,
+      
     },
   },
   {

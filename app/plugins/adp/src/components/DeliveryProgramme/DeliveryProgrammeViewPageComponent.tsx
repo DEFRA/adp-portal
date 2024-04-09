@@ -92,8 +92,16 @@ export const DeliveryProgrammeViewPageComponent = () => {
     );
   };
 
+
+  const isCodeUnique = (delivery_programme_code: string, id: string) => {
+    return !tableData.some(
+      item => 
+        item.delivery_programme_code.toLowerCase() === delivery_programme_code.toLowerCase() && item.id !== id,
+    )
+  }
+
   const handleUpdate = async (deliveryProgramme: DeliveryProgramme) => {
-    if (!isNameUnique(deliveryProgramme.title, deliveryProgramme.id)) {
+    if (!isNameUnique(deliveryProgramme.title, deliveryProgramme.id) ) {
       setIsModalOpen(true);
 
       alertApi.post({
@@ -102,6 +110,18 @@ export const DeliveryProgrammeViewPageComponent = () => {
         display: 'permanent',
       });
 
+      return;
+    }
+
+    if (!isCodeUnique(deliveryProgramme.delivery_programme_code, deliveryProgramme.id)) {
+      setIsModalOpen(true);
+  
+      alertApi.post({
+        message: `The delivery programme code '${deliveryProgramme.delivery_programme_code}' is already in use. Please choose a different code.`,
+        severity: 'error',
+        display: 'permanent',
+      });
+  
       return;
     }
 
