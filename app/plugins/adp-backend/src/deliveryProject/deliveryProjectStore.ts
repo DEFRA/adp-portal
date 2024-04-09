@@ -13,11 +13,11 @@ type Row = {
   finance_code?: string;
   delivery_programme_id: string;
   delivery_project_code: string;
-  namespace?: string;
+  namespace: string;
   updated_by?: string;
   created_at: Date;
   updated_at: Date;
-  ado_project?: string;
+  ado_project: string;
   team_type: string;
   service_owner: string;
 };
@@ -56,8 +56,8 @@ export class DeliveryProjectStore {
       finance_code: row?.finance_code,
       delivery_programme_id: row.delivery_programme_id,
       delivery_project_code: row.delivery_project_code,
-      namespace: row?.namespace,
-      ado_project: row?.ado_project,
+      namespace: row.namespace,
+      ado_project: row.ado_project,
       created_at: new Date(row.created_at),
       updated_at: new Date(row.updated_at),
       updated_by: row?.updated_by,
@@ -98,8 +98,8 @@ export class DeliveryProjectStore {
           finance_code: row?.finance_code,
           delivery_programme_id: row.delivery_programme_id,
           delivery_project_code: row.delivery_project_code,
-          namespace: row?.namespace,
-          ado_project: row?.ado_project,
+          namespace: row.namespace,
+          ado_project: row.ado_project,
           created_at: new Date(row.created_at),
           updated_at: new Date(row.updated_at),
           updated_by: row?.updated_by,

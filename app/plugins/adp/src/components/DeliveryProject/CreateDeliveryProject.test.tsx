@@ -14,6 +14,10 @@ import {
 } from '@backstage/plugin-permission-react';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import userEvent from '@testing-library/user-event';
+import {
+  isCodeUnique,
+  isNameUnique,
+} from '../../utils/DeliveryProject/DeliveryProjectUtils';
 
 const mockAlertApi = { post: jest.fn() };
 const mockErrorApi = { post: jest.fn() };
@@ -75,10 +79,10 @@ describe('Create Delivery Project', () => {
     jest.clearAllMocks();
     mockAuthorize.mockClear();
   });
-  // afterEach(() => {
-  //   mockGetDeliveryProjects.mockReset();
-  //   mockCreateDeliveryProject.mockReset();
-  // });
+  afterEach(() => {
+    mockGetDeliveryProjects.mockReset();
+    mockCreateDeliveryProject.mockReset();
+  });
   afterAll(() => {
     jest.resetAllMocks();
   });
@@ -144,16 +148,8 @@ describe('Create Delivery Project', () => {
     fireEvent.change(rendered.getByLabelText('ADO Project'), {
       target: { value: 'defra-ffc' },
     });
-    // await userEvent.type(
-    //   rendered.getByLabelText('ADO Project'),
-    //   'defra-ffc{enter}',
-    // );
 
     await userEvent.click(rendered.getByTestId('actions-modal-update-button'));
-    // fireEvent.keyDown(rendered.getByRole('button', { name: /Create/ }), {
-    //   key: 'enter',
-    //   keyCode: 13,
-    // });
 
     mockGetDeliveryProjects.mockResolvedValueOnce(updatedTableData);
 
@@ -205,6 +201,84 @@ describe('Create Delivery Project', () => {
     await waitFor(() => {
       expect(mockCreateDeliveryProject).toHaveBeenCalled();
       expect(mockErrorApi.post).toHaveBeenCalledWith(expect.any(Error));
+      expect(mockAlertApi.post).toHaveBeenCalled();
+    });
+  });
+
+  it('Add Delivery Project Creation fails when project_code is not unique', async () => {
+    (isCodeUnique as jest.Mock).mockReturnValue(false);
+    const rendered = await render();
+    fireEvent.click(rendered.getByTestId('create-delivery-project-button'));
+    fireEvent.change(rendered.getByLabelText('Title'), {
+      target: { value: 'Project' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('Delivery Project Description'), {
+      target: { value: 'Description 1' },
+    });
+
+    const select = rendered.getByLabelText('Delivery Programme');
+    fireEvent.keyDown(select, { key: 'ArrowDown' });
+    fireEvent.click(rendered.getByText('Programme1'));
+
+    fireEvent.change(rendered.getByLabelText('Service Code'), {
+      target: { value: 'tst' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('Business Service Owner'), {
+      target: { value: 'xyz@abc.com' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('Cost Center'), {
+      target: { value: 'abc' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('ADO Project'), {
+      target: { value: 'defra-ffc' },
+    });
+
+    fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
+
+    await waitFor(() => {
+      expect(mockAlertApi.post).toHaveBeenCalled();
+    });
+  });
+
+  it('Add Delivery Project Creation fails when name is not unique', async () => {
+    (isNameUnique as jest.Mock).mockReturnValue(false);
+    const rendered = await render();
+    fireEvent.click(rendered.getByTestId('create-delivery-project-button'));
+    fireEvent.change(rendered.getByLabelText('Title'), {
+      target: { value: 'Project' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('Delivery Project Description'), {
+      target: { value: 'Description 1' },
+    });
+
+    const select = rendered.getByLabelText('Delivery Programme');
+    fireEvent.keyDown(select, { key: 'ArrowDown' });
+    fireEvent.click(rendered.getByText('Programme1'));
+
+    fireEvent.change(rendered.getByLabelText('Service Code'), {
+      target: { value: 'tst' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('Business Service Owner'), {
+      target: { value: 'xyz@abc.com' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('Cost Center'), {
+      target: { value: 'abc' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('ADO Project'), {
+      target: { value: 'defra-ffc' },
+    });
+
+    fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
+
+    await waitFor(() => {
       expect(mockAlertApi.post).toHaveBeenCalled();
     });
   });

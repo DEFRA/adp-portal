@@ -55,7 +55,6 @@ export const ActionsModal: FC<ActionsModalProps> = ({
   const formContext = useFormContext();
   const formMethods = formContext || useForm({ defaultValues: initialValues });
   const {
-    register,
     handleSubmit,
     formState: { errors },
     reset,
@@ -123,68 +122,72 @@ export const ActionsModal: FC<ActionsModalProps> = ({
     />
   );
 
-  const renderSelectField = (field: any, index: number) => (
-    <TextField
-      key={`${field.name}-${index}`}
-      id={field.name}
-      label={field.label}
-      variant="outlined"
-      fullWidth
-      margin="dense"
-      select
-      SelectProps={{
-        multiple: field.multiple,
-        renderValue: field.multiple
-          ? selected => (
-              <SelectedChipsRenderer
-                selected={selected || []}
-                options={field.options}
-              />
-            )
-          : undefined,
-      }}
-      {...register(field.name, {
-        required: field.validations?.required
-          ? 'This field is required'
-          : undefined,
-        maxLength: field.validations?.maxLength
-          ? {
-              value: field.validations.maxLength,
-              message: `Maximum length is ${field.validations.maxLength} characters`,
-            }
-          : undefined,
-        pattern: field.validations?.pattern
-          ? {
-              value: field.validations.pattern.value,
-              message: field.validations.pattern.message,
-            }
-          : undefined,
-      })}
+  const renderSelectField = (selectField: any, index: number) => (
+    <Controller
+      name={selectField.name}
+      key={`${selectField.name}-${index}`}
+      control={control}
       defaultValue={
-        field.multiple
-          ? Array.isArray(initialValues[field.name])
-            ? initialValues[field.name].map(
+        selectField.multiple
+          ? Array.isArray(initialValues[selectField.name])
+            ? initialValues[selectField.name].map(
                 (item: any) => item.aad_entity_ref_id,
               )
             : []
-          : initialValues[field.name] || ''
+          : initialValues[selectField.name] || ''
       }
-      disabled={field.disabled}
-      error={!!errors[field.name]}
-      helperText={errors[field.name]?.message ?? field.helperText}
-      data-testid={field.name}
-      onChange={field.onChange}
-    >
-      {field.options?.map((option: any) => (
-        <MenuItem
-          key={option.value}
-          value={option.value}
-          data-testid={'select-option-' + field.name + '-' + option.value}
+      rules={{
+        required: selectField.validations?.required
+          ? 'This field is required'
+          : undefined,
+      }}
+      render={({ field }) => (
+        <TextField
+          id={selectField.name}
+          label={selectField.label}
+          variant="outlined"
+          fullWidth
+          margin="dense"
+          select
+          SelectProps={{
+            multiple: selectField.multiple,
+            renderValue: selectField.multiple
+              ? selected => (
+                  <SelectedChipsRenderer
+                    selected={selected || []}
+                    options={selectField.options}
+                  />
+                )
+              : undefined,
+          }}
+          {...field}
+          disabled={selectField.disabled}
+          error={!!errors[selectField.name]}
+          helperText={
+            errors[selectField.name]?.message ?? selectField.helperText
+          }
+          data-testid={selectField.name}
+          onChange={e => {
+            field.onChange(e);
+            if (selectField.onChange) {
+              selectField.onChange(e);
+            }
+          }}
         >
-          {option.label}
-        </MenuItem>
-      ))}
-    </TextField>
+          {selectField.options?.map((option: any) => (
+            <MenuItem
+              key={option.value}
+              value={option.value}
+              data-testid={
+                'select-option-' + selectField.name + '-' + option.value
+              }
+            >
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+      )}
+    />
   );
 
   return (

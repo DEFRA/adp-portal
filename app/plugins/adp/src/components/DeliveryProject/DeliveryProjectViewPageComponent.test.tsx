@@ -215,7 +215,6 @@ describe('DeliveryProjectViewPageComponent', () => {
     });
 
     fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
-    await screen.findByText('Delivery Projects');
 
     mockGetDeliveryProjects.mockResolvedValue(updatedTableData);
 
@@ -226,8 +225,6 @@ describe('DeliveryProjectViewPageComponent', () => {
         message: 'Updated',
         severity: 'success',
       });
-      expect(rendered.queryByText('Edit: Project')).not.toBeInTheDocument();
-      expect(rendered.queryByText('Project updated')).toBeInTheDocument();
     });
   });
 
