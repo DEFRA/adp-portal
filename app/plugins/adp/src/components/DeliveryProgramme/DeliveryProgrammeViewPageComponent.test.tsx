@@ -400,8 +400,6 @@ describe('DeliveryProgrammeViewPageComponent', () => {
   it('should not update the item when update button is clicked and has a non-unique programme_code', async () => {
     mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
 
-    console.log(mockTableData);
-
     const rendered = await render();
     fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-2'));
 
