@@ -162,7 +162,7 @@ catalog:
         tenantId: ${AUTH_MICROSOFT_TENANT_ID}
         queryMode: basic
         user:
-          select: ['id', 'mail', 'displayName', 'description']
+          select: ['id', 'mail', 'displayName', 'description', 'userPrincipalName' ]
         userGroupMember:
           filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or displayName eq '${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}'"
         group:
