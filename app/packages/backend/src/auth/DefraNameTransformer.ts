@@ -69,7 +69,6 @@ export async function defraADONameTransformer(
     const emailAddress  = chooseUserPrincipalIfEmailIsBlank(user);
     const name = normalizeEntityName(emailAddress) + ( mailIsBlank(user) ? '.upn' : '');
 
-    console.log("Log Info", emailAddress, user, name);
     const entity = createEntityFromOriginalUser(name, user, emailAddress);
     return addPhotoIfRequired(userPhoto, entity);
 
