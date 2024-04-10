@@ -1,7 +1,7 @@
 import { defraADONameTransformer } from './DefraNameTransformer'; // Import the function to be tested
 import { UserEntity } from '@backstage/catalog-model';
 import {
-  defaultUserTransformer, normalizeEntityName,
+  defaultUserTransformer,
 } from '@backstage/plugin-catalog-backend-module-msgraph';
 import {
   MICROSOFT_EMAIL_ANNOTATION,
