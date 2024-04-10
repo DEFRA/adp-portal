@@ -14,21 +14,21 @@ function hasEmailOrUserPrincipalName(user:  MicrosoftGraph.User) {
   return user.mail || user.userPrincipalName ;
 }
 
-function createEntitiyFromOrignalUser(name: string, user:  MicrosoftGraph.User, idToUse: string | undefined | null) {
+function createEntityFromOriginalUser(name: string, user:  MicrosoftGraph.User, email: string ) {
   const entity: UserEntity = {
     apiVersion: 'backstage.io/v1alpha1',
     kind: 'User',
     metadata: {
       name,
       annotations: {
-        [MICROSOFT_EMAIL_ANNOTATION]: user.mail!,
         [MICROSOFT_GRAPH_USER_ID_ANNOTATION]: user.id!,
+        [MICROSOFT_EMAIL_ANNOTATION] :email,
       },
     },
     spec: {
       profile: {
         displayName: user.displayName!,
-        email: idToUse!,
+        email: email!,
       },
       memberOf: [],
     },
@@ -49,7 +49,7 @@ function mailIsBlank(user: User) {
 }
 
 function chooseUserPrincipalIfEmailIsBlank(user:  MicrosoftGraph.User) {
-  return mailIsBlank(user) ? user.userPrincipalName:  user.mail;
+  return mailIsBlank(user) ? (user.userPrincipalName):  user.mail;
 }
 
 export async function defraADONameTransformer(
@@ -59,9 +59,9 @@ export async function defraADONameTransformer(
     if (!hasEmailOrUserPrincipalName(user) ) {
       return undefined;
     }
-    const idToUse  = chooseUserPrincipalIfEmailIsBlank(user);
-    const name = normalizeEntityName(idToUse);
-    const entity = createEntitiyFromOrignalUser(name, user, idToUse);
+    const emailAddress  = chooseUserPrincipalIfEmailIsBlank(user);
+    const name = normalizeEntityName(emailAddress);
+    const entity = createEntityFromOriginalUser(name, user, emailAddress);
     return addPhotoIfRequired(userPhoto, entity);
 
 }
