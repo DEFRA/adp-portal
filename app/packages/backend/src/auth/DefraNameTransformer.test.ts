@@ -63,10 +63,10 @@ describe('Defra ADO User Transformer', () => {
     const {mockGraphUser, mockUserPhoto} = createTestData('freds@example.com', '');
 
     const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
-    expect(result?.metadata?.name).toBe('freds_example.com.upn');
+    expect(result?.metadata?.name).toBe('freds_example.com');
     // Assume if there was no email, the email was the UPN
     expect(result?.spec?.profile?.email).toBe('freds@example.com')
-    expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBeUndefined();
+    expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBe('freds@example.com');
 
   });
   it('Parses UPN correctly for email is undefined ', async () => {
@@ -74,9 +74,10 @@ describe('Defra ADO User Transformer', () => {
     const {mockGraphUser, mockUserPhoto} = createTestData('freds@example.com', undefined );
 
     const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
-    expect(result?.metadata?.name).toBe('freds_example.com.upn');
+    expect(result?.metadata?.name).toBe('freds_example.com');
     // Assume if there was no email, the email was the UPN
     expect(result?.spec?.profile?.email).toBe('freds@example.com')
+    expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBe('freds@example.com');
 
   });
 
@@ -85,8 +86,9 @@ describe('Defra ADO User Transformer', () => {
     const {mockGraphUser, mockUserPhoto} = createTestData('freds@example.com', null );
 
     const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
-    expect(result?.metadata?.name).toBe('freds_example.com.upn');
+    expect(result?.metadata?.name).toBe('freds_example.com');
     expect(result?.spec?.profile?.email).toBe('freds@example.com')
+    expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBe('freds@example.com');
 
   });
 
