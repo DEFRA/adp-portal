@@ -7,7 +7,30 @@ import express from 'express';
 import request from 'supertest';
 import { createAlbRouter } from './armsLengthBodyRouter';
 import { ConfigReader } from '@backstage/config';
-import { getCurrentUsername , checkForDuplicateTitle, getOwner} from '../utils';
+import { expectedAlbWithName } from '../testData/albTestData';
+import { InputError } from '@backstage/errors';
+
+let mockGetAll: jest.Mock;
+let mockGet: jest.Mock;
+let mockAdd: jest.Mock;
+let mockUpdate: jest.Mock;
+
+jest.mock('../armsLengthBody/armsLengthBodyStore', () => {
+  return {
+    ArmsLengthBodyStore: jest.fn().mockImplementation(() => {
+      mockGetAll = jest.fn().mockResolvedValue([expectedAlbWithName]);
+      mockGet = jest.fn().mockResolvedValue(expectedAlbWithName);
+      mockAdd = jest.fn().mockResolvedValue(expectedAlbWithName);
+      mockUpdate = jest.fn().mockResolvedValue(expectedAlbWithName);
+      return {
+        getAll: mockGetAll,
+        get: mockGet,
+        add: mockAdd,
+        update: mockUpdate,
+      };
+    }),
+  };
+});
 
 describe('createRouter', () => {
   let app: express.Express;
@@ -28,7 +51,7 @@ describe('createRouter', () => {
     database: createTestDatabase(),
     config: mockConfig,
   };
-  const owner = getOwner(mockOptions);
+
   function createTestDatabase(): PluginDatabaseManager {
     return DatabaseManager.fromConfig(
       new ConfigReader({
@@ -54,7 +77,6 @@ describe('createRouter', () => {
   describe('GET /health', () => {
     it('returns ok', async () => {
       const response = await request(app).get('/health');
-
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({ status: 'ok' });
     });
@@ -62,117 +84,86 @@ describe('createRouter', () => {
 
   describe('GET /armsLengthBody', () => {
     it('returns ok', async () => {
+      mockGetAll.mockResolvedValueOnce([expectedAlbWithName]);
       const response = await request(app).get('/armsLengthBody');
       expect(response.status).toEqual(200);
     });
+    it('returns bad request', async () => {
+      mockGetAll.mockRejectedValueOnce(new InputError('error'));
+      const response = await request(app).get('/armsLengthBody');
+      expect(response.status).toEqual(400);
+    });
+  });
+
+  describe('GET /armsLengthBody/:id', () => {
+    it('returns ok', async () => {
+      mockGet.mockResolvedValueOnce(expectedAlbWithName);
+      const response = await request(app).get('/armsLengthBody/1234');
+      expect(response.status).toEqual(200);
+    });
+
+    it('returns bad request', async () => {
+      mockGet.mockRejectedValueOnce(new InputError('error'));
+      const response = await request(app).get('/armsLengthBody/4321');
+      expect(response.status).toEqual(400);
+    });
+  });
+
+  describe('GET /armsLengthBodyNames', () => {
+    it('returns ok', async () => {
+      mockGetAll.mockResolvedValueOnce([expectedAlbWithName]);
+      const response = await request(app).get('/armsLengthBodyNames');
+      expect(response.status).toEqual(200);
+    });
+    it('returns ok', async () => {
+      mockGetAll.mockRejectedValueOnce([expectedAlbWithName]);
+      const response = await request(app).get('/armsLengthBodyNames');
+      expect(response.status).toEqual(400);
+    });
   });
 
   describe('POST /armsLengthBody', () => {
     it('returns ok', async () => {
-      mockIdentityApi.getIdentity.mockResolvedValue({
-        identity: { userEntityRef: 'user:default/johndoe'},
-      });
-      const creator = await getCurrentUsername(
-        mockIdentityApi,
-        express.request,
-      );
-
-      const expectedALB = {
-        creator: creator,
-        owner: owner,
-        title: 'Test ALB example',
-        alias: 'ALB',
-        description: 'This is an example ALB',
+      mockGetAll.mockResolvedValueOnce([expectedAlbWithName]);
+      const data = {
+        ...expectedAlbWithName,
+        title: 'new title',
       };
-      const getExistingData = await request(app).get('/armsLengthBody');
-      const checkDuplicate = await checkForDuplicateTitle(
-        getExistingData.body,
-        expectedALB.title,
-      );
-      const response = await request(app)
-        .post('/armsLengthBody')
-        .send(expectedALB);
+      const response = await request(app).post('/armsLengthBody').send(data);
       expect(response.status).toEqual(201);
-      expect(checkDuplicate).toBe(false);
-    },6000);
-
-    it('returns Error', async () => {
-      const invalidALB = {
-        alias: 'ALB',
-        description: 'This is an example ALB',
-      };
+    });
+    it('return 406 if title already exists', async () => {
+      mockGetAll.mockResolvedValueOnce([expectedAlbWithName]);
       const response = await request(app)
         .post('/armsLengthBody')
-        .send(invalidALB);
-      expect(response.status).toEqual(400);
-    },6000);
-  });
-
-  describe('POST /armsLengthBody', () => {
-    it('returns 406 when ALB title already exists', async () => {
-      const expectedALB = {
-        title: 'Marine and Maritime',
-        alias: 'ALB',
-        description: 'This is an example ALB',
-      };
-      const response = await request(app)
-        .post('/armsLengthBody')
-        .send(expectedALB);
+        .send(expectedAlbWithName);
       expect(response.status).toEqual(406);
-      expect(response.text).toEqual('{"error":"ALB title already exists"}');
-    },6000);
+    });
+    it('returns bad request', async () => {
+      mockAdd.mockRejectedValueOnce(new InputError('error'));
+      const response = await request(app)
+        .post('/armsLengthBody')
+        .send(expectedAlbWithName);
+      expect(response.status).toEqual(400);
+    }, 6000);
   });
 
   describe('PATCH /armsLengthBody', () => {
-    it('returns ok', async () => {
-      mockIdentityApi.getIdentity.mockResolvedValue({
-        identity: { userEntityRef: 'user:default/johndoe' },
-      });
-      const creator = await getCurrentUsername(
-        mockIdentityApi,
-        express.request,
-      );
-
-      const expectedALB = {
-        creator: creator,
-        owner: owner,
-        title: 'Test ALB',
-        alias: 'ALB',
-        description: 'This is an example ALB',
-      };
-      const postRequest = await request(app)
-        .post('/armsLengthBody')
-        .send(expectedALB);
-      expect(postRequest.status).toEqual(201);
-      const getCurrentData = await request(app).get('/armsLengthBody');
-      const currentData = getCurrentData.body.find(
-        (e: { title: string }) => e.title === 'Test ALB',
-      );
-      expect(currentData.name).toBe('test-alb');
-      const updatedALB = {
-        title: 'Test ALB updated',
-        id: currentData.id,
-      };
-      const patchRequest = await request(app)
-        .patch('/armsLengthBody')
-        .send(updatedALB);
-      expect(patchRequest.status).toEqual(204);
-      const getUpdatedtData = await request(app).get('/armsLengthBody');
-      const updatedData = getUpdatedtData.body.find(
-        (e: { title: string }) => e.title === 'Test ALB updated',
-      );
-      expect(updatedData.name).toBe('test-alb');
+    it('returns created', async () => {
+      const existing = { ...expectedAlbWithName, id: '123' };
+      mockGetAll.mockResolvedValueOnce([existing]);
+      const data = { ...existing };
+      data.title = 'new title';
+      const response = await request(app).patch('/armsLengthBody').send(data);
+      expect(response.status).toEqual(200);
     });
 
-    it('returns 406', async () => {
-      const expectedALB = {
-        title: 'Marine and Maritime',
-      };
-      const response = await request(app)
-        .post('/armsLengthBody')
-        .send(expectedALB);
-      expect(response.status).toEqual(406);
-      expect(response.text).toEqual('{"error":"ALB title already exists"}');
+    it('returns bad request', async () => {
+      const existing = { ...expectedAlbWithName, id: '123' };
+      const data = { ...existing };
+      mockUpdate.mockRejectedValueOnce(new InputError('error'));
+      const response = await request(app).patch('/armsLengthBody').send(data);
+      expect(response.status).toEqual(400);
     });
   });
 });

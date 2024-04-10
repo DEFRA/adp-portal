@@ -32,6 +32,7 @@ jest.mock('@backstage/plugin-permission-react', () => ({
 const mockGetArmsLengthBodies = jest.fn();
 const mockCreateArmsLengthBody = jest.fn().mockResolvedValue({});
 const mockRefetchArmsLengthBody = jest.fn();
+
 jest.mock('./api/AlbClient', () => ({
   ArmsLengthBodyClient: jest.fn().mockImplementation(() => ({
     getArmsLengthBodies: mockGetArmsLengthBodies,
@@ -72,7 +73,7 @@ describe('CreateAlb', () => {
     });
 
     act(() => {
-      fireEvent.click(rendered.getByTestId('edit-modal-cancel-button'));
+      fireEvent.click(rendered.getByTestId('actions-modal-cancel-button'));
     });
 
     await waitFor(() => {
@@ -82,7 +83,7 @@ describe('CreateAlb', () => {
 
   it('Add ALB can create an Arms Length Body', async () => {
     const updatedTableData = [
-      { title: 'ALB 1', description: 'Description for ALB 1' },
+      { title: 'ALB 1', description: 'Description for ALB 1', alias: 'Alias 1'},
     ];
 
     const rendered = await render();
@@ -95,13 +96,16 @@ describe('CreateAlb', () => {
       fireEvent.change(rendered.getByLabelText('Title'), {
         target: { value: 'ALB 1' },
       });
+      fireEvent.change(rendered.getByLabelText('Alias'), {
+        target: { value: 'Alias 1' },
+      });
       fireEvent.change(rendered.getByLabelText('ALB Description'), {
         target: { value: 'Description for ALB 1' },
       });
     });
 
     act(() => {
-      fireEvent.click(rendered.getByTestId('edit-modal-update-button'));
+      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
     });
 
     mockGetArmsLengthBodies.mockResolvedValue(updatedTableData);
@@ -109,7 +113,7 @@ describe('CreateAlb', () => {
     await waitFor(() => {
       expect(mockCreateArmsLengthBody).toHaveBeenCalledWith({
         description: 'Description for ALB 1',
-        short_name: '',
+        alias: 'Alias 1',
         title: 'ALB 1',
         url: '',
       });
@@ -140,13 +144,13 @@ describe('CreateAlb', () => {
     });
 
     act(() => {
-      fireEvent.click(rendered.getByTestId('edit-modal-update-button'));
+      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
     });
 
     await waitFor(() => {
       expect(mockCreateArmsLengthBody).toHaveBeenCalledWith({
         description: 'Description for ALB 1',
-        short_name: '',
+        alias: '',
         title: 'ALB 1',
         url: '',
       });
@@ -156,7 +160,7 @@ describe('CreateAlb', () => {
       expect(mockAlertApi.post).toHaveBeenNthCalledWith(1, {
         display: 'permanent',
         message:
-          "The name 'ALB 1' is already in use. Please choose a different name.",
+          "The title 'ALB 1' is already in use. Please choose a different name.",
         severity: 'error',
       });
     });

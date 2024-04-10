@@ -8,11 +8,12 @@ import {
 } from '@backstage/plugin-catalog-backend-module-msgraph';
 import { GithubEntityProvider } from '@backstage/plugin-catalog-backend-module-github';
 import {defraADONameTransformer} from "../auth/DefraNameTransformer";
+import { AdpDatabaseEntityProvider } from '@internal/plugin-catalog-backend-module-adp';
 
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
-  const builder = await CatalogBuilder.create(env);
+  const builder = CatalogBuilder.create(env);
 
   builder.addEntityProvider(
     MicrosoftGraphOrgEntityProvider.fromConfig(env.config, {
@@ -26,6 +27,13 @@ export default async function createPlugin(
 
   builder.addEntityProvider(
     GithubEntityProvider.fromConfig(env.config, {
+      logger: env.logger,
+      scheduler: env.scheduler,
+    }),
+  );
+
+  builder.addEntityProvider(
+    AdpDatabaseEntityProvider.create(env.discovery, {
       logger: env.logger,
       scheduler: env.scheduler,
     }),

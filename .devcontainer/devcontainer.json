@@ -1,0 +1,28 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+{
+  "name": "ADP Portal Web",
+  "dockerComposeFile": "docker-compose.yaml",
+  "service": "editor",
+  "postStartCommand": "cd app && yarn",
+  "workspaceFolder": "/workspaces/adp-portal/app",
+  "initializeCommand": "cd .devcontainer && . initialize.sh",
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": [
+        "editorconfig.editorconfig",
+        "dbaeumer.vscode-eslint",
+        "ms-playwright.playwright",
+        "esbenp.prettier-vscode",
+        "sonarsource.sonarlint-vscode"
+      ]
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/azure-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/docker-from-docker:1": {}
+  }
+}

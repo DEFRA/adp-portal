@@ -37,7 +37,7 @@ export const AlbViewPageComponent = () => {
   const discoveryApi = useApi(discoveryApiRef);
   const fetchApi = useApi(fetchApiRef);
   const fields = albFormFields;
-
+  
   const albClient: ArmsLengthBodyApi = new ArmsLengthBodyClient(
     discoveryApi,
     fetchApi,
@@ -82,7 +82,7 @@ export const AlbViewPageComponent = () => {
       setIsModalOpen(true);
 
       alertApi.post({
-        message: `The name '${armsLengthBody.title}' is already in use. Please choose a different name.`,
+        message: `The title '${armsLengthBody.title}' is already in use. Please choose a different title.`,
         severity: 'error',
         display: 'permanent',
       });
@@ -111,8 +111,8 @@ export const AlbViewPageComponent = () => {
       type: 'string',
     },
     {
-      title: 'Short Name',
-      field: 'short_name',
+      title: 'Alias',
+      field: 'alias',
       highlight: false,
       type: 'string',
     },
@@ -131,20 +131,11 @@ export const AlbViewPageComponent = () => {
     {
       title: 'Updated At',
       field: 'updated_at',
-      render: (data: {}) => {
-        const e = data as ArmsLengthBody;
- 
-        if (e.updated_at === undefined) {
-          return 'No date available';
-        }
-        const date = new Date(e.updated_at);
-        return date.toLocaleString();
-      },
       highlight: false,
-      type: 'date',
+      type: 'datetime',
     },
     {
-      title: '',
+      width: '',
       highlight: true,
       render: (rowData: {}) => {
         const alb = rowData as ArmsLengthBody;
@@ -181,7 +172,12 @@ export const AlbViewPageComponent = () => {
         <Typography paragraph>
           View or add Arms Length Bodies to the Azure Developer Platform.
         </Typography>
-        <DefaultTable data={tableData} columns={columns} title="View all" />
+        <DefaultTable
+          data={tableData}
+          columns={columns}
+          title="View all"
+          isCompact={true}
+        />
 
         {isModalOpen && allowed && (
           <ActionsModal

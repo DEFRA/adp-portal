@@ -115,4 +115,35 @@ describe('armsLengthBodyClient', () => {
       );
     });
   });
+
+  describe('getArmsLengthBodyNames', () => {
+    it('fetches arms length body names successfully', async () => {
+      const mockNamesMapping = { '1': 'Body Name 1', '2': 'Body Name 2' };
+      fetchApi.fetch.mockResolvedValue({
+        ok: true,
+        json: jest.fn().mockResolvedValue(mockNamesMapping),
+      });
+
+      const namesMapping = await client.getArmsLengthBodyNames();
+
+      expect(namesMapping).toEqual(mockNamesMapping);
+      expect(discoveryApi.getBaseUrl).toHaveBeenCalledWith('adp');
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/armslengthbodynames',
+      );
+    });
+
+    it('throws an error when fetching arms length body names fails', async () => {
+      fetchApi.fetch.mockResolvedValue({
+        ok: false,
+        status: 404,
+        statusText: 'Not Found',
+        json: jest.fn().mockResolvedValue({ error: 'Endpoint not found' }),
+      });
+
+      await expect(client.getArmsLengthBodyNames()).rejects.toThrow(
+        'Failed to fetch arms length bodies',
+      );
+    });
+  });
 });

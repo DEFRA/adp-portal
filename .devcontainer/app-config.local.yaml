@@ -1,0 +1,14 @@
+integrations:
+  azure:
+    - host: dev.azure.com
+      credentials:
+        - personalAccessToken: ${ADO_PAT}
+
+backend:
+  database:
+    client: pg
+    connection:
+      host: postgres
+      port: 5432
+      user: backstage
+      password: backstage

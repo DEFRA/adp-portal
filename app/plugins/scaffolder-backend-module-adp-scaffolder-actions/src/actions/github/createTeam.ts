@@ -14,7 +14,7 @@ export function createGithubTeamAction(options: {
   const { integrations, config } = options;
   return createTemplateAction<{
     githubTeamName: string;
-    githubTeamDescription: string;
+    githubTeamDescription?: string;
     orgName?: string;
     users: string;
     visibility: 'secret' | 'closed';
@@ -25,7 +25,7 @@ export function createGithubTeamAction(options: {
     schema: {
       input: {
         type: 'object',
-        required: ['githubTeamName', 'githubTeamDescription'],
+        required: ['githubTeamName'],
         properties: {
           githubTeamName: {
             title: 'Team name to be created in GitHub organization',
@@ -94,7 +94,7 @@ export function createGithubTeamAction(options: {
           octokit,
           organization,
           githubTeamName,
-          githubTeamDescription,
+          githubTeamDescription ?? '',
           visibility,
           ctx,
         );
