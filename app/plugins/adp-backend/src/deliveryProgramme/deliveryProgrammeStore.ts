@@ -53,7 +53,7 @@ export class DeliveryProgrammeStore {
       delivery_programme_code: row.delivery_programme_code,
       url: row?.url,
       created_at: new Date(row.created_at),
-      updated_at: row.updated_at,
+      updated_at: new Date(row.updated_at),
       updated_by: row?.updated_by,
     }));
   }
@@ -162,7 +162,7 @@ export class DeliveryProgrammeStore {
     if (Object.keys(updatedData).length === 0) {
       return existingProgramme;
     }
-    
+
     await this.client<Row>(TABLE_NAME)
       .where('id', deliveryProgramme.id)
       .update({

@@ -156,6 +156,7 @@ export const ActionsModal: FC<ActionsModalProps> = ({
                   <SelectedChipsRenderer
                     selected={selected || []}
                     options={selectField.options}
+                    comparer={selectField.comparer}
                   />
                 )
               : undefined,

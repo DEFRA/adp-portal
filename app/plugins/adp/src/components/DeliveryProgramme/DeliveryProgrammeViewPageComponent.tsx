@@ -32,9 +32,15 @@ import {
 } from '../../hooks/useProgrammeManagersList';
 import { usePermission } from '@backstage/plugin-permission-react';
 
+type FormDataModel =
+  | Record<string, never>
+  | (Omit<DeliveryProgramme, 'programme_managers'> & {
+      programme_managers: string[];
+    });
+
 export const DeliveryProgrammeViewPageComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState<FormDataModel>({});
   const [tableData, setTableData] = useState<DeliveryProgramme[]>([]);
   const [key, refetchDeliveryProgramme] = useReducer(i => {
     return i + 1;
@@ -73,7 +79,12 @@ export const DeliveryProgrammeViewPageComponent = () => {
     try {
       const detailedProgramme =
         await deliveryprogClient.getDeliveryProgrammeById(deliveryProgramme.id);
-      setFormData(detailedProgramme);
+      setFormData({
+        ...detailedProgramme,
+        programme_managers: detailedProgramme.programme_managers.map(
+          m => m.aad_entity_ref_id,
+        ),
+      });
       setIsModalOpen(true);
     } catch (e: any) {
       errorApi.post(e);
@@ -121,9 +132,15 @@ export const DeliveryProgrammeViewPageComponent = () => {
   const getOptionFields = () => {
     return DeliveryProgrammeFormFields.map(field => {
       if (field.name === 'arms_length_body_id') {
-        return { ...field, options: getArmsLengthBodyDropDown };
+        return {
+          ...field,
+          options: getArmsLengthBodyDropDown,
+        };
       } else if (field.name === 'programme_managers') {
-        return { ...field, options: getProgrammeManagerDropDown };
+        return {
+          ...field,
+          options: getProgrammeManagerDropDown,
+        };
       }
       return field;
     });
