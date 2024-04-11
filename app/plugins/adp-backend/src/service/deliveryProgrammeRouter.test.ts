@@ -227,6 +227,8 @@ describe('createRouter', () => {
 
       const expectedProgramme = {
         ...expectedProgrammeDataWithManager,
+        title: 'new title',
+        delivery_programme_code: 'new code',
         arms_length_body_id: '1',
       };
       expectedProgramme.title = 'new title';
@@ -244,6 +246,30 @@ describe('createRouter', () => {
         .post('/deliveryProgramme')
         .send(expectedProgrammeDataWithManager);
       expect(response.status).toEqual(406);
+    });
+
+    it('returns 406 if programme code already exists', async () => {
+      const existingProgramme = {
+        ...expectedProgrammeDataWithManager,
+        delivery_programme_code: 'existing code',
+      };
+      mockGetAllProgrammes.mockResolvedValueOnce([existingProgramme]);
+
+      const duplicateCodeProgramme = {
+        ...expectedProgrammeDataWithManager,
+        title: 'Unique New Title',
+        delivery_programme_code: 'existing code',
+        arms_length_body_id: '1',
+      };
+
+      const response = await request(programmeApp)
+        .post('/deliveryProgramme')
+        .send(duplicateCodeProgramme);
+
+      expect(response.status).toEqual(406);
+      expect(response.body.error).toEqual(
+        'Delivery Programme code already exists',
+      );
     });
 
     it('returns bad request', async () => {
@@ -309,6 +335,41 @@ describe('createRouter', () => {
       expect(response.status).toEqual(406);
     });
 
+    it('return 406 if programme code already exists', async () => {
+      mockGetEntities.mockResolvedValueOnce(catalogTestData);
+      const existingProgrammes = [
+        {
+          ...expectedProgrammeDataWithManager,
+          id: '123',
+          delivery_programme_code: 'unique-code-1',
+        },
+        {
+          ...expectedProgrammeDataWithManager,
+          id: '1234',
+          delivery_programme_code: 'duplicate-code',
+        },
+      ];
+      mockGetAllProgrammes.mockResolvedValueOnce(existingProgrammes);
+
+      const dataToUpdate = {
+        ...expectedProgrammeDataWithName,
+        id: '123',
+        delivery_programme_code: 'duplicate-code',
+      };
+
+      mockUpdateProgramme.mockResolvedValueOnce(dataToUpdate);
+      mockGetAllProgrammeManagers.mockResolvedValueOnce(programmeManagerList);
+
+      const response = await request(programmeApp)
+        .patch('/deliveryProgramme')
+        .send(dataToUpdate);
+
+      expect(response.status).toEqual(406);
+      expect(response.body.error).toEqual(
+        'Delivery Programme code already exists',
+      );
+    });
+
     it('returns updated with changes to programme managers', async () => {
       const existing = {
         ...expectedProgrammeDataWithManager,
@@ -333,16 +394,13 @@ describe('createRouter', () => {
       };
       mockUpdateProgramme.mockResolvedValueOnce(data);
       mockGetProgrammeManagerByProgrammeId.mockResolvedValueOnce(
-        mockUpdatedManagers
+        mockUpdatedManagers,
       );
-      mockUpdateProgrammeManagers.mockResolvedValueOnce(
-        mockUpdatedManagers
-      );
+      mockUpdateProgrammeManagers.mockResolvedValueOnce(mockUpdatedManagers);
       const response = await request(programmeApp)
         .patch('/deliveryProgramme')
         .send(data);
       expect(response.status).toEqual(200);
-
     });
 
     it('returns bad request', async () => {
