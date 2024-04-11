@@ -6,8 +6,12 @@ import {
 } from '@backstage/backend-tasks';
 import { AdpDatabaseEntityProvider } from './AdpDatabaseEntityProvider';
 import { EntityProviderConnection } from '@backstage/plugin-catalog-node';
-import fetch, { Response } from 'node-fetch';
 import { DiscoveryService } from '@backstage/backend-plugin-api';
+import {
+  mockAlbTransformerData,
+  mockProgrammeTransformerData,
+  mockProjectTransformerData,
+} from '../testData/entityProviderTestData';
 
 class MockTaskRunner implements TaskRunner {
   private tasks: TaskInvocationDefinition[] = [];
@@ -22,10 +26,6 @@ class MockTaskRunner implements TaskRunner {
   }
 }
 
-jest.mock('node-fetch', () => jest.fn());
-const mockedFetch: jest.MockedFunction<typeof fetch> =
-  fetch as jest.MockedFunction<typeof fetch>;
-
 const logger = getVoidLogger();
 
 describe('AdbDatabaseEntityProvider', () => {
@@ -35,40 +35,38 @@ describe('AdbDatabaseEntityProvider', () => {
     getBaseUrl: jest.fn().mockResolvedValue('http://localhost:123/api/adp'),
     getExternalBaseUrl: jest.fn(),
   };
+  let options = {
+    logger: logger,
+    schedule: mockSchedule,
+    scheduler: mockScheduler,
+  };
+  const entityProvider = AdpDatabaseEntityProvider.create(
+    mockDiscoveryService,
+    options,
+  );
 
   it('initializes correctly from required parameters', () => {
-    const options = {
-      logger: logger,
-      schedule: mockSchedule,
-      scheduler: mockScheduler,
-    };
-
-    const entityProvider = AdpDatabaseEntityProvider.create(
-      mockDiscoveryService,
-      options,
-    );
-
     expect(entityProvider).toBeDefined();
   });
 
   it('throws an error if a schedule is not provided', () => {
-    const options = {
+    const optionsWithoutSchedule = {
       logger: logger,
       schedule: null!,
       scheduler: null!,
     };
     expect(() =>
-      AdpDatabaseEntityProvider.create(mockDiscoveryService, options),
+      AdpDatabaseEntityProvider.create(mockDiscoveryService, optionsWithoutSchedule),
     ).toThrow(/Either schedule or scheduler must be provided./);
   });
 
-  it('returns the entity provider name', () => {
-    const options = {
-      logger: logger,
-      schedule: mockSchedule,
-      scheduler: mockScheduler,
-    };
+  it('throws an error if connection is not intialized', () => {
+    expect(entityProvider['refresh'](options.logger)).rejects.toThrow(
+      `ADP Data Model discovery connection not initialized for ${entityProvider.getProviderName()}`,
+    );
+  });
 
+  it('returns the entity provider name', () => {
     const entityProvider = AdpDatabaseEntityProvider.create(
       mockDiscoveryService,
       options,
@@ -80,113 +78,23 @@ describe('AdbDatabaseEntityProvider', () => {
   });
 
   it('applies a full update on scheduled execution', async () => {
-    const options = {
-      logger: logger,
-      schedule: mockSchedule,
-      scheduler: mockScheduler,
-    };
     const entityProviderConnection: EntityProviderConnection = {
       applyMutation: jest.fn(),
       refresh: jest.fn(),
     };
 
-    mockedFetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue([
-        {
-          id: '1111',
-          created_at: new Date(),
-          updated_at: new Date(),
-          creator: 'test@test.com',
-          owner: 'test@test.com',
-          name: 'test-alb-1',
-          alias: 'TA1',
-          description: 'Test description 1',
-          url: 'https://test1.com',
-          title: 'Test ALB 1',
-          children: ['test-title-1'],
-        },
-        {
-          id: '2222',
-          created_at: new Date(),
-          updated_at: new Date(),
-          creator: 'test@test.com',
-          owner: 'test@test.com',
-          name: 'test-alb-2',
-          alias: 'TA2',
-          description: 'Test description 2',
-          url: 'https://test2.com',
-          title: 'Test ALB 2',
-          children: ['test-title-2'],
-        },
-        {
-          programme_managers: [],
-          title: 'Test title 1',
-          alias: 'Test Alias',
-          description: 'Test description',
-          finance_code: 'Test finance_code',
-          arms_length_body_id: '1111',
-          delivery_programme_code: 'Test delivery_programme_code',
-          url: 'https://www.example.uk/',
-          name: 'test-title-1',
-          id: '123',
-          children: ['test-title-1'],
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
-        {
-          programme_managers: [],
-          title: 'Test title 1',
-          alias: 'Test Alias',
-          description: 'Test description',
-          finance_code: 'Test finance_code',
-          arms_length_body_id: '2222',
-          delivery_programme_code: 'Test delivery_programme_code',
-          url: 'https://www.example.uk/',
-          name: 'test-title-1',
-          id: '1234',
-          children: ['test-title-2'],
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
-        {
-          title: 'Test title 1',
-          alias: 'Test Alias',
-          description: 'Test description',
-          finance_code: 'Test finance_code',
-          delivery_programme_id: '123`',
-          delivery_project_code: 'Test delivery_project_code',
-          url: 'https://www.example.uk/',
-          name: 'test-title-1',
-          id: '123',
-          children: [],
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
-        {
-          title: 'Test title 2',
-          alias: 'Test Alias',
-          description: 'Test description',
-          finance_code: 'Test finance_code',
-          delivery_programme_id: '1234',
-          delivery_project_code: 'Test delivery_project_code',
-          url: 'https://www.example.uk/',
-          name: 'test-title-1',
-          id: '1234',
-          children: [],
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
-      ]),
-      ok: jest.fn().mockImplementation(() => true),
-    } as unknown as Response);
-
-    const entityProvider = AdpDatabaseEntityProvider.create(
-      mockDiscoveryService,
-      options,
-    );
-
     await entityProvider.connect(entityProviderConnection);
 
+    jest
+      .spyOn(entityProvider as any, 'readArmsLengthBodies')
+      .mockResolvedValueOnce(mockAlbTransformerData);
+    jest
+      .spyOn(entityProvider as any, 'readDeliveryProgrammes')
+      .mockResolvedValueOnce(mockProgrammeTransformerData);
+    jest
+      .spyOn(entityProvider as any, 'readDeliveryProjects')
+      .mockResolvedValueOnce(mockProjectTransformerData);
+    const loggerSpy = jest.spyOn(options.logger, 'info');
     const taskDef = mockSchedule.getTasks()[0];
     expect(taskDef.id).toEqual(`${entityProvider.getProviderName()}:refresh`);
 
@@ -194,143 +102,27 @@ describe('AdbDatabaseEntityProvider', () => {
 
     const expectedEntities = [
       {
-        entity: {
-          apiVersion: 'backstage.io/v1beta1',
-          kind: 'Group',
-          metadata: {
-            name: 'test-alb-1',
-            title: 'Test ALB 1 (TA1)',
-            description: 'Test description 1',
-            tags: [],
-            annotations: {
-              'backstage.io/managed-by-location':
-                'adp:arms-length-body\\test-alb-1',
-              'backstage.io/managed-by-origin-location':
-                'adp:arms-length-body\\test-alb-1',
-            },
-            links: [{ url: 'https://test1.com' }],
-          },
-          spec: {
-            type: 'arms-length-body',
-            children: ['test-title-1'],
-          },
-        },
+        entity: mockAlbTransformerData[0],
         locationKey: entityProvider.getProviderName(),
       },
       {
-        entity: {
-          apiVersion: 'backstage.io/v1beta1',
-          kind: 'Group',
-          metadata: {
-            name: 'test-alb-2',
-            title: 'Test ALB 2 (TA2)',
-            description: 'Test description 2',
-            tags: [],
-            annotations: {
-              'backstage.io/managed-by-location':
-                'adp:arms-length-body\\test-alb-2',
-              'backstage.io/managed-by-origin-location':
-                'adp:arms-length-body\\test-alb-2',
-            },
-            links: [{ url: 'https://test2.com' }],
-          },
-          spec: {
-            type: 'arms-length-body',
-            children: ['test-title-2'],
-          },
-        },
+        entity: mockAlbTransformerData[1],
         locationKey: entityProvider.getProviderName(),
       },
       {
-        entity: {
-          apiVersion: 'backstage.io/v1beta1',
-          kind: 'Group',
-          metadata: {
-            name: 'test-title-1',
-            title: 'Test title 1 (Test Alias)',
-            description: 'Test description',
-            tags: [],
-            annotations: {
-              'backstage.io/managed-by-location':
-                'adp:delivery-programme\\test-title-1',
-              'backstage.io/managed-by-origin-location': `adp:delivery-programme\\test-title-1`,
-            },
-            links: [{ url: 'https://www.example.uk/' }],
-          },
-          spec: {
-            type: 'delivery-programme',
-            children: ['test-title-1'],
-          },
-        },
+        entity: mockProgrammeTransformerData[0],
         locationKey: entityProvider.getProviderName(),
       },
       {
-        entity: {
-          apiVersion: 'backstage.io/v1beta1',
-          kind: 'Group',
-          metadata: {
-            name: 'test-title-2',
-            title: 'Test title 2 (Test Alias)',
-            description: 'Test description',
-            tags: [],
-            annotations: {
-              'backstage.io/managed-by-location':
-                'adp:delivery-programme\\test-title-2',
-              'backstage.io/managed-by-origin-location': `adp:delivery-programme\\test-title-2`,
-            },
-            links: [{ url: 'https://www.example.uk/' }],
-          },
-          spec: {
-            type: 'delivery-programme',
-            children: ['test-title-2'],
-          },
-        },
+        entity: mockProgrammeTransformerData[1],
         locationKey: entityProvider.getProviderName(),
       },
       {
-        entity: {
-          apiVersion: 'backstage.io/v1beta1',
-          kind: 'Group',
-          metadata: {
-            name: 'test-title-1',
-            title: 'Test title 1 (Test Alias)',
-            description: 'Test description',
-            tags: [],
-            annotations: {
-              'backstage.io/managed-by-location':
-                'adp:delivery-project\\test-title-1',
-              'backstage.io/managed-by-origin-location': `adp:delivery-project\\test-title-1`,
-            },
-            links: [{ url: 'https://www.example.uk/' }],
-          },
-          spec: {
-            type: 'delivery-project',
-            children: [],
-          },
-        },
+        entity: mockProjectTransformerData[0],
         locationKey: entityProvider.getProviderName(),
       },
       {
-        entity: {
-          apiVersion: 'backstage.io/v1beta1',
-          kind: 'Group',
-          metadata: {
-            name: 'test-title-2',
-            title: 'Test title 2 (Test Alias)',
-            description: 'Test description',
-            tags: [],
-            annotations: {
-              'backstage.io/managed-by-location':
-                'adp:delivery-project\\test-title-2',
-              'backstage.io/managed-by-origin-location': `adp:delivery-project\\test-title-2`,
-            },
-            links: [{ url: 'https://www.example.uk/' }],
-          },
-          spec: {
-            type: 'delivery-project',
-            children: [],
-          },
-        },
+        entity: mockProjectTransformerData[1],
         locationKey: entityProvider.getProviderName(),
       },
     ];
@@ -340,5 +132,8 @@ describe('AdbDatabaseEntityProvider', () => {
       type: 'full',
       entities: expectedEntities,
     });
+    expect(loggerSpy).toHaveBeenCalledWith(
+      'Discovering ADP Data Model Entities',
+    );
   });
 });

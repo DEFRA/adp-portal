@@ -139,6 +139,7 @@ describe('createRouter', () => {
     jest.resetAllMocks();
     mockGetEntities.mockResolvedValue(catalogTestData);
   });
+  
   afterEach(() => {
     mockGetEntities.mockClear();
   });
