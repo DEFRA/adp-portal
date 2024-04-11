@@ -98,11 +98,11 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   private async refresh(logger: Logger): Promise<void> {
     if (!this.connection) {
       throw new Error(
-        `ADP Data Model discovery connection not initialized for ${this.getProviderName()}`,
+        `ADP Onboarding Model discovery connection not initialized for ${this.getProviderName()}`,
       );
     }
 
-    logger.info('Discovering ADP Data Model Entities');
+    logger.info('Discovering ADP Onboarding Model Entities');
 
     const { markReadComplete } = this.trackProgress(logger);
 

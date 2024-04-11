@@ -80,7 +80,7 @@ describe('AdbDatabaseEntityProvider', () => {
 
   it('throws an error if connection is not intialized', () => {
     expect(entityProvider['refresh'](options.logger)).rejects.toThrow(
-      `ADP Data Model discovery connection not initialized for ${entityProvider.getProviderName()}`,
+      `ADP Onboarding Model discovery connection not initialized for ${entityProvider.getProviderName()}`,
     );
   });
 
@@ -142,7 +142,7 @@ describe('AdbDatabaseEntityProvider', () => {
       entities: expectedEntities,
     });
     expect(loggerSpy).toHaveBeenCalledWith(
-      'Discovering ADP Data Model Entities',
+      'Discovering ADP Onboarding Model Entities',
     );
   });
 

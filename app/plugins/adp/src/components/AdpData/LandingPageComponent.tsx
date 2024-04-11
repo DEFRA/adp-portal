@@ -13,11 +13,11 @@ import { CardTemplate } from './CardComponent';
 export const LandingPageComponent = () => (
   <Page themeId="tool">
     <Header
-      title="Azure Development Platform: Data"
-      subtitle="ADP Data"
+      title="Azure Development Platform: Onboarding"
+      subtitle="ADP Onboarding"
     ></Header>
     <Content>
-      <ContentHeader title="ADP Data">
+      <ContentHeader title="ADP Onboarding">
         <SupportButton>
           View or manage units within the DEFRA delivery organization on the
           Azure Developer Platform.

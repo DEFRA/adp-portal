@@ -181,7 +181,7 @@ export const DeliveryProjectViewPageComponent = () => {
   return (
     <Page themeId="tool">
       <Header
-        title="Azure Development Platform: Data"
+        title="Azure Development Platform: Onboarding"
         subtitle="ADP Platform Configuration"
       />
       <Content>
