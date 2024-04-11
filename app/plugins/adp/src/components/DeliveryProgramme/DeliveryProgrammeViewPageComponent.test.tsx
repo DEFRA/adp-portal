@@ -191,6 +191,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     await waitFor(() => {
       expect(rendered.getByText('Delivery Programme 1')).toBeInTheDocument();
       expect(rendered.getByText('Delivery Programme 2')).toBeInTheDocument();
+
     });
   });
 
@@ -219,19 +220,23 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     act(() => {
       fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-1'));
     });
+
     await waitFor(() => {
-      const modalText = rendered.queryByText('Edit: Delivery Programme 1');
-      expect(modalText).not.toBeInTheDocument();
-    }, { timeout: 1000 }); 
-    
-  
+      expect(
+        rendered.getByText('Edit: Delivery Programme 1'),
+      ).toBeInTheDocument();
+    });
   });
 
   xit('should close edit modal when cancel button is clicked', async () => {
     mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
     const rendered = await render();
+
+    
     act(() => {
       fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-1'));
+
+    
     });
 
     await waitFor(() => {
@@ -374,19 +379,19 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     mockUpdateDeliveryProgramme.mockResolvedValue(updatedTableData);
     const rendered = await render();
     act(() => {
-      fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-1'));
+    fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-1'));
     });
     await waitFor(() => {
       expect(rendered.queryByText('Title')).toBeInTheDocument();
     });
     act(() => {
-      fireEvent.change(rendered.getByLabelText('Title'), {
+    fireEvent.change(rendered.getByLabelText('Title'), {
         target: { value: 'Delivery Programme 2' },
-      });
+    });
     });
 
     act(() => {
-      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
+    fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
     });
     mockGetDeliveryProgrammes.mockResolvedValue(updatedTableData);
 
