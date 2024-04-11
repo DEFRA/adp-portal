@@ -26,10 +26,14 @@ export const armsLengthBodyGroupTransformer: ArmsLengthBodyGroupTransformer =
       },
       spec: {
         type: 'arms-length-body',
-        children: armsLengthBody.children,
+        children: [],
       },
     };
-
+    
+    if (armsLengthBody.children) {
+      entity.spec.children = armsLengthBody.children;
+    }
+    
     if (armsLengthBody.description) {
       entity.metadata.description = armsLengthBody.description;
     }

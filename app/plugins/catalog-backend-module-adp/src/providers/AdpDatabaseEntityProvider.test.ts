@@ -8,10 +8,14 @@ import { AdpDatabaseEntityProvider } from './AdpDatabaseEntityProvider';
 import { EntityProviderConnection } from '@backstage/plugin-catalog-node';
 import { DiscoveryService } from '@backstage/backend-plugin-api';
 import {
+  armsLengthBody,
+  deliveryProgramme,
+  deliveryProject,
   mockAlbTransformerData,
   mockProgrammeTransformerData,
   mockProjectTransformerData,
 } from '../testData/entityProviderTestData';
+import fetch, { Response } from 'node-fetch';
 
 class MockTaskRunner implements TaskRunner {
   private tasks: TaskInvocationDefinition[] = [];
@@ -26,6 +30,10 @@ class MockTaskRunner implements TaskRunner {
   }
 }
 
+jest.mock('node-fetch', () => jest.fn());
+const mockedFetch: jest.MockedFunction<typeof fetch> =
+  fetch as jest.MockedFunction<typeof fetch>;
+
 const logger = getVoidLogger();
 
 describe('AdbDatabaseEntityProvider', () => {
@@ -35,15 +43,22 @@ describe('AdbDatabaseEntityProvider', () => {
     getBaseUrl: jest.fn().mockResolvedValue('http://localhost:123/api/adp'),
     getExternalBaseUrl: jest.fn(),
   };
+
   let options = {
     logger: logger,
     schedule: mockSchedule,
     scheduler: mockScheduler,
   };
+
   const entityProvider = AdpDatabaseEntityProvider.create(
     mockDiscoveryService,
     options,
   );
+
+  const entityProviderConnection: EntityProviderConnection = {
+    applyMutation: jest.fn(),
+    refresh: jest.fn(),
+  };
 
   it('initializes correctly from required parameters', () => {
     expect(entityProvider).toBeDefined();
@@ -56,7 +71,10 @@ describe('AdbDatabaseEntityProvider', () => {
       scheduler: null!,
     };
     expect(() =>
-      AdpDatabaseEntityProvider.create(mockDiscoveryService, optionsWithoutSchedule),
+      AdpDatabaseEntityProvider.create(
+        mockDiscoveryService,
+        optionsWithoutSchedule,
+      ),
     ).toThrow(/Either schedule or scheduler must be provided./);
   });
 
@@ -67,22 +85,12 @@ describe('AdbDatabaseEntityProvider', () => {
   });
 
   it('returns the entity provider name', () => {
-    const entityProvider = AdpDatabaseEntityProvider.create(
-      mockDiscoveryService,
-      options,
-    );
-
     expect(entityProvider.getProviderName()).toBe(
       AdpDatabaseEntityProvider.name,
     );
   });
 
   it('applies a full update on scheduled execution', async () => {
-    const entityProviderConnection: EntityProviderConnection = {
-      applyMutation: jest.fn(),
-      refresh: jest.fn(),
-    };
-
     await entityProvider.connect(entityProviderConnection);
 
     jest
@@ -94,6 +102,7 @@ describe('AdbDatabaseEntityProvider', () => {
     jest
       .spyOn(entityProvider as any, 'readDeliveryProjects')
       .mockResolvedValueOnce(mockProjectTransformerData);
+
     const loggerSpy = jest.spyOn(options.logger, 'info');
     const taskDef = mockSchedule.getTasks()[0];
     expect(taskDef.id).toEqual(`${entityProvider.getProviderName()}:refresh`);
@@ -135,5 +144,74 @@ describe('AdbDatabaseEntityProvider', () => {
     expect(loggerSpy).toHaveBeenCalledWith(
       'Discovering ADP Data Model Entities',
     );
+  });
+
+  it('successfully runs readArmsLengthBodies', async () => {
+    mockedFetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(armsLengthBody),
+      ok: jest.fn().mockImplementation(() => true),
+    } as unknown as Response);
+
+    await entityProvider.connect(entityProviderConnection);
+
+    const response = await (entityProvider as any).readArmsLengthBodies(
+      options.logger,
+    );
+    expect(options.logger.info).toHaveBeenCalledWith(
+      expect.stringContaining('Discovering all Arms Length Bodies'),
+    );
+    expect(mockedFetch).toHaveBeenCalledWith(
+      expect.stringContaining('/armslengthbody'),
+      expect.objectContaining({
+        method: 'GET',
+      }),
+    );
+    expect(response).toEqual(mockAlbTransformerData);
+  });
+
+  it('successfully runs readDeliveryProgrammes', async () => {
+    mockedFetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(deliveryProgramme),
+      ok: jest.fn().mockImplementation(() => true),
+    } as unknown as Response);
+
+    await entityProvider.connect(entityProviderConnection);
+
+    const response = await (entityProvider as any).readDeliveryProgrammes(
+      options.logger,
+    );
+    expect(options.logger.info).toHaveBeenCalledWith(
+      expect.stringContaining('Discovering all Delivery Programmes'),
+    );
+    expect(mockedFetch).toHaveBeenCalledWith(
+      expect.stringContaining('/deliveryProgramme'),
+      expect.objectContaining({
+        method: 'GET',
+      }),
+    );
+    expect(response).toEqual(mockProgrammeTransformerData);
+  });
+
+  it('successfully runs readDeliveryProjects', async () => {
+    mockedFetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(deliveryProject),
+      ok: jest.fn().mockImplementation(() => true),
+    } as unknown as Response);
+
+    await entityProvider.connect(entityProviderConnection);
+
+    const response = await (entityProvider as any).readDeliveryProjects(
+      options.logger,
+    );
+    expect(options.logger.info).toHaveBeenCalledWith(
+      expect.stringContaining('Discovering all Delivery Projects'),
+    );
+    expect(mockedFetch).toHaveBeenCalledWith(
+      expect.stringContaining('/deliveryProject'),
+      expect.objectContaining({
+        method: 'GET',
+      }),
+    );
+    expect(response).toEqual(mockProjectTransformerData);
   });
 });

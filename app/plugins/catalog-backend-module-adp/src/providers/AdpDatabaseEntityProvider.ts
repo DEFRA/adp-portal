@@ -155,7 +155,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   }
 
   private async readDeliveryProgrammes(logger: Logger): Promise<GroupEntity[]> {
-    logger.info('Discovering All Delivery Programmes');
+    logger.info('Discovering all Delivery Programmes');
     const baseUrl = await this.discovery.getBaseUrl('adp');
     const endpoint = `${baseUrl}/deliveryProgramme`;
 
@@ -185,7 +185,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   }
 
   private async readDeliveryProjects(logger: Logger): Promise<GroupEntity[]> {
-    logger.info('Discovering All Delivery Projects');
+    logger.info('Discovering all Delivery Projects');
     const baseUrl = await this.discovery.getBaseUrl('adp');
     const endpoint = `${baseUrl}/deliveryProject`;
 
