@@ -119,7 +119,7 @@ export class DeliveryProjectStore {
         ado_project: DeliveryProject?.ado_project,
         updated_by: author,
       },
-      ['id', 'created_at', 'updated_at'],
+      ['id', 'created_at', 'updated_at', 'name'],
     );
 
     if (insertResult.length < 1) {
@@ -133,6 +133,7 @@ export class DeliveryProjectStore {
       id: insertResult[0].id,
       created_at: new Date(insertResult[0].created_at),
       updated_at: new Date(insertResult[0].updated_at),
+      name: insertResult[0].name
     };
   }
 

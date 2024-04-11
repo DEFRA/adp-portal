@@ -2,6 +2,7 @@ import {
   createName,
   getCurrentUsername,
   checkForDuplicateTitle,
+  checkForDuplicateProgrammeCode,
 } from './index';
 import express from 'express';
 
@@ -49,6 +50,50 @@ describe('checkForDuplicateTitle', () => {
   it('returns true when there is a duplicate title', async () => {
     const title = 'Environment Agency';
     expect(await checkForDuplicateTitle(data, title)).toBeTruthy();
+  });
+});
+
+describe('checkForDuplicateCode', () => {
+  const data = [
+    {
+      name: 'Seed',
+      title: 'Seed',
+      alias: 'EA',
+      description: '',
+      finance_code: '1',
+      arms_length_body_id: "111",
+      delivery_programme_code: '1',
+      programme_managers: [
+        {
+          id: '1',
+          delivery_programme_id: '1',
+          aad_entity_ref_id: 'testUserId1',
+          email: 'name1@email.com',
+          name: 'name1',
+        },
+        {
+          id: '2',
+          delivery_programme_id: '2',
+          aad_entity_ref_id: 'testUserId2',
+          email: 'name2@email.com',
+          name: 'name2',
+        },
+      ],
+      id: '24fcc156-a86c-4905-980a-90b73b218881',
+      created_at: new Date(),
+      updated_at: new Date(),
+    },
+  ];
+
+
+  it('returns false when there is no duplicate code', async () => {
+    const code = 'Example Code';
+    expect(await checkForDuplicateProgrammeCode(data, code)).toBeFalsy();
+  });
+
+  it('returns true when there is a duplicate code', async () => {
+    const code = '1';
+    expect(await checkForDuplicateProgrammeCode(data, code)).toBeTruthy();
   });
 });
 

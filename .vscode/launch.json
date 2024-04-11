@@ -5,12 +5,17 @@
       "type": "node",
       "name": "Debug Jest tests",
       "request": "launch",
-      "args": [
-        "repo",
-        "test",
-        "--runInBand",
-        "--watchAll=false"
-      ],
+      "args": ["repo", "test", "--runInBand", "--watchAll=false"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "program": "node_modules/.bin/backstage-cli",
+      "cwd": "${workspaceFolder}/app"
+    },
+    {
+      "type": "node",
+      "name": "Debug current jest tests",
+      "request": "launch",
+      "args": ["repo", "test", "${file}", "--runInBand", "--watchAll=false"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "program": "node_modules/.bin/backstage-cli",
@@ -20,12 +25,7 @@
       "type": "node",
       "name": "Debug Jest tests-adp",
       "request": "launch",
-      "args": [
-        "repo",
-        "test",
-        "--runInBand",
-        "--watchAll=false"
-      ],
+      "args": ["repo", "test", "--runInBand", "--watchAll=false"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "program": "node_modules/.bin/backstage-cli",
@@ -35,13 +35,7 @@
       "type": "node",
       "name": "Debug Jest tests - Custom Actions",
       "request": "launch",
-      "args": [
-        "repo",
-        "test",
-        "--runInBand",
-        "--watchAll=false",
-        "--coverage"
-      ],
+      "args": ["repo", "test", "--runInBand", "--watchAll=false", "--coverage"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "program": "node_modules/.bin/backstage-cli",

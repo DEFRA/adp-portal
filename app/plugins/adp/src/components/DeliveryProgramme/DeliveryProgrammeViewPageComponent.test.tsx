@@ -72,7 +72,7 @@ const mockTableData = [
     alias: 'DeliveryProgramme2',
     description: 'Description 2',
     finance_code: '',
-    delivery_programme_code: '1',
+    delivery_programme_code: '2',
     url: 'http://deliveryprogramme.com',
     created_at: '2021-01-01T00:00:00Z',
     updated_at: '2021-01-01T00:00:00Z',
@@ -394,6 +394,37 @@ describe('DeliveryProgrammeViewPageComponent', () => {
         rendered.queryByText('Edit: Delivery Programme 1'),
       ).toBeInTheDocument();
       expect(mockAlertApi.post).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('should not update the item when update button is clicked and has a non-unique programme_code', async () => {
+    mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
+
+    const rendered = await render();
+    fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-2'));
+
+    await waitFor(() =>
+      expect(rendered.getByLabelText('Title')).toBeInTheDocument(),
+    );
+
+    fireEvent.change(rendered.getByLabelText('Title'), {
+      target: { value: 'Delivery Programme Updated' },
+    });
+    fireEvent.change(rendered.getByLabelText('Delivery Programme Code'), {
+      target: { value: '2' },
+    });
+
+    fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
+
+    await waitFor(() => {
+      expect(mockUpdateDeliveryProgramme).not.toHaveBeenCalled();
+      expect(mockAlertApi.post).toHaveBeenCalledWith({
+        display: 'permanent',
+        message: expect.stringContaining(
+          'already in use. Please choose a different code',
+        ),
+        severity: 'error',
+      });
     });
   });
 

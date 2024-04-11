@@ -13,8 +13,15 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import { DeliveryProgramme } from '@internal/plugin-adp-common';
 import { useArmsLengthBodyList } from '../../hooks/useArmsLengthBodyList';
 
-import { transformedData, useProgrammeManagersList } from '../../hooks/useProgrammeManagersList';
+import {
+  transformedData,
+  useProgrammeManagersList,
+} from '../../hooks/useProgrammeManagersList';
 import { DeliveryProgrammeFormFields } from './DeliveryProgrammeFormFields';
+import {
+  isCodeUnique,
+  isNameUnique,
+} from '../../utils/DeliveryProgramme/DeliveryProgrammeUtils';
 
 interface CreateDeliveryProgrammeProps {
   refetchDeliveryProgramme: () => void;
@@ -57,6 +64,38 @@ const CreateDeliveryProgramme: React.FC<CreateDeliveryProgrammeProps> = ({
 
   const handleSubmit = async (deliveryProgramme: DeliveryProgramme) => {
     try {
+      const data = await deliveryprogClient.getDeliveryProgrammes();
+
+      if (!isNameUnique(data, deliveryProgramme.title, deliveryProgramme.id)) {
+        setIsModalOpen(true);
+
+        alertApi.post({
+          message: `The title '${deliveryProgramme.title}' is already in use. Please choose a different title.`,
+          severity: 'error',
+          display: 'permanent',
+        });
+
+        return;
+      }
+
+      if (
+        !isCodeUnique(
+          data,
+          deliveryProgramme.delivery_programme_code,
+          deliveryProgramme.id,
+        )
+      ) {
+        setIsModalOpen(true);
+
+        alertApi.post({
+          message: `The delivery programme code '${deliveryProgramme.delivery_programme_code}' is already in use. Please choose a different code.`,
+          severity: 'error',
+          display: 'permanent',
+        });
+
+        return;
+      }
+
       await deliveryprogClient.createDeliveryProgramme(deliveryProgramme);
       alertApi.post({
         message: 'Delivery Programme created successfully.',
@@ -67,7 +106,7 @@ const CreateDeliveryProgramme: React.FC<CreateDeliveryProgrammeProps> = ({
       handleCloseModal();
     } catch (e: any) {
       alertApi.post({
-        message: `The title '${deliveryProgramme.title}' is already in use. Please choose a different title.`,
+        message: e.message,
         severity: 'error',
         display: 'permanent',
       });

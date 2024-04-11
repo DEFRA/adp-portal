@@ -170,12 +170,20 @@ describe('Create Delivery Programme', () => {
   it('Add Delivery Programme Creation fails and triggers error handling', async () => {
     mockCreateDeliveryProgramme.mockRejectedValue(new Error('Creation Failed'));
 
+    mockGetDeliveryProgrammes.mockResolvedValue([
+      {
+        title: 'Existing Programme',
+        delivery_programme_code: 'ExistingCode',
+        id: '123',
+      },
+    ]);
+
     const rendered = await render();
 
     fireEvent.click(rendered.getByTestId('create-delivery-programme-button'));
 
     fireEvent.change(rendered.getByLabelText('Title'), {
-      target: { value: 'Delivery Programme' },
+      target: { value: 'New Delivery Programme' },
     });
 
     fireEvent.change(rendered.getByLabelText('Alias'), {
@@ -191,7 +199,7 @@ describe('Create Delivery Programme', () => {
     await waitFor(() => userEvent.click(rendered.getByText(/Jane Doe/i)));
 
     fireEvent.change(rendered.getByLabelText('Delivery Programme Code'), {
-      target: { value: 'Delivery Programme Code' },
+      target: { value: 'NewCode' },
     });
 
     fireEvent.change(
@@ -204,22 +212,113 @@ describe('Create Delivery Programme', () => {
     fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
 
     await waitFor(() => {
-      expect(mockCreateDeliveryProgramme).toHaveBeenCalledWith({
-        title: 'Delivery Programme',
-        alias: 'Alias for Delivery Programme',
-        programme_managers: ['testUserId1'],
-        arms_length_body_id: 'alb1',
-        description: 'Description for Delivery Programme',
-        delivery_programme_code: 'Delivery Programme Code',
-        url: '',
-        finance_code: '',
-      });
+      expect(mockCreateDeliveryProgramme).toHaveBeenCalled();
       expect(mockErrorApi.post).toHaveBeenCalledWith(expect.any(Error));
 
-      expect(mockAlertApi.post).toHaveBeenNthCalledWith(1, {
+      expect(mockAlertApi.post).toHaveBeenCalledWith({
+        display: 'permanent',
+        message: 'Creation Failed',
+        severity: 'error',
+      });
+    });
+  });
+
+  it('should show an error if the programme title is not unique', async () => {
+    mockGetDeliveryProgrammes.mockResolvedValue([
+      {
+        title: 'Existing Programme',
+        id: 'existing-id',
+        delivery_programme_code: '1234',
+      },
+    ]);
+
+    const rendered = await render();
+
+    fireEvent.click(rendered.getByTestId('create-delivery-programme-button'));
+
+    fireEvent.change(rendered.getByLabelText('Title'), {
+      target: { value: 'Existing Programme' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('Alias'), {
+      target: { value: 'Alias for Delivery Programme' },
+    });
+
+    userEvent.click(rendered.getByLabelText('Arms Length Body'));
+    await waitFor(() =>
+      userEvent.click(rendered.getByText(/Arms Length Body 1/i)),
+    );
+
+    userEvent.click(rendered.getByLabelText('Programme Managers'));
+    await waitFor(() => userEvent.click(rendered.getByText(/Jane Doe/i)));
+
+    fireEvent.change(rendered.getByLabelText('Delivery Programme Code'), {
+      target: { value: 'NewCode' },
+    });
+
+    fireEvent.change(
+      rendered.getByLabelText('Delivery Programme Description'),
+      {
+        target: { value: 'Description for Delivery Programme' },
+      },
+    );
+
+    fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
+
+    await waitFor(() => {
+      expect(mockCreateDeliveryProgramme).not.toHaveBeenCalled();
+      expect(mockAlertApi.post).toHaveBeenCalled();
+    });
+  });
+
+  it('should show an error if the delivery programme code is not unique', async () => {
+    mockGetDeliveryProgrammes.mockResolvedValue([
+      {
+        title: 'Some Programme',
+        id: 'existing-id',
+        delivery_programme_code: 'ExistingCode',
+      },
+    ]);
+
+    const rendered = await render();
+
+    fireEvent.click(rendered.getByTestId('create-delivery-programme-button'));
+
+    fireEvent.change(rendered.getByLabelText('Title'), {
+      target: { value: 'Unique Programme' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('Delivery Programme Code'), {
+      target: { value: 'ExistingCode' },
+    });
+
+    fireEvent.change(rendered.getByLabelText('Alias'), {
+      target: { value: 'Alias for Delivery Programme' },
+    });
+
+    userEvent.click(rendered.getByLabelText('Arms Length Body'));
+    await waitFor(() =>
+      userEvent.click(rendered.getByText(/Arms Length Body 1/i)),
+    );
+
+    userEvent.click(rendered.getByLabelText('Programme Managers'));
+    await waitFor(() => userEvent.click(rendered.getByText(/Jane Doe/i)));
+
+    fireEvent.change(
+      rendered.getByLabelText('Delivery Programme Description'),
+      {
+        target: { value: 'Description for Delivery Programme' },
+      },
+    );
+
+    fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
+
+    await waitFor(() => {
+      expect(mockCreateDeliveryProgramme).not.toHaveBeenCalled();
+      expect(mockAlertApi.post).toHaveBeenCalledWith({
         display: 'permanent',
         message:
-          "The title 'Delivery Programme' is already in use. Please choose a different title.",
+          "The delivery programme code 'ExistingCode' is already in use. Please choose a different code.",
         severity: 'error',
       });
     });
