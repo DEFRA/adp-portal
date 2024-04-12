@@ -32,6 +32,11 @@ export async function checkForDuplicateProjectCode(
   code = code.trim().toLowerCase();
   const duplicate = store.find(
     object => object.delivery_project_code.trim().toLowerCase() === code,
+  );
+
+  return duplicate !== undefined;
+}
+
 
 export async function checkForDuplicateProgrammeCode(
   store: DeliveryProgramme[],

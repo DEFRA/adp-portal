@@ -85,6 +85,10 @@ describe('checkForDuplicateCode', () => {
   it('returns true when there is a duplicate code', async () => {
     const code = 'Test delivery_project_code';
     expect(await checkForDuplicateProjectCode(data, code)).toBeTruthy();
+  });
+});
+
+describe('checkForDuplicateProgrammeCode', () => {
 
   const data = [
     {
@@ -154,3 +158,4 @@ describe('getCurrentUsername', () => {
     ).resolves.toBe('unknown');
   });
 });
+
