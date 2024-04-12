@@ -46,7 +46,7 @@ const CreateDeliveryProgramme: React.FC<CreateDeliveryProgrammeProps> = ({
     discoveryApi,
     fetchApi,
   );
-  const { allowed } = usePermission({
+  const { allowed: allowedToCreateAdpProgramme } = usePermission({
     permission: adpProgrammmeCreatePermission,
   });
 
@@ -123,7 +123,7 @@ const CreateDeliveryProgramme: React.FC<CreateDeliveryProgrammeProps> = ({
 
   return (
     <>
-      {allowed && (
+      {allowedToCreateAdpProgramme && (
         <Button
           variant="contained"
           size="large"

@@ -9,10 +9,7 @@ import {
 } from '@backstage/core-plugin-api';
 import { DeliveryProjectClient } from './api/DeliveryProjectClient';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import {
-  DeliveryProject,
-  adpProjectCreatePermission,
-} from '@internal/plugin-adp-common';
+import { DeliveryProject, adpProjectCreatePermission } from '@internal/plugin-adp-common';
 import { useDeliveryProgrammesList } from '../../hooks/useDeliveryProgrammesList';
 import { DeliveryProjectFormFields } from './DeliveryProjectFormFields';
 import { CreateDeliveryProjectModal } from './CreateDeliveryProjectModal';
@@ -44,7 +41,7 @@ const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
     fetchApi,
   );
 
-  const { allowed } = usePermission({
+  const { allowed: allowedToCreateAdpProject } = usePermission({
     permission: adpProjectCreatePermission,
   });
 
@@ -169,17 +166,17 @@ const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
 
   return (
     <>
-      {allowed && (
-        <Button
-          variant="contained"
-          size="large"
-          color="primary"
-          startIcon={<AddBoxIcon />}
-          onClick={handleOpenModal}
-          data-testid="create-delivery-project-button"
-        >
-          Add Delivery Project
-        </Button>
+    {allowedToCreateAdpProject && ( 
+      <Button
+        variant="contained"
+        size="large"
+        color="primary"
+        startIcon={<AddBoxIcon />}
+        onClick={handleOpenModal}
+        data-testid="create-delivery-project-button"
+      >
+        Add Delivery Project
+      </Button>
       )}
       {isModalOpen && (
         <CreateDeliveryProjectModal

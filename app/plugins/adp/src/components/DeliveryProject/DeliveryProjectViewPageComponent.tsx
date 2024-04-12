@@ -52,7 +52,7 @@ export const DeliveryProjectViewPageComponent = () => {
     fetchApi,
   );
 
-  const { allowed } = usePermission({
+  const { allowed: allowedToEditAdpProject } = usePermission({
     permission: adpProjectCreatePermission,
   });
 
@@ -185,7 +185,7 @@ export const DeliveryProjectViewPageComponent = () => {
       render: (rowData: any) => {
         const data = rowData as DeliveryProject;
         return (
-          allowed && (
+          allowedToEditAdpProject && (
             <Button
               variant="contained"
               color="default"
@@ -227,7 +227,7 @@ export const DeliveryProjectViewPageComponent = () => {
           isCompact={true}
         />
 
-        {isModalOpen && allowed && (
+        {isModalOpen && allowedToEditAdpProject && (
           <ActionsModal
             open={isModalOpen}
             onClose={handleCloseModal}

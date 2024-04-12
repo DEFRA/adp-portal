@@ -43,7 +43,7 @@ export const AlbViewPageComponent = () => {
     fetchApi,
   );
 
-  const { allowed } = usePermission({
+  const { allowed: allowedToEditAlb } = usePermission({
     permission: adpProgrammmeCreatePermission,
   });
 
@@ -140,7 +140,7 @@ export const AlbViewPageComponent = () => {
       render: (rowData: {}) => {
         const alb = rowData as ArmsLengthBody;
         return (
-          allowed && (
+          allowedToEditAlb && (
             <Button
               variant="contained"
               color="default"
@@ -179,7 +179,7 @@ export const AlbViewPageComponent = () => {
           isCompact={true}
         />
 
-        {isModalOpen && allowed && (
+        {isModalOpen && allowedToEditAlb && (
           <ActionsModal
             open={isModalOpen}
             onClose={handleCloseModal}
