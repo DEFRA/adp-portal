@@ -29,13 +29,13 @@ properties:
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-CLIENT-SECRET
         identity: {{userAssignedIdentity}}
       - name: authm-client-id
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/AUTH-MICROSOFT-CLIENT-ID
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-AUTH-APP-REG-CLIENT-ID
         identity: {{userAssignedIdentity}}
       - name: authm-client-secret
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/AUTH-MICROSOFT-CLIENT-SECRET
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-AUTH-APP-REG-SECRET
         identity: {{userAssignedIdentity}}
       - name: authm-tenant-id
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/AUTH-MICROSOFT-TENANT-ID
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-AUTH-APP-REG-TENANT-ID
         identity: {{userAssignedIdentity}}        
       - name: backend-secret
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/BACKSTAGE-BACKEND-SECRET
