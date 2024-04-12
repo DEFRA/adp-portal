@@ -16,7 +16,7 @@ jest.mock('@backstage/catalog-client', () => ({
   CatalogClient: jest.fn().mockImplementation(() => ({
     getEntities: async () => {
       return {
-        items: catalogTestData
+        items: catalogTestData,
       };
     },
   })),
@@ -181,6 +181,7 @@ describe('createRouter', () => {
       mockCreateFluxConfig.mockResolvedValueOnce(undefined);
       const data = { ...expectedProjectDataWithName };
       data.title = 'new title';
+      data.delivery_project_code = 'abc';
       const response = await request(projectApp)
         .post('/deliveryProject')
         .send(data);
@@ -188,7 +189,19 @@ describe('createRouter', () => {
     });
 
     it('return 406 if title already exists', async () => {
-      mockProjectGetAll.mockResolvedValueOnce([expectedProjectDataWithName]);
+      const data = { ...expectedProjectDataWithName };
+      data.delivery_project_code = 'abc';
+      mockProjectGetAll.mockResolvedValueOnce([data]);
+      const response = await request(projectApp)
+        .post('/deliveryProject')
+        .send(expectedProjectDataWithName);
+      expect(response.status).toEqual(406);
+    });
+
+    it('return 406 if code already exists', async () => {
+      const data = { ...expectedProjectDataWithName };
+      data.title = 'new';
+      mockProjectGetAll.mockResolvedValueOnce([data]);
       const response = await request(projectApp)
         .post('/deliveryProject')
         .send(expectedProjectDataWithName);
@@ -213,7 +226,35 @@ describe('createRouter', () => {
       const response = await request(projectApp)
         .patch('/deliveryProject')
         .send(data);
-      expect(response.status).toEqual(201);
+      expect(response.status).toEqual(200);
+    });
+
+    it('return 406 if title already exists', async () => {
+      const existing1 = { ...expectedProjectDataWithName, id: '123' };
+      const existing2 = { ...expectedProjectDataWithName, id: '1234' };
+      existing2.title = 'new1';
+      existing2.delivery_project_code = 'xyz';
+      mockProjectGetAll.mockResolvedValueOnce([existing1, existing2]);
+      const data = { ...existing1 };
+      data.title = 'new1';
+      const response = await request(projectApp)
+        .patch('/deliveryProject')
+        .send(data);
+      expect(response.status).toEqual(406);
+    });
+
+    it('return 406 if code already exists', async () => {
+      const existing1 = { ...expectedProjectDataWithName, id: '123' };
+      const existing2 = { ...expectedProjectDataWithName, id: '1234' };
+      existing2.title = 'new1';
+      existing2.delivery_project_code = 'xyz';
+      mockProjectGetAll.mockResolvedValueOnce([existing1, existing2]);
+      const data = { ...existing1 };
+      data.delivery_project_code = 'xyz';
+      const response = await request(projectApp)
+        .patch('/deliveryProject')
+        .send(data);
+      expect(response.status).toEqual(406);
     });
 
     it('returns bad request', async () => {

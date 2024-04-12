@@ -1,16 +1,30 @@
 import React from 'react';
 import { Box, Chip } from '@material-ui/core';
 
-const SelectedChipsRenderer = ({ selected, options }) => {
+function defaultComparer(x: unknown, y: unknown): boolean {
+  return x === y;
+}
+
+type SelectedChipsRendererProps<TSelected, TOptionValue> = {
+  readonly selected: TSelected;
+  readonly options: Array<{ label: string; value: TOptionValue }>;
+  readonly comparer?: (x: TSelected, y: TOptionValue) => boolean;
+};
+
+function SelectedChipsRenderer<TSelected, TOptionValue>({
+  selected,
+  options,
+  comparer = defaultComparer,
+}: SelectedChipsRendererProps<TSelected, TOptionValue>) {
   if (!Array.isArray(selected) || !Array.isArray(options)) {
     return null;
   }
 
-  const getLabel = (value: any) => {
-    const option = options.find(
-      (option: { value: any }) => option.value === value,
-    );
-    return option ? option.label : value;
+  const getLabel = (value: TSelected) => {
+    const option = options.find(option => {
+      return comparer(value, option.value);
+    });
+    return option ? option.label : String(value);
   };
 
   return (
@@ -25,6 +39,6 @@ const SelectedChipsRenderer = ({ selected, options }) => {
       ))}
     </Box>
   );
-};
+}
 
 export default SelectedChipsRenderer;

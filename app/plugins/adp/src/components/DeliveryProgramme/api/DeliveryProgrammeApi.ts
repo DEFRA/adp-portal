@@ -1,4 +1,7 @@
-import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import {
+  DeliveryProgramme,
+  ProgrammeManager,
+} from '@internal/plugin-adp-common';
 import { createApiRef } from '@backstage/core-plugin-api';
 
 export const DeliveryProgrammeApiRef = createApiRef<DeliveryProgramme>({
@@ -7,8 +10,8 @@ export const DeliveryProgrammeApiRef = createApiRef<DeliveryProgramme>({
 
 export interface DeliveryProgrammeApi {
   getDeliveryProgrammes(): Promise<DeliveryProgramme[]>;
-  getDeliveryProgrammeById(id: string): Promise <DeliveryProgramme>;
+  getDeliveryProgrammeById(id: string): Promise<DeliveryProgramme>;
   updateDeliveryProgramme(data: any): Promise<DeliveryProgramme[]>;
   createDeliveryProgramme(data: any): Promise<DeliveryProgramme[]>;
-
+  getProgrammeManagers(): Promise<ProgrammeManager[]>;
 }

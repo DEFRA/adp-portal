@@ -27,6 +27,10 @@ import { DeliveryProjectApi } from './api/DeliveryProjectApi';
 import { DeliveryProjectFormFields } from './DeliveryProjectFormFields';
 import { useDeliveryProgrammesList } from '../../hooks/useDeliveryProgrammesList';
 import { usePermission } from '@backstage/plugin-permission-react';
+import {
+  isCodeUnique,
+  isNameUnique,
+} from '../../utils/DeliveryProject/DeliveryProjectUtils';
 
 export const DeliveryProjectViewPageComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,7 +44,8 @@ export const DeliveryProjectViewPageComponent = () => {
   const errorApi = useApi(errorApiRef);
   const discoveryApi = useApi(discoveryApiRef);
   const fetchApi = useApi(fetchApiRef);
-  const getDeliveryProgrammeDropDown = useDeliveryProgrammesList();
+  const programmesList = useDeliveryProgrammesList();
+  const deliveryProgrammeDropDown = programmesList.map(x => x.dropdownItem);
 
   const deliveryProjectClient: DeliveryProjectApi = new DeliveryProjectClient(
     discoveryApi,
@@ -66,8 +71,9 @@ export const DeliveryProjectViewPageComponent = () => {
 
   const handleEdit = async (deliveryProject: DeliveryProject) => {
     try {
-      const project =
-        await deliveryProjectClient.getDeliveryProjectById(deliveryProject.id);
+      const project = await deliveryProjectClient.getDeliveryProjectById(
+        deliveryProject.id,
+      );
       setFormData(project);
       setIsModalOpen(true);
     } catch (e: any) {
@@ -80,23 +86,29 @@ export const DeliveryProjectViewPageComponent = () => {
     setIsModalOpen(false);
   };
 
-  const isNameUnique = (title: string, id: string) => {
-    return !tableData.some(
-      item =>
-        item.title.toLowerCase() === title.toLowerCase() && item.id !== id,
-    );
-  };
-
   const handleUpdate = async (deliveryProject: DeliveryProject) => {
-    if (!isNameUnique(deliveryProject.title, deliveryProject.id)) {
+    if (!isNameUnique(tableData, deliveryProject.title, deliveryProject.id)) {
       setIsModalOpen(true);
-
       alertApi.post({
         message: `The title '${deliveryProject.title}' is already in use. Please choose a different title.`,
         severity: 'error',
         display: 'permanent',
       });
-
+      return;
+    }
+    if (
+      !isCodeUnique(
+        tableData,
+        deliveryProject.delivery_project_code,
+        deliveryProject.id,
+      )
+    ) {
+      setIsModalOpen(true);
+      alertApi.post({
+        message: `The service code '${deliveryProject.delivery_project_code}' is already in use. Please choose a different service code.`,
+        severity: 'error',
+        display: 'permanent',
+      });
       return;
     }
 
@@ -113,10 +125,20 @@ export const DeliveryProjectViewPageComponent = () => {
     }
   };
 
-  const getOptionFields = () => {
+  const getFieldsAndOptions = () => {
     return DeliveryProjectFormFields.map(field => {
       if (field.name === 'delivery_programme_id') {
-        return { ...field, options: getDeliveryProgrammeDropDown };
+        return { ...field, options: deliveryProgrammeDropDown };
+      }
+      if (field.name === 'team_type') {
+        const options = [
+          { label: 'Delivery Team', value: 'delivery' },
+          { label: 'Platform Team', value: 'platform' },
+        ];
+        return { ...field, options: options };
+      }
+      if (field.name === 'namespace') {
+        return { ...field, disabled: true };
       }
       return field;
     });
@@ -212,7 +234,7 @@ export const DeliveryProjectViewPageComponent = () => {
             onSubmit={handleUpdate}
             initialValues={formData}
             mode="edit"
-            fields={getOptionFields()}
+            fields={getFieldsAndOptions()}
           />
         )}
       </Content>

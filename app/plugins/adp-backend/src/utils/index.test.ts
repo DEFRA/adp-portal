@@ -1,7 +1,9 @@
+import { DeliveryProject } from '@internal/plugin-adp-common';
 import {
   createName,
   getCurrentUsername,
   checkForDuplicateTitle,
+  checkForDuplicateProjectCode,
   checkForDuplicateProgrammeCode,
 } from './index';
 import express from 'express';
@@ -54,6 +56,40 @@ describe('checkForDuplicateTitle', () => {
 });
 
 describe('checkForDuplicateCode', () => {
+
+  const data: DeliveryProject[] = [
+    {
+      title: 'Test title',
+      alias: 'Test alias',
+      description: 'Test description',
+      finance_code: 'Test finance_code',
+      delivery_project_code: 'Test delivery_project_code',
+      namespace: 'Test namespace',
+      ado_project: 'Test ado_project',
+      name: 'Test name',
+      team_type: 'Test team_type',
+      service_owner: 'Test service_owner',
+      id: '1',
+      delivery_programme_id: '1',
+      created_at: new Date(),
+      updated_at: new Date(),
+      updated_by: 'author',
+    },
+  ];
+
+  it('returns false when there is no duplicate code', async () => {
+    const code = 'Example code';
+    expect(await checkForDuplicateProjectCode(data, code)).toBeFalsy();
+  });
+
+  it('returns true when there is a duplicate code', async () => {
+    const code = 'Test delivery_project_code';
+    expect(await checkForDuplicateProjectCode(data, code)).toBeTruthy();
+  });
+});
+
+describe('checkForDuplicateProgrammeCode', () => {
+
   const data = [
     {
       name: 'Seed',

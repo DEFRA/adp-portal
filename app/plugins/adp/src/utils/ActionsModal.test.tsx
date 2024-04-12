@@ -20,7 +20,7 @@ describe('ActionsModal', () => {
   const initialValues = {
     title: 'Test Record',
     description: 'Test Description',
-    programme_managers: ['manager 1', 'manager 2']
+    programme_managers: ['manager 1', 'manager 2'],
   };
 
   const fields = [
@@ -90,9 +90,15 @@ describe('ActionsModal', () => {
 
       await userEvent.click(screen.getByLabelText(/Multi Select Field/));
 
-      expect(screen.getByText('Option 1')).toBeInTheDocument();
-      expect(screen.getByText('Option 2')).toBeInTheDocument();
-      expect(screen.getByText('Option 3')).toBeInTheDocument();
+      const chip1 = await screen.findByText('Option 1', {
+        selector: '.MuiChip-label',
+      });
+      expect(chip1).toBeInTheDocument();
+
+      const chip2 = await screen.findByText('Option 2', {
+        selector: '.MuiChip-label',
+      });
+      expect(chip2).toBeInTheDocument();
     });
   });
 

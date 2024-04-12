@@ -13,11 +13,13 @@ type Row = {
   finance_code?: string;
   delivery_programme_id: string;
   delivery_project_code: string;
-  url?: string;
+  namespace: string;
   updated_by?: string;
   created_at: Date;
   updated_at: Date;
-  ado_project?: string;
+  ado_project: string;
+  team_type: string;
+  service_owner: string;
 };
 
 export type PartialDeliveryProject = Partial<DeliveryProject>;
@@ -35,11 +37,13 @@ export class DeliveryProjectStore {
         'finance_code',
         'delivery_programme_id',
         'delivery_project_code',
-        'url',
+        'namespace',
         'ado_project',
         'created_at',
         'updated_at',
         'updated_by',
+        'team_type',
+        'service_owner',
       )
       .orderBy('created_at');
 
@@ -52,11 +56,13 @@ export class DeliveryProjectStore {
       finance_code: row?.finance_code,
       delivery_programme_id: row.delivery_programme_id,
       delivery_project_code: row.delivery_project_code,
-      url: row?.url,
-      ado_project: row?.ado_project,
+      namespace: row.namespace,
+      ado_project: row.ado_project,
       created_at: new Date(row.created_at),
       updated_at: new Date(row.updated_at),
       updated_by: row?.updated_by,
+      team_type: row.team_type,
+      service_owner: row.service_owner,
     }));
   }
 
@@ -72,11 +78,13 @@ export class DeliveryProjectStore {
         'finance_code',
         'delivery_programme_id',
         'delivery_project_code',
-        'url',
+        'namespace',
         'ado_project',
         'created_at',
         'updated_at',
         'updated_by',
+        'team_type',
+        'service_owner',
       )
       .first();
 
@@ -90,20 +98,19 @@ export class DeliveryProjectStore {
           finance_code: row?.finance_code,
           delivery_programme_id: row.delivery_programme_id,
           delivery_project_code: row.delivery_project_code,
-          url: row?.url,
-          ado_project: row?.ado_project,
+          namespace: row.namespace,
+          ado_project: row.ado_project,
           created_at: new Date(row.created_at),
           updated_at: new Date(row.updated_at),
           updated_by: row?.updated_by,
+          team_type: row.team_type,
+          service_owner: row.service_owner,
         }
       : null;
   }
 
   async add(
-    DeliveryProject: Omit<
-      DeliveryProject,
-      'id' | 'created_at' | 'updated_at'
-    >,
+    DeliveryProject: Omit<DeliveryProject, 'id' | 'created_at' | 'updated_at'>,
     author: string,
   ): Promise<DeliveryProject> {
     const insertResult = await this.client<Row>(TABLE_NAME).insert(
@@ -115,9 +122,11 @@ export class DeliveryProjectStore {
         finance_code: DeliveryProject?.finance_code,
         delivery_programme_id: DeliveryProject.delivery_programme_id,
         delivery_project_code: DeliveryProject.delivery_project_code,
-        url: DeliveryProject?.url,
+        namespace: DeliveryProject?.namespace,
         ado_project: DeliveryProject?.ado_project,
         updated_by: author,
+        team_type: DeliveryProject.team_type,
+        service_owner: DeliveryProject.service_owner,
       },
       ['id', 'created_at', 'updated_at', 'name'],
     );
@@ -131,6 +140,7 @@ export class DeliveryProjectStore {
     return {
       ...DeliveryProject,
       id: insertResult[0].id,
+      name: createName(DeliveryProject.title),
       created_at: new Date(insertResult[0].created_at),
       updated_at: new Date(insertResult[0].updated_at),
       name: insertResult[0].name

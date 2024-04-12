@@ -4,8 +4,10 @@ export const expectedProjectData = {
   description: 'Test description',
   finance_code: 'Test finance_code',
   delivery_project_code: 'Test delivery_project_code',
-  url: 'Test url',
-  ado_project: 'Test ado_project'
+  namespace: 'Test namespace',
+  ado_project: 'Test ado_project',
+  team_type: 'Test team_type',
+  service_owner: 'Test service_owner',
 };
 
 export const expectedProjectDataWithName = {
@@ -14,7 +16,9 @@ export const expectedProjectDataWithName = {
   description: 'Test description',
   finance_code: 'Test finance_code',
   delivery_project_code: 'Test delivery_project_code',
-  url: 'Test url',
+  namespace: 'Test namespace',
   ado_project: 'Test ado_project',
-  name: 'Test name'
+  name: 'Test name',
+  team_type: 'Test team_type',
+  service_owner: 'Test service_owner',
 };

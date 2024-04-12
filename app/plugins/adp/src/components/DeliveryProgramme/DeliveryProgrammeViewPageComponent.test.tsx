@@ -56,15 +56,7 @@ const mockTableData = [
     created_at: '2021-01-01T00:00:00Z',
     updated_at: '2021-01-01T00:00:00Z',
     arms_length_body_id: '1',
-    programme_managers: [
-      {
-        id: '1',
-        delivery_programme_id: '1',
-        aad_entity_ref_id: 'testUserId1',
-        email: 'name1@email.com',
-        name: 'name1',
-      },
-    ],
+    programme_managers: [],
   },
   {
     id: '2',
@@ -77,22 +69,7 @@ const mockTableData = [
     created_at: '2021-01-01T00:00:00Z',
     updated_at: '2021-01-01T00:00:00Z',
     arms_length_body_id: '2',
-    programme_managers: [
-      {
-        id: '1',
-        delivery_programme_id: '2',
-        aad_entity_ref_id: 'testUserId1',
-        email: 'name1@email.com',
-        name: 'name1',
-      },
-      {
-        id: '2',
-        delivery_programme_id: '2',
-        aad_entity_ref_id: 'testUserId2',
-        email: 'name2@email.com',
-        name: 'name2',
-      },
-    ],
+    programme_managers: [],
   },
 ];
 
@@ -101,7 +78,7 @@ const updatedTableData = [
     id: '1',
     title: 'Delivery Programme 1 edited',
     alias: 'DeliveryProgramme1',
-    programme_managers: ['testUserId1'],
+    programme_managers: [],
     arms_length_body_id: '1',
     finance_code: '',
     delivery_programme_code: '1',
@@ -116,7 +93,7 @@ const updatedTableData = [
     alias: 'DeliveryProgramme2',
     finance_code: '',
     delivery_programme_code: '1',
-    programme_managers: ['testUserId1', 'testUserId2'],
+    programme_managers: [],
     arms_length_body_id: '2',
     description: 'Description 2',
     url: 'http://delivery2.com',
@@ -216,6 +193,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
   it('should open edit modal when edit button is clicked', async () => {
     mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
     const rendered = await render();
+
     act(() => {
       fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-1'));
     });
@@ -230,6 +208,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
   it('should close edit modal when cancel button is clicked', async () => {
     mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
     const rendered = await render();
+
     act(() => {
       fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-1'));
     });
@@ -269,8 +248,10 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-1'));
 
     await waitFor(() => {
-      expect(rendered.queryByText('Title')).toBeInTheDocument();
-      expect(rendered.queryByText('Delivery Programme 1')).toBeInTheDocument();
+      expect(rendered.getByLabelText('Title')).toBeInTheDocument();
+      expect(
+        rendered.queryByText('Edit: Delivery Programme 1'),
+      ).toBeInTheDocument();
     });
 
     fireEvent.change(rendered.getByLabelText('Title'), {
@@ -288,15 +269,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
         alias: 'DeliveryProgramme1',
         finance_code: '',
         delivery_programme_code: '1',
-        programme_managers: [
-          {
-            id: '1',
-            delivery_programme_id: '1',
-            aad_entity_ref_id: 'testUserId1',
-            email: 'name1@email.com',
-            name: 'name1',
-          },
-        ],
+        programme_managers: ['testUserId1'],
         arms_length_body_id: '1',
         description: 'Description 1',
         url: 'http://delivery1.com',

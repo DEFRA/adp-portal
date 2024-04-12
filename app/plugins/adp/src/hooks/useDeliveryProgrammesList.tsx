@@ -4,31 +4,58 @@ import {
   discoveryApiRef,
   fetchApiRef,
   errorApiRef,
+  identityApiRef,
 } from '@backstage/core-plugin-api';
 import { DeliveryProgrammeClient } from '../components/DeliveryProgramme/api';
+import { DeliveryProgramme } from '@internal/plugin-adp-common';
 
-type ProgrammesListOptions = {
-  label: string;
-  value: string;
+type ProgrammesList = {
+  dropdownItem: {
+    label: string;
+    value: string;
+  };
+  programme: DeliveryProgramme;
 };
 
-export const useDeliveryProgrammesList = (): ProgrammesListOptions[] => {
-  const [options, setOptions] = useState<ProgrammesListOptions[]>([]);
+export const useDeliveryProgrammesList = (): ProgrammesList[] => {
+  const [options, setOptions] = useState<ProgrammesList[]>([]);
 
   const discoveryApi = useApi(discoveryApiRef);
   const fetchApi = useApi(fetchApiRef);
   const errorApi = useApi(errorApiRef);
+  const identityApi = useApi(identityApiRef);
 
   useEffect(() => {
-    const deliveryProgammeClient = new DeliveryProgrammeClient(discoveryApi, fetchApi);
+    const deliveryProgammeClient = new DeliveryProgrammeClient(
+      discoveryApi,
+      fetchApi,
+    );
     const fetchProgrammesList = async () => {
       try {
+        const loggedInUserProfile = await identityApi.getProfileInfo();
         const programmes = await deliveryProgammeClient.getDeliveryProgrammes();
-        const formattedProgrammes = programmes.map(x => {
+        const programmeManagers =
+          await deliveryProgammeClient.getProgrammeManagers();
+        const programmesForCurrentUser = programmeManagers.filter(
+          p =>
+            p.email.toLowerCase() === loggedInUserProfile.email?.toLowerCase(),
+        );
+        const filteredProgrammes = programmesForCurrentUser
+          .map(p => {
+            return programmes.find(x => x.id === p.delivery_programme_id);
+          })
+          .filter(
+            (programme): programme is DeliveryProgramme =>
+              programme !== undefined,
+          );
+        const formattedProgrammes = filteredProgrammes.map(x => {
           return {
-            label: x.title,
-            value: x.id
-          }
+            dropdownItem: {
+              label: x.title,
+              value: x.id,
+            },
+            programme: x,
+          };
         });
         setOptions(formattedProgrammes);
       } catch (e: any) {
@@ -37,7 +64,7 @@ export const useDeliveryProgrammesList = (): ProgrammesListOptions[] => {
     };
 
     fetchProgrammesList();
-  }, [discoveryApi, fetchApi, errorApi]);
+  }, [discoveryApi, fetchApi, errorApi, identityApi]);
 
   return options;
 };

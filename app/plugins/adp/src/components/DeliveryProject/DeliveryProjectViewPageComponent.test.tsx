@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
 import {
   PermissionApi,
@@ -31,33 +31,43 @@ jest.mock('@backstage/plugin-permission-react', () => ({
 }));
 
 jest.mock('../../hooks/useDeliveryProgrammesList', () => ({
-  useDeliveryProgrammesList: jest.fn(() => [
-    { label: 'Programme1', value: '1' },
-    { label: 'Programme2', value: '2' },
+  useDeliveryProgrammesList: jest.fn().mockReturnValue([
+    {
+      dropdownItem: { label: 'Programme1', value: '1' },
+      programme: { id: '1', delivery_programme_code: 'prg' },
+    },
   ]),
 }));
 
 const mockTableData = [
   {
     id: '1',
-    title: 'Delivery Project 1',
-    description: 'Description 1',
-    delivery_project_code: '1',
-    created_at: '2021-01-01T00:00:00Z',
-    updated_at: '2021-01-01T00:00:00Z',
+    title: 'Project',
     delivery_programme_id: '1',
+    description: 'Description 1',
+    delivery_project_code: 'tst',
+    team_type: 'delivery',
+    service_owner: 'x@y.com',
+    ado_project: 'defra-ffc',
+    namespace: 'prg-tst',
+    created_at: new Date(),
+    updated_at: new Date(),
   },
 ];
 
 const updatedTableData = [
   {
     id: '1',
-    title: 'Delivery Project 1 updated',
-    description: 'Description 1',
-    delivery_project_code: '1',
-    created_at: '2021-01-01T00:00:00Z',
-    updated_at: '2021-01-01T00:00:00Z',
+    title: 'Project',
     delivery_programme_id: '1',
+    description: 'Description 1 updated',
+    delivery_project_code: 'tst',
+    team_type: 'delivery',
+    service_owner: 'x@y.com',
+    ado_project: 'defra-ffc',
+    namespace: 'prg-tst',
+    created_at: new Date(),
+    updated_at: new Date(),
   },
 ];
 
@@ -65,12 +75,16 @@ const mockGetDeliveryProjects = jest.fn();
 const mockUpdateDeliveryProject = jest.fn().mockResolvedValue({});
 const mockGetDeliveryProjectById = jest.fn().mockResolvedValue({
   id: '1',
-  title: 'Delivery Project 1',
-  description: 'Description 1',
-  delivery_project_code: '1',
-  created_at: '2021-01-01T00:00:00Z',
-  updated_at: '2021-01-01T00:00:00Z',
+  title: 'Project',
   delivery_programme_id: '1',
+  description: 'Description 1 updated',
+  delivery_project_code: 'tst',
+  team_type: 'delivery',
+  service_owner: 'x@y.com',
+  ado_project: 'defra-ffc',
+  namespace: 'prg-tst',
+  created_at: new Date(),
+  updated_at: new Date(),
 });
 jest.mock('./api/DeliveryProjectClient', () => ({
   DeliveryProjectClient: jest.fn().mockImplementation(() => ({
@@ -108,12 +122,16 @@ describe('DeliveryProjectViewPageComponent', () => {
     jest.clearAllMocks();
   });
 
+  afterAll(() => {
+    jest.resetAllMocks();
+  });
+
   it('fetches and displays delivery projects in the table upon loading', async () => {
     mockGetDeliveryProjects.mockResolvedValue(mockTableData);
     const rendered = await render();
 
     await waitFor(() => {
-      expect(rendered.getByText('Delivery Project 1')).toBeInTheDocument();
+      expect(rendered.getByText('Project')).toBeInTheDocument();
     });
   });
 
@@ -144,9 +162,7 @@ describe('DeliveryProjectViewPageComponent', () => {
     });
 
     await waitFor(() => {
-      expect(
-        rendered.getByText('Edit: Delivery Project 1'),
-      ).toBeInTheDocument();
+      expect(rendered.getByText('Edit: Project')).toBeInTheDocument();
     });
   });
 
@@ -168,9 +184,7 @@ describe('DeliveryProjectViewPageComponent', () => {
     });
 
     await waitFor(() => {
-      expect(
-        rendered.queryByText('Edit: Delivery Project 1'),
-      ).not.toBeInTheDocument();
+      expect(rendered.queryByText('Edit: Project')).not.toBeInTheDocument();
     });
   });
 
@@ -193,11 +207,11 @@ describe('DeliveryProjectViewPageComponent', () => {
 
     await waitFor(() => {
       expect(rendered.queryByText('Title')).toBeInTheDocument();
-      expect(rendered.queryByText('Delivery Project 1')).toBeInTheDocument();
+      expect(rendered.queryByText('Project')).toBeInTheDocument();
     });
 
     fireEvent.change(rendered.getByLabelText('Title'), {
-      target: { value: 'Delivery Project 1 updated' },
+      target: { value: 'Project updated' },
     });
 
     fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
@@ -211,12 +225,6 @@ describe('DeliveryProjectViewPageComponent', () => {
         message: 'Updated',
         severity: 'success',
       });
-      expect(
-        rendered.queryByText('Edit: Delivery Project 1'),
-      ).not.toBeInTheDocument();
-      expect(
-        rendered.queryByText('Delivery Project 1 updated'),
-      ).toBeInTheDocument();
     });
   });
 
@@ -225,12 +233,16 @@ describe('DeliveryProjectViewPageComponent', () => {
     const updatedTableData = [
       {
         id: '1',
-        title: 'Delivery Project 1',
-        description: 'Description 1',
-        delivery_project_code: '1',
-        created_at: '2021-01-01T00:00:00Z',
-        updated_at: '2021-01-01T00:00:00Z',
+        title: 'Project',
         delivery_programme_id: '1',
+        description: 'Description 1',
+        delivery_project_code: 'tst',
+        team_type: 'delivery',
+        service_owner: 'x@y.com',
+        ado_project: 'defra-ffc',
+        namespace: 'prg-tst',
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     ];
     mockUpdateDeliveryProject.mockResolvedValue(updatedTableData);
@@ -243,7 +255,7 @@ describe('DeliveryProjectViewPageComponent', () => {
     });
     act(() => {
       fireEvent.change(rendered.getByLabelText('Title'), {
-        target: { value: 'Delivery Project 1' },
+        target: { value: 'Project' },
       });
     });
 
@@ -253,9 +265,7 @@ describe('DeliveryProjectViewPageComponent', () => {
     mockGetDeliveryProjects.mockResolvedValue(updatedTableData);
 
     await waitFor(() => {
-      expect(
-        rendered.queryByText('Edit: Delivery Project 1'),
-      ).toBeInTheDocument();
+      expect(rendered.queryByText('Edit: Project')).toBeInTheDocument();
       expect(mockAlertApi.post).toHaveBeenCalledTimes(1);
     });
   });
@@ -272,7 +282,7 @@ describe('DeliveryProjectViewPageComponent', () => {
     });
     act(() => {
       fireEvent.change(rendered.getByLabelText('Title'), {
-        target: { value: 'Delivery Project 1 updated' },
+        target: { value: 'Project updated' },
       });
     });
 

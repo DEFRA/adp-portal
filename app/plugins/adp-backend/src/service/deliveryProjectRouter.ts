@@ -10,11 +10,10 @@ import {
   PartialDeliveryProject,
 } from '../deliveryProject/deliveryProjectStore';
 import { DeliveryProject } from '@internal/plugin-adp-common';
-import { checkForDuplicateTitle, getCurrentUsername } from '../utils/index';
+import { checkForDuplicateProjectCode, checkForDuplicateTitle, getCurrentUsername } from '../utils/index';
 import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
 import { FluxConfigApi } from '../deliveryProject/fluxConfigApi';
 import { Config } from '@backstage/config';
-
 export interface ProjectRouterOptions {
   logger: Logger;
   identity: IdentityApi;
@@ -71,14 +70,21 @@ export async function createProjectRouter(
 
       const data: DeliveryProject[] = await deliveryProjectStore.getAll();
 
-      const isDuplicate: boolean = await checkForDuplicateTitle(
+      const isDuplicateTitle: boolean = await checkForDuplicateTitle(
         data,
         req.body.title,
       );
-      if (isDuplicate) {
-        res
-          .status(406)
-          .json({ error: 'Delivery Project title already exists' });
+      const isDuplicateCode: boolean = await checkForDuplicateProjectCode(
+        data,
+        req.body.delivery_project_code,
+      );
+      if (isDuplicateTitle || isDuplicateCode) {
+        const errorMessage = isDuplicateTitle
+          ? 'Delivery Project title already exists'
+          : isDuplicateCode
+          ? 'Service Code already exists'
+          : '';
+        res.status(406).json({ error: errorMessage });
       } else {
         const author = await getCurrentUsername(identity, req);
         const deliveryProject = await deliveryProjectStore.add(
@@ -111,14 +117,16 @@ export async function createProjectRouter(
       const currentData = allProjects.find(
         project => project.id === req.body.id,
       );
-      const updatedTitle = req.body?.title;
-      const currentTitle = currentData?.title;
-      const isTitleChanged = updatedTitle && currentTitle !== updatedTitle;
+      const isTitleChanged =
+        req.body?.title && currentData?.title !== req.body?.title;
+      const isProjectCodeChanged =
+        req.body?.delivery_project_code &&
+        currentData?.delivery_project_code !== req.body?.delivery_project_code;
 
       if (isTitleChanged) {
         const isDuplicate: boolean = await checkForDuplicateTitle(
           allProjects,
-          updatedTitle,
+          req.body?.title,
         );
         if (isDuplicate) {
           res
@@ -128,12 +136,23 @@ export async function createProjectRouter(
         }
       }
 
+      if (isProjectCodeChanged) {
+        const isDuplicate: boolean = await checkForDuplicateProjectCode(
+          allProjects,
+          req.body?.delivery_project_code,
+        );
+        if (isDuplicate) {
+          res.status(406).json({ error: 'Service Code already exists' });
+          return;
+        }
+      }
+
       const author = await getCurrentUsername(identity, req);
       const deliveryProject = await deliveryProjectStore.update(
         req.body,
         author,
       );
-      res.status(201).json(deliveryProject);
+      res.status(200).json(deliveryProject);
     } catch (error) {
       const deliveryProjectError = error as Error;
       logger.error(
