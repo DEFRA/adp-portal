@@ -35,7 +35,7 @@ export const useProgrammeManagersList = (): ProgrammeManagersListOptions[] => {
             label: transformedName,
             value: item.metadata.annotations['graph.microsoft.com/user-id'],
           };
-        });
+        }).sort((a: { label: string; }, b: { label: string; }) => a.label.localeCompare(b.label));
 
         setOptions(formattedProgrammeManagers);
       } catch (e: any) {
