@@ -34,11 +34,5 @@ export const deliveryProjectGroupTransformer: DeliveryProjectGroupTransformer =
       entity.metadata.description = deliveryProject.description;
     }
 
-    if (deliveryProject.url) {
-      entity.metadata.links?.push({
-        url: deliveryProject.url ? deliveryProject.url : '',
-      });
-    }
-
     return entity;
   };

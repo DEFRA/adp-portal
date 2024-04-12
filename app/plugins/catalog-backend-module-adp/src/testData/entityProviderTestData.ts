@@ -73,10 +73,13 @@ export const deliveryProject = [
     description: 'Test description 1',
     finance_code: 'Test finance_code',
     delivery_project_code: 'Test delivery_project_code',
+    delivery_programme_id: '123',
     ado_project: 'Test ado_project',
-    url: 'https://test1.com',
-    children: ['test-project-1'],
+    namespace: 'Test namespace',
+    team_type: 'Test team_type',
+    service_owner: 'Test service_owner',
   },
+
   {
     id: '1234',
     created_at: new Date(),
@@ -87,8 +90,11 @@ export const deliveryProject = [
     description: 'Test description 2',
     finance_code: 'Test finance_code',
     delivery_programme_code: 'Test delivery_programme_code',
-    url: 'https://test2.com',
+    delivery_programme_id: '1234',
     children: ['test-project-2'],
+    namespace: 'Test namespace',
+    team_type: 'Test team_type',
+    service_owner: 'Test service_owner',
   },
 ];
 
@@ -192,7 +198,7 @@ export const mockProjectTransformerData = [
           'adp:delivery-project\\test-project-1',
         'backstage.io/managed-by-origin-location': `adp:delivery-project\\test-project-1`,
       },
-      links: [{ url: 'https://test1.com' }],
+      links: [],
     },
     spec: {
       type: 'delivery-project',
@@ -212,7 +218,7 @@ export const mockProjectTransformerData = [
           'adp:delivery-project\\test-project-2',
         'backstage.io/managed-by-origin-location': `adp:delivery-project\\test-project-2`,
       },
-      links: [{ url: 'https://test2.com' }],
+      links: [],
     },
     spec: {
       type: 'delivery-project',
