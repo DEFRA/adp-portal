@@ -110,11 +110,11 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     const programmeEntities = await this.readDeliveryProgrammes(logger);
     const projectEntities = await this.readDeliveryProjects(logger);
 
-    const entities = {
+    const entities = [
       ...albEntities,
       ...programmeEntities,
       ...projectEntities,
-    };
+    ];
 
     console.log('albEntities', albEntities)
     console.log('entities', entities)
