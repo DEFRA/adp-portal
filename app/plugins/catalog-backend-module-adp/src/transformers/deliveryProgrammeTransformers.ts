@@ -18,6 +18,7 @@ export const deliveryProgrammeGroupTransformer: DeliveryProgrammeGroupTransforme
           deliveryProgramme.title,
           deliveryProgramme.alias,
         ),
+        description: deliveryProgramme.description || undefined,
         tags: [],
         annotations: {
           'backstage.io/managed-by-location': `adp:delivery-programme\\${deliveryProgramme.name}`,
@@ -27,21 +28,13 @@ export const deliveryProgrammeGroupTransformer: DeliveryProgrammeGroupTransforme
       },
       spec: {
         type: 'delivery-programme',
-        children: []
+        children: deliveryProgramme.children ?? []
       },
     };
 
-    if (deliveryProgramme.children) {
-      entity.spec.children = deliveryProgramme.children;
-    }
-
-    if (deliveryProgramme.description) {
-      entity.metadata.description = deliveryProgramme.description;
-    }
-
     if (deliveryProgramme.url) {
       entity.metadata.links?.push({
-        url: deliveryProgramme.url ? deliveryProgramme.url : '',
+        url: deliveryProgramme.url,
       });
     }
 

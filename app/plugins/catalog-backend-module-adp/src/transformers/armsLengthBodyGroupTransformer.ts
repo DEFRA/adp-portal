@@ -17,6 +17,7 @@ export const armsLengthBodyGroupTransformer: ArmsLengthBodyGroupTransformer =
           armsLengthBody.title,
           armsLengthBody.alias,
         ),
+        description: armsLengthBody.description || undefined,
         tags: [],
         annotations: {
           'backstage.io/managed-by-location': `adp:arms-length-body\\${armsLengthBody.name}`,
@@ -26,21 +27,13 @@ export const armsLengthBodyGroupTransformer: ArmsLengthBodyGroupTransformer =
       },
       spec: {
         type: 'arms-length-body',
-        children: []
+        children: armsLengthBody.children ?? []
       },
     };
-    
-    if (armsLengthBody.children) {
-      entity.spec.children = armsLengthBody.children;
-    }
-    
-    if (armsLengthBody.description) {
-      entity.metadata.description = armsLengthBody.description;
-    }
 
     if (armsLengthBody.url) {
       entity.metadata.links?.push({
-        url: armsLengthBody.url ? armsLengthBody.url : '',
+        url: armsLengthBody.url
       });
     }
 

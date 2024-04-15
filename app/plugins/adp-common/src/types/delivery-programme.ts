@@ -12,7 +12,7 @@ export type DeliveryProgramme = {
     delivery_programme_code: string;
     url?: string;
     updated_by?: string;
-    children?: string[] | [];
+    children?: string[];
 }
 
 export type ProgrammeManager = {
