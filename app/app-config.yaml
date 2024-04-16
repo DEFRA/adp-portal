@@ -190,7 +190,7 @@ techRadar:
 
 adp:
   fluxOnboarding:
-    apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/FluxConfig
+    apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/FluxTeamConfig
     defaultConfigVariables:
       - key: TEAM_CPU_QUOTA
         value: "2000"
