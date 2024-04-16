@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, waitFor } from '@testing-library/react';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
 import {
   PermissionApi,

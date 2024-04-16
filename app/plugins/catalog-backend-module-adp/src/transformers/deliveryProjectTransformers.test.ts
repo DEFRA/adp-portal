@@ -1,19 +1,23 @@
+import { DeliveryProject } from '@internal/plugin-adp-common';
 import { deliveryProjectGroupTransformer } from './deliveryProjectTransformer';
 
 describe('deliveryProjectGroupTransformer', () => {
   it('should transform a valid DeliveryProject to a GroupEntity', async () => {
-    const deliveryProject = {
+    const deliveryProject: DeliveryProject = {
       title: 'Test title 1',
       alias: 'Test Alias',
       description: 'Test description',
       finance_code: 'Test finance_code',
       delivery_programme_id: '05aa36b6-c7a2-4c35-820e-c31d20011f47',
       delivery_project_code: 'Test delivery_project_code',
-      url: 'https://www.example.uk/',
       name: 'test-title-1',
       id: '1234',
       created_at: new Date(),
       updated_at: new Date(),
+      namespace: 'test-namespace',
+      ado_project: 'TEST-PROJECT',
+      service_owner: 'test@test.com',
+      team_type: 'test'
     };
 
     const expectedGroupEntity = {

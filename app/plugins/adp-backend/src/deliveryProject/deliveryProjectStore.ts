@@ -143,7 +143,6 @@ export class DeliveryProjectStore {
       name: createName(DeliveryProject.title),
       created_at: new Date(insertResult[0].created_at),
       updated_at: new Date(insertResult[0].updated_at),
-      name: insertResult[0].name
     };
   }
 
