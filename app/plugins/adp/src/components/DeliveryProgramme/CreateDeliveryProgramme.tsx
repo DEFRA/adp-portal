@@ -10,7 +10,10 @@ import {
 } from '@backstage/core-plugin-api';
 import { DeliveryProgrammeClient } from './api/DeliveryProgrammeClient';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import {
+  DeliveryProgramme,
+  adpProgrammmeCreatePermission,
+} from '@internal/plugin-adp-common';
 import { useArmsLengthBodyList } from '../../hooks/useArmsLengthBodyList';
 
 import {
@@ -22,6 +25,7 @@ import {
   isCodeUnique,
   isNameUnique,
 } from '../../utils/DeliveryProgramme/DeliveryProgrammeUtils';
+import { usePermission } from '@backstage/plugin-permission-react';
 
 interface CreateDeliveryProgrammeProps {
   refetchDeliveryProgramme: () => void;
@@ -42,6 +46,9 @@ const CreateDeliveryProgramme: React.FC<CreateDeliveryProgrammeProps> = ({
     discoveryApi,
     fetchApi,
   );
+  const { allowed: allowedToCreateAdpProgramme } = usePermission({
+    permission: adpProgrammmeCreatePermission,
+  });
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -116,17 +123,18 @@ const CreateDeliveryProgramme: React.FC<CreateDeliveryProgrammeProps> = ({
 
   return (
     <>
-      <Button
-        variant="contained"
-        size="large"
-        color="primary"
-        startIcon={<AddBoxIcon />}
-        onClick={handleOpenModal}
-        data-testid="create-delivery-programme-button"
-      >
-        Add Delivery Programme
-      </Button>
-
+      {allowedToCreateAdpProgramme && (
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          startIcon={<AddBoxIcon />}
+          onClick={handleOpenModal}
+          data-testid="create-delivery-programme-button"
+        >
+          Add Delivery Programme
+        </Button>
+      )}
       {isModalOpen && (
         <ActionsModal
           open={isModalOpen}
