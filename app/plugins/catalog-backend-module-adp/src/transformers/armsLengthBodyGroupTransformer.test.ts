@@ -10,7 +10,7 @@ describe('armsLengthBodyGroupTransformer', () => {
     const result = await armsLengthBodyGroupTransformer(armsLengthBody);
     expect(result).toEqual(expectedAlbEntity);
   });
-  
+
   it('should transform a valid ArmsLengthBody without children to a GroupEntity', async () => {
     const result = await armsLengthBodyGroupTransformer({
       ...armsLengthBody,
@@ -18,4 +18,13 @@ describe('armsLengthBodyGroupTransformer', () => {
     });
     expect(result).toEqual(expectedAlbEntityNoChild);
   });
+
+  it('should transform a valid ArmsLengthBody with children as undefined to a GroupEntity', async () => {
+    const result = await armsLengthBodyGroupTransformer({
+      ...armsLengthBody,
+      children: undefined,
+    });
+    expect(result).toEqual(expectedAlbEntityNoChild);
+  });
+  
 });
