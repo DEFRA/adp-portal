@@ -62,7 +62,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
     fetchApi,
   );
 
-  const { allowed } = usePermission({
+  const { allowed: allowedToEditAdpProgramme } = usePermission({
     permission: adpProgrammmeCreatePermission,
   });
 
@@ -204,7 +204,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
       render: (rowData: any) => {
         const data = rowData as DeliveryProgramme;
         return (
-          allowed && (
+          allowedToEditAdpProgramme && (
             <Button
               variant="contained"
               color="default"
@@ -246,7 +246,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
           isCompact={true}
         />
 
-        {isModalOpen && allowed && (
+        {isModalOpen && allowedToEditAdpProgramme && (
           <ActionsModal
             open={isModalOpen}
             onClose={handleCloseModal}

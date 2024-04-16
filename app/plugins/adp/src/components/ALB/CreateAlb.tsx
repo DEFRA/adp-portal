@@ -31,7 +31,7 @@ const CreateAlb: React.FC<CreateAlbProps> = ({ refetchArmsLengthBody }) => {
 
   const albClient = new ArmsLengthBodyClient(discoveryApi, fetchApi);
 
-  const { allowed } = usePermission({
+  const { allowed: allowedToCreateAlb } = usePermission({
     permission: adpProgrammmeCreatePermission,
   });
 
@@ -65,7 +65,7 @@ const CreateAlb: React.FC<CreateAlbProps> = ({ refetchArmsLengthBody }) => {
 
   return (
     <>
-      {allowed && (
+      {allowedToCreateAlb && (
         <Button
           variant="contained"
           size="large"

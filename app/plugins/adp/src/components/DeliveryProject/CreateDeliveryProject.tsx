@@ -9,7 +9,7 @@ import {
 } from '@backstage/core-plugin-api';
 import { DeliveryProjectClient } from './api/DeliveryProjectClient';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { DeliveryProject } from '@internal/plugin-adp-common';
+import { DeliveryProject, adpProjectCreatePermission } from '@internal/plugin-adp-common';
 import { useDeliveryProgrammesList } from '../../hooks/useDeliveryProgrammesList';
 import { DeliveryProjectFormFields } from './DeliveryProjectFormFields';
 import { CreateDeliveryProjectModal } from './CreateDeliveryProjectModal';
@@ -17,6 +17,7 @@ import {
   isCodeUnique,
   isNameUnique,
 } from '../../utils/DeliveryProject/DeliveryProjectUtils';
+import { usePermission } from '@backstage/plugin-permission-react';
 
 interface CreateDeliveryProjectProps {
   refetchDeliveryProject: () => void;
@@ -39,6 +40,11 @@ const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
     discoveryApi,
     fetchApi,
   );
+
+  const { allowed: allowedToCreateAdpProject } = usePermission({
+    permission: adpProjectCreatePermission,
+  });
+
   type PartialDeliveryProject = Partial<DeliveryProject>;
   const initialValues: PartialDeliveryProject = {
     team_type: 'delivery',
@@ -160,6 +166,7 @@ const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
 
   return (
     <>
+    {allowedToCreateAdpProject && ( 
       <Button
         variant="contained"
         size="large"
@@ -170,7 +177,7 @@ const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
       >
         Add Delivery Project
       </Button>
-
+      )}
       {isModalOpen && (
         <CreateDeliveryProjectModal
           open={isModalOpen}
