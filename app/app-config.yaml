@@ -45,6 +45,7 @@ proxy:
     '/adp-portal-api': 
       target: ${ADP_PORTAL_API_ENDPOINT}
       changeOrigin: true
+      secure: false
       
 grafana:
   domain: ${GRAFANA_ENDPOINT}
