@@ -18,7 +18,7 @@ export const deliveryProgrammeGroupTransformer: DeliveryProgrammeGroupTransforme
           deliveryProgramme.title,
           deliveryProgramme.alias,
         ),
-        description: deliveryProgramme.description || undefined,
+        description: deliveryProgramme.description,
         tags: [],
         annotations: {
           'backstage.io/managed-by-location': `adp:delivery-programme\\${deliveryProgramme.name}`,

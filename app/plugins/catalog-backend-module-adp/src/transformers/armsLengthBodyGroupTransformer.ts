@@ -17,7 +17,7 @@ export const armsLengthBodyGroupTransformer: ArmsLengthBodyGroupTransformer =
           armsLengthBody.title,
           armsLengthBody.alias,
         ),
-        description: armsLengthBody.description || undefined,
+        description: armsLengthBody.description,
         tags: [],
         annotations: {
           'backstage.io/managed-by-location': `adp:arms-length-body\\${armsLengthBody.name}`,

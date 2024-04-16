@@ -17,7 +17,7 @@ export const deliveryProjectGroupTransformer: DeliveryProjectGroupTransformer =
           deliveryProject.title,
           deliveryProject.alias,
         ),
-        description: deliveryProject.description || undefined,
+        description: deliveryProject.description,
         tags: [],
         annotations: {
           'backstage.io/managed-by-location': `adp:delivery-project\\${deliveryProject.name}`,
