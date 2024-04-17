@@ -35,7 +35,8 @@ resources:
       name: DEFRA/adp-pipeline-common
       endpoint: DEFRA
       type: github
-      ref: main
+      #ref: main
+      ref: sm/360633/TagandReleaseForPortal
 
 extends:
   template: /pipelines/common-aca-app-build.yaml@DEFRA-ADPPipelineCommon
