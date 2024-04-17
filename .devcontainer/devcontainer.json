@@ -5,8 +5,9 @@
   "dockerComposeFile": "docker-compose.yaml",
   "service": "editor",
   "postStartCommand": "cd app && yarn",
-  "workspaceFolder": "/workspaces/adp-portal/app",
-  "initializeCommand": "cd .devcontainer && . initialize.sh",
+  "workspaceFolder": "/workspaces/adp-portal",
+  "mounts": ["source=${localWorkspaceFolder},target=/workspaces/adp-portal"],
+  "initializeCommand": [".devcontainer/initialize"],
   "customizations": {
     "vscode": {
       "settings": {},

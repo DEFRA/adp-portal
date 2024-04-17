@@ -6,6 +6,8 @@ services:
     init: true
     env_file:
       - ../.env
+    volumes:
+      - azurecli:/home/node/.azure
 
   postgres:
     image: postgres
@@ -14,7 +16,9 @@ services:
       POSTGRES_PASSWORD: backstage
     volumes:
       - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
 
 volumes:
   postgres:
-
+  azurecli:
