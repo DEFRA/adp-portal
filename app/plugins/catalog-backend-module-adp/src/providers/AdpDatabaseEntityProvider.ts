@@ -98,11 +98,11 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   private async refresh(logger: Logger): Promise<void> {
     if (!this.connection) {
       throw new Error(
-        `ADP Data Model discovery connection not initialized for ${this.getProviderName()}`,
+        `ADP Onboarding Model discovery connection not initialized for ${this.getProviderName()}`,
       );
     }
 
-    logger.info('Discovering ADP Data Model Entities');
+    logger.info('Discovering ADP Onboarding Model Entities');
 
     const { markReadComplete } = this.trackProgress(logger);
 
@@ -110,24 +110,17 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     const programmeEntities = await this.readDeliveryProgrammes(logger);
     const projectEntities = await this.readDeliveryProjects(logger);
 
-    const entities = [
-      ...albEntities,
-      ...programmeEntities,
-      ...projectEntities,
-    ];
+    const entities = [...albEntities, ...programmeEntities, ...projectEntities];
 
-    console.log('albEntities', albEntities)
-    console.log('entities', entities)
     const { markCommitComplete } = markReadComplete(entities);
 
     await this.connection.applyMutation({
       type: 'full',
-      entities: [...entities].map(entity => ({
+      entities: entities.map(entity => ({
         locationKey: this.getProviderName(),
         entity: entity,
       })),
     });
-
     markCommitComplete(entities);
   }
 
@@ -162,7 +155,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   }
 
   private async readDeliveryProgrammes(logger: Logger): Promise<GroupEntity[]> {
-    logger.info('Discovering All Delivery Programmes');
+    logger.info('Discovering all Delivery Programmes');
     const baseUrl = await this.discovery.getBaseUrl('adp');
     const endpoint = `${baseUrl}/deliveryProgramme`;
 
@@ -192,7 +185,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   }
 
   private async readDeliveryProjects(logger: Logger): Promise<GroupEntity[]> {
-    logger.info('Discovering All Delivery Projects');
+    logger.info('Discovering all Delivery Projects');
     const baseUrl = await this.discovery.getBaseUrl('adp');
     const endpoint = `${baseUrl}/deliveryProject`;
 

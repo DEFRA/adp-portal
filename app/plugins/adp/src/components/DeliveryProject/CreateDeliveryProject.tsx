@@ -81,7 +81,7 @@ const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
       };
       return result;
     });
-  }, [formValues.delivery_project_code]);
+  }, [formValues.delivery_project_code, formValues.delivery_programme_id]);
 
   const getFieldsAndOptions = () => {
     return DeliveryProjectFormFields.map(field => {

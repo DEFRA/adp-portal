@@ -6,6 +6,7 @@ export type DeliveryProgrammeGroupTransformer = (
   deliveryProgramme: DeliveryProgramme,
 ) => Promise<GroupEntity | undefined>;
 
+
 export const deliveryProgrammeGroupTransformer: DeliveryProgrammeGroupTransformer =
   async (deliveryProgramme): Promise<GroupEntity | undefined> => {
     const entity: GroupEntity = {
@@ -17,6 +18,7 @@ export const deliveryProgrammeGroupTransformer: DeliveryProgrammeGroupTransforme
           deliveryProgramme.title,
           deliveryProgramme.alias,
         ),
+        description: deliveryProgramme.description,
         tags: [],
         annotations: {
           'backstage.io/managed-by-location': `adp:delivery-programme\\${deliveryProgramme.name}`,
@@ -30,13 +32,9 @@ export const deliveryProgrammeGroupTransformer: DeliveryProgrammeGroupTransforme
       },
     };
 
-    if (deliveryProgramme.description) {
-      entity.metadata.description = deliveryProgramme.description;
-    }
-
     if (deliveryProgramme.url) {
       entity.metadata.links?.push({
-        url: deliveryProgramme.url ? deliveryProgramme.url : '',
+        url: deliveryProgramme.url,
       });
     }
 

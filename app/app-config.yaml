@@ -177,10 +177,6 @@ catalog:
   # 'all users'
   # Locations configured to import static data into the catalog
   locations:
-    - type: url
-      target: https://github.com/defra/adp-software-templates/blob/main/catalog-model/defra-org.yaml
-      rules:
-        - allow: [User, Group]
 
     - type: url
       target: https://github.com/defra/adp-software-templates/blob/main/catalog-model/all.yaml
