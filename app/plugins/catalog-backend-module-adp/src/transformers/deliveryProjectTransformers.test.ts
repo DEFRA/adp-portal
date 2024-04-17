@@ -1,4 +1,3 @@
-import { DeliveryProject } from '@internal/plugin-adp-common';
 import {
   deliveryProject,
   expectedProjectEntity,
