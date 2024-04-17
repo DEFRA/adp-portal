@@ -1,4 +1,3 @@
-import { DeliveryProgrammeClient } from '../../DeliveryProgramme/api';
 import { DeliveryProjectClient } from './DeliveryProjectClient';
 
 jest.mock('@backstage/core-plugin-api', () => ({
@@ -115,31 +114,6 @@ describe('deliveryProjectClient', () => {
         name: 'New Body',
         namespace: 'adp-dmo',
       };
-      jest
-        .spyOn(DeliveryProgrammeClient.prototype, 'getDeliveryProgrammeById')
-        .mockImplementation(() =>
-          Promise.resolve({
-            id: '1',
-            name: 'Programme 1',
-            arms_length_body_id: 'alb1',
-            programme_managers: [
-              {
-                email: 'x@y.com',
-                aad_entity_ref_id: 'id',
-                delivery_programme_id: '1',
-                id: 'm1',
-                name: 'manager',
-              },
-            ],
-            created_at: new Date(),
-            updated_at: new Date(),
-            updated_by: 'author',
-            delivery_programme_code: 'prog1',
-            description: 'Description',
-            title: 'Title',
-            finance_code: 'fincode',
-          }),
-        );
 
       fetchApi.fetch
         .mockResolvedValueOnce({
@@ -190,31 +164,6 @@ describe('deliveryProjectClient', () => {
         name: 'New Body',
         namespace: 'adp-dmo',
       };
-      jest
-        .spyOn(DeliveryProgrammeClient.prototype, 'getDeliveryProgrammeById')
-        .mockImplementation(() =>
-          Promise.resolve({
-            id: '1',
-            name: 'Programme 1',
-            arms_length_body_id: 'alb1',
-            programme_managers: [
-              {
-                email: 'x@y.com',
-                aad_entity_ref_id: 'id',
-                delivery_programme_id: '1',
-                id: 'm1',
-                name: 'manager',
-              },
-            ],
-            created_at: new Date(),
-            updated_at: new Date(),
-            updated_by: 'author',
-            delivery_programme_code: 'prog1',
-            description: 'Description',
-            title: 'Title',
-            finance_code: 'fincode',
-          }),
-        );
 
       fetchApi.fetch
         .mockResolvedValueOnce({

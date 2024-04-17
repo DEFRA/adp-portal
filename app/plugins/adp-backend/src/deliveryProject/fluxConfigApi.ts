@@ -40,7 +40,7 @@ export class FluxConfigApi {
   }
 
   async createFluxConfig(deliveryProject: DeliveryProject) {
-    const endpoint = `${this.apiBaseUrl}/create/${deliveryProject.name}`;
+    const endpoint = `${this.apiBaseUrl}/${deliveryProject.name}`;
 
     const deliveryProgramme = await this.deliveryProgrammeStore.get(
       deliveryProject.delivery_programme_id,
@@ -78,7 +78,7 @@ export class FluxConfigApi {
   }
 
   async getFluxConfig(teamName: string): Promise<FluxTeamConfig | null> {
-    const endpoint = `${this.apiBaseUrl}/get/${teamName}`;
+    const endpoint = `${this.apiBaseUrl}/${teamName}`;
     const statusCodeNotFound = 404;
 
     const response = await fetch(endpoint, {
