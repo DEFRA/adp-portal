@@ -5,23 +5,14 @@ import {
 } from '@internal/plugin-adp-common';
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
-import {
-  DeliveryProgrammeApi,
-  DeliveryProgrammeClient,
-} from '../../DeliveryProgramme/api';
 
 export class DeliveryProjectClient implements DeliveryProjectApi {
   private discoveryApi: DiscoveryApi;
   private fetchApi: FetchApi;
-  private deliveryProgClient: DeliveryProgrammeApi;
 
   constructor(discoveryApi: DiscoveryApi, fetchApi: FetchApi) {
     this.discoveryApi = discoveryApi;
     this.fetchApi = fetchApi;
-    this.deliveryProgClient = new DeliveryProgrammeClient(
-      discoveryApi,
-      fetchApi,
-    );
   }
 
   private async getApiUrl(): Promise<string> {
@@ -82,12 +73,9 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
         if (!response.ok) {
           throw await ResponseError.fromResponse(response);
         }
-        const deliveryProgramme: DeliveryProgramme =
-          await this.deliveryProgClient.getDeliveryProgrammeById(
-            data.delivery_programme_id,
-          );
+
         const adGroupPayload = {
-          members: deliveryProgramme.programme_managers.map(x => x.email),
+          members: []
         };
         await this.createEntraIdGroupsForProject(
           adGroupPayload,
