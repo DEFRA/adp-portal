@@ -2055,43 +2055,7 @@
     "@material-ui/core" "^4.12.2"
     "@material-ui/icons" "^4.9.1"
 
-"@backstage/backend-app-api@^0.5.10", "@backstage/backend-app-api@^0.5.11", "@backstage/backend-app-api@^0.5.8":
-  version "0.5.11"
-  resolved "https://registry.yarnpkg.com/@backstage/backend-app-api/-/backend-app-api-0.5.11.tgz#4bd0c13976aa66ff6826576428465a84f6648571"
-  integrity sha512-M9pTFJ06EdTRpXkINPRCgZ+XloQsORCzOyCZsvmK8QVT4AxWoSkB4Sp/CM+YxPIk4ofYts68wUScdhPm/YcJwQ==
-  dependencies:
-    "@backstage/backend-common" "^0.21.0"
-    "@backstage/backend-plugin-api" "^0.6.10"
-    "@backstage/backend-tasks" "^0.5.15"
-    "@backstage/cli-common" "^0.1.13"
-    "@backstage/cli-node" "^0.2.3"
-    "@backstage/config" "^1.1.1"
-    "@backstage/config-loader" "^1.6.2"
-    "@backstage/errors" "^1.2.3"
-    "@backstage/plugin-auth-node" "^0.4.4"
-    "@backstage/plugin-permission-node" "^0.7.21"
-    "@backstage/types" "^1.1.1"
-    "@manypkg/get-packages" "^1.1.3"
-    "@types/cors" "^2.8.6"
-    "@types/express" "^4.17.6"
-    compression "^1.7.4"
-    cors "^2.8.5"
-    express "^4.17.1"
-    express-promise-router "^4.1.0"
-    fs-extra "^11.2.0"
-    helmet "^6.0.0"
-    lodash "^4.17.21"
-    logform "^2.3.2"
-    minimatch "^5.0.0"
-    minimist "^1.2.5"
-    morgan "^1.10.0"
-    node-forge "^1.3.1"
-    selfsigned "^2.0.0"
-    stoppable "^1.1.0"
-    winston "^3.2.1"
-    winston-transport "^4.5.0"
-
-"@backstage/backend-app-api@^0.5.14":
+"@backstage/backend-app-api@^0.5.10", "@backstage/backend-app-api@^0.5.14", "@backstage/backend-app-api@^0.5.8":
   version "0.5.14"
   resolved "https://registry.yarnpkg.com/@backstage/backend-app-api/-/backend-app-api-0.5.14.tgz#a110bdbebc3b8b1b302b0726b7c92b2742fb5e3f"
   integrity sha512-Sqd5WRkp5x0JxK0ms5shes+VXmJ/t9++Z88CR8N3oBtp3H0t+iKewxOlgHhvYZKPyPiVCXZqKu7eCWH9UZ+Gqg==
@@ -2189,9 +2153,9 @@
     yn "^4.0.0"
 
 "@backstage/backend-common@^0.20.0", "@backstage/backend-common@^0.20.1":
-  version "0.20.1"
-  resolved "https://registry.yarnpkg.com/@backstage/backend-common/-/backend-common-0.20.1.tgz#e9b8bc7d7251ea57b2db52d7c6619dd74caa959f"
-  integrity sha512-VI3b2Bio+ne/IgVhKh6wP+ogqBVV+vo8ck/n0RHwtukpRc0Gx92M+LPfqf4UxlV7fvY2tYSFXtXLXupeW8aWfQ==
+  version "0.20.2"
+  resolved "https://registry.yarnpkg.com/@backstage/backend-common/-/backend-common-0.20.2.tgz#0ce5b7bfcb91918008c4ec6bb6aede72c4474e20"
+  integrity sha512-hQazpWVhjcOIic1bDMVKZ2pQn9Th4gKmI+1Q5aT2cls7dnXNF7Mwb3bRgnVQk+18bEn6sxHOUyCAFd8KzYTtLg==
   dependencies:
     "@aws-sdk/abort-controller" "^3.347.0"
     "@aws-sdk/client-s3" "^3.350.0"
@@ -2249,68 +2213,7 @@
     yauzl "^2.10.0"
     yn "^4.0.0"
 
-"@backstage/backend-common@^0.21.0":
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/@backstage/backend-common/-/backend-common-0.21.0.tgz#72595fa7367727fbfff07223a8ed37d2c07efaa4"
-  integrity sha512-TfUNUtdWGD+opArGM4xCPGGJMW2HU557AA7nzMZYF+UZWBn0Pyjo9DVED/+A4VqMo5dGwLTB7g2odROfkNxZMA==
-  dependencies:
-    "@aws-sdk/abort-controller" "^3.347.0"
-    "@aws-sdk/client-s3" "^3.350.0"
-    "@aws-sdk/credential-providers" "^3.350.0"
-    "@aws-sdk/types" "^3.347.0"
-    "@backstage/backend-app-api" "^0.5.11"
-    "@backstage/backend-dev-utils" "^0.1.4"
-    "@backstage/backend-plugin-api" "^0.6.10"
-    "@backstage/cli-common" "^0.1.13"
-    "@backstage/config" "^1.1.1"
-    "@backstage/config-loader" "^1.6.2"
-    "@backstage/errors" "^1.2.3"
-    "@backstage/integration" "^1.9.0"
-    "@backstage/integration-aws-node" "^0.1.9"
-    "@backstage/types" "^1.1.1"
-    "@google-cloud/storage" "^7.0.0"
-    "@keyv/memcache" "^1.3.5"
-    "@keyv/redis" "^2.5.3"
-    "@kubernetes/client-node" "0.20.0"
-    "@manypkg/get-packages" "^1.1.3"
-    "@octokit/rest" "^19.0.3"
-    "@types/cors" "^2.8.6"
-    "@types/dockerode" "^3.3.0"
-    "@types/express" "^4.17.6"
-    "@types/luxon" "^3.0.0"
-    "@types/webpack-env" "^1.15.2"
-    archiver "^6.0.0"
-    base64-stream "^1.0.0"
-    compression "^1.7.4"
-    concat-stream "^2.0.0"
-    cors "^2.8.5"
-    dockerode "^4.0.0"
-    express "^4.17.1"
-    express-promise-router "^4.1.0"
-    fs-extra "^11.2.0"
-    git-url-parse "^14.0.0"
-    helmet "^6.0.0"
-    isomorphic-git "^1.23.0"
-    jose "^4.6.0"
-    keyv "^4.5.2"
-    knex "^3.0.0"
-    lodash "^4.17.21"
-    logform "^2.3.2"
-    luxon "^3.0.0"
-    minimatch "^5.0.0"
-    mysql2 "^2.2.5"
-    node-fetch "^2.6.7"
-    p-limit "^3.1.0"
-    pg "^8.11.3"
-    raw-body "^2.4.1"
-    tar "^6.1.12"
-    uuid "^8.3.2"
-    winston "^3.2.1"
-    winston-transport "^4.5.0"
-    yauzl "^2.10.0"
-    yn "^4.0.0"
-
-"@backstage/backend-common@^0.21.3":
+"@backstage/backend-common@^0.21.0", "@backstage/backend-common@^0.21.3":
   version "0.21.3"
   resolved "https://registry.yarnpkg.com/@backstage/backend-common/-/backend-common-0.21.3.tgz#67d757d1ff81a79121bdbe80b3032542f5ff571f"
   integrity sha512-kqJ5p/Cd3dRcvVoVLIo6kYi5MMy5/uQBibt92o4QKHclagPJ2KLKJOUXwDpAtCw8MLe4Dtms9hj19SoU+wsFCQ==
@@ -2394,21 +2297,7 @@
     openapi-merge "^1.3.2"
     openapi3-ts "^3.1.2"
 
-"@backstage/backend-plugin-api@^0.6.10", "@backstage/backend-plugin-api@^0.6.7", "@backstage/backend-plugin-api@^0.6.8", "@backstage/backend-plugin-api@^0.6.9":
-  version "0.6.10"
-  resolved "https://registry.yarnpkg.com/@backstage/backend-plugin-api/-/backend-plugin-api-0.6.10.tgz#75c893bae1d3b40273c9c3510eab7d760ada5d4c"
-  integrity sha512-uSAr1+xMgw+p/Johfz0gKnqqk/hYLS24hRAvoZVqyc9ydGryU+oxj45JUhIHz880AYuHwsoz9T5oNWLuRpsM7A==
-  dependencies:
-    "@backstage/backend-tasks" "^0.5.15"
-    "@backstage/config" "^1.1.1"
-    "@backstage/plugin-auth-node" "^0.4.4"
-    "@backstage/plugin-permission-common" "^0.7.12"
-    "@backstage/types" "^1.1.1"
-    "@types/express" "^4.17.6"
-    express "^4.17.1"
-    knex "^3.0.0"
-
-"@backstage/backend-plugin-api@^0.6.13":
+"@backstage/backend-plugin-api@^0.6.10", "@backstage/backend-plugin-api@^0.6.13", "@backstage/backend-plugin-api@^0.6.7", "@backstage/backend-plugin-api@^0.6.8", "@backstage/backend-plugin-api@^0.6.9":
   version "0.6.13"
   resolved "https://registry.yarnpkg.com/@backstage/backend-plugin-api/-/backend-plugin-api-0.6.13.tgz#26bb86cb4565fead2424faa42ac603ae98a85e5b"
   integrity sha512-7SAAjx2YuZvsJHokkhh9U/cCV3az25DyqWse9BQJS4UTwDsWyebGmubtFI4SOXQKKR6U5t3ogtezYJXz+9K2Yw==
