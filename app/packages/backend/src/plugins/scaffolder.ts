@@ -13,6 +13,7 @@ import {
   runPipelineAction,
   createGithubTeamAction,
   addGithubTeamToRepoAction,
+  filters,
 } from '@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions';
 import { createHttpBackstageAction } from '@roadiehq/scaffolder-backend-module-http-request';
 
@@ -70,5 +71,6 @@ export default async function createPlugin(
     identity: env.identity,
     permissions: env.permissions,
     actions: actions,
+    additionalTemplateFilters: { ...filters },
   });
 }
