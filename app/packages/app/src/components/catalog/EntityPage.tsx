@@ -243,6 +243,53 @@ const serviceEntityPage = (
   </EntityLayout>
 );
 
+const helmEntityPage = (
+  <EntityLayout>
+    <EntityLayout.Route path="/" title="Overview">
+      {overviewContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/ci-cd" title="CI/CD">
+      {cicdContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/pull-requests" title="Pull Requests">
+      {pullRequest}
+    </EntityLayout.Route>
+    
+    <EntityLayout.Route path="/dependencies" title="Dependencies">
+      <Grid container spacing={3} alignItems="stretch">
+        <Grid item md={6}>
+          <EntityDependsOnComponentsCard variant="gridItem" />
+        </Grid>
+        <Grid item md={6}>
+          <EntityDependsOnResourcesCard variant="gridItem" />
+        </Grid>
+      </Grid>
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/docs" title="Docs">
+      {techdocsContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/releases" title="Deployments" if={isKubernetesAvailable}>
+      <Grid container spacing={3} alignItems="stretch">
+        <Grid item md={12}>
+          <EntityFluxHelmReleasesCard />
+        </Grid>
+        <Grid item md={12}>
+          <EntityFluxKustomizationsCard />
+        </Grid>
+      </Grid>
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/kubernetes" title="Kubernetes" if={isKubernetesAvailable}>
+      <EntityKubernetesContent refreshIntervalMs={30000} />
+    </EntityLayout.Route>
+
+  </EntityLayout>
+);
+
 const websiteEntityPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
@@ -329,6 +376,10 @@ const componentPage = (
 
     <EntitySwitch.Case if={isComponentType('website')}>
       {websiteEntityPage}
+    </EntitySwitch.Case>
+
+    <EntitySwitch.Case if={isComponentType('helm')}>
+      {helmEntityPage}
     </EntitySwitch.Case>
 
     <EntitySwitch.Case>{defaultEntityPage}</EntitySwitch.Case>
