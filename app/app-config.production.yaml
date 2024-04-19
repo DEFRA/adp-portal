@@ -104,9 +104,9 @@ catalog:
         clientId: ${AUTH_MICROSOFT_CLIENT_ID}
         clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
         userGroupMember:
-          filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or displayName eq '${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}'"
+          filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or startsWith(displayName, '${ADP_PORTAL_USERS_GROUP_PREFIX}')"
         group:
-          filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or displayName eq '${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}'"
+          filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or startsWith(displayName, '${ADP_PORTAL_USERS_GROUP_PREFIX}')"
         schedule:
           frequency: { minutes: 10 }
           timeout: { minutes: 10 }
