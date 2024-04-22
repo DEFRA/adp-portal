@@ -83,7 +83,7 @@ properties:
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-USERS-GROUP
         identity: {{userAssignedIdentity}}
       - name: adp-portal-users-group-prefix
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP_PORTAL_USERS_GROUP_PREFIX
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-USERS-GROUP-PREFIX
         identity: {{userAssignedIdentity}}
       - name: backend-plugins-secret
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/BACKEND-PLUGINS-SECRET
