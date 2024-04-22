@@ -71,6 +71,7 @@ describe('checkForDuplicateCode', () => {
       service_owner: 'Test service_owner',
       id: '1',
       delivery_programme_id: '1',
+      delivery_project_users: [],
       created_at: new Date(),
       updated_at: new Date(),
       updated_by: 'author',
@@ -158,4 +159,6 @@ describe('getCurrentUsername', () => {
     ).resolves.toBe('unknown');
   });
 });
+
+
 

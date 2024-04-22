@@ -9,25 +9,38 @@ import {
   DeliveryProjectStore,
   PartialDeliveryProject,
 } from '../deliveryProject/deliveryProjectStore';
+import { DeliveryProjectUserStore } from '../deliveryProject/deliveryProjectUserStore';
 import { DeliveryProject } from '@internal/plugin-adp-common';
-import { checkForDuplicateProjectCode, checkForDuplicateTitle, getCurrentUsername } from '../utils/index';
+import {
+  checkForDuplicateProjectCode,
+  checkForDuplicateTitle,
+  getCurrentUsername,
+} from '../utils/index';
 import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
 import { FluxConfigApi } from '../deliveryProject/fluxConfigApi';
 import { Config } from '@backstage/config';
+import { CatalogClient } from '@backstage/catalog-client';
+import { DiscoveryApi } from '@backstage/core-plugin-api';
+import { addProjectUser } from '../service-utils/deliveryProjectUtils';
+import { Entity } from '@backstage/catalog-model';
+
 export interface ProjectRouterOptions {
   logger: Logger;
   identity: IdentityApi;
   database: PluginDatabaseManager;
   config: Config;
+  discovery: DiscoveryApi;
 }
 
 export async function createProjectRouter(
   options: ProjectRouterOptions,
 ): Promise<express.Router> {
-  const { logger, identity, database, config } = options;
+  const { logger, identity, database, config, discovery } = options;
+  const catalog = new CatalogClient({ discoveryApi: discovery });
   const adpDatabase = AdpDatabase.create(database);
   const connection = await adpDatabase.get();
   const deliveryProjectStore = new DeliveryProjectStore(connection);
+  const deliveryProjectUserStore = new DeliveryProjectUserStore(connection);
   const deliveryProgrammeStore = new DeliveryProgrammeStore(connection);
   const fluxConfigApi = new FluxConfigApi(config, deliveryProgrammeStore);
 
@@ -48,10 +61,28 @@ export async function createProjectRouter(
     }
   });
 
+  router.get('/projectUser', async (_req, res) => {
+    try {
+      const data = await deliveryProjectUserStore.getAll();
+      res.json(data);
+    } catch (error) {
+      const deliveryProjectError = error as Error;
+      logger.error(
+        'Error in retrieving a delivery project users: ',
+        deliveryProjectError,
+      );
+      throw new InputError(deliveryProjectError.message);
+    }
+  });
+
   router.get('/deliveryProject/:id', async (_req, res) => {
     try {
       const deliveryProject = await deliveryProjectStore.get(_req.params.id);
-      res.json(deliveryProject);
+      const projectUser = await deliveryProjectUserStore.get(_req.params.id);
+      if (projectUser && deliveryProject !== null) {
+        deliveryProject.delivery_project_users = projectUser;
+        res.json(deliveryProject);
+      }
     } catch (error) {
       const deliveryProjectError = error as Error;
       logger.error(
@@ -78,6 +109,7 @@ export async function createProjectRouter(
         data,
         req.body.delivery_project_code,
       );
+
       if (isDuplicateTitle || isDuplicateCode) {
         const errorMessage = isDuplicateTitle
           ? 'Delivery Project title already exists'
@@ -85,17 +117,42 @@ export async function createProjectRouter(
           ? 'Service Code already exists'
           : '';
         res.status(406).json({ error: errorMessage });
-      } else {
-        const author = await getCurrentUsername(identity, req);
-        const deliveryProject = await deliveryProjectStore.add(
-          req.body,
-          author,
-        );
-
-        await fluxConfigApi.createFluxConfig(deliveryProject);
-
-        res.status(201).json(deliveryProject);
       }
+      const author = await getCurrentUsername(identity, req);
+      const deliveryProject = await deliveryProjectStore.add(req.body, author);
+
+      await fluxConfigApi.createFluxConfig(deliveryProject);
+
+      const projectUsers = req.body.delivery_project_users;
+
+      if (projectUsers !== undefined) {
+        const catalogEntities = await catalog.getEntities({
+          filter: {
+            kind: 'User',
+          },
+          fields: [
+            'metadata.name',
+            'metadata.annotations.graph.microsoft.com/user-id',
+            'metadata.annotations.microsoft.com/email',
+            'spec.profile.displayName',
+          ],
+        });
+
+        const catalogEntity: Entity[] = catalogEntities.items;
+
+        addProjectUser(
+          projectUsers,
+          deliveryProject.id,
+          req.body.isAdmin || false,
+          req.body.isTechnical || false,
+          deliveryProject,
+          deliveryProjectUserStore,
+          catalogEntity,
+        );
+      } else {
+        req.body.delivery_project_users = [];
+      }
+      res.status(201).json(deliveryProject);
     } catch (error) {
       const deliveryProjectError = error as Error;
       logger.error(
