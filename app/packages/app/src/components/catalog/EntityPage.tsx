@@ -409,6 +409,7 @@ const groupPage = (
     <EntityLayout.Route path="/pull-requests" title="Pull Requests">
       <EntityTeamPullRequestsContent />
     </EntityLayout.Route>
+    {/* TODO: Render if group is delivery programmes */}
     <EntityLayout.Route path="/manage-members" title="Manage Members">
       <ProgrammeAdminViewPageComponent />
     </EntityLayout.Route>

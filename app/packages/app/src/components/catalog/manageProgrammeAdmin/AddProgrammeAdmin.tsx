@@ -1,31 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { Button } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import {
-  alertApiRef,
-  discoveryApiRef,
-  errorApiRef,
-  fetchApiRef,
-  useApi,
-} from '@backstage/core-plugin-api';
 import { ProgrammeAdminModal } from './ProgrammeAdminModal';
 import { ProgrammeAdminFormFields } from './ProgrammeAdminFormFields';
 import { useProgrammeManagersList } from '@internal/plugin-adp/src/hooks/useProgrammeManagersList';
+import { ProgrammeManager } from '@internal/plugin-adp-common';
 
 interface AddProgrammeAdminProps {
   refetchProgrammeAdmin: () => void;
 }
 
-export const AddProgrammeAdmin: React.FC<AddProgrammeAdminProps> = ({
+const AddProgrammeAdmin: React.FC<AddProgrammeAdminProps> = ({
   refetchProgrammeAdmin: refetchProgrammeAdmin,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const alertApi = useApi(alertApiRef);
-  const discoveryApi = useApi(discoveryApiRef);
-  const fetchApi = useApi(fetchApiRef);
-  const errorApi = useApi(errorApiRef);
 
-  const getProgrammeManagerDropDown = useProgrammeManagersList();
+  const initialValues: Partial<ProgrammeManager> = {
+    delivery_programme_id: 'delivery programme name', //TODO: Set initial value correctly
+  };
+
+  const [formValues, setFormValues] = useState(initialValues);
+
+  const getProgrammeManagerDropDown = useProgrammeManagersList(); //TODO: Rename programme managers to programme admins
 
   const getOptionFields = () => {
     return ProgrammeAdminFormFields.map(field => {
@@ -42,9 +38,18 @@ export const AddProgrammeAdmin: React.FC<AddProgrammeAdminProps> = ({
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setFormValues({
+      delivery_programme_id: 'delivery programme name', //TODO: Set initial value correctly
+    });
   };
 
-  const handleSubmit = async () => {};
+  useEffect(() => {
+    // TODO: setFormValues using the name value in groups
+  }, [formValues.delivery_programme_id]);
+
+  const handleSubmit = async () => {
+    // TODO: handle submit
+  };
 
   return (
     <>
@@ -65,11 +70,14 @@ export const AddProgrammeAdmin: React.FC<AddProgrammeAdminProps> = ({
           open={isModalOpen}
           onClose={handleCloseModal}
           onSubmit={handleSubmit}
-          initialValues={{}}
-          mode="create"
+          initialValues={{...initialValues}}
+          // TODO: Refactor actions modal - 'create', 'edit' mode as it displays those words when adding programme admin
+          mode="create" 
           fields={getOptionFields()}
         />
       )}
     </>
   );
 };
+
+export default AddProgrammeAdmin;

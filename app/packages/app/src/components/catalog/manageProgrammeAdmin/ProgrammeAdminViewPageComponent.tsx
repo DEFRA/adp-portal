@@ -1,10 +1,8 @@
 import React, { useState, useReducer } from 'react';
-import {
-  TableColumn,
-} from '@backstage/core-components';
+import { TableColumn } from '@backstage/core-components';
 import { ProgrammeManager } from '@internal/plugin-adp-common';
 import { Button, Grid } from '@material-ui/core';
-import { AddProgrammeAdmin } from './AddProgrammeAdmin';
+import AddProgrammeAdmin from './AddProgrammeAdmin';
 import { DefaultTable } from '@internal/plugin-adp/src/utils/Table';
 import { ActionsModal } from '@internal/plugin-adp/src/utils/ActionsModal';
 import { useProgrammeManagersList } from '@internal/plugin-adp/src/hooks/useProgrammeManagersList';
@@ -14,7 +12,9 @@ export const ProgrammeAdminViewPageComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tableData, setTableData] = useState<ProgrammeManager[]>([]);
   const [formData, setFormData] = useState({});
-  const [key, refetchProgrammeAdmin] = useReducer(i => i + 1, 0);
+  const [key, refetchProgrammeAdmin] = useReducer(i => {
+    return i + 1;
+  }, 0);
 
   const getProgrammeManagerDropDown = useProgrammeManagersList();
   const getOptionFields = () => {
@@ -34,9 +34,15 @@ export const ProgrammeAdminViewPageComponent = () => {
     setIsModalOpen(false);
   };
 
-  const handleEdit = async (programmeManager: ProgrammeManager) => {};
+  //TODO: getAllProgrammeManagersById
 
-  const handleUpdate = async (programmeManager: ProgrammeManager) => {};
+  const handleEdit = async (programmeManager: ProgrammeManager) => {
+    // TODO: handle edit
+  };
+
+  const handleUpdate = async (programmeManager: ProgrammeManager) => {
+    // TODO: handle update
+  };
 
   const columns: TableColumn[] = [
     {
