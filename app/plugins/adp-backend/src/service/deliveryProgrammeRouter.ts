@@ -35,6 +35,45 @@ export interface ProgrammeRouterOptions {
   discovery: DiscoveryApi;
 }
 
+function hasTitleChanged(updatedTitle: any, currentData: DeliveryProgramme | undefined) {
+  return updatedTitle && updatedTitle !== currentData!.title;
+}
+
+function hasDeliveryProgramChanged(updatedCode: any, currentData: DeliveryProgramme | undefined) {
+  return updatedCode && updatedCode !== currentData!.delivery_programme_code;
+}
+
+// TODO - These 2 functions are the same
+function findUpdatedProgramManagers(programmeManagers: any, existingProgrammeManagers: ProgrammeManager[]) {
+  const updatedManagers: ProgrammeManager[] = []
+  for (const updatedManager of programmeManagers) {
+    if (
+      !existingProgrammeManagers.some(
+        manager =>
+          manager.aad_entity_ref_id === updatedManager.aad_entity_ref_id,
+      )
+    ) {
+      updatedManagers.push(updatedManager);
+    }
+  }
+  return updatedManagers;
+}
+
+function findRemovedManagers(existingProgrammeManagers: ProgrammeManager[], programmeManagers: any) {
+  const removedManagers: ProgrammeManager[] = []
+  for (const existingManager of existingProgrammeManagers) {
+    if (
+      !programmeManagers.some(
+        (manager: ProgrammeManager) =>
+          manager.aad_entity_ref_id === existingManager.aad_entity_ref_id,
+      )
+    ) {
+      removedManagers.push(existingManager);
+    }
+  }
+  return removedManagers;
+}
+
 export async function createProgrammeRouter(
   options: ProgrammeRouterOptions,
 ): Promise<express.Router> {
@@ -235,7 +274,7 @@ export async function createProgrammeRouter(
       const updatedTitle = requestBody?.title;
       const updatedCode = requestBody?.delivery_programme_code;
     
-      if (updatedTitle && updatedTitle !== currentData!.title) {
+      if (hasTitleChanged(updatedTitle, currentData)) {
         const isDuplicateTitle = await checkForDuplicateTitle(allProgrammes, updatedTitle);
         if (isDuplicateTitle) {
           res.status(406).json({ error: 'Delivery Programme title already exists' });
@@ -243,7 +282,7 @@ export async function createProgrammeRouter(
         }
       }
   
-      if (updatedCode && updatedCode !== currentData!.delivery_programme_code) {
+      if (hasDeliveryProgramChanged(updatedCode, currentData)) {
         const isDuplicateCode = await checkForDuplicateProgrammeCode(allProgrammes, updatedCode);
         if (isDuplicateCode) {
           res.status(406).json({ error: 'Delivery Programme code already exists' });
@@ -262,17 +301,8 @@ export async function createProgrammeRouter(
         const existingProgrammeManagers = await programmeManagersStore.get(
           deliveryProgramme.id,
         );
-        const updatedManagers: ProgrammeManager[] = [];
-        for (const updatedManager of programmeManagers) {
-          if (
-            !existingProgrammeManagers.some(
-              manager =>
-                manager.aad_entity_ref_id === updatedManager.aad_entity_ref_id,
-            )
-          ) {
-            updatedManagers.push(updatedManager);
-          }
-        }
+        const updatedManagers: ProgrammeManager[] = findUpdatedProgramManagers(programmeManagers, existingProgrammeManagers);
+
         const catalogEntities = await catalog.getEntities({
           filter: {
             kind: 'User',
@@ -287,6 +317,7 @@ export async function createProgrammeRouter(
 
         const catalogEntity: Entity[] = catalogEntities.items;
 
+        //TODO should this be await - Intelij thinks so.
         addProgrammeManager(
           updatedManagers,
           deliveryProgramme.id,
@@ -295,19 +326,9 @@ export async function createProgrammeRouter(
           catalogEntity,
         );
 
-        const removedManagers: ProgrammeManager[] = [];
+        const removedManagers: ProgrammeManager[] = findRemovedManagers(existingProgrammeManagers, programmeManagers);
 
-        for (const existingManager of existingProgrammeManagers) {
-          if (
-            !programmeManagers.some(
-              (manager: ProgrammeManager) =>
-                manager.aad_entity_ref_id === existingManager.aad_entity_ref_id,
-            )
-          ) {
-            removedManagers.push(existingManager);
-          }
-        }
-
+        //TODO should this be await - Intelij thinks so.
         deleteProgrammeManager(
           removedManagers,
           deliveryProgramme.id,
