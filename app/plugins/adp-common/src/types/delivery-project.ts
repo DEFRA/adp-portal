@@ -14,4 +14,5 @@ export type DeliveryProject = {
   created_at: Date;
   updated_at: Date;
   updated_by?: string;
+  github_team_visibility?: 'public' | 'private';
 };
