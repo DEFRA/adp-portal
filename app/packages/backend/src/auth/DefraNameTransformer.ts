@@ -9,7 +9,7 @@ import {
 // Can we write a test for theis function in tha file with the same name
 
 function hasEmailOrUserPrincipalName(user:  MicrosoftGraph.User) {
-  return user.mail ?? user.userPrincipalName ;
+  return user.mail || user.userPrincipalName ;
 }
 
 function createEntityFromOriginalUser(name: string, user:  MicrosoftGraph.User, email: string ) {
