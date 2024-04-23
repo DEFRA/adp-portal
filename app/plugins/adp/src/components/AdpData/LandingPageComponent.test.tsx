@@ -25,7 +25,7 @@ describe('LandingPageComponent', () => {
     expect(screen.getByText('Azure Development Platform: Onboarding')).toBeInTheDocument();
     expect(screen.getByText('View or add Arms Length Bodies, Delivery Programmes & Delivery Teams to the Azure Developer Platform.')).toBeInTheDocument();
     expect(screen.getByText('Arms Length Bodies')).toBeInTheDocument();
-    expect(screen.getByText('Delivery Programmes')).toBeInTheDocument();
+    expect(screen.getByText('Delivery Projects')).toBeInTheDocument();
     expect(screen.getByText('Delivery Team')).toBeInTheDocument();
   });
 });
