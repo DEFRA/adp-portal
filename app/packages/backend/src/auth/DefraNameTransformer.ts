@@ -9,7 +9,7 @@ import {
 // Can we write a test for theis function in tha file with the same name
 
 function hasEmailOrUserPrincipalName(user:  MicrosoftGraph.User) {
-  return user.mail || user.userPrincipalName ;
+  return user.mail ?? user.userPrincipalName ;
 }
 
 function createEntityFromOriginalUser(name: string, user:  MicrosoftGraph.User, email: string ) {
@@ -26,7 +26,7 @@ function createEntityFromOriginalUser(name: string, user:  MicrosoftGraph.User, 
     spec: {
       profile: {
         displayName: user.displayName!,
-        email: email!,
+        email: email,
       },
       memberOf: [],
     },
