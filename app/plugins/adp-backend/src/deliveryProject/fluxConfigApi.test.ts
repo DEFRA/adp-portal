@@ -3,6 +3,7 @@ import { FluxConfigApi } from './fluxConfigApi';
 import { expectedProgrammeDataWithManager } from '../testData/programmeTestData';
 import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
 import fetch, { Response } from 'node-fetch';
+import { DeliveryProject } from '@internal/plugin-adp-common';
 
 jest.mock('node-fetch', () => jest.fn());
 const mockedFetch: jest.MockedFunction<typeof fetch> =
@@ -160,7 +161,7 @@ describe('FluxConfigApi', () => {
       status: 204,
     } as unknown as Response);
 
-    const deliveryProject = {
+    const deliveryProject: DeliveryProject = {
       name: 'test-project',
       id: '123-456',
       title: 'Test Project',
@@ -169,6 +170,10 @@ describe('FluxConfigApi', () => {
       delivery_project_code: '123',
       created_at: new Date(),
       updated_at: new Date(),
+      namespace: 'test-namespace',
+      service_owner: 'owner@test.com',
+      team_type: 'test',
+      ado_project: 'TEST-ADO',
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
@@ -197,6 +202,10 @@ describe('FluxConfigApi', () => {
       delivery_project_code: '123',
       created_at: new Date(),
       updated_at: new Date(),
+      namespace: 'test-namespace',
+      service_owner: 'owner@test.com',
+      team_type: 'test',
+      ado_project: 'TEST-ADO',
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);

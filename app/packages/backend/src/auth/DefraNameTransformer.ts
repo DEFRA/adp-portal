@@ -44,7 +44,7 @@ function addPhotoIfRequired(userPhoto: string | undefined, entity: UserEntity) {
   return entity;
 }
 
-function mailIsBlank(user: User) {
+function mailIsBlank(user: MicrosoftGraph.User) {
   return user.mail === undefined || user.mail?.length === 0 || user.mail === null;
 }
 
@@ -60,8 +60,8 @@ export async function defraADONameTransformer(
       return undefined;
     }
     const emailAddress  = chooseUserPrincipalIfEmailIsBlank(user);
-    const name = normalizeEntityName(emailAddress);
-    const entity = createEntityFromOriginalUser(name, user, emailAddress);
+    const name = normalizeEntityName(emailAddress!);
+    const entity = createEntityFromOriginalUser(name, user, emailAddress!);
     return addPhotoIfRequired(userPhoto, entity);
 
 }

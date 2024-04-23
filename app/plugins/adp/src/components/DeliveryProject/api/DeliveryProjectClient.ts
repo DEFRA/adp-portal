@@ -75,7 +75,7 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
         }
 
         const adGroupPayload = {
-          members: []
+          members: [],
         };
         await this.createEntraIdGroupsForProject(
           adGroupPayload,
@@ -134,7 +134,7 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
   ): Promise<void> {
     try {
       const adpPortalApiBaseUrl = await this.getPortalApiBaseUrl();
-      const createAdGroupUrl = `${adpPortalApiBaseUrl}/AadGroup/create/${projectName}`;
+      const createAdGroupUrl = `${adpPortalApiBaseUrl}/AadGroup/${projectName}/groups-config`;
       const response = await this.fetchApi.fetch(createAdGroupUrl, {
         method: 'POST',
         headers: {

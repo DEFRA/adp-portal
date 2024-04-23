@@ -2,12 +2,20 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Start Backend",
+      "type": "node",
+      "request": "launch",
+      "args": ["package", "start"],
+      "cwd": "${workspaceFolder}/app/packages/backend",
+      "program": "node_modules/.bin/backstage-cli",
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal"
+    },
+    {
       "name": "Attach",
       "port": 9229,
       "request": "attach",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "type": "node"
     },
     {
@@ -28,9 +36,16 @@
     },
     {
       "type": "node",
-      "name": "Debug current jest tests",
+      "name": "Debug current jest file",
       "request": "launch",
-      "args": ["repo", "test", "${file}", "--runInBand", "--watchAll=false"],
+      "args": [
+        "repo",
+        "test",
+        "${file}",
+        "--runInBand",
+        "--watchAll=false",
+        "--testTimeout=99999999"
+      ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "program": "node_modules/.bin/backstage-cli",

@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "1.0.79",
+  "version": "1.0.88",
   "private": true,
   "engines": {
     "node": "18 || 20"
@@ -47,7 +47,8 @@
   },
   "resolutions": {
     "@types/react": "^17",
-    "@types/react-dom": "^17"
+    "@types/react-dom": "^17",
+    "mysql2": "^3.9.4"
   },
   "prettier": "@spotify/prettier-config",
   "lint-staged": {

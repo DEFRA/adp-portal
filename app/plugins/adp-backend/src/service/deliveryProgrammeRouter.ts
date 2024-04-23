@@ -238,14 +238,16 @@ export async function createProgrammeRouter(
       if (updatedTitle && updatedTitle !== currentData!.title) {
         const isDuplicateTitle = await checkForDuplicateTitle(allProgrammes, updatedTitle);
         if (isDuplicateTitle) {
-          return res.status(406).json({ error: 'Delivery Programme title already exists' });
+          res.status(406).json({ error: 'Delivery Programme title already exists' });
+          return;
         }
       }
   
       if (updatedCode && updatedCode !== currentData!.delivery_programme_code) {
         const isDuplicateCode = await checkForDuplicateProgrammeCode(allProgrammes, updatedCode);
         if (isDuplicateCode) {
-          return res.status(406).json({ error: 'Delivery Programme code already exists' });
+          res.status(406).json({ error: 'Delivery Programme code already exists' });
+          return;
         }
       }
 

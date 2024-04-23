@@ -3,7 +3,6 @@ import { ScaffolderEntitiesProcessor } from '@backstage/plugin-catalog-backend-m
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
 import {
-  defaultUserTransformer,
   MicrosoftGraphOrgEntityProvider
 } from '@backstage/plugin-catalog-backend-module-msgraph';
 import { GithubEntityProvider } from '@backstage/plugin-catalog-backend-module-github';

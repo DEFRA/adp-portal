@@ -28,7 +28,7 @@ export const deliveryProgrammeGroupTransformer: DeliveryProgrammeGroupTransforme
       },
       spec: {
         type: 'delivery-programme',
-        children: deliveryProgramme.children ?? []
+        children: deliveryProgramme.children ?? [],
       },
     };
 
