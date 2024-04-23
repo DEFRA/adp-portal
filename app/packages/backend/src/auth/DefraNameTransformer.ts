@@ -2,9 +2,7 @@ import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
 
 import {  UserEntity } from '@backstage/catalog-model';
 import {
-  normalizeEntityName
-} from '@backstage/plugin-catalog-backend-module-msgraph';
-import {
+  normalizeEntityName,
   MICROSOFT_EMAIL_ANNOTATION,
   MICROSOFT_GRAPH_USER_ID_ANNOTATION,
 } from '@backstage/plugin-catalog-backend-module-msgraph';
