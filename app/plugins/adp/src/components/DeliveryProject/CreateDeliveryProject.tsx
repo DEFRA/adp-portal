@@ -1,23 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Button } from '@material-ui/core';
-import {
-  alertApiRef,
-  discoveryApiRef,
-  errorApiRef,
-  fetchApiRef,
-  useApi,
-} from '@backstage/core-plugin-api';
-import { DeliveryProjectClient } from './api/DeliveryProjectClient';
+import React, {useEffect, useState} from 'react';
+import {Button} from '@material-ui/core';
+import {alertApiRef, discoveryApiRef, errorApiRef, fetchApiRef, useApi,} from '@backstage/core-plugin-api';
+import {DeliveryProjectClient} from './api/DeliveryProjectClient';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { DeliveryProject, adpProjectCreatePermission } from '@internal/plugin-adp-common';
-import { useDeliveryProgrammesList } from '../../hooks/useDeliveryProgrammesList';
-import { DeliveryProjectFormFields } from './DeliveryProjectFormFields';
-import { CreateDeliveryProjectModal } from './CreateDeliveryProjectModal';
-import {
-  isCodeUnique,
-  isNameUnique,
-} from '../../utils/DeliveryProject/DeliveryProjectUtils';
-import { usePermission } from '@backstage/plugin-permission-react';
+import {adpProjectCreatePermission, DeliveryProject} from '@internal/plugin-adp-common';
+import {useDeliveryProgrammesList} from '../../hooks/useDeliveryProgrammesList';
+import {DeliveryProjectFormFields} from './DeliveryProjectFormFields';
+import {CreateDeliveryProjectModal} from './CreateDeliveryProjectModal';
+import {isCodeUnique, isNameUnique,} from '../../utils/DeliveryProject/DeliveryProjectUtils';
+import {usePermission} from '@backstage/plugin-permission-react';
 
 interface CreateDeliveryProjectProps {
   refetchDeliveryProject: () => void;
@@ -83,19 +74,31 @@ const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
     });
   }, [formValues.delivery_project_code, formValues.delivery_programme_id]);
 
+  function updateDeliveryProgrammeIdFromEvent() {
+    return (event: React.ChangeEvent<HTMLInputElement>) => {
+      setFormValues(values => ({
+        ...values,
+        delivery_programme_id: event.target.value,
+      }));
+    };
+  }
+
+  function updateDeliveryCodeFromEventFunction() {
+    return (event: React.ChangeEvent<HTMLInputElement>) => {
+      setFormValues(values => ({
+        ...values,
+        delivery_project_code: event.target.value,
+      }));
+    };
+  }
+
   const getFieldsAndOptions = () => {
     return DeliveryProjectFormFields.map(field => {
       if (field.name === 'delivery_programme_id') {
-        const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-          setFormValues(values => ({
-            ...values,
-            delivery_programme_id: event.target.value,
-          }));
-        };
         return {
           ...field,
           options: deliveryProgrammeDropDown,
-          onChange: handleChange,
+          onChange: updateDeliveryProgrammeIdFromEvent(),
         };
       }
       if (field.name === 'team_type') {
@@ -106,13 +109,7 @@ const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
         return { ...field, options: options };
       }
       if (field.name === 'delivery_project_code') {
-        const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-          setFormValues(values => ({
-            ...values,
-            delivery_project_code: event.target.value,
-          }));
-        };
-        return { ...field, onChange: handleChange };
+        return { ...field, onChange: updateDeliveryCodeFromEventFunction() };
       }
       return field;
     });
