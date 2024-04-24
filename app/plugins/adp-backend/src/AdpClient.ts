@@ -20,7 +20,7 @@ export class AdpClient {
   }
 
   public async syncDeliveryProjectWithGithubTeams(deliveryProjectName: string) {
-    const baseUrl = this.#discoveryApi.getBaseUrl('adp');
+    const baseUrl = await this.#discoveryApi.getBaseUrl('adp');
     const endpoint = `${baseUrl}/deliveryProject/${deliveryProjectName}/github/teams/sync`;
     const response = await this.#fetch(endpoint, {
       method: 'PUT',

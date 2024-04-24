@@ -67,7 +67,6 @@ export default async function createPlugin(
     }),
     addDeliveryProjectToRepo({
       config: env.config,
-      logger: env.logger,
       getGithubClient: org => createGithubClient(integrations, env.config, org),
       adpClient,
     }),

@@ -6,11 +6,10 @@ import { IAdpClient } from '@internal/plugin-adp-backend';
 
 export function addDeliveryProjectToRepo(options: {
   config: Config;
-  logger: Logger;
   getGithubClient: (organization: string) => Promise<Octokit>;
   adpClient: IAdpClient;
 }) {
-  const { config, logger, getGithubClient, adpClient } = options;
+  const { config, getGithubClient, adpClient } = options;
   return createTemplateAction<{
     projectName: string;
     repoName: string;
@@ -60,7 +59,7 @@ export function addDeliveryProjectToRepo(options: {
         projectName,
       );
 
-      await addTeamsToRepository(orgName, repoName, owner, {
+      await addTeamsToRepository(ctx.logger, orgName, repoName, owner, {
         [teams.contributors.slug]: 'push',
         [teams.admins.slug]: 'admin',
         [getPlatformAdminsSlug(config)]: 'admin',
@@ -77,6 +76,7 @@ export function addDeliveryProjectToRepo(options: {
   }
 
   async function addTeamsToRepository(
+    logger: Logger,
     organization: string,
     repoName: string,
     owner: string,
