@@ -82,6 +82,9 @@ properties:
       - name: adp-portal-users-group
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-USERS-GROUP
         identity: {{userAssignedIdentity}}
+      - name: adp-portal-users-group-prefix
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-USERS-GROUP-PREFIX
+        identity: {{userAssignedIdentity}}
       - name: backend-plugins-secret
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/BACKEND-PLUGINS-SECRET
         identity: {{userAssignedIdentity}}
@@ -153,6 +156,8 @@ properties:
             secretRef: adp-portal-platform-admins-group
           - name: ADP_PORTAL_PROGRAMME_ADMINS_GROUP
             secretRef: adp-portal-programme-admins-group
+          - name: ADP_PORTAL_USERS_GROUP_PREFIX
+            secretRef: adp-portal-users-group-prefix
           - name: ADP_PORTAL_API_ENDPOINT
             secretRef: adp-portal-api-endpoint
           - name: ADP_PORTAL_USERS_GROUP
