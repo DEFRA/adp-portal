@@ -10,23 +10,23 @@ import { AdpDatabase } from '../database/adpDatabase';
 import {
   DeliveryProgrammeStore,
   PartialDeliveryProgramme,
-} from '../deliveryProgramme/deliveryProgrammeStore';
+} from '../deliveryProgramme';
 import {
   DeliveryProgramme,
-  ProgrammeManager,
+  DeliveryProgrammeAdmin,
 } from '@internal/plugin-adp-common';
 import {
   checkForDuplicateProgrammeCode,
   checkForDuplicateTitle,
   getCurrentUsername,
 } from '../utils/index';
-import { ProgrammeManagerStore } from '../deliveryProgramme/deliveryProgrammeManagerStore';
+import { DeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import { Entity } from '@backstage/catalog-model';
 import {
   addProgrammeManager,
   deleteProgrammeManager,
 } from '../service-utils/deliveryProgrammeUtils';
-import { DeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
+import { DeliveryProjectStore } from '../deliveryProject';
 
 export interface ProgrammeRouterOptions {
   logger: Logger;
@@ -44,7 +44,7 @@ export async function createProgrammeRouter(
   const deliveryProgrammesStore = new DeliveryProgrammeStore(
     await adpDatabase.get(),
   );
-  const programmeManagersStore = new ProgrammeManagerStore(
+  const programmeManagersStore = new DeliveryProgrammeAdminStore(
     await adpDatabase.get(),
   );
   const deliveryProjectStore = new DeliveryProjectStore(
@@ -77,20 +77,6 @@ export async function createProgrammeRouter(
       const deliveryProgramError = error as Error;
       logger.error(
         'Error in retrieving delivery programmes: ',
-        deliveryProgramError,
-      );
-      throw new InputError(deliveryProgramError.message);
-    }
-  });
-
-  router.get('/programmeManager', async (_req, res) => {
-    try {
-      const data = await programmeManagersStore.getAll();
-      res.json(data);
-    } catch (error) {
-      const deliveryProgramError = error as Error;
-      logger.error(
-        'Error in retrieving programme managers: ',
         deliveryProgramError,
       );
       throw new InputError(deliveryProgramError.message);
@@ -262,7 +248,7 @@ export async function createProgrammeRouter(
         const existingProgrammeManagers = await programmeManagersStore.get(
           deliveryProgramme.id,
         );
-        const updatedManagers: ProgrammeManager[] = [];
+        const updatedManagers: DeliveryProgrammeAdmin[] = [];
         for (const updatedManager of programmeManagers) {
           if (
             !existingProgrammeManagers.some(
@@ -295,12 +281,12 @@ export async function createProgrammeRouter(
           catalogEntity,
         );
 
-        const removedManagers: ProgrammeManager[] = [];
+        const removedManagers: DeliveryProgrammeAdmin[] = [];
 
         for (const existingManager of existingProgrammeManagers) {
           if (
             !programmeManagers.some(
-              (manager: ProgrammeManager) =>
+              (manager: DeliveryProgrammeAdmin) =>
                 manager.aad_entity_ref_id === existingManager.aad_entity_ref_id,
             )
           ) {

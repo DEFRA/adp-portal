@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { ProgrammeManager } from '@internal/plugin-adp-common';
+import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 
 const TABLE_NAME = 'delivery_programme_pm';
 type Row = {
@@ -10,9 +10,9 @@ type Row = {
   name: string;
 };
 
-export class ProgrammeManagerStore {
+export class DeliveryProgrammeAdminStore {
   constructor(private readonly client: Knex) {}
-  async getAll(): Promise<ProgrammeManager[]> {
+  async getAll(): Promise<DeliveryProgrammeAdmin[]> {
     const ProgrammeManagers = await this.client<Row>(TABLE_NAME)
       .select(
         'id',
@@ -32,7 +32,7 @@ export class ProgrammeManagerStore {
     }));
   }
 
-  async get(delivery_programme_id: string): Promise<ProgrammeManager[]> {
+  async get(delivery_programme_id: string): Promise<DeliveryProgrammeAdmin[]> {
     const ProgrammeManagers = await this.client<Row>(TABLE_NAME)
       .where('delivery_programme_id', delivery_programme_id)
       .select(
@@ -53,8 +53,8 @@ export class ProgrammeManagerStore {
   }
 
   async add(
-    programmeManager: Omit<ProgrammeManager, 'id'>,
-  ): Promise<ProgrammeManager> {
+    programmeManager: Omit<DeliveryProgrammeAdmin, 'id'>,
+  ): Promise<DeliveryProgrammeAdmin> {
     const insertResult = await this.client<Row>(TABLE_NAME).insert(
       {
         delivery_programme_id: programmeManager.delivery_programme_id,

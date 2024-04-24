@@ -1,2 +1,2 @@
 export { DeliveryProgrammeStore } from './deliveryProgrammeStore';
-export { ProgrammeManagerStore } from './deliveryProgrammeManagerStore';
+export type { PartialDeliveryProgramme } from './deliveryProgrammeStore';

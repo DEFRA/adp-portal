@@ -35,7 +35,7 @@ export const useDeliveryProgrammesList = (): ProgrammesList[] => {
         const loggedInUserProfile = await identityApi.getProfileInfo();
         const programmes = await deliveryProgammeClient.getDeliveryProgrammes();
         const programmeManagers =
-          await deliveryProgammeClient.getProgrammeManagers();
+          await deliveryProgammeClient.getDeliveryProgrammeAdmins();
         const programmesForCurrentUser = programmeManagers.filter(
           p =>
             p.email.toLowerCase() === loggedInUserProfile.email?.toLowerCase(),

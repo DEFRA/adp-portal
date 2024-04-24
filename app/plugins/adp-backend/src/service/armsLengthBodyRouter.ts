@@ -8,7 +8,7 @@ import { AdpDatabase } from '../database/adpDatabase';
 import {
   ArmsLengthBodyStore,
   PartialArmsLengthBody,
-} from '../armsLengthBody/armsLengthBodyStore';
+} from '../armsLengthBody';
 import { ArmsLengthBody } from '@internal/plugin-adp-common';
 import { Config } from '@backstage/config';
 import {

@@ -12,6 +12,7 @@ import { createAlbRouter } from './armsLengthBodyRouter';
 import { createProgrammeRouter } from './deliveryProgrammeRouter';
 import { Router } from 'express';
 import { createProjectRouter } from './deliveryProjectRouter';
+import { createDeliveryProgrammeAdminRouter } from './deliveryProgrammeAdminRouter';
 
 export interface ServerOptions {
   port: number;
@@ -37,33 +38,37 @@ export async function startStandaloneServer(
       },
     }),
   ).forPlugin('adp-plugin');
+  const identityClient = DefaultIdentityClient.create({
+    discovery,
+    issuer: await discovery.getExternalBaseUrl('auth'),
+  });
 
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
-    identity: DefaultIdentityClient.create({
-      discovery,
-      issuer: await discovery.getExternalBaseUrl('auth'),
-    }),
+    identity: identityClient,
     database,
     config,
   });
 
   const deliveryProgrammeRouter = await createProgrammeRouter({
     logger,
-    identity: DefaultIdentityClient.create({
-      discovery,
-      issuer: await discovery.getExternalBaseUrl('auth'),
-    }),
+    identity: identityClient,
     database,
     discovery,
   });
 
+  const deliveryProgrammeAdminRouter = await createDeliveryProgrammeAdminRouter(
+    {
+      database,
+      discovery,
+      identity: identityClient,
+      logger,
+    },
+  );
+
   const deliveryProjectRouter = await createProjectRouter({
     logger,
-    identity: DefaultIdentityClient.create({
-      discovery,
-      issuer: await discovery.getExternalBaseUrl('auth'),
-    }),
+    identity: identityClient,
     database,
     config,
   });
@@ -72,6 +77,7 @@ export async function startStandaloneServer(
   router.use(armsLengthBodyRouter);
   router.use(deliveryProgrammeRouter);
   router.use(deliveryProjectRouter);
+  router.use(deliveryProgrammeAdminRouter);
 
   let service = createServiceBuilder(module)
     .setPort(options.port)

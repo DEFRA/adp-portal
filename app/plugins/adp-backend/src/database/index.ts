@@ -1,0 +1,1 @@
+export { AdpDatabase } from './adpDatabase';

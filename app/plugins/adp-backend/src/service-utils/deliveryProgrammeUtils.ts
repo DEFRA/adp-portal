@@ -1,9 +1,9 @@
-import { ProgrammeManagerStore } from '../deliveryProgramme/deliveryProgrammeManagerStore';
+import { DeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin/deliveryProgrammeAdminStore';
 import { Entity } from '@backstage/catalog-model';
 import { NotFoundError } from '@backstage/errors';
 import {
   DeliveryProgramme,
-  ProgrammeManager,
+  DeliveryProgrammeAdmin,
 } from '@internal/plugin-adp-common';
 
 export interface ICatalog {
@@ -24,10 +24,10 @@ export interface ICatalog {
 }
 
 export async function addProgrammeManager(
-  programmeManagers: ProgrammeManager[],
+  programmeManagers: DeliveryProgrammeAdmin[],
   deliveryProgrammeId: string,
   deliveryProgramme: DeliveryProgramme,
-  ProgrammeManagerStore: ProgrammeManagerStore,
+  ProgrammeManagerStore: DeliveryProgrammeAdminStore,
   catalogEntity: Entity[],
 ) {
   if (programmeManagers !== undefined) {
@@ -49,9 +49,9 @@ export async function addProgrammeManager(
 }
 
 export async function deleteProgrammeManager(
-  programmeManagers: ProgrammeManager[],
+  programmeManagers: DeliveryProgrammeAdmin[],
   deliveryProgrammeId: string,
-  ProgrammeManagerStore: ProgrammeManagerStore,
+  ProgrammeManagerStore: DeliveryProgrammeAdminStore,
 ) {
   for (const manager of programmeManagers) {
     const store = {

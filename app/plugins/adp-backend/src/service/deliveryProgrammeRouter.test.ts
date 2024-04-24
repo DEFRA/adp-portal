@@ -59,9 +59,9 @@ const mockUpdatedManagers = programmeManagerList.filter(
     managers.delivery_programme_id === '123' &&
     managers.aad_entity_ref_id !== 'a9dc2414-0626-43d2-993d-a53aac4d73422',
 );
-jest.mock('../deliveryProgramme/deliveryProgrammeManagerStore', () => {
+jest.mock('../deliveryProgrammeAdmin', () => {
   return {
-    ProgrammeManagerStore: jest.fn().mockImplementation(() => {
+    DeliveryProgrammeAdminStore: jest.fn().mockImplementation(() => {
       mockGetAllProgrammeManagers = jest
         .fn()
         .mockResolvedValue(programmeManagerList);
@@ -185,21 +185,6 @@ describe('createRouter', () => {
       const response = await request(programmeApp).get(
         '/deliveryProgramme/4321',
       );
-      expect(response.status).toEqual(400);
-    });
-  });
-
-  describe('GET /programmeManager', () => {
-    it('returns ok', async () => {
-      mockGetAllProgrammeManagers.mockResolvedValueOnce([programmeManagerList]);
-      const response = await request(programmeApp).get('/programmeManager');
-      expect(response.status).toEqual(200);
-    });
-    it('returns bad request', async () => {
-      mockGetAllProgrammeManagers.mockRejectedValueOnce(
-        new InputError('error'),
-      );
-      const response = await request(programmeApp).get('/programmeManager');
       expect(response.status).toEqual(400);
     });
   });

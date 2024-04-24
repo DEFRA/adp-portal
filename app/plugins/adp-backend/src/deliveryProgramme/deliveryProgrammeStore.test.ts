@@ -9,18 +9,18 @@ import { createName } from '../utils/index';
 import { expectedAlbWithName } from '../testData/albTestData';
 import {
   DeliveryProgramme,
-  ProgrammeManager,
+  DeliveryProgrammeAdmin,
 } from '@internal/plugin-adp-common';
 import {
   expectedProgrammeDataWithName,
   expectedProgrammeDataWithoutManager,
-} from '../testData/programmeTestData'
-import { ProgrammeManagerStore } from './deliveryProgrammeManagerStore';
+} from '../testData/programmeTestData';
 import {
   addProgrammeManager,
   deleteProgrammeManager,
 } from '../service-utils/deliveryProgrammeUtils';
 import { catalogTestData } from '../testData/catalogEntityTestData';
+import { DeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 
 describe('DeliveryProgrammeStore', () => {
   const databases = TestDatabases.create();
@@ -31,7 +31,7 @@ describe('DeliveryProgrammeStore', () => {
       getClient: () => Promise.resolve(knex),
     });
     const programmeStore = new DeliveryProgrammeStore(await db.get());
-    const managerStore = new ProgrammeManagerStore(await db.get());
+    const managerStore = new DeliveryProgrammeAdminStore(await db.get());
 
     return { knex, programmeStore, managerStore };
   }
@@ -57,7 +57,7 @@ describe('DeliveryProgrammeStore', () => {
         arms_length_body_id: albId,
       };
       const newManagers: Omit<
-        ProgrammeManager,
+        DeliveryProgrammeAdmin,
         'id' | 'delivery_programme_id' | 'email' | 'name'
       >[] = [
         {
@@ -77,7 +77,7 @@ describe('DeliveryProgrammeStore', () => {
       expect(addResult.created_at).toBeDefined();
       expect(addResult.updated_at).toBeDefined();
       await addProgrammeManager(
-        newManagers as ProgrammeManager[],
+        newManagers as DeliveryProgrammeAdmin[],
         addResult.id,
         addResult,
         managerStore,
@@ -100,7 +100,7 @@ describe('DeliveryProgrammeStore', () => {
         ),
       ).toBeTruthy();
       const updatedManagers: Omit<
-        ProgrammeManager,
+        DeliveryProgrammeAdmin,
         'id' | 'delivery_programme_id' | 'email' | 'name'
       >[] = [
         {
@@ -108,7 +108,7 @@ describe('DeliveryProgrammeStore', () => {
         },
       ];
       await deleteProgrammeManager(
-        updatedManagers as ProgrammeManager[],
+        updatedManagers as DeliveryProgrammeAdmin[],
         addResult.id,
         managerStore,
       );

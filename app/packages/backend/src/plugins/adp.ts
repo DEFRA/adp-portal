@@ -3,6 +3,7 @@ import {
   createAlbRouter,
   createProgrammeRouter,
   createProjectRouter,
+  createDeliveryProgrammeAdminRouter
 } from '@internal/plugin-adp-backend';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
@@ -13,38 +14,44 @@ export default async function createPlugin({
   database,
   config,
 }: PluginEnvironment): Promise<Router> {
+  const identityClient = DefaultIdentityClient.create({
+    discovery,
+    issuer: await discovery.getExternalBaseUrl('auth'),
+  });
+
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
-    identity: DefaultIdentityClient.create({
-      discovery,
-      issuer: await discovery.getExternalBaseUrl('auth'),
-    }),
+    identity: identityClient,
     database,
     config,
   });
+
   const deliveryProgrammeRouter = await createProgrammeRouter({
     logger,
-    identity: DefaultIdentityClient.create({
-      discovery,
-      issuer: await discovery.getExternalBaseUrl('auth'),
-    }),
+    identity: identityClient,
     database,
     discovery,
   });
+
   const deliveryProjectRouter = await createProjectRouter({
     logger,
-    identity: DefaultIdentityClient.create({
-      discovery,
-      issuer: await discovery.getExternalBaseUrl('auth'),
-    }),
+    identity: identityClient,
     database,
     config,
   });
+
+  const deliveryProgrameAdminRouter = await createDeliveryProgrammeAdminRouter({
+    database,
+    discovery,
+    identity: identityClient,
+    logger
+  })
 
   const combinedRouter = Router();
   combinedRouter.use(armsLengthBodyRouter);
   combinedRouter.use(deliveryProgrammeRouter);
   combinedRouter.use(deliveryProjectRouter);
+  combinedRouter.use(deliveryProgrameAdminRouter);
 
   return combinedRouter;
 }

@@ -186,7 +186,7 @@ describe('deliveryProgrammeClient', () => {
         ok: true,
         json: jest.fn().mockResolvedValue(mockProgrammeManagers),
       });
-      const result = await client.getProgrammeManagers();
+      const result = await client.getDeliveryProgrammeAdmins();
       expect(result).toEqual(mockProgrammeManagers);
     });
     it('throws error when fetch errors out', async () => {
@@ -196,7 +196,7 @@ describe('deliveryProgrammeClient', () => {
         statusText: 'Not Found',
         json: jest.fn().mockResolvedValue({ error: 'unknown error' }),
       });
-      await expect(client.getProgrammeManagers()).rejects.toThrow(
+      await expect(client.getDeliveryProgrammeAdmins()).rejects.toThrow(
         'Failed to fetch Delivery Programme Managers',
       );
     });
