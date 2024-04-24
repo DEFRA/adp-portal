@@ -15,9 +15,9 @@ import {
 import { InputError } from '@backstage/errors';
 import { catalogTestData } from '../testData/catalogEntityTestData';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
-import { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
-import { IDeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
-import { IProgrammeManagerStore } from '../deliveryProgramme/deliveryProgrammeManagerStore';
+import { IDeliveryProjectStore } from '../deliveryProject';
+import { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import { IProgrammeManagerStore } from '../deliveryProgramme';
 import { expectedProjectDataWithName } from '../testData/projectTestData';
 
 const managerByProgrammeId = programmeManagerList.filter(

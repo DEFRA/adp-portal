@@ -18,17 +18,21 @@ export type GithubTeamDetails = {
   slug: string;
 };
 
+export type IGitHubTeamsApi = {
+  [P in keyof GitHubTeamsApi]: GitHubTeamsApi[P];
+};
 export class GitHubTeamsApi {
-  readonly #apiBaseUrl: string;
   readonly #fetch: typeof fetch;
+  readonly #config: Config;
 
   constructor(config: Config, fetchApi = fetch) {
-    this.#apiBaseUrl = config.getString('adp.githubTeams.apiBaseUrl');
-    this.#fetch = fetchApi ?? fetch;
+    this.#config = config;
+    this.#fetch = fetchApi;
   }
 
   public async setTeam(teamName: string, request: SetTeamRequest) {
-    const endpoint = `${this.#apiBaseUrl}/${teamName}`;
+    const baseUrl = this.#config.getString('adp.githubTeams.apiBaseUrl');
+    const endpoint = `${baseUrl}/${teamName}`;
     const response = await this.#fetch(endpoint, {
       method: 'PUT',
       headers: {

@@ -11,9 +11,11 @@ import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { InputError } from '@backstage/errors';
 import { catalogTestData } from '../testData/catalogEntityTestData';
 import { expectedProgrammeDataWithName } from '../testData/programmeTestData';
-import { IDeliveryProjectGithubTeamsSyncronizer } from '../deliveryProject';
-import { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
-import { IDeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
+import {
+  IDeliveryProjectGithubTeamsSyncronizer,
+  IDeliveryProjectStore,
+} from '../deliveryProject';
+import { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 
 jest.mock('@backstage/catalog-client', () => ({

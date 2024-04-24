@@ -1,7 +1,7 @@
 import { InputError } from '@backstage/errors';
-import { DeliveryProgrammeStore } from '../deliveryProgramme';
-import { DeliveryProjectStore } from './deliveryProjectStore';
-import { GitHubTeamsApi, GithubTeamDetails } from './githubTeamsApi';
+import { IDeliveryProjectStore } from './deliveryProjectStore';
+import { GithubTeamDetails, IGitHubTeamsApi } from './GitHubTeamsApi';
+import { IDeliveryProgrammeStore } from '../deliveryProgramme';
 
 export type DeliveryProjectTeamsSyncResult = {
   contributors: GithubTeamDetails;
@@ -15,14 +15,14 @@ export interface IDeliveryProjectGithubTeamsSyncronizer {
 export class DeliveryProjectGithubTeamsSyncronizer
   implements IDeliveryProjectGithubTeamsSyncronizer
 {
-  readonly #githubTeams: GitHubTeamsApi;
-  readonly #deliveryProjects: DeliveryProjectStore;
-  readonly #deliveryProgrammes: DeliveryProgrammeStore;
+  readonly #githubTeams: IGitHubTeamsApi;
+  readonly #deliveryProjects: IDeliveryProjectStore;
+  readonly #deliveryProgrammes: IDeliveryProgrammeStore;
 
   public constructor(
-    githubTeams: GitHubTeamsApi,
-    deliveryProjects: DeliveryProjectStore,
-    deliveryProgrammes: DeliveryProgrammeStore,
+    githubTeams: IGitHubTeamsApi,
+    deliveryProjects: IDeliveryProjectStore,
+    deliveryProgrammes: IDeliveryProgrammeStore,
   ) {
     this.#githubTeams = githubTeams;
     this.#deliveryProjects = deliveryProjects;

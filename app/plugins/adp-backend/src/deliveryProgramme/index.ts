@@ -1,2 +1,8 @@
-export { DeliveryProgrammeStore } from './deliveryProgrammeStore';
-export { ProgrammeManagerStore } from './deliveryProgrammeManagerStore';
+export {
+  type IDeliveryProgrammeStore,
+  DeliveryProgrammeStore,
+} from './deliveryProgrammeStore';
+export {
+  type IProgrammeManagerStore,
+  ProgrammeManagerStore,
+} from './deliveryProgrammeManagerStore';

@@ -19,13 +19,13 @@ import {
   checkForDuplicateTitle,
   getCurrentUsername,
 } from '../utils/index';
-import { IProgrammeManagerStore } from '../deliveryProgramme/deliveryProgrammeManagerStore';
+import { IProgrammeManagerStore } from '../deliveryProgramme';
 import { Entity } from '@backstage/catalog-model';
 import {
   addProgrammeManager,
   deleteProgrammeManager,
 } from '../service-utils/deliveryProgrammeUtils';
-import { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
+import { IDeliveryProjectStore } from '../deliveryProject';
 
 export interface ProgrammeRouterOptions {
   logger: Logger;

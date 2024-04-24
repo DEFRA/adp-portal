@@ -14,10 +14,12 @@ import {
   checkForDuplicateTitle,
   getCurrentUsername,
 } from '../utils/index';
-import { IDeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
-import { FluxConfigApi } from '../deliveryProject/fluxConfigApi';
+import { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import {
+  FluxConfigApi,
+  IDeliveryProjectGithubTeamsSyncronizer,
+} from '../deliveryProject';
 import { Config } from '@backstage/config';
-import { IDeliveryProjectGithubTeamsSyncronizer } from '../deliveryProject/DeliveryProjectGithubTeamsSyncronizer';
 export interface ProjectRouterOptions {
   logger: Logger;
   identity: IdentityApi;
