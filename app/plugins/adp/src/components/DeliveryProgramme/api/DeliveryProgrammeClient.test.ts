@@ -176,18 +176,18 @@ describe('deliveryProgrammeClient', () => {
     });
   });
 
-  describe('getProgrammeManagers', () => {
-    it('fetches programme managers successfully', async () => {
-      const mockProgrammeManagers = [
+  describe('getDeliveryProgrammeAdmins', () => {
+    it('fetches Delivery Programme Admins successfully', async () => {
+      const mockProgrammeAdmins = [
         { id: '1', name: '<NAME>' },
         { id: '2', name: '<NAME>' },
       ];
       fetchApi.fetch.mockResolvedValue({
         ok: true,
-        json: jest.fn().mockResolvedValue(mockProgrammeManagers),
+        json: jest.fn().mockResolvedValue(mockProgrammeAdmins),
       });
       const result = await client.getDeliveryProgrammeAdmins();
-      expect(result).toEqual(mockProgrammeManagers);
+      expect(result).toEqual(mockProgrammeAdmins);
     });
     it('throws error when fetch errors out', async () => {
       fetchApi.fetch.mockResolvedValue({
@@ -197,7 +197,7 @@ describe('deliveryProgrammeClient', () => {
         json: jest.fn().mockResolvedValue({ error: 'unknown error' }),
       });
       await expect(client.getDeliveryProgrammeAdmins()).rejects.toThrow(
-        'Failed to fetch Delivery Programme Managers',
+        'Failed to fetch Delivery Programme Admins',
       );
     });
   });

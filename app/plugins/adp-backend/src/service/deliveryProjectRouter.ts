@@ -4,14 +4,14 @@ import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
-import { AdpDatabase } from '../database/adpDatabase';
+import { AdpDatabase } from '../database';
 import {
   DeliveryProjectStore,
   PartialDeliveryProject,
 } from '../deliveryProject/deliveryProjectStore';
 import { DeliveryProject } from '@internal/plugin-adp-common';
 import { checkForDuplicateProjectCode, checkForDuplicateTitle, getCurrentUsername } from '../utils/index';
-import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
+import { DeliveryProgrammeStore } from '../deliveryProgramme';
 import { FluxConfigApi } from '../deliveryProject/fluxConfigApi';
 import { Config } from '@backstage/config';
 export interface ProjectRouterOptions {

@@ -88,7 +88,7 @@ export async function createProgrammeRouter(
       const deliveryProgramme = await deliveryProgrammesStore.get(
         _req.params.id,
       );
-      const programmeManager = await programmeManagersStore.get(_req.params.id);
+      const programmeManager = await programmeManagersStore.getByDeliveryProgramme(_req.params.id);
       if (programmeManager && deliveryProgramme !== null) {
         deliveryProgramme.programme_managers = programmeManager;
         res.json(deliveryProgramme);
@@ -135,13 +135,11 @@ export async function createProgrammeRouter(
 
       const data: DeliveryProgramme[] = await deliveryProgrammesStore.getAll();
 
-      
       const isDuplicateTitle: boolean = await checkForDuplicateTitle(
         data,
         req.body.title,
       );
 
-      
       const isDuplicateCode: boolean = await checkForDuplicateProgrammeCode(
         data,
         req.body.delivery_programme_code,
@@ -151,14 +149,14 @@ export async function createProgrammeRouter(
         res
           .status(406)
           .json({ error: 'Delivery Programme title already exists' });
-        return; 
+        return;
       }
 
       if (isDuplicateCode) {
         res
           .status(406)
           .json({ error: 'Delivery Programme code already exists' });
-        return; 
+        return;
       }
       const author = await getCurrentUsername(identity, req);
       const deliveryProgramme = await deliveryProgrammesStore.add(
@@ -220,23 +218,32 @@ export async function createProgrammeRouter(
 
       const updatedTitle = requestBody?.title;
       const updatedCode = requestBody?.delivery_programme_code;
-    
+
       if (updatedTitle && updatedTitle !== currentData!.title) {
-        const isDuplicateTitle = await checkForDuplicateTitle(allProgrammes, updatedTitle);
+        const isDuplicateTitle = await checkForDuplicateTitle(
+          allProgrammes,
+          updatedTitle,
+        );
         if (isDuplicateTitle) {
-          res.status(406).json({ error: 'Delivery Programme title already exists' });
-          return;
-        }
-      }
-  
-      if (updatedCode && updatedCode !== currentData!.delivery_programme_code) {
-        const isDuplicateCode = await checkForDuplicateProgrammeCode(allProgrammes, updatedCode);
-        if (isDuplicateCode) {
-          res.status(406).json({ error: 'Delivery Programme code already exists' });
+          res
+            .status(406)
+            .json({ error: 'Delivery Programme title already exists' });
           return;
         }
       }
 
+      if (updatedCode && updatedCode !== currentData!.delivery_programme_code) {
+        const isDuplicateCode = await checkForDuplicateProgrammeCode(
+          allProgrammes,
+          updatedCode,
+        );
+        if (isDuplicateCode) {
+          res
+            .status(406)
+            .json({ error: 'Delivery Programme code already exists' });
+          return;
+        }
+      }
 
       const author = await getCurrentUsername(identity, req);
       const deliveryProgramme = await deliveryProgrammesStore.update(
@@ -245,7 +252,7 @@ export async function createProgrammeRouter(
       );
       const programmeManagers = req.body.programme_managers;
       if (programmeManagers !== undefined) {
-        const existingProgrammeManagers = await programmeManagersStore.get(
+        const existingProgrammeManagers = await programmeManagersStore.getByDeliveryProgramme(
           deliveryProgramme.id,
         );
         const updatedManagers: DeliveryProgrammeAdmin[] = [];

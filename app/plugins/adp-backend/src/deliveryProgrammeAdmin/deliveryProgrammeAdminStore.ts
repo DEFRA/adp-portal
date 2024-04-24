@@ -1,6 +1,8 @@
 import { Knex } from 'knex';
 import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import { CreateDeliveryProgrammeAdmin } from '../utils';
 
+// TODO: Correct table name
 const TABLE_NAME = 'delivery_programme_pm';
 type Row = {
   id: string;
@@ -13,7 +15,7 @@ type Row = {
 export class DeliveryProgrammeAdminStore {
   constructor(private readonly client: Knex) {}
   async getAll(): Promise<DeliveryProgrammeAdmin[]> {
-    const ProgrammeManagers = await this.client<Row>(TABLE_NAME)
+    const deliveryProgrammeAdmins = await this.client<Row>(TABLE_NAME)
       .select(
         'id',
         'delivery_programme_id',
@@ -23,7 +25,7 @@ export class DeliveryProgrammeAdminStore {
       )
       .orderBy('delivery_programme_id');
 
-    return ProgrammeManagers.map(row => ({
+    return deliveryProgrammeAdmins.map(row => ({
       id: row.id,
       delivery_programme_id: row.delivery_programme_id,
       aad_entity_ref_id: row.aad_entity_ref_id,
@@ -32,8 +34,8 @@ export class DeliveryProgrammeAdminStore {
     }));
   }
 
-  async get(delivery_programme_id: string): Promise<DeliveryProgrammeAdmin[]> {
-    const ProgrammeManagers = await this.client<Row>(TABLE_NAME)
+  async getByDeliveryProgramme(delivery_programme_id: string): Promise<DeliveryProgrammeAdmin[]> {
+    const deliveryProgrammeAdmins = await this.client<Row>(TABLE_NAME)
       .where('delivery_programme_id', delivery_programme_id)
       .select(
         'id',
@@ -43,7 +45,7 @@ export class DeliveryProgrammeAdminStore {
         'name',
       );
 
-    return ProgrammeManagers.map(row => ({
+    return deliveryProgrammeAdmins.map(row => ({
       id: row.id,
       delivery_programme_id: row.delivery_programme_id,
       aad_entity_ref_id: row.aad_entity_ref_id,
@@ -53,7 +55,7 @@ export class DeliveryProgrammeAdminStore {
   }
 
   async add(
-    programmeManager: Omit<DeliveryProgrammeAdmin, 'id'>,
+    programmeManager: CreateDeliveryProgrammeAdmin,
   ): Promise<DeliveryProgrammeAdmin> {
     const insertResult = await this.client<Row>(TABLE_NAME).insert(
       {
@@ -69,6 +71,23 @@ export class DeliveryProgrammeAdminStore {
       ...programmeManager,
       id: insertResult[0].id,
     };
+  }
+
+  async addMany(
+    deliveryProgrammeAdmins: CreateDeliveryProgrammeAdmin[],
+  ): Promise<DeliveryProgrammeAdmin[]> {
+    const insertResult = await this.client<Row>(TABLE_NAME).insert(
+      deliveryProgrammeAdmins,
+      ['id', 'delivery_programme_id', 'aad_entity_ref_id', 'email', 'name'],
+    );
+
+    return insertResult.map(row => ({
+      id: row.id,
+      delivery_programme_id: row.delivery_programme_id,
+      aad_entity_ref_id: row.aad_entity_ref_id,
+      email: row.email,
+      name: row.name,
+    }));
   }
 
   async delete(entityRefId: string, deliveryProgrammeId: string) {

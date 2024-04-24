@@ -83,7 +83,7 @@ describe('DeliveryProgrammeStore', () => {
         managerStore,
         catalogTestData.items,
       );
-      const allManagers = await managerStore.get(addResult.id);
+      const allManagers = await managerStore.getByDeliveryProgramme(addResult.id);
       expect(allManagers.length).toBe(3);
       expect(
         allManagers.some(

@@ -76,7 +76,7 @@ jest.mock('../deliveryProgrammeAdmin', () => {
         .mockResolvedValue(mockUpdatedManagers);
       return {
         getAll: mockGetAllProgrammeManagers,
-        get: mockGetProgrammeManagerByProgrammeId,
+        getByDeliveryProgramme: mockGetProgrammeManagerByProgrammeId,
         add: mockAddProgrammeManagers,
         update: mockUpdateProgrammeManagers,
       };
