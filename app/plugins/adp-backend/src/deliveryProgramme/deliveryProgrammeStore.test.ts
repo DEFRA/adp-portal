@@ -1,5 +1,4 @@
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
-import { AdpDatabase } from '../database/adpDatabase';
 import {
   DeliveryProgrammeStore,
   PartialDeliveryProgramme,
@@ -14,24 +13,25 @@ import {
 import {
   expectedProgrammeDataWithName,
   expectedProgrammeDataWithoutManager,
-} from '../testData/programmeTestData'
+} from '../testData/programmeTestData';
 import { ProgrammeManagerStore } from './deliveryProgrammeManagerStore';
 import {
   addProgrammeManager,
   deleteProgrammeManager,
 } from '../service-utils/deliveryProgrammeUtils';
 import { catalogTestData } from '../testData/catalogEntityTestData';
+import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 
 describe('DeliveryProgrammeStore', () => {
   const databases = TestDatabases.create();
 
   async function createDatabase(databaseId: TestDatabaseId) {
     const knex = await databases.init(databaseId);
-    const db = AdpDatabase.create({
+    await initializeAdpDatabase({
       getClient: () => Promise.resolve(knex),
     });
-    const programmeStore = new DeliveryProgrammeStore(await db.get());
-    const managerStore = new ProgrammeManagerStore(await db.get());
+    const programmeStore = new DeliveryProgrammeStore(knex);
+    const managerStore = new ProgrammeManagerStore(knex);
 
     return { knex, programmeStore, managerStore };
   }

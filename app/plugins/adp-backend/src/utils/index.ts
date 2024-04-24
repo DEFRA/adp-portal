@@ -24,7 +24,6 @@ export async function checkForDuplicateTitle(
   return duplicate !== undefined;
 }
 
-
 export async function checkForDuplicateProjectCode(
   store: DeliveryProject[],
   code: string,
@@ -37,14 +36,15 @@ export async function checkForDuplicateProjectCode(
   return duplicate !== undefined;
 }
 
-
 export async function checkForDuplicateProgrammeCode(
   store: DeliveryProgramme[],
   delivery_programme_code: string,
 ): Promise<boolean> {
   delivery_programme_code = delivery_programme_code.trim().toLowerCase();
   const duplicate = store.find(
-    object => object.delivery_programme_code.trim().toLowerCase() === delivery_programme_code,
+    object =>
+      object.delivery_programme_code.trim().toLowerCase() ===
+      delivery_programme_code,
   );
 
   return duplicate !== undefined;

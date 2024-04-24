@@ -9,6 +9,7 @@ import { createAlbRouter } from './armsLengthBodyRouter';
 import { ConfigReader } from '@backstage/config';
 import { expectedAlbWithName } from '../testData/albTestData';
 import { InputError } from '@backstage/errors';
+import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 
 let mockGetAll: jest.Mock;
 let mockGet: jest.Mock;
@@ -66,6 +67,7 @@ describe('createRouter', () => {
   }
 
   beforeAll(async () => {
+    await initializeAdpDatabase(mockOptions.database);
     const router = await createAlbRouter(mockOptions);
     app = express().use(router);
   });

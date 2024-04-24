@@ -12,6 +12,15 @@ import { createAlbRouter } from './armsLengthBodyRouter';
 import { createProgrammeRouter } from './deliveryProgrammeRouter';
 import { Router } from 'express';
 import { createProjectRouter } from './deliveryProjectRouter';
+import {
+  DeliveryProjectGithubTeamsSyncronizer,
+  DeliveryProjectStore,
+  GitHubTeamsApi,
+} from '../deliveryProject';
+import {
+  DeliveryProgrammeStore,
+  ProgrammeManagerStore,
+} from '../deliveryProgramme';
 
 export interface ServerOptions {
   port: number;
@@ -37,6 +46,10 @@ export async function startStandaloneServer(
       },
     }),
   ).forPlugin('adp-plugin');
+  const dbClient = await database.getClient();
+  const deliveryProjectStore = new DeliveryProjectStore(dbClient);
+  const deliveryProgrammeStore = new DeliveryProgrammeStore(dbClient);
+  const programmeManagerStore = new ProgrammeManagerStore(dbClient);
 
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
@@ -48,24 +61,32 @@ export async function startStandaloneServer(
     config,
   });
 
-  const deliveryProgrammeRouter = await createProgrammeRouter({
+  const deliveryProgrammeRouter = createProgrammeRouter({
     logger,
     identity: DefaultIdentityClient.create({
       discovery,
       issuer: await discovery.getExternalBaseUrl('auth'),
     }),
-    database,
+    deliveryProgrammeStore,
+    deliveryProjectStore,
+    programmeManagerStore,
     discovery,
   });
 
-  const deliveryProjectRouter = await createProjectRouter({
+  const deliveryProjectRouter = createProjectRouter({
     logger,
     identity: DefaultIdentityClient.create({
       discovery,
       issuer: await discovery.getExternalBaseUrl('auth'),
     }),
-    database,
     config,
+    deliveryProgrammeStore,
+    deliveryProjectStore,
+    teamSyncronizer: new DeliveryProjectGithubTeamsSyncronizer(
+      new GitHubTeamsApi(config),
+      deliveryProjectStore,
+      deliveryProgrammeStore,
+    ),
   });
 
   const router = Router();

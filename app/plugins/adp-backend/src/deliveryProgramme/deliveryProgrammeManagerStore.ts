@@ -10,6 +10,10 @@ type Row = {
   name: string;
 };
 
+export type IProgrammeManagerStore = {
+  [P in keyof ProgrammeManagerStore]: ProgrammeManagerStore[P];
+};
+
 export class ProgrammeManagerStore {
   constructor(private readonly client: Knex) {}
   async getAll(): Promise<ProgrammeManager[]> {

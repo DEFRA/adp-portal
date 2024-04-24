@@ -11,6 +11,10 @@ import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { InputError } from '@backstage/errors';
 import { catalogTestData } from '../testData/catalogEntityTestData';
 import { expectedProgrammeDataWithName } from '../testData/programmeTestData';
+import { IDeliveryProjectGithubTeamsSyncronizer } from '../deliveryProject';
+import { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
+import { IDeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
+import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 
 jest.mock('@backstage/catalog-client', () => ({
   CatalogClient: jest.fn().mockImplementation(() => ({
@@ -21,64 +25,6 @@ jest.mock('@backstage/catalog-client', () => ({
     },
   })),
 }));
-
-let mockProjectGetAll: jest.Mock;
-let mockProjectGet: jest.Mock;
-let mockProjectAdd: jest.Mock;
-let mockProjectUpdate: jest.Mock;
-
-jest.mock('../deliveryProject/deliveryProjectStore', () => {
-  return {
-    DeliveryProjectStore: jest.fn().mockImplementation(() => {
-      mockProjectGetAll = jest
-        .fn()
-        .mockResolvedValue([expectedProjectDataWithName]);
-      mockProjectGet = jest.fn().mockResolvedValue(expectedProjectDataWithName);
-      mockProjectAdd = jest.fn().mockResolvedValue(expectedProjectDataWithName);
-      mockProjectUpdate = jest
-        .fn()
-        .mockResolvedValue(expectedProjectDataWithName);
-
-      return {
-        getAll: mockProjectGetAll,
-        get: mockProjectGet,
-        add: mockProjectAdd,
-        update: mockProjectUpdate,
-      };
-    }),
-  };
-});
-
-let mockProgrammeGetAll: jest.Mock;
-let mockProgrammeGet: jest.Mock;
-let mockProgrammeAdd: jest.Mock;
-let mockProgrammeUpdate: jest.Mock;
-
-jest.mock('../deliveryProgramme/deliveryProgrammeStore', () => {
-  return {
-    DeliveryProgrammeStore: jest.fn().mockImplementation(() => {
-      mockProgrammeGetAll = jest
-        .fn()
-        .mockResolvedValue([expectedProgrammeDataWithName]);
-      mockProgrammeGet = jest
-        .fn()
-        .mockResolvedValue(expectedProgrammeDataWithName);
-      mockProgrammeAdd = jest
-        .fn()
-        .mockResolvedValue(expectedProgrammeDataWithName);
-      mockProgrammeUpdate = jest
-        .fn()
-        .mockResolvedValue(expectedProgrammeDataWithName);
-
-      return {
-        getAll: mockProgrammeGetAll,
-        get: mockProgrammeGet,
-        add: mockProgrammeAdd,
-        update: mockProgrammeUpdate,
-      };
-    }),
-  };
-});
 
 let mockCreateFluxConfig: jest.Mock;
 let mockGetFluxConfig: jest.Mock;
@@ -116,6 +62,24 @@ describe('createRouter', () => {
     },
   });
 
+  const mockSyncronizer: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> = {
+    syncronize: jest.fn(),
+  };
+
+  const mockDeliveryProjectStore: jest.Mocked<IDeliveryProjectStore> = {
+    add: jest.fn(),
+    get: jest.fn(),
+    getAll: jest.fn(),
+    update: jest.fn(),
+  };
+
+  const mockDeliveryProgrammeStore: jest.Mocked<IDeliveryProgrammeStore> = {
+    add: jest.fn(),
+    get: jest.fn(),
+    getAll: jest.fn(),
+    update: jest.fn(),
+  };
+
   const mockDiscoveryApi = { getBaseUrl: jest.fn() };
   const mockOptions = {
     logger: getVoidLogger(),
@@ -123,6 +87,9 @@ describe('createRouter', () => {
     database: createTestDatabase(),
     config: mockConfig,
     discovery: mockDiscoveryApi,
+    teamSyncronizer: mockSyncronizer,
+    deliveryProjectStore: mockDeliveryProjectStore,
+    deliveryProgrammeStore: mockDeliveryProgrammeStore,
   };
 
   function createTestDatabase(): PluginDatabaseManager {
@@ -139,23 +106,48 @@ describe('createRouter', () => {
   }
 
   beforeAll(async () => {
-    const projectRouter = await createProjectRouter(mockOptions);
+    await initializeAdpDatabase(mockOptions.database);
+    const projectRouter = createProjectRouter(mockOptions);
     projectApp = express().use(projectRouter);
   });
 
   beforeEach(() => {
     jest.resetAllMocks();
+    mockDeliveryProjectStore.add.mockResolvedValue(expectedProjectDataWithName);
+    mockDeliveryProjectStore.get.mockResolvedValue(expectedProjectDataWithName);
+    mockDeliveryProjectStore.getAll.mockResolvedValue([
+      expectedProjectDataWithName,
+    ]);
+    mockDeliveryProjectStore.update.mockResolvedValue(
+      expectedProjectDataWithName,
+    );
+    mockDeliveryProgrammeStore.add.mockResolvedValue(
+      expectedProgrammeDataWithName,
+    );
+    mockDeliveryProgrammeStore.get.mockResolvedValue(
+      expectedProgrammeDataWithName,
+    );
+    mockDeliveryProgrammeStore.getAll.mockResolvedValue([
+      expectedProgrammeDataWithName,
+    ]);
+    mockDeliveryProgrammeStore.update.mockResolvedValue(
+      expectedProgrammeDataWithName,
+    );
   });
 
   describe('GET /deliveryProject', () => {
     it('returns ok', async () => {
-      mockProjectGetAll.mockResolvedValueOnce([expectedProjectDataWithName]);
+      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([
+        expectedProjectDataWithName,
+      ]);
       const response = await request(projectApp).get('/deliveryProject');
       expect(response.status).toEqual(200);
     });
 
     it('returns bad request', async () => {
-      mockProjectGetAll.mockRejectedValueOnce(new InputError('error'));
+      mockDeliveryProjectStore.getAll.mockRejectedValueOnce(
+        new InputError('error'),
+      );
       const response = await request(projectApp).get('/deliveryProject');
       expect(response.status).toEqual(400);
     });
@@ -163,13 +155,17 @@ describe('createRouter', () => {
 
   describe('GET /deliveryProject/:id', () => {
     it('returns ok', async () => {
-      mockProjectGet.mockResolvedValueOnce(expectedProjectDataWithName);
+      mockDeliveryProjectStore.get.mockResolvedValueOnce(
+        expectedProjectDataWithName,
+      );
       const response = await request(projectApp).get('/deliveryProject/1234');
       expect(response.status).toEqual(200);
     });
 
     it('returns bad request', async () => {
-      mockProjectGet.mockRejectedValueOnce(new InputError('error'));
+      mockDeliveryProjectStore.get.mockRejectedValueOnce(
+        new InputError('error'),
+      );
       const response = await request(projectApp).get('/deliveryProject/4321');
       expect(response.status).toEqual(400);
     });
@@ -177,7 +173,9 @@ describe('createRouter', () => {
 
   describe('POST /deliveryProject', () => {
     it('returns created', async () => {
-      mockProjectGetAll.mockResolvedValueOnce([expectedProjectDataWithName]);
+      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([
+        expectedProjectDataWithName,
+      ]);
       mockCreateFluxConfig.mockResolvedValueOnce(undefined);
       const data = { ...expectedProjectDataWithName };
       data.title = 'new title';
@@ -191,7 +189,7 @@ describe('createRouter', () => {
     it('return 406 if title already exists', async () => {
       const data = { ...expectedProjectDataWithName };
       data.delivery_project_code = 'abc';
-      mockProjectGetAll.mockResolvedValueOnce([data]);
+      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([data]);
       const response = await request(projectApp)
         .post('/deliveryProject')
         .send(expectedProjectDataWithName);
@@ -201,7 +199,7 @@ describe('createRouter', () => {
     it('return 406 if code already exists', async () => {
       const data = { ...expectedProjectDataWithName };
       data.title = 'new';
-      mockProjectGetAll.mockResolvedValueOnce([data]);
+      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([data]);
       const response = await request(projectApp)
         .post('/deliveryProject')
         .send(expectedProjectDataWithName);
@@ -209,10 +207,12 @@ describe('createRouter', () => {
     });
 
     it('returns bad request', async () => {
-      mockProjectAdd.mockRejectedValueOnce(new InputError('error'));
+      mockDeliveryProjectStore.add.mockRejectedValueOnce(
+        new InputError('error'),
+      );
       const response = await request(projectApp)
         .post('/deliveryProject')
-        .send(expectedProjectDataWithName);
+        .send({ title: 'abc', delivery_project_code: 'def' });
       expect(response.status).toEqual(400);
     });
   });
@@ -220,7 +220,7 @@ describe('createRouter', () => {
   describe('PATCH /deliveryProject', () => {
     it('returns created', async () => {
       const existing = { ...expectedProjectDataWithName, id: '123' };
-      mockProjectGetAll.mockResolvedValueOnce([existing]);
+      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([existing]);
       const data = { ...existing };
       data.title = 'new title';
       const response = await request(projectApp)
@@ -234,7 +234,10 @@ describe('createRouter', () => {
       const existing2 = { ...expectedProjectDataWithName, id: '1234' };
       existing2.title = 'new1';
       existing2.delivery_project_code = 'xyz';
-      mockProjectGetAll.mockResolvedValueOnce([existing1, existing2]);
+      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([
+        existing1,
+        existing2,
+      ]);
       const data = { ...existing1 };
       data.title = 'new1';
       const response = await request(projectApp)
@@ -248,7 +251,10 @@ describe('createRouter', () => {
       const existing2 = { ...expectedProjectDataWithName, id: '1234' };
       existing2.title = 'new1';
       existing2.delivery_project_code = 'xyz';
-      mockProjectGetAll.mockResolvedValueOnce([existing1, existing2]);
+      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([
+        existing1,
+        existing2,
+      ]);
       const data = { ...existing1 };
       data.delivery_project_code = 'xyz';
       const response = await request(projectApp)
@@ -260,7 +266,9 @@ describe('createRouter', () => {
     it('returns bad request', async () => {
       const existing = { ...expectedProjectDataWithName, id: '123' };
       const data = { ...existing };
-      mockProjectUpdate.mockRejectedValueOnce(new InputError('error'));
+      mockDeliveryProjectStore.update.mockRejectedValueOnce(
+        new InputError('error'),
+      );
       const response = await request(projectApp)
         .patch('/deliveryProject')
         .send(data);

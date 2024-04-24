@@ -1,5 +1,4 @@
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
-import { AdpDatabase } from '../database/adpDatabase';
 import {
   DeliveryProjectStore,
   PartialDeliveryProject,
@@ -9,16 +8,17 @@ import { DeliveryProject } from '@internal/plugin-adp-common';
 import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { expectedProgrammeDataWithoutManager } from '../testData/programmeTestData';
 import { expectedAlbWithName } from '../testData/albTestData';
+import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 
 describe('DeliveryProjectStore', () => {
   const databases = TestDatabases.create();
 
   async function createDatabase(databaseId: TestDatabaseId) {
     const knex = await databases.init(databaseId);
-    const db = AdpDatabase.create({
+    await initializeAdpDatabase({
       getClient: () => Promise.resolve(knex),
     });
-    const projectStore = new DeliveryProjectStore(await db.get());
+    const projectStore = new DeliveryProjectStore(knex);
 
     return { knex, projectStore: projectStore };
   }
