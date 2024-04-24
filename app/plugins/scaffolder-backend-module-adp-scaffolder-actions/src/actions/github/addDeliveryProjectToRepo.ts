@@ -73,7 +73,7 @@ export function addDeliveryProjectToRepo(options: {
   }
 
   function getPlatformAdminsSlug(config: Config) {
-    return config.getString('github.platform-admins');
+    return config.getString('github.platformAdmins');
   }
 
   async function addTeamsToRepository(

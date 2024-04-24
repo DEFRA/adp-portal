@@ -164,6 +164,7 @@ export function createProjectRouter(
         req.body,
         author,
       );
+      await teamSyncronizer.syncronize(deliveryProject.name);
       res.status(200).json(deliveryProject);
     } catch (error) {
       const deliveryProjectError = error as Error;
