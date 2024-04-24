@@ -42,36 +42,19 @@ function hasTitleChanged(updatedTitle: any, currentData: DeliveryProgramme | und
 function hasDeliveryProgramChanged(updatedCode: any, currentData: DeliveryProgramme | undefined) {
   return updatedCode && updatedCode !== currentData!.delivery_programme_code;
 }
-
-// TODO - These 2 functions are the same
-function findUpdatedProgramManagers(programmeManagers: any, existingProgrammeManagers: ProgrammeManager[]) {
-  const updatedManagers: ProgrammeManager[] = []
-  for (const updatedManager of programmeManagers) {
-    if (
-      !existingProgrammeManagers.some(
-        manager =>
-          manager.aad_entity_ref_id === updatedManager.aad_entity_ref_id,
-      )
-    ) {
-      updatedManagers.push(updatedManager);
-    }
-  }
-  return updatedManagers;
-}
-
-function findRemovedManagers(existingProgrammeManagers: ProgrammeManager[], programmeManagers: any) {
-  const removedManagers: ProgrammeManager[] = []
-  for (const existingManager of existingProgrammeManagers) {
+function findManagers(listToSearch: ProgrammeManager[], programmeManagers: ProgrammeManager[]) {
+  const foundManagers: ProgrammeManager[] = []
+  for (const lookupmanager of listToSearch) {
     if (
       !programmeManagers.some(
         (manager: ProgrammeManager) =>
-          manager.aad_entity_ref_id === existingManager.aad_entity_ref_id,
+          manager.aad_entity_ref_id === lookupmanager.aad_entity_ref_id,
       )
     ) {
-      removedManagers.push(existingManager);
+      foundManagers.push(lookupmanager);
     }
   }
-  return removedManagers;
+  return foundManagers;
 }
 
 export async function createProgrammeRouter(
@@ -301,7 +284,7 @@ export async function createProgrammeRouter(
         const existingProgrammeManagers = await programmeManagersStore.get(
           deliveryProgramme.id,
         );
-        const updatedManagers: ProgrammeManager[] = findUpdatedProgramManagers(programmeManagers, existingProgrammeManagers);
+        const updatedManagers: ProgrammeManager[] = findManagers(programmeManagers, existingProgrammeManagers);
 
         const catalogEntities = await catalog.getEntities({
           filter: {
@@ -317,8 +300,7 @@ export async function createProgrammeRouter(
 
         const catalogEntity: Entity[] = catalogEntities.items;
 
-        //TODO should this be await - Intelij thinks so.
-        addProgrammeManager(
+        await addProgrammeManager(
           updatedManagers,
           deliveryProgramme.id,
           deliveryProgramme,
@@ -326,10 +308,9 @@ export async function createProgrammeRouter(
           catalogEntity,
         );
 
-        const removedManagers: ProgrammeManager[] = findRemovedManagers(existingProgrammeManagers, programmeManagers);
+        const removedManagers: ProgrammeManager[] = findManagers(existingProgrammeManagers, programmeManagers);
 
-        //TODO should this be await - Intelij thinks so.
-        deleteProgrammeManager(
+        await deleteProgrammeManager(
           removedManagers,
           deliveryProgramme.id,
           programmeManagersStore,
