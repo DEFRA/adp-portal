@@ -186,6 +186,49 @@ describe('FluxConfigApi', () => {
     expect(fetch).toHaveBeenCalled();
   });
 
+  it('should create Flux team configuration with config variables', async () => {
+    mockedFetch.mockResolvedValue({
+      ok: true,
+      status: 204,
+    } as unknown as Response);
+
+    const deliveryProject: DeliveryProject = {
+      name: 'test-project',
+      id: '123-456',
+      title: 'Test Project',
+      description: 'Test Project',
+      delivery_programme_id: '123',
+      delivery_project_code: '123',
+      created_at: new Date(),
+      updated_at: new Date(),
+      namespace: 'test-namespace',
+      service_owner: 'owner@test.com',
+      team_type: 'test',
+      ado_project: 'TEST-ADO',
+    };
+
+    const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
+    const fluxConfigApi = new FluxConfigApi(
+      new ConfigReader({
+        adp: {
+          fluxOnboarding: {
+            apiBaseUrl: 'https://portal-api/FluxOnboarding',
+            defaultConfigVariables: [
+              {
+                key: 'MyConfigVariable',
+                value: 'MyConfigValue',
+              },
+            ],
+          },
+        },
+      }),
+      mockDeliveryProgrammeStore,
+    );
+    await fluxConfigApi.createFluxConfig(deliveryProject);
+
+    expect(fetch).toHaveBeenCalled();
+  });
+
   it('should throw if a non-success response is received when creating team configuration', async () => {
     mockedFetch.mockResolvedValue({
       ok: false,
