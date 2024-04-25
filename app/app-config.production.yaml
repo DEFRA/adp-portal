@@ -8,7 +8,12 @@ kubernetes:
   clusterLocatorMethods:
     - type: 'config'
       clusters:
-        - $include: ./config/cluster.${BACKSTAGE_ENVIRONMENT}.configuration.yaml
+        - $include: ./config/cluster.${CLUSTER1_ENV:-na}.configuration.yaml
+        - $include: ./config/cluster.${CLUSTER2_ENV:-na}.configuration.yaml
+        - $include: ./config/cluster.${CLUSTER3_ENV:-na}.configuration.yaml
+        - $include: ./config/cluster.${CLUSTER4_ENV:-na}.configuration.yaml
+        - $include: ./config/cluster.${CLUSTER5_ENV:-na}.configuration.yaml
+        - $include: ./config/cluster.${CLUSTER6_ENV:-na}.configuration.yaml
 
 integrations:
   azure:
