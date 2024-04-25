@@ -71,18 +71,18 @@ kubernetes:
   clusterLocatorMethods:
     - type: 'config'
       clusters:
-        - name: ${SND1_CLUSTER_NAME}
-          url: ${SND1_CLUSTER_API_SERVER_ADDRESS}
+        - name: ${CLUSTER1_NAME}
+          url: ${CLUSTER1_API_SERVER_ADDRESS}
           authProvider: azure
           skipTLSVerify: true
           skipMetricsLookup: true
-        - name: ${SND2_CLUSTER_NAME}
-          url: ${SND2_CLUSTER_API_SERVER_ADDRESS}
+        - name: ${CLUSTER2_NAME}
+          url: ${CLUSTER2_API_SERVER_ADDRESS}
           authProvider: azure
           skipTLSVerify: true
           skipMetricsLookup: true
-        - name: ${SND3_CLUSTER_NAME}
-          url: ${SND3_CLUSTER_API_SERVER_ADDRESS}
+        - name: ${CLUSTER3_NAME}
+          url: ${CLUSTER3_API_SERVER_ADDRESS}
           authProvider: azure
           skipTLSVerify: true
           skipMetricsLookup: true

@@ -71,12 +71,12 @@ export ADP_PORTAL_PLATFORM_ADMINS_GROUP=""
 export ADP_PORTAL_PROGRAMME_ADMINS_GROUP=""
 export ADP_PORTAL_USERS_GROUP=""
 
-export SND1_CLUSTER_NAME=""
-export SND1_CLUSTER_API_SERVER_ADDRESS=""
-export SND2_CLUSTER_NAME=""
-export SND2_CLUSTER_API_SERVER_ADDRESS=""
-export SND3_CLUSTER_NAME=""
-export SND3_CLUSTER_API_SERVER_ADDRESS=""
+export CLUSTER1_NAME=""
+export CLUSTER1_API_SERVER_ADDRESS=""
+export CLUSTER2_NAME=""
+export CLUSTER2_API_SERVER_ADDRESS=""
+export CLUSTER3_NAME=""
+export CLUSTER3_API_SERVER_ADDRESS=""
 ```
 
 To convert a GitHub private key into a format that can be used in the `GITHUB_PRIVATE_KEY` environment variable use one of the following scripts:
