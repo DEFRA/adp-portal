@@ -23,7 +23,7 @@ function endpointInterface<T>(defaults: T) {
         format: 'raw',
         previews: [],
       },
-      baseUrl: 'http://github.com',
+      baseUrl: 'https://github.com',
       headers: {
         'user-agent': 'test',
         accept: 'application/json',
