@@ -144,5 +144,147 @@ describe('addDeliveryProjectToRepo', () => {
         ],
       ]);
     });
+    it('Should error when a team fails to be syncronized', async () => {
+      // arrange
+      const { sut, adpClient, config, octokit, logger } = setup();
+      const projectName = randomUUID();
+      const repoName = randomUUID();
+      const orgName = randomUUID();
+      const owner = randomUUID();
+
+      adpClient.syncDeliveryProjectWithGithubTeams.mockRejectedValueOnce(
+        new Error('Failed successfully'),
+      );
+
+      // act
+      await expectException(() =>
+        sut.handler({
+          createTemporaryDirectory: jest.fn(),
+          input: {
+            projectName,
+            repoName,
+            orgName,
+            owner,
+          },
+          workspacePath: 'test-workspace',
+          logger,
+          logStream: new PassThrough(),
+          output: jest.fn(),
+        }),
+      );
+
+      // assert
+      expect(
+        adpClient.syncDeliveryProjectWithGithubTeams.mock.calls,
+      ).toMatchObject([[projectName]]);
+      expect(config.getString.mock.calls).toMatchObject([]);
+      expect(
+        octokit.rest.teams.addOrUpdateRepoPermissionsInOrg.mock.calls,
+      ).toMatchObject([]);
+    });
+    it('Should error when a team fails to be added', async () => {
+      // arrange
+      const { sut, adpClient, config, octokit, logger } = setup();
+      const projectName = randomUUID();
+      const repoName = randomUUID();
+      const orgName = randomUUID();
+      const owner = randomUUID();
+
+      const teams: DeliveryProjectTeamsSyncResult = {
+        admins: {
+          description: 'Admins team',
+          id: 123,
+          isPublic: true,
+          maintainers: ['abc'],
+          members: ['def'],
+          name: 'Admins-Team',
+          slug: 'admins-team',
+        },
+        contributors: {
+          description: 'Contributors team',
+          id: 456,
+          isPublic: true,
+          maintainers: ['ghi'],
+          members: ['jkl'],
+          name: 'Contributors-Team',
+          slug: 'contributors-team',
+        },
+      };
+
+      adpClient.syncDeliveryProjectWithGithubTeams.mockResolvedValueOnce(teams);
+      config.getString.mockImplementationOnce(x => {
+        expect(x).toBe('github.platformAdmins');
+        return 'Platform-Admins';
+      });
+      octokit.rest.teams.addOrUpdateRepoPermissionsInOrg
+        .mockResolvedValueOnce(undefined!)
+        .mockResolvedValueOnce(undefined!)
+        .mockRejectedValueOnce(new Error('Failed successfully'));
+
+      // act
+      await expectException(() =>
+        sut.handler({
+          createTemporaryDirectory: jest.fn(),
+          input: {
+            projectName,
+            repoName,
+            orgName,
+            owner,
+          },
+          workspacePath: 'test-workspace',
+          logger,
+          logStream: new PassThrough(),
+          output: jest.fn(),
+        }),
+      );
+
+      // assert
+      expect(
+        adpClient.syncDeliveryProjectWithGithubTeams.mock.calls,
+      ).toMatchObject([[projectName]]);
+      expect(config.getString.mock.calls).toMatchObject([
+        ['github.platformAdmins'],
+      ]);
+      expect(
+        octokit.rest.teams.addOrUpdateRepoPermissionsInOrg.mock.calls,
+      ).toMatchObject([
+        [
+          {
+            org: orgName,
+            owner,
+            repo: repoName,
+            team_slug: 'contributors-team',
+            permission: 'push',
+          },
+        ],
+        [
+          {
+            org: orgName,
+            owner,
+            repo: repoName,
+            team_slug: 'admins-team',
+            permission: 'admin',
+          },
+        ],
+        [
+          {
+            org: orgName,
+            owner,
+            repo: repoName,
+            team_slug: 'Platform-Admins',
+            permission: 'admin',
+          },
+        ],
+      ]);
+    });
   });
 });
+
+async function expectException(action: () => unknown) {
+  try {
+    await action();
+    throw new Error('No exception was thrown where one was expected');
+  } catch (err) {
+    return err;
+  }
+}

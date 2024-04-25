@@ -182,7 +182,6 @@ export function createProjectRouter(
     '/deliveryProject/:projectName/github/teams/sync',
     async (req, res) => {
       const { projectName } = req.params;
-
       const result = await teamSyncronizer.syncronize(projectName);
       res.status(200).send(result);
     },
