@@ -43,6 +43,8 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
         setup();
       const projectName = randomUUID();
 
+      deliveryProjects.getByName.mockResolvedValueOnce(null);
+
       // act
       await expectException(() => sut.syncronize(projectName));
 
@@ -76,6 +78,7 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
       };
 
       deliveryProjects.getByName.mockResolvedValueOnce(project);
+      deliveryProgrammes.get.mockResolvedValueOnce(null);
 
       // act
       await expectException(() => sut.syncronize(projectName));
