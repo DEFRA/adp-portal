@@ -179,7 +179,7 @@ catalog:
   # Locations configured to import static data into the catalog
   locations:
     - type: url
-      target: https://github.com/DEFRA/adp-software-templates/blob/dm-templates-use-new-git-team-flow/catalog-model/all.yaml
+      target: https://github.com/DEFRA/adp-software-templates/blob/main/catalog-model/all.yaml
 
 techRadar:
   data: https://raw.githubusercontent.com/defra/adp-software-templates/main/tech-radars/development-tech-radar.json
