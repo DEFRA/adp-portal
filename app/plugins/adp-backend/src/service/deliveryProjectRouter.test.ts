@@ -17,6 +17,7 @@ import {
 } from '../deliveryProject';
 import { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
+import { randomUUID } from 'node:crypto';
 
 jest.mock('@backstage/catalog-client', () => ({
   CatalogClient: jest.fn().mockImplementation(() => ({
@@ -276,6 +277,24 @@ describe('createRouter', () => {
         .patch('/deliveryProject')
         .send(data);
       expect(response.status).toEqual(400);
+    });
+  });
+
+  describe('PUT /deliveryProject/:projectName/github/teams/sync', () => {
+    it('Should call the syncronizer', async () => {
+      // arrange
+      const projectName = randomUUID();
+
+      // act
+      const response = await request(projectApp).put(
+        `/deliveryProject/${projectName}/github/teams/sync`,
+      );
+
+      // assert
+      expect(response.status).toBe(200);
+      expect(mockSyncronizer.syncronize.mock.calls).toMatchObject([
+        [projectName],
+      ]);
     });
   });
 });
