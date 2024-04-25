@@ -17,6 +17,7 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
       add: jest.fn(),
       get: jest.fn(),
       getAll: jest.fn(),
+      getByName: jest.fn(),
       update: jest.fn(),
     };
     const deliveryProgrammes: jest.Mocked<IDeliveryProgrammeStore> = {
@@ -46,7 +47,9 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
       await expectException(() => sut.syncronize(projectName));
 
       // assert
-      expect(deliveryProjects.get.mock.calls).toMatchObject([[projectName]]);
+      expect(deliveryProjects.getByName.mock.calls).toMatchObject([
+        [projectName],
+      ]);
       expect(deliveryProgrammes.get.mock.calls).toMatchObject([]);
       expect(githubTeams.setTeam.mock.calls).toMatchObject([]);
     });
@@ -72,13 +75,15 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
         github_team_visibility: 'private',
       };
 
-      deliveryProjects.get.mockResolvedValueOnce(project);
+      deliveryProjects.getByName.mockResolvedValueOnce(project);
 
       // act
       await expectException(() => sut.syncronize(projectName));
 
       // assert
-      expect(deliveryProjects.get.mock.calls).toMatchObject([[projectName]]);
+      expect(deliveryProjects.getByName.mock.calls).toMatchObject([
+        [projectName],
+      ]);
       expect(deliveryProgrammes.get.mock.calls).toMatchObject([[programmeId]]);
       expect(githubTeams.setTeam.mock.calls).toMatchObject([]);
     });
@@ -135,7 +140,7 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
         slug: randomUUID(),
       };
 
-      deliveryProjects.get.mockResolvedValueOnce(project);
+      deliveryProjects.getByName.mockResolvedValueOnce(project);
       deliveryProgrammes.get.mockResolvedValueOnce(programme);
       githubTeams.setTeam
         .mockResolvedValueOnce(contributors)
@@ -149,7 +154,9 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
         contributors,
         admins,
       });
-      expect(deliveryProjects.get.mock.calls).toMatchObject([[projectName]]);
+      expect(deliveryProjects.getByName.mock.calls).toMatchObject([
+        [projectName],
+      ]);
       expect(deliveryProgrammes.get.mock.calls).toMatchObject([[programmeId]]);
       expect(githubTeams.setTeam.mock.calls).toMatchObject([
         [

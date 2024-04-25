@@ -100,7 +100,10 @@ export function addDeliveryProjectToRepo(options: {
         x.status === 'rejected',
     );
     if (failed.length > 0) {
-      for (const { reason } of failed) logger.error(String(reason));
+      for (const { reason } of failed) {
+        console.error(reason);
+        logger.error(String(reason));
+      }
       throw new Error('Failed to add the teams to the repository');
     }
   }

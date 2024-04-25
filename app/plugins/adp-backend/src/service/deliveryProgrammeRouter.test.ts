@@ -59,6 +59,7 @@ describe('createRouter', () => {
     add: jest.fn(),
     get: jest.fn(),
     getAll: jest.fn(),
+    getByName: jest.fn(),
     update: jest.fn(),
   };
 

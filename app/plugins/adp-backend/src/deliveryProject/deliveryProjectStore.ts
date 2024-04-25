@@ -92,6 +92,14 @@ export class DeliveryProjectStore {
 
     return row ? mapRow(row) : null;
   }
+  async getByName(name: string): Promise<DeliveryProject | null> {
+    const row = await this.#client<Row>(TABLE_NAME)
+      .where('name', name)
+      .select(...selectColumns)
+      .first();
+
+    return row ? mapRow(row) : null;
+  }
 
   async add(
     DeliveryProject: Omit<DeliveryProject, 'id' | 'created_at' | 'updated_at'>,

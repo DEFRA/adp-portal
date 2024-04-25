@@ -38,7 +38,7 @@ export class DeliveryProjectGithubTeamsSyncronizer
   }
 
   async #getDeliveryProjectTeamConfig(projectName: string) {
-    const deliveryProject = await this.#deliveryProjects.get(projectName);
+    const deliveryProject = await this.#deliveryProjects.getByName(projectName);
     if (deliveryProject === null)
       throw new InputError(`Unknown delivery project ${projectName}`);
 
