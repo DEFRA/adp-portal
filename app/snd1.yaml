@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: SNDADPINFAK1401
+  annotations:
+    kubernetes.io/api-server: 'https://sndadpinfak1401-dy0uzsjo.sndadpdnsdz1401.privatelink.uksouth.azmk8s.io'
+    kubernetes.io/auth-provider: 'azure'
+    kubernetes.io/skip-tls-verify: 'true'    
+    kubernetes.io/skip-metrics-lookup: 'true'
+spec:
+  type: kubernetes-cluster
+  owner: user:guest

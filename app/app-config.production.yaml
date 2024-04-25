@@ -8,31 +8,7 @@ kubernetes:
   clusterLocatorMethods:
     - type: 'config'
       clusters:
-        - name: ${CLUSTER1_NAME}
-          url: ${CLUSTER1_API_SERVER_ADDRESS}
-          authProvider: azure
-          skipTLSVerify: true
-          skipMetricsLookup: true
-        - name: ${CLUSTER2_NAME}
-          url: ${CLUSTER2_API_SERVER_ADDRESS}
-          authProvider: azure
-          skipTLSVerify: true
-          skipMetricsLookup: true
-        - name: ${CLUSTER3_NAME}
-          url: ${CLUSTER3_API_SERVER_ADDRESS}
-          authProvider: azure
-          skipTLSVerify: true
-          skipMetricsLookup: true
-        - name: ${CLUSTER4_NAME}
-          url: ${CLUSTER4_API_SERVER_ADDRESS}
-          authProvider: azure
-          skipTLSVerify: true
-          skipMetricsLookup: true   
-        - name: ${CLUSTER5_NAME}
-          url: ${CLUSTER5_API_SERVER_ADDRESS}
-          authProvider: azure
-          skipTLSVerify: true
-          skipMetricsLookup: true             
+        - $include: ./config/cluster.${BACKSTAGE_ENVIRONMENT}.configuration.yaml
 
 integrations:
   azure:

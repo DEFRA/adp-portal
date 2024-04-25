@@ -69,23 +69,7 @@ kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
   clusterLocatorMethods:
-    - type: 'config'
-      clusters:
-        - name: ${CLUSTER1_NAME}
-          url: ${CLUSTER1_API_SERVER_ADDRESS}
-          authProvider: azure
-          skipTLSVerify: true
-          skipMetricsLookup: true
-        - name: ${CLUSTER2_NAME}
-          url: ${CLUSTER2_API_SERVER_ADDRESS}
-          authProvider: azure
-          skipTLSVerify: true
-          skipMetricsLookup: true
-        - name: ${CLUSTER3_NAME}
-          url: ${CLUSTER3_API_SERVER_ADDRESS}
-          authProvider: azure
-          skipTLSVerify: true
-          skipMetricsLookup: true
+    - type: 'catalog'
 
 gitops:
   readOnly: true # disable sync/suspend/resume of resources
