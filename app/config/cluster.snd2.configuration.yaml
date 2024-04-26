@@ -1,0 +1,5 @@
+name: ${SND2_CLUSTER_NAME}
+url: ${SND2_CLUSTER_API_SERVER_ADDRESS}
+authProvider: azure
+skipTLSVerify: true
+skipMetricsLookup: true
