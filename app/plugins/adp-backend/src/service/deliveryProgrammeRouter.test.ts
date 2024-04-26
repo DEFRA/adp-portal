@@ -17,8 +17,8 @@ import { catalogTestData } from '../testData/catalogEntityTestData';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 import { IDeliveryProjectStore } from '../deliveryProject';
 import { IDeliveryProgrammeStore } from '../deliveryProgramme';
-import { IProgrammeManagerStore } from '../deliveryProgramme';
 import { expectedProjectDataWithName } from '../testData/projectTestData';
+import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 
 const managerByProgrammeId = programmeManagerList.filter(
   managers => managers.delivery_programme_id === '123',
@@ -70,9 +70,11 @@ describe('createRouter', () => {
     update: jest.fn(),
   };
 
-  const mockProgrammeManagerStore: jest.Mocked<IProgrammeManagerStore> = {
+  const mockDeliveryProgrammeAdminStore: jest.Mocked<IDeliveryProgrammeAdminStore> = {
     add: jest.fn(),
-    get: jest.fn(),
+    getByAADEntityRef: jest.fn(),
+    getByDeliveryProgramme: jest.fn(),
+    addMany: jest.fn(),
     getAll: jest.fn(),
     delete: jest.fn(),
   };
@@ -85,7 +87,7 @@ describe('createRouter', () => {
     discovery: mockDiscoveryApi,
     deliveryProjectStore: mockDeliveryProjectStore,
     deliveryProgrammeStore: mockDeliveryProgrammeStore,
-    programmeManagerStore: mockProgrammeManagerStore,
+    deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
   };
 
   function createTestDatabase(): PluginDatabaseManager {
@@ -121,9 +123,9 @@ describe('createRouter', () => {
     mockDeliveryProgrammeStore.update.mockResolvedValue(
       expectedProgrammeDataWithManager,
     );
-    mockProgrammeManagerStore.getAll.mockResolvedValue(programmeManagerList);
-    mockProgrammeManagerStore.add.mockResolvedValue(programmeManagerList[0]);
-    mockProgrammeManagerStore.get.mockResolvedValue(managerByProgrammeId);
+    mockDeliveryProgrammeAdminStore.getAll.mockResolvedValue(programmeManagerList);
+    mockDeliveryProgrammeAdminStore.add.mockResolvedValue(programmeManagerList[0]);
+    mockDeliveryProgrammeAdminStore.getByDeliveryProgramme.mockResolvedValue(managerByProgrammeId);
     mockGetEntities.mockResolvedValue(catalogTestData);
   });
 
@@ -165,7 +167,7 @@ describe('createRouter', () => {
       mockDeliveryProgrammeStore.get.mockResolvedValueOnce(
         expectedProgrammeDataWithManager,
       );
-      mockProgrammeManagerStore.get.mockResolvedValueOnce(programmeManagerList);
+      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(programmeManagerList);
       const response = await request(programmeApp).get(
         '/deliveryProgramme/1234',
       );
@@ -205,7 +207,7 @@ describe('createRouter', () => {
       mockDeliveryProgrammeStore.add.mockResolvedValueOnce(
         expectedProgrammeDataWithManager,
       );
-      mockProgrammeManagerStore.add.mockResolvedValueOnce(
+      mockDeliveryProgrammeAdminStore.add.mockResolvedValueOnce(
         programmeManagerList[0],
       );
 
@@ -287,7 +289,7 @@ describe('createRouter', () => {
       };
 
       mockDeliveryProgrammeStore.update.mockResolvedValueOnce(data);
-      mockProgrammeManagerStore.getAll.mockResolvedValueOnce(
+      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
         programmeManagerList,
       );
       const response = await request(programmeApp)
@@ -318,7 +320,7 @@ describe('createRouter', () => {
         title: 'test title',
       };
       mockDeliveryProgrammeStore.update.mockResolvedValueOnce(data);
-      mockProgrammeManagerStore.getAll.mockResolvedValueOnce(
+      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
         programmeManagerList,
       );
       const response = await request(programmeApp)
@@ -352,7 +354,7 @@ describe('createRouter', () => {
       };
 
       mockDeliveryProgrammeStore.update.mockResolvedValueOnce(dataToUpdate);
-      mockProgrammeManagerStore.getAll.mockResolvedValueOnce(
+      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
         programmeManagerList,
       );
 
@@ -389,8 +391,8 @@ describe('createRouter', () => {
         id: '123',
       };
       mockDeliveryProgrammeStore.update.mockResolvedValueOnce(data as any);
-      mockProgrammeManagerStore.get.mockResolvedValueOnce(mockUpdatedManagers);
-      mockProgrammeManagerStore.add.mockResolvedValueOnce(
+      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(mockUpdatedManagers);
+      mockDeliveryProgrammeAdminStore.add.mockResolvedValueOnce(
         mockUpdatedManagers[0],
       );
       const response = await request(programmeApp)

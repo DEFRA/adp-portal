@@ -1,9 +1,8 @@
-import { PluginDatabaseManager, errorHandler } from '@backstage/backend-common';
+import { errorHandler } from '@backstage/backend-common';
 import { DiscoveryService } from '@backstage/backend-plugin-api';
 import { IdentityApi } from '@backstage/plugin-auth-node';
 import { Logger } from 'winston';
-import { AdpDatabase } from '../database';
-import { DeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import express from 'express';
 import Router from 'express-promise-router';
 import { InputError } from '@backstage/errors';
@@ -23,20 +22,15 @@ type DeleteDeliveryProgrammeAdminRequest = {
 export interface DeliveryProgrammeAdminRouterOptions {
   logger: Logger;
   identity: IdentityApi;
-  database: PluginDatabaseManager;
+  deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore
   discovery: DiscoveryService;
 }
 
 export async function createDeliveryProgrammeAdminRouter(
   options: DeliveryProgrammeAdminRouterOptions,
 ): Promise<express.Router> {
-  const { logger, database, discovery } = options;
-
+  const { logger, discovery, deliveryProgrammeAdminStore } = options;
   const catalog = new CatalogClient({ discoveryApi: discovery });
-  const adpDatabase = AdpDatabase.create(database);
-  const deliveryProgrammeAdminStore = new DeliveryProgrammeAdminStore(
-    await adpDatabase.get(),
-  );
 
   const router = Router();
   router.use(express.json());

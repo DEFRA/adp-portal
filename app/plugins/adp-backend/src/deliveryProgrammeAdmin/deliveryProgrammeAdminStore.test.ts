@@ -1,32 +1,31 @@
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
-import { AdpDatabase } from '../database';
 import { DeliveryProgrammeAdminStore } from './deliveryProgrammeAdminStore';
+import { initializeAdpDatabase } from '../database';
 
 describe('DeliveryProgrammeAdminStore', () => {
   const databases = TestDatabases.create();
 
   async function createDatabase(databaseId: TestDatabaseId) {
     const knex = await databases.init(databaseId);
-    const db = AdpDatabase.create({
+    await initializeAdpDatabase({
       getClient: () => Promise.resolve(knex),
     });
-    const dbClient = await db.get();
     const deliveryProgrammeAdminStore = new DeliveryProgrammeAdminStore(
-      dbClient,
+      await knex,
     );
 
-    return { dbClient, deliveryProgrammeAdminStore };
+    return { knex, deliveryProgrammeAdminStore };
   }
 
   it.each(databases.eachSupportedId())(
     'should get all Delivery Programme Admins from the database',
     async databaseId => {
-      const { deliveryProgrammeAdminStore, dbClient } = await createDatabase(
+      const { deliveryProgrammeAdminStore, knex } = await createDatabase(
         databaseId,
       );
 
       // Arrange - test case setup
-      const deliveryProgramme = await dbClient
+      const deliveryProgramme = await knex
         .first('id')
         .from('delivery_programme');
 
@@ -54,12 +53,12 @@ describe('DeliveryProgrammeAdminStore', () => {
   it.each(databases.eachSupportedId())(
     'should get Delivery Programme Admins by Delivery Programme from the database',
     async databaseId => {
-      const { deliveryProgrammeAdminStore, dbClient } = await createDatabase(
+      const { deliveryProgrammeAdminStore, knex } = await createDatabase(
         databaseId,
       );
 
       // Arrange - test case setup
-      const deliveryProgrammes = await dbClient
+      const deliveryProgrammes = await knex
         .select('id')
         .from('delivery_programme');
 
@@ -97,12 +96,12 @@ describe('DeliveryProgrammeAdminStore', () => {
   it.each(databases.eachSupportedId())(
     'should get a Delivery Programme Admin from the database',
     async databaseId => {
-      const { deliveryProgrammeAdminStore, dbClient } = await createDatabase(
+      const { deliveryProgrammeAdminStore, knex } = await createDatabase(
         databaseId,
       );
 
       // Arrange - test case setup
-      const deliveryProgrammes = await dbClient
+      const deliveryProgrammes = await knex
         .select('id')
         .from('delivery_programme');
 
@@ -134,12 +133,12 @@ describe('DeliveryProgrammeAdminStore', () => {
   it.each(databases.eachSupportedId())(
     'should insert a single Delivery Programme Admin into the database',
     async databaseId => {
-      const { deliveryProgrammeAdminStore, dbClient } = await createDatabase(
+      const { deliveryProgrammeAdminStore, knex } = await createDatabase(
         databaseId,
       );
 
       // Arrange - test case setup
-      const deliveryProgramme = await dbClient
+      const deliveryProgramme = await knex
         .first('id')
         .from('delivery_programme');
 
@@ -154,7 +153,7 @@ describe('DeliveryProgrammeAdminStore', () => {
         deliveryProgrammeAdmin,
       );
 
-      const expectedEntity = await dbClient
+      const expectedEntity = await knex
         .first('id', 'name')
         .where('id', addResult.id)
         .from('delivery_programme_pm');
@@ -173,12 +172,12 @@ describe('DeliveryProgrammeAdminStore', () => {
   it.each(databases.eachSupportedId())(
     'should insert multiple Delivery Programme Admins into the database',
     async databaseId => {
-      const { deliveryProgrammeAdminStore, dbClient } = await createDatabase(
+      const { deliveryProgrammeAdminStore, knex } = await createDatabase(
         databaseId,
       );
 
       // Arrange - test case setup
-      const deliveryProgramme = await dbClient
+      const deliveryProgramme = await knex
         .first('id')
         .from('delivery_programme');
 
@@ -198,7 +197,7 @@ describe('DeliveryProgrammeAdminStore', () => {
         },
       ]);
 
-      const expectedEntities = await dbClient
+      const expectedEntities = await knex
         .where('delivery_programme_id', deliveryProgramme.id)
         .from('delivery_programme_pm');
 
@@ -211,12 +210,12 @@ describe('DeliveryProgrammeAdminStore', () => {
   it.each(databases.eachSupportedId())(
     'should delete a Delivery Programme Admin from the database',
     async databaseId => {
-      const { deliveryProgrammeAdminStore, dbClient } = await createDatabase(
+      const { deliveryProgrammeAdminStore, knex } = await createDatabase(
         databaseId,
       );
 
       // Arrange - test case setup
-      const deliveryProgramme = await dbClient
+      const deliveryProgramme = await knex
         .first('id')
         .from('delivery_programme');
 
@@ -233,7 +232,7 @@ describe('DeliveryProgrammeAdminStore', () => {
       // Act - delete the record
       await deliveryProgrammeAdminStore.delete(addResult.id);
 
-      const expectedEntities = await dbClient
+      const expectedEntities = await knex
         .where('id', addResult.id)
         .from('delivery_programme_pm');
 

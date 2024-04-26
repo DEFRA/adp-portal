@@ -6,7 +6,7 @@ import {
 import { NotFoundError } from '@backstage/errors';
 import { createName } from '../utils/index';
 import { expectedAlbWithName } from '../testData/albTestData';
-import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
+import { initializeAdpDatabase } from '../database';
 
 describe('armsLengthBodyStore', () => {
   const databases = TestDatabases.create();

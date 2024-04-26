@@ -12,6 +12,10 @@ type Row = {
   name: string;
 };
 
+export type IDeliveryProgrammeAdminStore = {
+  [P in keyof DeliveryProgrammeAdminStore]: DeliveryProgrammeAdminStore[P];
+};
+
 export class DeliveryProgrammeAdminStore {
   constructor(private readonly client: Knex) {}
 

@@ -20,8 +20,8 @@ import {
 } from '../deliveryProject';
 import {
   DeliveryProgrammeStore,
-  ProgrammeManagerStore,
 } from '../deliveryProgramme';
+import { DeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 
 export interface ServerOptions {
   port: number;
@@ -47,43 +47,43 @@ export async function startStandaloneServer(
       },
     }),
   ).forPlugin('adp-plugin');
-  const identityClient = DefaultIdentityClient.create({
+  const identity = DefaultIdentityClient.create({
     discovery,
     issuer: await discovery.getExternalBaseUrl('auth'),
   });
   const dbClient = await database.getClient();
   const deliveryProjectStore = new DeliveryProjectStore(dbClient);
   const deliveryProgrammeStore = new DeliveryProgrammeStore(dbClient);
-  const programmeManagerStore = new ProgrammeManagerStore(dbClient);
+  const deliveryProgrammeAdminStore = new DeliveryProgrammeAdminStore(dbClient);
 
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
-    identity: identityClient,
+    identity,
     database,
     config,
   });
 
   const deliveryProgrammeRouter = createProgrammeRouter({
     logger,
-    identity: identityClient,
+    identity,
     deliveryProgrammeStore,
     deliveryProjectStore,
-    programmeManagerStore,
+    deliveryProgrammeAdminStore,
     discovery,
   });
 
   const deliveryProgrammeAdminRouter = await createDeliveryProgrammeAdminRouter(
     {
-      database,
+      deliveryProgrammeAdminStore,
       discovery,
-      identity: identityClient,
+      identity,
       logger,
     },
   );
 
   const deliveryProjectRouter = await createProjectRouter({
     logger,
-    identity: identityClient,
+    identity,
     config,
     deliveryProgrammeStore,
     deliveryProjectStore,

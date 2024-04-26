@@ -10,48 +10,9 @@ import { ConfigReader } from '@backstage/config';
 import { createDeliveryProgrammeAdminRouter } from './deliveryProgrammeAdminRouter';
 import { InputError } from '@backstage/errors';
 import { catalogTestData } from '../testData/catalogEntityTestData';
-
-let mockGetAllProgrammeAdmins: jest.Mock;
-let mockGetProgrammeAdminByProgrammeId: jest.Mock;
-let mockAddProgrammeAdmin: jest.Mock;
-let mockAddManyProgrammeAdmins: jest.Mock;
-let mockDeleteDeliveryProgrammeAdmin: jest.Mock;
-let mockGetByAADEntityRef: jest.Mock;
-
-const programmeAdminByProgrammeId = programmeManagerList.filter(
-  managers => managers.delivery_programme_id === '123',
-);
+import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 
 const programmeManagerByAADEntityRef = programmeManagerList[0];
-
-jest.mock('../deliveryProgrammeAdmin', () => {
-  return {
-    DeliveryProgrammeAdminStore: jest.fn().mockImplementation(() => {
-      mockGetAllProgrammeAdmins = jest
-        .fn()
-        .mockResolvedValue(programmeManagerList);
-      mockGetProgrammeAdminByProgrammeId = jest
-        .fn()
-        .mockResolvedValue(programmeAdminByProgrammeId);
-      mockAddProgrammeAdmin = jest.fn().mockResolvedValue(programmeManagerList);
-      mockAddManyProgrammeAdmins = jest
-        .fn()
-        .mockResolvedValue(programmeManagerList);
-      mockDeleteDeliveryProgrammeAdmin = jest.fn();
-      mockGetByAADEntityRef = jest
-        .fn()
-        .mockResolvedValue(programmeManagerByAADEntityRef);
-      return {
-        getAll: mockGetAllProgrammeAdmins,
-        get: mockGetProgrammeAdminByProgrammeId,
-        getByAADEntityRef: mockGetByAADEntityRef,
-        add: mockAddProgrammeAdmin,
-        addMany: mockAddManyProgrammeAdmins,
-        delete: mockDeleteDeliveryProgrammeAdmin,
-      };
-    }),
-  };
-});
 
 let mockGetEntities = jest.fn();
 jest.mock('@backstage/catalog-client', () => {
@@ -75,11 +36,21 @@ describe('createRouter', () => {
     getExternalBaseUrl: jest.fn(),
   };
 
+  const mockDeliveryProgrammeAdminStore: jest.Mocked<IDeliveryProgrammeAdminStore> = {
+    add: jest.fn(),
+    getByAADEntityRef: jest.fn(),
+    getByDeliveryProgramme: jest.fn(),
+    addMany: jest.fn(),
+    getAll: jest.fn(),
+    delete: jest.fn(),
+  };
+
   const mockOptions = {
     logger: getVoidLogger(),
     identity: mockIdentityApi,
     database: createTestDatabase(),
     discovery: mockDiscoveryService,
+    deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore
   };
 
   function createTestDatabase(): PluginDatabaseManager {
@@ -120,7 +91,7 @@ describe('createRouter', () => {
 
   describe('GET /deliveryProgrammeAdmins', () => {
     it('returns ok', async () => {
-      mockGetAllProgrammeAdmins.mockResolvedValueOnce([programmeManagerList]);
+      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(programmeManagerList);
       const response = await request(deliveryProgrammeAdminApp).get(
         '/deliveryProgrammeAdmins',
       );
@@ -128,7 +99,7 @@ describe('createRouter', () => {
     });
 
     it('returns bad request', async () => {
-      mockGetAllProgrammeAdmins.mockRejectedValueOnce(new InputError('error'));
+      mockDeliveryProgrammeAdminStore.getAll.mockRejectedValueOnce(new InputError('error'));
 
       const response = await request(deliveryProgrammeAdminApp).get(
         '/deliveryProgrammeAdmins',
@@ -139,7 +110,7 @@ describe('createRouter', () => {
 
   describe('POST /deliveryProgrammeAdmin/:deliveryProgrammeId', () => {
     it('returns a 201 response when programme managers are created', async () => {
-      mockAddManyProgrammeAdmins.mockResolvedValueOnce(programmeManagerList);
+      mockDeliveryProgrammeAdminStore.addMany.mockResolvedValueOnce(programmeManagerList);
       mockGetEntities.mockResolvedValueOnce(catalogTestData);
 
       const deliveryProgrammeId = '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46';
@@ -156,7 +127,7 @@ describe('createRouter', () => {
     });
 
     it('returns a 400 bad request response if an error occurs', async () => {
-      mockAddManyProgrammeAdmins.mockRejectedValueOnce(new InputError('error'));
+      mockDeliveryProgrammeAdminStore.addMany.mockRejectedValueOnce(new InputError('error'));
 
       const deliveryProgrammeId = '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46';
       const requestBody = [
@@ -174,6 +145,8 @@ describe('createRouter', () => {
 
   describe('DELETE /deliveryProgrammeAdmin/', () => {
     it('returns a 204 response when a delivery programme admin is deleted', async () => {
+      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(programmeManagerByAADEntityRef);
+
       const deliveryProgrammeAdmin = programmeManagerByAADEntityRef;
       const requestBody = {
         aadEntityRefId: deliveryProgrammeAdmin.aad_entity_ref_id,
@@ -187,7 +160,8 @@ describe('createRouter', () => {
     });
 
     it('returns a 400 bad request response if an error occurs', async () => {
-      mockDeleteDeliveryProgrammeAdmin.mockRejectedValueOnce(
+      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(programmeManagerByAADEntityRef);
+      mockDeliveryProgrammeAdminStore.delete.mockRejectedValueOnce(
         new InputError('error'),
       );
 

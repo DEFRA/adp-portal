@@ -19,20 +19,20 @@ import {
   checkForDuplicateTitle,
   getCurrentUsername,
 } from '../utils/index';
-import { IProgrammeManagerStore } from '../deliveryProgramme';
 import { Entity } from '@backstage/catalog-model';
 import {
   addProgrammeManager,
   deleteProgrammeManager,
 } from '../service-utils/deliveryProgrammeUtils';
 import { IDeliveryProjectStore } from '../deliveryProject';
+import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 
 export interface ProgrammeRouterOptions {
   logger: Logger;
   identity: IdentityApi;
   discovery: DiscoveryApi;
   deliveryProgrammeStore: IDeliveryProgrammeStore;
-  programmeManagerStore: IProgrammeManagerStore;
+  deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
   deliveryProjectStore: IDeliveryProjectStore;
 }
 
@@ -45,7 +45,7 @@ export function createProgrammeRouter(
     discovery,
     deliveryProgrammeStore,
     deliveryProjectStore,
-    programmeManagerStore,
+    deliveryProgrammeAdminStore,
   } = options;
   const catalog = new CatalogClient({ discoveryApi: discovery });
 
@@ -86,7 +86,7 @@ export function createProgrammeRouter(
       const deliveryProgramme = await deliveryProgrammeStore.get(
         _req.params.id,
       );
-      const programmeManager = await programmeManagersStore.getByDeliveryProgramme(_req.params.id);
+      const programmeManager = await deliveryProgrammeAdminStore.getByDeliveryProgramme(_req.params.id);
       if (programmeManager && deliveryProgramme !== null) {
         deliveryProgramme.programme_managers = programmeManager;
         res.json(deliveryProgramme);
@@ -131,7 +131,7 @@ export function createProgrammeRouter(
         throw new InputError('Invalid payload');
       }
 
-      const data: DeliveryProgramme[] = await deliveryProgrammesStore.getAll();
+      const data: DeliveryProgramme[] = await deliveryProgrammeStore.getAll();
 
       const isDuplicateTitle: boolean = await checkForDuplicateTitle(
         data,
@@ -181,7 +181,7 @@ export function createProgrammeRouter(
           programmeManagers,
           deliveryProgramme.id,
           deliveryProgramme,
-          programmeManagerStore,
+          deliveryProgrammeAdminStore,
           catalogEntity,
         );
       } else {
@@ -250,7 +250,7 @@ export function createProgrammeRouter(
       );
       const programmeManagers = req.body.programme_managers;
       if (programmeManagers !== undefined) {
-        const existingProgrammeManagers = await programmeManagersStore.getByDeliveryProgramme(
+        const existingProgrammeManagers = await deliveryProgrammeAdminStore.getByDeliveryProgramme(
           deliveryProgramme.id,
         );
         const updatedManagers: DeliveryProgrammeAdmin[] = [];
@@ -282,7 +282,7 @@ export function createProgrammeRouter(
           updatedManagers,
           deliveryProgramme.id,
           deliveryProgramme,
-          programmeManagerStore,
+          deliveryProgrammeAdminStore,
           catalogEntity,
         );
 
@@ -301,7 +301,7 @@ export function createProgrammeRouter(
 
         deleteProgrammeManager(
           removedManagers,
-          programmeManagersStore,
+          deliveryProgrammeAdminStore,
         );
       }
       res.status(200).json(deliveryProgramme);

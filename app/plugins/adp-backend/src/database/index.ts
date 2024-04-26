@@ -1,1 +1,1 @@
-export { AdpDatabase } from './adpDatabase';
+export { initializeAdpDatabase } from './initializeAdpDatabase';

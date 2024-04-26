@@ -1,1 +1,4 @@
-export { DeliveryProgrammeAdminStore } from './deliveryProgrammeAdminStore';
+export {
+  DeliveryProgrammeAdminStore,
+  type IDeliveryProgrammeAdminStore,
+} from './deliveryProgrammeAdminStore';

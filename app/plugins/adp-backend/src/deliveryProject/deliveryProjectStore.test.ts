@@ -6,7 +6,6 @@ import {
 import { NotFoundError } from '@backstage/errors';
 import { DeliveryProject } from '@internal/plugin-adp-common';
 import {
-  expectedProjectData,
   expectedProjectDataWithName,
 } from '../testData/projectTestData';
 import { expectedProgrammeDataWithoutManager } from '../testData/programmeTestData';

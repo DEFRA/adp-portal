@@ -13,8 +13,7 @@ import {
   expectedProgrammeDataWithName,
   expectedProgrammeDataWithoutManager,
 } from '../testData/programmeTestData';
-import { catalogTestData } from '../testData/catalogEntityTestData';
-import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
+import { initializeAdpDatabase } from '../database';
 
 describe('DeliveryProgrammeStore', () => {
   const databases = TestDatabases.create();
@@ -24,7 +23,7 @@ describe('DeliveryProgrammeStore', () => {
     await initializeAdpDatabase({
       getClient: () => Promise.resolve(knex),
     });
-    const programmeStore = new DeliveryProgrammeStore(await db.get());
+    const programmeStore = new DeliveryProgrammeStore(await knex);
 
     return { knex, programmeStore };
   }
