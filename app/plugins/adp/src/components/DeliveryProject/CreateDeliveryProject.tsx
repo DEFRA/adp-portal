@@ -1,21 +1,33 @@
-import React, {useEffect, useState} from 'react';
-import {Button} from '@material-ui/core';
-import {alertApiRef, discoveryApiRef, errorApiRef, fetchApiRef, useApi,} from '@backstage/core-plugin-api';
-import {DeliveryProjectClient} from './api/DeliveryProjectClient';
+import React, { useEffect, useState } from 'react';
+import { Button } from '@material-ui/core';
+import {
+  alertApiRef,
+  discoveryApiRef,
+  errorApiRef,
+  fetchApiRef,
+  useApi,
+} from '@backstage/core-plugin-api';
+import { DeliveryProjectClient } from './api/DeliveryProjectClient';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import {adpProjectCreatePermission, DeliveryProject} from '@internal/plugin-adp-common';
-import {useDeliveryProgrammesList} from '../../hooks/useDeliveryProgrammesList';
-import {DeliveryProjectFormFields} from './DeliveryProjectFormFields';
-import {CreateDeliveryProjectModal} from './CreateDeliveryProjectModal';
-import {isCodeUnique, isNameUnique,} from '../../utils/DeliveryProject/DeliveryProjectUtils';
-import {usePermission} from '@backstage/plugin-permission-react';
+import {
+  DeliveryProject,
+  adpProjectCreatePermission,
+} from '@internal/plugin-adp-common';
+import { useDeliveryProgrammesList } from '../../hooks/useDeliveryProgrammesList';
+import { deliveryProjectFormFields } from './deliveryProjectFormFields';
+import { CreateDeliveryProjectModal } from './CreateDeliveryProjectModal';
+import {
+  isCodeUnique,
+  isNameUnique,
+} from '../../utils/DeliveryProject/DeliveryProjectUtils';
+import { usePermission } from '@backstage/plugin-permission-react';
 
 interface CreateDeliveryProjectProps {
   refetchDeliveryProject: () => void;
 }
 
 const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
-  refetchDeliveryProject: refetchDeliveryProject,
+  refetchDeliveryProject,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
@@ -24,7 +36,7 @@ const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
   const errorApi = useApi(errorApiRef);
 
   const programmesList = useDeliveryProgrammesList();
-  const deliveryProgrammeDropDown = programmesList.map(x => x.dropdownItem);
+  const deliveryProgrammeOptions = programmesList.map(x => x.dropdownItem);
   const deliveryProgrammes = programmesList.map(x => x.programme);
 
   const deliveryProjectClient = new DeliveryProjectClient(
@@ -74,47 +86,6 @@ const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
     });
   }, [formValues.delivery_project_code, formValues.delivery_programme_id]);
 
-  function updateDeliveryProgrammeIdFromEvent() {
-    return (event: React.ChangeEvent<HTMLInputElement>) => {
-      setFormValues(values => ({
-        ...values,
-        delivery_programme_id: event.target.value,
-      }));
-    };
-  }
-
-  function updateDeliveryCodeFromEventFunction() {
-    return (event: React.ChangeEvent<HTMLInputElement>) => {
-      setFormValues(values => ({
-        ...values,
-        delivery_project_code: event.target.value,
-      }));
-    };
-  }
-
-  const getFieldsAndOptions = () => {
-    return DeliveryProjectFormFields.map(field => {
-      if (field.name === 'delivery_programme_id') {
-        return {
-          ...field,
-          options: deliveryProgrammeDropDown,
-          onChange: updateDeliveryProgrammeIdFromEvent(),
-        };
-      }
-      if (field.name === 'team_type') {
-        const options = [
-          { label: 'Delivery Team', value: 'delivery' },
-          { label: 'Platform Team', value: 'platform' },
-        ];
-        return { ...field, options: options };
-      }
-      if (field.name === 'delivery_project_code') {
-        return { ...field, onChange: updateDeliveryCodeFromEventFunction() };
-      }
-      return field;
-    });
-  };
-
   const handleSubmit = async (deliveryProject: DeliveryProject) => {
     try {
       const data = await deliveryProjectClient.getDeliveryProjects();
@@ -163,17 +134,17 @@ const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
 
   return (
     <>
-    {allowedToCreateAdpProject && ( 
-      <Button
-        variant="contained"
-        size="large"
-        color="primary"
-        startIcon={<AddBoxIcon />}
-        onClick={handleOpenModal}
-        data-testid="create-delivery-project-button"
-      >
-        Add Delivery Project
-      </Button>
+      {allowedToCreateAdpProject && (
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          startIcon={<AddBoxIcon />}
+          onClick={handleOpenModal}
+          data-testid="create-delivery-project-button"
+        >
+          Add Delivery Project
+        </Button>
       )}
       {isModalOpen && (
         <CreateDeliveryProjectModal
@@ -182,7 +153,21 @@ const CreateDeliveryProject: React.FC<CreateDeliveryProjectProps> = ({
           onSubmit={handleSubmit}
           initialValues={{ ...initialValues, namespace: formValues.namespace }}
           mode="create"
-          fields={getFieldsAndOptions()}
+          fields={deliveryProjectFormFields({
+            deliveryProgrammeOptions,
+            onProjectCodeChange(event) {
+              setFormValues(values => ({
+                ...values,
+                delivery_project_code: event.target.value,
+              }));
+            },
+            onProgrammeIdChange(event) {
+              setFormValues(values => ({
+                ...values,
+                delivery_programme_id: event.target.value,
+              }));
+            },
+          })}
         />
       )}
     </>

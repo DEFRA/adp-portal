@@ -24,7 +24,7 @@ import {
 import CreateDeliveryProject from './CreateDeliveryProject';
 import { DeliveryProjectClient } from './api/DeliveryProjectClient';
 import { DeliveryProjectApi } from './api/DeliveryProjectApi';
-import { DeliveryProjectFormFields } from './DeliveryProjectFormFields';
+import { deliveryProjectFormFields } from './deliveryProjectFormFields';
 import { useDeliveryProgrammesList } from '../../hooks/useDeliveryProgrammesList';
 import { usePermission } from '@backstage/plugin-permission-react';
 import {
@@ -45,7 +45,7 @@ export const DeliveryProjectViewPageComponent = () => {
   const discoveryApi = useApi(discoveryApiRef);
   const fetchApi = useApi(fetchApiRef);
   const programmesList = useDeliveryProgrammesList();
-  const deliveryProgrammeDropDown = programmesList.map(x => x.dropdownItem);
+  const deliveryProgrammeOptions = programmesList.map(x => x.dropdownItem);
 
   const deliveryProjectClient: DeliveryProjectApi = new DeliveryProjectClient(
     discoveryApi,
@@ -123,25 +123,6 @@ export const DeliveryProjectViewPageComponent = () => {
     } catch (e: any) {
       errorApi.post(e);
     }
-  };
-
-  const getFieldsAndOptions = () => {
-    return DeliveryProjectFormFields.map(field => {
-      if (field.name === 'delivery_programme_id') {
-        return { ...field, options: deliveryProgrammeDropDown };
-      }
-      if (field.name === 'team_type') {
-        const options = [
-          { label: 'Delivery Team', value: 'delivery' },
-          { label: 'Platform Team', value: 'platform' },
-        ];
-        return { ...field, options: options };
-      }
-      if (field.name === 'namespace') {
-        return { ...field, disabled: true };
-      }
-      return field;
-    });
   };
 
   const columns: TableColumn[] = [
@@ -234,7 +215,10 @@ export const DeliveryProjectViewPageComponent = () => {
             onSubmit={handleUpdate}
             initialValues={formData}
             mode="edit"
-            fields={getFieldsAndOptions()}
+            fields={deliveryProjectFormFields({
+              deliveryProgrammeOptions,
+              disableNamespace: true,
+            })}
           />
         )}
       </Content>

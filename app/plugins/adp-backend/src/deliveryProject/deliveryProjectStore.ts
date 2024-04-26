@@ -20,7 +20,50 @@ type Row = {
   ado_project: string;
   team_type: string;
   service_owner: string;
+  github_team_visibility?: 'public' | 'private';
 };
+
+const selectColumns = [
+  'id',
+  'title',
+  'name',
+  'alias',
+  'description',
+  'finance_code',
+  'delivery_programme_id',
+  'delivery_project_code',
+  'namespace',
+  'ado_project',
+  'created_at',
+  'updated_at',
+  'updated_by',
+  'team_type',
+  'service_owner',
+  'github_team_visibility',
+] as const;
+
+function mapRow(
+  row: Pick<Row, (typeof selectColumns)[number]>,
+): DeliveryProject {
+  return {
+    id: row.id,
+    name: row.name,
+    title: row.title,
+    alias: row?.alias,
+    description: row.description,
+    finance_code: row?.finance_code,
+    delivery_programme_id: row.delivery_programme_id,
+    delivery_project_code: row.delivery_project_code,
+    namespace: row.namespace,
+    ado_project: row.ado_project,
+    created_at: new Date(row.created_at),
+    updated_at: new Date(row.updated_at),
+    updated_by: row?.updated_by,
+    team_type: row.team_type,
+    service_owner: row.service_owner,
+    github_team_visibility: row.github_team_visibility,
+  };
+}
 
 export type PartialDeliveryProject = Partial<DeliveryProject>;
 
@@ -28,85 +71,19 @@ export class DeliveryProjectStore {
   constructor(private readonly client: Knex) {}
   async getAll(): Promise<DeliveryProject[]> {
     const DeliveryProjects = await this.client<Row>(TABLE_NAME)
-      .select(
-        'id',
-        'title',
-        'name',
-        'alias',
-        'description',
-        'finance_code',
-        'delivery_programme_id',
-        'delivery_project_code',
-        'namespace',
-        'ado_project',
-        'created_at',
-        'updated_at',
-        'updated_by',
-        'team_type',
-        'service_owner',
-      )
+      .select(...selectColumns)
       .orderBy('created_at');
 
-    return DeliveryProjects.map(row => ({
-      id: row.id,
-      name: row.name,
-      title: row.title,
-      alias: row?.alias,
-      description: row.description,
-      finance_code: row?.finance_code,
-      delivery_programme_id: row.delivery_programme_id,
-      delivery_project_code: row.delivery_project_code,
-      namespace: row.namespace,
-      ado_project: row.ado_project,
-      created_at: new Date(row.created_at),
-      updated_at: new Date(row.updated_at),
-      updated_by: row?.updated_by,
-      team_type: row.team_type,
-      service_owner: row.service_owner,
-    }));
+    return DeliveryProjects.map(mapRow);
   }
 
   async get(id: string): Promise<DeliveryProject | null> {
     const row = await this.client<Row>(TABLE_NAME)
       .where('id', id)
-      .select(
-        'id',
-        'title',
-        'name',
-        'alias',
-        'description',
-        'finance_code',
-        'delivery_programme_id',
-        'delivery_project_code',
-        'namespace',
-        'ado_project',
-        'created_at',
-        'updated_at',
-        'updated_by',
-        'team_type',
-        'service_owner',
-      )
+      .select(...selectColumns)
       .first();
 
-    return row
-      ? {
-          id: row.id,
-          name: row.name,
-          title: row.title,
-          alias: row?.alias,
-          description: row.description,
-          finance_code: row?.finance_code,
-          delivery_programme_id: row.delivery_programme_id,
-          delivery_project_code: row.delivery_project_code,
-          namespace: row.namespace,
-          ado_project: row.ado_project,
-          created_at: new Date(row.created_at),
-          updated_at: new Date(row.updated_at),
-          updated_by: row?.updated_by,
-          team_type: row.team_type,
-          service_owner: row.service_owner,
-        }
-      : null;
+    return row ? mapRow(row) : null;
   }
 
   async add(
@@ -127,6 +104,7 @@ export class DeliveryProjectStore {
         updated_by: author,
         team_type: DeliveryProject.team_type,
         service_owner: DeliveryProject.service_owner,
+        github_team_visibility: DeliveryProject.github_team_visibility,
       },
       ['id', 'created_at', 'updated_at', 'name'],
     );
