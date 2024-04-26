@@ -1,0 +1,1 @@
+export { ProgrammeAdminViewPageComponent } from './ProgrammeAdminViewPageComponent';

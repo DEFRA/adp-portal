@@ -1,6 +1,11 @@
 import React, { useState, useReducer } from 'react';
-import { TableColumn } from '@backstage/core-components';
-import { ProgrammeManager } from '@internal/plugin-adp-common';
+import {
+  Content,
+  ContentHeader,
+  Page,
+  TableColumn,
+} from '@backstage/core-components';
+import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { Button, Grid } from '@material-ui/core';
 import AddProgrammeAdmin from './AddProgrammeAdmin';
 import { DefaultTable } from '@internal/plugin-adp/src/utils/Table';
@@ -10,7 +15,7 @@ import { ProgrammeAdminFormFields } from './ProgrammeAdminFormFields';
 
 export const ProgrammeAdminViewPageComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tableData, setTableData] = useState<ProgrammeManager[]>([]);
+  const [tableData, setTableData] = useState<DeliveryProgrammeAdmin[]>([]);
   const [formData, setFormData] = useState({});
   const [key, refetchProgrammeAdmin] = useReducer(i => {
     return i + 1;
@@ -36,11 +41,11 @@ export const ProgrammeAdminViewPageComponent = () => {
 
   //TODO: getAllProgrammeManagersById
 
-  const handleEdit = async (programmeManager: ProgrammeManager) => {
+  const handleEdit = async (programmeManager: DeliveryProgrammeAdmin) => {
     // TODO: handle edit
   };
 
-  const handleUpdate = async (programmeManager: ProgrammeManager) => {
+  const handleUpdate = async (programmeManager: DeliveryProgrammeAdmin) => {
     // TODO: handle update
   };
 
@@ -75,7 +80,7 @@ export const ProgrammeAdminViewPageComponent = () => {
       width: '',
       highlight: true,
       render: (rowData: any) => {
-        const data = rowData as ProgrammeManager;
+        const data = rowData as DeliveryProgrammeAdmin;
         return (
           //  TODO: Add permission
           <Button
@@ -92,30 +97,32 @@ export const ProgrammeAdminViewPageComponent = () => {
   ];
 
   return (
-    <Grid container spacing={2}>
-      <Grid item container justifyContent="flex-end">
-        {/* TODO: Add permissions */}
-        <AddProgrammeAdmin refetchProgrammeAdmin={refetchProgrammeAdmin} />
-      </Grid>
-      <Grid item xs={12}>
-        <div>
-          <DefaultTable
-            data={tableData}
-            columns={columns}
-            title="View all"
-            isCompact={true}
-          />
+    <Page themeId="tool">
+      <Content>
+        <ContentHeader title="Delivery Programme Admins">
           {/* TODO: Add permissions */}
-          <ActionsModal
-            open={isModalOpen}
-            onClose={handleCloseModal}
-            onSubmit={handleUpdate}
-            initialValues={formData}
-            mode="edit"
-            fields={getOptionFields()}
-          />
-        </div>
-      </Grid>
-    </Grid>
+          <AddProgrammeAdmin refetchProgrammeAdmin={refetchProgrammeAdmin} />
+        </ContentHeader>
+        <Grid item>
+          <div>
+            <DefaultTable
+              data={tableData}
+              columns={columns}
+              title="View all"
+              isCompact={true}
+            />
+            {/* TODO: Add permissions */}
+            <ActionsModal
+              open={isModalOpen}
+              onClose={handleCloseModal}
+              onSubmit={handleUpdate}
+              initialValues={formData}
+              mode="edit"
+              fields={getOptionFields()}
+            />
+          </div>
+        </Grid>
+      </Content>
+    </Page>
   );
 };

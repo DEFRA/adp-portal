@@ -3,7 +3,7 @@ import {
   createRoutableExtension,
 } from '@backstage/core-plugin-api';
 
-import { rootRouteRef } from './routes';
+import { manageProgrammeAdminEntityContentRouteRef, rootRouteRef } from './routes';
 
 export const adpPlugin = createPlugin({
   id: 'adp',
@@ -53,3 +53,11 @@ export const DeliveryProjectViewPage = adpPlugin.provide(
     mountPoint: rootRouteRef,
   }),
 );
+
+export const EntityPageManageProgrammeAdminContent = adpPlugin.provide(
+  createRoutableExtension({
+    name: 'EntityPageManageProgrammeAdminContent',
+    component: () => import('./components/EntityPage/ManageProgrammeAdmin').then(m => m.ProgrammeAdminViewPageComponent),
+    mountPoint: manageProgrammeAdminEntityContentRouteRef
+  })
+)

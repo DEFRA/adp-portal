@@ -4,7 +4,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import { ProgrammeAdminModal } from './ProgrammeAdminModal';
 import { ProgrammeAdminFormFields } from './ProgrammeAdminFormFields';
 import { useProgrammeManagersList } from '@internal/plugin-adp/src/hooks/useProgrammeManagersList';
-import { ProgrammeManager } from '@internal/plugin-adp-common';
+import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 
 interface AddProgrammeAdminProps {
   refetchProgrammeAdmin: () => void;
@@ -15,7 +15,7 @@ const AddProgrammeAdmin: React.FC<AddProgrammeAdminProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const initialValues: Partial<ProgrammeManager> = {
+  const initialValues: Partial<DeliveryProgrammeAdmin> = {
     delivery_programme_id: 'delivery programme name', //TODO: Set initial value correctly
   };
 
