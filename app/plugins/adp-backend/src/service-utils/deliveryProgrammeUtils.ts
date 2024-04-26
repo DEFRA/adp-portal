@@ -1,4 +1,5 @@
-import { DeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin/deliveryProgrammeAdminStore';
+// TODO Update
+import { IProgrammeManagerStore } from '../deliveryProgramme/deliveryProgrammeManagerStore';
 import { Entity } from '@backstage/catalog-model';
 import { NotFoundError } from '@backstage/errors';
 import {
@@ -27,7 +28,7 @@ export async function addProgrammeManager(
   programmeManagers: DeliveryProgrammeAdmin[],
   deliveryProgrammeId: string,
   deliveryProgramme: DeliveryProgramme,
-  ProgrammeManagerStore: DeliveryProgrammeAdminStore,
+  ProgrammeManagerStore: IProgrammeManagerStore,
   catalogEntity: Entity[],
 ) {
   if (programmeManagers !== undefined) {
@@ -50,7 +51,7 @@ export async function addProgrammeManager(
 
 export async function deleteProgrammeManager(
   programmeManagers: DeliveryProgrammeAdmin[],
-  programmeManagerStore: DeliveryProgrammeAdminStore,
+  programmeManagerStore: IProgrammeManagerStore,
 ) {
   for (const manager of programmeManagers) {
     await programmeManagerStore.delete(manager.id);

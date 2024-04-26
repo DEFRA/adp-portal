@@ -1,9 +1,15 @@
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 import {
+  DeliveryProgrammeStore,
+  DeliveryProjectGithubTeamsSyncronizer,
+  DeliveryProjectStore,
+  GitHubTeamsApi,
+  ProgrammeManagerStore,
   createAlbRouter,
   createProgrammeRouter,
   createProjectRouter,
   createDeliveryProgrammeAdminRouter
+  initializeAdpDatabase,
 } from '@internal/plugin-adp-backend';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
@@ -14,30 +20,42 @@ export default async function createPlugin({
   database,
   config,
 }: PluginEnvironment): Promise<Router> {
-  const identityClient = DefaultIdentityClient.create({
+  await initializeAdpDatabase(database);
+
+  const dbClient = await database.getClient();
+  const deliveryProjectStore = new DeliveryProjectStore(dbClient);
+  const deliveryProgrammeStore = new DeliveryProgrammeStore(dbClient);
+  const programmeManagerStore = new ProgrammeManagerStore(dbClient);
+  const identity = DefaultIdentityClient.create({
     discovery,
     issuer: await discovery.getExternalBaseUrl('auth'),
   });
 
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
-    identity: identityClient,
+    identity,
     database,
     config,
   });
-
-  const deliveryProgrammeRouter = await createProgrammeRouter({
+  const deliveryProgrammeRouter = createProgrammeRouter({
     logger,
-    identity: identityClient,
-    database,
+    identity,
     discovery,
+    deliveryProgrammeStore,
+    deliveryProjectStore,
+    programmeManagerStore,
   });
-
-  const deliveryProjectRouter = await createProjectRouter({
+  const deliveryProjectRouter = createProjectRouter({
     logger,
-    identity: identityClient,
-    database,
+    identity,
     config,
+    deliveryProgrammeStore,
+    deliveryProjectStore,
+    teamSyncronizer: new DeliveryProjectGithubTeamsSyncronizer(
+      new GitHubTeamsApi(config),
+      deliveryProjectStore,
+      deliveryProgrammeStore,
+    ),
   });
 
   const deliveryProgrameAdminRouter = await createDeliveryProgrammeAdminRouter({

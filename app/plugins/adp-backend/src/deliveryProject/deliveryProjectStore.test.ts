@@ -1,24 +1,27 @@
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
-import { AdpDatabase } from '../database/adpDatabase';
 import {
   DeliveryProjectStore,
   PartialDeliveryProject,
 } from './deliveryProjectStore';
 import { NotFoundError } from '@backstage/errors';
 import { DeliveryProject } from '@internal/plugin-adp-common';
-import { expectedProjectDataWithName } from '../testData/projectTestData';
+import {
+  expectedProjectData,
+  expectedProjectDataWithName,
+} from '../testData/projectTestData';
 import { expectedProgrammeDataWithoutManager } from '../testData/programmeTestData';
 import { expectedAlbWithName } from '../testData/albTestData';
+import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 
 describe('DeliveryProjectStore', () => {
   const databases = TestDatabases.create();
 
   async function createDatabase(databaseId: TestDatabaseId) {
     const knex = await databases.init(databaseId);
-    const db = AdpDatabase.create({
+    await initializeAdpDatabase({
       getClient: () => Promise.resolve(knex),
     });
-    const projectStore = new DeliveryProjectStore(await db.get());
+    const projectStore = new DeliveryProjectStore(knex);
 
     return { knex, projectStore: projectStore };
   }
@@ -278,4 +281,60 @@ describe('DeliveryProjectStore', () => {
       ).rejects.toThrow(NotFoundError);
     },
   );
+
+  describe('#getByName', () => {
+    it.each(databases.eachSupportedId())(
+      'Should get the project when it exists',
+      async databaseId => {
+        // arrange
+        const { knex, projectStore } = await createDatabase(databaseId);
+        const insertAlbId = await knex('arms_length_body').insert(
+          expectedAlbWithName,
+          ['id'],
+        );
+        const albId = insertAlbId[0].id;
+        const programme = {
+          ...expectedProgrammeDataWithoutManager,
+          arms_length_body_id: albId,
+        };
+        const insertProgrammeId = await knex('delivery_programme').insert(
+          programme,
+          ['id'],
+        );
+        const programmeId = insertProgrammeId[0].id;
+        const expectedProject = [
+          {
+            ...expectedProjectDataWithName,
+            delivery_programme_id: programmeId,
+            updated_by: 'test',
+          },
+        ];
+        const insertProjectId = await knex('delivery_project').insert(
+          expectedProject,
+          ['id'],
+        );
+        const expected = insertProjectId[0];
+        const name = expectedProject[0].name;
+
+        // act
+        const actual = await projectStore.getByName(name);
+
+        // assert
+        expect(actual).toMatchObject(expected);
+      },
+    );
+    it.each(databases.eachSupportedId())(
+      'Should return null when the project doesnt exist',
+      async databaseId => {
+        // arrange
+        const { projectStore } = await createDatabase(databaseId);
+
+        // act
+        const actual = await projectStore.getByName('abc');
+
+        // assert
+        expect(actual).toBeNull();
+      },
+    );
+  });
 });

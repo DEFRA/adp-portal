@@ -1,3 +1,5 @@
+import { DeliveryProgramme } from '@internal/plugin-adp-common';
+
 export const expectedProgrammeData = {
   programme_managers: [],
   title: 'Test title expectedProgrammeData',
@@ -8,16 +10,28 @@ export const expectedProgrammeData = {
   url: 'Test url',
 };
 
-export const expectedProgrammeDataWithManager = {
+export const expectedProgrammeDataWithManager: DeliveryProgramme = {
   programme_managers: [
     {
       aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
+      delivery_programme_id: '',
+      email: '',
+      id: '',
+      name: '',
     },
     {
       aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73422',
+      delivery_programme_id: '',
+      email: '',
+      id: '',
+      name: '',
     },
     {
       aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73423',
+      delivery_programme_id: '',
+      email: '',
+      id: '',
+      name: '',
     },
   ],
   title: 'Test title expectedProgrammeDataWithManager',
@@ -27,6 +41,10 @@ export const expectedProgrammeDataWithManager = {
   delivery_programme_code: 'Test delivery_programme_code',
   url: 'Test url',
   name: 'test-title-expectedprogrammedatawithmanager',
+  id: '',
+  created_at: new Date(),
+  updated_at: new Date(),
+  arms_length_body_id: '',
 };
 
 export const expectedProgrammeDataWithName = {
@@ -37,6 +55,11 @@ export const expectedProgrammeDataWithName = {
   delivery_programme_code: 'Test delivery_programme_code',
   url: 'Test url',
   name: 'test-title-expectedprogrammedatawithname',
+  id: '',
+  programme_managers: [],
+  arms_length_body_id: '',
+  created_at: new Date(),
+  updated_at: new Date(),
 };
 
 export const expectedProgrammeDataWithoutManager = {

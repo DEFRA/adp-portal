@@ -1,5 +1,4 @@
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
-import { AdpDatabase } from '../database/adpDatabase';
 import {
   DeliveryProgrammeStore,
   PartialDeliveryProgramme,
@@ -14,13 +13,15 @@ import {
   expectedProgrammeDataWithName,
   expectedProgrammeDataWithoutManager,
 } from '../testData/programmeTestData';
+import { catalogTestData } from '../testData/catalogEntityTestData';
+import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 
 describe('DeliveryProgrammeStore', () => {
   const databases = TestDatabases.create();
 
   async function createDatabase(databaseId: TestDatabaseId) {
     const knex = await databases.init(databaseId);
-    const db = AdpDatabase.create({
+    await initializeAdpDatabase({
       getClient: () => Promise.resolve(knex),
     });
     const programmeStore = new DeliveryProgrammeStore(await db.get());

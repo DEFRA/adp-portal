@@ -1,5 +1,4 @@
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
-import { AdpDatabase } from '../database/adpDatabase';
 import {
   ArmsLengthBodyStore,
   PartialArmsLengthBody,
@@ -7,16 +6,17 @@ import {
 import { NotFoundError } from '@backstage/errors';
 import { createName } from '../utils/index';
 import { expectedAlbWithName } from '../testData/albTestData';
+import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 
 describe('armsLengthBodyStore', () => {
   const databases = TestDatabases.create();
 
   async function createDatabase(databaseId: TestDatabaseId) {
     const knex = await databases.init(databaseId);
-    const db = AdpDatabase.create({
+    await initializeAdpDatabase({
       getClient: () => Promise.resolve(knex),
     });
-    const store = new ArmsLengthBodyStore(await db.get());
+    const store = new ArmsLengthBodyStore(knex);
     return { knex, store };
   }
 

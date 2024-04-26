@@ -66,11 +66,18 @@ function mapRow(
 }
 
 export type PartialDeliveryProject = Partial<DeliveryProject>;
+export type IDeliveryProjectStore = {
+  [P in keyof DeliveryProjectStore]: DeliveryProjectStore[P];
+};
 
 export class DeliveryProjectStore {
-  constructor(private readonly client: Knex) {}
+  readonly #client: Knex<any, any[]>;
+
+  constructor(client: Knex) {
+    this.#client = client;
+  }
   async getAll(): Promise<DeliveryProject[]> {
-    const DeliveryProjects = await this.client<Row>(TABLE_NAME)
+    const DeliveryProjects = await this.#client<Row>(TABLE_NAME)
       .select(...selectColumns)
       .orderBy('created_at');
 
@@ -78,8 +85,16 @@ export class DeliveryProjectStore {
   }
 
   async get(id: string): Promise<DeliveryProject | null> {
-    const row = await this.client<Row>(TABLE_NAME)
+    const row = await this.#client<Row>(TABLE_NAME)
       .where('id', id)
+      .select(...selectColumns)
+      .first();
+
+    return row ? mapRow(row) : null;
+  }
+  async getByName(name: string): Promise<DeliveryProject | null> {
+    const row = await this.#client<Row>(TABLE_NAME)
+      .where('name', name)
       .select(...selectColumns)
       .first();
 
@@ -90,7 +105,7 @@ export class DeliveryProjectStore {
     DeliveryProject: Omit<DeliveryProject, 'id' | 'created_at' | 'updated_at'>,
     author: string,
   ): Promise<DeliveryProject> {
-    const insertResult = await this.client<Row>(TABLE_NAME).insert(
+    const insertResult = await this.#client<Row>(TABLE_NAME).insert(
       {
         title: DeliveryProject.title,
         name: createName(DeliveryProject.title),
@@ -149,7 +164,7 @@ export class DeliveryProjectStore {
     if (Object.keys(updatedData).length === 0) {
       return existingProject;
     }
-    await this.client<Row>(TABLE_NAME)
+    await this.#client<Row>(TABLE_NAME)
       .where('id', DeliveryProject.id)
       .update({
         ...updatedData,

@@ -13,6 +13,15 @@ import { createProgrammeRouter } from './deliveryProgrammeRouter';
 import { Router } from 'express';
 import { createProjectRouter } from './deliveryProjectRouter';
 import { createDeliveryProgrammeAdminRouter } from './deliveryProgrammeAdminRouter';
+import {
+  DeliveryProjectGithubTeamsSyncronizer,
+  DeliveryProjectStore,
+  GitHubTeamsApi,
+} from '../deliveryProject';
+import {
+  DeliveryProgrammeStore,
+  ProgrammeManagerStore,
+} from '../deliveryProgramme';
 
 export interface ServerOptions {
   port: number;
@@ -42,6 +51,10 @@ export async function startStandaloneServer(
     discovery,
     issuer: await discovery.getExternalBaseUrl('auth'),
   });
+  const dbClient = await database.getClient();
+  const deliveryProjectStore = new DeliveryProjectStore(dbClient);
+  const deliveryProgrammeStore = new DeliveryProgrammeStore(dbClient);
+  const programmeManagerStore = new ProgrammeManagerStore(dbClient);
 
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
@@ -50,10 +63,12 @@ export async function startStandaloneServer(
     config,
   });
 
-  const deliveryProgrammeRouter = await createProgrammeRouter({
+  const deliveryProgrammeRouter = createProgrammeRouter({
     logger,
     identity: identityClient,
-    database,
+    deliveryProgrammeStore,
+    deliveryProjectStore,
+    programmeManagerStore,
     discovery,
   });
 
@@ -69,8 +84,14 @@ export async function startStandaloneServer(
   const deliveryProjectRouter = await createProjectRouter({
     logger,
     identity: identityClient,
-    database,
     config,
+    deliveryProgrammeStore,
+    deliveryProjectStore,
+    teamSyncronizer: new DeliveryProjectGithubTeamsSyncronizer(
+      new GitHubTeamsApi(config),
+      deliveryProjectStore,
+      deliveryProgrammeStore,
+    ),
   });
 
   const router = Router();

@@ -1,7 +1,7 @@
 import { Config } from '@backstage/config';
 import { DeliveryProject } from '@internal/plugin-adp-common';
 import fetch from 'node-fetch';
-import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
+import { IDeliveryProgrammeStore } from '../deliveryProgramme';
 
 export type FluxConfig = {
   key: string;
@@ -30,10 +30,10 @@ export type FluxTeamConfig = {
 
 export class FluxConfigApi {
   private readonly apiBaseUrl: string;
-  private readonly deliveryProgrammeStore: DeliveryProgrammeStore;
+  private readonly deliveryProgrammeStore: IDeliveryProgrammeStore;
   private readonly config: Config;
 
-  constructor(config: Config, deliveryProgrammeStore: DeliveryProgrammeStore) {
+  constructor(config: Config, deliveryProgrammeStore: IDeliveryProgrammeStore) {
     this.apiBaseUrl = config.getString('adp.fluxOnboarding.apiBaseUrl');
     this.deliveryProgrammeStore = deliveryProgrammeStore;
     this.config = config;
@@ -52,7 +52,9 @@ export class FluxConfigApi {
       );
     }
 
-    const configValues = this.parseConfigKeyValues('adp.fluxOnboarding.defaultConfigVariables');
+    const configValues = this.parseConfigKeyValues(
+      'adp.fluxOnboarding.defaultConfigVariables',
+    );
 
     const teamConfig = {
       programmeName: deliveryProgramme.name,
@@ -103,11 +105,12 @@ export class FluxConfigApi {
     const keyValueMap = new Map();
 
     if (this.config.has(configKey)) {
-      this.config
-        .getConfigArray(configKey)
-        .forEach(configVar => {
-          keyValueMap.set(configVar.getString('key'), configVar.getString('value'));
-        });
+      this.config.getConfigArray(configKey).forEach(configVar => {
+        keyValueMap.set(
+          configVar.getString('key'),
+          configVar.getString('value'),
+        );
+      });
     }
 
     const keyValues = Object.fromEntries(keyValueMap.entries());
