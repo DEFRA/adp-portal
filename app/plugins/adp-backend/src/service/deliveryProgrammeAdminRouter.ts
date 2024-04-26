@@ -1,12 +1,11 @@
 import { errorHandler } from '@backstage/backend-common';
-import { DiscoveryService } from '@backstage/backend-plugin-api';
 import { IdentityApi } from '@backstage/plugin-auth-node';
 import { Logger } from 'winston';
 import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import express from 'express';
 import Router from 'express-promise-router';
 import { InputError } from '@backstage/errors';
-import { CatalogClient } from '@backstage/catalog-client';
+import { CatalogApi } from '@backstage/catalog-client';
 import { UserEntityV1alpha1 } from '@backstage/catalog-model';
 import { CreateDeliveryProgrammeAdmin } from '../utils';
 
@@ -23,14 +22,13 @@ export interface DeliveryProgrammeAdminRouterOptions {
   logger: Logger;
   identity: IdentityApi;
   deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore
-  discovery: DiscoveryService;
+  catalog: CatalogApi
 }
 
-export async function createDeliveryProgrammeAdminRouter(
+export function createDeliveryProgrammeAdminRouter(
   options: DeliveryProgrammeAdminRouterOptions,
-): Promise<express.Router> {
-  const { logger, discovery, deliveryProgrammeAdminStore } = options;
-  const catalog = new CatalogClient({ discoveryApi: discovery });
+): express.Router {
+  const { logger, catalog, deliveryProgrammeAdminStore } = options;
 
   const router = Router();
   router.use(express.json());
@@ -127,7 +125,7 @@ export async function createDeliveryProgrammeAdminRouter(
 async function getDeliveryProgrammeAdminsFromCatalog(
   aadEntityRefs: string[],
   deliveryProgrammeId: string,
-  catalog: CatalogClient,
+  catalog: CatalogApi,
 ): Promise<CreateDeliveryProgrammeAdmin[]> {
   const catalogUsersResponse = await catalog.getEntities({
     filter: {

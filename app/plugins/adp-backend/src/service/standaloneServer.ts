@@ -22,6 +22,7 @@ import {
   DeliveryProgrammeStore,
 } from '../deliveryProgramme';
 import { DeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import { CatalogClient } from '@backstage/catalog-client';
 
 export interface ServerOptions {
   port: number;
@@ -55,6 +56,7 @@ export async function startStandaloneServer(
   const deliveryProjectStore = new DeliveryProjectStore(dbClient);
   const deliveryProgrammeStore = new DeliveryProgrammeStore(dbClient);
   const deliveryProgrammeAdminStore = new DeliveryProgrammeAdminStore(dbClient);
+  const catalog = new CatalogClient({discoveryApi: discovery});
 
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
@@ -69,19 +71,19 @@ export async function startStandaloneServer(
     deliveryProgrammeStore,
     deliveryProjectStore,
     deliveryProgrammeAdminStore,
-    discovery,
+    catalog,
   });
 
-  const deliveryProgrammeAdminRouter = await createDeliveryProgrammeAdminRouter(
+  const deliveryProgrammeAdminRouter = createDeliveryProgrammeAdminRouter(
     {
       deliveryProgrammeAdminStore,
-      discovery,
+      catalog,
       identity,
       logger,
     },
   );
 
-  const deliveryProjectRouter = await createProjectRouter({
+  const deliveryProjectRouter = createProjectRouter({
     logger,
     identity,
     config,

@@ -9,7 +9,6 @@ import { createProjectRouter } from './deliveryProjectRouter';
 import { ConfigReader } from '@backstage/config';
 import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { InputError } from '@backstage/errors';
-import { catalogTestData } from '../testData/catalogEntityTestData';
 import { expectedProgrammeDataWithName } from '../testData/programmeTestData';
 import {
   IDeliveryProjectGithubTeamsSyncronizer,
@@ -18,16 +17,6 @@ import {
 import { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 import { randomUUID } from 'node:crypto';
-
-jest.mock('@backstage/catalog-client', () => ({
-  CatalogClient: jest.fn().mockImplementation(() => ({
-    getEntities: async () => {
-      return {
-        items: catalogTestData,
-      };
-    },
-  })),
-}));
 
 let mockCreateFluxConfig: jest.Mock;
 let mockGetFluxConfig: jest.Mock;
@@ -84,13 +73,11 @@ describe('createRouter', () => {
     update: jest.fn(),
   };
 
-  const mockDiscoveryApi = { getBaseUrl: jest.fn() };
   const mockOptions = {
     logger: getVoidLogger(),
     identity: mockIdentityApi,
     database: createTestDatabase(),
     config: mockConfig,
-    discovery: mockDiscoveryApi,
     teamSyncronizer: mockSyncronizer,
     deliveryProjectStore: mockDeliveryProjectStore,
     deliveryProgrammeStore: mockDeliveryProgrammeStore,

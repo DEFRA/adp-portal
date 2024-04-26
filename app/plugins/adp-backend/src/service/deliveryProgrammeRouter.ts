@@ -4,8 +4,7 @@ import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
-import { DiscoveryApi } from '@backstage/core-plugin-api';
-import { CatalogClient } from '@backstage/catalog-client';
+import { CatalogApi } from '@backstage/catalog-client';
 import {
   IDeliveryProgrammeStore,
   PartialDeliveryProgramme,
@@ -30,10 +29,10 @@ import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 export interface ProgrammeRouterOptions {
   logger: Logger;
   identity: IdentityApi;
-  discovery: DiscoveryApi;
   deliveryProgrammeStore: IDeliveryProgrammeStore;
   deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
   deliveryProjectStore: IDeliveryProjectStore;
+  catalog: CatalogApi;
 }
 
 export function createProgrammeRouter(
@@ -42,12 +41,11 @@ export function createProgrammeRouter(
   const {
     logger,
     identity,
-    discovery,
     deliveryProgrammeStore,
     deliveryProjectStore,
     deliveryProgrammeAdminStore,
+    catalog
   } = options;
-  const catalog = new CatalogClient({ discoveryApi: discovery });
 
   const router = Router();
   router.use(express.json());

@@ -1,27 +1,17 @@
 import express from 'express';
 import request from 'supertest';
 import { programmeManagerList } from '../testData/programmeTestData';
+import { getVoidLogger } from '@backstage/backend-common';
 import {
-  DatabaseManager,
-  PluginDatabaseManager,
-  getVoidLogger,
-} from '@backstage/backend-common';
-import { ConfigReader } from '@backstage/config';
-import { createDeliveryProgrammeAdminRouter } from './deliveryProgrammeAdminRouter';
+  DeliveryProgrammeAdminRouterOptions,
+  createDeliveryProgrammeAdminRouter,
+} from './deliveryProgrammeAdminRouter';
 import { InputError } from '@backstage/errors';
 import { catalogTestData } from '../testData/catalogEntityTestData';
 import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import { CatalogApi } from '@backstage/catalog-client';
 
 const programmeManagerByAADEntityRef = programmeManagerList[0];
-
-let mockGetEntities = jest.fn();
-jest.mock('@backstage/catalog-client', () => {
-  return {
-    CatalogClient: jest
-      .fn()
-      .mockImplementation(() => ({ getEntities: mockGetEntities })),
-  };
-});
 
 describe('createRouter', () => {
   let deliveryProgrammeAdminApp: express.Express;
@@ -31,40 +21,39 @@ describe('createRouter', () => {
     }),
   };
 
-  const mockDiscoveryService = {
-    getBaseUrl: jest.fn(),
-    getExternalBaseUrl: jest.fn(),
+  const mockDeliveryProgrammeAdminStore: jest.Mocked<IDeliveryProgrammeAdminStore> =
+    {
+      add: jest.fn(),
+      getByAADEntityRef: jest.fn(),
+      getByDeliveryProgramme: jest.fn(),
+      addMany: jest.fn(),
+      getAll: jest.fn(),
+      delete: jest.fn(),
+    };
+
+  const mockCatalogClient: jest.Mocked<CatalogApi> = {
+    addLocation: jest.fn(),
+    getEntities: jest.fn(),
+    getEntitiesByRefs: jest.fn(),
+    getEntityAncestors: jest.fn(),
+    getEntityByRef: jest.fn(),
+    getEntityFacets: jest.fn(),
+    getLocationByEntity: jest.fn(),
+    getLocationById: jest.fn(),
+    getLocationByRef: jest.fn(),
+    queryEntities: jest.fn(),
+    refreshEntity: jest.fn(),
+    removeEntityByUid: jest.fn(),
+    removeLocationById: jest.fn(),
+    validateEntity: jest.fn(),
   };
 
-  const mockDeliveryProgrammeAdminStore: jest.Mocked<IDeliveryProgrammeAdminStore> = {
-    add: jest.fn(),
-    getByAADEntityRef: jest.fn(),
-    getByDeliveryProgramme: jest.fn(),
-    addMany: jest.fn(),
-    getAll: jest.fn(),
-    delete: jest.fn(),
-  };
-
-  const mockOptions = {
+  const mockOptions: DeliveryProgrammeAdminRouterOptions = {
     logger: getVoidLogger(),
     identity: mockIdentityApi,
-    database: createTestDatabase(),
-    discovery: mockDiscoveryService,
-    deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore
+    catalog: mockCatalogClient,
+    deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
   };
-
-  function createTestDatabase(): PluginDatabaseManager {
-    return DatabaseManager.fromConfig(
-      new ConfigReader({
-        backend: {
-          database: {
-            client: 'better-sqlite3',
-            connection: ':memory:',
-          },
-        },
-      }),
-    ).forPlugin('adp');
-  }
 
   beforeAll(async () => {
     const deliveryProgrammeAdminRouter =
@@ -74,11 +63,11 @@ describe('createRouter', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockGetEntities.mockResolvedValue(catalogTestData);
+    mockCatalogClient.getEntities.mockResolvedValue(catalogTestData);
   });
 
   afterEach(() => {
-    mockGetEntities.mockClear();
+    mockCatalogClient.getEntities.mockClear();
   });
 
   describe('GET /health', () => {
@@ -91,7 +80,9 @@ describe('createRouter', () => {
 
   describe('GET /deliveryProgrammeAdmins', () => {
     it('returns ok', async () => {
-      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(programmeManagerList);
+      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
+        programmeManagerList,
+      );
       const response = await request(deliveryProgrammeAdminApp).get(
         '/deliveryProgrammeAdmins',
       );
@@ -99,7 +90,9 @@ describe('createRouter', () => {
     });
 
     it('returns bad request', async () => {
-      mockDeliveryProgrammeAdminStore.getAll.mockRejectedValueOnce(new InputError('error'));
+      mockDeliveryProgrammeAdminStore.getAll.mockRejectedValueOnce(
+        new InputError('error'),
+      );
 
       const response = await request(deliveryProgrammeAdminApp).get(
         '/deliveryProgrammeAdmins',
@@ -110,8 +103,10 @@ describe('createRouter', () => {
 
   describe('POST /deliveryProgrammeAdmin/:deliveryProgrammeId', () => {
     it('returns a 201 response when programme managers are created', async () => {
-      mockDeliveryProgrammeAdminStore.addMany.mockResolvedValueOnce(programmeManagerList);
-      mockGetEntities.mockResolvedValueOnce(catalogTestData);
+      mockDeliveryProgrammeAdminStore.addMany.mockResolvedValueOnce(
+        programmeManagerList,
+      );
+      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
 
       const deliveryProgrammeId = '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46';
       const requestBody = [
@@ -127,7 +122,9 @@ describe('createRouter', () => {
     });
 
     it('returns a 400 bad request response if an error occurs', async () => {
-      mockDeliveryProgrammeAdminStore.addMany.mockRejectedValueOnce(new InputError('error'));
+      mockDeliveryProgrammeAdminStore.addMany.mockRejectedValueOnce(
+        new InputError('error'),
+      );
 
       const deliveryProgrammeId = '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46';
       const requestBody = [
@@ -145,7 +142,9 @@ describe('createRouter', () => {
 
   describe('DELETE /deliveryProgrammeAdmin/', () => {
     it('returns a 204 response when a delivery programme admin is deleted', async () => {
-      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(programmeManagerByAADEntityRef);
+      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(
+        programmeManagerByAADEntityRef,
+      );
 
       const deliveryProgrammeAdmin = programmeManagerByAADEntityRef;
       const requestBody = {
@@ -160,7 +159,9 @@ describe('createRouter', () => {
     });
 
     it('returns a 400 bad request response if an error occurs', async () => {
-      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(programmeManagerByAADEntityRef);
+      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(
+        programmeManagerByAADEntityRef,
+      );
       mockDeliveryProgrammeAdminStore.delete.mockRejectedValueOnce(
         new InputError('error'),
       );

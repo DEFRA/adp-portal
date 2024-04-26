@@ -5,7 +5,7 @@ import {
 } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
-import { createAlbRouter } from './armsLengthBodyRouter';
+import { AlbRouterOptions, createAlbRouter } from './armsLengthBodyRouter';
 import { ConfigReader } from '@backstage/config';
 import { expectedAlbWithName } from '../testData/albTestData';
 import { InputError } from '@backstage/errors';
@@ -46,7 +46,7 @@ describe('createRouter', () => {
       programmeAdminGroup: 'test',
     },
   });
-  const mockOptions = {
+  const mockOptions: AlbRouterOptions = {
     logger: getVoidLogger(),
     identity: mockIdentityApi,
     database: createTestDatabase(),

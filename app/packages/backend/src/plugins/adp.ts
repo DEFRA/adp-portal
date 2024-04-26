@@ -13,6 +13,7 @@ import {
 } from '@internal/plugin-adp-backend';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
+import { CatalogClient } from '@backstage/catalog-client';
 
 export default async function createPlugin({
   logger,
@@ -30,6 +31,7 @@ export default async function createPlugin({
     discovery,
     issuer: await discovery.getExternalBaseUrl('auth'),
   });
+  const catalog = new CatalogClient({ discoveryApi: discovery });
 
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
@@ -41,10 +43,10 @@ export default async function createPlugin({
   const deliveryProgrammeRouter = createProgrammeRouter({
     logger,
     identity,
-    discovery,
     deliveryProgrammeStore,
     deliveryProjectStore,
-    deliveryProgrammeAdminStore: deliveryProgrammeAdminStore,
+    deliveryProgrammeAdminStore,
+    catalog
   });
   
   const deliveryProjectRouter = createProjectRouter({
@@ -60,9 +62,9 @@ export default async function createPlugin({
     ),
   });
 
-  const deliveryProgrameAdminRouter = await createDeliveryProgrammeAdminRouter({
+  const deliveryProgrameAdminRouter = createDeliveryProgrammeAdminRouter({
     deliveryProgrammeAdminStore,
-    discovery,
+    catalog,
     identity,
     logger
   })
