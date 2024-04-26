@@ -1,0 +1,5 @@
+name: ${TST2_CLUSTER_NAME}
+url: ${TST2_CLUSTER_API_SERVER_ADDRESS}
+authProvider: azure
+skipTLSVerify: true
+skipMetricsLookup: true
