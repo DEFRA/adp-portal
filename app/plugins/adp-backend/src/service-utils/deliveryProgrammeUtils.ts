@@ -50,20 +50,10 @@ export async function addProgrammeManager(
 
 export async function deleteProgrammeManager(
   programmeManagers: DeliveryProgrammeAdmin[],
-  deliveryProgrammeId: string,
-  ProgrammeManagerStore: DeliveryProgrammeAdminStore,
+  programmeManagerStore: DeliveryProgrammeAdminStore,
 ) {
   for (const manager of programmeManagers) {
-    const store = {
-      aad_entity_ref_id: manager.aad_entity_ref_id,
-      delivery_programme_id: deliveryProgrammeId,
-      email: manager.email,
-      name: manager.name,
-    };
-    await ProgrammeManagerStore.delete(
-      store.aad_entity_ref_id,
-      store.delivery_programme_id,
-    );
+    await programmeManagerStore.delete(manager.id);
   }
 }
 

@@ -11,45 +11,43 @@ import { createDeliveryProgrammeAdminRouter } from './deliveryProgrammeAdminRout
 import { InputError } from '@backstage/errors';
 import { catalogTestData } from '../testData/catalogEntityTestData';
 
-let mockGetAllProgrammeManagers: jest.Mock;
-let mockGetProgrammeManagerByProgrammeId: jest.Mock;
-let mockAddProgrammeManagers: jest.Mock;
-let mockAddManyProgrammeManagers: jest.Mock;
-let mockUpdateProgrammeManagers: jest.Mock;
+let mockGetAllProgrammeAdmins: jest.Mock;
+let mockGetProgrammeAdminByProgrammeId: jest.Mock;
+let mockAddProgrammeAdmin: jest.Mock;
+let mockAddManyProgrammeAdmins: jest.Mock;
+let mockDeleteDeliveryProgrammeAdmin: jest.Mock;
+let mockGetByAADEntityRef: jest.Mock;
 
-const managerByProgrammeId = programmeManagerList.filter(
+const programmeAdminByProgrammeId = programmeManagerList.filter(
   managers => managers.delivery_programme_id === '123',
 );
 
-const mockUpdatedManagers = programmeManagerList.filter(
-  managers =>
-    managers.delivery_programme_id === '123' &&
-    managers.aad_entity_ref_id !== 'a9dc2414-0626-43d2-993d-a53aac4d73422',
-);
+const programmeManagerByAADEntityRef = programmeManagerList[0];
+
 jest.mock('../deliveryProgrammeAdmin', () => {
   return {
     DeliveryProgrammeAdminStore: jest.fn().mockImplementation(() => {
-      mockGetAllProgrammeManagers = jest
+      mockGetAllProgrammeAdmins = jest
         .fn()
         .mockResolvedValue(programmeManagerList);
-      mockGetProgrammeManagerByProgrammeId = jest
+      mockGetProgrammeAdminByProgrammeId = jest
         .fn()
-        .mockResolvedValue(managerByProgrammeId);
-      mockAddProgrammeManagers = jest
-        .fn()
-        .mockResolvedValue(programmeManagerList);
-      mockAddManyProgrammeManagers = jest
+        .mockResolvedValue(programmeAdminByProgrammeId);
+      mockAddProgrammeAdmin = jest.fn().mockResolvedValue(programmeManagerList);
+      mockAddManyProgrammeAdmins = jest
         .fn()
         .mockResolvedValue(programmeManagerList);
-      mockUpdateProgrammeManagers = jest
+      mockDeleteDeliveryProgrammeAdmin = jest.fn();
+      mockGetByAADEntityRef = jest
         .fn()
-        .mockResolvedValue(mockUpdatedManagers);
+        .mockResolvedValue(programmeManagerByAADEntityRef);
       return {
-        getAll: mockGetAllProgrammeManagers,
-        get: mockGetProgrammeManagerByProgrammeId,
-        add: mockAddProgrammeManagers,
-        addMany: mockAddManyProgrammeManagers,
-        update: mockUpdateProgrammeManagers,
+        getAll: mockGetAllProgrammeAdmins,
+        get: mockGetProgrammeAdminByProgrammeId,
+        getByAADEntityRef: mockGetByAADEntityRef,
+        add: mockAddProgrammeAdmin,
+        addMany: mockAddManyProgrammeAdmins,
+        delete: mockDeleteDeliveryProgrammeAdmin,
       };
     }),
   };
@@ -104,7 +102,7 @@ describe('createRouter', () => {
   });
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
     mockGetEntities.mockResolvedValue(catalogTestData);
   });
 
@@ -122,7 +120,7 @@ describe('createRouter', () => {
 
   describe('GET /deliveryProgrammeAdmins', () => {
     it('returns ok', async () => {
-      mockGetAllProgrammeManagers.mockResolvedValueOnce([programmeManagerList]);
+      mockGetAllProgrammeAdmins.mockResolvedValueOnce([programmeManagerList]);
       const response = await request(deliveryProgrammeAdminApp).get(
         '/deliveryProgrammeAdmins',
       );
@@ -130,9 +128,7 @@ describe('createRouter', () => {
     });
 
     it('returns bad request', async () => {
-      mockGetAllProgrammeManagers.mockRejectedValueOnce(
-        new InputError('error'),
-      );
+      mockGetAllProgrammeAdmins.mockRejectedValueOnce(new InputError('error'));
 
       const response = await request(deliveryProgrammeAdminApp).get(
         '/deliveryProgrammeAdmins',
@@ -143,7 +139,7 @@ describe('createRouter', () => {
 
   describe('POST /deliveryProgrammeAdmin/:deliveryProgrammeId', () => {
     it('returns a 201 response when programme managers are created', async () => {
-      mockAddManyProgrammeManagers.mockResolvedValueOnce(programmeManagerList);
+      mockAddManyProgrammeAdmins.mockResolvedValueOnce(programmeManagerList);
       mockGetEntities.mockResolvedValueOnce(catalogTestData);
 
       const deliveryProgrammeId = '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46';
@@ -160,7 +156,7 @@ describe('createRouter', () => {
     });
 
     it('returns a 400 bad request response if an error occurs', async () => {
-      mockAddManyProgrammeManagers.mockRejectedValueOnce(new InputError('error'));
+      mockAddManyProgrammeAdmins.mockRejectedValueOnce(new InputError('error'));
 
       const deliveryProgrammeId = '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46';
       const requestBody = [
@@ -173,6 +169,38 @@ describe('createRouter', () => {
         .post(`/deliveryProgrammeAdmin/${deliveryProgrammeId}`)
         .send(requestBody);
       expect(response.status).toEqual(400);
-    })
+    });
+  });
+
+  describe('DELETE /deliveryProgrammeAdmin/', () => {
+    it('returns a 204 response when a delivery programme admin is deleted', async () => {
+      const deliveryProgrammeAdmin = programmeManagerByAADEntityRef;
+      const requestBody = {
+        aadEntityRefId: deliveryProgrammeAdmin.aad_entity_ref_id,
+        deliveryProgrammeId: deliveryProgrammeAdmin.delivery_programme_id,
+      };
+
+      const response = await request(deliveryProgrammeAdminApp)
+        .del('/deliveryProgrammeAdmin')
+        .send(requestBody);
+      expect(response.status).toEqual(204);
+    });
+
+    it('returns a 400 bad request response if an error occurs', async () => {
+      mockDeleteDeliveryProgrammeAdmin.mockRejectedValueOnce(
+        new InputError('error'),
+      );
+
+      const deliveryProgrammeAdmin = programmeManagerByAADEntityRef;
+      const requestBody = {
+        aadEntityRefId: deliveryProgrammeAdmin.aad_entity_ref_id,
+        deliveryProgrammeId: deliveryProgrammeAdmin.delivery_programme_id,
+      };
+
+      const response = await request(deliveryProgrammeAdminApp)
+        .del(`/deliveryProgrammeAdmin`)
+        .send(requestBody);
+      expect(response.status).toEqual(400);
+    });
   });
 });

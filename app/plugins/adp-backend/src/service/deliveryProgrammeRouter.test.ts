@@ -49,6 +49,7 @@ let mockGetAllProgrammeManagers: jest.Mock;
 let mockGetProgrammeManagerByProgrammeId: jest.Mock;
 let mockAddProgrammeManagers: jest.Mock;
 let mockUpdateProgrammeManagers: jest.Mock;
+let mockDeleteProgrammeAdmin: jest.Mock;
 
 const managerByProgrammeId = programmeManagerList.filter(
   managers => managers.delivery_programme_id === '123',

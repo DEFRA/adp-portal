@@ -303,7 +303,6 @@ export async function createProgrammeRouter(
 
         deleteProgrammeManager(
           removedManagers,
-          deliveryProgramme.id,
           programmeManagersStore,
         );
       }

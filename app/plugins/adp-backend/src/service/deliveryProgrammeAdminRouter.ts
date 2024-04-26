@@ -12,7 +12,12 @@ import { UserEntityV1alpha1 } from '@backstage/catalog-model';
 import { CreateDeliveryProgrammeAdmin } from '../utils';
 
 type CreateDeliveryProgrammeAdminRequest = {
-  aad_entity_ref_id: string
+  aadEntityRefId: string;
+};
+
+type DeleteDeliveryProgrammeAdminRequest = {
+  aadEntityRefId: string;
+  deliveryProgrammeId: string;
 };
 
 export interface DeliveryProgrammeAdminRouterOptions {
@@ -59,17 +64,20 @@ export async function createDeliveryProgrammeAdminRouter(
     async (req, res) => {
       try {
         const deliveryProgrammeId = req.params.deliveryProgrammeId;
-        const deliveryProgrammeAADRefs = req.body as CreateDeliveryProgrammeAdminRequest[];
+        const deliveryProgrammeAADRefs =
+          req.body as CreateDeliveryProgrammeAdminRequest[];
         let deliveryProgrammeAdmins: CreateDeliveryProgrammeAdmin[] = [];
 
         if (deliveryProgrammeAADRefs !== undefined) {
           deliveryProgrammeAdmins = await getDeliveryProgrammeAdminsFromCatalog(
-            deliveryProgrammeAADRefs.map(ref => ref.aad_entity_ref_id),
+            deliveryProgrammeAADRefs.map(ref => ref.aadEntityRefId),
             deliveryProgrammeId,
             catalog,
           );
 
-          deliveryProgrammeAdmins = await deliveryProgrammeAdminStore.addMany(deliveryProgrammeAdmins);
+          deliveryProgrammeAdmins = await deliveryProgrammeAdminStore.addMany(
+            deliveryProgrammeAdmins,
+          );
         }
 
         res.status(201).json(deliveryProgrammeAdmins);
@@ -84,6 +92,40 @@ export async function createDeliveryProgrammeAdminRouter(
     },
   );
 
+  router.delete('/deliveryProgrammeAdmin', async (req, res) => {
+    try {
+      const deleteRequest = req.body as DeleteDeliveryProgrammeAdminRequest;
+
+      const deliveryProgrammeAdmin =
+        await deliveryProgrammeAdminStore.getByAADEntityRef(
+          deleteRequest.aadEntityRefId,
+          deleteRequest.deliveryProgrammeId,
+        );
+
+      if (deliveryProgrammeAdmin !== undefined) {
+        await deliveryProgrammeAdminStore.delete(deliveryProgrammeAdmin.id);
+
+        logger.info(
+          `DELETE /deliveryProgrammeAdmin: Deleted Delivery Programme Admin with aadEntityRefId ${deleteRequest.aadEntityRefId} and deliveryProgrammeId ${deleteRequest.deliveryProgrammeId}`,
+        );
+
+        res.status(204).end();
+      } else {
+        logger.warn(
+          `DELETE /deliveryProgrammeAdmin: Could not find Delivery Programme Admin with aadEntityRefId ${deleteRequest.aadEntityRefId} and deliveryProgrammeId ${deleteRequest.deliveryProgrammeId}`,
+        );
+        res.status(404).end();
+      }
+    } catch (error) {
+      const typedError = error as Error;
+      logger.error(
+        `DELETE /deliveryProgrammeAdmin. Could not delete delivery programme admin: ${typedError.message}`,
+        typedError,
+      );
+      throw new InputError(typedError.message);
+    }
+  });
+
   router.use(errorHandler());
   return router;
 }
@@ -93,7 +135,6 @@ async function getDeliveryProgrammeAdminsFromCatalog(
   deliveryProgrammeId: string,
   catalog: CatalogClient,
 ): Promise<CreateDeliveryProgrammeAdmin[]> {
-  // TODO: Refactor to use getEntitiesByRefs - this returns the entire catalog
   const catalogUsersResponse = await catalog.getEntities({
     filter: {
       kind: 'User',
@@ -130,5 +171,7 @@ async function getDeliveryProgrammeAdminsFromCatalog(
     }
   });
 
-  return users.filter((user) => user !== undefined) as CreateDeliveryProgrammeAdmin[];
+  return users.filter(
+    user => user !== undefined,
+  ) as CreateDeliveryProgrammeAdmin[];
 }
