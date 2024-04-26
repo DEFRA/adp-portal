@@ -1,34 +1,45 @@
-import { PluginDatabaseManager, errorHandler } from '@backstage/backend-common';
+import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
-import { AdpDatabase } from '../database/adpDatabase';
 import {
-  DeliveryProjectStore,
+  IDeliveryProjectStore,
   PartialDeliveryProject,
 } from '../deliveryProject/deliveryProjectStore';
 import { DeliveryProject } from '@internal/plugin-adp-common';
-import { checkForDuplicateProjectCode, checkForDuplicateTitle, getCurrentUsername } from '../utils/index';
-import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
-import { FluxConfigApi } from '../deliveryProject/fluxConfigApi';
+import {
+  checkForDuplicateProjectCode,
+  checkForDuplicateTitle,
+  getCurrentUsername,
+} from '../utils/index';
+import { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import {
+  FluxConfigApi,
+  IDeliveryProjectGithubTeamsSyncronizer,
+} from '../deliveryProject';
 import { Config } from '@backstage/config';
 export interface ProjectRouterOptions {
   logger: Logger;
   identity: IdentityApi;
-  database: PluginDatabaseManager;
   config: Config;
+  teamSyncronizer: IDeliveryProjectGithubTeamsSyncronizer;
+  deliveryProjectStore: IDeliveryProjectStore;
+  deliveryProgrammeStore: IDeliveryProgrammeStore;
 }
 
-export async function createProjectRouter(
+export function createProjectRouter(
   options: ProjectRouterOptions,
-): Promise<express.Router> {
-  const { logger, identity, database, config } = options;
-  const adpDatabase = AdpDatabase.create(database);
-  const connection = await adpDatabase.get();
-  const deliveryProjectStore = new DeliveryProjectStore(connection);
-  const deliveryProgrammeStore = new DeliveryProgrammeStore(connection);
+): express.Router {
+  const {
+    logger,
+    identity,
+    config,
+    teamSyncronizer,
+    deliveryProgrammeStore,
+    deliveryProjectStore,
+  } = options;
   const fluxConfigApi = new FluxConfigApi(config, deliveryProgrammeStore);
 
   const router = Router();
@@ -92,7 +103,10 @@ export async function createProjectRouter(
           author,
         );
 
-        await fluxConfigApi.createFluxConfig(deliveryProject);
+        await Promise.allSettled([
+          fluxConfigApi.createFluxConfig(deliveryProject),
+          teamSyncronizer.syncronize(deliveryProject.name),
+        ]);
 
         res.status(201).json(deliveryProject);
       }
@@ -152,6 +166,7 @@ export async function createProjectRouter(
         req.body,
         author,
       );
+      await teamSyncronizer.syncronize(deliveryProject.name);
       res.status(200).json(deliveryProject);
     } catch (error) {
       const deliveryProjectError = error as Error;
@@ -162,6 +177,16 @@ export async function createProjectRouter(
       throw new InputError(deliveryProjectError.message);
     }
   });
+
+  router.put(
+    '/deliveryProject/:projectName/github/teams/sync',
+    async (req, res) => {
+      const { projectName } = req.params;
+      const result = await teamSyncronizer.syncronize(projectName);
+      res.status(200).send(result);
+    },
+  );
+
   router.use(errorHandler());
   return router;
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { TestApiProvider } from '@backstage/test-utils';
-
 import {
   alertApiRef,
   errorApiRef,
@@ -27,7 +26,7 @@ jest.mock(
       getDeliveryProgrammes: jest
         .fn()
         .mockResolvedValue([{ id: '1', title: 'prg1' }]),
-      getProgrammeManagers: jest.fn().mockResolvedValue([
+      getDeliveryProgrammeAdmins: jest.fn().mockResolvedValue([
         {
           id: '1',
           delivery_programme_id: '1',

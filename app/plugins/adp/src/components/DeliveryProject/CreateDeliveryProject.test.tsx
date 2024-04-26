@@ -113,6 +113,7 @@ describe('Create Delivery Project', () => {
         team_type: 'delivery',
         service_owner: 'x@y.com',
         ado_project: 'defra-ffc',
+        github_team_visibility: 'public',
         namespace: 'prg-tst',
         created_at: new Date(),
         updated_at: new Date(),
@@ -129,9 +130,15 @@ describe('Create Delivery Project', () => {
       target: { value: 'Description 1' },
     });
 
-    const select = rendered.getByLabelText('Delivery Programme');
-    fireEvent.keyDown(select, { key: 'ArrowDown' });
+    const deliveryProgramme = rendered.getByLabelText('Delivery Programme');
+    fireEvent.keyDown(deliveryProgramme, { key: 'ArrowDown' });
     fireEvent.click(rendered.getByText('Programme1'));
+
+    const githubTeamVisibility = rendered.getByLabelText(
+      'GitHub Team Visibility',
+    );
+    fireEvent.keyDown(githubTeamVisibility, { key: 'ArrowDown' });
+    fireEvent.click(rendered.getByText('Publicly visible'));
 
     fireEvent.change(rendered.getByLabelText('Service Code'), {
       target: { value: 'tst' },
@@ -176,9 +183,15 @@ describe('Create Delivery Project', () => {
       target: { value: 'Description 1' },
     });
 
-    const select = rendered.getByLabelText('Delivery Programme');
-    fireEvent.keyDown(select, { key: 'ArrowDown' });
+    const deliveryProgramme = rendered.getByLabelText('Delivery Programme');
+    fireEvent.keyDown(deliveryProgramme, { key: 'ArrowDown' });
     fireEvent.click(rendered.getByText('Programme1'));
+
+    const githubTeamVisibility = rendered.getByLabelText(
+      'GitHub Team Visibility',
+    );
+    fireEvent.keyDown(githubTeamVisibility, { key: 'ArrowDown' });
+    fireEvent.click(rendered.getByText('Publicly visible'));
 
     fireEvent.change(rendered.getByLabelText('Service Code'), {
       target: { value: 'tst' },
@@ -217,9 +230,15 @@ describe('Create Delivery Project', () => {
       target: { value: 'Description 1' },
     });
 
-    const select = rendered.getByLabelText('Delivery Programme');
-    fireEvent.keyDown(select, { key: 'ArrowDown' });
+    const deliveryProgramme = rendered.getByLabelText('Delivery Programme');
+    fireEvent.keyDown(deliveryProgramme, { key: 'ArrowDown' });
     fireEvent.click(rendered.getByText('Programme1'));
+
+    const githubTeamVisibility = rendered.getByLabelText(
+      'GitHub Team Visibility',
+    );
+    fireEvent.keyDown(githubTeamVisibility, { key: 'ArrowDown' });
+    fireEvent.click(rendered.getByText('Publicly visible'));
 
     fireEvent.change(rendered.getByLabelText('Service Code'), {
       target: { value: 'tst' },
@@ -256,9 +275,15 @@ describe('Create Delivery Project', () => {
       target: { value: 'Description 1' },
     });
 
-    const select = rendered.getByLabelText('Delivery Programme');
-    fireEvent.keyDown(select, { key: 'ArrowDown' });
+    const deliveryProgramme = rendered.getByLabelText('Delivery Programme');
+    fireEvent.keyDown(deliveryProgramme, { key: 'ArrowDown' });
     fireEvent.click(rendered.getByText('Programme1'));
+
+    const githubTeamVisibility = rendered.getByLabelText(
+      'GitHub Team Visibility',
+    );
+    fireEvent.keyDown(githubTeamVisibility, { key: 'ArrowDown' });
+    fireEvent.click(rendered.getByText('Publicly visible'));
 
     fireEvent.change(rendered.getByLabelText('Service Code'), {
       target: { value: 'tst' },

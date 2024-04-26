@@ -14,13 +14,19 @@ import {
   createGithubTeamAction,
   addGithubTeamToRepoAction,
   filters,
+  addDeliveryProjectToRepo,
+  createGithubClient,
 } from '@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions';
 import { createHttpBackstageAction } from '@roadiehq/scaffolder-backend-module-http-request';
+import { AdpClient } from '@internal/plugin-adp-backend';
 
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
   const catalogClient = new CatalogClient({
+    discoveryApi: env.discovery,
+  });
+  const adpClient = new AdpClient({
     discoveryApi: env.discovery,
   });
 
@@ -58,6 +64,11 @@ export default async function createPlugin(
     addGithubTeamToRepoAction({
       integrations: integrations,
       config: env.config,
+    }),
+    addDeliveryProjectToRepo({
+      config: env.config,
+      getGithubClient: org => createGithubClient(integrations, env.config, org),
+      adpClient,
     }),
     createHttpBackstageAction({ discovery: env.discovery }),
   ];

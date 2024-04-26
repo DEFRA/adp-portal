@@ -8,6 +8,7 @@ export const expectedProjectData = {
   ado_project: 'Test ado_project',
   team_type: 'Test team_type',
   service_owner: 'Test service_owner',
+  github_team_visibility: 'public' as const,
 };
 
 export const expectedProjectDataWithName = {
@@ -21,4 +22,9 @@ export const expectedProjectDataWithName = {
   name: 'Test name',
   team_type: 'Test team_type',
   service_owner: 'Test service_owner',
+  github_team_visibility: 'public' as const,
+  id: '123',
+  delivery_programme_id: '',
+  created_at: new Date(),
+  updated_at: new Date(),
 };

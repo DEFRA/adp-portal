@@ -2,7 +2,7 @@ export type DeliveryProgramme = {
     id: string; 
     created_at: Date;
     updated_at: Date;
-    programme_managers: ProgrammeManager[];
+    programme_managers: DeliveryProgrammeAdmin[];
     title: string;
     readonly name: string;
     alias?: string;
@@ -15,7 +15,7 @@ export type DeliveryProgramme = {
     children?: string[];
 }
 
-export type ProgrammeManager = {
+export type DeliveryProgrammeAdmin = {
     id: string, 
     delivery_programme_id: string;
     aad_entity_ref_id: string;

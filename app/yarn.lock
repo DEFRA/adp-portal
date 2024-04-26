@@ -2382,12 +2382,32 @@
     cross-fetch "^4.0.0"
     uri-template "^2.0.0"
 
+"@backstage/catalog-client@^1.6.4":
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/@backstage/catalog-client/-/catalog-client-1.6.4.tgz#b0823a97606c5a92a78df365b8c4f48b8456f5f1"
+  integrity sha512-sItchBGNqZBCXqTu/U+EZhimhiKdZBEJOQ28fFeFYGJ+wm8Kfz82d2KbwVPgK41aN20gftChN5ZXBkcyddiUFQ==
+  dependencies:
+    "@backstage/catalog-model" "^1.4.5"
+    "@backstage/errors" "^1.2.4"
+    cross-fetch "^4.0.0"
+    uri-template "^2.0.0"
+
 "@backstage/catalog-model@^1.2.1", "@backstage/catalog-model@^1.4.3", "@backstage/catalog-model@^1.4.4":
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/@backstage/catalog-model/-/catalog-model-1.4.4.tgz#53ebbe754c72a0e01bb7ea025af0358dc459db9c"
   integrity sha512-JiCeAgUdRMQTjO0+34QeKDxYh/UQrXtDUvVic5z11uf8WuX3L9N7LiPOqJG+3t9TAyc5side21nDD7REdHoVFA==
   dependencies:
     "@backstage/errors" "^1.2.3"
+    "@backstage/types" "^1.1.1"
+    ajv "^8.10.0"
+    lodash "^4.17.21"
+
+"@backstage/catalog-model@^1.4.5":
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/@backstage/catalog-model/-/catalog-model-1.4.5.tgz#b8f6309ff12b72dffdfe852d615c553ae13452c0"
+  integrity sha512-I4QOCy0pSXJikQWgC8MWj2zDRCgQnnmvnNOOnPFcg7hIIIzeV0sGp6d3Qi7bc2tvzXt3fT3biSOCgGOWi1IJKA==
+  dependencies:
+    "@backstage/errors" "^1.2.4"
     "@backstage/types" "^1.1.1"
     ajv "^8.10.0"
     lodash "^4.17.21"
@@ -2717,6 +2737,14 @@
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@backstage/errors/-/errors-1.2.3.tgz#6418d3ece63b13d14e32d44ec4db0f8866b0b1c9"
   integrity sha512-3YtYRKLNeRaSCzKSikNFoemesacDoEY0UwZAq7lnzCCpiCpSCfg7UA4y7wfjadFFU9Pd6nckUg2BzOk9keL15w==
+  dependencies:
+    "@backstage/types" "^1.1.1"
+    serialize-error "^8.0.1"
+
+"@backstage/errors@^1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@backstage/errors/-/errors-1.2.4.tgz#2ba79c6308e87b0de99edf499e1c82477d3d6e8a"
+  integrity sha512-JBhKn9KwZTzp/AaOC0vBncKCM1vI9Z8rKKyr9vj3wt3SSgCnDPxNwVz7SlXa2Rc9TOQq0Yk3olkmQE9U+S5uWg==
   dependencies:
     "@backstage/types" "^1.1.1"
     serialize-error "^8.0.1"
@@ -19604,9 +19632,9 @@ mute-stream@~1.0.0:
   integrity sha512-avsJQhyd+680gKXyG/sQc0nXaC6rBkPOfyHYcFb9+hdkqQkR9bdnkJ0AMZhke0oesPqIO+mFFJ+IdBc7mst4IA==
 
 mysql2@^2.2.5, mysql2@^3.9.4:
-  version "3.9.5"
-  resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-3.9.5.tgz#6bd39c853874d48841a2e0705002847048d54b06"
-  integrity sha512-idfCjWgJEIU2zToiAsy1UO9RQ+VvCrbfB9458LrComY7mJmAIvjdD+/58VmNLFUeQpKE4xZZqD+yZe3tlu62NQ==
+  version "3.9.7"
+  resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-3.9.7.tgz#843755daf65b5ef08afe545fe14b8fb62824741a"
+  integrity sha512-KnJT8vYRcNAZv73uf9zpXqNbvBG7DJrs+1nACsjZP1HMJ1TgXEy8wnNilXAn/5i57JizXKtrUtwDB7HxT9DDpw==
   dependencies:
     denque "^2.1.0"
     generate-function "^2.3.1"

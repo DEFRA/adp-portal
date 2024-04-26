@@ -12,6 +12,17 @@ import { createAlbRouter } from './armsLengthBodyRouter';
 import { createProgrammeRouter } from './deliveryProgrammeRouter';
 import { Router } from 'express';
 import { createProjectRouter } from './deliveryProjectRouter';
+import { createDeliveryProgrammeAdminRouter } from './deliveryProgrammeAdminRouter';
+import {
+  DeliveryProjectGithubTeamsSyncronizer,
+  DeliveryProjectStore,
+  GitHubTeamsApi,
+} from '../deliveryProject';
+import {
+  DeliveryProgrammeStore,
+} from '../deliveryProgramme';
+import { DeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import { CatalogClient } from '@backstage/catalog-client';
 
 export interface ServerOptions {
   port: number;
@@ -37,41 +48,59 @@ export async function startStandaloneServer(
       },
     }),
   ).forPlugin('adp-plugin');
+  const identity = DefaultIdentityClient.create({
+    discovery,
+    issuer: await discovery.getExternalBaseUrl('auth'),
+  });
+  const dbClient = await database.getClient();
+  const deliveryProjectStore = new DeliveryProjectStore(dbClient);
+  const deliveryProgrammeStore = new DeliveryProgrammeStore(dbClient);
+  const deliveryProgrammeAdminStore = new DeliveryProgrammeAdminStore(dbClient);
+  const catalog = new CatalogClient({discoveryApi: discovery});
 
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
-    identity: DefaultIdentityClient.create({
-      discovery,
-      issuer: await discovery.getExternalBaseUrl('auth'),
-    }),
+    identity,
     database,
     config,
   });
 
-  const deliveryProgrammeRouter = await createProgrammeRouter({
+  const deliveryProgrammeRouter = createProgrammeRouter({
     logger,
-    identity: DefaultIdentityClient.create({
-      discovery,
-      issuer: await discovery.getExternalBaseUrl('auth'),
-    }),
-    database,
-    discovery,
+    identity,
+    deliveryProgrammeStore,
+    deliveryProjectStore,
+    deliveryProgrammeAdminStore,
+    catalog,
   });
 
-  const deliveryProjectRouter = await createProjectRouter({
+  const deliveryProgrammeAdminRouter = createDeliveryProgrammeAdminRouter(
+    {
+      deliveryProgrammeAdminStore,
+      catalog,
+      identity,
+      logger,
+    },
+  );
+
+  const deliveryProjectRouter = createProjectRouter({
     logger,
-    identity: DefaultIdentityClient.create({
-      discovery,
-      issuer: await discovery.getExternalBaseUrl('auth'),
-    }),
-    database,
+    identity,
     config,
+    deliveryProgrammeStore,
+    deliveryProjectStore,
+    teamSyncronizer: new DeliveryProjectGithubTeamsSyncronizer(
+      new GitHubTeamsApi(config),
+      deliveryProjectStore,
+      deliveryProgrammeStore,
+    ),
   });
 
   const router = Router();
   router.use(armsLengthBodyRouter);
   router.use(deliveryProgrammeRouter);
   router.use(deliveryProjectRouter);
+  router.use(deliveryProgrammeAdminRouter);
 
   let service = createServiceBuilder(module)
     .setPort(options.port)

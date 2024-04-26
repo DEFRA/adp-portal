@@ -1,0 +1,5 @@
+name: ${DEV1_CLUSTER_NAME}
+url: ${DEV1_CLUSTER_API_SERVER_ADDRESS}
+authProvider: azure
+skipTLSVerify: true
+skipMetricsLookup: true
