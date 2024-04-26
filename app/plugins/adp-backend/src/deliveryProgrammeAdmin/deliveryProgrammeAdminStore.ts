@@ -2,8 +2,7 @@ import { Knex } from 'knex';
 import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { CreateDeliveryProgrammeAdmin } from '../utils';
 
-// TODO: Correct table name
-const TABLE_NAME = 'delivery_programme_pm';
+const TABLE_NAME = 'delivery_programme_admin';
 type Row = {
   id: string;
   delivery_programme_id: string;

@@ -156,7 +156,7 @@ describe('DeliveryProgrammeAdminStore', () => {
       const expectedEntity = await knex
         .first('id', 'name')
         .where('id', addResult.id)
-        .from('delivery_programme_pm');
+        .from('delivery_programme_admin');
 
       // Assert - check return value
       expect(addResult).toBeDefined();
@@ -199,7 +199,7 @@ describe('DeliveryProgrammeAdminStore', () => {
 
       const expectedEntities = await knex
         .where('delivery_programme_id', deliveryProgramme.id)
-        .from('delivery_programme_pm');
+        .from('delivery_programme_admin');
 
       // Assert - check return value
       expect(addResult).toHaveLength(2);
@@ -234,7 +234,7 @@ describe('DeliveryProgrammeAdminStore', () => {
 
       const expectedEntities = await knex
         .where('id', addResult.id)
-        .from('delivery_programme_pm');
+        .from('delivery_programme_admin');
 
       // Assert
       expect(expectedEntities).toHaveLength(0);

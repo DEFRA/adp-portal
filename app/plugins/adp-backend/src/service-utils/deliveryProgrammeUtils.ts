@@ -1,4 +1,3 @@
-// TODO Update
 import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import { Entity } from '@backstage/catalog-model';
 import { NotFoundError } from '@backstage/errors';
