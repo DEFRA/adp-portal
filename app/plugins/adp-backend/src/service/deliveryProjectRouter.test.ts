@@ -10,13 +10,11 @@ import { ConfigReader } from '@backstage/config';
 import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { InputError } from '@backstage/errors';
 import { expectedProgrammeDataWithName } from '../testData/programmeTestData';
-import {
-  IDeliveryProjectGithubTeamsSyncronizer,
-  IDeliveryProjectStore,
-} from '../deliveryProject';
+import { IDeliveryProjectStore } from '../deliveryProject';
 import { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 import { randomUUID } from 'node:crypto';
+import { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 
 let mockCreateFluxConfig: jest.Mock;
 let mockGetFluxConfig: jest.Mock;

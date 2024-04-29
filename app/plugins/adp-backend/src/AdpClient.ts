@@ -1,7 +1,7 @@
 import { DiscoveryService } from '@backstage/backend-plugin-api';
 import { InputError } from '@backstage/errors';
 import fetch from 'node-fetch';
-import { DeliveryProjectTeamsSyncResult } from './deliveryProject';
+import { DeliveryProjectTeamsSyncResult } from './githubTeam';
 
 export interface AdpClientOptions {
   discoveryApi: DiscoveryService;
