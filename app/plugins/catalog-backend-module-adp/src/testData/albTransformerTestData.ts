@@ -25,6 +25,7 @@ export const expectedAlbEntity = {
         'adp:arms-length-body\\environment-agency',
       'backstage.io/managed-by-origin-location':
         'adp:arms-length-body\\environment-agency',
+      'adp.defra.gov.uk/arms-length-body-id': '1234'
     },
     links: [{ url: 'https://www.example.uk/' }],
   },

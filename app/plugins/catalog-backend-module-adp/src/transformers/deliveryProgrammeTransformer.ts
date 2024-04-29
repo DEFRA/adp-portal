@@ -23,6 +23,7 @@ export const deliveryProgrammeGroupTransformer: DeliveryProgrammeGroupTransforme
         annotations: {
           'backstage.io/managed-by-location': `adp:delivery-programme\\${deliveryProgramme.name}`,
           'backstage.io/managed-by-origin-location': `adp:delivery-programme\\${deliveryProgramme.name}`,
+          'adp.defra.gov.uk/delivery-programme-id': deliveryProgramme.id
         },
         links: [],
       },
