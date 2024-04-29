@@ -3,7 +3,7 @@ import { BackstageIdentityResponse } from '@backstage/core-plugin-api'
 
 export class RbacTestData {
 
-  public static mockLogger: any = { child: jest.fn(), info: jest.fn(), error: jest.fn(), debug: jest.fn() };
+  public static readonly mockLogger: any = { child: jest.fn(), info: jest.fn(), error: jest.fn(), debug: jest.fn() };
 
   public static readonly  mockRbacGroups: RbacGroups = {
     platformAdminsGroup: "Test-PlatformAdminsGroup",

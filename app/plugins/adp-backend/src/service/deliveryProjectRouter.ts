@@ -90,11 +90,10 @@ export function createProjectRouter(
         req.body.delivery_project_code,
       );
       if (isDuplicateTitle || isDuplicateCode) {
+        // Pick error message, for either title or code
         const errorMessage = isDuplicateTitle
           ? 'Delivery Project title already exists'
-          : isDuplicateCode
-          ? 'Service Code already exists'
-          : '';
+          : 'Service Code already exists'
         res.status(406).json({ error: errorMessage });
       } else {
         const author = await getCurrentUsername(identity, req);

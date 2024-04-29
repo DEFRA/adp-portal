@@ -35,6 +35,30 @@ export interface ProgrammeRouterOptions {
   catalog: CatalogApi;
 }
 
+
+function hasTitleChanged(updatedTitle: any, currentData: DeliveryProgramme | undefined) {
+  return updatedTitle && updatedTitle !== currentData!.title;
+}
+
+function hasDeliveryProgramChanged(updatedCode: any, currentData: DeliveryProgramme | undefined) {
+  return updatedCode && updatedCode !== currentData!.delivery_programme_code;
+}
+function findManagers(listToSearch: DeliveryProgrammeAdmin[], programmeManagers: ProgrammeManager[]) {
+  const foundManagers: DeliveryProgrammeAdmin[] = []
+  for (const lookupmanager of listToSearch) {
+    if (
+      !programmeManagers.some(
+        (manager: DeliveryProgrammeAdmin) =>
+          manager.aad_entity_ref_id === lookupmanager.aad_entity_ref_id,
+      )
+    ) {
+      foundManagers.push(lookupmanager);
+    }
+  }
+  return foundManagers;
+}
+
+
 export function createProgrammeRouter(
   options: ProgrammeRouterOptions,
 ): express.Router {
@@ -215,15 +239,19 @@ export function createProgrammeRouter(
       const updatedTitle = requestBody?.title;
       const updatedCode = requestBody?.delivery_programme_code;
 
-      if (updatedTitle && updatedTitle !== currentData!.title) {
-        const isDuplicateTitle = await checkForDuplicateTitle(
-          allProgrammes,
-          updatedTitle,
-        );
+    
+      if (hasTitleChanged(updatedTitle, currentData)) {
+        const isDuplicateTitle = await checkForDuplicateTitle(allProgrammes, updatedTitle);
         if (isDuplicateTitle) {
-          res
-            .status(406)
-            .json({ error: 'Delivery Programme title already exists' });
+          res.status(406).json({ error: 'Delivery Programme title already exists' });
+          return;
+        }
+      }
+  
+      if (hasDeliveryProgramChanged(updatedCode, currentData)) {
+        const isDuplicateCode = await checkForDuplicateProgrammeCode(allProgrammes, updatedCode);
+        if (isDuplicateCode) {
+          res.status(406).json({ error: 'Delivery Programme code already exists' });
           return;
         }
       }
@@ -251,17 +279,9 @@ export function createProgrammeRouter(
         const existingProgrammeManagers = await deliveryProgrammeAdminStore.getByDeliveryProgramme(
           deliveryProgramme.id,
         );
-        const updatedManagers: DeliveryProgrammeAdmin[] = [];
-        for (const updatedManager of programmeManagers) {
-          if (
-            !existingProgrammeManagers.some(
-              manager =>
-                manager.aad_entity_ref_id === updatedManager.aad_entity_ref_id,
-            )
-          ) {
-            updatedManagers.push(updatedManager);
-          }
-        }
+
+        const updatedManagers: DeliveryProgrammeAdmin[] = findManagers(programmeManagers, existingProgrammeManagers);
+
         const catalogEntities = await catalog.getEntities({
           filter: {
             kind: 'User',
@@ -276,7 +296,7 @@ export function createProgrammeRouter(
 
         const catalogEntity: Entity[] = catalogEntities.items;
 
-        addProgrammeManager(
+        await addProgrammeManager(
           updatedManagers,
           deliveryProgramme.id,
           deliveryProgramme,
@@ -284,20 +304,9 @@ export function createProgrammeRouter(
           catalogEntity,
         );
 
-        const removedManagers: DeliveryProgrammeAdmin[] = [];
+        const removedManagers: DeliveryProgrammeAdmin[] = findManagers(existingProgrammeManagers, programmeManagers);
 
-        for (const existingManager of existingProgrammeManagers) {
-          if (
-            !programmeManagers.some(
-              (manager: DeliveryProgrammeAdmin) =>
-                manager.aad_entity_ref_id === existingManager.aad_entity_ref_id,
-            )
-          ) {
-            removedManagers.push(existingManager);
-          }
-        }
-
-        deleteProgrammeManager(
+        await deleteProgrammeManager(
           removedManagers,
           deliveryProgrammeAdminStore,
         );
