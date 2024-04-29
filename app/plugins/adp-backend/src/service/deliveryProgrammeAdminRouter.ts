@@ -51,6 +51,21 @@ export function createDeliveryProgrammeAdminRouter(
     }
   });
 
+  router.get('/deliveryProgrammeAdmins/:deliveryProgrammeId', async (req, res) => {
+    try {
+      const deliveryProgrammeId = req.params.deliveryProgrammeId;
+      const data = await deliveryProgrammeAdminStore.getByDeliveryProgramme(deliveryProgrammeId);
+      res.json(data);
+    } catch (error) {
+      const typedError = error as Error;
+        logger.error(
+          `GET /deliveryProgrammeAdmins/:deliveryProgrammeId. Could not get delivery programme admins for delivery programme: ${typedError.message}`,
+          typedError,
+        );
+        throw new InputError(typedError.message);
+    }
+  })
+
   router.post(
     '/deliveryProgrammeAdmin/:deliveryProgrammeId',
     async (req, res) => {
