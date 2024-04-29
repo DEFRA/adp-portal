@@ -34,7 +34,7 @@ backend:
     connection: ':memory:'
   auth:
     keys:
-    - secret: ${BACKEND_PLUGINS_SECRET}
+      - secret: ${BACKEND_PLUGINS_SECRET}
 
 proxy:
   endpoints:
@@ -42,11 +42,11 @@ proxy:
       target: ${GRAFANA_ENDPOINT}
       headers:
         Authorization: Bearer ${GRAFANA_TOKEN}
-    '/adp-portal-api': 
+    '/adp-portal-api':
       target: ${ADP_PORTAL_API_ENDPOINT}
       changeOrigin: true
       secure: false
-      
+
 grafana:
   domain: ${GRAFANA_ENDPOINT}
   unifiedAlerting: false
@@ -108,10 +108,9 @@ rbac:
   programmeAdminGroup: ${ADP_PORTAL_PROGRAMME_ADMINS_GROUP}
   adpPortalUsersGroup: ${ADP_PORTAL_USERS_GROUP}
 
-
 auth:
   keys:
-  - secret: ${BACKEND_PLUGINS_SECRET}
+    - secret: ${BACKEND_PLUGINS_SECRET}
 
   environment: sandpit
   providers:
@@ -137,6 +136,7 @@ azureDevOps:
 github:
   host: github.com
   organization: ${GITHUB_ORGANIZATION}
+  platformAdmins: adp-platform-admins
 
 catalog:
   import:
@@ -164,7 +164,8 @@ catalog:
         tenantId: ${AUTH_MICROSOFT_TENANT_ID}
         queryMode: basic
         user:
-          select: ['id', 'mail', 'displayName', 'description', 'userPrincipalName' ]
+          select:
+            ['id', 'mail', 'displayName', 'description', 'userPrincipalName']
         userGroupMember:
           filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or startsWith(displayName, '${ADP_PORTAL_USERS_GROUP_PREFIX}')"
         group:
@@ -177,11 +178,10 @@ catalog:
   # 'all users'
   # Locations configured to import static data into the catalog
   locations:
-
     - type: url
-      target: https://github.com/defra/adp-software-templates/blob/main/catalog-model/all.yaml
-      
-techRadar: 
+      target: https://github.com/DEFRA/adp-software-templates/blob/main/catalog-model/all.yaml
+
+techRadar:
   data: https://raw.githubusercontent.com/defra/adp-software-templates/main/tech-radars/development-tech-radar.json
 
 adp:
@@ -194,3 +194,5 @@ adp:
         value: 3000Mi
       - key: TEAM_PODS_QUOTA
         value: '20'
+  githubTeams:
+    apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/github/teams

@@ -28,6 +28,7 @@ node_modules/
 .nvmrc
 
 # dotenv environment variables file
+.devcontainer/.env
 .env
 .env.test
 
@@ -57,3 +58,4 @@ e2e-test-report/
 *.private-key.pem
 env.sh
 rsaprivkey.txt
+

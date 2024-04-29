@@ -25,5 +25,13 @@
       "version": "latest"
     },
     "ghcr.io/devcontainers/features/docker-from-docker:1": {}
+  },
+  "portsAttributes": {
+    "3000": {
+      "label": "backstage-frontend"
+    },
+    "7007": {
+      "label": "backstage-backend"
+    }
   }
 }

@@ -20,6 +20,9 @@ type Row = {
 };
 
 export type PartialDeliveryProgramme = Partial<DeliveryProgramme>;
+export type IDeliveryProgrammeStore = {
+  [P in keyof DeliveryProgrammeStore]: DeliveryProgrammeStore[P];
+};
 
 export class DeliveryProgrammeStore {
   constructor(private readonly client: Knex) {}

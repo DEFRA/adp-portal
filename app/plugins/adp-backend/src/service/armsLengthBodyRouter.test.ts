@@ -5,10 +5,11 @@ import {
 } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
-import { createAlbRouter } from './armsLengthBodyRouter';
+import { AlbRouterOptions, createAlbRouter } from './armsLengthBodyRouter';
 import { ConfigReader } from '@backstage/config';
 import { expectedAlbWithName } from '../testData/albTestData';
 import { InputError } from '@backstage/errors';
+import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 
 let mockGetAll: jest.Mock;
 let mockGet: jest.Mock;
@@ -45,7 +46,7 @@ describe('createRouter', () => {
       programmeAdminGroup: 'test',
     },
   });
-  const mockOptions = {
+  const mockOptions: AlbRouterOptions = {
     logger: getVoidLogger(),
     identity: mockIdentityApi,
     database: createTestDatabase(),
@@ -66,6 +67,7 @@ describe('createRouter', () => {
   }
 
   beforeAll(async () => {
+    await initializeAdpDatabase(mockOptions.database);
     const router = await createAlbRouter(mockOptions);
     app = express().use(router);
   });

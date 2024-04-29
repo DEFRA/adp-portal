@@ -134,10 +134,28 @@ properties:
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-NAME
         identity: {{userAssignedIdentity}}
       - name: prd1-cluster-api-server-address
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-API-SERVER-ADDRESS
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-API-SERVER-ADDRESS    
         identity: {{userAssignedIdentity}}
       - name: adp-portal-api-endpoint
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-API-ENDPOINT
+        identity: {{userAssignedIdentity}}
+      - name: cluster1-env
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER1-ENV
+        identity: {{userAssignedIdentity}}
+      - name: cluster2-env
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER2-ENV
+        identity: {{userAssignedIdentity}}
+      - name: cluster3-env
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER3-ENV
+        identity: {{userAssignedIdentity}}
+      - name: cluster4-env
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER4-ENV
+        identity: {{userAssignedIdentity}}
+      - name: cluster5-env
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER5-ENV
+        identity: {{userAssignedIdentity}}
+      - name: cluster6-env
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER6-ENV
         identity: {{userAssignedIdentity}}
   template:
     containers:
@@ -237,6 +255,18 @@ properties:
             secretRef: prd1-cluster-name
           - name: PRD1_CLUSTER_API_SERVER_ADDRESS
             secretRef: prd1-cluster-api-server-address
+          - name: CLUSTER1_ENV
+            secretRef: cluster1-env
+          - name: CLUSTER2_ENV
+            secretRef: cluster2-env
+          - name: CLUSTER3_ENV
+            secretRef: cluster3-env
+          - name: CLUSTER4_ENV
+            secretRef: cluster4-env
+          - name: CLUSTER5_ENV
+            secretRef: cluster5-env
+          - name: CLUSTER6_ENV
+            secretRef: cluster6-env
             
         resources:
           cpu: 0.5

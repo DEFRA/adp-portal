@@ -1,0 +1,1 @@
+export { initializeAdpDatabase } from './initializeAdpDatabase';

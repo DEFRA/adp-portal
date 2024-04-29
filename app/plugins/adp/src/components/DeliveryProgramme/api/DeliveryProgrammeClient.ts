@@ -1,7 +1,7 @@
 import { DeliveryProgrammeApi } from './DeliveryProgrammeApi';
 import {
   DeliveryProgramme,
-  ProgrammeManager,
+  DeliveryProgrammeAdmin,
 } from '@internal/plugin-adp-common';
 
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
@@ -20,8 +20,10 @@ export class DeliveryProgrammeClient implements DeliveryProgrammeApi {
     return `${await this.discoveryApi.getBaseUrl('adp')}/deliveryProgramme`;
   }
 
-  private async getManagerApiUrl(): Promise<string> {
-    return `${await this.discoveryApi.getBaseUrl('adp')}/programmeManager`;
+  private async getDeliveryProgrammeAdminApiUrl(): Promise<string> {
+    return `${await this.discoveryApi.getBaseUrl(
+      'adp',
+    )}/deliveryProgrammeAdmins`;
   }
 
   async getDeliveryProgrammes(): Promise<DeliveryProgramme[]> {
@@ -111,18 +113,16 @@ export class DeliveryProgrammeClient implements DeliveryProgrammeApi {
     }
   }
 
-  async getProgrammeManagers(): Promise<ProgrammeManager[]> {
+  async getDeliveryProgrammeAdmins(): Promise<DeliveryProgrammeAdmin[]> {
     try {
-      const url = await this.getManagerApiUrl();
+      const url = await this.getDeliveryProgrammeAdminApiUrl();
       const response = await this.fetchApi.fetch(url);
       if (!response.ok) {
         throw await ResponseError.fromResponse(response);
       }
       return await response.json();
     } catch (error) {
-      throw new Error(`Failed to fetch Delivery Programme Managers`);
+      throw new Error(`Failed to fetch Delivery Programme Admins`);
     }
   }
 }
-
-export type { DeliveryProgrammeApi };

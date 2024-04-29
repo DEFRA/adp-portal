@@ -23,4 +23,8 @@ export const expectedProjectDataWithName = {
   team_type: 'Test team_type',
   service_owner: 'Test service_owner',
   github_team_visibility: 'public' as const,
+  id: '123',
+  delivery_programme_id: '',
+  created_at: new Date(),
+  updated_at: new Date(),
 };

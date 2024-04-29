@@ -1,0 +1,5 @@
+name: ${SND4_CLUSTER_NAME}
+url: ${SND4_CLUSTER_API_SERVER_ADDRESS}
+authProvider: azure
+skipTLSVerify: true
+skipMetricsLookup: true

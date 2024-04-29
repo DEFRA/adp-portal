@@ -1,5 +1,4 @@
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
-import { AdpDatabase } from '../database/adpDatabase';
 import {
   DeliveryProgrammeStore,
   PartialDeliveryProgramme,
@@ -9,39 +8,33 @@ import { createName } from '../utils/index';
 import { expectedAlbWithName } from '../testData/albTestData';
 import {
   DeliveryProgramme,
-  ProgrammeManager,
 } from '@internal/plugin-adp-common';
 import {
   expectedProgrammeDataWithName,
   expectedProgrammeDataWithoutManager,
-} from '../testData/programmeTestData'
-import { ProgrammeManagerStore } from './deliveryProgrammeManagerStore';
-import {
-  addProgrammeManager,
-  deleteProgrammeManager,
-} from '../service-utils/deliveryProgrammeUtils';
-import { catalogTestData } from '../testData/catalogEntityTestData';
+} from '../testData/programmeTestData';
+import { initializeAdpDatabase } from '../database';
 
 describe('DeliveryProgrammeStore', () => {
   const databases = TestDatabases.create();
 
   async function createDatabase(databaseId: TestDatabaseId) {
     const knex = await databases.init(databaseId);
-    const db = AdpDatabase.create({
+    await initializeAdpDatabase({
       getClient: () => Promise.resolve(knex),
     });
-    const programmeStore = new DeliveryProgrammeStore(await db.get());
-    const managerStore = new ProgrammeManagerStore(await db.get());
+    const programmeStore = new DeliveryProgrammeStore(await knex);
 
-    return { knex, programmeStore, managerStore };
+    return { knex, programmeStore };
   }
 
   it.each(databases.eachSupportedId())(
     'should create a new Delivery Programme',
     async databaseId => {
-      const { knex, programmeStore, managerStore } = await createDatabase(
+      const { knex, programmeStore } = await createDatabase(
         databaseId,
       );
+
       const insertAlbId = await knex('arms_length_body').insert(
         expectedAlbWithName,
         ['id'],
@@ -49,84 +42,20 @@ describe('DeliveryProgrammeStore', () => {
 
       const albId = insertAlbId[0].id;
 
-      const expectedProgrammeId: Omit<
+      const expectedDeliveryProgramme: Omit<
         DeliveryProgramme,
         'id' | 'created_at' | 'updated_at' | 'programme_managers'
       > = {
         ...expectedProgrammeDataWithName,
         arms_length_body_id: albId,
       };
-      const newManagers: Omit<
-        ProgrammeManager,
-        'id' | 'delivery_programme_id' | 'email' | 'name'
-      >[] = [
-        {
-          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
-        },
-        {
-          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73422',
-        },
-        {
-          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73423',
-        },
-      ];
-      const addResult = await programmeStore.add(expectedProgrammeId, 'test');
 
-      expect(addResult.name).toEqual(createName(expectedProgrammeId.title));
+      const addResult = await programmeStore.add(expectedDeliveryProgramme, 'test');
+
+      expect(addResult.name).toEqual(createName(expectedDeliveryProgramme.title));
       expect(addResult.id).toBeDefined();
       expect(addResult.created_at).toBeDefined();
       expect(addResult.updated_at).toBeDefined();
-      await addProgrammeManager(
-        newManagers as ProgrammeManager[],
-        addResult.id,
-        addResult,
-        managerStore,
-        catalogTestData.items,
-      );
-      const allManagers = await managerStore.get(addResult.id);
-      expect(allManagers.length).toBe(3);
-      expect(
-        allManagers.some(
-          (manager: { aad_entity_ref_id: string }) =>
-            manager.aad_entity_ref_id ===
-            'a9dc2414-0626-43d2-993d-a53aac4d73421',
-        ),
-      ).toBeTruthy();
-      expect(
-        allManagers.some(
-          (manager: { aad_entity_ref_id: string }) =>
-            manager.aad_entity_ref_id ===
-            'a9dc2414-0626-43d2-993d-a53aac4d73422',
-        ),
-      ).toBeTruthy();
-      const updatedManagers: Omit<
-        ProgrammeManager,
-        'id' | 'delivery_programme_id' | 'email' | 'name'
-      >[] = [
-        {
-          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
-        },
-      ];
-      await deleteProgrammeManager(
-        updatedManagers as ProgrammeManager[],
-        addResult.id,
-        managerStore,
-      );
-      const allManagersAfterDelete = await managerStore.getAll();
-      expect(
-        allManagersAfterDelete.some(
-          (manager: { aad_entity_ref_id: string }) =>
-            manager.aad_entity_ref_id ===
-            'a9dc2414-0626-43d2-993d-a53aac4d73421',
-        ),
-      ).toBeFalsy();
-      expect(
-        allManagersAfterDelete.some(
-          (manager: { aad_entity_ref_id: string }) =>
-            manager.aad_entity_ref_id ===
-            'a9dc2414-0626-43d2-993d-a53aac4d73422',
-        ),
-      ).toBeTruthy();
     },
   );
 

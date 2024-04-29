@@ -1,9 +1,9 @@
-import { ProgrammeManagerStore } from '../deliveryProgramme/deliveryProgrammeManagerStore';
+import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import { Entity } from '@backstage/catalog-model';
 import { NotFoundError } from '@backstage/errors';
 import {
   DeliveryProgramme,
-  ProgrammeManager,
+  DeliveryProgrammeAdmin,
 } from '@internal/plugin-adp-common';
 
 export interface ICatalog {
@@ -24,10 +24,10 @@ export interface ICatalog {
 }
 
 export async function addProgrammeManager(
-  programmeManagers: ProgrammeManager[],
+  programmeManagers: DeliveryProgrammeAdmin[],
   deliveryProgrammeId: string,
   deliveryProgramme: DeliveryProgramme,
-  ProgrammeManagerStore: ProgrammeManagerStore,
+  deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore,
   catalogEntity: Entity[],
 ) {
   if (programmeManagers !== undefined) {
@@ -42,28 +42,18 @@ export async function addProgrammeManager(
         name: managerDetails.name,
         email: managerDetails.email,
       };
-      const programmeManager = await ProgrammeManagerStore.add(store);
+      const programmeManager = await deliveryProgrammeAdminStore.add(store);
       deliveryProgramme.programme_managers.push(programmeManager);
     }
   }
 }
 
 export async function deleteProgrammeManager(
-  programmeManagers: ProgrammeManager[],
-  deliveryProgrammeId: string,
-  ProgrammeManagerStore: ProgrammeManagerStore,
+  programmeManagers: DeliveryProgrammeAdmin[],
+  deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore,
 ) {
   for (const manager of programmeManagers) {
-    const store = {
-      aad_entity_ref_id: manager.aad_entity_ref_id,
-      delivery_programme_id: deliveryProgrammeId,
-      email: manager.email,
-      name: manager.name,
-    };
-    await ProgrammeManagerStore.delete(
-      store.aad_entity_ref_id,
-      store.delivery_programme_id,
-    );
+    await deliveryProgrammeAdminStore.delete(manager.id);
   }
 }
 
