@@ -1,4 +1,4 @@
-import { deliveryProgrammeGroupTransformer } from './deliveryProgrammeTransformers';
+import { deliveryProgrammeGroupTransformer } from './deliveryProgrammeTransformer';
 import {
   deliveryProgramme,
   expectedProgrammeEntity,

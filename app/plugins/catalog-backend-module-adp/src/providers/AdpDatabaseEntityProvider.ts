@@ -14,7 +14,7 @@ import {
   DeliveryProject,
 } from '@internal/plugin-adp-common';
 import { armsLengthBodyGroupTransformer } from '../transformers';
-import { deliveryProgrammeGroupTransformer } from '../transformers/deliveryProgrammeTransformers';
+import { deliveryProgrammeGroupTransformer } from '../transformers/deliveryProgrammeTransformer';
 import { deliveryProjectGroupTransformer } from '../transformers/deliveryProjectTransformer';
 
 export class AdpDatabaseEntityProvider implements EntityProvider {
