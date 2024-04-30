@@ -46,17 +46,17 @@ export class GithubTeamStore {
 
   public async set(projectId: string, teams: Record<string, GithubTeamRef>) {
     await this.#connection.transaction(async t => {
-      await this.#delete(this.#table(t), projectId);
+      await this.#deleteInternal(this.#table(t), projectId);
       const rows = toRows(projectId, teams);
       if (rows.length > 0) await this.#table(t).insert(rows);
     });
   }
 
   public async delete(projectId: string) {
-    await this.#delete(this.#table(), projectId);
+    await this.#deleteInternal(this.#table(), projectId);
   }
 
-  #delete(builder: Knex.QueryBuilder<Row>, projectId: string) {
+  #deleteInternal(builder: Knex.QueryBuilder<Row>, projectId: string) {
     return builder.where('delivery_project_id', projectId).delete();
   }
 }
