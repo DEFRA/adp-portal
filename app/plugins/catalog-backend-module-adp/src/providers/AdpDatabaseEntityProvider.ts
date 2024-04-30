@@ -14,8 +14,8 @@ import {
   DeliveryProject,
 } from '@internal/plugin-adp-common';
 import { armsLengthBodyGroupTransformer } from '../transformers';
-import { deliveryProgrammeGroupTransformer } from '../transformers/deliveryProgrammeTransformer';
-import { deliveryProjectGroupTransformer } from '../transformers/deliveryProjectTransformer';
+import { deliveryProgrammeGroupTransformer } from '../transformers';
+import { deliveryProjectGroupTransformer } from '../transformers';
 
 export class AdpDatabaseEntityProvider implements EntityProvider {
   private readonly logger: Logger;
