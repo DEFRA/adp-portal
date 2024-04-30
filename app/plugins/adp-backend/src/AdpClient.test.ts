@@ -2,7 +2,7 @@ import { DiscoveryService } from '@backstage/backend-plugin-api';
 import { AdpClient } from './AdpClient';
 import fetch, { Response } from 'node-fetch';
 import { randomUUID } from 'node:crypto';
-import { DeliveryProjectTeamsSyncResult } from './deliveryProject';
+import { DeliveryProjectTeamsSyncResult } from './githubTeam';
 
 describe('AdpClient', () => {
   function setup() {

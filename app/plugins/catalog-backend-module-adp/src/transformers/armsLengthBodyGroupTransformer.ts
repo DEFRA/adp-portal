@@ -22,6 +22,7 @@ export const armsLengthBodyGroupTransformer: ArmsLengthBodyGroupTransformer =
         annotations: {
           'backstage.io/managed-by-location': `adp:arms-length-body\\${armsLengthBody.name}`,
           'backstage.io/managed-by-origin-location': `adp:arms-length-body\\${armsLengthBody.name}`,
+          'adp.defra.gov.uk/arms-length-body-id': armsLengthBody.id
         },
         links: [],
       },

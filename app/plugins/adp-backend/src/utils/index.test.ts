@@ -5,6 +5,7 @@ import {
   checkForDuplicateTitle,
   checkForDuplicateProjectCode,
   checkForDuplicateProgrammeCode,
+  createGithubTeamDetails,
 } from './index';
 import express from 'express';
 
@@ -56,7 +57,6 @@ describe('checkForDuplicateTitle', () => {
 });
 
 describe('checkForDuplicateCode', () => {
-
   const data: DeliveryProject[] = [
     {
       title: 'Test title',
@@ -89,7 +89,6 @@ describe('checkForDuplicateCode', () => {
 });
 
 describe('checkForDuplicateProgrammeCode', () => {
-
   const data = [
     {
       name: 'Seed',
@@ -97,7 +96,7 @@ describe('checkForDuplicateProgrammeCode', () => {
       alias: 'EA',
       description: '',
       finance_code: '1',
-      arms_length_body_id: "111",
+      arms_length_body_id: '111',
       delivery_programme_code: '1',
       programme_managers: [
         {
@@ -120,7 +119,6 @@ describe('checkForDuplicateProgrammeCode', () => {
       updated_at: new Date(),
     },
   ];
-
 
   it('returns false when there is no duplicate code', async () => {
     const code = 'Example Code';
@@ -159,3 +157,53 @@ describe('getCurrentUsername', () => {
   });
 });
 
+describe('createGithubTeamNames', () => {
+  it.each<{
+    project: Partial<DeliveryProject>;
+    expected: ReturnType<typeof createGithubTeamDetails>;
+  }>([
+    {
+      project: { name: 'MyProject', description: 'My cool project' },
+      expected: {
+        contributors: {
+          name: 'MyProject-Contributors',
+          description: 'My cool project',
+        },
+        admins: {
+          name: 'MyProject-Admins',
+          description: 'My cool project',
+        },
+      },
+    },
+  ])(
+    'Should correctly get the team names for a project with name $project.name',
+    ({ project, expected }) => {
+      // arrange
+      const fullProject: DeliveryProject = {
+        ado_project: '',
+        alias: '',
+        created_at: new Date(),
+        delivery_programme_id: '',
+        delivery_project_code: '',
+        description: '',
+        finance_code: '',
+        github_team_visibility: 'public',
+        id: '',
+        name: '',
+        namespace: '',
+        service_owner: '',
+        team_type: '',
+        title: '',
+        updated_at: new Date(),
+        updated_by: '',
+        ...project,
+      };
+
+      // act
+      const actual = createGithubTeamDetails(fullProject);
+
+      // assert
+      expect(actual).toMatchObject(expected);
+    },
+  );
+});

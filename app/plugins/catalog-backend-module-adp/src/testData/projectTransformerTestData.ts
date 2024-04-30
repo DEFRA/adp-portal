@@ -27,6 +27,7 @@ export const deliveryProject = {
         'backstage.io/managed-by-location':
           'adp:delivery-project\\test-title-1',
         'backstage.io/managed-by-origin-location': `adp:delivery-project\\test-title-1`,
+        'adp.defra.gov.uk/delivery-project-id': '1234'
       },
       links: [],
     },

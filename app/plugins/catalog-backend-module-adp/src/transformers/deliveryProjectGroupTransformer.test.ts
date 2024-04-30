@@ -2,7 +2,7 @@ import {
   deliveryProject,
   expectedProjectEntity,
 } from '../testData/projectTransformerTestData';
-import { deliveryProjectGroupTransformer } from './deliveryProjectTransformer';
+import { deliveryProjectGroupTransformer } from './deliveryProjectGroupTransformer';
 
 describe('deliveryProjectGroupTransformer', () => {
   it('should transform a valid DeliveryProject to a GroupEntity', async () => {

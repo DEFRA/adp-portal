@@ -13,16 +13,15 @@ import { createProgrammeRouter } from './deliveryProgrammeRouter';
 import { Router } from 'express';
 import { createProjectRouter } from './deliveryProjectRouter';
 import { createDeliveryProgrammeAdminRouter } from './deliveryProgrammeAdminRouter';
-import {
-  DeliveryProjectGithubTeamsSyncronizer,
-  DeliveryProjectStore,
-  GitHubTeamsApi,
-} from '../deliveryProject';
-import {
-  DeliveryProgrammeStore,
-} from '../deliveryProgramme';
+import { DeliveryProjectStore } from '../deliveryProject';
+import { DeliveryProgrammeStore } from '../deliveryProgramme';
 import { DeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import { CatalogClient } from '@backstage/catalog-client';
+import {
+  DeliveryProjectGithubTeamsSyncronizer,
+  GitHubTeamsApi,
+  GithubTeamStore,
+} from '../githubTeam';
 
 export interface ServerOptions {
   port: number;
@@ -56,7 +55,8 @@ export async function startStandaloneServer(
   const deliveryProjectStore = new DeliveryProjectStore(dbClient);
   const deliveryProgrammeStore = new DeliveryProgrammeStore(dbClient);
   const deliveryProgrammeAdminStore = new DeliveryProgrammeAdminStore(dbClient);
-  const catalog = new CatalogClient({discoveryApi: discovery});
+  const githubTeamStore = new GithubTeamStore(dbClient);
+  const catalog = new CatalogClient({ discoveryApi: discovery });
 
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
@@ -74,14 +74,12 @@ export async function startStandaloneServer(
     catalog,
   });
 
-  const deliveryProgrammeAdminRouter = createDeliveryProgrammeAdminRouter(
-    {
-      deliveryProgrammeAdminStore,
-      catalog,
-      identity,
-      logger,
-    },
-  );
+  const deliveryProgrammeAdminRouter = createDeliveryProgrammeAdminRouter({
+    deliveryProgrammeAdminStore,
+    catalog,
+    identity,
+    logger,
+  });
 
   const deliveryProjectRouter = createProjectRouter({
     logger,
@@ -92,7 +90,7 @@ export async function startStandaloneServer(
     teamSyncronizer: new DeliveryProjectGithubTeamsSyncronizer(
       new GitHubTeamsApi(config),
       deliveryProjectStore,
-      deliveryProgrammeStore,
+      githubTeamStore,
     ),
   });
 

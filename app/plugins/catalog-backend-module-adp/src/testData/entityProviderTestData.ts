@@ -111,6 +111,7 @@ export const mockAlbTransformerData = [
         'backstage.io/managed-by-location': 'adp:arms-length-body\\test-alb-1',
         'backstage.io/managed-by-origin-location':
           'adp:arms-length-body\\test-alb-1',
+        'adp.defra.gov.uk/arms-length-body-id': '1111'
       },
       links: [{ url: 'https://test1.com' }],
     },
@@ -131,6 +132,7 @@ export const mockAlbTransformerData = [
         'backstage.io/managed-by-location': 'adp:arms-length-body\\test-alb-2',
         'backstage.io/managed-by-origin-location':
           'adp:arms-length-body\\test-alb-2',
+        'adp.defra.gov.uk/arms-length-body-id': '2222'
       },
       links: [{ url: 'https://test2.com' }],
     },
@@ -154,6 +156,7 @@ export const mockProgrammeTransformerData = [
         'backstage.io/managed-by-location':
           'adp:delivery-programme\\test-programme-1',
         'backstage.io/managed-by-origin-location': `adp:delivery-programme\\test-programme-1`,
+        'adp.defra.gov.uk/delivery-programme-id': '123'
       },
       links: [{ url: 'https://test1.com' }],
     },
@@ -174,6 +177,7 @@ export const mockProgrammeTransformerData = [
         'backstage.io/managed-by-location':
           'adp:delivery-programme\\test-programme-2',
         'backstage.io/managed-by-origin-location': `adp:delivery-programme\\test-programme-2`,
+        'adp.defra.gov.uk/delivery-programme-id': '1234'
       },
       links: [{ url: 'https://test2.com' }],
     },
@@ -197,6 +201,7 @@ export const mockProjectTransformerData = [
         'backstage.io/managed-by-location':
           'adp:delivery-project\\test-project-1',
         'backstage.io/managed-by-origin-location': `adp:delivery-project\\test-project-1`,
+        'adp.defra.gov.uk/delivery-project-id': '123'
       },
       links: [],
     },
@@ -217,6 +222,7 @@ export const mockProjectTransformerData = [
         'backstage.io/managed-by-location':
           'adp:delivery-project\\test-project-2',
         'backstage.io/managed-by-origin-location': `adp:delivery-project\\test-project-2`,
+        'adp.defra.gov.uk/delivery-project-id': '1234'
       },
       links: [],
     },
