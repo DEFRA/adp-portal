@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 import {
   Content,
   ContentHeader,
@@ -8,18 +8,25 @@ import {
 import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { Button, Grid } from '@material-ui/core';
 import AddProgrammeAdmin from './AddProgrammeAdmin';
-import { DefaultTable } from '@internal/plugin-adp/src/utils/Table';
-import { ActionsModal } from '@internal/plugin-adp/src/utils/ActionsModal';
+import { DefaultTable } from '@internal/plugin-adp/src/utils';
+import { ActionsModal } from '@internal/plugin-adp/src/utils';
 import { useProgrammeManagersList } from '@internal/plugin-adp/src/hooks/useProgrammeManagersList';
 import { ProgrammeAdminFormFields } from './ProgrammeAdminFormFields';
+import { errorApiRef, useApi } from '@backstage/core-plugin-api';
+import { deliveryProgrammeAdminApiRef } from './api';
+import { useEntity } from '@backstage/plugin-catalog-react';
 
-export const ProgrammeAdminViewPageComponent = () => {
+export const DeliveryProgrammeAdminViewPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tableData, setTableData] = useState<DeliveryProgrammeAdmin[]>([]);
   const [formData, setFormData] = useState({});
   const [key, refetchProgrammeAdmin] = useReducer(i => {
     return i + 1;
   }, 0);
+  const { entity } = useEntity();
+
+  const deliveryProgrammeAdminApi = useApi(deliveryProgrammeAdminApiRef);
+  const errorApi = useApi(errorApiRef);
 
   const getProgrammeManagerDropDown = useProgrammeManagersList();
   const getOptionFields = () => {
@@ -39,7 +46,20 @@ export const ProgrammeAdminViewPageComponent = () => {
     setIsModalOpen(false);
   };
 
-  //TODO: getAllProgrammeManagersById
+  // TODO: Refactor to use a hook
+  const getDeliveryProgrammeAdmins = async () => {
+    try {
+      const deliveryProgrammeId = entity.metadata.annotations!['adp.defra.gov.uk/delivery-programme-id'];
+      const data = await deliveryProgrammeAdminApi.getByDeliveryProgrammeId(deliveryProgrammeId);
+      setTableData(data);
+    } catch (error: any) {
+      errorApi.post(error);
+    }
+  }
+
+  useEffect(() => {
+    getDeliveryProgrammeAdmins();
+  }, [key]);
 
   const handleEdit = async (programmeManager: DeliveryProgrammeAdmin) => {
     // TODO: handle edit
@@ -58,7 +78,7 @@ export const ProgrammeAdminViewPageComponent = () => {
     },
     {
       title: 'Contact',
-      field: 'contact',
+      field: 'email',
       highlight: false,
       type: 'string',
     },
@@ -68,6 +88,9 @@ export const ProgrammeAdminViewPageComponent = () => {
       field: 'role',
       highlight: false,
       type: 'string',
+      render: () => (
+        <>Delivery Programme Admin</>
+      )
     },
     {
       title: 'Updated At',
@@ -77,7 +100,6 @@ export const ProgrammeAdminViewPageComponent = () => {
     },
 
     {
-      width: '',
       highlight: true,
       render: (rowData: any) => {
         const data = rowData as DeliveryProgrammeAdmin;
@@ -85,11 +107,10 @@ export const ProgrammeAdminViewPageComponent = () => {
           //  TODO: Add permission
           <Button
             variant="contained"
-            color="default"
-            onClick={() => handleEdit(data)}
+            color="secondary"
             data-testid={`programme-admin-edit-button-${data.id}`}
           >
-            Edit
+            Remove
           </Button>
         );
       },

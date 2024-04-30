@@ -1,15 +1,29 @@
 import {
+  createApiFactory,
   createPlugin,
   createRoutableExtension,
+  discoveryApiRef,
+  fetchApiRef,
 } from '@backstage/core-plugin-api';
 
 import { manageProgrammeAdminEntityContentRouteRef, rootRouteRef } from './routes';
+import { DeliveryProgrammeAdminApiClient, deliveryProgrammeAdminApiRef } from './components/DeliveryProgrammeAdmin/api';
 
 export const adpPlugin = createPlugin({
   id: 'adp',
   routes: {
     root: rootRouteRef,
   },
+  apis: [
+    createApiFactory({
+      api: deliveryProgrammeAdminApiRef,
+      deps: {
+        discoveryApi: discoveryApiRef,
+        fetchApi: fetchApiRef
+      },
+      factory: ({discoveryApi, fetchApi}) => new DeliveryProgrammeAdminApiClient(discoveryApi, fetchApi),
+    })
+  ]
 });
 
 export const AdpPage = adpPlugin.provide(
@@ -56,8 +70,8 @@ export const DeliveryProjectViewPage = adpPlugin.provide(
 
 export const EntityPageManageProgrammeAdminContent = adpPlugin.provide(
   createRoutableExtension({
-    name: 'EntityPageManageProgrammeAdminContent',
-    component: () => import('./components/EntityPage/ManageProgrammeAdmin').then(m => m.ProgrammeAdminViewPageComponent),
+    name: 'EntityPageManageDeliveryProgrammeAdminContent',
+    component: () => import('./components/DeliveryProgrammeAdmin').then(m => m.DeliveryProgrammeAdminViewPage),
     mountPoint: manageProgrammeAdminEntityContentRouteRef
   })
 )
