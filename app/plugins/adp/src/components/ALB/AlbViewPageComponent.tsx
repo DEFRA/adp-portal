@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { Button, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import {
   Header,
   Page,
@@ -8,44 +9,30 @@ import {
   SupportButton,
   TableColumn,
 } from '@backstage/core-components';
-import { DefaultTable } from '../../utils/Table';
-import { ActionsModal } from '../../utils/ActionsModal';
+import { DefaultTable } from '../../utils';
 import {
   useApi,
   discoveryApiRef,
   fetchApiRef,
-  alertApiRef,
   errorApiRef,
 } from '@backstage/core-plugin-api';
-import {
-  ArmsLengthBody,
-  adpProgrammmeCreatePermission,
-} from '@internal/plugin-adp-common';
+import { ArmsLengthBody } from '@internal/plugin-adp-common';
 import { ArmsLengthBodyClient } from './api/AlbClient';
 import { ArmsLengthBodyApi } from './api/AlbApi';
-import CreateAlb from './CreateAlb';
-import { albFormFields } from './AlbFormFields';
-import { usePermission } from '@backstage/plugin-permission-react';
+import { CreateAlbButton } from './CreateAlbButton';
+import { EditAlbButton } from './EditAlbButton';
 
 export const AlbViewPageComponent = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({});
   const [tableData, setTableData] = useState<ArmsLengthBody[]>([]);
   const [key, refetchArmsLengthBody] = useReducer(i => i + 1, 0);
-  const alertApi = useApi(alertApiRef);
   const errorApi = useApi(errorApiRef);
   const discoveryApi = useApi(discoveryApiRef);
   const fetchApi = useApi(fetchApiRef);
-  const fields = albFormFields;
-  
+
   const albClient: ArmsLengthBodyApi = new ArmsLengthBodyClient(
     discoveryApi,
     fetchApi,
   );
-
-  const { allowed: allowedToEditAlb } = usePermission({
-    permission: adpProgrammmeCreatePermission,
-  });
 
   const getAllArmsLengthBodies = async () => {
     try {
@@ -60,50 +47,7 @@ export const AlbViewPageComponent = () => {
     getAllArmsLengthBodies();
   }, [key]);
 
-  const handleEdit = (ArmsLengthBody: React.SetStateAction<{}>) => {
-    setFormData(ArmsLengthBody);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setFormData({});
-    setIsModalOpen(false);
-  };
-
-  const isNameUnique = (title: string, id: string) => {
-    return !tableData.some(
-      item =>
-        item.title.toLowerCase() === title.toLowerCase() && item.id !== id,
-    );
-  };
-
-  const handleUpdate = async (armsLengthBody: ArmsLengthBody) => {
-    if (!isNameUnique(armsLengthBody.title, armsLengthBody.id)) {
-      setIsModalOpen(true);
-
-      alertApi.post({
-        message: `The title '${armsLengthBody.title}' is already in use. Please choose a different title.`,
-        severity: 'error',
-        display: 'permanent',
-      });
-
-      return;
-    }
-
-    try {
-      await albClient.updateArmsLengthBody(armsLengthBody);
-      alertApi.post({
-        message: `Updated`,
-        severity: 'success',
-        display: 'transient',
-      });
-      refetchArmsLengthBody();
-    } catch (e: any) {
-      errorApi.post(e);
-    }
-  };
-
-  const columns: TableColumn[] = [
+  const columns: TableColumn<ArmsLengthBody>[] = [
     {
       title: 'Title',
       field: 'title',
@@ -137,21 +81,17 @@ export const AlbViewPageComponent = () => {
     {
       width: '',
       highlight: true,
-      render: (rowData: {}) => {
-        const alb = rowData as ArmsLengthBody;
-        return (
-          allowedToEditAlb && (
-            <Button
-              variant="contained"
-              color="default"
-              onClick={() => handleEdit(rowData)}
-              data-testid={`alb-edit-button-${alb.id}`}
-            >
-              Edit
-            </Button>
-          )
-        );
-      },
+      render: data => (
+        <EditAlbButton
+          variant="contained"
+          color="default"
+          data-testid={`alb-edit-button-${data.id}`}
+          armsLengthBody={data}
+          onEdited={refetchArmsLengthBody}
+        >
+          Edit
+        </EditAlbButton>
+      ),
     },
   ];
 
@@ -163,7 +103,15 @@ export const AlbViewPageComponent = () => {
       />
       <Content>
         <ContentHeader title="Arms Length Bodies">
-          <CreateAlb refetchArmsLengthBody={refetchArmsLengthBody} />
+          <CreateAlbButton
+            variant="contained"
+            size="large"
+            color="primary"
+            startIcon={<AddBoxIcon />}
+            onCreated={refetchArmsLengthBody}
+          >
+            Add ALB
+          </CreateAlbButton>
           <SupportButton>
             View or manage units within the DEFRA delivery organization on the
             Azure Developer Platform.
@@ -178,17 +126,6 @@ export const AlbViewPageComponent = () => {
           title="View all"
           isCompact={true}
         />
-
-        {isModalOpen && allowedToEditAlb && (
-          <ActionsModal
-            open={isModalOpen}
-            onClose={handleCloseModal}
-            onSubmit={handleUpdate}
-            initialValues={formData}
-            mode="edit"
-            fields={fields}
-          />
-        )}
       </Content>
     </Page>
   );

@@ -7,7 +7,7 @@ import {
   within,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { DefaultTable } from './Table';
+import { DefaultTable } from './DefaultTable';
 
 describe('DefaultTable', () => {
   const columns = [

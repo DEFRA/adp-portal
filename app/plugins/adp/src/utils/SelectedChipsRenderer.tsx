@@ -7,7 +7,7 @@ function defaultComparer(x: unknown, y: unknown): boolean {
 
 type SelectedChipsRendererProps<TSelected, TOptionValue> = {
   readonly selected: TSelected;
-  readonly options: Array<{ label: string; value: TOptionValue }>;
+  readonly options: ReadonlyArray<{ label: string; value: TOptionValue }>;
   readonly comparer?: (x: TSelected, y: TOptionValue) => boolean;
 };
 

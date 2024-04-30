@@ -68,8 +68,6 @@ export class DeliveryProjectGithubTeamsSyncronizer
     if (deliveryProject === null)
       throw new InputError(`Unknown delivery project ${projectName}`);
 
-    console.log(this.#githubTeamsStore);
-
     const teamDetails = createGithubTeamDetails(deliveryProject);
     const teamIds = await this.#githubTeamsStore.get(deliveryProject.id);
 

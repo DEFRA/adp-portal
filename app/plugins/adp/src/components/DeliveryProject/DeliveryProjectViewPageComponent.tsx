@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { Button, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import {
   Header,
   Page,
@@ -8,53 +9,33 @@ import {
   SupportButton,
   TableColumn,
 } from '@backstage/core-components';
-import { DefaultTable } from '../../utils/Table';
-import { ActionsModal } from '../../utils/ActionsModal';
+import { DefaultTable } from '../../utils';
 import {
   useApi,
   discoveryApiRef,
   fetchApiRef,
-  alertApiRef,
   errorApiRef,
 } from '@backstage/core-plugin-api';
-import {
-  DeliveryProject,
-  adpProjectCreatePermission,
-} from '@internal/plugin-adp-common';
-import CreateDeliveryProject from './CreateDeliveryProject';
+import { DeliveryProject } from '@internal/plugin-adp-common';
 import { DeliveryProjectClient } from './api/DeliveryProjectClient';
 import { DeliveryProjectApi } from './api/DeliveryProjectApi';
-import { deliveryProjectFormFields } from './deliveryProjectFormFields';
-import { useDeliveryProgrammesList } from '../../hooks/useDeliveryProgrammesList';
-import { usePermission } from '@backstage/plugin-permission-react';
-import {
-  isCodeUnique,
-  isNameUnique,
-} from '../../utils/DeliveryProject/DeliveryProjectUtils';
+import { CreateDeliveryProjectButton } from './CreateDeliveryProjectButton';
+import { EditDeliveryProjectButton } from './EditDeliveryProjectButton';
 
 export const DeliveryProjectViewPageComponent = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({});
   const [tableData, setTableData] = useState<DeliveryProject[]>([]);
   const [key, refetchDeliveryProject] = useReducer(i => {
     return i + 1;
   }, 0);
 
-  const alertApi = useApi(alertApiRef);
   const errorApi = useApi(errorApiRef);
   const discoveryApi = useApi(discoveryApiRef);
   const fetchApi = useApi(fetchApiRef);
-  const programmesList = useDeliveryProgrammesList();
-  const deliveryProgrammeOptions = programmesList.map(x => x.dropdownItem);
 
   const deliveryProjectClient: DeliveryProjectApi = new DeliveryProjectClient(
     discoveryApi,
     fetchApi,
   );
-
-  const { allowed: allowedToEditAdpProject } = usePermission({
-    permission: adpProjectCreatePermission,
-  });
 
   const getAllDeliveryProjects = async () => {
     try {
@@ -69,63 +50,7 @@ export const DeliveryProjectViewPageComponent = () => {
     getAllDeliveryProjects();
   }, [key]);
 
-  const handleEdit = async (deliveryProject: DeliveryProject) => {
-    try {
-      const project = await deliveryProjectClient.getDeliveryProjectById(
-        deliveryProject.id,
-      );
-      setFormData(project);
-      setIsModalOpen(true);
-    } catch (e: any) {
-      errorApi.post(e);
-    }
-  };
-
-  const handleCloseModal = () => {
-    setFormData({});
-    setIsModalOpen(false);
-  };
-
-  const handleUpdate = async (deliveryProject: DeliveryProject) => {
-    if (!isNameUnique(tableData, deliveryProject.title, deliveryProject.id)) {
-      setIsModalOpen(true);
-      alertApi.post({
-        message: `The title '${deliveryProject.title}' is already in use. Please choose a different title.`,
-        severity: 'error',
-        display: 'permanent',
-      });
-      return;
-    }
-    if (
-      !isCodeUnique(
-        tableData,
-        deliveryProject.delivery_project_code,
-        deliveryProject.id,
-      )
-    ) {
-      setIsModalOpen(true);
-      alertApi.post({
-        message: `The service code '${deliveryProject.delivery_project_code}' is already in use. Please choose a different service code.`,
-        severity: 'error',
-        display: 'permanent',
-      });
-      return;
-    }
-
-    try {
-      await deliveryProjectClient.updateDeliveryProject(deliveryProject);
-      alertApi.post({
-        message: `Updated`,
-        severity: 'success',
-        display: 'transient',
-      });
-      refetchDeliveryProject();
-    } catch (e: any) {
-      errorApi.post(e);
-    }
-  };
-
-  const columns: TableColumn[] = [
+  const columns: TableColumn<DeliveryProject>[] = [
     {
       title: 'Title',
       field: 'title',
@@ -163,21 +88,16 @@ export const DeliveryProjectViewPageComponent = () => {
     {
       width: '',
       highlight: true,
-      render: (rowData: any) => {
-        const data = rowData as DeliveryProject;
-        return (
-          allowedToEditAdpProject && (
-            <Button
-              variant="contained"
-              color="default"
-              onClick={() => handleEdit(data)}
-              data-testid={`delivery-project-edit-button-${data.id}`}
-            >
-              Edit
-            </Button>
-          )
-        );
-      },
+      render: data => (
+        <EditDeliveryProjectButton
+          variant="contained"
+          color="default"
+          deliveryProject={data}
+          data-testid={`delivery-programme-edit-button-${data.id}`}
+        >
+          Edit
+        </EditDeliveryProjectButton>
+      ),
     },
   ];
 
@@ -189,9 +109,15 @@ export const DeliveryProjectViewPageComponent = () => {
       />
       <Content>
         <ContentHeader title="Delivery Projects">
-          <CreateDeliveryProject
-            refetchDeliveryProject={refetchDeliveryProject}
-          />
+          <CreateDeliveryProjectButton
+            variant="contained"
+            size="large"
+            color="primary"
+            startIcon={<AddBoxIcon />}
+            onCreated={refetchDeliveryProject}
+          >
+            Add Delivery Project
+          </CreateDeliveryProjectButton>
           <SupportButton>
             View or manage units within the DEFRA delivery organization on the
             Azure Developer Platform.
@@ -207,20 +133,6 @@ export const DeliveryProjectViewPageComponent = () => {
           title="View all"
           isCompact={true}
         />
-
-        {isModalOpen && allowedToEditAdpProject && (
-          <ActionsModal
-            open={isModalOpen}
-            onClose={handleCloseModal}
-            onSubmit={handleUpdate}
-            initialValues={formData}
-            mode="edit"
-            fields={deliveryProjectFormFields({
-              deliveryProgrammeOptions,
-              disableNamespace: true,
-            })}
-          />
-        )}
       </Content>
     </Page>
   );
