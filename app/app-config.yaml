@@ -179,10 +179,10 @@ catalog:
   # Locations configured to import static data into the catalog
   locations:
     - type: url
-      target: https://github.com/DEFRA/adp-software-templates/blob/main/catalog-model/all.yaml
+      target: https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/catalog-model/all.yaml
 
 techRadar:
-  data: https://raw.githubusercontent.com/defra/adp-software-templates/main/tech-radars/development-tech-radar.json
+  data: https://raw.githubusercontent.com/defra/adp-software-templates/${ADP_PORTAL_TEMPLATE_VERSION}/tech-radars/development-tech-radar.json
 
 adp:
   fluxOnboarding:

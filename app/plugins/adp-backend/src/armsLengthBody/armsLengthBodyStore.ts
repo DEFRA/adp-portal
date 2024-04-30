@@ -146,7 +146,7 @@ export class ArmsLengthBodyStore {
 
     const updated = new Date();
 
-    const updatedData: Partial<ArmsLengthBody> = { ...armsLengthBody };
+    const { children, ...updatedData } = armsLengthBody;
 
     if (Object.keys(updatedData).length === 0) {
       return existingALB;

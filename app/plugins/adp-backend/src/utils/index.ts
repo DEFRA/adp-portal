@@ -66,3 +66,16 @@ export function getOwner(options: AlbRouterOptions): string {
 }
 
 export type { CreateDeliveryProgrammeAdmin } from './types';
+
+export function createGithubTeamDetails(deliveryProject: DeliveryProject) {
+  return {
+    contributors: {
+      name: `${deliveryProject.name}-Contributors`,
+      description: deliveryProject.description,
+    },
+    admins: {
+      name: `${deliveryProject.name}-Admins`,
+      description: deliveryProject.description,
+    },
+  };
+}

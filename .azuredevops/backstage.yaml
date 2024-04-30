@@ -267,7 +267,10 @@ properties:
             secretRef: cluster5-env
           - name: CLUSTER6_ENV
             secretRef: cluster6-env
-            
+
+          - name: ADP_PORTAL_TEMPLATE_VERSION
+            value: '1.0.0'
+
         resources:
           cpu: 0.5
           memory: 1Gi
