@@ -9,6 +9,7 @@ type Row = {
   aad_entity_ref_id: string;
   email: string;
   name: string;
+  updated_at: Date;
 };
 
 export type IDeliveryProgrammeAdminStore = {
@@ -30,6 +31,7 @@ export class DeliveryProgrammeAdminStore {
         'aad_entity_ref_id',
         'email',
         'name',
+        'updated_at'
       )
       .orderBy('delivery_programme_id');
 
@@ -39,6 +41,7 @@ export class DeliveryProgrammeAdminStore {
       aad_entity_ref_id: row.aad_entity_ref_id,
       email: row.email,
       name: row.name,
+      updated_at: row.updated_at,
     }));
   }
 
@@ -58,6 +61,7 @@ export class DeliveryProgrammeAdminStore {
         'aad_entity_ref_id',
         'email',
         'name',
+        'updated_at'
       );
 
     return deliveryProgrammeAdmins.map(row => ({
@@ -66,6 +70,7 @@ export class DeliveryProgrammeAdminStore {
       aad_entity_ref_id: row.aad_entity_ref_id,
       email: row.email,
       name: row.name,
+      updated_at: row.updated_at,
     }));
   }
 
@@ -88,6 +93,7 @@ export class DeliveryProgrammeAdminStore {
         'aad_entity_ref_id',
         'email',
         'name',
+        'updated_at',
       );
 
     return deliveryProgrammeAdmin !== undefined ? {
@@ -96,6 +102,7 @@ export class DeliveryProgrammeAdminStore {
       aad_entity_ref_id: deliveryProgrammeAdmin.aad_entity_ref_id,
       email: deliveryProgrammeAdmin.email,
       name: deliveryProgrammeAdmin.name,
+      updated_at: deliveryProgrammeAdmin.updated_at,
     } : undefined;
   }
 
@@ -114,12 +121,13 @@ export class DeliveryProgrammeAdminStore {
         email: deliveryProgrammeAdmin.email,
         name: deliveryProgrammeAdmin.name,
       },
-      ['id'],
+      ['id', 'updated_at'],
     );
 
     return {
       ...deliveryProgrammeAdmin,
       id: insertResult[0].id,
+      updated_at: insertResult[0].updated_at,
     };
   }
 
@@ -133,7 +141,7 @@ export class DeliveryProgrammeAdminStore {
   ): Promise<DeliveryProgrammeAdmin[]> {
     const insertResult = await this.client<Row>(TABLE_NAME).insert(
       deliveryProgrammeAdmins,
-      ['id', 'delivery_programme_id', 'aad_entity_ref_id', 'email', 'name'],
+      ['id', 'delivery_programme_id', 'aad_entity_ref_id', 'email', 'name', 'updated_at'],
     );
 
     return insertResult.map(row => ({
@@ -142,6 +150,7 @@ export class DeliveryProgrammeAdminStore {
       aad_entity_ref_id: row.aad_entity_ref_id,
       email: row.email,
       name: row.name,
+      updated_at: row.updated_at,
     }));
   }
 

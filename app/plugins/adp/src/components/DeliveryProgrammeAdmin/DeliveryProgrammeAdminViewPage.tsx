@@ -49,13 +49,16 @@ export const DeliveryProgrammeAdminViewPage = () => {
   // TODO: Refactor to use a hook
   const getDeliveryProgrammeAdmins = async () => {
     try {
-      const deliveryProgrammeId = entity.metadata.annotations!['adp.defra.gov.uk/delivery-programme-id'];
-      const data = await deliveryProgrammeAdminApi.getByDeliveryProgrammeId(deliveryProgrammeId);
+      const deliveryProgrammeId =
+        entity.metadata.annotations!['adp.defra.gov.uk/delivery-programme-id'];
+      const data = await deliveryProgrammeAdminApi.getByDeliveryProgrammeId(
+        deliveryProgrammeId,
+      );
       setTableData(data);
     } catch (error: any) {
       errorApi.post(error);
     }
-  }
+  };
 
   useEffect(() => {
     getDeliveryProgrammeAdmins();
@@ -81,6 +84,9 @@ export const DeliveryProgrammeAdminViewPage = () => {
       field: 'email',
       highlight: false,
       type: 'string',
+      render: (row: Partial<DeliveryProgrammeAdmin>) => (
+        <a href={`mailto:${row.email}`}>{row.email}</a>
+      ),
     },
 
     {
@@ -88,9 +94,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
       field: 'role',
       highlight: false,
       type: 'string',
-      render: () => (
-        <>Delivery Programme Admin</>
-      )
+      render: () => <>Delivery Programme Admin</>,
     },
     {
       title: 'Updated At',
@@ -98,17 +102,15 @@ export const DeliveryProgrammeAdminViewPage = () => {
       highlight: false,
       type: 'datetime',
     },
-
     {
       highlight: true,
-      render: (rowData: any) => {
-        const data = rowData as DeliveryProgrammeAdmin;
+      render: (row: Partial<DeliveryProgrammeAdmin>) => {
         return (
           //  TODO: Add permission
           <Button
             variant="contained"
             color="secondary"
-            data-testid={`programme-admin-edit-button-${data.id}`}
+            data-testid={`programme-admin-edit-button-${row.id}`}
           >
             Remove
           </Button>

@@ -21,4 +21,5 @@ export type DeliveryProgrammeAdmin = {
     aad_entity_ref_id: string;
     email: string;
     name: string;
+    updated_at: Date;
 }
