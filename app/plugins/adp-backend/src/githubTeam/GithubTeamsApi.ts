@@ -2,6 +2,7 @@ import { Config } from '@backstage/config';
 import fetch from 'node-fetch';
 
 export type SetTeamRequest = {
+  name?: string;
   description?: string;
   members?: string[];
   maintainers?: string[];
@@ -30,9 +31,23 @@ export class GitHubTeamsApi {
     this.#fetch = fetchApi;
   }
 
-  public async setTeam(teamName: string, request: SetTeamRequest) {
+  public async createTeam(request: SetTeamRequest): Promise<GithubTeamDetails> {
+    return await this.#setTeam(null, request);
+  }
+
+  public async setTeam(
+    teamId: number,
+    request: SetTeamRequest,
+  ): Promise<GithubTeamDetails> {
+    return await this.#setTeam(teamId, request);
+  }
+
+  async #setTeam(
+    teamId: number | null,
+    request: SetTeamRequest,
+  ): Promise<GithubTeamDetails> {
     const baseUrl = this.#config.getString('adp.githubTeams.apiBaseUrl');
-    const endpoint = `${baseUrl}/${teamName}`;
+    const endpoint = teamId === null ? baseUrl : `${baseUrl}/${teamId}`;
     const response = await this.#fetch(endpoint, {
       method: 'PUT',
       headers: {
@@ -41,12 +56,10 @@ export class GitHubTeamsApi {
       body: JSON.stringify(request),
     });
 
-    if (!response.ok) {
-      throw new Error(
-        `Failed to set the team info - ${response.status} ${response.statusText}`,
-      );
-    }
+    if (response.status === 200) return await response.json();
 
-    return (await response.json()) as GithubTeamDetails;
+    throw new Error(
+      `Failed to set the team info - ${response.status} ${response.statusText}`,
+    );
   }
 }

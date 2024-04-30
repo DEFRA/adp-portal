@@ -1,7 +1,6 @@
 import { Config } from '@backstage/config';
-import { GitHubTeamsApi, GithubTeamDetails } from './GitHubTeamsApi';
+import { GitHubTeamsApi, GithubTeamDetails } from './GithubTeamsApi';
 import fetch, { Response } from 'node-fetch';
-import { randomUUID } from 'node:crypto';
 
 describe('GitHubTeamsApi', () => {
   function setup() {
@@ -32,11 +31,99 @@ describe('GitHubTeamsApi', () => {
     return { sut, fetchApi, config };
   }
 
+  describe('#createTeam', () => {
+    it('Should return the response when the API call is successful', async () => {
+      // arrange
+      const { sut, config, fetchApi } = setup();
+      const expected: GithubTeamDetails = {
+        description: 'description',
+        id: 123,
+        isPublic: true,
+        maintainers: ['abc'],
+        members: ['def'],
+        name: 'name',
+        slug: 'slug',
+      };
+      const response = new Response(JSON.stringify(expected), { status: 200 });
+
+      config.getString.mockImplementationOnce(x => {
+        expect(x).toBe('adp.githubTeams.apiBaseUrl');
+        return 'https://localhost/api';
+      });
+      fetchApi.mockResolvedValueOnce(response);
+
+      // act
+      const actual = await sut.createTeam({
+        name: 'name',
+        description: 'description',
+        isPublic: true,
+        maintainers: ['abc'],
+        members: ['def'],
+      });
+
+      // assert
+      expect(actual).toMatchObject(expected);
+      expect(config.getString.mock.calls).toMatchObject([
+        ['adp.githubTeams.apiBaseUrl'],
+      ]);
+      expect(fetchApi.mock.calls).toMatchObject([
+        [
+          `https://localhost/api`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: '{"name":"name","description":"description","isPublic":true,"maintainers":["abc"],"members":["def"]}',
+          },
+        ],
+      ]);
+    });
+    it('Should throw an error when the API call is not successful', async () => {
+      // arrange
+      const { sut, config, fetchApi } = setup();
+      const response = new Response(undefined, { status: 400 });
+
+      config.getString.mockImplementationOnce(x => {
+        expect(x).toBe('adp.githubTeams.apiBaseUrl');
+        return 'https://localhost/api';
+      });
+      fetchApi.mockResolvedValueOnce(response);
+
+      // act
+      await expectException(() =>
+        sut.createTeam({
+          name: 'name',
+          description: 'description',
+          isPublic: true,
+          maintainers: ['abc'],
+          members: ['def'],
+        }),
+      );
+
+      // assert
+      expect(config.getString.mock.calls).toMatchObject([
+        ['adp.githubTeams.apiBaseUrl'],
+      ]);
+      expect(fetchApi.mock.calls).toMatchObject([
+        [
+          `https://localhost/api`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: '{"name":"name","description":"description","isPublic":true,"maintainers":["abc"],"members":["def"]}',
+          },
+        ],
+      ]);
+    });
+  });
   describe('#setTeam', () => {
     it('Should return the response when the API call is successful', async () => {
       // arrange
       const { sut, config, fetchApi } = setup();
-      const teamName = randomUUID();
+      const teamId = Math.random();
       const expected: GithubTeamDetails = {
         description: 'description',
         id: 123,
@@ -55,7 +142,8 @@ describe('GitHubTeamsApi', () => {
       fetchApi.mockResolvedValueOnce(response);
 
       // act
-      const actual = await sut.setTeam(teamName, {
+      const actual = await sut.setTeam(teamId, {
+        name: 'name',
         description: 'description',
         isPublic: true,
         maintainers: ['abc'],
@@ -69,13 +157,13 @@ describe('GitHubTeamsApi', () => {
       ]);
       expect(fetchApi.mock.calls).toMatchObject([
         [
-          `http://localhost/api/${teamName}`,
+          `http://localhost/api/${teamId}`,
           {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: '{"description":"description","isPublic":true,"maintainers":["abc"],"members":["def"]}',
+            body: '{"name":"name","description":"description","isPublic":true,"maintainers":["abc"],"members":["def"]}',
           },
         ],
       ]);
@@ -83,7 +171,7 @@ describe('GitHubTeamsApi', () => {
     it('Should throw an error when the API call is not successful', async () => {
       // arrange
       const { sut, config, fetchApi } = setup();
-      const teamName = randomUUID();
+      const teamId = Math.random();
       const response = new Response(undefined, { status: 400 });
 
       config.getString.mockImplementationOnce(x => {
@@ -94,7 +182,8 @@ describe('GitHubTeamsApi', () => {
 
       // act
       await expectException(() =>
-        sut.setTeam(teamName, {
+        sut.setTeam(teamId, {
+          name: 'name',
           description: 'description',
           isPublic: true,
           maintainers: ['abc'],
@@ -108,13 +197,13 @@ describe('GitHubTeamsApi', () => {
       ]);
       expect(fetchApi.mock.calls).toMatchObject([
         [
-          `http://localhost/api/${teamName}`,
+          `http://localhost/api/${teamId}`,
           {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: '{"description":"description","isPublic":true,"maintainers":["abc"],"members":["def"]}',
+            body: '{"name":"name","description":"description","isPublic":true,"maintainers":["abc"],"members":["def"]}',
           },
         ],
       ]);

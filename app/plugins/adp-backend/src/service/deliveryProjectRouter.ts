@@ -15,10 +15,7 @@ import {
   getCurrentUsername,
 } from '../utils/index';
 import { IDeliveryProgrammeStore } from '../deliveryProgramme';
-import {
-  FluxConfigApi,
-  IDeliveryProjectGithubTeamsSyncronizer,
-} from '../deliveryProject';
+import { FluxConfigApi } from '../deliveryProject';
 import { Config } from '@backstage/config';
 export interface ProjectRouterOptions {
   logger: Logger;
@@ -28,6 +25,7 @@ export interface ProjectRouterOptions {
   deliveryProjectStore: IDeliveryProjectStore;
   deliveryProgrammeStore: IDeliveryProgrammeStore;
 }
+import { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 
 export function createProjectRouter(
   options: ProjectRouterOptions,
@@ -93,7 +91,7 @@ export function createProjectRouter(
         // Pick error message, for either title or code
         const errorMessage = isDuplicateTitle
           ? 'Delivery Project title already exists'
-          : 'Service Code already exists'
+          : 'Service Code already exists';
         res.status(406).json({ error: errorMessage });
       } else {
         const author = await getCurrentUsername(identity, req);
