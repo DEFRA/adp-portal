@@ -52,6 +52,7 @@ export const ActionsModal: FC<ActionsModalProps> = ({
   mode,
   fields,
 }) => {
+
   const formContext = useFormContext();
   const formMethods = formContext || useForm({ defaultValues: initialValues });
   const {

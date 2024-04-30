@@ -22,6 +22,7 @@ export const deliveryProjectGroupTransformer: DeliveryProjectGroupTransformer =
         annotations: {
           'backstage.io/managed-by-location': `adp:delivery-project\\${deliveryProject.name}`,
           'backstage.io/managed-by-origin-location': `adp:delivery-project\\${deliveryProject.name}`,
+          'adp.defra.gov.uk/delivery-project-id': deliveryProject.id
         },
         links: [],
       },

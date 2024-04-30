@@ -78,6 +78,8 @@ export SND2_CLUSTER_NAME=""
 export SND2_CLUSTER_API_SERVER_ADDRESS=""
 export SND3_CLUSTER_NAME=""
 export SND3_CLUSTER_API_SERVER_ADDRESS=""
+
+export TZ=utc
 ```
 
 To convert a GitHub private key into a format that can be used in the `GITHUB_PRIVATE_KEY` environment variable use one of the following scripts:

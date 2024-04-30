@@ -10,6 +10,7 @@ import {
   createProjectRouter,
   createDeliveryProgrammeAdminRouter,
   initializeAdpDatabase,
+  GithubTeamStore,
 } from '@internal/plugin-adp-backend';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
@@ -27,6 +28,7 @@ export default async function createPlugin({
   const deliveryProjectStore = new DeliveryProjectStore(dbClient);
   const deliveryProgrammeStore = new DeliveryProgrammeStore(dbClient);
   const deliveryProgrammeAdminStore = new DeliveryProgrammeAdminStore(dbClient);
+  const githubTeamStore = new GithubTeamStore(dbClient);
   const identity = DefaultIdentityClient.create({
     discovery,
     issuer: await discovery.getExternalBaseUrl('auth'),
@@ -46,9 +48,9 @@ export default async function createPlugin({
     deliveryProgrammeStore,
     deliveryProjectStore,
     deliveryProgrammeAdminStore,
-    catalog
+    catalog,
   });
-  
+
   const deliveryProjectRouter = createProjectRouter({
     logger,
     identity,
@@ -58,7 +60,7 @@ export default async function createPlugin({
     teamSyncronizer: new DeliveryProjectGithubTeamsSyncronizer(
       new GitHubTeamsApi(config),
       deliveryProjectStore,
-      deliveryProgrammeStore,
+      githubTeamStore,
     ),
   });
 
@@ -66,8 +68,8 @@ export default async function createPlugin({
     deliveryProgrammeAdminStore,
     catalog,
     identity,
-    logger
-  })
+    logger,
+  });
 
   const combinedRouter = Router();
   combinedRouter.use(armsLengthBodyRouter);
