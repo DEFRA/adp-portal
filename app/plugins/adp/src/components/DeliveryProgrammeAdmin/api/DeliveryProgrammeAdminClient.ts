@@ -32,19 +32,74 @@ export class DeliveryProgrammeAdminApiClient
     return deliveryProgrammeAdmins;
   }
 
-  getAll(): Promise<DeliveryProgrammeAdmin[]> {
-    throw new Error('Method not implemented.');
+  async getAll(): Promise<DeliveryProgrammeAdmin[]> {
+    const baseUrl = await this.getBaseUrl();
+    const url = `${baseUrl}/deliveryProgrammeAdmins/`;
+
+    const response = await this.fetchApi.fetch(url);
+
+    if (!response.ok) {
+      throw await ResponseError.fromResponse(response);
+    }
+
+    const deliveryProgrammeAdmins =
+      (await response.json()) as DeliveryProgrammeAdmin[];
+
+    return deliveryProgrammeAdmins;
   }
 
-  create(data: any): Promise<DeliveryProgrammeAdmin[]> {
-    throw new Error('Method not implemented.');
+  async create(
+    deliveryProgrammeId: string,
+    aadEntityRefIds: string[],
+  ): Promise<DeliveryProgrammeAdmin[]> {
+    const baseUrl = await this.getBaseUrl();
+    const url = `${baseUrl}/deliveryProgrammeAdmins/${deliveryProgrammeId}`;
+
+    const body = aadEntityRefIds.map(ref => ({
+      aadEntityRefId: ref,
+    }));
+
+    const response = await this.fetchApi.fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw await ResponseError.fromResponse(response);
+    }
+
+    const deliveryProgrammeAdmins =
+      (await response.json()) as DeliveryProgrammeAdmin[];
+
+    return deliveryProgrammeAdmins;
   }
 
-  delete(
+  async delete(
     aadEntityRefId: string,
     deliveryProgrammeId: string,
-  ): Promise<DeliveryProgrammeAdmin[]> {
-    throw new Error('Method not implemented.');
+  ) {
+    const baseUrl = await this.getBaseUrl();
+    const url = `${baseUrl}/deliveryProgrammeAdmin`;
+
+    const body = {
+      aadEntityRefId: aadEntityRefId,
+      deliveryProgrammeId: deliveryProgrammeId
+    };
+
+    const response = await this.fetchApi.fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw await ResponseError.fromResponse(response);
+    }
   }
 
   private async getBaseUrl(): Promise<string> {

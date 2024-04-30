@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import {
   Content,
   ContentHeader,
@@ -7,20 +7,14 @@ import {
 } from '@backstage/core-components';
 import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { Button, Grid } from '@material-ui/core';
-import AddProgrammeAdmin from './AddProgrammeAdmin';
 import { DefaultTable } from '@internal/plugin-adp/src/utils';
-import { ActionsModal } from '@internal/plugin-adp/src/utils';
-import { useProgrammeManagersList } from '@internal/plugin-adp/src/hooks/useProgrammeManagersList';
-import { ProgrammeAdminFormFields } from './ProgrammeAdminFormFields';
 import { errorApiRef, useApi } from '@backstage/core-plugin-api';
 import { deliveryProgrammeAdminApiRef } from './api';
 import { useEntity } from '@backstage/plugin-catalog-react';
 
 export const DeliveryProgrammeAdminViewPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [tableData, setTableData] = useState<DeliveryProgrammeAdmin[]>([]);
-  const [formData, setFormData] = useState({});
-  const [key, refetchProgrammeAdmin] = useReducer(i => {
+  const [key, _refetchProgrammeAdmin] = useReducer(i => {
     return i + 1;
   }, 0);
   const { entity } = useEntity();
@@ -28,25 +22,6 @@ export const DeliveryProgrammeAdminViewPage = () => {
   const deliveryProgrammeAdminApi = useApi(deliveryProgrammeAdminApiRef);
   const errorApi = useApi(errorApiRef);
 
-  const getProgrammeManagerDropDown = useProgrammeManagersList();
-  const getOptionFields = () => {
-    return ProgrammeAdminFormFields.map(field => {
-      if (field.name === 'programme_managers') {
-        return {
-          ...field,
-          options: getProgrammeManagerDropDown,
-        };
-      }
-      return field;
-    });
-  };
-
-  const handleCloseModal = () => {
-    setFormData({});
-    setIsModalOpen(false);
-  };
-
-  // TODO: Refactor to use a hook
   const getDeliveryProgrammeAdmins = async () => {
     try {
       const deliveryProgrammeId =
@@ -64,14 +39,6 @@ export const DeliveryProgrammeAdminViewPage = () => {
     getDeliveryProgrammeAdmins();
   }, [key]);
 
-  const handleEdit = async (programmeManager: DeliveryProgrammeAdmin) => {
-    // TODO: handle edit
-  };
-
-  const handleUpdate = async (programmeManager: DeliveryProgrammeAdmin) => {
-    // TODO: handle update
-  };
-
   const columns: TableColumn[] = [
     {
       title: 'Name',
@@ -88,7 +55,6 @@ export const DeliveryProgrammeAdminViewPage = () => {
         <a href={`mailto:${row.email}`}>{row.email}</a>
       ),
     },
-
     {
       title: 'role',
       field: 'role',
@@ -124,7 +90,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
       <Content>
         <ContentHeader title="Delivery Programme Admins">
           {/* TODO: Add permissions */}
-          <AddProgrammeAdmin refetchProgrammeAdmin={refetchProgrammeAdmin} />
+          {/* <AddProgrammeAdmin refetchProgrammeAdmin={refetchProgrammeAdmin} /> */}
         </ContentHeader>
         <Grid item>
           <div>
@@ -135,14 +101,14 @@ export const DeliveryProgrammeAdminViewPage = () => {
               isCompact={true}
             />
             {/* TODO: Add permissions */}
-            <ActionsModal
+            {/* <ActionsModal
               open={isModalOpen}
               onClose={handleCloseModal}
               onSubmit={handleUpdate}
               initialValues={formData}
               mode="edit"
               fields={getOptionFields()}
-            />
+            /> */}
           </div>
         </Grid>
       </Content>
