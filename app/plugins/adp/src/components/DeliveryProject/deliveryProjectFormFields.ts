@@ -18,10 +18,6 @@ export function deliveryProjectFormFields({
       helperText: 'This must be unique',
       validations: {
         required: true,
-        pattern: {
-          value: /^[a-zA-Z0-9]+(?:[. ][a-zA-Z0-9]+)*$/,
-          message: 'Invalid delivery project name format',
-        },
       },
     },
     {

@@ -5,10 +5,6 @@ export const DeliveryProgrammeFormFields = [
     helperText: 'This must be unique',
     validations: {
       required: true,
-      pattern: {
-        value: /^[a-zA-Z0-9]+(?:[. ][a-zA-Z0-9]+)*$/,
-        message: 'Invalid Delivery Programme name format',
-      },
     },
   },
   {
@@ -48,7 +44,6 @@ export const DeliveryProgrammeFormFields = [
     helperText: 'This must be unique',
     validations: {
       required: true,
-      
     },
   },
   {

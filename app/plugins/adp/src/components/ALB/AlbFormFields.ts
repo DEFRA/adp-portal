@@ -6,11 +6,6 @@ export const albFormFields = [
         'This must be unique',
       validations: {
         required: true,
-        pattern: {
-          value: /^[a-zA-Z0-9]+(?:[. ][a-zA-Z0-9]+)*$/,
-          message:
-            'Invalid ALB name format',
-        },
       },
     },
     {
