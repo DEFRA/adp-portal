@@ -21,7 +21,7 @@ properties:
     secrets:
       - name: github-app-id
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-APP-ID
-        identity: {{userAssignedIdentity}}      
+        identity: {{userAssignedIdentity}}
       - name: github-client-id
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-CLIENT-ID
         identity: {{userAssignedIdentity}}
@@ -36,7 +36,7 @@ properties:
         identity: {{userAssignedIdentity}}
       - name: authm-tenant-id
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-AUTH-APP-REG-TENANT-ID
-        identity: {{userAssignedIdentity}}        
+        identity: {{userAssignedIdentity}}
       - name: backend-secret
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/BACKSTAGE-BACKEND-SECRET
         identity: {{userAssignedIdentity}}
@@ -134,7 +134,7 @@ properties:
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-NAME
         identity: {{userAssignedIdentity}}
       - name: prd1-cluster-api-server-address
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-API-SERVER-ADDRESS    
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/PRD1-CLUSTER-API-SERVER-ADDRESS
         identity: {{userAssignedIdentity}}
       - name: adp-portal-api-endpoint
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-API-ENDPOINT
@@ -164,6 +164,8 @@ properties:
         env:
           - name: POSTGRES_PORT
             value: 5432
+          - name: TZ
+            value: utc
           - name: APP_BASE_URL
             secretRef: app-base-url
           - name: APP_BACKEND_BASE_URL
@@ -192,7 +194,7 @@ properties:
             secretRef: authm-client-secret
           - name: AUTH_MICROSOFT_TENANT_ID
             secretRef: authm-tenant-id
-          
+
           # Required for the Backstage Flux and Kubernetes Plugins
           - name: AZURE_CLIENT_ID
             secretRef: authm-client-id
