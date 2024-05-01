@@ -11,9 +11,12 @@ export interface DeliveryProgrammeAdminApi {
   getByDeliveryProgrammeId(
     deliveryProgrammeId: string,
   ): Promise<DeliveryProgrammeAdmin[]>;
-  create(data: any): Promise<DeliveryProgrammeAdmin[]>;
+  create(
+    deliveryProgrammeId: string,
+    aadEntityRefIds: string[],
+  ): Promise<DeliveryProgrammeAdmin[]>;
   delete(
     aadEntityRefId: string,
     deliveryProgrammeId: string,
-  ): Promise<DeliveryProgrammeAdmin[]>;
+  ): void;
 }

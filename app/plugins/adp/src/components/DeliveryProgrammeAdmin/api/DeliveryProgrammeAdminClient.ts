@@ -3,7 +3,7 @@ import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
 import { DeliveryProgrammeAdminApi } from './DeliveryProgrammeAdminApi';
 
-export class DeliveryProgrammeAdminApiClient
+export class DeliveryProgrammeAdminClient
   implements DeliveryProgrammeAdminApi
 {
   private discoveryApi: DiscoveryApi;

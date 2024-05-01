@@ -1,2 +1,2 @@
-export { deliveryProgrammeAdminApiRef } from './DeliveryProgrammeAdminApi';
-export { DeliveryProgrammeAdminApiClient } from './DeliveryProgrammeAdminClient';
+export { deliveryProgrammeAdminApiRef, type DeliveryProgrammeAdminApi } from './DeliveryProgrammeAdminApi';
+export { DeliveryProgrammeAdminClient } from './DeliveryProgrammeAdminClient';

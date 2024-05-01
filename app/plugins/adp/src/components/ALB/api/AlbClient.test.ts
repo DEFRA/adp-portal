@@ -73,7 +73,7 @@ describe('armsLengthBodyClient', () => {
 
       const updateData = { name: 'New Name' };
       await expect(client.updateArmsLengthBody(updateData)).rejects.toThrow(
-        'Request failed with 400 Error',
+        'Request failed with 400 Bad Request',
       );
     });
   });
@@ -111,7 +111,7 @@ describe('armsLengthBodyClient', () => {
       });
 
       await expect(client.createArmsLengthBody(newData)).rejects.toThrow(
-        'Request failed with 400 Error',
+        'Request failed with 400 Bad Request',
       );
     });
   });
