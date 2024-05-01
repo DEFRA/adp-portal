@@ -1,7 +1,6 @@
 import React from 'react';
 import { errorApiRef } from '@backstage/core-plugin-api';
 import {
-  MockErrorApi,
   TestApiProvider,
   renderInTestApp,
 } from '@backstage/test-utils';

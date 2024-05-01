@@ -11,6 +11,7 @@ import { DefaultTable } from '@internal/plugin-adp/src/utils';
 import { errorApiRef, useApi } from '@backstage/core-plugin-api';
 import { deliveryProgrammeAdminApiRef } from './api';
 import { useEntity } from '@backstage/plugin-catalog-react';
+import { DELIVERY_PROGRAMME_ID_ANNOTATION } from '@internal/plugin-catalog-backend-module-adp';
 
 export const DeliveryProgrammeAdminViewPage = () => {
   const [tableData, setTableData] = useState<DeliveryProgrammeAdmin[]>([]);
@@ -25,7 +26,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
   const getDeliveryProgrammeAdmins = async () => {
     try {
       const deliveryProgrammeId =
-        entity.metadata.annotations!['adp.defra.gov.uk/delivery-programme-id'];
+        entity.metadata.annotations![DELIVERY_PROGRAMME_ID_ANNOTATION];
       const data = await deliveryProgrammeAdminApi.getByDeliveryProgrammeId(
         deliveryProgrammeId,
       );

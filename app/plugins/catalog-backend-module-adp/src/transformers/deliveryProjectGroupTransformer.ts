@@ -1,6 +1,7 @@
-import { GroupEntity } from '@backstage/catalog-model';
+import { ANNOTATION_LOCATION, ANNOTATION_ORIGIN_LOCATION, GroupEntity } from '@backstage/catalog-model';
 import { DeliveryProject } from '@internal/plugin-adp-common';
 import { createTransformerTitle } from './utils';
+import { DELIVERY_PROJECT_ID_ANNOTATION } from './constants';
 
 export type DeliveryProjectGroupTransformer = (
   deliveryProject: DeliveryProject,
@@ -20,9 +21,9 @@ export const deliveryProjectGroupTransformer: DeliveryProjectGroupTransformer =
         description: deliveryProject.description,
         tags: [],
         annotations: {
-          'backstage.io/managed-by-location': `adp:delivery-project\\${deliveryProject.name}`,
-          'backstage.io/managed-by-origin-location': `adp:delivery-project\\${deliveryProject.name}`,
-          'adp.defra.gov.uk/delivery-project-id': deliveryProject.id
+          [ANNOTATION_LOCATION]: `adp:delivery-project\\${deliveryProject.name}`,
+          [ANNOTATION_ORIGIN_LOCATION]: `adp:delivery-project\\${deliveryProject.name}`,
+          [DELIVERY_PROJECT_ID_ANNOTATION]: deliveryProject.id
         },
         links: [],
       },
