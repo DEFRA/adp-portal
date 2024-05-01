@@ -7,6 +7,7 @@ import {
   ContentHeader,
   SupportButton,
   TableColumn,
+  LinkButton,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils/Table';
 import { ActionsModal } from '../../utils/ActionsModal';
@@ -35,6 +36,9 @@ import {
   isCodeUnique,
   isNameUnique,
 } from '../../utils/DeliveryProgramme/DeliveryProgrammeUtils';
+import { EntityRefLink } from '@backstage/plugin-catalog-react';
+import { ButtonGroup } from '@mui/material';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 type FormDataModel =
   | Record<string, never>
@@ -169,6 +173,16 @@ export const DeliveryProgrammeViewPageComponent = () => {
       field: 'title',
       highlight: true,
       type: 'string',
+      render: (row: Partial<DeliveryProgramme>) => {
+        return (
+          <EntityRefLink
+            entityRef={`group:default/${row.name!}`}
+            defaultKind="group"
+            defaultNamespace="default"
+            title={row.title!}
+          />
+        );
+      },
     },
     {
       title: 'Alias',
@@ -197,23 +211,27 @@ export const DeliveryProgrammeViewPageComponent = () => {
       highlight: false,
       type: 'datetime',
     },
-
     {
-      width: '',
       highlight: true,
-      render: (rowData: any) => {
-        const data = rowData as DeliveryProgramme;
+      align: 'right',
+      render: (rowData: Partial<DeliveryProgramme>) => {
         return (
-          allowedToEditAdpProgramme && (
-            <Button
-              variant="contained"
-              color="default"
-              onClick={() => handleEdit(data)}
-              data-testid={`delivery-programme-edit-button-${data.id}`}
-            >
-              Edit
-            </Button>
-          )
+          <>
+            <LinkButton to='/' variant='outlined' color='default' title='View Delivery Programme Admins'>
+            <AccountBoxIcon />
+            </LinkButton>
+            <>&nbsp;</>
+            {allowedToEditAdpProgramme && (
+              <Button
+                variant="contained"
+                color="default"
+                onClick={() => handleEdit(rowData as DeliveryProgramme)}
+                data-testid={`delivery-programme-edit-button-${rowData.id}`}
+              >
+                Edit
+              </Button>
+            )}
+          </>
         );
       },
     },
