@@ -11,7 +11,6 @@ import { DefaultTable } from '@internal/plugin-adp/src/utils';
 import { errorApiRef, useApi } from '@backstage/core-plugin-api';
 import { deliveryProgrammeAdminApiRef } from './api';
 import { useEntity } from '@backstage/plugin-catalog-react';
-import { DELIVERY_PROGRAMME_ID_ANNOTATION } from '@internal/plugin-catalog-backend-module-adp';
 
 export const DeliveryProgrammeAdminViewPage = () => {
   const [tableData, setTableData] = useState<DeliveryProgrammeAdmin[]>([]);
@@ -26,7 +25,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
   const getDeliveryProgrammeAdmins = async () => {
     try {
       const deliveryProgrammeId =
-        entity.metadata.annotations![DELIVERY_PROGRAMME_ID_ANNOTATION];
+        entity.metadata.annotations!['adp.defra.gov.uk/delivery-programme-id'];
       const data = await deliveryProgrammeAdminApi.getByDeliveryProgrammeId(
         deliveryProgrammeId,
       );
@@ -73,7 +72,6 @@ export const DeliveryProgrammeAdminViewPage = () => {
       highlight: true,
       render: (row: Partial<DeliveryProgrammeAdmin>) => {
         return (
-          //  TODO: Add permission
           <Button
             variant="contained"
             color="secondary"
@@ -90,8 +88,6 @@ export const DeliveryProgrammeAdminViewPage = () => {
     <Page themeId="tool">
       <Content>
         <ContentHeader title="Delivery Programme Admins">
-          {/* TODO: Add permissions */}
-          {/* <AddProgrammeAdmin refetchProgrammeAdmin={refetchProgrammeAdmin} /> */}
         </ContentHeader>
         <Grid item>
           <div>
@@ -101,15 +97,6 @@ export const DeliveryProgrammeAdminViewPage = () => {
               title="View all"
               isCompact={true}
             />
-            {/* TODO: Add permissions */}
-            {/* <ActionsModal
-              open={isModalOpen}
-              onClose={handleCloseModal}
-              onSubmit={handleUpdate}
-              initialValues={formData}
-              mode="edit"
-              fields={getOptionFields()}
-            /> */}
           </div>
         </Grid>
       </Content>
