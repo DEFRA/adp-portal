@@ -12,35 +12,39 @@ import { faker } from '@faker-js/faker';
 import { EntityProvider } from '@backstage/plugin-catalog-react';
 import { Entity } from '@backstage/catalog-model';
 
-const mockDeliveryProgrameAdminApi: jest.Mocked<DeliveryProgrammeAdminApi> = {
-  getAll: jest.fn(),
-  getByDeliveryProgrammeId: jest.fn(),
-  create: jest.fn(),
-  delete: jest.fn(),
-};
-const mockErrorApi = { post: jest.fn() };
+function setup() {
+  const mockDeliveryProgrameAdminApi: jest.Mocked<DeliveryProgrammeAdminApi> = {
+    getAll: jest.fn(),
+    getByDeliveryProgrammeId: jest.fn(),
+    create: jest.fn(),
+    delete: jest.fn(),
+  };
+  const mockErrorApi = { post: jest.fn() };
+  
+  const groupEntity = {
+    apiVersion: 'backstage.io/v1beta1',
+    kind: 'Group',
+    metadata: {
+      name: 'test-group',
+      annotations: {},
+    },
+  } as Entity;
+  
+  const apis = [
+    [errorApiRef, mockErrorApi],
+    [deliveryProgrammeAdminApiRef, mockDeliveryProgrameAdminApi],
+  ] as const;
+  
+  const Provider = (
+    <TestApiProvider apis={apis}>
+      <EntityProvider entity={groupEntity}>
+        <DeliveryProgrammeAdminViewPage />
+      </EntityProvider>
+    </TestApiProvider>
+  );
 
-const groupEntity = {
-  apiVersion: 'backstage.io/v1beta1',
-  kind: 'Group',
-  metadata: {
-    name: 'test-group',
-    annotations: {},
-  },
-} as Entity;
-
-const apis = [
-  [errorApiRef, mockErrorApi],
-  [deliveryProgrammeAdminApiRef, mockDeliveryProgrameAdminApi],
-] as const;
-
-const Provider = (
-  <TestApiProvider apis={apis}>
-    <EntityProvider entity={groupEntity}>
-      <DeliveryProgrammeAdminViewPage />
-    </EntityProvider>
-  </TestApiProvider>
-);
+  return {mockDeliveryProgrameAdminApi, mockErrorApi, Provider};
+}
 
 function createDeliveryProgrammeAdmin(): DeliveryProgrammeAdmin {
   return {
@@ -59,6 +63,7 @@ describe('DeliveryProgrammeAdminViewPage', () => {
   });
 
   it('fetches and displays Delivery Programme Admins in the table upon loading', async () => {
+    const {mockDeliveryProgrameAdminApi, Provider} = setup();
     const expectedDeliveryProgrammeAdmins = faker.helpers.multiple(
       createDeliveryProgrammeAdmin,
       { count: 5 },
@@ -81,6 +86,7 @@ describe('DeliveryProgrammeAdminViewPage', () => {
   });
 
   it('fetches and displays a message if no Delivery Programme Admins are returned', async () => {
+    const {mockDeliveryProgrameAdminApi, Provider} = setup();
     mockDeliveryProgrameAdminApi.getByDeliveryProgrammeId.mockResolvedValue([]);
 
     const rendered = await renderInTestApp(Provider);
@@ -91,6 +97,7 @@ describe('DeliveryProgrammeAdminViewPage', () => {
   });
 
   it('returns an error message when the API returns an error', async () => {
+    const {mockDeliveryProgrameAdminApi, mockErrorApi, Provider} = setup();
     const expectedError = 'Something broke';
     mockDeliveryProgrameAdminApi.getByDeliveryProgrammeId.mockRejectedValue(
       new Error(expectedError),
