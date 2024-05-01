@@ -37,7 +37,6 @@ import {
   isNameUnique,
 } from '../../utils/DeliveryProgramme/DeliveryProgrammeUtils';
 import { EntityRefLink } from '@backstage/plugin-catalog-react';
-import { ButtonGroup } from '@mui/material';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 type FormDataModel =

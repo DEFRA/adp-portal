@@ -32,19 +32,19 @@ export const LandingPageComponent = () => (
           cardTitle="Arms Length Bodies"
           cardSubTitle="ADP"
           cardText="Arms Length Bodies (ALB's) are a specific category of central government public bodies that are administratively classified by the Cabinet Office. Each Arms Length Body may contain multiple delivery programmes."
-          pathToView="/alb"
+          pathToView="arms-length-bodies"
         />
         <CardTemplate
           cardTitle="Delivery Programmes"
           cardSubTitle="ADP"
           cardText="Delivery Programmes coordinate and oversee multiple related delivery teams or projects to realise outcomes and benefits related to a strategic objective set by DEFRA or an Arms Length Body. Each delivery programme may contain multiple delivery teams."
-          pathToView="/deliveryprogramme"
+          pathToView="delivery-programmes"
         />
         <CardTemplate
           cardTitle="Delivery Projects"
           cardSubTitle="ADP"
           cardText="Delivery Projects are responsible for creating and maintaining platform services to realise benefits and outcomes for delivery programmes through the Azure Developer Platform. Each delivery project must be part of a delivery programme and team members are able to scaffold platform services through this portal."
-          pathToView="/deliveryproject"
+          pathToView="delivery-projects"
         />
       </ItemCardGrid>
     </Content>
