@@ -6,11 +6,11 @@ const TABLE_NAME = 'delivery_programme';
 exports.seed = async function seed(knex) {
 
   const recordsWithEmptyFields = await knex(TABLE_NAME)
-  .select('name')
-  .where(function() {
-    this.where('description', '')
-    .orWhere('delivery_programme_code', '')
-});
+    .select('name')
+    .where(function() {
+      this.where('description', '')
+      .orWhere('delivery_programme_code', '')
+    });
 
   for (const record of records) {
     const [{ count }] = await knex(TABLE_NAME)
@@ -23,7 +23,7 @@ exports.seed = async function seed(knex) {
     const recordsToUpdate = recordsWithEmptyFields.filter(d => d.name === record.name)
     if(recordsToUpdate.length > 0) {
       await knex(TABLE_NAME)
-      .whereIn('name', recordsToUpdate)
+      .where('name', record.name)
       .update({
         description: record.description,
         delivery_programme_code: record.delivery_programme_code,
