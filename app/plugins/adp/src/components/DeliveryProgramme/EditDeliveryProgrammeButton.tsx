@@ -16,7 +16,12 @@ import {
   DeliveryProgramme,
   adpProgrammmeCreatePermission,
 } from '@internal/plugin-adp-common';
-import { DialogForm, SubmitResult, deliveryProgrammeUtil } from '../../utils';
+import {
+  DialogForm,
+  SubmitResult,
+  TitleWithHelp,
+  deliveryProgrammeUtil,
+} from '../../utils';
 
 export type EditDeliveryProgrammeButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -79,7 +84,11 @@ export function EditDeliveryProgrammeButton({
             setIsModalOpen(false);
             if (success) onEditd?.();
           }}
-          title={`Update Delivery Programme ${deliveryProgramme.title}`}
+          title={
+            <TitleWithHelp href="https://defra.github.io/adp-documentation/Getting-Started/onboarding-a-delivery-programme/">
+              {`Update Delivery Programme ${deliveryProgramme.title}`}
+            </TitleWithHelp>
+          }
           confirm="Update"
           submit={handleSubmit}
         />

@@ -15,8 +15,7 @@ export const adpPlugin = createPlugin({
 export const AdpPage = adpPlugin.provide(
   createRoutableExtension({
     name: 'AdpPage',
-    component: () =>
-      import('./components/ALB/').then(m => m.LandingPageComponent),
+    component: getComponent('LandingPageComponent'),
     mountPoint: rootRouteRef,
   }),
 );
@@ -24,10 +23,7 @@ export const AdpPage = adpPlugin.provide(
 export const AlbViewPage = adpPlugin.provide(
   createRoutableExtension({
     name: 'AlbViewPage',
-    component: () =>
-      import('./components/ALB/AlbViewPageComponent').then(
-        m => m.AlbViewPageComponent,
-      ),
+    component: getComponent('AlbViewPageComponent'),
     mountPoint: rootRouteRef,
   }),
 );
@@ -35,10 +31,7 @@ export const AlbViewPage = adpPlugin.provide(
 export const DeliveryProgrammeViewPage = adpPlugin.provide(
   createRoutableExtension({
     name: 'DeliveryProgrammeViewPage',
-    component: () =>
-      import(
-        './components/DeliveryProgramme/DeliveryProgrammeViewPageComponent'
-      ).then(m => m.DeliveryProgrammeViewPageComponent),
+    component: getComponent('DeliveryProgrammeViewPageComponent'),
     mountPoint: rootRouteRef,
   }),
 );
@@ -46,10 +39,14 @@ export const DeliveryProgrammeViewPage = adpPlugin.provide(
 export const DeliveryProjectViewPage = adpPlugin.provide(
   createRoutableExtension({
     name: 'DeliveryProjectViewPage',
-    component: () =>
-      import(
-        './components/DeliveryProject/DeliveryProjectViewPageComponent'
-      ).then(m => m.DeliveryProjectViewPageComponent),
+    component: getComponent('DeliveryProjectViewPageComponent'),
     mountPoint: rootRouteRef,
   }),
 );
+
+function getComponent<T extends keyof typeof import('./components')>(name: T) {
+  return async () => {
+    const components = await import('./components');
+    return components[name];
+  };
+}

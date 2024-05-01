@@ -65,8 +65,8 @@ export function DeliveryProjectFormFields({
 
   function getTitleAdornment() {
     const programme = deliveryProgrammes.get(watch('delivery_programme_id'));
-    if (programme === undefined) return '';
-    return programme.delivery_programme_code + ' - ';
+    if (programme === undefined) return '???';
+    return programme.delivery_programme_code;
   }
 
   let i = 0;
@@ -98,7 +98,7 @@ export function DeliveryProjectFormFields({
         }}
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
+            <InputAdornment position="start" style={{ marginTop: '0.2em' }}>
               {getTitleAdornment()}
             </InputAdornment>
           ),

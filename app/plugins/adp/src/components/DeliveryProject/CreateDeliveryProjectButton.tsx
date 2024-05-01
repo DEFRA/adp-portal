@@ -14,7 +14,12 @@ import {
 } from './DeliveryProjectFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
 import { adpProjectCreatePermission } from '@internal/plugin-adp-common';
-import { DialogForm, SubmitResult, deliveryProjectUtil } from '../../utils';
+import {
+  DialogForm,
+  SubmitResult,
+  TitleWithHelp,
+  deliveryProjectUtil,
+} from '../../utils';
 
 export type CreateDeliveryProjectButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -76,7 +81,11 @@ export function CreateDeliveryProjectButton({
             setIsModalOpen(false);
             if (success) onCreated?.();
           }}
-          title="Create a new Delivery Project"
+          title={
+            <TitleWithHelp href="https://defra.github.io/adp-documentation/Getting-Started/onboarding-a-delivery-project/">
+              Create a new Delivery Project
+            </TitleWithHelp>
+          }
           confirm="Create"
           submit={handleSubmit}
           disabled={{

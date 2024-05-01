@@ -14,7 +14,12 @@ import {
 } from './DeliveryProgrammeFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
 import { adpProgrammmeCreatePermission } from '@internal/plugin-adp-common';
-import { DialogForm, SubmitResult, deliveryProgrammeUtil } from '../../utils';
+import {
+  DialogForm,
+  SubmitResult,
+  TitleWithHelp,
+  deliveryProgrammeUtil,
+} from '../../utils';
 
 export type CreateDeliveryProgrammeButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -72,7 +77,11 @@ export function CreateDeliveryProgrammeButton({
             setIsModalOpen(false);
             if (success) onCreated?.();
           }}
-          title="Create a new Delivery Programme"
+          title={
+            <TitleWithHelp href="https://defra.github.io/adp-documentation/Getting-Started/onboarding-a-delivery-programme/">
+              Create a new Delivery Programme
+            </TitleWithHelp>
+          }
           confirm="Create"
           submit={handleSubmit}
         />
