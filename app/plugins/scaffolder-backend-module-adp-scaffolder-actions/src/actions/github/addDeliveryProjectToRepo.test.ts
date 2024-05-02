@@ -44,10 +44,6 @@ describe('addDeliveryProjectToRepo', () => {
       adpClient,
     });
     const logger = getVoidLogger();
-    logger.error = (...args: unknown[]) => {
-      console.error(...args);
-      return logger;
-    };
     return { sut, config, getGithubClient, adpClient, octokit, logger };
   }
 
