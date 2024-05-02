@@ -5,6 +5,9 @@ import React from 'react';
 import { DialogForm, DialogFormProps, SubmitResult } from './DialogForm';
 import { FieldValues } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
+
+console.log(process.env);
 
 describe('DialogForm', () => {
   it('Should not render when closed', async () => {
@@ -220,8 +223,10 @@ describe('DialogForm', () => {
     expect(alertApi.alert$).not.toHaveBeenCalled();
     expect(alertApi.post).not.toHaveBeenCalled();
 
-    finishSubmit({ type: 'validationError', errors: [] });
-    await new Promise(res => setTimeout(res, 100));
+    await act(async () => {
+      finishSubmit({ type: 'validationError', errors: [] });
+      await new Promise(res => setTimeout(res, 1));
+    });
 
     expect(result.baseElement).toMatchSnapshot('Submitted');
     expect(props.submit.mock.calls).toMatchObject([[{ foo: '' }]]);

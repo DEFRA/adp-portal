@@ -17,7 +17,7 @@
     "tsc": "tsc",
     "tsc:full": "tsc --skipLibCheck false --incremental false",
     "clean": "backstage-cli repo clean",
-    "test": "backstage-cli repo test",
+    "test": "backstage-cli repo test --config jest.config.js",
     "test:all": "backstage-cli repo test --coverage",
     "test:e2e": "playwright test",
     "test:cobertura": "backstage-cli repo test --coverage --coverageReporters=cobertura",
