@@ -8,12 +8,12 @@ import { createName } from '../utils/index';
 import { NotFoundError } from '@backstage/errors';
 import {
   SafeResult,
-  UUID,
   checkMany,
   containsAnyValue,
   emptyUUID,
   isUUID,
 } from '../service/util';
+import { type UUID } from 'node:crypto';
 
 type Row = {
   id: UUID;
@@ -47,7 +47,7 @@ const allColumns = [
   'created_at',
   'updated_at',
   'updated_by',
-] as const satisfies Array<keyof Row>;
+] as const satisfies ReadonlyArray<keyof Row>;
 
 export class ArmsLengthBodyStore {
   readonly #client: Knex;

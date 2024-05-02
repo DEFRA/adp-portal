@@ -1,13 +1,11 @@
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
-import {
-  DeliveryProgrammeStore,
-  PartialDeliveryProgramme,
-} from './deliveryProgrammeStore';
+import { DeliveryProgrammeStore } from './deliveryProgrammeStore';
 import { NotFoundError } from '@backstage/errors';
 import { createName } from '../utils/index';
 import { expectedAlbWithName } from '../testData/albTestData';
 import {
-  DeliveryProgramme,
+  CreateDeliveryProgrammeRequest,
+  UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
 import {
   expectedProgrammeDataWithName,
@@ -31,9 +29,7 @@ describe('DeliveryProgrammeStore', () => {
   it.each(databases.eachSupportedId())(
     'should create a new Delivery Programme',
     async databaseId => {
-      const { knex, programmeStore } = await createDatabase(
-        databaseId,
-      );
+      const { knex, programmeStore } = await createDatabase(databaseId);
 
       const insertAlbId = await knex('arms_length_body').insert(
         expectedAlbWithName,
@@ -42,20 +38,22 @@ describe('DeliveryProgrammeStore', () => {
 
       const albId = insertAlbId[0].id;
 
-      const expectedDeliveryProgramme: Omit<
-        DeliveryProgramme,
-        'id' | 'created_at' | 'updated_at' | 'programme_managers'
-      > = {
+      const expectedDeliveryProgramme: CreateDeliveryProgrammeRequest = {
         ...expectedProgrammeDataWithName,
         arms_length_body_id: albId,
       };
 
-      const addResult = await programmeStore.add(expectedDeliveryProgramme, 'test');
+      const addResult = await programmeStore.add(
+        expectedDeliveryProgramme,
+        'test',
+      );
+      if (!addResult.success) throw new Error('Failed to add programme');
+      const added = addResult.value;
 
-      expect(addResult.name).toEqual(createName(expectedDeliveryProgramme.title));
-      expect(addResult.id).toBeDefined();
-      expect(addResult.created_at).toBeDefined();
-      expect(addResult.updated_at).toBeDefined();
+      expect(added.name).toEqual(createName(expectedDeliveryProgramme.title));
+      expect(added.id).toBeDefined();
+      expect(added.created_at).toBeDefined();
+      expect(added.updated_at).toBeDefined();
     },
   );
 
@@ -146,7 +144,7 @@ describe('DeliveryProgrammeStore', () => {
       );
 
       const currentId = insertProgrammeId[0].id;
-      const expectedUpdate: PartialDeliveryProgramme = {
+      const expectedUpdate: UpdateDeliveryProgrammeRequest = {
         id: currentId,
         title: 'Programme Example',
         alias: 'programme',
@@ -158,12 +156,14 @@ describe('DeliveryProgrammeStore', () => {
         expectedUpdate,
         'test1@test.com',
       );
+      if (!updateResult.success) throw new Error('Failed to update programme');
+      const updated = updateResult.value;
 
-      expect(updateResult).toBeDefined();
-      expect(updateResult.title).toBe(expectedUpdate.title);
-      expect(updateResult.alias).toBe(expectedUpdate.alias);
-      expect(updateResult.url).toBe(expectedUpdate.url);
-      expect(updateResult.updated_at).toBeDefined();
+      expect(updated).toBeDefined();
+      expect(updated.title).toBe(expectedUpdate.title);
+      expect(updated.alias).toBe(expectedUpdate.alias);
+      expect(updated.url).toBe(expectedUpdate.url);
+      expect(updated.updated_at).toBeDefined();
     },
   );
 

@@ -1,4 +1,9 @@
+import {
+  CreateDeliveryProgrammeRequest,
+  UpdateDeliveryProgrammeRequest,
+} from '@internal/plugin-adp-common';
 import { DeliveryProgrammeClient } from './DeliveryProgrammeClient';
+import { randomUUID } from 'node:crypto';
 
 jest.mock('@backstage/core-plugin-api', () => ({
   DiscoveryApi: jest.fn(),
@@ -90,7 +95,10 @@ describe('deliveryProgrammeClient', () => {
         json: jest.fn().mockResolvedValue(mockData),
       });
 
-      const updateData = { name: 'New Name' };
+      const updateData: UpdateDeliveryProgrammeRequest = {
+        id: randomUUID(),
+        title: 'My programme',
+      };
       const result = await client.updateDeliveryProgramme(updateData);
       expect(result).toEqual(mockData);
     });
@@ -104,7 +112,10 @@ describe('deliveryProgrammeClient', () => {
         json: jest.fn().mockResolvedValue({ error: errorMessage }),
       });
 
-      const updateData = { name: 'New Name' };
+      const updateData: UpdateDeliveryProgrammeRequest = {
+        id: randomUUID(),
+        title: 'My programme',
+      };
       await expect(client.updateDeliveryProgramme(updateData)).rejects.toThrow(
         'Request failed with 400 Bad Request',
       );
@@ -113,7 +124,12 @@ describe('deliveryProgrammeClient', () => {
 
   describe('create delivery programme', () => {
     it('creates a delivery programme successfully', async () => {
-      const newData = { name: 'New Body' };
+      const newData: CreateDeliveryProgrammeRequest = {
+        arms_length_body_id: randomUUID(),
+        delivery_programme_code: 'ABC',
+        description: 'Test programme',
+        title: 'My Programme',
+      };
       const mockResponseData = [{ id: 1, name: 'New Body' }];
 
       fetchApi.fetch.mockResolvedValue({
@@ -134,7 +150,12 @@ describe('deliveryProgrammeClient', () => {
     });
 
     it('throws an error when the creation fails', async () => {
-      const newData = { name: 'New Body' };
+      const newData: CreateDeliveryProgrammeRequest = {
+        arms_length_body_id: randomUUID(),
+        delivery_programme_code: 'ABC',
+        description: 'Test programme',
+        title: 'My Programme',
+      };
       const errorMessage = 'Failed to create Delivery Programme';
       fetchApi.fetch.mockResolvedValue({
         ok: false,

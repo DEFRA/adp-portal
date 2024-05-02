@@ -1,4 +1,9 @@
+import {
+  CreateArmsLengthBodyRequest,
+  UpdateArmsLengthBodyRequest,
+} from '@internal/plugin-adp-common';
 import { ArmsLengthBodyClient } from './AlbClient';
+import { randomUUID } from 'node:crypto';
 
 jest.mock('@backstage/core-plugin-api', () => ({
   DiscoveryApi: jest.fn(),
@@ -57,7 +62,10 @@ describe('armsLengthBodyClient', () => {
         json: jest.fn().mockResolvedValue(mockData),
       });
 
-      const updateData = { name: 'New Name' };
+      const updateData: UpdateArmsLengthBodyRequest = {
+        id: randomUUID(),
+        title: 'My Arms Length Body',
+      };
       const result = await client.updateArmsLengthBody(updateData);
       expect(result).toEqual(mockData);
     });
@@ -71,7 +79,10 @@ describe('armsLengthBodyClient', () => {
         json: jest.fn().mockResolvedValue({ error: errorMessage }),
       });
 
-      const updateData = { name: 'New Name' };
+      const updateData: UpdateArmsLengthBodyRequest = {
+        id: randomUUID(),
+        title: 'My Arms Length Body',
+      };
       await expect(client.updateArmsLengthBody(updateData)).rejects.toThrow(
         'Request failed with 400 Bad Request',
       );
@@ -80,7 +91,10 @@ describe('armsLengthBodyClient', () => {
 
   describe('createArmsLengthBody', () => {
     it('creates an arms length body successfully', async () => {
-      const newData = { name: 'New Body' };
+      const newData: CreateArmsLengthBodyRequest = {
+        description: 'Test arms length body',
+        title: 'New Body',
+      };
       const mockResponseData = [{ id: 1, name: 'New Body' }];
 
       fetchApi.fetch.mockResolvedValue({
@@ -101,7 +115,10 @@ describe('armsLengthBodyClient', () => {
     });
 
     it('throws an error when the creation fails', async () => {
-      const newData = { name: 'New Body' };
+      const newData: CreateArmsLengthBodyRequest = {
+        description: 'Test arms length body',
+        title: 'New Body',
+      };
       const errorMessage = 'Failed to create Arms Length Body';
       fetchApi.fetch.mockResolvedValue({
         ok: false,

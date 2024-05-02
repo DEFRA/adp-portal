@@ -102,26 +102,32 @@ describe('createRouter', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
-    mockDeliveryProjectStore.add.mockResolvedValue(expectedProjectDataWithName);
+    mockDeliveryProjectStore.add.mockResolvedValue({
+      success: true,
+      value: expectedProjectDataWithName,
+    });
     mockDeliveryProjectStore.get.mockResolvedValue(expectedProjectDataWithName);
     mockDeliveryProjectStore.getAll.mockResolvedValue([
       expectedProjectDataWithName,
     ]);
-    mockDeliveryProjectStore.update.mockResolvedValue(
-      expectedProjectDataWithName,
-    );
-    mockDeliveryProgrammeStore.add.mockResolvedValue(
-      expectedProgrammeDataWithName,
-    );
+    mockDeliveryProjectStore.update.mockResolvedValue({
+      success: true,
+      value: expectedProjectDataWithName,
+    });
+    mockDeliveryProgrammeStore.add.mockResolvedValue({
+      success: true,
+      value: expectedProgrammeDataWithName,
+    });
     mockDeliveryProgrammeStore.get.mockResolvedValue(
       expectedProgrammeDataWithName,
     );
     mockDeliveryProgrammeStore.getAll.mockResolvedValue([
       expectedProgrammeDataWithName,
     ]);
-    mockDeliveryProgrammeStore.update.mockResolvedValue(
-      expectedProgrammeDataWithName,
-    );
+    mockDeliveryProgrammeStore.update.mockResolvedValue({
+      success: true,
+      value: expectedProgrammeDataWithName,
+    });
   });
 
   describe('GET /deliveryProject', () => {

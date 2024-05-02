@@ -3,8 +3,9 @@ import {
   ANNOTATION_ORIGIN_LOCATION,
 } from '@backstage/catalog-model';
 import { DELIVERY_PROJECT_ID_ANNOTATION } from '../transformers';
+import { DeliveryProject } from '@internal/plugin-adp-common';
 
-export const deliveryProject = {
+export const deliveryProject: DeliveryProject = {
   delivery_programme_id: '05aa36b6-c7a2-4c35-820e-c31d20011f47',
   name: 'test-title-1',
   id: '1234',
@@ -19,6 +20,7 @@ export const deliveryProject = {
   service_owner: 'Test service_owner',
   created_at: new Date(),
   updated_at: new Date(),
+  delivery_programme_code: 'ABC',
 };
 
 export const expectedProjectEntity = {
@@ -26,7 +28,7 @@ export const expectedProjectEntity = {
   kind: 'Group',
   metadata: {
     name: 'test-title-1',
-    title: 'Test title 1 (Test Alias)',
+    title: 'ABC Test title 1 (Test Alias)',
     description: 'Test description',
     tags: [],
     annotations: {

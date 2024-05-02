@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { ValidationErrorMapping } from '@internal/plugin-adp-common';
 import { InputError } from '@backstage/errors';
 import { z } from 'zod';
+import { type UUID } from 'node:crypto';
 
 export function respond<Request, Success, Error extends string>(
   request: Request,
@@ -36,7 +37,6 @@ export type SafeResult<Success, Error extends PropertyKey> =
   | { success: false; errors: Array<Error | 'unknown'> };
 
 export const emptyUUID = '00000000-0000-0000-0000-000000000000';
-export type UUID = `${string}-${string}-${string}-${string}-${string}`;
 
 export function isUUID(value: string): value is UUID {
   return /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(
@@ -47,7 +47,7 @@ export function isUUID(value: string): value is UUID {
 export async function checkMany<
   T extends Record<string, boolean | Promise<boolean>>,
 >(checks: T): Promise<SafeResult<undefined, keyof T>> {
-  const results: Array<[keyof T, boolean]> = await Promise.all(
+  const results: Array<readonly [keyof T, boolean]> = await Promise.all(
     Object.entries(checks).map(async e => [e[0], await e[1]] as const),
   );
   const failed = results.filter(x => x[1]);

@@ -1,12 +1,11 @@
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
-import {
-  ArmsLengthBodyStore,
-  PartialArmsLengthBody,
-} from './armsLengthBodyStore';
+import { ArmsLengthBodyStore } from './armsLengthBodyStore';
 import { NotFoundError } from '@backstage/errors';
 import { createName } from '../utils/index';
 import { expectedAlbWithName } from '../testData/albTestData';
 import { initializeAdpDatabase } from '../database';
+import { UpdateArmsLengthBodyRequest } from '@internal/plugin-adp-common';
+import { randomUUID } from 'node:crypto';
 
 describe('armsLengthBodyStore', () => {
   const databases = TestDatabases.create();
@@ -29,10 +28,13 @@ describe('armsLengthBodyStore', () => {
         'test',
         'test group',
       );
-      expect(addResult.name).toEqual(createName(expectedAlbWithName.title));
-      expect(addResult.id).toBeDefined();
-      expect(addResult.created_at).toBeDefined();
-      expect(addResult.updated_at).toBeDefined();
+      if (!addResult.success)
+        throw new Error('Failed to update arms length body');
+      const added = addResult.value;
+      expect(added.name).toEqual(createName(expectedAlbWithName.title));
+      expect(added.id).toBeDefined();
+      expect(added.created_at).toBeDefined();
+      expect(added.updated_at).toBeDefined();
     },
   );
 
@@ -88,7 +90,7 @@ describe('armsLengthBodyStore', () => {
         ['id'],
       );
       const test2Id = insertedIds[0].id;
-      const expectedUpdate: PartialArmsLengthBody = {
+      const expectedUpdate: UpdateArmsLengthBodyRequest = {
         id: test2Id,
         title: 'ALB Example',
         alias: 'ALB',
@@ -97,11 +99,14 @@ describe('armsLengthBodyStore', () => {
       };
 
       const updateResult = await store.update(expectedUpdate, 'test@test.com');
+      if (!updateResult.success)
+        throw new Error('Failed to update arms length body');
+      const updated = updateResult.value;
 
-      expect(updateResult).toBeDefined();
-      expect(updateResult.title).toBe(expectedUpdate.title);
-      expect(updateResult.alias).toBe(expectedUpdate.alias);
-      expect(updateResult.url).toBe(expectedUpdate.url);
+      expect(updated).toBeDefined();
+      expect(updated.title).toBe(expectedUpdate.title);
+      expect(updated.alias).toBe(expectedUpdate.alias);
+      expect(updated.url).toBe(expectedUpdate.url);
     },
   );
 
@@ -117,11 +122,8 @@ describe('armsLengthBodyStore', () => {
           await store.update(
             {
               id: '1234567',
-              creator: 'n/a',
-              owner: 'n/a',
               title: 'Non-existent ALB',
               alias: 'Non-existent ALB',
-              name: 'non-existent-alb',
               description: 'n/a',
             },
             'test@test.com',
@@ -137,12 +139,10 @@ describe('armsLengthBodyStore', () => {
 
       await knex('arms_length_body').insert(expectedAlbWithName);
       await store.getAll();
-      const updateWithoutId = {
-        creator: 'n/a',
-        owner: 'n/a',
+      const updateWithoutId: UpdateArmsLengthBodyRequest = {
+        id: randomUUID(),
         title: 'Non-existent ALB',
         alias: 'Non-existent ALB',
-        name: 'non-existent-alb',
         description: 'n/a',
       };
       await expect(

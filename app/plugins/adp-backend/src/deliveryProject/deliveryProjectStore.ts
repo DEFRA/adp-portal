@@ -8,12 +8,12 @@ import {
 import { createName } from '../utils/index';
 import {
   SafeResult,
-  UUID,
   checkMany,
   containsAnyValue,
   emptyUUID,
   isUUID,
 } from '../service/util';
+import { type UUID } from 'node:crypto';
 
 type Row = {
   id: string;
@@ -55,10 +55,10 @@ const allColumns = addTableName('delivery_project', [
   'team_type',
   'service_owner',
   'github_team_visibility',
-] as const satisfies Array<keyof Row>);
+] as const satisfies ReadonlyArray<keyof Row>);
 const programmeColumns = addTableName('delivery_programme', [
   'delivery_programme_code',
-] as const satisfies Array<keyof DeliveryProgrammeRow>);
+] as const satisfies ReadonlyArray<keyof DeliveryProgrammeRow>);
 
 export type PartialDeliveryProject = Partial<DeliveryProject>;
 export type IDeliveryProjectStore = {

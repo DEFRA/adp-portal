@@ -174,6 +174,7 @@ describe('FluxConfigApi', () => {
       service_owner: 'owner@test.com',
       team_type: 'test',
       ado_project: 'TEST-ADO',
+      delivery_programme_code: 'ABC',
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
@@ -205,6 +206,7 @@ describe('FluxConfigApi', () => {
       service_owner: 'owner@test.com',
       team_type: 'test',
       ado_project: 'TEST-ADO',
+      delivery_programme_code: 'ABC',
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
@@ -236,7 +238,7 @@ describe('FluxConfigApi', () => {
       statusText: 'Something went wrong',
     } as unknown as Response);
 
-    const deliveryProject = {
+    const deliveryProject: DeliveryProject = {
       name: 'test-project',
       id: '123-456',
       title: 'Test Project',
@@ -249,6 +251,7 @@ describe('FluxConfigApi', () => {
       service_owner: 'owner@test.com',
       team_type: 'test',
       ado_project: 'TEST-ADO',
+      delivery_programme_code: 'ABC',
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);

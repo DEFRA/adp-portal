@@ -9,12 +9,12 @@ import {
 import { createName } from '../utils/index';
 import {
   SafeResult,
-  UUID,
   checkMany,
   containsAnyValue,
   emptyUUID,
   isUUID,
 } from '../service/util';
+import { type UUID } from 'node:crypto';
 
 type Row = {
   id: string;
@@ -47,7 +47,7 @@ const allColumns = [
   'created_at',
   'updated_at',
   'updated_by',
-] as const satisfies Array<keyof Row>;
+] as const satisfies ReadonlyArray<keyof Row>;
 
 export class DeliveryProgrammeStore {
   readonly #client: Knex;

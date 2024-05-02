@@ -1,16 +1,23 @@
-import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import {
+  DeliveryProgramme,
+  DeliveryProgrammeAdmin,
+} from '@internal/plugin-adp-common';
 
 export const expectedProgrammeData = {
   programme_managers: [],
   title: 'Test title expectedProgrammeData',
   alias: 'Test Alias',
   description: 'Test description',
-  finance_code: 'Test finance_code',
   delivery_programme_code: 'Test delivery_programme_code',
   url: 'Test url',
-};
+  id: '',
+  created_at: new Date(),
+  updated_at: new Date(),
+  name: '',
+  arms_length_body_id: '',
+} satisfies DeliveryProgramme;
 
-export const expectedProgrammeDataWithManager: DeliveryProgramme = {
+export const expectedProgrammeDataWithManager = {
   programme_managers: [
     {
       aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
@@ -40,7 +47,6 @@ export const expectedProgrammeDataWithManager: DeliveryProgramme = {
   title: 'Test title expectedProgrammeDataWithManager',
   alias: 'Test Alias',
   description: 'Test description',
-  finance_code: 'Test finance_code',
   delivery_programme_code: 'Test delivery_programme_code',
   url: 'Test url',
   name: 'test-title-expectedprogrammedatawithmanager',
@@ -48,13 +54,12 @@ export const expectedProgrammeDataWithManager: DeliveryProgramme = {
   created_at: new Date(),
   updated_at: new Date(),
   arms_length_body_id: '',
-};
+} satisfies DeliveryProgramme;
 
 export const expectedProgrammeDataWithName = {
   title: 'Test title expectedProgrammeDataWithName',
   alias: 'Test Alias',
   description: 'Test description',
-  finance_code: 'Test finance_code',
   delivery_programme_code: 'Test delivery_programme_code',
   url: 'Test url',
   name: 'test-title-expectedprogrammedatawithname',
@@ -63,18 +68,21 @@ export const expectedProgrammeDataWithName = {
   arms_length_body_id: '',
   created_at: new Date(),
   updated_at: new Date(),
-};
+} satisfies DeliveryProgramme;
 
 export const expectedProgrammeDataWithoutManager = {
   title: 'Test title expectedProgrammeDataWithoutManager',
   alias: 'Test Alias',
   description: 'Test description',
-  finance_code: 'Test finance_code',
   delivery_programme_code: 'Test delivery_programme_code',
   url: 'Test url',
   updated_by: 'john',
   name: 'test-title-expectedprogrammewithoutmanager',
-};
+  id: '',
+  arms_length_body_id: '',
+  created_at: new Date(),
+  updated_at: new Date(),
+} satisfies Omit<DeliveryProgramme, 'programme_managers'>;
 
 export const programmeManagerList = [
   {
@@ -117,4 +125,4 @@ export const programmeManagerList = [
     name: 'test 3',
     updated_at: new Date(),
   },
-];
+] satisfies DeliveryProgrammeAdmin[];

@@ -40,7 +40,7 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
         setup();
       const projectName = randomUUID();
 
-      deliveryProjects.getByName.mockResolvedValueOnce(null);
+      deliveryProjects.getByName.mockRejectedValueOnce(new Error());
 
       // act
       await expectException(() => sut.syncronize(projectName));
@@ -74,6 +74,7 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
         namespace: randomUUID(),
         updated_at: new Date(),
         github_team_visibility: 'private',
+        delivery_programme_code: 'ABC',
       };
       const storedTeams: Record<string, GithubTeamRef> = {
         admins: {

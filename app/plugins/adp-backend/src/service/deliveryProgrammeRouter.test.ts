@@ -94,18 +94,20 @@ describe('createRouter', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
-    mockDeliveryProgrammeStore.add.mockResolvedValue(
-      expectedProgrammeDataWithManager,
-    );
+    mockDeliveryProgrammeStore.add.mockResolvedValue({
+      success: true,
+      value: expectedProgrammeDataWithManager,
+    });
     mockDeliveryProgrammeStore.get.mockResolvedValue(
       expectedProgrammeDataWithManager,
     );
     mockDeliveryProgrammeStore.getAll.mockResolvedValue([
       expectedProgrammeDataWithManager,
     ]);
-    mockDeliveryProgrammeStore.update.mockResolvedValue(
-      expectedProgrammeDataWithManager,
-    );
+    mockDeliveryProgrammeStore.update.mockResolvedValue({
+      success: true,
+      value: expectedProgrammeDataWithManager,
+    });
     mockDeliveryProgrammeAdminStore.getAll.mockResolvedValue(
       programmeManagerList,
     );
@@ -195,9 +197,10 @@ describe('createRouter', () => {
         expectedProgrammeDataWithManager,
       ]);
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      mockDeliveryProgrammeStore.add.mockResolvedValueOnce(
-        expectedProgrammeDataWithManager,
-      );
+      mockDeliveryProgrammeStore.add.mockResolvedValueOnce({
+        success: true,
+        value: expectedProgrammeDataWithManager,
+      });
       mockDeliveryProgrammeAdminStore.add.mockResolvedValueOnce(
         programmeManagerList[0],
       );
@@ -279,7 +282,10 @@ describe('createRouter', () => {
         title: 'new title',
       };
 
-      mockDeliveryProgrammeStore.update.mockResolvedValueOnce(data);
+      mockDeliveryProgrammeStore.update.mockResolvedValueOnce({
+        success: true,
+        value: data,
+      });
       mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
         programmeManagerList,
       );
@@ -310,7 +316,10 @@ describe('createRouter', () => {
         id: '123',
         title: 'test title',
       };
-      mockDeliveryProgrammeStore.update.mockResolvedValueOnce(data);
+      mockDeliveryProgrammeStore.update.mockResolvedValueOnce({
+        success: true,
+        value: data,
+      });
       mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
         programmeManagerList,
       );
@@ -344,7 +353,10 @@ describe('createRouter', () => {
         delivery_programme_code: 'duplicate-code',
       };
 
-      mockDeliveryProgrammeStore.update.mockResolvedValueOnce(dataToUpdate);
+      mockDeliveryProgrammeStore.update.mockResolvedValueOnce({
+        success: true,
+        value: dataToUpdate,
+      });
       mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
         programmeManagerList,
       );

@@ -1,16 +1,15 @@
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
-import {
-  DeliveryProjectStore,
-  PartialDeliveryProject,
-} from './deliveryProjectStore';
+import { DeliveryProjectStore } from './deliveryProjectStore';
 import { NotFoundError } from '@backstage/errors';
-import { DeliveryProject } from '@internal/plugin-adp-common';
 import {
-  expectedProjectDataWithName,
-} from '../testData/projectTestData';
+  CreateDeliveryProjectRequest,
+  UpdateDeliveryProjectRequest,
+} from '@internal/plugin-adp-common';
+import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { expectedProgrammeDataWithoutManager } from '../testData/programmeTestData';
 import { expectedAlbWithName } from '../testData/albTestData';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
+import { randomUUID } from 'node:crypto';
 
 describe('DeliveryProjectStore', () => {
   const databases = TestDatabases.create();
@@ -45,20 +44,19 @@ describe('DeliveryProjectStore', () => {
       );
       const programmeId = insertProgrammeId[0].id;
 
-      const expectedProject: Omit<
-        DeliveryProject,
-        'id' | 'created_at' | 'updated_at'
-      > = {
+      const expectedProject: CreateDeliveryProjectRequest = {
         ...expectedProjectDataWithName,
         delivery_programme_id: programmeId,
       };
 
       const addResult = await projectStore.add(expectedProject, 'test');
+      if (!addResult.success) throw new Error('Failed to seed project');
+      const addedProject = addResult.value;
 
-      expect(addResult.title).toEqual(expectedProject.title);
-      expect(addResult.id).toBeDefined();
-      expect(addResult.created_at).toBeDefined();
-      expect(addResult.updated_at).toBeDefined();
+      expect(addedProject.title).toEqual(expectedProject.title);
+      expect(addedProject.id).toBeDefined();
+      expect(addedProject.created_at).toBeDefined();
+      expect(addedProject.updated_at).toBeDefined();
     },
   );
 
@@ -111,11 +109,13 @@ describe('DeliveryProjectStore', () => {
         ['id'],
       );
       const programmeId = insertProgrammeId[0].id;
-      const expectedProject = {
+      const expectedProject: CreateDeliveryProjectRequest = {
         ...expectedProjectDataWithName,
         delivery_programme_id: programmeId,
       };
-      const createdProject = await projectStore.add(expectedProject, 'test');
+      const createResult = await projectStore.add(expectedProject, 'test');
+      if (!createResult.success) throw new Error('Failed to seed project');
+      const createdProject = createResult.value;
 
       const getResult = await projectStore.get(createdProject.id);
 
@@ -191,7 +191,7 @@ describe('DeliveryProjectStore', () => {
       );
       const currentId = insertProjectId[0].id;
 
-      const expectedUpdate: PartialDeliveryProject = {
+      const expectedUpdate: UpdateDeliveryProjectRequest = {
         id: currentId,
         title: 'Test title updated',
       };
@@ -202,7 +202,12 @@ describe('DeliveryProjectStore', () => {
       );
 
       expect(updateResult).toBeDefined();
-      expect(updateResult.title).toBe(expectedUpdate.title);
+      expect(updateResult).toMatchObject({
+        success: true,
+        value: {
+          title: expectedUpdate.title,
+        },
+      });
     },
   );
 
@@ -233,7 +238,7 @@ describe('DeliveryProjectStore', () => {
       ];
       await knex('delivery_project').insert(expectedProject, ['id']);
 
-      const expectedUpdate: PartialDeliveryProject = {
+      const expectedUpdate: UpdateDeliveryProjectRequest = {
         id: '12345',
         title: 'Test title updated',
       };
@@ -271,7 +276,8 @@ describe('DeliveryProjectStore', () => {
       ];
       await knex('delivery_project').insert(expectedProject, ['id']);
 
-      const expectedUpdate: PartialDeliveryProject = {
+      const expectedUpdate: UpdateDeliveryProjectRequest = {
+        id: randomUUID(),
         title: 'Test title updated',
       };
 

@@ -2,9 +2,6 @@ import { DeliveryProject } from '@internal/plugin-adp-common';
 import {
   createName,
   getCurrentUsername,
-  checkForDuplicateTitle,
-  checkForDuplicateProjectCode,
-  checkForDuplicateProgrammeCode,
   createGithubTeamDetails,
 } from './index';
 import express from 'express';
@@ -26,110 +23,6 @@ describe('createName', () => {
     const input = 'Example   Name With  Spaces';
     const expected = 'example-name-with-spaces';
     expect(createName(input)).toBe(expected);
-  });
-});
-
-describe('checkForDuplicateTitle', () => {
-  const data = [
-    {
-      creator: 'Seed',
-      owner: 'Seed',
-      title: 'Environment Agency',
-      alias: 'EA',
-      description: '',
-      url: '',
-      name: 'environment-agency',
-      id: '24fcc156-a86c-4905-980a-90b73b218881',
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-  ];
-
-  it('returns false when there is no duplicate title', async () => {
-    const title = 'Example Title';
-    expect(await checkForDuplicateTitle(data, title)).toBeFalsy();
-  });
-
-  it('returns true when there is a duplicate title', async () => {
-    const title = 'Environment Agency';
-    expect(await checkForDuplicateTitle(data, title)).toBeTruthy();
-  });
-});
-
-describe('checkForDuplicateCode', () => {
-  const data: DeliveryProject[] = [
-    {
-      title: 'Test title',
-      alias: 'Test alias',
-      description: 'Test description',
-      finance_code: 'Test finance_code',
-      delivery_project_code: 'Test delivery_project_code',
-      namespace: 'Test namespace',
-      ado_project: 'Test ado_project',
-      name: 'Test name',
-      team_type: 'Test team_type',
-      service_owner: 'Test service_owner',
-      id: '1',
-      delivery_programme_id: '1',
-      created_at: new Date(),
-      updated_at: new Date(),
-      updated_by: 'author',
-    },
-  ];
-
-  it('returns false when there is no duplicate code', async () => {
-    const code = 'Example code';
-    expect(await checkForDuplicateProjectCode(data, code)).toBeFalsy();
-  });
-
-  it('returns true when there is a duplicate code', async () => {
-    const code = 'Test delivery_project_code';
-    expect(await checkForDuplicateProjectCode(data, code)).toBeTruthy();
-  });
-});
-
-describe('checkForDuplicateProgrammeCode', () => {
-  const data = [
-    {
-      name: 'Seed',
-      title: 'Seed',
-      alias: 'EA',
-      description: '',
-      finance_code: '1',
-      arms_length_body_id: '111',
-      delivery_programme_code: '1',
-      programme_managers: [
-        {
-          id: '1',
-          delivery_programme_id: '1',
-          aad_entity_ref_id: 'testUserId1',
-          email: 'name1@email.com',
-          name: 'name1',
-          updated_at: new Date(),
-        },
-        {
-          id: '2',
-          delivery_programme_id: '2',
-          aad_entity_ref_id: 'testUserId2',
-          email: 'name2@email.com',
-          name: 'name2',
-          updated_at: new Date(),
-        },
-      ],
-      id: '24fcc156-a86c-4905-980a-90b73b218881',
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-  ];
-
-  it('returns false when there is no duplicate code', async () => {
-    const code = 'Example Code';
-    expect(await checkForDuplicateProgrammeCode(data, code)).toBeFalsy();
-  });
-
-  it('returns true when there is a duplicate code', async () => {
-    const code = '1';
-    expect(await checkForDuplicateProgrammeCode(data, code)).toBeTruthy();
   });
 });
 
@@ -187,6 +80,7 @@ describe('createGithubTeamNames', () => {
         created_at: new Date(),
         delivery_programme_id: '',
         delivery_project_code: '',
+        delivery_programme_code: '',
         description: '',
         finance_code: '',
         github_team_visibility: 'public',
