@@ -5,11 +5,24 @@ import {
   CreateDeliveryProjectRequest,
   UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
-import { expectedProjectDataWithName } from '../testData/projectTestData';
-import { expectedProgrammeDataWithoutManager } from '../testData/programmeTestData';
-import { expectedAlbWithName } from '../testData/albTestData';
+import {
+  deliveryProjectSeedData,
+  expectedProjectDataWithName,
+} from '../testData/projectTestData';
+import { albSeedData } from '../testData/albTestData';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 import { randomUUID } from 'node:crypto';
+import {
+  arms_length_body,
+  arms_length_body_name,
+} from '../armsLengthBody/arms_length_body';
+import {
+  delivery_programme,
+  delivery_programme_name,
+} from '../deliveryProgramme/delivery_programme';
+import { delivery_project, delivery_project_name } from './delivery_project';
+import { deliveryProgrammeSeedData } from '../testData/programmeTestData';
+import { Knex } from 'knex';
 
 describe('DeliveryProjectStore', () => {
   const databases = TestDatabases.create();
@@ -21,28 +34,34 @@ describe('DeliveryProjectStore', () => {
     });
     const projectStore = new DeliveryProjectStore(knex);
 
-    return { knex, projectStore: projectStore };
+    return { knex, projectStore };
+  }
+
+  async function seedAlb(knex: Knex) {
+    await knex<arms_length_body>(arms_length_body_name).insert(albSeedData);
+    return albSeedData.id;
+  }
+  async function seedProgramme(knex: Knex) {
+    await seedAlb(knex);
+    await knex<delivery_programme>(delivery_programme_name).insert(
+      deliveryProgrammeSeedData,
+    );
+    return deliveryProgrammeSeedData.id;
+  }
+
+  async function seedProject(knex: Knex) {
+    await seedProgramme(knex);
+    await knex<delivery_project>(delivery_project_name).insert(
+      deliveryProjectSeedData,
+    );
+    return deliveryProjectSeedData.id;
   }
 
   it.each(databases.eachSupportedId())(
     'should create a new Delivery Project',
     async databaseId => {
       const { knex, projectStore } = await createDatabase(databaseId);
-
-      const insertAlbId = await knex('arms_length_body').insert(
-        expectedAlbWithName,
-        ['id'],
-      );
-      const albId = insertAlbId[0].id;
-      const programme = {
-        ...expectedProgrammeDataWithoutManager,
-        arms_length_body_id: albId,
-      };
-      const insertProgrammeId = await knex('delivery_programme').insert(
-        programme,
-        ['id'],
-      );
-      const programmeId = insertProgrammeId[0].id;
+      const programmeId = await seedProgramme(knex);
 
       const expectedProject: CreateDeliveryProjectRequest = {
         ...expectedProjectDataWithName,
@@ -64,28 +83,8 @@ describe('DeliveryProjectStore', () => {
     'should get all Delivery Projects from the database',
     async databaseId => {
       const { knex, projectStore } = await createDatabase(databaseId);
-      const insertAlbId = await knex('arms_length_body').insert(
-        expectedAlbWithName,
-        ['id'],
-      );
-      const albId = insertAlbId[0].id;
-      const programme = {
-        ...expectedProgrammeDataWithoutManager,
-        arms_length_body_id: albId,
-      };
-      const insertProgrammeId = await knex('delivery_programme').insert(
-        programme,
-        ['id'],
-      );
-      const programmeId = insertProgrammeId[0].id;
-      const expectedProject = [
-        {
-          ...expectedProjectDataWithName,
-          delivery_programme_id: programmeId,
-          updated_by: 'test',
-        },
-      ];
-      await knex('delivery_project').insert(expectedProject);
+      await seedProject(knex);
+
       const getAllResult = await projectStore.getAll();
       expect(getAllResult).toHaveLength(1);
     },
@@ -95,26 +94,16 @@ describe('DeliveryProjectStore', () => {
     'should get a Delivery Project from the database',
     async databaseId => {
       const { knex, projectStore } = await createDatabase(databaseId);
-      const insertAlbId = await knex('arms_length_body').insert(
-        expectedAlbWithName,
-        ['id'],
-      );
-      const albId = insertAlbId[0].id;
-      const programme = {
-        ...expectedProgrammeDataWithoutManager,
-        arms_length_body_id: albId,
-      };
-      const insertProgrammeId = await knex('delivery_programme').insert(
-        programme,
-        ['id'],
-      );
-      const programmeId = insertProgrammeId[0].id;
+      const programmeId = await seedProgramme(knex);
       const expectedProject: CreateDeliveryProjectRequest = {
         ...expectedProjectDataWithName,
         delivery_programme_id: programmeId,
       };
       const createResult = await projectStore.add(expectedProject, 'test');
-      if (!createResult.success) throw new Error('Failed to seed project');
+      if (!createResult.success)
+        throw new Error(
+          'Failed to seed project: ' + JSON.stringify(createResult.errors),
+        );
       const createdProject = createResult.value;
 
       const getResult = await projectStore.get(createdProject.id);
@@ -128,35 +117,14 @@ describe('DeliveryProjectStore', () => {
   );
 
   it.each(databases.eachSupportedId())(
-    'should return null if a Delivery Project cannot be found in the database',
+    'should throw NotFound if a Delivery Project cannot be found in the database',
     async databaseId => {
       const { knex, projectStore } = await createDatabase(databaseId);
-      const insertAlbId = await knex('arms_length_body').insert(
-        expectedAlbWithName,
-        ['id'],
-      );
-      const albId = insertAlbId[0].id;
-      const programme = {
-        ...expectedProgrammeDataWithoutManager,
-        arms_length_body_id: albId,
-      };
-      const insertProgrammeId = await knex('delivery_programme').insert(
-        programme,
-        ['id'],
-      );
-      const programmeId = insertProgrammeId[0].id;
-      const expectedProject = [
-        {
-          ...expectedProjectDataWithName,
-          delivery_programme_id: programmeId,
-          updated_by: 'test',
-        },
-      ];
-      await knex('delivery_project').insert(expectedProject);
+      await seedProject(knex);
 
-      const getResult = await projectStore.get('12345');
+      const getResult = projectStore.get('12345');
 
-      expect(getResult).toBeNull();
+      expect(getResult).rejects.toBeInstanceOf(NotFoundError);
     },
   );
 
@@ -164,32 +132,7 @@ describe('DeliveryProjectStore', () => {
     'should update an existing Delivery Project in the database',
     async databaseId => {
       const { knex, projectStore } = await createDatabase(databaseId);
-      const insertAlbId = await knex('arms_length_body').insert(
-        expectedAlbWithName,
-        ['id'],
-      );
-      const albId = insertAlbId[0].id;
-      const programme = {
-        ...expectedProgrammeDataWithoutManager,
-        arms_length_body_id: albId,
-      };
-      const insertProgrammeId = await knex('delivery_programme').insert(
-        programme,
-        ['id'],
-      );
-      const programmeId = insertProgrammeId[0].id;
-      const expectedProject = [
-        {
-          ...expectedProjectDataWithName,
-          delivery_programme_id: programmeId,
-          updated_by: 'test',
-        },
-      ];
-      const insertProjectId = await knex('delivery_project').insert(
-        expectedProject,
-        ['id'],
-      );
-      const currentId = insertProjectId[0].id;
+      const currentId = await seedProject(knex);
 
       const expectedUpdate: UpdateDeliveryProjectRequest = {
         id: currentId,
@@ -215,28 +158,7 @@ describe('DeliveryProjectStore', () => {
     'should not update a non-existing Delivery Project in the database',
     async databaseId => {
       const { knex, projectStore } = await createDatabase(databaseId);
-      const insertAlbId = await knex('arms_length_body').insert(
-        expectedAlbWithName,
-        ['id'],
-      );
-      const albId = insertAlbId[0].id;
-      const programme = {
-        ...expectedProgrammeDataWithoutManager,
-        arms_length_body_id: albId,
-      };
-      const insertProgrammeId = await knex('delivery_programme').insert(
-        programme,
-        ['id'],
-      );
-      const programmeId = insertProgrammeId[0].id;
-      const expectedProject = [
-        {
-          ...expectedProjectDataWithName,
-          delivery_programme_id: programmeId,
-          updated_by: 'test',
-        },
-      ];
-      await knex('delivery_project').insert(expectedProject, ['id']);
+      await seedProject(knex);
 
       const expectedUpdate: UpdateDeliveryProjectRequest = {
         id: '12345',
@@ -253,28 +175,7 @@ describe('DeliveryProjectStore', () => {
     'should not update an undefined project id',
     async databaseId => {
       const { knex, projectStore } = await createDatabase(databaseId);
-      const insertAlbId = await knex('arms_length_body').insert(
-        expectedAlbWithName,
-        ['id'],
-      );
-      const albId = insertAlbId[0].id;
-      const programme = {
-        ...expectedProgrammeDataWithoutManager,
-        arms_length_body_id: albId,
-      };
-      const insertProgrammeId = await knex('delivery_programme').insert(
-        programme,
-        ['id'],
-      );
-      const programmeId = insertProgrammeId[0].id;
-      const expectedProject = [
-        {
-          ...expectedProjectDataWithName,
-          delivery_programme_id: programmeId,
-          updated_by: 'test',
-        },
-      ];
-      await knex('delivery_project').insert(expectedProject, ['id']);
+      await seedProject(knex);
 
       const expectedUpdate: UpdateDeliveryProjectRequest = {
         id: randomUUID(),
@@ -293,33 +194,10 @@ describe('DeliveryProjectStore', () => {
       async databaseId => {
         // arrange
         const { knex, projectStore } = await createDatabase(databaseId);
-        const insertAlbId = await knex('arms_length_body').insert(
-          expectedAlbWithName,
-          ['id'],
-        );
-        const albId = insertAlbId[0].id;
-        const programme = {
-          ...expectedProgrammeDataWithoutManager,
-          arms_length_body_id: albId,
-        };
-        const insertProgrammeId = await knex('delivery_programme').insert(
-          programme,
-          ['id'],
-        );
-        const programmeId = insertProgrammeId[0].id;
-        const expectedProject = [
-          {
-            ...expectedProjectDataWithName,
-            delivery_programme_id: programmeId,
-            updated_by: 'test',
-          },
-        ];
-        const insertProjectId = await knex('delivery_project').insert(
-          expectedProject,
-          ['id'],
-        );
-        const expected = insertProjectId[0];
-        const name = expectedProject[0].name;
+        await seedProject(knex);
+
+        const expected = deliveryProjectSeedData;
+        const name = deliveryProjectSeedData.name;
 
         // act
         const actual = await projectStore.getByName(name);
@@ -329,16 +207,16 @@ describe('DeliveryProjectStore', () => {
       },
     );
     it.each(databases.eachSupportedId())(
-      'Should return null when the project doesnt exist',
+      'Should throw NotFound when the project doesnt exist',
       async databaseId => {
         // arrange
         const { projectStore } = await createDatabase(databaseId);
 
         // act
-        const actual = await projectStore.getByName('abc');
+        const actual = projectStore.getByName('abc');
 
         // assert
-        expect(actual).toBeNull();
+        expect(actual).rejects.toBeInstanceOf(NotFoundError);
       },
     );
   });

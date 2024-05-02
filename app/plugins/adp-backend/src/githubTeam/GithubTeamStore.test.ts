@@ -1,5 +1,9 @@
 import { Knex } from 'knex';
-import { GithubTeamStore, Row } from './GithubTeamStore';
+import { GithubTeamStore } from './GithubTeamStore';
+import {
+  delivery_project_github_team,
+  delivery_project_github_teams_name,
+} from './delivery_project_github_team';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 import { ArmsLengthBodyStore } from '../armsLengthBody';
 import {
@@ -11,6 +15,7 @@ import { randomUUID } from 'node:crypto';
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
 import { DeliveryProgrammeStore } from '../deliveryProgramme';
 import { DeliveryProjectStore } from '../deliveryProject';
+import { assertUUID } from '../service/util';
 
 describe('GithubTeamStore', () => {
   const databases = TestDatabases.create();
@@ -39,7 +44,8 @@ describe('GithubTeamStore', () => {
       alb.creator ?? randomUUID(),
       alb.owner ?? randomUUID(),
     );
-    if (!result.success) throw new Error('Failed to seed ALB');
+    if (!result.success)
+      throw new Error('Failed to seed ALB: ' + JSON.stringify(result.errors));
     return result.value;
   }
   async function seedProgramme(
@@ -59,7 +65,10 @@ describe('GithubTeamStore', () => {
       },
       randomUUID(),
     );
-    if (!result.success) throw new Error('Failed to seed Delivery Programme');
+    if (!result.success)
+      throw new Error(
+        'Failed to seed Delivery Programme ' + JSON.stringify(result.errors),
+      );
     return result.value;
   }
   async function seedProject(
@@ -85,26 +94,34 @@ describe('GithubTeamStore', () => {
       },
       randomUUID(),
     );
-    if (!result.success) throw new Error('Failed to seed Delivery Project');
+    if (!result.success)
+      throw new Error(
+        'Failed to seed Delivery Project ' + JSON.stringify(result.errors),
+      );
     return result.value;
   }
   async function seedGithubTeam(
     knex: Knex,
     projectId: string,
     type: string,
-    team: Partial<Omit<Row, 'delivery_project_id' | 'type'>> = {},
+    team: Partial<
+      Omit<delivery_project_github_team, 'delivery_project_id' | 'type'>
+    > = {},
   ) {
+    assertUUID(projectId);
     return (
-      await knex.table<Row>('delivery_project_github_teams').insert(
-        {
-          github_team_id: Math.random(),
-          team_name: randomUUID(),
-          ...team,
-          team_type: type,
-          delivery_project_id: projectId,
-        },
-        '*',
-      )
+      await knex
+        .table<delivery_project_github_team>(delivery_project_github_teams_name)
+        .insert(
+          {
+            github_team_id: Math.random(),
+            team_name: randomUUID(),
+            ...team,
+            team_type: type,
+            delivery_project_id: projectId,
+          },
+          '*',
+        )
     )[0];
   }
 
@@ -194,7 +211,7 @@ describe('GithubTeamStore', () => {
 
         // assert
         const records = await knex
-          .table<Row>('delivery_project_github_teams')
+          .table<delivery_project_github_team>('delivery_project_github_teams')
           .select('*');
         expect(records).toMatchObject([]);
       },
@@ -218,7 +235,7 @@ describe('GithubTeamStore', () => {
 
         // assert
         const records = await knex
-          .table<Row>('delivery_project_github_teams')
+          .table<delivery_project_github_team>('delivery_project_github_teams')
           .select('*');
         expect(records).toMatchObject([
           {
@@ -250,7 +267,7 @@ describe('GithubTeamStore', () => {
 
         // assert
         const records = await knex
-          .table<Row>('delivery_project_github_teams')
+          .table<delivery_project_github_team>('delivery_project_github_teams')
           .select('*');
         expect(records).toMatchObject([
           {
@@ -278,7 +295,7 @@ describe('GithubTeamStore', () => {
 
         // assert
         const records = await knex
-          .table<Row>('delivery_project_github_teams')
+          .table<delivery_project_github_team>('delivery_project_github_teams')
           .select('*');
         expect(records).toMatchObject([]);
       },
@@ -300,7 +317,7 @@ describe('GithubTeamStore', () => {
 
         // assert
         const records = await knex
-          .table<Row>('delivery_project_github_teams')
+          .table<delivery_project_github_team>('delivery_project_github_teams')
           .select('*');
         expect(records).toMatchObject([admins2]);
       },
@@ -330,7 +347,7 @@ describe('GithubTeamStore', () => {
 
         // assert
         const records = await knex
-          .table<Row>('delivery_project_github_teams')
+          .table<delivery_project_github_team>('delivery_project_github_teams')
           .select('*');
         expect(records).toMatchObject([
           {
@@ -365,7 +382,7 @@ describe('GithubTeamStore', () => {
 
         // assert
         const records = await knex
-          .table<Row>('delivery_project_github_teams')
+          .table<delivery_project_github_team>('delivery_project_github_teams')
           .select('*');
         expect(records).toMatchObject([]);
       },
@@ -386,7 +403,7 @@ describe('GithubTeamStore', () => {
 
         // assert
         const records = await knex
-          .table<Row>('delivery_project_github_teams')
+          .table<delivery_project_github_team>('delivery_project_github_teams')
           .select('*');
         expect(records).toMatchObject([]);
       },
@@ -408,7 +425,7 @@ describe('GithubTeamStore', () => {
 
         // assert
         const records = await knex
-          .table<Row>('delivery_project_github_teams')
+          .table<delivery_project_github_team>('delivery_project_github_teams')
           .select('*');
         expect(records).toMatchObject([admins2]);
       },

@@ -1,17 +1,10 @@
 import { Knex } from 'knex';
 import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { CreateDeliveryProgrammeAdmin } from '../utils';
+import { delivery_programme_admin } from './delivery_programme_admin';
+import { assertUUID } from '../service/util';
 
 const TABLE_NAME = 'delivery_programme_admin';
-type Row = {
-  id: string;
-  delivery_programme_id: string;
-  aad_entity_ref_id: string;
-  email: string;
-  name: string;
-  updated_at: Date;
-};
-
 export type IDeliveryProgrammeAdminStore = {
   [P in keyof DeliveryProgrammeAdminStore]: DeliveryProgrammeAdminStore[P];
 };
@@ -24,14 +17,16 @@ export class DeliveryProgrammeAdminStore {
    * @returns a collection of DeliveryProgrammeAdmin.
    */
   async getAll(): Promise<DeliveryProgrammeAdmin[]> {
-    const deliveryProgrammeAdmins = await this.client<Row>(TABLE_NAME)
+    const deliveryProgrammeAdmins = await this.client<delivery_programme_admin>(
+      TABLE_NAME,
+    )
       .select(
         'id',
         'delivery_programme_id',
         'aad_entity_ref_id',
         'email',
         'name',
-        'updated_at'
+        'updated_at',
       )
       .orderBy('delivery_programme_id');
 
@@ -53,7 +48,9 @@ export class DeliveryProgrammeAdminStore {
   async getByDeliveryProgramme(
     delivery_programme_id: string,
   ): Promise<DeliveryProgrammeAdmin[]> {
-    const deliveryProgrammeAdmins = await this.client<Row>(TABLE_NAME)
+    const deliveryProgrammeAdmins = await this.client<delivery_programme_admin>(
+      TABLE_NAME,
+    )
       .where('delivery_programme_id', delivery_programme_id)
       .select(
         'id',
@@ -61,7 +58,7 @@ export class DeliveryProgrammeAdminStore {
         'aad_entity_ref_id',
         'email',
         'name',
-        'updated_at'
+        'updated_at',
       );
 
     return deliveryProgrammeAdmins.map(row => ({
@@ -84,7 +81,9 @@ export class DeliveryProgrammeAdminStore {
     aadEntityRefId: string,
     deliveryProgrammeId: string,
   ): Promise<DeliveryProgrammeAdmin | undefined> {
-    const deliveryProgrammeAdmin = await this.client<Row>(TABLE_NAME)
+    const deliveryProgrammeAdmin = await this.client<delivery_programme_admin>(
+      TABLE_NAME,
+    )
       .where('delivery_programme_id', deliveryProgrammeId)
       .andWhere('aad_entity_ref_id', aadEntityRefId)
       .first(
@@ -96,14 +95,16 @@ export class DeliveryProgrammeAdminStore {
         'updated_at',
       );
 
-    return deliveryProgrammeAdmin !== undefined ? {
-      id: deliveryProgrammeAdmin.id,
-      delivery_programme_id: deliveryProgrammeAdmin.delivery_programme_id,
-      aad_entity_ref_id: deliveryProgrammeAdmin.aad_entity_ref_id,
-      email: deliveryProgrammeAdmin.email,
-      name: deliveryProgrammeAdmin.name,
-      updated_at: deliveryProgrammeAdmin.updated_at,
-    } : undefined;
+    return deliveryProgrammeAdmin !== undefined
+      ? {
+          id: deliveryProgrammeAdmin.id,
+          delivery_programme_id: deliveryProgrammeAdmin.delivery_programme_id,
+          aad_entity_ref_id: deliveryProgrammeAdmin.aad_entity_ref_id,
+          email: deliveryProgrammeAdmin.email,
+          name: deliveryProgrammeAdmin.name,
+          updated_at: deliveryProgrammeAdmin.updated_at,
+        }
+      : undefined;
   }
 
   /**
@@ -114,7 +115,10 @@ export class DeliveryProgrammeAdminStore {
   async add(
     deliveryProgrammeAdmin: CreateDeliveryProgrammeAdmin,
   ): Promise<DeliveryProgrammeAdmin> {
-    const insertResult = await this.client<Row>(TABLE_NAME).insert(
+    assertUUID(deliveryProgrammeAdmin.delivery_programme_id);
+    const insertResult = await this.client<delivery_programme_admin>(
+      TABLE_NAME,
+    ).insert(
       {
         delivery_programme_id: deliveryProgrammeAdmin.delivery_programme_id,
         aad_entity_ref_id: deliveryProgrammeAdmin.aad_entity_ref_id,
@@ -139,9 +143,22 @@ export class DeliveryProgrammeAdminStore {
   async addMany(
     deliveryProgrammeAdmins: CreateDeliveryProgrammeAdmin[],
   ): Promise<DeliveryProgrammeAdmin[]> {
-    const insertResult = await this.client<Row>(TABLE_NAME).insert(
-      deliveryProgrammeAdmins,
-      ['id', 'delivery_programme_id', 'aad_entity_ref_id', 'email', 'name', 'updated_at'],
+    const insertResult = await this.client<delivery_programme_admin>(
+      TABLE_NAME,
+    ).insert(
+      deliveryProgrammeAdmins.map(a => {
+        const { delivery_programme_id } = a;
+        assertUUID(delivery_programme_id);
+        return { ...a, delivery_programme_id };
+      }),
+      [
+        'id',
+        'delivery_programme_id',
+        'aad_entity_ref_id',
+        'email',
+        'name',
+        'updated_at',
+      ],
     );
 
     return insertResult.map(row => ({

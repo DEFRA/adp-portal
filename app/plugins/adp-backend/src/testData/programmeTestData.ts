@@ -2,6 +2,7 @@ import {
   DeliveryProgramme,
   DeliveryProgrammeAdmin,
 } from '@internal/plugin-adp-common';
+import { delivery_programme } from '../deliveryProgramme/delivery_programme';
 
 export const expectedProgrammeData = {
   programme_managers: [],
@@ -126,3 +127,17 @@ export const programmeManagerList = [
     updated_at: new Date(),
   },
 ] satisfies DeliveryProgrammeAdmin[];
+
+export const deliveryProgrammeSeedData: delivery_programme = {
+  title: 'Test title expectedProgrammeDataWithoutManager',
+  alias: 'Test Alias',
+  description: 'Test description',
+  delivery_programme_code: 'Test delivery_programme_code',
+  url: 'Test url',
+  updated_by: 'john',
+  name: 'test-title-expectedprogrammewithoutmanager',
+  id: '00000000-0000-0000-0000-000000000001',
+  arms_length_body_id: '00000000-0000-0000-0000-000000000001',
+  created_at: new Date(),
+  updated_at: new Date(),
+};

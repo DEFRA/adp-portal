@@ -38,10 +38,15 @@ export type SafeResult<Success, Error extends PropertyKey> =
 
 export const emptyUUID = '00000000-0000-0000-0000-000000000000';
 
-export function isUUID(value: string): value is UUID {
-  return /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(
-    value,
+export function isUUID(value: unknown): value is UUID {
+  return (
+    typeof value === 'string' &&
+    /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(value)
   );
+}
+
+export function assertUUID(value: unknown): asserts value is UUID {
+  if (!isUUID(value)) throw new InputError('Value is not a UUID');
 }
 
 export async function checkMany<

@@ -2,10 +2,11 @@ import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
 import { ArmsLengthBodyStore } from './armsLengthBodyStore';
 import { NotFoundError } from '@backstage/errors';
 import { createName } from '../utils/index';
-import { expectedAlbWithName } from '../testData/albTestData';
+import { albSeedData, expectedAlbWithName } from '../testData/albTestData';
 import { initializeAdpDatabase } from '../database';
 import { UpdateArmsLengthBodyRequest } from '@internal/plugin-adp-common';
 import { randomUUID } from 'node:crypto';
+import { arms_length_body, arms_length_body_name } from './arms_length_body';
 
 describe('armsLengthBodyStore', () => {
   const databases = TestDatabases.create();
@@ -52,10 +53,9 @@ describe('armsLengthBodyStore', () => {
     'should get a ALBs from the database',
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
-      const insertedIds = await knex('arms_length_body').insert(
-        expectedAlbWithName,
-        ['id'],
-      );
+      const insertedIds = await knex<arms_length_body>(
+        arms_length_body_name,
+      ).insert(albSeedData, ['id']);
       const test2Id = insertedIds[0].id;
 
       const getResult = await store.get(test2Id);
@@ -74,7 +74,7 @@ describe('armsLengthBodyStore', () => {
     'should return null if a ALB cannot be found in the database',
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
-      await knex('arms_length_body').insert(expectedAlbWithName);
+      await knex<arms_length_body>(arms_length_body_name).insert(albSeedData);
       const getResult = await store.get('12345');
       expect(getResult).toBeNull();
     },
@@ -85,10 +85,9 @@ describe('armsLengthBodyStore', () => {
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
 
-      const insertedIds = await knex('arms_length_body').insert(
-        expectedAlbWithName,
-        ['id'],
-      );
+      const insertedIds = await knex<arms_length_body>(
+        arms_length_body_name,
+      ).insert(albSeedData, ['id']);
       const test2Id = insertedIds[0].id;
       const expectedUpdate: UpdateArmsLengthBodyRequest = {
         id: test2Id,
@@ -115,7 +114,7 @@ describe('armsLengthBodyStore', () => {
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
 
-      await knex('arms_length_body').insert(expectedAlbWithName);
+      await knex<arms_length_body>(arms_length_body_name).insert(albSeedData);
 
       await expect(
         async () =>
@@ -137,7 +136,7 @@ describe('armsLengthBodyStore', () => {
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
 
-      await knex('arms_length_body').insert(expectedAlbWithName);
+      await knex<arms_length_body>(arms_length_body_name).insert(albSeedData);
       await store.getAll();
       const updateWithoutId: UpdateArmsLengthBodyRequest = {
         id: randomUUID(),

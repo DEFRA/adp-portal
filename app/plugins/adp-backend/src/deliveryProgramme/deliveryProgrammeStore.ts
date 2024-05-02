@@ -9,26 +9,21 @@ import {
 import { createName } from '../utils/index';
 import {
   SafeResult,
+  assertUUID,
   checkMany,
   containsAnyValue,
   emptyUUID,
   isUUID,
 } from '../service/util';
 import { type UUID } from 'node:crypto';
-
-type Row = {
-  id: string;
-  title: string;
-  readonly name: string;
-  alias: string | null;
-  description: string;
-  arms_length_body_id: string;
-  delivery_programme_code: string;
-  url: string | null;
-  updated_by: string | null;
-  created_at: Date;
-  updated_at: Date;
-};
+import {
+  delivery_programme,
+  delivery_programme_name,
+} from './delivery_programme';
+import {
+  arms_length_body,
+  arms_length_body_name,
+} from '../armsLengthBody/arms_length_body';
 
 export type PartialDeliveryProgramme = Partial<DeliveryProgramme>;
 export type IDeliveryProgrammeStore = {
@@ -47,7 +42,7 @@ const allColumns = [
   'created_at',
   'updated_at',
   'updated_by',
-] as const satisfies ReadonlyArray<keyof Row>;
+] as const satisfies ReadonlyArray<keyof delivery_programme>;
 
 export class DeliveryProgrammeStore {
   readonly #client: Knex;
@@ -57,7 +52,7 @@ export class DeliveryProgrammeStore {
   }
 
   get #table() {
-    return this.#client<Row>('delivery_programme');
+    return this.#client<delivery_programme>(delivery_programme_name);
   }
 
   async getAll(): Promise<DeliveryProgramme[]> {
@@ -114,6 +109,8 @@ export class DeliveryProgrammeStore {
     });
     if (!valid.success) return valid;
 
+    assertUUID(arms_length_body_id);
+
     const result = await this.#table.insert(
       {
         title,
@@ -165,6 +162,8 @@ export class DeliveryProgrammeStore {
     });
     if (!valid.success) return valid;
 
+    if (arms_length_body_id !== undefined) assertUUID(arms_length_body_id);
+
     const result = await this.#table.where('id', id).update(
       {
         arms_length_body_id,
@@ -185,7 +184,7 @@ export class DeliveryProgrammeStore {
   }
 
   #normalize(
-    row: Row,
+    row: delivery_programme,
     programmeManagers: DeliveryProgrammeAdmin[] = [],
   ): DeliveryProgramme {
     return {
@@ -218,7 +217,9 @@ export class DeliveryProgrammeStore {
 
   async #armsLengthBodyExists(id: string) {
     if (!isUUID(id)) return false;
-    const [{ count }] = await this.#client('arms_length_body')
+    const [{ count }] = await this.#client<arms_length_body>(
+      arms_length_body_name,
+    )
       .where('id', id)
       .limit(1)
       .count('*', { as: 'count' });

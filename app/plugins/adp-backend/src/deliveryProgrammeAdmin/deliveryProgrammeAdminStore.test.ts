@@ -1,6 +1,10 @@
 import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
 import { DeliveryProgrammeAdminStore } from './deliveryProgrammeAdminStore';
 import { initializeAdpDatabase } from '../database';
+import {
+  delivery_programme,
+  delivery_programme_name,
+} from '../deliveryProgramme/delivery_programme';
 
 describe('DeliveryProgrammeAdminStore', () => {
   const databases = TestDatabases.create();
@@ -10,9 +14,7 @@ describe('DeliveryProgrammeAdminStore', () => {
     await initializeAdpDatabase({
       getClient: () => Promise.resolve(knex),
     });
-    const deliveryProgrammeAdminStore = new DeliveryProgrammeAdminStore(
-      await knex,
-    );
+    const deliveryProgrammeAdminStore = new DeliveryProgrammeAdminStore(knex);
 
     return { knex, deliveryProgrammeAdminStore };
   }
@@ -27,7 +29,7 @@ describe('DeliveryProgrammeAdminStore', () => {
       // Arrange - test case setup
       const deliveryProgramme = await knex
         .first('id')
-        .from('delivery_programme');
+        .from<delivery_programme>(delivery_programme_name);
 
       await deliveryProgrammeAdminStore.addMany([
         {
@@ -60,7 +62,7 @@ describe('DeliveryProgrammeAdminStore', () => {
       // Arrange - test case setup
       const deliveryProgrammes = await knex
         .select('id')
-        .from('delivery_programme');
+        .from<delivery_programme>(delivery_programme_name);
 
       await deliveryProgrammeAdminStore.addMany([
         {
@@ -103,7 +105,7 @@ describe('DeliveryProgrammeAdminStore', () => {
       // Arrange - test case setup
       const deliveryProgrammes = await knex
         .select('id')
-        .from('delivery_programme');
+        .from<delivery_programme>(delivery_programme_name);
 
       await deliveryProgrammeAdminStore.addMany([
         {
@@ -140,7 +142,7 @@ describe('DeliveryProgrammeAdminStore', () => {
       // Arrange - test case setup
       const deliveryProgramme = await knex
         .first('id')
-        .from('delivery_programme');
+        .from<delivery_programme>(delivery_programme_name);
 
       // Act
       const deliveryProgrammeAdmin = {
@@ -156,7 +158,7 @@ describe('DeliveryProgrammeAdminStore', () => {
       const expectedEntity = await knex
         .first('id', 'name')
         .where('id', addResult.id)
-        .from('delivery_programme_admin');
+        .from<delivery_programme>(delivery_programme_name);
 
       // Assert - check return value
       expect(addResult).toBeDefined();
@@ -179,7 +181,7 @@ describe('DeliveryProgrammeAdminStore', () => {
       // Arrange - test case setup
       const deliveryProgramme = await knex
         .first('id')
-        .from('delivery_programme');
+        .from<delivery_programme>(delivery_programme_name);
 
       // Act
       const addResult = await deliveryProgrammeAdminStore.addMany([
@@ -199,7 +201,7 @@ describe('DeliveryProgrammeAdminStore', () => {
 
       const expectedEntities = await knex
         .where('delivery_programme_id', deliveryProgramme.id)
-        .from('delivery_programme_admin');
+        .from<delivery_programme>(delivery_programme_name);
 
       // Assert - check return value
       expect(addResult).toHaveLength(2);
@@ -217,7 +219,7 @@ describe('DeliveryProgrammeAdminStore', () => {
       // Arrange - test case setup
       const deliveryProgramme = await knex
         .first('id')
-        .from('delivery_programme');
+        .from<delivery_programme>(delivery_programme_name);
 
       const deliveryProgrammeAdmin = {
         delivery_programme_id: deliveryProgramme.id,
@@ -234,7 +236,7 @@ describe('DeliveryProgrammeAdminStore', () => {
 
       const expectedEntities = await knex
         .where('id', addResult.id)
-        .from('delivery_programme_admin');
+        .from<delivery_programme>(delivery_programme_name);
 
       // Assert
       expect(expectedEntities).toHaveLength(0);

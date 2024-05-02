@@ -1,12 +1,10 @@
 import { Knex } from 'knex';
-
-export type Row = {
-  id: string;
-  delivery_project_id: string;
-  github_team_id: number;
-  team_type: string;
-  team_name: string;
-};
+import {
+  delivery_project_github_team,
+  delivery_project_github_teams_name,
+} from './delivery_project_github_team';
+import { type UUID } from 'node:crypto';
+import { assertUUID } from '../service/util';
 
 const columns = [
   'id',
@@ -14,7 +12,7 @@ const columns = [
   'github_team_id',
   'team_type',
   'team_name',
-] as const satisfies ReadonlyArray<keyof Row>;
+] as const satisfies ReadonlyArray<keyof delivery_project_github_team>;
 
 export type GithubTeamRef = {
   id: number;
@@ -33,7 +31,9 @@ export class GithubTeamStore {
 
   #table(context?: <T extends {}>(name: string) => Knex.QueryBuilder<T>) {
     context ??= this.#connection;
-    return context<Row>('delivery_project_github_teams');
+    return context<delivery_project_github_team>(
+      delivery_project_github_teams_name,
+    );
   }
 
   public async get(projectId: string) {
@@ -45,6 +45,7 @@ export class GithubTeamStore {
   }
 
   public async set(projectId: string, teams: Record<string, GithubTeamRef>) {
+    assertUUID(projectId);
     await this.#connection.transaction(async t => {
       await this.#delete(this.#table(t), projectId);
       const rows = toRows(projectId, teams);
@@ -56,12 +57,17 @@ export class GithubTeamStore {
     await this.#delete(this.#table(), projectId);
   }
 
-  #delete(builder: Knex.QueryBuilder<Row>, projectId: string) {
+  #delete(
+    builder: Knex.QueryBuilder<delivery_project_github_team>,
+    projectId: string,
+  ) {
     return builder.where('delivery_project_id', projectId).delete();
   }
 }
 
-function toTeamRefs(rows: Row[]): Record<string, GithubTeamRef> {
+function toTeamRefs(
+  rows: delivery_project_github_team[],
+): Record<string, GithubTeamRef> {
   return Object.fromEntries(
     rows.map(r => [
       r.team_type,
@@ -74,9 +80,9 @@ function toTeamRefs(rows: Row[]): Record<string, GithubTeamRef> {
 }
 
 function toRows(
-  projectId: string,
+  projectId: UUID,
   teams: Record<string, GithubTeamRef>,
-): Omit<Row, 'id'>[] {
+): Omit<delivery_project_github_team, 'id'>[] {
   return Object.entries(teams).map(([type, { name, id }]) => ({
     delivery_project_id: projectId,
     github_team_id: id,

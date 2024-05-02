@@ -69,7 +69,7 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
       );
     }
     const result = await this.#createDeliveryProjectCore(data);
-    console.log(result);
+
     const adGroupPayload = {
       members: [],
     };

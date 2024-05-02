@@ -14,20 +14,7 @@ import {
   isUUID,
 } from '../service/util';
 import { type UUID } from 'node:crypto';
-
-type Row = {
-  id: UUID;
-  creator: string;
-  owner: string;
-  title: string;
-  alias: string | null;
-  description: string;
-  url: string | null;
-  readonly name: string;
-  created_at: Date;
-  updated_by: string | null;
-  updated_at: Date;
-};
+import { arms_length_body, arms_length_body_name } from './arms_length_body';
 
 export type PartialArmsLengthBody = Partial<ArmsLengthBody>;
 
@@ -47,7 +34,7 @@ const allColumns = [
   'created_at',
   'updated_at',
   'updated_by',
-] as const satisfies ReadonlyArray<keyof Row>;
+] as const satisfies ReadonlyArray<keyof arms_length_body>;
 
 export class ArmsLengthBodyStore {
   readonly #client: Knex;
@@ -56,7 +43,7 @@ export class ArmsLengthBodyStore {
   }
 
   get #table() {
-    return this.#client<Row>('arms_length_body');
+    return this.#client<arms_length_body>(arms_length_body_name);
   }
 
   async getAll(): Promise<ArmsLengthBody[]> {
@@ -148,7 +135,7 @@ export class ArmsLengthBodyStore {
     };
   }
 
-  #normalize(row: Row): ArmsLengthBody {
+  #normalize(row: arms_length_body): ArmsLengthBody {
     return {
       ...row,
       alias: row.alias ?? undefined,

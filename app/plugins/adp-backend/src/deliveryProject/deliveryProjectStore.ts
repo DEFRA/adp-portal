@@ -8,37 +8,20 @@ import {
 import { createName } from '../utils/index';
 import {
   SafeResult,
+  assertUUID,
   checkMany,
   containsAnyValue,
   emptyUUID,
   isUUID,
 } from '../service/util';
 import { type UUID } from 'node:crypto';
+import { delivery_project, delivery_project_name } from './delivery_project';
+import {
+  delivery_programme,
+  delivery_programme_name,
+} from '../deliveryProgramme/delivery_programme';
 
-type Row = {
-  id: string;
-  title: string;
-  name: string;
-  alias: string | null;
-  description: string;
-  finance_code: string | null;
-  delivery_programme_id: string;
-  delivery_project_code: string;
-  namespace: string;
-  updated_by: string | null;
-  created_at: Date;
-  updated_at: Date;
-  ado_project: string;
-  team_type: string;
-  service_owner: string;
-  github_team_visibility: 'public' | 'private' | null;
-};
-type DeliveryProgrammeRow = {
-  id: string;
-  delivery_programme_code: string;
-};
-
-const allColumns = addTableName('delivery_project', [
+const allColumns = addTableName(delivery_project_name, [
   'id',
   'title',
   'name',
@@ -55,10 +38,10 @@ const allColumns = addTableName('delivery_project', [
   'team_type',
   'service_owner',
   'github_team_visibility',
-] as const satisfies ReadonlyArray<keyof Row>);
-const programmeColumns = addTableName('delivery_programme', [
+] as const satisfies ReadonlyArray<keyof delivery_project>);
+const programmeColumns = addTableName(delivery_programme_name, [
   'delivery_programme_code',
-] as const satisfies ReadonlyArray<keyof DeliveryProgrammeRow>);
+] as const satisfies ReadonlyArray<keyof delivery_programme>);
 
 export type PartialDeliveryProject = Partial<DeliveryProject>;
 export type IDeliveryProjectStore = {
@@ -73,22 +56,22 @@ export class DeliveryProjectStore {
   }
 
   get #table() {
-    return this.#client<Row>('delivery_project');
+    return this.#client<delivery_project>(delivery_project_name);
   }
 
   get #tableWithProgrammes() {
-    return this.#table.join<DeliveryProgrammeRow>(
-      'delivery_programme',
-      'delivery_programme.id',
+    return this.#table.join<delivery_programme>(
+      delivery_programme_name,
+      `${delivery_programme_name}.id`,
       '=',
-      'delivery_project.delivery_programme_id',
+      `${delivery_project_name}.delivery_programme_id`,
     );
   }
 
   async getAll(): Promise<DeliveryProject[]> {
     const result = await this.#tableWithProgrammes
       .select(...allColumns, ...programmeColumns)
-      .orderBy('created_at');
+      .orderBy(`${delivery_project_name}.created_at`);
 
     return result.map(r => this.#normalize(r));
   }
@@ -96,7 +79,7 @@ export class DeliveryProjectStore {
   async get(id: string): Promise<DeliveryProject> {
     if (!isUUID(id)) throw notFound();
     const result = await this.#tableWithProgrammes
-      .where('id', id)
+      .where(`${delivery_project_name}.id`, id)
       .select(...allColumns, ...programmeColumns)
       .first();
 
@@ -107,7 +90,7 @@ export class DeliveryProjectStore {
 
   async getByName(name: string): Promise<DeliveryProject> {
     const result = await this.#tableWithProgrammes
-      .where('name', name)
+      .where(`${delivery_project_name}.name`, name)
       .select(...allColumns, ...programmeColumns)
       .first();
 
@@ -145,7 +128,7 @@ export class DeliveryProjectStore {
       'UNKNOWN-DELIVERY-PROGRAMME';
 
     const name = createName(`${programmeCode}-${title}`);
-    await checkMany({
+    const valid = await checkMany({
       unknownDeliveryProgramme: not(
         this.#deliveryProgrammeExists(delivery_programme_id),
       ),
@@ -160,6 +143,10 @@ export class DeliveryProjectStore {
         emptyUUID,
       ),
     });
+    if (!valid.success) return valid;
+
+    assertUUID(delivery_programme_id);
+
     const result = await this.#table.insert(
       {
         title,
@@ -217,7 +204,7 @@ export class DeliveryProjectStore {
     if (!isUUID(id)) throw notFound();
     const programmeId =
       delivery_programme_id ?? (await this.#getDeliveryProgrammeId(id));
-    await checkMany({
+    const valid = await checkMany({
       unknownDeliveryProgramme:
         delivery_programme_id !== undefined &&
         not(this.#deliveryProgrammeExists(delivery_programme_id)),
@@ -227,6 +214,9 @@ export class DeliveryProjectStore {
         delivery_project_code !== undefined &&
         this.#projectCodeExists(delivery_project_code, id),
     });
+    if (!valid.success) return valid;
+
+    if (delivery_programme_id !== undefined) assertUUID(delivery_programme_id);
 
     const result = await this.#table.where('id', id).update(
       {
@@ -272,7 +262,9 @@ export class DeliveryProjectStore {
     return result.delivery_programme_id;
   }
 
-  #normalize(row: Row & DeliveryProgrammeRow): DeliveryProject {
+  #normalize(
+    row: delivery_project & Pick<delivery_programme, 'delivery_programme_code'>,
+  ): DeliveryProject {
     return {
       ...row,
       alias: row.alias ?? undefined,
@@ -317,7 +309,9 @@ export class DeliveryProjectStore {
 
   async #deliveryProgrammeExists(id: string) {
     if (!isUUID(id)) return false;
-    const [{ count }] = await this.#client('arms_length_body')
+    const [{ count }] = await this.#client<delivery_programme>(
+      delivery_programme_name,
+    )
       .where('id', id)
       .limit(1)
       .count('*', { as: 'count' });
