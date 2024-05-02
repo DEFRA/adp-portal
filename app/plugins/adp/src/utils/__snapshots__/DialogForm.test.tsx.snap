@@ -1,0 +1,1978 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DialogForm Should block the form while submitting: Submitted 1`] = `
+<body
+  style="padding-right: 0px; overflow: hidden;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="MuiDialog-root"
+    role="presentation"
+    style="position: fixed; z-index: 1300; right: 0px; bottom: 0px; top: 0px; left: 0px;"
+  >
+    <div
+      aria-hidden="true"
+      class="MuiBackdrop-root"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+    />
+    <div
+      data-test="sentinelStart"
+      tabindex="0"
+    />
+    <div
+      class="MuiDialog-container MuiDialog-scrollPaper"
+      role="none presentation"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+      tabindex="-1"
+    >
+      <div
+        class="MuiPaper-root MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm MuiPaper-elevation24 MuiPaper-rounded"
+        role="dialog"
+      >
+        <form>
+          <div
+            class="MuiDialogTitle-root"
+          >
+            <h2
+              class="MuiTypography-root MuiTypography-h6"
+            >
+              My form
+            </h2>
+          </div>
+          <div
+            class="MuiDialogContent-root"
+          >
+            <div>
+              Array [
+  Object {
+    "clearErrors": [Function clearErrors],
+    "control": Object {
+      "_defaultValues": Object {
+        "foo": "",
+      },
+      "_disableForm": [Function _disableForm],
+      "_executeSchema": [Function P],
+      "_fields": Object {},
+      "_formState": Object {
+        "dirtyFields": Object {},
+        "disabled": false,
+        "errors": Object {},
+        "isDirty": false,
+        "isLoading": false,
+        "isSubmitSuccessful": false,
+        "isSubmitted": false,
+        "isSubmitting": false,
+        "isValid": false,
+        "isValidating": false,
+        "submitCount": 0,
+        "touchedFields": Object {},
+      },
+      "_formValues": Object {
+        "foo": "",
+      },
+      "_getDirty": [Function W],
+      "_getFieldArray": [Function _getFieldArray],
+      "_getWatch": [Function I],
+      "_names": Object {
+        "array": Set {},
+        "focus": "",
+        "mount": Set {},
+        "unMount": Set {},
+        "watch": Set {},
+        "watchAll": false,
+      },
+      "_options": Object {
+        "defaultValues": Object {
+          "foo": "",
+        },
+        "mode": "onSubmit",
+        "reValidateMode": "onChange",
+        "shouldFocusError": true,
+      },
+      "_proxyFormState": Object {
+        "defaultValues": "all",
+        "dirtyFields": false,
+        "errors": false,
+        "isDirty": false,
+        "isValid": false,
+        "isValidating": false,
+        "touchedFields": false,
+      },
+      "_removeUnmounted": [Function _removeUnmounted],
+      "_reset": [Function fe],
+      "_resetDefaultValues": [Function _resetDefaultValues],
+      "_setErrors": [Function _setErrors],
+      "_state": Object {
+        "action": false,
+        "mount": true,
+        "watch": false,
+      },
+      "_subjects": Object {
+        "array": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "state": Object {
+          "next": [Function next],
+          "observers": Array [
+            Object {
+              "next": [Function next],
+            },
+          ],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "values": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+      },
+      "_updateDisabledField": [Function ue],
+      "_updateFieldArray": [Function _updateFieldArray],
+      "_updateFormState": [Function _updateFormState],
+      "_updateValid": [Function j],
+      "getFieldState": [Function ae],
+      "handleSubmit": [Function ce],
+      "register": [Function le],
+      "setError": [Function ne],
+      "unregister": [Function ie],
+    },
+    "disabled": undefined,
+    "formState": Object {
+      "defaultValues": Object {
+        "foo": "",
+      },
+    },
+    "getFieldState": [Function ae],
+    "getValues": [Function se],
+    "handleSubmit": [Function ce],
+    "register": [Function le],
+    "reset": [Function me],
+    "resetField": [Function resetField],
+    "setError": [Function ne],
+    "setFocus": [Function setFocus],
+    "setValue": [Function Z],
+    "trigger": [Function re],
+    "unregister": [Function ie],
+    "watch": [Function watch],
+  },
+]
+            </div>
+          </div>
+          <div
+            class="MuiDialogActions-root MuiDialogActions-spacing"
+          >
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+              data-testid="actions-modal-cancel-button"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Cancel
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+              data-testid="actions-modal-submit-button"
+              tabindex="0"
+              type="submit"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Continue
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <div
+              class="MuiBox-root MuiBox-root-4"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      data-test="sentinelEnd"
+      tabindex="0"
+    />
+  </div>
+</body>
+`;
+
+exports[`DialogForm Should block the form while submitting: Submitting 1`] = `
+<body
+  style="padding-right: 0px; overflow: hidden;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="MuiDialog-root"
+    role="presentation"
+    style="position: fixed; z-index: 1300; right: 0px; bottom: 0px; top: 0px; left: 0px;"
+  >
+    <div
+      aria-hidden="true"
+      class="MuiBackdrop-root"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+    />
+    <div
+      data-test="sentinelStart"
+      tabindex="0"
+    />
+    <div
+      class="MuiDialog-container MuiDialog-scrollPaper"
+      role="none presentation"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+      tabindex="-1"
+    >
+      <div
+        class="MuiPaper-root MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm MuiPaper-elevation24 MuiPaper-rounded"
+        role="dialog"
+      >
+        <form>
+          <div
+            class="MuiDialogTitle-root"
+          >
+            <h2
+              class="MuiTypography-root MuiTypography-h6"
+            >
+              My form
+            </h2>
+          </div>
+          <div
+            class="MuiDialogContent-root"
+          >
+            <div>
+              Array [
+  Object {
+    "clearErrors": [Function clearErrors],
+    "control": Object {
+      "_defaultValues": Object {
+        "foo": "",
+      },
+      "_disableForm": [Function _disableForm],
+      "_executeSchema": [Function P],
+      "_fields": Object {},
+      "_formState": Object {
+        "dirtyFields": Object {},
+        "disabled": false,
+        "errors": Object {},
+        "isDirty": false,
+        "isLoading": false,
+        "isSubmitSuccessful": false,
+        "isSubmitted": false,
+        "isSubmitting": true,
+        "isValid": false,
+        "isValidating": false,
+        "submitCount": 0,
+        "touchedFields": Object {},
+      },
+      "_formValues": Object {
+        "foo": "",
+      },
+      "_getDirty": [Function W],
+      "_getFieldArray": [Function _getFieldArray],
+      "_getWatch": [Function I],
+      "_names": Object {
+        "array": Set {},
+        "mount": Set {},
+        "unMount": Set {},
+        "watch": Set {},
+      },
+      "_options": Object {
+        "defaultValues": Object {
+          "foo": "",
+        },
+        "mode": "onSubmit",
+        "reValidateMode": "onChange",
+        "shouldFocusError": true,
+      },
+      "_proxyFormState": Object {
+        "defaultValues": "all",
+        "dirtyFields": false,
+        "errors": false,
+        "isDirty": false,
+        "isValid": false,
+        "isValidating": false,
+        "touchedFields": false,
+      },
+      "_removeUnmounted": [Function _removeUnmounted],
+      "_reset": [Function fe],
+      "_resetDefaultValues": [Function _resetDefaultValues],
+      "_setErrors": [Function _setErrors],
+      "_state": Object {
+        "action": false,
+        "mount": true,
+        "watch": false,
+      },
+      "_subjects": Object {
+        "array": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "state": Object {
+          "next": [Function next],
+          "observers": Array [
+            Object {
+              "next": [Function next],
+            },
+          ],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "values": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+      },
+      "_updateDisabledField": [Function ue],
+      "_updateFieldArray": [Function _updateFieldArray],
+      "_updateFormState": [Function _updateFormState],
+      "_updateValid": [Function j],
+      "getFieldState": [Function ae],
+      "handleSubmit": [Function ce],
+      "register": [Function le],
+      "setError": [Function ne],
+      "unregister": [Function ie],
+    },
+    "disabled": true,
+    "formState": Object {
+      "defaultValues": Object {
+        "foo": "",
+      },
+    },
+    "getFieldState": [Function ae],
+    "getValues": [Function se],
+    "handleSubmit": [Function ce],
+    "register": [Function le],
+    "reset": [Function me],
+    "resetField": [Function resetField],
+    "setError": [Function ne],
+    "setFocus": [Function setFocus],
+    "setValue": [Function Z],
+    "trigger": [Function re],
+    "unregister": [Function ie],
+    "watch": [Function watch],
+  },
+]
+            </div>
+          </div>
+          <div
+            class="MuiDialogActions-root MuiDialogActions-spacing"
+          >
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              data-testid="actions-modal-cancel-button"
+              disabled=""
+              tabindex="-1"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Cancel
+              </span>
+            </button>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              data-testid="actions-modal-submit-button"
+              disabled=""
+              tabindex="-1"
+              type="submit"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Continue
+              </span>
+            </button>
+            <div
+              class="MuiBox-root MuiBox-root-4"
+            >
+              <div
+                class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
+                role="progressbar"
+                style="width: 1rem; height: 1rem;"
+              >
+                <svg
+                  class="MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.2"
+                    stroke-width="3.6"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      data-test="sentinelEnd"
+      tabindex="0"
+    />
+  </div>
+</body>
+`;
+
+exports[`DialogForm Should call completed when cancel is clicked 1`] = `
+<body
+  style="padding-right: 0px; overflow: hidden;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="MuiDialog-root"
+    role="presentation"
+    style="position: fixed; z-index: 1300; right: 0px; bottom: 0px; top: 0px; left: 0px;"
+  >
+    <div
+      aria-hidden="true"
+      class="MuiBackdrop-root"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+    />
+    <div
+      data-test="sentinelStart"
+      tabindex="0"
+    />
+    <div
+      class="MuiDialog-container MuiDialog-scrollPaper"
+      role="none presentation"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+      tabindex="-1"
+    >
+      <div
+        class="MuiPaper-root MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm MuiPaper-elevation24 MuiPaper-rounded"
+        role="dialog"
+      >
+        <form>
+          <div
+            class="MuiDialogTitle-root"
+          >
+            <h2
+              class="MuiTypography-root MuiTypography-h6"
+            >
+              My form
+            </h2>
+          </div>
+          <div
+            class="MuiDialogContent-root"
+          >
+            <div>
+              Array [
+  Object {
+    "clearErrors": [Function clearErrors],
+    "control": Object {
+      "_defaultValues": Object {
+        "foo": "",
+      },
+      "_disableForm": [Function _disableForm],
+      "_executeSchema": [Function P],
+      "_fields": Object {},
+      "_formState": Object {
+        "dirtyFields": Object {},
+        "disabled": false,
+        "errors": Object {},
+        "isDirty": false,
+        "isLoading": false,
+        "isSubmitSuccessful": false,
+        "isSubmitted": false,
+        "isSubmitting": false,
+        "isValid": false,
+        "isValidating": false,
+        "submitCount": 0,
+        "touchedFields": Object {},
+      },
+      "_formValues": Object {
+        "foo": "",
+      },
+      "_getDirty": [Function W],
+      "_getFieldArray": [Function _getFieldArray],
+      "_getWatch": [Function I],
+      "_names": Object {
+        "array": Set {},
+        "focus": "",
+        "mount": Set {},
+        "unMount": Set {},
+        "watch": Set {},
+        "watchAll": false,
+      },
+      "_options": Object {
+        "defaultValues": Object {
+          "foo": "",
+        },
+        "mode": "onSubmit",
+        "reValidateMode": "onChange",
+        "shouldFocusError": true,
+      },
+      "_proxyFormState": Object {
+        "defaultValues": "all",
+        "dirtyFields": false,
+        "errors": false,
+        "isDirty": false,
+        "isValid": false,
+        "isValidating": false,
+        "touchedFields": false,
+      },
+      "_removeUnmounted": [Function _removeUnmounted],
+      "_reset": [Function fe],
+      "_resetDefaultValues": [Function _resetDefaultValues],
+      "_setErrors": [Function _setErrors],
+      "_state": Object {
+        "action": false,
+        "mount": true,
+        "watch": false,
+      },
+      "_subjects": Object {
+        "array": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "state": Object {
+          "next": [Function next],
+          "observers": Array [
+            Object {
+              "next": [Function next],
+            },
+          ],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "values": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+      },
+      "_updateDisabledField": [Function ue],
+      "_updateFieldArray": [Function _updateFieldArray],
+      "_updateFormState": [Function _updateFormState],
+      "_updateValid": [Function j],
+      "getFieldState": [Function ae],
+      "handleSubmit": [Function ce],
+      "register": [Function le],
+      "setError": [Function ne],
+      "unregister": [Function ie],
+    },
+    "disabled": undefined,
+    "formState": Object {
+      "defaultValues": Object {
+        "foo": "",
+      },
+    },
+    "getFieldState": [Function ae],
+    "getValues": [Function se],
+    "handleSubmit": [Function ce],
+    "register": [Function le],
+    "reset": [Function me],
+    "resetField": [Function resetField],
+    "setError": [Function ne],
+    "setFocus": [Function setFocus],
+    "setValue": [Function Z],
+    "trigger": [Function re],
+    "unregister": [Function ie],
+    "watch": [Function watch],
+  },
+]
+            </div>
+          </div>
+          <div
+            class="MuiDialogActions-root MuiDialogActions-spacing"
+          >
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+              data-testid="actions-modal-cancel-button"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Cancel
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              >
+                <span
+                  class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+                  style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+                >
+                  <span
+                    class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+                  />
+                </span>
+              </span>
+            </button>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+              data-testid="actions-modal-submit-button"
+              tabindex="0"
+              type="submit"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Continue
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <div
+              class="MuiBox-root MuiBox-root-2"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      data-test="sentinelEnd"
+      tabindex="0"
+    />
+  </div>
+</body>
+`;
+
+exports[`DialogForm Should call submit when confirm is clicked 1`] = `
+<body
+  style="padding-right: 0px; overflow: hidden;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="MuiDialog-root"
+    role="presentation"
+    style="position: fixed; z-index: 1300; right: 0px; bottom: 0px; top: 0px; left: 0px;"
+  >
+    <div
+      aria-hidden="true"
+      class="MuiBackdrop-root"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+    />
+    <div
+      data-test="sentinelStart"
+      tabindex="0"
+    />
+    <div
+      class="MuiDialog-container MuiDialog-scrollPaper"
+      role="none presentation"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+      tabindex="-1"
+    >
+      <div
+        class="MuiPaper-root MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm MuiPaper-elevation24 MuiPaper-rounded"
+        role="dialog"
+      >
+        <form>
+          <div
+            class="MuiDialogTitle-root"
+          >
+            <h2
+              class="MuiTypography-root MuiTypography-h6"
+            >
+              My form
+            </h2>
+          </div>
+          <div
+            class="MuiDialogContent-root"
+          >
+            <div>
+              Array [
+  Object {
+    "clearErrors": [Function clearErrors],
+    "control": Object {
+      "_defaultValues": Object {
+        "foo": "",
+      },
+      "_disableForm": [Function _disableForm],
+      "_executeSchema": [Function P],
+      "_fields": Object {},
+      "_formState": Object {
+        "dirtyFields": Object {},
+        "disabled": false,
+        "errors": Object {},
+        "isDirty": false,
+        "isLoading": false,
+        "isSubmitSuccessful": false,
+        "isSubmitted": false,
+        "isSubmitting": true,
+        "isValid": false,
+        "isValidating": false,
+        "submitCount": 0,
+        "touchedFields": Object {},
+      },
+      "_formValues": Object {
+        "foo": "",
+      },
+      "_getDirty": [Function W],
+      "_getFieldArray": [Function _getFieldArray],
+      "_getWatch": [Function I],
+      "_names": Object {
+        "array": Set {},
+        "mount": Set {},
+        "unMount": Set {},
+        "watch": Set {},
+      },
+      "_options": Object {
+        "defaultValues": Object {
+          "foo": "",
+        },
+        "mode": "onSubmit",
+        "reValidateMode": "onChange",
+        "shouldFocusError": true,
+      },
+      "_proxyFormState": Object {
+        "defaultValues": "all",
+        "dirtyFields": false,
+        "errors": false,
+        "isDirty": false,
+        "isValid": false,
+        "isValidating": false,
+        "touchedFields": false,
+      },
+      "_removeUnmounted": [Function _removeUnmounted],
+      "_reset": [Function fe],
+      "_resetDefaultValues": [Function _resetDefaultValues],
+      "_setErrors": [Function _setErrors],
+      "_state": Object {
+        "action": false,
+        "mount": true,
+        "watch": false,
+      },
+      "_subjects": Object {
+        "array": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "state": Object {
+          "next": [Function next],
+          "observers": Array [
+            Object {
+              "next": [Function next],
+            },
+          ],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "values": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+      },
+      "_updateDisabledField": [Function ue],
+      "_updateFieldArray": [Function _updateFieldArray],
+      "_updateFormState": [Function _updateFormState],
+      "_updateValid": [Function j],
+      "getFieldState": [Function ae],
+      "handleSubmit": [Function ce],
+      "register": [Function le],
+      "setError": [Function ne],
+      "unregister": [Function ie],
+    },
+    "disabled": true,
+    "formState": Object {
+      "defaultValues": Object {
+        "foo": "",
+      },
+    },
+    "getFieldState": [Function ae],
+    "getValues": [Function se],
+    "handleSubmit": [Function ce],
+    "register": [Function le],
+    "reset": [Function me],
+    "resetField": [Function resetField],
+    "setError": [Function ne],
+    "setFocus": [Function setFocus],
+    "setValue": [Function Z],
+    "trigger": [Function re],
+    "unregister": [Function ie],
+    "watch": [Function watch],
+  },
+]
+            </div>
+          </div>
+          <div
+            class="MuiDialogActions-root MuiDialogActions-spacing"
+          >
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              data-testid="actions-modal-cancel-button"
+              disabled=""
+              tabindex="-1"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Cancel
+              </span>
+            </button>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              data-testid="actions-modal-submit-button"
+              disabled=""
+              tabindex="-1"
+              type="submit"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Continue
+              </span>
+            </button>
+            <div
+              class="MuiBox-root MuiBox-root-3"
+            >
+              <div
+                class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
+                role="progressbar"
+                style="width: 1rem; height: 1rem;"
+              >
+                <svg
+                  class="MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.2"
+                    stroke-width="3.6"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      data-test="sentinelEnd"
+      tabindex="0"
+    />
+  </div>
+</body>
+`;
+
+exports[`DialogForm Should not call completed when submit returns a validation error: Submitted 1`] = `
+<body
+  style="padding-right: 0px; overflow: hidden;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="MuiDialog-root"
+    role="presentation"
+    style="position: fixed; z-index: 1300; right: 0px; bottom: 0px; top: 0px; left: 0px;"
+  >
+    <div
+      aria-hidden="true"
+      class="MuiBackdrop-root"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+    />
+    <div
+      data-test="sentinelStart"
+      tabindex="0"
+    />
+    <div
+      class="MuiDialog-container MuiDialog-scrollPaper"
+      role="none presentation"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+      tabindex="-1"
+    >
+      <div
+        class="MuiPaper-root MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm MuiPaper-elevation24 MuiPaper-rounded"
+        role="dialog"
+      >
+        <form>
+          <div
+            class="MuiDialogTitle-root"
+          >
+            <h2
+              class="MuiTypography-root MuiTypography-h6"
+            >
+              My form
+            </h2>
+          </div>
+          <div
+            class="MuiDialogContent-root"
+          >
+            <div>
+              Array [
+  Object {
+    "clearErrors": [Function clearErrors],
+    "control": Object {
+      "_defaultValues": Object {
+        "foo": "",
+      },
+      "_disableForm": [Function _disableForm],
+      "_executeSchema": [Function P],
+      "_fields": Object {},
+      "_formState": Object {
+        "dirtyFields": Object {},
+        "disabled": false,
+        "errors": Object {},
+        "isDirty": false,
+        "isLoading": false,
+        "isSubmitSuccessful": false,
+        "isSubmitted": false,
+        "isSubmitting": true,
+        "isValid": false,
+        "isValidating": false,
+        "submitCount": 0,
+        "touchedFields": Object {},
+      },
+      "_formValues": Object {
+        "foo": "",
+      },
+      "_getDirty": [Function W],
+      "_getFieldArray": [Function _getFieldArray],
+      "_getWatch": [Function I],
+      "_names": Object {
+        "array": Set {},
+        "mount": Set {},
+        "unMount": Set {},
+        "watch": Set {},
+      },
+      "_options": Object {
+        "defaultValues": Object {
+          "foo": "",
+        },
+        "mode": "onSubmit",
+        "reValidateMode": "onChange",
+        "shouldFocusError": true,
+      },
+      "_proxyFormState": Object {
+        "defaultValues": "all",
+        "dirtyFields": false,
+        "errors": false,
+        "isDirty": false,
+        "isValid": false,
+        "isValidating": false,
+        "touchedFields": false,
+      },
+      "_removeUnmounted": [Function _removeUnmounted],
+      "_reset": [Function fe],
+      "_resetDefaultValues": [Function _resetDefaultValues],
+      "_setErrors": [Function _setErrors],
+      "_state": Object {
+        "action": false,
+        "mount": true,
+        "watch": false,
+      },
+      "_subjects": Object {
+        "array": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "state": Object {
+          "next": [Function next],
+          "observers": Array [
+            Object {
+              "next": [Function next],
+            },
+          ],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "values": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+      },
+      "_updateDisabledField": [Function ue],
+      "_updateFieldArray": [Function _updateFieldArray],
+      "_updateFormState": [Function _updateFormState],
+      "_updateValid": [Function j],
+      "getFieldState": [Function ae],
+      "handleSubmit": [Function ce],
+      "register": [Function le],
+      "setError": [Function ne],
+      "unregister": [Function ie],
+    },
+    "disabled": undefined,
+    "formState": Object {
+      "defaultValues": Object {
+        "foo": "",
+      },
+    },
+    "getFieldState": [Function ae],
+    "getValues": [Function se],
+    "handleSubmit": [Function ce],
+    "register": [Function le],
+    "reset": [Function me],
+    "resetField": [Function resetField],
+    "setError": [Function ne],
+    "setFocus": [Function setFocus],
+    "setValue": [Function Z],
+    "trigger": [Function re],
+    "unregister": [Function ie],
+    "watch": [Function watch],
+  },
+]
+            </div>
+          </div>
+          <div
+            class="MuiDialogActions-root MuiDialogActions-spacing"
+          >
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+              data-testid="actions-modal-cancel-button"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Cancel
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+              data-testid="actions-modal-submit-button"
+              tabindex="0"
+              type="submit"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Continue
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <div
+              class="MuiBox-root MuiBox-root-6"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      data-test="sentinelEnd"
+      tabindex="0"
+    />
+  </div>
+</body>
+`;
+
+exports[`DialogForm Should not call completed when submit returns a validation error: Submitting 1`] = `
+<body
+  style="padding-right: 0px; overflow: hidden;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="MuiDialog-root"
+    role="presentation"
+    style="position: fixed; z-index: 1300; right: 0px; bottom: 0px; top: 0px; left: 0px;"
+  >
+    <div
+      aria-hidden="true"
+      class="MuiBackdrop-root"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+    />
+    <div
+      data-test="sentinelStart"
+      tabindex="0"
+    />
+    <div
+      class="MuiDialog-container MuiDialog-scrollPaper"
+      role="none presentation"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+      tabindex="-1"
+    >
+      <div
+        class="MuiPaper-root MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm MuiPaper-elevation24 MuiPaper-rounded"
+        role="dialog"
+      >
+        <form>
+          <div
+            class="MuiDialogTitle-root"
+          >
+            <h2
+              class="MuiTypography-root MuiTypography-h6"
+            >
+              My form
+            </h2>
+          </div>
+          <div
+            class="MuiDialogContent-root"
+          >
+            <div>
+              Array [
+  Object {
+    "clearErrors": [Function clearErrors],
+    "control": Object {
+      "_defaultValues": Object {
+        "foo": "",
+      },
+      "_disableForm": [Function _disableForm],
+      "_executeSchema": [Function P],
+      "_fields": Object {},
+      "_formState": Object {
+        "dirtyFields": Object {},
+        "disabled": false,
+        "errors": Object {},
+        "isDirty": false,
+        "isLoading": false,
+        "isSubmitSuccessful": false,
+        "isSubmitted": false,
+        "isSubmitting": true,
+        "isValid": false,
+        "isValidating": false,
+        "submitCount": 0,
+        "touchedFields": Object {},
+      },
+      "_formValues": Object {
+        "foo": "",
+      },
+      "_getDirty": [Function W],
+      "_getFieldArray": [Function _getFieldArray],
+      "_getWatch": [Function I],
+      "_names": Object {
+        "array": Set {},
+        "mount": Set {},
+        "unMount": Set {},
+        "watch": Set {},
+      },
+      "_options": Object {
+        "defaultValues": Object {
+          "foo": "",
+        },
+        "mode": "onSubmit",
+        "reValidateMode": "onChange",
+        "shouldFocusError": true,
+      },
+      "_proxyFormState": Object {
+        "defaultValues": "all",
+        "dirtyFields": false,
+        "errors": false,
+        "isDirty": false,
+        "isValid": false,
+        "isValidating": false,
+        "touchedFields": false,
+      },
+      "_removeUnmounted": [Function _removeUnmounted],
+      "_reset": [Function fe],
+      "_resetDefaultValues": [Function _resetDefaultValues],
+      "_setErrors": [Function _setErrors],
+      "_state": Object {
+        "action": false,
+        "mount": true,
+        "watch": false,
+      },
+      "_subjects": Object {
+        "array": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "state": Object {
+          "next": [Function next],
+          "observers": Array [
+            Object {
+              "next": [Function next],
+            },
+          ],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "values": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+      },
+      "_updateDisabledField": [Function ue],
+      "_updateFieldArray": [Function _updateFieldArray],
+      "_updateFormState": [Function _updateFormState],
+      "_updateValid": [Function j],
+      "getFieldState": [Function ae],
+      "handleSubmit": [Function ce],
+      "register": [Function le],
+      "setError": [Function ne],
+      "unregister": [Function ie],
+    },
+    "disabled": true,
+    "formState": Object {
+      "defaultValues": Object {
+        "foo": "",
+      },
+    },
+    "getFieldState": [Function ae],
+    "getValues": [Function se],
+    "handleSubmit": [Function ce],
+    "register": [Function le],
+    "reset": [Function me],
+    "resetField": [Function resetField],
+    "setError": [Function ne],
+    "setFocus": [Function setFocus],
+    "setValue": [Function Z],
+    "trigger": [Function re],
+    "unregister": [Function ie],
+    "watch": [Function watch],
+  },
+]
+            </div>
+          </div>
+          <div
+            class="MuiDialogActions-root MuiDialogActions-spacing"
+          >
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              data-testid="actions-modal-cancel-button"
+              disabled=""
+              tabindex="-1"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Cancel
+              </span>
+            </button>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              data-testid="actions-modal-submit-button"
+              disabled=""
+              tabindex="-1"
+              type="submit"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Continue
+              </span>
+            </button>
+            <div
+              class="MuiBox-root MuiBox-root-6"
+            >
+              <div
+                class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
+                role="progressbar"
+                style="width: 1rem; height: 1rem;"
+              >
+                <svg
+                  class="MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.2"
+                    stroke-width="3.6"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      data-test="sentinelEnd"
+      tabindex="0"
+    />
+  </div>
+</body>
+`;
+
+exports[`DialogForm Should not render when closed 1`] = `
+<body>
+  <div />
+</body>
+`;
+
+exports[`DialogForm Should raise an alert when submitting throws an error: Submitted 1`] = `
+<body
+  style="padding-right: 0px; overflow: hidden;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="MuiDialog-root"
+    role="presentation"
+    style="position: fixed; z-index: 1300; right: 0px; bottom: 0px; top: 0px; left: 0px;"
+  >
+    <div
+      aria-hidden="true"
+      class="MuiBackdrop-root"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+    />
+    <div
+      data-test="sentinelStart"
+      tabindex="0"
+    />
+    <div
+      class="MuiDialog-container MuiDialog-scrollPaper"
+      role="none presentation"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+      tabindex="-1"
+    >
+      <div
+        class="MuiPaper-root MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm MuiPaper-elevation24 MuiPaper-rounded"
+        role="dialog"
+      >
+        <form>
+          <div
+            class="MuiDialogTitle-root"
+          >
+            <h2
+              class="MuiTypography-root MuiTypography-h6"
+            >
+              My form
+            </h2>
+          </div>
+          <div
+            class="MuiDialogContent-root"
+          >
+            <div>
+              Array [
+  Object {
+    "clearErrors": [Function clearErrors],
+    "control": Object {
+      "_defaultValues": Object {
+        "foo": "",
+      },
+      "_disableForm": [Function _disableForm],
+      "_executeSchema": [Function P],
+      "_fields": Object {},
+      "_formState": Object {
+        "dirtyFields": Object {},
+        "disabled": false,
+        "errors": Object {},
+        "isDirty": false,
+        "isLoading": false,
+        "isSubmitSuccessful": false,
+        "isSubmitted": false,
+        "isSubmitting": true,
+        "isValid": false,
+        "isValidating": false,
+        "submitCount": 0,
+        "touchedFields": Object {},
+      },
+      "_formValues": Object {
+        "foo": "",
+      },
+      "_getDirty": [Function W],
+      "_getFieldArray": [Function _getFieldArray],
+      "_getWatch": [Function I],
+      "_names": Object {
+        "array": Set {},
+        "mount": Set {},
+        "unMount": Set {},
+        "watch": Set {},
+      },
+      "_options": Object {
+        "defaultValues": Object {
+          "foo": "",
+        },
+        "mode": "onSubmit",
+        "reValidateMode": "onChange",
+        "shouldFocusError": true,
+      },
+      "_proxyFormState": Object {
+        "defaultValues": "all",
+        "dirtyFields": false,
+        "errors": false,
+        "isDirty": false,
+        "isValid": false,
+        "isValidating": false,
+        "touchedFields": false,
+      },
+      "_removeUnmounted": [Function _removeUnmounted],
+      "_reset": [Function fe],
+      "_resetDefaultValues": [Function _resetDefaultValues],
+      "_setErrors": [Function _setErrors],
+      "_state": Object {
+        "action": false,
+        "mount": true,
+        "watch": false,
+      },
+      "_subjects": Object {
+        "array": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "state": Object {
+          "next": [Function next],
+          "observers": Array [
+            Object {
+              "next": [Function next],
+            },
+          ],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "values": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+      },
+      "_updateDisabledField": [Function ue],
+      "_updateFieldArray": [Function _updateFieldArray],
+      "_updateFormState": [Function _updateFormState],
+      "_updateValid": [Function j],
+      "getFieldState": [Function ae],
+      "handleSubmit": [Function ce],
+      "register": [Function le],
+      "setError": [Function ne],
+      "unregister": [Function ie],
+    },
+    "disabled": undefined,
+    "formState": Object {
+      "defaultValues": Object {
+        "foo": "",
+      },
+    },
+    "getFieldState": [Function ae],
+    "getValues": [Function se],
+    "handleSubmit": [Function ce],
+    "register": [Function le],
+    "reset": [Function me],
+    "resetField": [Function resetField],
+    "setError": [Function ne],
+    "setFocus": [Function setFocus],
+    "setValue": [Function Z],
+    "trigger": [Function re],
+    "unregister": [Function ie],
+    "watch": [Function watch],
+  },
+]
+            </div>
+          </div>
+          <div
+            class="MuiDialogActions-root MuiDialogActions-spacing"
+          >
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+              data-testid="actions-modal-cancel-button"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Cancel
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+              data-testid="actions-modal-submit-button"
+              tabindex="0"
+              type="submit"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Continue
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <div
+              class="MuiBox-root MuiBox-root-5"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      data-test="sentinelEnd"
+      tabindex="0"
+    />
+  </div>
+</body>
+`;
+
+exports[`DialogForm Should raise an alert when submitting throws an error: Submitting 1`] = `
+<body
+  style="padding-right: 0px; overflow: hidden;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="MuiDialog-root"
+    role="presentation"
+    style="position: fixed; z-index: 1300; right: 0px; bottom: 0px; top: 0px; left: 0px;"
+  >
+    <div
+      aria-hidden="true"
+      class="MuiBackdrop-root"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+    />
+    <div
+      data-test="sentinelStart"
+      tabindex="0"
+    />
+    <div
+      class="MuiDialog-container MuiDialog-scrollPaper"
+      role="none presentation"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+      tabindex="-1"
+    >
+      <div
+        class="MuiPaper-root MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm MuiPaper-elevation24 MuiPaper-rounded"
+        role="dialog"
+      >
+        <form>
+          <div
+            class="MuiDialogTitle-root"
+          >
+            <h2
+              class="MuiTypography-root MuiTypography-h6"
+            >
+              My form
+            </h2>
+          </div>
+          <div
+            class="MuiDialogContent-root"
+          >
+            <div>
+              Array [
+  Object {
+    "clearErrors": [Function clearErrors],
+    "control": Object {
+      "_defaultValues": Object {
+        "foo": "",
+      },
+      "_disableForm": [Function _disableForm],
+      "_executeSchema": [Function P],
+      "_fields": Object {},
+      "_formState": Object {
+        "dirtyFields": Object {},
+        "disabled": false,
+        "errors": Object {},
+        "isDirty": false,
+        "isLoading": false,
+        "isSubmitSuccessful": false,
+        "isSubmitted": false,
+        "isSubmitting": true,
+        "isValid": false,
+        "isValidating": false,
+        "submitCount": 0,
+        "touchedFields": Object {},
+      },
+      "_formValues": Object {
+        "foo": "",
+      },
+      "_getDirty": [Function W],
+      "_getFieldArray": [Function _getFieldArray],
+      "_getWatch": [Function I],
+      "_names": Object {
+        "array": Set {},
+        "mount": Set {},
+        "unMount": Set {},
+        "watch": Set {},
+      },
+      "_options": Object {
+        "defaultValues": Object {
+          "foo": "",
+        },
+        "mode": "onSubmit",
+        "reValidateMode": "onChange",
+        "shouldFocusError": true,
+      },
+      "_proxyFormState": Object {
+        "defaultValues": "all",
+        "dirtyFields": false,
+        "errors": false,
+        "isDirty": false,
+        "isValid": false,
+        "isValidating": false,
+        "touchedFields": false,
+      },
+      "_removeUnmounted": [Function _removeUnmounted],
+      "_reset": [Function fe],
+      "_resetDefaultValues": [Function _resetDefaultValues],
+      "_setErrors": [Function _setErrors],
+      "_state": Object {
+        "action": false,
+        "mount": true,
+        "watch": false,
+      },
+      "_subjects": Object {
+        "array": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "state": Object {
+          "next": [Function next],
+          "observers": Array [
+            Object {
+              "next": [Function next],
+            },
+          ],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "values": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+      },
+      "_updateDisabledField": [Function ue],
+      "_updateFieldArray": [Function _updateFieldArray],
+      "_updateFormState": [Function _updateFormState],
+      "_updateValid": [Function j],
+      "getFieldState": [Function ae],
+      "handleSubmit": [Function ce],
+      "register": [Function le],
+      "setError": [Function ne],
+      "unregister": [Function ie],
+    },
+    "disabled": true,
+    "formState": Object {
+      "defaultValues": Object {
+        "foo": "",
+      },
+    },
+    "getFieldState": [Function ae],
+    "getValues": [Function se],
+    "handleSubmit": [Function ce],
+    "register": [Function le],
+    "reset": [Function me],
+    "resetField": [Function resetField],
+    "setError": [Function ne],
+    "setFocus": [Function setFocus],
+    "setValue": [Function Z],
+    "trigger": [Function re],
+    "unregister": [Function ie],
+    "watch": [Function watch],
+  },
+]
+            </div>
+          </div>
+          <div
+            class="MuiDialogActions-root MuiDialogActions-spacing"
+          >
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              data-testid="actions-modal-cancel-button"
+              disabled=""
+              tabindex="-1"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Cancel
+              </span>
+            </button>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              data-testid="actions-modal-submit-button"
+              disabled=""
+              tabindex="-1"
+              type="submit"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Continue
+              </span>
+            </button>
+            <div
+              class="MuiBox-root MuiBox-root-5"
+            >
+              <div
+                class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
+                role="progressbar"
+                style="width: 1rem; height: 1rem;"
+              >
+                <svg
+                  class="MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.2"
+                    stroke-width="3.6"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      data-test="sentinelEnd"
+      tabindex="0"
+    />
+  </div>
+</body>
+`;
+
+exports[`DialogForm Should render when open 1`] = `
+<body
+  style="padding-right: 0px; overflow: hidden;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="MuiDialog-root"
+    role="presentation"
+    style="position: fixed; z-index: 1300; right: 0px; bottom: 0px; top: 0px; left: 0px;"
+  >
+    <div
+      aria-hidden="true"
+      class="MuiBackdrop-root"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+    />
+    <div
+      data-test="sentinelStart"
+      tabindex="0"
+    />
+    <div
+      class="MuiDialog-container MuiDialog-scrollPaper"
+      role="none presentation"
+      style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+      tabindex="-1"
+    >
+      <div
+        class="MuiPaper-root MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm MuiPaper-elevation24 MuiPaper-rounded"
+        role="dialog"
+      >
+        <form>
+          <div
+            class="MuiDialogTitle-root"
+          >
+            <h2
+              class="MuiTypography-root MuiTypography-h6"
+            >
+              My form
+            </h2>
+          </div>
+          <div
+            class="MuiDialogContent-root"
+          >
+            <div>
+              Array [
+  Object {
+    "clearErrors": [Function clearErrors],
+    "control": Object {
+      "_defaultValues": Object {
+        "foo": "",
+      },
+      "_disableForm": [Function _disableForm],
+      "_executeSchema": [Function P],
+      "_fields": Object {},
+      "_formState": Object {
+        "dirtyFields": Object {},
+        "disabled": false,
+        "errors": Object {},
+        "isDirty": false,
+        "isLoading": false,
+        "isSubmitSuccessful": false,
+        "isSubmitted": false,
+        "isSubmitting": false,
+        "isValid": false,
+        "isValidating": false,
+        "submitCount": 0,
+        "touchedFields": Object {},
+      },
+      "_formValues": Object {
+        "foo": "",
+      },
+      "_getDirty": [Function W],
+      "_getFieldArray": [Function _getFieldArray],
+      "_getWatch": [Function I],
+      "_names": Object {
+        "array": Set {},
+        "mount": Set {},
+        "unMount": Set {},
+        "watch": Set {},
+      },
+      "_options": Object {
+        "defaultValues": Object {
+          "foo": "",
+        },
+        "mode": "onSubmit",
+        "reValidateMode": "onChange",
+        "shouldFocusError": true,
+      },
+      "_proxyFormState": Object {
+        "dirtyFields": false,
+        "errors": false,
+        "isDirty": false,
+        "isValid": false,
+        "isValidating": false,
+        "touchedFields": false,
+      },
+      "_removeUnmounted": [Function _removeUnmounted],
+      "_reset": [Function fe],
+      "_resetDefaultValues": [Function _resetDefaultValues],
+      "_setErrors": [Function _setErrors],
+      "_state": Object {
+        "action": false,
+        "mount": false,
+        "watch": false,
+      },
+      "_subjects": Object {
+        "array": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "state": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+        "values": Object {
+          "next": [Function next],
+          "observers": Array [],
+          "subscribe": [Function subscribe],
+          "unsubscribe": [Function unsubscribe],
+        },
+      },
+      "_updateDisabledField": [Function ue],
+      "_updateFieldArray": [Function _updateFieldArray],
+      "_updateFormState": [Function _updateFormState],
+      "_updateValid": [Function j],
+      "getFieldState": [Function ae],
+      "handleSubmit": [Function ce],
+      "register": [Function le],
+      "setError": [Function ne],
+      "unregister": [Function ie],
+    },
+    "disabled": undefined,
+    "formState": Object {
+      "defaultValues": Object {
+        "foo": "",
+      },
+    },
+    "getFieldState": [Function ae],
+    "getValues": [Function se],
+    "handleSubmit": [Function ce],
+    "register": [Function le],
+    "reset": [Function me],
+    "resetField": [Function resetField],
+    "setError": [Function ne],
+    "setFocus": [Function setFocus],
+    "setValue": [Function Z],
+    "trigger": [Function re],
+    "unregister": [Function ie],
+    "watch": [Function watch],
+  },
+]
+            </div>
+          </div>
+          <div
+            class="MuiDialogActions-root MuiDialogActions-spacing"
+          >
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+              data-testid="actions-modal-cancel-button"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Cancel
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+              data-testid="actions-modal-submit-button"
+              tabindex="0"
+              type="submit"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Continue
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <div
+              class="MuiBox-root MuiBox-root-1"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      data-test="sentinelEnd"
+      tabindex="0"
+    />
+  </div>
+</body>
+`;

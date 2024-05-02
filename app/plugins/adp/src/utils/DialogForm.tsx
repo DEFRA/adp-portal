@@ -131,7 +131,7 @@ export function DialogForm<TFields extends FieldValues>({
             disabled={submitting}
             type="submit"
             color="primary"
-            data-testid="actions-modal-update-button"
+            data-testid="actions-modal-submit-button"
           >
             {confirm}
           </Button>
