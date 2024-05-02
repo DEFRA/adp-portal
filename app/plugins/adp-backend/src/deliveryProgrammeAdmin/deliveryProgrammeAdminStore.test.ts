@@ -240,7 +240,7 @@ describe('DeliveryProgrammeAdminStore', () => {
 
       const expectedEntities = await knex
         .where('id', addResult.id)
-        .from<delivery_programme>(delivery_programme_name);
+        .from<delivery_programme_admin>(delivery_programme_admin_name);
 
       // Assert
       expect(expectedEntities).toHaveLength(0);
