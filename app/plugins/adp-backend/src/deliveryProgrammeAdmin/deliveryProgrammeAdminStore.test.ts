@@ -5,6 +5,10 @@ import {
   delivery_programme,
   delivery_programme_name,
 } from '../deliveryProgramme/delivery_programme';
+import {
+  delivery_programme_admin,
+  delivery_programme_admin_name,
+} from './delivery_programme_admin';
 
 describe('DeliveryProgrammeAdminStore', () => {
   const databases = TestDatabases.create();
@@ -158,7 +162,7 @@ describe('DeliveryProgrammeAdminStore', () => {
       const expectedEntity = await knex
         .first('id', 'name')
         .where('id', addResult.id)
-        .from<delivery_programme>(delivery_programme_name);
+        .from<delivery_programme_admin>(delivery_programme_admin_name);
 
       // Assert - check return value
       expect(addResult).toBeDefined();
@@ -201,7 +205,7 @@ describe('DeliveryProgrammeAdminStore', () => {
 
       const expectedEntities = await knex
         .where('delivery_programme_id', deliveryProgramme.id)
-        .from<delivery_programme>(delivery_programme_name);
+        .from<delivery_programme_admin>(delivery_programme_admin_name);
 
       // Assert - check return value
       expect(addResult).toHaveLength(2);

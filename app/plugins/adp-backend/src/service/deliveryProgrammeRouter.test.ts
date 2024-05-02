@@ -17,15 +17,13 @@ import { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import { CatalogApi } from '@backstage/catalog-client';
+import {
+  CreateDeliveryProgrammeRequest,
+  UpdateDeliveryProgrammeRequest,
+} from '@internal/plugin-adp-common';
 
 const managerByProgrammeId = programmeManagerList.filter(
   managers => managers.delivery_programme_id === '123',
-);
-
-const mockUpdatedManagers = programmeManagerList.filter(
-  managers =>
-    managers.delivery_programme_id === '123' &&
-    managers.aad_entity_ref_id !== 'a9dc2414-0626-43d2-993d-a53aac4d73422',
 );
 
 describe('createRouter', () => {
@@ -193,229 +191,204 @@ describe('createRouter', () => {
 
   describe('POST /deliveryProgramme', () => {
     it('returns created', async () => {
-      mockDeliveryProgrammeStore.getAll.mockResolvedValueOnce([
-        expectedProgrammeDataWithManager,
-      ]);
-      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      mockDeliveryProgrammeStore.add.mockResolvedValueOnce({
+      // arrange
+      mockDeliveryProgrammeStore.add.mockResolvedValue({
         success: true,
-        value: expectedProgrammeDataWithManager,
+        value: expectedProgrammeDataWithName,
       });
-      mockDeliveryProgrammeAdminStore.add.mockResolvedValueOnce(
-        programmeManagerList[0],
-      );
 
-      const expectedProgramme = {
-        ...expectedProgrammeDataWithManager,
-        title: 'new title',
-        delivery_programme_code: 'new code',
-        arms_length_body_id: '1',
-      };
-      expectedProgramme.title = 'new title';
+      // act
       const response = await request(programmeApp)
         .post('/deliveryProgramme')
-        .send(expectedProgramme);
+        .send({
+          title: 'def',
+          arms_length_body_id: '123',
+          description: 'My description',
+          delivery_programme_code: 'abc',
+        } satisfies CreateDeliveryProgrammeRequest);
+
+      // assert
       expect(response.status).toEqual(201);
-    });
-
-    it('return 406 if title already exists', async () => {
-      mockDeliveryProgrammeStore.getAll.mockResolvedValueOnce([
-        expectedProgrammeDataWithManager,
-      ]);
-      const response = await request(programmeApp)
-        .post('/deliveryProgramme')
-        .send(expectedProgrammeDataWithManager);
-      expect(response.status).toEqual(406);
-    });
-
-    it('returns 406 if programme code already exists', async () => {
-      const existingProgramme = {
-        ...expectedProgrammeDataWithManager,
-        delivery_programme_code: 'existing code',
-      };
-      mockDeliveryProgrammeStore.getAll.mockResolvedValueOnce([
-        existingProgramme,
-      ]);
-
-      const duplicateCodeProgramme = {
-        ...expectedProgrammeDataWithManager,
-        title: 'Unique New Title',
-        delivery_programme_code: 'existing code',
-        arms_length_body_id: '1',
-      };
-
-      const response = await request(programmeApp)
-        .post('/deliveryProgramme')
-        .send(duplicateCodeProgramme);
-
-      expect(response.status).toEqual(406);
-      expect(response.body.error).toEqual(
-        'Delivery Programme code already exists',
+      expect(response.body).toMatchObject(
+        JSON.parse(JSON.stringify(expectedProgrammeDataWithName)),
       );
     });
 
-    it('returns bad request', async () => {
-      mockDeliveryProgrammeStore.add.mockRejectedValueOnce(
-        new InputError('error'),
-      );
+    it('return 400 with errors', async () => {
+      // arrange
+      mockDeliveryProgrammeStore.add.mockResolvedValue({
+        success: false,
+        errors: [
+          'duplicateName',
+          'duplicateProgrammeCode',
+          'duplicateTitle',
+          'unknown',
+          'unknownArmsLengthBody',
+        ],
+      });
+
+      // act
       const response = await request(programmeApp)
         .post('/deliveryProgramme')
-        .send({ title: 'abc' });
+        .send({
+          title: 'def',
+          arms_length_body_id: '123',
+          description: 'My description',
+          delivery_programme_code: 'abc',
+        } satisfies CreateDeliveryProgrammeRequest);
+
+      // assert
       expect(response.status).toEqual(400);
+      expect(response.body).toMatchObject({
+        errors: [
+          {
+            path: 'title',
+            error: {
+              message:
+                "The name 'def' is already in use. Please choose a different name.",
+            },
+          },
+          {
+            path: 'delivery_programme_code',
+            error: {
+              message:
+                'The programme code is already in use by another delivery programme.',
+            },
+          },
+          {
+            path: 'title',
+            error: {
+              message:
+                "The name 'def' is already in use. Please choose a different name.",
+            },
+          },
+          {
+            path: 'root',
+            error: {
+              message: 'An unexpected error occurred.',
+            },
+          },
+          {
+            path: 'arms_length_body_id',
+            error: {
+              message: 'The arms length body does not exist.',
+            },
+          },
+        ],
+      });
+    });
+
+    it('return 400 if if the request is bad', async () => {
+      const response = await request(programmeApp)
+        .post('/deliveryProgramme')
+        .send({ notATitle: 'abc' });
+      expect(response.status).toEqual(400);
+    });
+
+    it('returns internal server error', async () => {
+      mockDeliveryProgrammeStore.add.mockRejectedValueOnce(new Error('error'));
+      const response = await request(programmeApp)
+        .post('/deliveryProgramme')
+        .send({
+          title: 'def',
+          arms_length_body_id: '123',
+          description: 'My description',
+          delivery_programme_code: 'abc',
+        } satisfies CreateDeliveryProgrammeRequest);
+      expect(response.status).toEqual(500);
     });
   });
 
   describe('PATCH /deliveryProgramme', () => {
-    it('returns created without any updates to programme managers', async () => {
-      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      const existing = {
-        ...expectedProgrammeDataWithManager,
-        id: '123',
-        arms_length_body_id: '2',
-      };
-      mockDeliveryProgrammeStore.getAll.mockResolvedValueOnce([existing]);
-
-      const data = {
-        ...expectedProgrammeDataWithName,
-        id: '123',
-        arms_length_body_id: '2',
-        title: 'new title',
-      };
-
-      mockDeliveryProgrammeStore.update.mockResolvedValueOnce({
+    it('returns ok', async () => {
+      // arrange
+      mockDeliveryProgrammeStore.update.mockResolvedValue({
         success: true,
-        value: data,
+        value: expectedProgrammeDataWithName,
       });
-      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
-        programmeManagerList,
-      );
+
+      // act
       const response = await request(programmeApp)
         .patch('/deliveryProgramme')
-        .send(data);
+        .send({ id: '123' } satisfies UpdateDeliveryProgrammeRequest);
+
+      // assert
       expect(response.status).toEqual(200);
+      expect(response.body).toMatchObject(
+        JSON.parse(JSON.stringify(expectedProgrammeDataWithName)),
+      );
     });
 
-    it('return 406 if title already exists', async () => {
-      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      const existing = [
-        {
-          ...expectedProgrammeDataWithManager,
-          id: '123',
-          arms_length_body_id: '2',
-        },
-        {
-          ...expectedProgrammeDataWithManager,
-          id: '1234',
-          title: 'test title',
-        },
-      ];
-      mockDeliveryProgrammeStore.getAll.mockResolvedValueOnce(existing);
-
-      const data = {
-        ...expectedProgrammeDataWithName,
-        id: '123',
-        title: 'test title',
-      };
-      mockDeliveryProgrammeStore.update.mockResolvedValueOnce({
-        success: true,
-        value: data,
+    it('return 400 with errors', async () => {
+      // arrange
+      mockDeliveryProgrammeStore.update.mockResolvedValue({
+        success: false,
+        errors: [
+          'duplicateProgrammeCode',
+          'duplicateTitle',
+          'unknown',
+          'unknownArmsLengthBody',
+        ],
       });
-      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
-        programmeManagerList,
-      );
+
+      // act
       const response = await request(programmeApp)
         .patch('/deliveryProgramme')
-        .send(data);
-      expect(response.status).toEqual(406);
-    });
-
-    it('return 406 if programme code already exists', async () => {
-      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      const existingProgrammes = [
-        {
-          ...expectedProgrammeDataWithManager,
+        .send({
           id: '123',
-          delivery_programme_code: 'unique-code-1',
-        },
-        {
-          ...expectedProgrammeDataWithManager,
-          id: '1234',
-          delivery_programme_code: 'duplicate-code',
-        },
-      ];
-      mockDeliveryProgrammeStore.getAll.mockResolvedValueOnce(
-        existingProgrammes,
-      );
+          arms_length_body_id: 'abc',
+          title: 'def',
+        } satisfies UpdateDeliveryProgrammeRequest);
 
-      const dataToUpdate = {
-        ...expectedProgrammeDataWithName,
-        id: '123',
-        delivery_programme_code: 'duplicate-code',
-      };
-
-      mockDeliveryProgrammeStore.update.mockResolvedValueOnce({
-        success: true,
-        value: dataToUpdate,
-      });
-      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
-        programmeManagerList,
-      );
-
-      const response = await request(programmeApp)
-        .patch('/deliveryProgramme')
-        .send(dataToUpdate);
-
-      expect(response.status).toEqual(406);
-      expect(response.body.error).toEqual(
-        'Delivery Programme code already exists',
-      );
-    });
-
-    it('returns updated with changes to programme managers', async () => {
-      const existing = {
-        ...expectedProgrammeDataWithManager,
-        id: '123',
-        arms_length_body_id: '2',
-      };
-      mockDeliveryProgrammeStore.getAll.mockResolvedValueOnce([existing]);
-      const data = {
-        ...expectedProgrammeDataWithManager,
-        programme_managers: [
+      // assert
+      expect(response.status).toEqual(400);
+      expect(response.body).toMatchObject({
+        errors: [
           {
-            aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
+            path: 'delivery_programme_code',
+            error: {
+              message:
+                'The programme code is already in use by another delivery programme.',
+            },
           },
           {
-            aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73423',
+            path: 'title',
+            error: {
+              message:
+                "The name 'def' is already in use. Please choose a different name.",
+            },
           },
           {
-            aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73424',
+            path: 'root',
+            error: {
+              message: 'An unexpected error occurred.',
+            },
+          },
+          {
+            path: 'arms_length_body_id',
+            error: {
+              message: 'The arms length body does not exist.',
+            },
           },
         ],
-        id: '123',
-      };
-      mockDeliveryProgrammeStore.update.mockResolvedValueOnce(data as any);
-      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
-        mockUpdatedManagers,
-      );
-      mockDeliveryProgrammeAdminStore.add.mockResolvedValueOnce(
-        mockUpdatedManagers[0],
-      );
-      const response = await request(programmeApp)
-        .patch('/deliveryProgramme')
-        .send(data);
-      expect(response.status).toEqual(200);
+      });
     });
 
-    it('returns bad request', async () => {
-      const existing = { ...expectedProgrammeDataWithManager, id: '123' };
-      const data = { ...existing };
+    it('return 400 if if the request is bad', async () => {
+      const response = await request(programmeApp)
+        .patch('/deliveryProgramme')
+        .send({ notAnId: 'abc' });
+      expect(response.status).toEqual(400);
+    });
+
+    it('returns internal server error', async () => {
       mockDeliveryProgrammeStore.update.mockRejectedValueOnce(
-        new InputError('error'),
+        new Error('error'),
       );
       const response = await request(programmeApp)
         .patch('/deliveryProgramme')
-        .send(data);
-      expect(response.status).toEqual(400);
+        .send({ id: '123' } satisfies UpdateDeliveryProgrammeRequest);
+      expect(response.status).toEqual(500);
     });
   });
 });

@@ -61,10 +61,7 @@ it('fetches and formats data correctly', async () => {
 
   await waitForNextUpdate();
 
-  expect(result.current).toEqual([
-    {
-      dropdownItem: { label: 'prg1', value: '1' },
-      programme: { id: '1', title: 'prg1' },
-    },
-  ]);
+  expect(result.current).toMatchObject(
+    new Map([['1', { id: '1', title: 'prg1' }]]),
+  );
 });

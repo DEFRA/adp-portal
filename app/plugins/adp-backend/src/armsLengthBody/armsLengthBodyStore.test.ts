@@ -71,12 +71,12 @@ describe('armsLengthBodyStore', () => {
   );
 
   it.each(databases.eachSupportedId())(
-    'should return null if a ALB cannot be found in the database',
+    'should throw NotFound if a ALB cannot be found in the database',
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
       await knex<arms_length_body>(arms_length_body_name).insert(albSeedData);
-      const getResult = await store.get('12345');
-      expect(getResult).toBeNull();
+      const getResult = store.get('12345');
+      expect(getResult).rejects.toBeInstanceOf(NotFoundError);
     },
   );
 

@@ -1,429 +1,134 @@
 import React from 'react';
-import { act, fireEvent, waitFor } from '@testing-library/react';
+
+import { Button } from '@material-ui/core';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import {
-  PermissionApi,
-  permissionApiRef,
-  usePermission,
-} from '@backstage/plugin-permission-react';
-import { AuthorizeResult } from '@backstage/plugin-permission-common';
+import { DeliveryProgrammeApi, deliveryProgrammeApiRef } from './api';
+import { ErrorApi, errorApiRef } from '@backstage/core-plugin-api';
 import { DeliveryProgrammeViewPageComponent } from './DeliveryProgrammeViewPageComponent';
-import {
-  alertApiRef,
-  errorApiRef,
-  discoveryApiRef,
-  fetchApiRef,
-} from '@backstage/core-plugin-api';
+import { waitFor } from '@testing-library/react';
 
-const mockErrorApi = { post: jest.fn() };
-const mockDiscoveryApi = { getBaseUrl: jest.fn() };
-const mockFetchApi = { fetch: jest.fn() };
-const mockAlertApi = { post: jest.fn() };
+jest.mock(
+  './EditDeliveryProgrammeButton',
+  () =>
+    ({
+      EditDeliveryProgrammeButton: ({ deliveryProgramme, ...props }) => (
+        <div>
+          {JSON.stringify(deliveryProgramme)} <Button {...props} />
+        </div>
+      ),
+    } satisfies typeof import('./EditDeliveryProgrammeButton')),
+);
+jest.mock(
+  './CreateDeliveryProgrammeButton',
+  () =>
+    ({
+      CreateDeliveryProgrammeButton: Button,
+    } satisfies typeof import('./CreateDeliveryProgrammeButton')),
+);
 
-const mockAuthorize = jest
-  .fn()
-  .mockImplementation(async () => ({ result: AuthorizeResult.ALLOW }));
-const permissionApi: Partial<PermissionApi> = { authorize: mockAuthorize };
-
-jest.mock('@backstage/plugin-permission-react', () => ({
-  ...jest.requireActual('@backstage/plugin-permission-react'),
-  usePermission: jest.fn().mockReturnValue({ allowed: true }),
-}));
-
-jest.mock('../../hooks/useArmsLengthBodyList', () => ({
-  useArmsLengthBodyList: jest.fn(() => [
-    { label: 'Arms Length Body 1', value: '1' },
-    { label: 'Arms Length Body 2', value: '2' },
-  ]),
-}));
-
-jest.mock('../../hooks/useProgrammeManagersList', () => ({
-  useProgrammeManagersList: jest.fn(() => [
-    { label: 'Jane Doe', value: 'testUserId1' },
-    { label: 'John Doe', value: 'testUserId2' },
-  ]),
-}));
-
-const mockTableData = [
-  {
-    id: '1',
-    title: 'Delivery Programme 1',
-    alias: 'DeliveryProgramme1',
-    description: 'Description 1',
-    finance_code: '',
-    delivery_programme_code: '1',
-    url: 'http://deliveryprogramme.com',
-    created_at: '2021-01-01T00:00:00Z',
-    updated_at: '2021-01-01T00:00:00Z',
-    arms_length_body_id: '1',
-    programme_managers: [],
-  },
-  {
-    id: '2',
-    title: 'Delivery Programme 2',
-    alias: 'DeliveryProgramme2',
-    description: 'Description 2',
-    finance_code: '',
-    delivery_programme_code: '2',
-    url: 'http://deliveryprogramme.com',
-    created_at: '2021-01-01T00:00:00Z',
-    updated_at: '2021-01-01T00:00:00Z',
-    arms_length_body_id: '2',
-    programme_managers: [],
-  },
-];
-
-const updatedTableData = [
-  {
-    id: '1',
-    title: 'Delivery Programme 1 edited',
-    alias: 'DeliveryProgramme1',
-    programme_managers: [],
-    arms_length_body_id: '1',
-    finance_code: '',
-    delivery_programme_code: '1',
-    description: 'Description 1',
-    url: 'http://delivery1.com',
-    created_at: '2021-01-01T00:00:00Z',
-    updated_at: '2021-01-01T00:00:00Z',
-  },
-  {
-    id: '2',
-    title: 'Delivery Programme 2',
-    alias: 'DeliveryProgramme2',
-    finance_code: '',
-    delivery_programme_code: '1',
-    programme_managers: [],
-    arms_length_body_id: '2',
-    description: 'Description 2',
-    url: 'http://delivery2.com',
-    created_at: '2021-01-02T00:00:00Z',
-    updated_at: '2021-01-02T00:00:00Z',
-  },
-];
-
-const mockGetDeliveryProgrammes = jest.fn();
-const mockUpdateDeliveryProgramme = jest.fn().mockResolvedValue({});
-const mockGetDeliveryProgrammeById = jest.fn().mockResolvedValue({
-  id: '1',
-  title: 'Delivery Programme 1',
-  alias: 'DeliveryProgramme1',
-  description: 'Description 1',
-  url: 'http://delivery1.com',
-  created_at: '2021-01-01T00:00:00Z',
-  updated_at: '2021-01-02T00:00:00Z',
-  finance_code: '',
-  delivery_programme_code: '1',
-  arms_length_body_id: '1',
-  programme_managers: [
-    {
-      id: '1',
-      delivery_programme_id: '1',
-      aad_entity_ref_id: 'testUserId1',
-      email: 'name1@email.com',
-      name: 'name1',
-    },
-  ],
+beforeEach(() => {
+  jest.spyOn(global.Math, 'random').mockReturnValue(0);
 });
-jest.mock('./api/DeliveryProgrammeClient', () => ({
-  DeliveryProgrammeClient: jest.fn().mockImplementation(() => ({
-    getDeliveryProgrammes: mockGetDeliveryProgrammes,
-    updateDeliveryProgramme: mockUpdateDeliveryProgramme,
-    getDeliveryProgrammeById: mockGetDeliveryProgrammeById,
-  })),
-}));
+
+afterEach(() => {
+  jest.spyOn(global.Math, 'random').mockRestore();
+});
 
 describe('DeliveryProgrammeViewPageComponent', () => {
-  beforeEach(() => {
-    mockGetDeliveryProgrammes.mockClear();
-    mockUpdateDeliveryProgramme.mockClear();
-    mockAuthorize.mockClear();
-    (usePermission as jest.Mock).mockReturnValue({ allowed: true });
-  });
+  function setup() {
+    const mockErrorApi: jest.Mocked<ErrorApi> = {
+      error$: jest.fn(),
+      post: jest.fn(),
+    };
+    const mockDeliveryProgrammeApi: jest.Mocked<DeliveryProgrammeApi> = {
+      createDeliveryProgramme: jest.fn(),
+      getDeliveryProgrammeAdmins: jest.fn(),
+      getDeliveryProgrammeById: jest.fn(),
+      updateDeliveryProgramme: jest.fn(),
+      getDeliveryProgrammes: jest.fn(),
+    };
 
-  const element = (
-    <TestApiProvider
-      apis={[
-        [alertApiRef, mockAlertApi],
-        [errorApiRef, mockErrorApi],
-        [discoveryApiRef, mockDiscoveryApi],
-        [fetchApiRef, mockFetchApi],
-        [permissionApiRef, permissionApi],
-      ]}
-    >
-      <DeliveryProgrammeViewPageComponent />
-    </TestApiProvider>
-  );
-  const render = async () => renderInTestApp(element);
+    return {
+      mockErrorApi,
+      mockDeliveryProgrammeApi,
+      async render() {
+        const result = await renderInTestApp(
+          <TestApiProvider
+            apis={[
+              [errorApiRef, mockErrorApi],
+              [deliveryProgrammeApiRef, mockDeliveryProgrammeApi],
+            ]}
+          >
+            <DeliveryProgrammeViewPageComponent />
+          </TestApiProvider>,
+        );
 
-  afterEach(() => {
-    mockGetDeliveryProgrammes.mockReset();
-    jest.clearAllMocks();
-  });
+        await waitFor(() => {
+          expect(
+            result.getByText('Azure Development Platform: Onboarding'),
+          ).toBeInTheDocument();
+        });
 
-  it('fetches and displays delivery programmes in the table upon loading', async () => {
-    mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
-    const rendered = await render();
+        return result;
+      },
+    };
+  }
 
-    await waitFor(() => {
-      expect(rendered.getByText('Delivery Programme 1')).toBeInTheDocument();
-      expect(rendered.getByText('Delivery Programme 2')).toBeInTheDocument();
-    });
-  });
-
-  it('should throw error when DeliveryProgramClient throws error', async () => {
-    mockGetDeliveryProgrammes.mockImplementation(() => {
-      throw new Error('Cannot fetch Delivery Programme');
-    });
-
-    const rendered = await render();
-
-    await waitFor(async () => {
-      expect(
-        await rendered.findByText('Delivery Programmes'),
-      ).toBeInTheDocument();
-      expect(mockErrorApi.post).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: 'Cannot fetch Delivery Programme',
-        }),
-      );
-    });
-  });
-
-  it('should open edit modal when edit button is clicked', async () => {
-    mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
-    const rendered = await render();
-
-    act(() => {
-      fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-1'));
-    });
-
-    await waitFor(() => {
-      expect(
-        rendered.getByText('Edit: Delivery Programme 1'),
-      ).toBeInTheDocument();
-    });
-  });
-
-  it('should close edit modal when cancel button is clicked', async () => {
-    mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
-    const rendered = await render();
-
-    act(() => {
-      fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-1'));
-    });
-
-    await waitFor(() => {
-      expect(
-        rendered.getByTestId('actions-modal-cancel-button'),
-      ).toBeInTheDocument();
-    });
-
-    act(() => {
-      fireEvent.click(rendered.getByTestId('actions-modal-cancel-button'));
-    });
-
-    await waitFor(() => {
-      expect(
-        rendered.queryByText('Edit: Delivery Programme 1'),
-      ).not.toBeInTheDocument();
-    });
-  });
-
-  it('should open add modal when add button is clicked', async () => {
-    mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
-    const rendered = await render();
-
-    fireEvent.click(rendered.getByTestId('create-delivery-programme-button'));
-
-    await waitFor(() => {
-      expect(rendered.getByText('Create:')).toBeInTheDocument();
-    });
-  });
-
-  it('should update the item when update button is clicked', async () => {
-    mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
-    const rendered = await render();
-
-    fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-1'));
-
-    await waitFor(() => {
-      expect(rendered.getByLabelText('Title')).toBeInTheDocument();
-      expect(
-        rendered.queryByText('Edit: Delivery Programme 1'),
-      ).toBeInTheDocument();
-    });
-
-    fireEvent.change(rendered.getByLabelText('Title'), {
-      target: { value: 'Delivery Programme 1 edited' },
-    });
-
-    fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
-
-    mockGetDeliveryProgrammes.mockResolvedValue(updatedTableData);
-
-    await waitFor(() => {
-      expect(mockUpdateDeliveryProgramme).toHaveBeenCalledWith({
-        id: '1',
-        title: 'Delivery Programme 1 edited',
-        alias: 'DeliveryProgramme1',
-        finance_code: '',
-        delivery_programme_code: '1',
-        programme_managers: ['testUserId1'],
-        arms_length_body_id: '1',
-        description: 'Description 1',
-        url: 'http://delivery1.com',
-        created_at: '2021-01-01T00:00:00Z',
-        updated_at: '2021-01-02T00:00:00Z',
-      });
-      expect(mockAlertApi.post).toHaveBeenNthCalledWith(1, {
-        display: 'transient',
-        message: 'Updated',
-        severity: 'success',
-      });
-      expect(
-        rendered.queryByText('Edit: Delivery Programme 1'),
-      ).not.toBeInTheDocument();
-      expect(
-        rendered.queryByText('Delivery Programme 1 edited'),
-      ).toBeInTheDocument();
-    });
-  });
-
-  it('should not update the item when update button is clicked and has a non-unique title', async () => {
-    mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
-    const updatedTableData = [
+  it('Should render the page correctly', async () => {
+    // arrange
+    const { render, mockDeliveryProgrammeApi } = setup();
+    mockDeliveryProgrammeApi.getDeliveryProgrammes.mockResolvedValueOnce([
       {
-        id: '1',
-        title: 'Delivery Programme 2',
-        alias: 'DeliveryProgramme1',
-        finance_code: '',
-        delivery_programme_code: '1',
-        programme_managers: [
-          {
-            id: '1',
-            delivery_programme_id: '1',
-            aad_entity_ref_id: 'testUserId1',
-            email: 'name1@email.com',
-            name: 'name1',
-          },
-        ],
-        arms_length_body_id: '1',
-        description: 'Description 1',
-        url: 'http://delivery1.com',
-        created_at: '2021-01-01T00:00:00Z',
-        updated_at: '2021-01-02T00:00:00Z',
+        arms_length_body_id: '123',
+        created_at: new Date(0),
+        delivery_programme_code: 'ABC',
+        description: 'My description',
+        id: '123',
+        name: 'programme-1',
+        programme_managers: [],
+        title: 'Programme 1',
+        updated_at: new Date(0),
+        alias: 'Cool',
+        children: [],
+        updated_by: 'Someone else',
+        url: 'https://test.com',
       },
       {
-        id: '2',
-        title: 'Delivery Programme 2',
-        alias: 'DeliveryProgramme2',
-        finance_code: '',
-        delivery_programme_code: '1',
-        programme_managers: [
-          {
-            id: '1',
-            delivery_programme_id: '1',
-            aad_entity_ref_id: 'testUserId1',
-            email: 'name1@email.com',
-            name: 'name1',
-          },
-          {
-            id: '2',
-            delivery_programme_id: '2',
-            aad_entity_ref_id: 'testUserId2',
-            email: 'name2@email.com',
-            name: 'name2',
-          },
-        ],
-        arms_length_body_id: '2',
-        description: 'Description 2',
-        url: 'http://delivery2.com',
-        created_at: '2021-01-01T00:00:00Z',
-        updated_at: '2021-01-01T00:00:00Z',
+        arms_length_body_id: '123',
+        created_at: new Date(0),
+        delivery_programme_code: 'ABC',
+        description: 'My description',
+        id: '123',
+        name: 'programme-2',
+        programme_managers: [],
+        title: 'Programme 2',
+        updated_at: new Date(0),
+        alias: 'Cool',
+        children: [],
+        updated_by: 'Someone else',
+        url: 'https://test.com',
       },
-    ];
-    mockUpdateDeliveryProgramme.mockResolvedValue(updatedTableData);
+      {
+        arms_length_body_id: '123',
+        created_at: new Date(0),
+        delivery_programme_code: 'ABC',
+        description: 'My description',
+        id: '123',
+        name: 'programme-3',
+        programme_managers: [],
+        title: 'Programme 3',
+        updated_at: new Date(0),
+        alias: 'Cool',
+        children: [],
+        updated_by: 'Someone else',
+        url: 'https://test.com',
+      },
+    ]);
+
+    // act
     const rendered = await render();
-    act(() => {
-      fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-1'));
-    });
-    await waitFor(() => {
-      expect(rendered.queryByText('Title')).toBeInTheDocument();
-    });
-    act(() => {
-      fireEvent.change(rendered.getByLabelText('Title'), {
-        target: { value: 'Delivery Programme 2' },
-      });
-    });
 
-    act(() => {
-      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
-    });
-    mockGetDeliveryProgrammes.mockResolvedValue(updatedTableData);
-
-    await waitFor(() => {
-      expect(
-        rendered.queryByText('Edit: Delivery Programme 1'),
-      ).toBeInTheDocument();
-      expect(mockAlertApi.post).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  it('should not update the item when update button is clicked and has a non-unique programme_code', async () => {
-    mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
-
-    const rendered = await render();
-    fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-2'));
-
-    await waitFor(() =>
-      expect(rendered.getByLabelText('Title')).toBeInTheDocument(),
-    );
-
-    fireEvent.change(rendered.getByLabelText('Title'), {
-      target: { value: 'Delivery Programme Updated' },
-    });
-    fireEvent.change(rendered.getByLabelText('Delivery Programme Code'), {
-      target: { value: '2' },
-    });
-
-    fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
-
-    await waitFor(() => {
-      expect(mockUpdateDeliveryProgramme).not.toHaveBeenCalled();
-      expect(mockAlertApi.post).toHaveBeenCalledWith({
-        display: 'permanent',
-        message: expect.stringContaining(
-          'already in use. Please choose a different code',
-        ),
-        severity: 'error',
-      });
-    });
-  });
-
-  it('should call AlertApi when update fails', async () => {
-    mockGetDeliveryProgrammes.mockResolvedValue(mockTableData);
-    mockUpdateDeliveryProgramme.mockRejectedValue(new Error('Update failed'));
-    const rendered = await render();
-    act(() => {
-      fireEvent.click(rendered.getByTestId('delivery-programme-edit-button-1'));
-    });
-    await waitFor(() => {
-      expect(rendered.queryByText('Title')).toBeInTheDocument();
-    });
-    act(() => {
-      fireEvent.change(rendered.getByLabelText('Title'), {
-        target: { value: 'Delivery Programme 2' },
-      });
-    });
-
-    act(() => {
-      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
-    });
-    mockGetDeliveryProgrammes.mockResolvedValue(updatedTableData);
-
-    await waitFor(() => {
-      expect(mockAlertApi.post).toHaveBeenCalledTimes(1);
-    });
+    // assert
+    expect(rendered).toMatchSnapshot();
   });
 });

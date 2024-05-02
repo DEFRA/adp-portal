@@ -7,6 +7,10 @@ import { expectedAlbWithName } from '../testData/albTestData';
 import { InputError } from '@backstage/errors';
 import { IArmsLengthBodyStore } from '../armsLengthBody';
 import { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import {
+  CreateArmsLengthBodyRequest,
+  UpdateArmsLengthBodyRequest,
+} from '@internal/plugin-adp-common';
 
 describe('createRouter', () => {
   let app: express.Express;
@@ -66,6 +70,7 @@ describe('createRouter', () => {
       mockArmsLengthBodyStore.getAll.mockResolvedValueOnce([
         expectedAlbWithName,
       ]);
+      mockDeliveryProgrammeStore.getAll.mockResolvedValueOnce([]);
       const response = await request(app).get('/armsLengthBody');
       expect(response.status).toEqual(200);
     });
@@ -112,55 +117,159 @@ describe('createRouter', () => {
   });
 
   describe('POST /armsLengthBody', () => {
-    it('returns ok', async () => {
-      mockArmsLengthBodyStore.getAll.mockResolvedValueOnce([
-        expectedAlbWithName,
-      ]);
-      const data = {
-        ...expectedAlbWithName,
-        title: 'new title',
-      };
-      const response = await request(app).post('/armsLengthBody').send(data);
+    it('returns created', async () => {
+      // arrange
+      mockArmsLengthBodyStore.add.mockResolvedValue({
+        success: true,
+        value: expectedAlbWithName,
+      });
+
+      // act
+      const response = await request(app)
+        .post('/armsLengthBody')
+        .send({
+          title: 'def',
+          description: 'My description',
+        } satisfies CreateArmsLengthBodyRequest);
+
+      // assert
       expect(response.status).toEqual(201);
-    });
-    it('return 406 if title already exists', async () => {
-      mockArmsLengthBodyStore.getAll.mockResolvedValueOnce([
-        expectedAlbWithName,
-      ]);
-      const response = await request(app)
-        .post('/armsLengthBody')
-        .send(expectedAlbWithName);
-      expect(response.status).toEqual(406);
-    });
-    it('returns bad request', async () => {
-      mockArmsLengthBodyStore.add.mockRejectedValueOnce(
-        new InputError('error'),
+      expect(response.body).toMatchObject(
+        JSON.parse(JSON.stringify(expectedAlbWithName)),
       );
+    });
+
+    it('return 400 with errors', async () => {
+      // arrange
+      mockArmsLengthBodyStore.add.mockResolvedValue({
+        success: false,
+        errors: ['duplicateName', 'duplicateTitle', 'unknown'],
+      });
+
+      // act
       const response = await request(app)
         .post('/armsLengthBody')
-        .send(expectedAlbWithName);
+        .send({
+          title: 'def',
+          description: 'My description',
+        } satisfies CreateArmsLengthBodyRequest);
+
+      // assert
       expect(response.status).toEqual(400);
-    }, 6000);
+      expect(response.body).toMatchObject({
+        errors: [
+          {
+            path: 'title',
+            error: {
+              message:
+                "The name 'def' is already in use. Please choose a different name.",
+            },
+          },
+          {
+            path: 'title',
+            error: {
+              message:
+                "The name 'def' is already in use. Please choose a different name.",
+            },
+          },
+          {
+            path: 'root',
+            error: {
+              message: 'An unexpected error occurred.',
+            },
+          },
+        ],
+      });
+    });
+
+    it('return 400 if if the request is bad', async () => {
+      const response = await request(app)
+        .post('/armsLengthBody')
+        .send({ notATitle: 'abc' });
+      expect(response.status).toEqual(400);
+    });
+
+    it('returns internal server error', async () => {
+      mockArmsLengthBodyStore.add.mockRejectedValueOnce(new Error('error'));
+      const response = await request(app)
+        .post('/armsLengthBody')
+        .send({
+          title: 'def',
+          description: 'My description',
+        } satisfies CreateArmsLengthBodyRequest);
+      expect(response.status).toEqual(500);
+    });
   });
 
   describe('PATCH /armsLengthBody', () => {
-    it('returns created', async () => {
-      const existing = { ...expectedAlbWithName, id: '123' };
-      mockArmsLengthBodyStore.getAll.mockResolvedValueOnce([existing]);
-      const data = { ...existing };
-      data.title = 'new title';
-      const response = await request(app).patch('/armsLengthBody').send(data);
+    it('returns ok', async () => {
+      // arrange
+      mockArmsLengthBodyStore.update.mockResolvedValue({
+        success: true,
+        value: expectedAlbWithName,
+      });
+
+      // act
+      const response = await request(app)
+        .patch('/armsLengthBody')
+        .send({ id: '123' } satisfies UpdateArmsLengthBodyRequest);
+
+      // assert
       expect(response.status).toEqual(200);
+      expect(response.body).toMatchObject(
+        JSON.parse(JSON.stringify(expectedAlbWithName)),
+      );
     });
 
-    it('returns bad request', async () => {
-      const existing = { ...expectedAlbWithName, id: '123' };
-      const data = { ...existing };
-      mockArmsLengthBodyStore.update.mockRejectedValueOnce(
-        new InputError('error'),
-      );
-      const response = await request(app).patch('/armsLengthBody').send(data);
+    it('return 400 with errors', async () => {
+      // arrange
+      mockArmsLengthBodyStore.update.mockResolvedValue({
+        success: false,
+        errors: ['duplicateTitle', 'unknown'],
+      });
+
+      // act
+      const response = await request(app)
+        .patch('/armsLengthBody')
+        .send({
+          id: '123',
+          title: 'def',
+        } satisfies UpdateArmsLengthBodyRequest);
+
+      // assert
       expect(response.status).toEqual(400);
+      expect(response.body).toMatchObject({
+        errors: [
+          {
+            path: 'title',
+            error: {
+              message:
+                "The name 'def' is already in use. Please choose a different name.",
+            },
+          },
+          {
+            path: 'root',
+            error: {
+              message: 'An unexpected error occurred.',
+            },
+          },
+        ],
+      });
+    });
+
+    it('return 400 if if the request is bad', async () => {
+      const response = await request(app)
+        .patch('/armsLengthBody')
+        .send({ notAnId: 'abc' });
+      expect(response.status).toEqual(400);
+    });
+
+    it('returns internal server error', async () => {
+      mockArmsLengthBodyStore.update.mockRejectedValueOnce(new Error('error'));
+      const response = await request(app)
+        .patch('/armsLengthBody')
+        .send({ id: '123' } satisfies UpdateArmsLengthBodyRequest);
+      expect(response.status).toEqual(500);
     });
   });
 });

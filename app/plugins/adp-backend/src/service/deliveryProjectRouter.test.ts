@@ -15,6 +15,10 @@ import { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 import { randomUUID } from 'node:crypto';
 import { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
+import {
+  CreateDeliveryProjectRequest,
+  UpdateDeliveryProjectRequest,
+} from '@internal/plugin-adp-common';
 
 let mockCreateFluxConfig: jest.Mock;
 let mockGetFluxConfig: jest.Mock;
@@ -168,106 +172,214 @@ describe('createRouter', () => {
 
   describe('POST /deliveryProject', () => {
     it('returns created', async () => {
-      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([
-        expectedProjectDataWithName,
-      ]);
-      mockCreateFluxConfig.mockResolvedValueOnce(undefined);
-      const data = { ...expectedProjectDataWithName };
-      data.title = 'new title';
-      data.delivery_project_code = 'abc';
+      // arrange
+      mockDeliveryProjectStore.add.mockResolvedValue({
+        success: true,
+        value: expectedProjectDataWithName,
+      });
+
+      // act
       const response = await request(projectApp)
         .post('/deliveryProject')
-        .send(data);
+        .send({
+          delivery_project_code: 'abc',
+          title: 'def',
+          ado_project: 'my project',
+          delivery_programme_id: '123',
+          description: 'My description',
+          github_team_visibility: 'public',
+          service_owner: 'test@email.com',
+          team_type: 'delivery',
+        } satisfies CreateDeliveryProjectRequest);
+
+      // assert
       expect(response.status).toEqual(201);
-    });
-
-    it('return 406 if title already exists', async () => {
-      const data = { ...expectedProjectDataWithName };
-      data.delivery_project_code = 'abc';
-      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([data]);
-      const response = await request(projectApp)
-        .post('/deliveryProject')
-        .send(expectedProjectDataWithName);
-      expect(response.status).toEqual(406);
-    });
-
-    it('return 406 if code already exists', async () => {
-      const data = { ...expectedProjectDataWithName };
-      data.title = 'new';
-      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([data]);
-      const response = await request(projectApp)
-        .post('/deliveryProject')
-        .send(expectedProjectDataWithName);
-      expect(response.status).toEqual(406);
-    });
-
-    it('returns bad request', async () => {
-      mockDeliveryProjectStore.add.mockRejectedValueOnce(
-        new InputError('error'),
+      expect(response.body).toMatchObject(
+        JSON.parse(JSON.stringify(expectedProjectDataWithName)),
       );
+    });
+
+    it('return 400 with errors', async () => {
+      // arrange
+      mockDeliveryProjectStore.add.mockResolvedValue({
+        success: false,
+        errors: [
+          'duplicateName',
+          'duplicateProjectCode',
+          'duplicateTitle',
+          'unknown',
+          'unknownDeliveryProgramme',
+        ],
+      });
+
+      // act
       const response = await request(projectApp)
         .post('/deliveryProject')
-        .send({ title: 'abc', delivery_project_code: 'def' });
+        .send({
+          delivery_project_code: 'abc',
+          title: 'def',
+          ado_project: 'my project',
+          delivery_programme_id: '123',
+          description: 'My description',
+          github_team_visibility: 'public',
+          service_owner: 'test@email.com',
+          team_type: 'delivery',
+        } satisfies CreateDeliveryProjectRequest);
+
+      // assert
       expect(response.status).toEqual(400);
+      expect(response.body).toMatchObject({
+        errors: [
+          {
+            path: 'title',
+            error: {
+              message:
+                "The name 'def' is already in use. Please choose a different name.",
+            },
+          },
+          {
+            path: 'delivery_project_code',
+            error: {
+              message:
+                'The project code is already in use by another delivery project.',
+            },
+          },
+          {
+            path: 'title',
+            error: {
+              message:
+                "The name 'def' is already in use. Please choose a different name.",
+            },
+          },
+          {
+            path: 'root',
+            error: {
+              message: 'An unexpected error occurred.',
+            },
+          },
+          {
+            path: 'delivery_programme_id',
+            error: {
+              message: 'The delivery programme does not exist.',
+            },
+          },
+        ],
+      });
+    });
+
+    it('return 400 if if the request is bad', async () => {
+      const response = await request(projectApp)
+        .post('/deliveryProject')
+        .send({ notATitle: 'abc' });
+      expect(response.status).toEqual(400);
+    });
+
+    it('returns internal server error', async () => {
+      mockDeliveryProjectStore.add.mockRejectedValueOnce(new Error('error'));
+      const response = await request(projectApp)
+        .post('/deliveryProject')
+        .send({
+          delivery_project_code: 'abc',
+          title: 'def',
+          ado_project: 'my project',
+          delivery_programme_id: '123',
+          description: 'My description',
+          github_team_visibility: 'public',
+          service_owner: 'test@email.com',
+          team_type: 'delivery',
+        } satisfies CreateDeliveryProjectRequest);
+      expect(response.status).toEqual(500);
     });
   });
 
   describe('PATCH /deliveryProject', () => {
-    it('returns created', async () => {
-      const existing = { ...expectedProjectDataWithName, id: '123' };
-      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([existing]);
-      const data = { ...existing };
-      data.title = 'new title';
+    it('returns ok', async () => {
+      // arrange
+      mockDeliveryProjectStore.update.mockResolvedValue({
+        success: true,
+        value: expectedProjectDataWithName,
+      });
+
+      // act
       const response = await request(projectApp)
         .patch('/deliveryProject')
-        .send(data);
+        .send({ id: '123' } satisfies UpdateDeliveryProjectRequest);
+
+      // assert
       expect(response.status).toEqual(200);
-    });
-
-    it('return 406 if title already exists', async () => {
-      const existing1 = { ...expectedProjectDataWithName, id: '123' };
-      const existing2 = { ...expectedProjectDataWithName, id: '1234' };
-      existing2.title = 'new1';
-      existing2.delivery_project_code = 'xyz';
-      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([
-        existing1,
-        existing2,
-      ]);
-      const data = { ...existing1 };
-      data.title = 'new1';
-      const response = await request(projectApp)
-        .patch('/deliveryProject')
-        .send(data);
-      expect(response.status).toEqual(406);
-    });
-
-    it('return 406 if code already exists', async () => {
-      const existing1 = { ...expectedProjectDataWithName, id: '123' };
-      const existing2 = { ...expectedProjectDataWithName, id: '1234' };
-      existing2.title = 'new1';
-      existing2.delivery_project_code = 'xyz';
-      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([
-        existing1,
-        existing2,
-      ]);
-      const data = { ...existing1 };
-      data.delivery_project_code = 'xyz';
-      const response = await request(projectApp)
-        .patch('/deliveryProject')
-        .send(data);
-      expect(response.status).toEqual(406);
-    });
-
-    it('returns bad request', async () => {
-      const existing = { ...expectedProjectDataWithName, id: '123' };
-      const data = { ...existing };
-      mockDeliveryProjectStore.update.mockRejectedValueOnce(
-        new InputError('error'),
+      expect(response.body).toMatchObject(
+        JSON.parse(JSON.stringify(expectedProjectDataWithName)),
       );
+    });
+
+    it('return 400 with errors', async () => {
+      // arrange
+      mockDeliveryProjectStore.update.mockResolvedValue({
+        success: false,
+        errors: [
+          'duplicateProjectCode',
+          'duplicateTitle',
+          'unknown',
+          'unknownDeliveryProgramme',
+        ],
+      });
+
+      // act
       const response = await request(projectApp)
         .patch('/deliveryProject')
-        .send(data);
+        .send({
+          id: '123',
+          delivery_project_code: 'abc',
+          title: 'def',
+        } satisfies UpdateDeliveryProjectRequest);
+
+      // assert
       expect(response.status).toEqual(400);
+      expect(response.body).toMatchObject({
+        errors: [
+          {
+            path: 'delivery_project_code',
+            error: {
+              message:
+                'The project code is already in use by another delivery project.',
+            },
+          },
+          {
+            path: 'title',
+            error: {
+              message:
+                "The name 'def' is already in use. Please choose a different name.",
+            },
+          },
+          {
+            path: 'root',
+            error: {
+              message: 'An unexpected error occurred.',
+            },
+          },
+          {
+            path: 'delivery_programme_id',
+            error: {
+              message: 'The delivery programme does not exist.',
+            },
+          },
+        ],
+      });
+    });
+
+    it('return 400 if if the request is bad', async () => {
+      const response = await request(projectApp)
+        .patch('/deliveryProject')
+        .send({ notAnId: 'abc' });
+      expect(response.status).toEqual(400);
+    });
+
+    it('returns internal server error', async () => {
+      mockDeliveryProjectStore.update.mockRejectedValueOnce(new Error('error'));
+      const response = await request(projectApp)
+        .patch('/deliveryProject')
+        .send({ id: '123' } satisfies UpdateDeliveryProjectRequest);
+      expect(response.status).toEqual(500);
     });
   });
 

@@ -21,6 +21,7 @@ import {
   arms_length_body,
   arms_length_body_name,
 } from '../armsLengthBody/arms_length_body';
+import { Knex } from 'knex';
 
 describe('DeliveryProgrammeStore', () => {
   const databases = TestDatabases.create();
@@ -35,16 +36,23 @@ describe('DeliveryProgrammeStore', () => {
     return { knex, programmeStore };
   }
 
+  async function seedAlb(knex: Knex) {
+    await knex<arms_length_body>(arms_length_body_name).insert(albSeedData);
+    return albSeedData.id;
+  }
+  async function seedProgramme(knex: Knex) {
+    await seedAlb(knex);
+    await knex<delivery_programme>(delivery_programme_name).insert(
+      deliveryProgrammeSeedData,
+    );
+    return deliveryProgrammeSeedData.id;
+  }
+
   it.each(databases.eachSupportedId())(
     'should create a new Delivery Programme',
     async databaseId => {
       const { knex, programmeStore } = await createDatabase(databaseId);
-
-      const insertAlbId = await knex<arms_length_body>(
-        arms_length_body_name,
-      ).insert(albSeedData, ['id']);
-
-      const albId = insertAlbId[0].id;
+      const albId = await seedAlb(knex);
 
       const expectedDeliveryProgramme: CreateDeliveryProgrammeRequest = {
         ...expectedProgrammeDataWithName,
@@ -78,22 +86,7 @@ describe('DeliveryProgrammeStore', () => {
     'should get a Delivery Programmes from the database',
     async databaseId => {
       const { knex, programmeStore } = await createDatabase(databaseId);
-      const insertAlbId = await knex<arms_length_body>(
-        arms_length_body_name,
-      ).insert(albSeedData, ['id']);
-
-      const albId = insertAlbId[0].id;
-      const expectedProgramme = [
-        {
-          ...deliveryProgrammeSeedData,
-          arms_length_body_id: albId,
-        },
-      ];
-      const insertProgrammeId = await knex<delivery_programme>(
-        delivery_programme_name,
-      ).insert(expectedProgramme, ['id']);
-
-      const programmeId = insertProgrammeId[0].id;
+      const programmeId = await seedProgramme(knex);
       const getResult = await programmeStore.get(programmeId);
 
       expect(getResult).toBeDefined();
@@ -107,26 +100,14 @@ describe('DeliveryProgrammeStore', () => {
   );
 
   it.each(databases.eachSupportedId())(
-    'should return null if a Delivery Programme cannot be found in the database',
+    'should throw NotFound if a Delivery Programme cannot be found in the database',
     async databaseId => {
       const { knex, programmeStore } = await createDatabase(databaseId);
-      const insertAlbId = await knex<arms_length_body>(
-        arms_length_body_name,
-      ).insert(albSeedData, ['id']);
-      const albId = insertAlbId[0].id;
-      const expectedProgramme = [
-        {
-          ...deliveryProgrammeSeedData,
-          arms_length_body_id: albId,
-        },
-      ];
-      await knex<delivery_programme>(delivery_programme_name).insert(
-        expectedProgramme,
-      );
+      await seedProgramme(knex);
 
-      const getResult = await programmeStore.get('12345');
+      const getResult = programmeStore.get('12345');
 
-      expect(getResult).toBeNull();
+      expect(getResult).rejects.toBeInstanceOf(NotFoundError);
     },
   );
 
@@ -134,21 +115,8 @@ describe('DeliveryProgrammeStore', () => {
     'should update an existing Delivery Programme in the database',
     async databaseId => {
       const { knex, programmeStore } = await createDatabase(databaseId);
-      const insertAlbId = await knex<arms_length_body>(
-        arms_length_body_name,
-      ).insert(albSeedData, ['id']);
-      const albId = insertAlbId[0].id;
-      const expectedProgramme = [
-        {
-          ...deliveryProgrammeSeedData,
-          arms_length_body_id: albId,
-        },
-      ];
-      const insertProgrammeId = await knex<delivery_programme>(
-        delivery_programme_name,
-      ).insert(expectedProgramme, ['id']);
+      const currentId = await seedProgramme(knex);
 
-      const currentId = insertProgrammeId[0].id;
       const expectedUpdate: UpdateDeliveryProgrammeRequest = {
         id: currentId,
         title: 'Programme Example',
@@ -176,19 +144,7 @@ describe('DeliveryProgrammeStore', () => {
     'should not update a non-existent Delivery Programme',
     async databaseId => {
       const { knex, programmeStore } = await createDatabase(databaseId);
-      const insertAlbId = await knex<arms_length_body>(
-        arms_length_body_name,
-      ).insert(albSeedData, ['id']);
-      const albId = insertAlbId[0].id;
-      const expectedProgramme = [
-        {
-          ...deliveryProgrammeSeedData,
-          arms_length_body_id: albId,
-        },
-      ];
-      await knex<delivery_programme>(delivery_programme_name).insert(
-        expectedProgramme,
-      );
+      await seedProgramme(knex);
 
       await expect(
         async () =>
@@ -208,14 +164,7 @@ describe('DeliveryProgrammeStore', () => {
     'should throw an error if existing Programme id is undefined',
     async databaseId => {
       const { knex, programmeStore } = await createDatabase(databaseId);
-
-      await knex<arms_length_body>(arms_length_body_name).insert(albSeedData);
-      await programmeStore.getAll();
-
-      const insertAlbId = await knex<arms_length_body>(
-        arms_length_body_name,
-      ).insert(albSeedData, ['id']);
-      const albId = insertAlbId[0].id;
+      const albId = await seedAlb(knex);
       const updateWithoutId = {
         ...expectedProgrammeDataWithoutManager,
         arms_length_body_id: albId,
