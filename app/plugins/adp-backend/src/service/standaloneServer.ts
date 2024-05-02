@@ -22,6 +22,7 @@ import {
   GitHubTeamsApi,
   GithubTeamStore,
 } from '../githubTeam';
+import { ArmsLengthBodyStore } from '../armsLengthBody';
 
 export interface ServerOptions {
   port: number;
@@ -52,6 +53,7 @@ export async function startStandaloneServer(
     issuer: await discovery.getExternalBaseUrl('auth'),
   });
   const dbClient = await database.getClient();
+  const armsLengthBodyStore = new ArmsLengthBodyStore(dbClient);
   const deliveryProjectStore = new DeliveryProjectStore(dbClient);
   const deliveryProgrammeStore = new DeliveryProgrammeStore(dbClient);
   const deliveryProgrammeAdminStore = new DeliveryProgrammeAdminStore(dbClient);
@@ -61,7 +63,8 @@ export async function startStandaloneServer(
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
     identity,
-    database,
+    deliveryProgrammeStore,
+    armsLengthBodyStore,
     config,
   });
 

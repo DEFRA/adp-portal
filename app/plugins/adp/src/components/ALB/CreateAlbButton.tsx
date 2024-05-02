@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
-import {
-  alertApiRef,
-  discoveryApiRef,
-  fetchApiRef,
-  useApi,
-} from '@backstage/core-plugin-api';
-import { ArmsLengthBodyClient } from './api/AlbClient';
+import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import { AlbFields, AlbFormFields, emptyForm } from './AlbFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
 import { adpProgrammmeCreatePermission } from '@internal/plugin-adp-common';
 import { DialogForm, SubmitResult, albUtil } from '../../utils';
+import { armsLengthBodyApiRef } from './api';
 
 export type CreateAlbButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -25,10 +20,7 @@ export function CreateAlbButton({
 }: CreateAlbButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
-  const discoveryApi = useApi(discoveryApiRef);
-  const fetchApi = useApi(fetchApiRef);
-
-  const client = new ArmsLengthBodyClient(discoveryApi, fetchApi);
+  const client = useApi(armsLengthBodyApiRef);
 
   const { allowed: allowedToCreateAlb } = usePermission({
     permission: adpProgrammmeCreatePermission,
@@ -41,7 +33,7 @@ export function CreateAlbButton({
     try {
       await client.createArmsLengthBody(fields);
     } catch (e: any) {
-      return albUtil.readValidationError(e, fields);
+      return albUtil.readValidationError(e);
     }
     alertApi.post({
       message: 'ALB created successfully.',

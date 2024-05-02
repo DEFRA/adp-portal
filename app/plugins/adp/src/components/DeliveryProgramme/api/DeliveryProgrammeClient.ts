@@ -1,11 +1,14 @@
 import { DeliveryProgrammeApi } from './DeliveryProgrammeApi';
 import {
+  CreateDeliveryProgrammeRequest,
   DeliveryProgramme,
   DeliveryProgrammeAdmin,
+  UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
 
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
+import { ValidationError } from '../../../utils/ValidationError';
 
 export class DeliveryProgrammeClient implements DeliveryProgrammeApi {
   private discoveryApi: DiscoveryApi;
@@ -64,7 +67,9 @@ export class DeliveryProgrammeClient implements DeliveryProgrammeApi {
     }
   }
 
-  async createDeliveryProgramme(data: any): Promise<DeliveryProgramme[]> {
+  async createDeliveryProgramme(
+    data: CreateDeliveryProgrammeRequest,
+  ): Promise<DeliveryProgramme[]> {
     const url = await this.getApiUrl();
     const response = await this.fetchApi.fetch(url, {
       method: 'POST',
@@ -73,15 +78,17 @@ export class DeliveryProgrammeClient implements DeliveryProgrammeApi {
       },
       body: JSON.stringify(data),
     });
+    if (response.ok) return await response.json();
 
-    if (!response.ok) {
-      throw await ResponseError.fromResponse(response);
-    }
+    if (response.status === 400)
+      throw new ValidationError((await response.json()).errors);
 
-    return response.json();
+    throw await ResponseError.fromResponse(response);
   }
 
-  async updateDeliveryProgramme(data: any): Promise<DeliveryProgramme[]> {
+  async updateDeliveryProgramme(
+    data: UpdateDeliveryProgrammeRequest,
+  ): Promise<DeliveryProgramme[]> {
     const url = await this.getApiUrl();
 
     const response = await this.fetchApi.fetch(url, {
@@ -91,13 +98,12 @@ export class DeliveryProgrammeClient implements DeliveryProgrammeApi {
       },
       body: JSON.stringify(data),
     });
+    if (response.ok) return await response.json();
 
-    if (!response.ok) {
-      throw await ResponseError.fromResponse(response);
-    }
+    if (response.status === 400)
+      throw new ValidationError((await response.json()).errors);
 
-    const updatedData: DeliveryProgramme[] = await response.json();
-    return updatedData;
+    throw await ResponseError.fromResponse(response);
   }
 
   async getDeliveryProgrammeById(id: string): Promise<DeliveryProgramme> {

@@ -19,7 +19,7 @@ export type DeliveryProjectFields = {
   alias?: string;
   description: string;
   team_type: string;
-  github_team_visibility: string;
+  github_team_visibility: 'public' | 'private';
   delivery_programme_id: string;
   delivery_project_code: string;
   finance_code?: string;
@@ -41,7 +41,7 @@ export const emptyForm = Object.freeze<DeliveryProjectFields>({
   ado_project: '',
   delivery_programme_id: '',
   delivery_project_code: '',
-  github_team_visibility: '',
+  github_team_visibility: '' as 'public',
   namespace: '',
   service_owner: '',
   team_type: '',
@@ -65,7 +65,7 @@ export function DeliveryProjectFormFields({
 
   function getTitleAdornment() {
     const programme = deliveryProgrammes.get(watch('delivery_programme_id'));
-    if (programme === undefined) return '???';
+    if (programme === undefined) return '';
     return programme.delivery_programme_code;
   }
 
@@ -91,14 +91,14 @@ export function DeliveryProjectFormFields({
         index={i++}
         name="title"
         label="Name"
-        helperText="This must be unique"
+        helperText="This must be unique and will be automatically prefixed with the delivery programme code."
         disabled={disabled}
         rules={{
           ...formRules.required,
         }}
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start" style={{ marginTop: '0.2em' }}>
+            <InputAdornment position="start" style={{ marginTop: '0.15em' }}>
               {getTitleAdornment()}
             </InputAdornment>
           ),

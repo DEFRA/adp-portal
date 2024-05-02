@@ -1,17 +1,23 @@
 import {
+  CreateDeliveryProgrammeRequest,
   DeliveryProgramme,
   DeliveryProgrammeAdmin,
+  UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
 import { createApiRef } from '@backstage/core-plugin-api';
 
-export const DeliveryProgrammeApiRef = createApiRef<DeliveryProgramme>({
+export const deliveryProgrammeApiRef = createApiRef<DeliveryProgrammeApi>({
   id: 'plugin.adp.deliveryprogrammeapi',
 });
 
 export interface DeliveryProgrammeApi {
   getDeliveryProgrammes(): Promise<DeliveryProgramme[]>;
   getDeliveryProgrammeById(id: string): Promise<DeliveryProgramme>;
-  updateDeliveryProgramme(data: any): Promise<DeliveryProgramme[]>;
-  createDeliveryProgramme(data: any): Promise<DeliveryProgramme[]>;
+  updateDeliveryProgramme(
+    data: UpdateDeliveryProgrammeRequest,
+  ): Promise<DeliveryProgramme[]>;
+  createDeliveryProgramme(
+    data: CreateDeliveryProgrammeRequest,
+  ): Promise<DeliveryProgramme[]>;
   getDeliveryProgrammeAdmins(): Promise<DeliveryProgrammeAdmin[]>;
 }

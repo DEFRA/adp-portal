@@ -1,39 +1,36 @@
-import { PluginDatabaseManager, errorHandler } from '@backstage/backend-common';
+import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
-import {
-  ArmsLengthBodyStore,
-  PartialArmsLengthBody,
-} from '../armsLengthBody';
-import { ArmsLengthBody } from '@internal/plugin-adp-common';
+import { IArmsLengthBodyStore } from '../armsLengthBody';
 import { Config } from '@backstage/config';
+import { getCurrentUsername, getOwner } from '../utils/index';
+import { IDeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
+import z from 'zod';
 import {
-  checkForDuplicateTitle,
-  getCurrentUsername,
-  getOwner,
-} from '../utils/index';
-import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
+  CreateArmsLengthBodyRequest,
+  UpdateArmsLengthBodyRequest,
+  ValidationErrorMapping,
+} from '@internal/plugin-adp-common';
+import { createParser, respond } from './util';
 
 export interface AlbRouterOptions {
   logger: Logger;
   identity: IdentityApi;
-  database: PluginDatabaseManager;
+  armsLengthBodyStore: IArmsLengthBodyStore;
+  deliveryProgrammeStore: IDeliveryProgrammeStore;
   config: Config;
 }
 
 export async function createAlbRouter(
   options: AlbRouterOptions,
 ): Promise<express.Router> {
-  const { logger, identity, database } = options;
+  const { logger, identity, armsLengthBodyStore, deliveryProgrammeStore } =
+    options;
 
   const owner = getOwner(options);
-
-  const dbClient = await database.getClient();
-  const armsLengthBodiesStore = new ArmsLengthBodyStore(dbClient);
-  const deliveryProgrammesStore = new DeliveryProgrammeStore(dbClient);
 
   const router = Router();
   router.use(express.json());
@@ -45,8 +42,8 @@ export async function createAlbRouter(
 
   router.get('/armsLengthBody', async (_req, res) => {
     try {
-      const albData = await armsLengthBodiesStore.getAll();
-      const programmeData = await deliveryProgrammesStore.getAll();
+      const albData = await armsLengthBodyStore.getAll();
+      const programmeData = await deliveryProgrammeStore.getAll();
 
       for (const alb of albData) {
         let albChildren = [];
@@ -68,7 +65,7 @@ export async function createAlbRouter(
 
   router.get('/armsLengthBody/:id', async (_req, res) => {
     try {
-      const data = await armsLengthBodiesStore.get(_req.params.id);
+      const data = await armsLengthBodyStore.get(_req.params.id);
       res.json(data);
     } catch (error) {
       const albError = error as Error;
@@ -79,7 +76,7 @@ export async function createAlbRouter(
 
   router.get('/armsLengthBodyNames', async (_req, res) => {
     try {
-      const armsLengthBodies = await armsLengthBodiesStore.getAll();
+      const armsLengthBodies = await armsLengthBodyStore.getAll();
       const armsLengthBodiesNames = Object.fromEntries(
         armsLengthBodies.map(alb => [alb.id, alb.title]),
       );
@@ -92,82 +89,60 @@ export async function createAlbRouter(
   });
 
   router.post('/armsLengthBody', async (req, res) => {
-    try {
-      if (!isArmsLengthBodyCreateRequest(req.body)) {
-        throw new InputError('Invalid payload');
-      }
-      const data: ArmsLengthBody[] = await armsLengthBodiesStore.getAll();
-      const isDuplicate: boolean = await checkForDuplicateTitle(
-        data,
-        req.body.title,
-      );
-      if (isDuplicate) {
-        res.status(406).json({ error: 'ALB title already exists' });
-      } else {
-        const creator = await getCurrentUsername(identity, req);
-        const armsLengthBody = await armsLengthBodiesStore.add(
-          req.body,
-          creator,
-          owner,
-        );
-        res.status(201).json(armsLengthBody);
-      }
-    } catch (error) {
-      const albError = error as Error;
-      logger.error('Error in creating a arms length body: ', albError);
-      throw new InputError(albError.message);
-    }
+    const body = parseCreateArmsLengthBodyRequest(req.body);
+    const creator = await getCurrentUsername(identity, req);
+    const result = await armsLengthBodyStore.add(body, creator, owner);
+    respond(body, res, result, errorMapping, { ok: 201 });
   });
 
   router.patch('/armsLengthBody', async (req, res) => {
-    try {
-      const requestBody = { ...req.body };
-      delete requestBody.tableData;
-
-      if (!isArmsLengthBodyUpdateRequest(requestBody)) {
-        throw new InputError('Invalid payload');
-      }
-      const allArmsLengthBodies: ArmsLengthBody[] =
-        await armsLengthBodiesStore.getAll();
-      const currentData = await armsLengthBodiesStore.get(requestBody.id);
-      const updatedTitle = requestBody?.title;
-      const currentTitle = currentData?.title;
-      const isTitleChanged = updatedTitle && currentTitle !== updatedTitle;
-
-      if (isTitleChanged) {
-        const isDuplicate: boolean = await checkForDuplicateTitle(
-          allArmsLengthBodies,
-          updatedTitle,
-        );
-        if (isDuplicate) {
-          res.status(406).json({ error: 'ALB title already exists' });
-          return;
-        }
-      }
-      const creator = await getCurrentUsername(identity, req);
-      const armsLengthBody = await armsLengthBodiesStore.update(
-        requestBody,
-        creator,
-      );
-      res.status(200).json(armsLengthBody);
-    } catch (error) {
-      const albError = error as Error;
-      logger.error('Error in updating a arms length body: ', albError);
-      throw new InputError(albError.message);
-    }
+    const body = parseUpdateArmsLengthBodyRequest(req.body);
+    const creator = await getCurrentUsername(identity, req);
+    const result = await armsLengthBodyStore.update(body, creator);
+    respond(body, res, result, errorMapping);
   });
   router.use(errorHandler());
   return router;
 }
 
-function isArmsLengthBodyCreateRequest(
-  request: Omit<ArmsLengthBody, 'id' | 'created_at'>,
-) {
-  return typeof request?.title === 'string';
-}
+const parseCreateArmsLengthBodyRequest =
+  createParser<CreateArmsLengthBodyRequest>(
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      alias: z.string().optional(),
+      url: z.string().optional(),
+    }),
+  );
 
-function isArmsLengthBodyUpdateRequest(
-  request: Omit<PartialArmsLengthBody, 'updated_at'>,
-) {
-  return typeof request?.id === 'string';
-}
+const parseUpdateArmsLengthBodyRequest =
+  createParser<UpdateArmsLengthBodyRequest>(
+    z.object({
+      id: z.string(),
+      title: z.string().optional(),
+      alias: z.string().optional(),
+      description: z.string().optional(),
+      url: z.string().optional(),
+    }),
+  );
+
+const errorMapping = {
+  duplicateName: (req: { title?: string }) => ({
+    path: 'title',
+    error: {
+      message: `The name '${req.title}' is already in use. Please choose a different name.`,
+    },
+  }),
+  duplicateTitle: (req: { title?: string }) => ({
+    path: 'title',
+    error: {
+      message: `The name '${req.title}' is already in use. Please choose a different name.`,
+    },
+  }),
+  unknown: () => ({
+    path: 'root',
+    error: {
+      message: `An unexpected error occurred.`,
+    },
+  }),
+} as const satisfies ValidationErrorMapping;

@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
-import {
-  alertApiRef,
-  discoveryApiRef,
-  fetchApiRef,
-  useApi,
-} from '@backstage/core-plugin-api';
-import { DeliveryProgrammeClient } from './api/DeliveryProgrammeClient';
+import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import {
   DeliveryProgrammeFields,
   DeliveryProgrammeFormFields,
@@ -20,6 +14,7 @@ import {
   TitleWithHelp,
   deliveryProgrammeUtil,
 } from '../../utils';
+import { deliveryProgrammeApiRef } from './api';
 
 export type CreateDeliveryProgrammeButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -34,10 +29,7 @@ export function CreateDeliveryProgrammeButton({
 }: CreateDeliveryProgrammeButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
-  const discoveryApi = useApi(discoveryApiRef);
-  const fetchApi = useApi(fetchApiRef);
-
-  const client = new DeliveryProgrammeClient(discoveryApi, fetchApi);
+  const client = useApi(deliveryProgrammeApiRef);
 
   const { allowed: allowedToCreateDeliveryProgramme } = usePermission({
     permission: adpProgrammmeCreatePermission,
@@ -50,7 +42,7 @@ export function CreateDeliveryProgrammeButton({
     try {
       await client.createDeliveryProgramme(fields);
     } catch (e: any) {
-      return deliveryProgrammeUtil.readValidationError(e, fields);
+      return deliveryProgrammeUtil.readValidationError(e);
     }
     alertApi.post({
       message: 'Delivery Programme created successfully.',

@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
-import {
-  alertApiRef,
-  discoveryApiRef,
-  fetchApiRef,
-  useApi,
-} from '@backstage/core-plugin-api';
-import { DeliveryProjectClient } from './api/DeliveryProjectClient';
+import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import {
   DeliveryProjectFields,
   DeliveryProjectFormFields,
+  emptyForm,
 } from './DeliveryProjectFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
 import {
@@ -21,7 +16,9 @@ import {
   SubmitResult,
   TitleWithHelp,
   deliveryProjectUtil,
+  populate,
 } from '../../utils';
+import { deliveryProjectApiRef } from './api';
 
 export type EditDeliveryProjectButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -38,10 +35,7 @@ export function EditDeliveryProjectButton({
 }: EditDeliveryProjectButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
-  const discoveryApi = useApi(discoveryApiRef);
-  const fetchApi = useApi(fetchApiRef);
-
-  const client = new DeliveryProjectClient(discoveryApi, fetchApi);
+  const client = useApi(deliveryProjectApiRef);
 
   const { allowed: allowedToEditDeliveryProject } = usePermission({
     permission: adpProjectCreatePermission,
@@ -58,7 +52,7 @@ export function EditDeliveryProjectButton({
         ...fields,
       });
     } catch (e: any) {
-      return deliveryProjectUtil.readValidationError(e, fields);
+      return deliveryProjectUtil.readValidationError(e);
     }
     alertApi.post({
       message: 'Delivery Project updated successfully.',
@@ -79,7 +73,7 @@ export function EditDeliveryProjectButton({
       </Button>
       {isModalOpen && (
         <DialogForm
-          defaultValues={deliveryProject}
+          defaultValues={populate(emptyForm, deliveryProject)}
           renderFields={DeliveryProjectFormFields}
           completed={success => {
             setIsModalOpen(false);

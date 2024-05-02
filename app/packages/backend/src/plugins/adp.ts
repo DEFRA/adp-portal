@@ -11,6 +11,7 @@ import {
   createDeliveryProgrammeAdminRouter,
   initializeAdpDatabase,
   GithubTeamStore,
+  ArmsLengthBodyStore,
 } from '@internal/plugin-adp-backend';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
@@ -25,6 +26,7 @@ export default async function createPlugin({
   await initializeAdpDatabase(database);
 
   const dbClient = await database.getClient();
+  const armsLengthBodyStore = new ArmsLengthBodyStore(dbClient);
   const deliveryProjectStore = new DeliveryProjectStore(dbClient);
   const deliveryProgrammeStore = new DeliveryProgrammeStore(dbClient);
   const deliveryProgrammeAdminStore = new DeliveryProgrammeAdminStore(dbClient);
@@ -38,7 +40,8 @@ export default async function createPlugin({
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
     identity,
-    database,
+    deliveryProgrammeStore,
+    armsLengthBodyStore,
     config,
   });
 

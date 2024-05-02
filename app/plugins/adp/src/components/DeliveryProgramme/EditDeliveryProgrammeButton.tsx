@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
-import {
-  alertApiRef,
-  discoveryApiRef,
-  fetchApiRef,
-  useApi,
-} from '@backstage/core-plugin-api';
-import { DeliveryProgrammeClient } from './api/DeliveryProgrammeClient';
+import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import {
   DeliveryProgrammeFields,
   DeliveryProgrammeFormFields,
+  emptyForm,
 } from './DeliveryProgrammeFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
 import {
@@ -21,27 +16,26 @@ import {
   SubmitResult,
   TitleWithHelp,
   deliveryProgrammeUtil,
+  populate,
 } from '../../utils';
+import { deliveryProgrammeApiRef } from './api';
 
 export type EditDeliveryProgrammeButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
     deliveryProgramme: DeliveryProgramme;
-    onEditd?: () => void;
+    onEdited?: () => void;
   }
 >;
 
 export function EditDeliveryProgrammeButton({
-  onEditd,
+  onEdited,
   deliveryProgramme,
   children,
   ...buttonProps
 }: EditDeliveryProgrammeButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
-  const discoveryApi = useApi(discoveryApiRef);
-  const fetchApi = useApi(fetchApiRef);
-
-  const client = new DeliveryProgrammeClient(discoveryApi, fetchApi);
+  const client = useApi(deliveryProgrammeApiRef);
 
   const { allowed: allowedToEditDeliveryProgramme } = usePermission({
     permission: adpProgrammmeCreatePermission,
@@ -53,11 +47,11 @@ export function EditDeliveryProgrammeButton({
   ): Promise<SubmitResult<DeliveryProgrammeFields>> {
     try {
       await client.updateDeliveryProgramme({
-        ...deliveryProgramme,
         ...fields,
+        id: deliveryProgramme.id,
       });
     } catch (e: any) {
-      return deliveryProgrammeUtil.readValidationError(e, fields);
+      return deliveryProgrammeUtil.readValidationError(e);
     }
     alertApi.post({
       message: 'Delivery Programme updated successfully.',
@@ -78,11 +72,11 @@ export function EditDeliveryProgrammeButton({
       </Button>
       {isModalOpen && (
         <DialogForm
-          defaultValues={deliveryProgramme}
+          defaultValues={populate(emptyForm, deliveryProgramme)}
           renderFields={DeliveryProgrammeFormFields}
           completed={success => {
             setIsModalOpen(false);
-            if (success) onEditd?.();
+            if (success) onEdited?.();
           }}
           title={
             <TitleWithHelp href="https://defra.github.io/adp-documentation/Getting-Started/onboarding-a-delivery-programme/">

@@ -10,15 +10,9 @@ import {
   TableColumn,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils';
-import {
-  useApi,
-  discoveryApiRef,
-  fetchApiRef,
-  errorApiRef,
-} from '@backstage/core-plugin-api';
+import { useApi, errorApiRef } from '@backstage/core-plugin-api';
 import { ArmsLengthBody } from '@internal/plugin-adp-common';
-import { ArmsLengthBodyClient } from './api/AlbClient';
-import { ArmsLengthBodyApi } from './api/AlbApi';
+import { armsLengthBodyApiRef } from './api';
 import { CreateAlbButton } from './CreateAlbButton';
 import { EditAlbButton } from './EditAlbButton';
 
@@ -26,17 +20,11 @@ export const AlbViewPageComponent = () => {
   const [tableData, setTableData] = useState<ArmsLengthBody[]>([]);
   const [key, refetchArmsLengthBody] = useReducer(i => i + 1, 0);
   const errorApi = useApi(errorApiRef);
-  const discoveryApi = useApi(discoveryApiRef);
-  const fetchApi = useApi(fetchApiRef);
-
-  const albClient: ArmsLengthBodyApi = new ArmsLengthBodyClient(
-    discoveryApi,
-    fetchApi,
-  );
+  const client = useApi(armsLengthBodyApiRef);
 
   const getAllArmsLengthBodies = async () => {
     try {
-      const data = await albClient.getArmsLengthBodies();
+      const data = await client.getArmsLengthBodies();
       setTableData(data);
     } catch (e: any) {
       errorApi.post(e);

@@ -1,24 +1,14 @@
-import { ResponseError } from '@backstage/errors';
-import { SubmitResult } from '../DialogForm';
+import { SubmitResult, ValidateResult } from '../DialogForm';
 import { DeliveryProjectFields } from '../../components/DeliveryProject/DeliveryProjectFormFields';
+import { ValidationError } from '../ValidationError';
 
 export function readValidationError(
   error: unknown,
-  fields: DeliveryProjectFields,
 ): SubmitResult<DeliveryProjectFields> {
-  if (error instanceof ResponseError && error.response.status === 406) {
-    // TODO: duplicate title
-    // TODO: duplicate delivery_project_code
+  if (error instanceof ValidationError) {
     return {
       type: 'validationError',
-      errors: [
-        {
-          name: 'title',
-          error: {
-            message: `The name '${fields.title}' is already in use. Please choose a different name.`,
-          },
-        },
-      ],
+      errors: error.errors as ValidateResult<DeliveryProjectFields>,
     };
   }
 

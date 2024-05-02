@@ -10,7 +10,6 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 import {
-  ErrorOption,
   FieldPath,
   FieldValues,
   UseFormProps,
@@ -19,11 +18,11 @@ import {
 } from 'react-hook-form';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import { DisabledFields } from './isFieldDisabled';
+import { ValidationError } from '@internal/plugin-adp-common';
 
-export type ValidateResult<TForm extends FieldValues> = Array<{
-  name: FieldPath<TForm> | 'root' | `root.${string}`;
-  error: ErrorOption;
-}>;
+export type ValidateResult<TForm extends FieldValues> = Array<
+  ValidationError<FieldPath<TForm> | 'root' | `root.${string}`>
+>;
 
 export type SubmitResult<TForm extends FieldValues> =
   | { type: 'success' }
@@ -35,6 +34,12 @@ export type DialogFormFieldsProps<TFields extends FieldValues> = Readonly<
   } & UseFormReturn<TFields>
 >;
 
+export type EachRequired<T> = T extends any
+  ? {
+      [P in keyof Required<T>]: T[P];
+    }
+  : never;
+
 export type DialogFormProps<TFields extends FieldValues> = Readonly<{
   title: ReactNode;
   open?: boolean;
@@ -43,6 +48,7 @@ export type DialogFormProps<TFields extends FieldValues> = Readonly<{
   confirm?: ReactNode;
   cancel?: ReactNode;
   defaultValues: UseFormProps<TFields>['defaultValues'];
+  mask?: EachRequired<TFields>;
   disabled?: DisabledFields<TFields>;
   validate?: (
     form: TFields,
@@ -74,7 +80,7 @@ export function DialogForm<TFields extends FieldValues>({
   if (!open) return null;
 
   function setErrors(errors: ValidateResult<TFields>) {
-    for (const error of errors) setError(error.name, error.error);
+    for (const error of errors) setError(error.path, error.error);
   }
 
   async function onSubmit(fields: TFields) {

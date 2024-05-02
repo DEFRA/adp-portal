@@ -10,15 +10,9 @@ import {
   TableColumn,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils';
-import {
-  useApi,
-  discoveryApiRef,
-  fetchApiRef,
-  errorApiRef,
-} from '@backstage/core-plugin-api';
+import { useApi, errorApiRef } from '@backstage/core-plugin-api';
 import { DeliveryProject } from '@internal/plugin-adp-common';
-import { DeliveryProjectClient } from './api/DeliveryProjectClient';
-import { DeliveryProjectApi } from './api/DeliveryProjectApi';
+import { deliveryProjectApiRef } from './api/DeliveryProjectApi';
 import { CreateDeliveryProjectButton } from './CreateDeliveryProjectButton';
 import { EditDeliveryProjectButton } from './EditDeliveryProjectButton';
 
@@ -29,17 +23,11 @@ export const DeliveryProjectViewPageComponent = () => {
   }, 0);
 
   const errorApi = useApi(errorApiRef);
-  const discoveryApi = useApi(discoveryApiRef);
-  const fetchApi = useApi(fetchApiRef);
-
-  const deliveryProjectClient: DeliveryProjectApi = new DeliveryProjectClient(
-    discoveryApi,
-    fetchApi,
-  );
+  const client = useApi(deliveryProjectApiRef);
 
   const getAllDeliveryProjects = async () => {
     try {
-      const data = await deliveryProjectClient.getDeliveryProjects();
+      const data = await client.getDeliveryProjects();
       setTableData(data);
     } catch (e: any) {
       errorApi.post(e);

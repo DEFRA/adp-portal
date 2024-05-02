@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
-import {
-  alertApiRef,
-  discoveryApiRef,
-  fetchApiRef,
-  useApi,
-} from '@backstage/core-plugin-api';
-import { DeliveryProjectClient } from './api/DeliveryProjectClient';
+import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import {
   DeliveryProjectFields,
   DeliveryProjectFormFields,
@@ -20,6 +14,7 @@ import {
   TitleWithHelp,
   deliveryProjectUtil,
 } from '../../utils';
+import { deliveryProjectApiRef } from './api';
 
 export type CreateDeliveryProjectButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -34,10 +29,7 @@ export function CreateDeliveryProjectButton({
 }: CreateDeliveryProjectButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
-  const discoveryApi = useApi(discoveryApiRef);
-  const fetchApi = useApi(fetchApiRef);
-
-  const client = new DeliveryProjectClient(discoveryApi, fetchApi);
+  const client = useApi(deliveryProjectApiRef);
 
   const { allowed: allowedToCreateDeliveryProject } = usePermission({
     permission: adpProjectCreatePermission,
@@ -51,7 +43,7 @@ export function CreateDeliveryProjectButton({
     try {
       await client.createDeliveryProject(fields);
     } catch (e: any) {
-      return deliveryProjectUtil.readValidationError(e, fields);
+      return deliveryProjectUtil.readValidationError(e);
     }
     alertApi.post({
       message: 'Delivery Project created successfully.',
@@ -75,6 +67,7 @@ export function CreateDeliveryProjectButton({
           defaultValues={{
             ...emptyForm,
             team_type: 'delivery',
+            github_team_visibility: 'public',
           }}
           renderFields={DeliveryProjectFormFields}
           completed={success => {

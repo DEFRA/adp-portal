@@ -4,16 +4,13 @@ import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
+import { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
 import {
-  IDeliveryProjectStore,
-  PartialDeliveryProject,
-} from '../deliveryProject/deliveryProjectStore';
-import { DeliveryProject } from '@internal/plugin-adp-common';
-import {
-  checkForDuplicateProjectCode,
-  checkForDuplicateTitle,
-  getCurrentUsername,
-} from '../utils/index';
+  CreateDeliveryProjectRequest,
+  UpdateDeliveryProjectRequest,
+  ValidationErrorMapping,
+} from '@internal/plugin-adp-common';
+import { getCurrentUsername } from '../utils/index';
 import { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { FluxConfigApi } from '../deliveryProject';
 import { Config } from '@backstage/config';
@@ -26,6 +23,8 @@ export interface ProjectRouterOptions {
   deliveryProgrammeStore: IDeliveryProgrammeStore;
 }
 import { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
+import { createParser, respond } from './util';
+import { z } from 'zod';
 
 export function createProjectRouter(
   options: ProjectRouterOptions,
@@ -71,110 +70,6 @@ export function createProjectRouter(
     }
   });
 
-  router.post('/deliveryProject', async (req, res) => {
-    try {
-      if (!isDeliveryProjectCreateRequest(req.body)) {
-        throw new InputError('Invalid payload');
-      }
-
-      const data: DeliveryProject[] = await deliveryProjectStore.getAll();
-
-      const isDuplicateTitle: boolean = await checkForDuplicateTitle(
-        data,
-        req.body.title,
-      );
-      const isDuplicateCode: boolean = await checkForDuplicateProjectCode(
-        data,
-        req.body.delivery_project_code,
-      );
-      if (isDuplicateTitle || isDuplicateCode) {
-        // Pick error message, for either title or code
-        const errorMessage = isDuplicateTitle
-          ? 'Delivery Project title already exists'
-          : 'Service Code already exists';
-        res.status(406).json({ error: errorMessage });
-      } else {
-        const author = await getCurrentUsername(identity, req);
-        const deliveryProject = await deliveryProjectStore.add(
-          req.body,
-          author,
-        );
-
-        await Promise.allSettled([
-          fluxConfigApi.createFluxConfig(deliveryProject),
-          teamSyncronizer.syncronize(deliveryProject.name),
-        ]);
-
-        res.status(201).json(deliveryProject);
-      }
-    } catch (error) {
-      const deliveryProjectError = error as Error;
-      logger.error(
-        'Error in creating a delivery project: ',
-        deliveryProjectError,
-      );
-      throw new InputError(deliveryProjectError.message);
-    }
-  });
-
-  router.patch('/deliveryProject', async (req, res) => {
-    try {
-      if (!isDeliveryProjectUpdateRequest(req.body)) {
-        throw new InputError('Invalid payload');
-      }
-      const allProjects: DeliveryProject[] =
-        await deliveryProjectStore.getAll();
-
-      const currentData = allProjects.find(
-        project => project.id === req.body.id,
-      );
-      const isTitleChanged =
-        req.body?.title && currentData?.title !== req.body?.title;
-      const isProjectCodeChanged =
-        req.body?.delivery_project_code &&
-        currentData?.delivery_project_code !== req.body?.delivery_project_code;
-
-      if (isTitleChanged) {
-        const isDuplicate: boolean = await checkForDuplicateTitle(
-          allProjects,
-          req.body?.title,
-        );
-        if (isDuplicate) {
-          res
-            .status(406)
-            .json({ error: 'Delivery Project title already exists' });
-          return;
-        }
-      }
-
-      if (isProjectCodeChanged) {
-        const isDuplicate: boolean = await checkForDuplicateProjectCode(
-          allProjects,
-          req.body?.delivery_project_code,
-        );
-        if (isDuplicate) {
-          res.status(406).json({ error: 'Service Code already exists' });
-          return;
-        }
-      }
-
-      const author = await getCurrentUsername(identity, req);
-      const deliveryProject = await deliveryProjectStore.update(
-        req.body,
-        author,
-      );
-      await teamSyncronizer.syncronize(deliveryProject.name);
-      res.status(200).json(deliveryProject);
-    } catch (error) {
-      const deliveryProjectError = error as Error;
-      logger.error(
-        'Error in updating a delivery project: ',
-        deliveryProjectError,
-      );
-      throw new InputError(deliveryProjectError.message);
-    }
-  });
-
   router.put(
     '/deliveryProject/:projectName/github/teams/sync',
     async (req, res) => {
@@ -184,18 +79,94 @@ export function createProjectRouter(
     },
   );
 
+  router.post('/deliveryProject', async (req, res) => {
+    const body = parseCreateDeliveryProjectRequest(req.body);
+    const creator = await getCurrentUsername(identity, req);
+    const result = await deliveryProjectStore.add(body, creator);
+    if (result.success) {
+      await Promise.allSettled([
+        fluxConfigApi.createFluxConfig(result.value),
+        teamSyncronizer.syncronize(result.value.name),
+      ]);
+    }
+    respond(body, res, result, errorMapping, { ok: 201 });
+  });
+
+  router.patch('/deliveryProject', async (req, res) => {
+    const body = parseUpdateDeliveryProjectRequest(req.body);
+    const creator = await getCurrentUsername(identity, req);
+    const result = await deliveryProjectStore.update(body, creator);
+    if (result.success) {
+      await Promise.allSettled([teamSyncronizer.syncronize(result.value.name)]);
+    }
+    respond(body, res, result, errorMapping);
+  });
+
   router.use(errorHandler());
   return router;
 }
 
-function isDeliveryProjectCreateRequest(
-  request: Omit<DeliveryProject, 'id' | 'created_at'>,
-) {
-  return typeof request?.title === 'string';
-}
+const parseCreateDeliveryProjectRequest =
+  createParser<CreateDeliveryProjectRequest>(
+    z.object({
+      title: z.string(),
+      alias: z.string().optional(),
+      description: z.string(),
+      finance_code: z.string().optional(),
+      delivery_programme_id: z.string(),
+      delivery_project_code: z.string(),
+      ado_project: z.string(),
+      team_type: z.string(),
+      service_owner: z.string(),
+      github_team_visibility: z.enum(['public', 'private']),
+    }),
+  );
+const parseUpdateDeliveryProjectRequest =
+  createParser<UpdateDeliveryProjectRequest>(
+    z.object({
+      id: z.string(),
+      title: z.string().optional(),
+      alias: z.string().optional(),
+      description: z.string().optional(),
+      finance_code: z.string().optional(),
+      delivery_programme_id: z.string().optional(),
+      delivery_project_code: z.string().optional(),
+      ado_project: z.string().optional(),
+      team_type: z.string().optional(),
+      service_owner: z.string().optional(),
+      github_team_visibility: z.enum(['public', 'private']).optional(),
+    }),
+  );
 
-function isDeliveryProjectUpdateRequest(
-  request: Omit<PartialDeliveryProject, 'updated_at'>,
-) {
-  return typeof request?.id === 'string';
-}
+const errorMapping = {
+  duplicateName: (req: { title?: string }) => ({
+    path: 'title',
+    error: {
+      message: `The name '${req.title}' is already in use. Please choose a different name.`,
+    },
+  }),
+  duplicateTitle: (req: { title?: string }) => ({
+    path: 'title',
+    error: {
+      message: `The name '${req.title}' is already in use. Please choose a different name.`,
+    },
+  }),
+  duplicateProjectCode: () => ({
+    path: 'delivery_project_code',
+    error: {
+      message: `The project code is already in use by another delivery project.`,
+    },
+  }),
+  unknownDeliveryProgramme: () => ({
+    path: 'delivery_programme_id',
+    error: {
+      message: `The delivery programme does not exist.`,
+    },
+  }),
+  unknown: () => ({
+    path: 'root',
+    error: {
+      message: `An unexpected error occurred.`,
+    },
+  }),
+} as const satisfies ValidationErrorMapping;

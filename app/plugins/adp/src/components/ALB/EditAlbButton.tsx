@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
-import {
-  alertApiRef,
-  discoveryApiRef,
-  fetchApiRef,
-  useApi,
-} from '@backstage/core-plugin-api';
-import { ArmsLengthBodyClient } from './api/AlbClient';
+import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import { AlbFields, AlbFormFields } from './AlbFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
 import {
@@ -14,6 +8,7 @@ import {
   adpProgrammmeCreatePermission,
 } from '@internal/plugin-adp-common';
 import { DialogForm, SubmitResult, albUtil } from '../../utils';
+import { armsLengthBodyApiRef } from './api';
 
 export type EditAlbProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -30,10 +25,7 @@ export function EditAlbButton({
 }: EditAlbProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
-  const discoveryApi = useApi(discoveryApiRef);
-  const fetchApi = useApi(fetchApiRef);
-
-  const client = new ArmsLengthBodyClient(discoveryApi, fetchApi);
+  const client = useApi(armsLengthBodyApiRef);
 
   const { allowed: allowedToCreateAlb } = usePermission({
     permission: adpProgrammmeCreatePermission,
@@ -45,11 +37,11 @@ export function EditAlbButton({
   ): Promise<SubmitResult<AlbFields>> {
     try {
       await client.updateArmsLengthBody({
-        ...armsLengthBody,
         ...fields,
+        id: armsLengthBody.id,
       });
     } catch (e: any) {
-      return albUtil.readValidationError(e, fields);
+      return albUtil.readValidationError(e);
     }
     alertApi.post({
       message: 'ALB edited successfully.',
