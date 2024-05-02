@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, ReactNode } from 'react';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import {
@@ -16,8 +16,14 @@ import { deliveryProgrammeApiRef } from './api/DeliveryProgrammeApi';
 import { CreateDeliveryProgrammeButton } from './CreateDeliveryProgrammeButton';
 import { EditDeliveryProgrammeButton } from './EditDeliveryProgrammeButton';
 
+type DeliveryProgrammeWithActions = DeliveryProgramme & {
+  actions: ReactNode;
+};
+
 export const DeliveryProgrammeViewPageComponent = () => {
-  const [tableData, setTableData] = useState<DeliveryProgramme[]>([]);
+  const [tableData, setTableData] = useState<DeliveryProgrammeWithActions[]>(
+    [],
+  );
   const [key, refetchDeliveryProgramme] = useReducer(i => {
     return i + 1;
   }, 0);
@@ -28,7 +34,22 @@ export const DeliveryProgrammeViewPageComponent = () => {
   const getAllDeliveryProgrammes = async () => {
     try {
       const data = await client.getDeliveryProgrammes();
-      setTableData(data);
+      setTableData(
+        data.map(d => ({
+          ...d,
+          actions: (
+            <EditDeliveryProgrammeButton
+              variant="contained"
+              color="default"
+              deliveryProgramme={d}
+              data-testid={`delivery-programme-edit-button-${d.id}`}
+              onEdited={refetchDeliveryProgramme}
+            >
+              Edit
+            </EditDeliveryProgrammeButton>
+          ),
+        })),
+      );
     } catch (e: any) {
       errorApi.post(e);
     }
@@ -38,7 +59,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
     getAllDeliveryProgrammes();
   }, [key]);
 
-  const columns: TableColumn<DeliveryProgramme>[] = [
+  const columns: TableColumn<DeliveryProgrammeWithActions>[] = [
     {
       title: 'Title',
       field: 'title',
@@ -76,16 +97,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
     {
       width: '',
       highlight: true,
-      render: data => (
-        <EditDeliveryProgrammeButton
-          variant="contained"
-          color="default"
-          deliveryProgramme={data}
-          data-testid={`delivery-programme-edit-button-${data.id}`}
-        >
-          Edit
-        </EditDeliveryProgrammeButton>
-      ),
+      field: 'actions',
     },
   ];
 
@@ -101,6 +113,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
             variant="contained"
             size="large"
             color="primary"
+            data-testid="delivery-programme-add-button"
             startIcon={<AddBoxIcon />}
             onCreated={refetchDeliveryProgramme}
           >

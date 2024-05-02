@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, ReactNode } from 'react';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import {
@@ -16,8 +16,12 @@ import { armsLengthBodyApiRef } from './api';
 import { CreateAlbButton } from './CreateAlbButton';
 import { EditAlbButton } from './EditAlbButton';
 
+type ArmsLengthBodyWithActions = ArmsLengthBody & {
+  actions: ReactNode;
+};
+
 export const AlbViewPageComponent = () => {
-  const [tableData, setTableData] = useState<ArmsLengthBody[]>([]);
+  const [tableData, setTableData] = useState<ArmsLengthBodyWithActions[]>([]);
   const [key, refetchArmsLengthBody] = useReducer(i => i + 1, 0);
   const errorApi = useApi(errorApiRef);
   const client = useApi(armsLengthBodyApiRef);
@@ -25,7 +29,22 @@ export const AlbViewPageComponent = () => {
   const getAllArmsLengthBodies = async () => {
     try {
       const data = await client.getArmsLengthBodies();
-      setTableData(data);
+      setTableData(
+        data.map(d => ({
+          ...d,
+          actions: (
+            <EditAlbButton
+              variant="contained"
+              color="default"
+              data-testid={`alb-edit-button-${d.id}`}
+              armsLengthBody={d}
+              onEdited={refetchArmsLengthBody}
+            >
+              Edit
+            </EditAlbButton>
+          ),
+        })),
+      );
     } catch (e: any) {
       errorApi.post(e);
     }
@@ -35,7 +54,7 @@ export const AlbViewPageComponent = () => {
     getAllArmsLengthBodies();
   }, [key]);
 
-  const columns: TableColumn<ArmsLengthBody>[] = [
+  const columns: TableColumn<ArmsLengthBodyWithActions>[] = [
     {
       title: 'Title',
       field: 'title',
@@ -69,17 +88,7 @@ export const AlbViewPageComponent = () => {
     {
       width: '',
       highlight: true,
-      render: data => (
-        <EditAlbButton
-          variant="contained"
-          color="default"
-          data-testid={`alb-edit-button-${data.id}`}
-          armsLengthBody={data}
-          onEdited={refetchArmsLengthBody}
-        >
-          Edit
-        </EditAlbButton>
-      ),
+      field: 'actions',
     },
   ];
 

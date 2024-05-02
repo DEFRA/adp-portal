@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, ReactNode } from 'react';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import {
@@ -19,8 +19,12 @@ import { deliveryProjectApiRef } from './api/DeliveryProjectApi';
 import { CreateDeliveryProjectButton } from './CreateDeliveryProjectButton';
 import { EditDeliveryProjectButton } from './EditDeliveryProjectButton';
 
+type DeliveryProjectWithActions = DeliveryProject & {
+  actions: ReactNode;
+};
+
 export const DeliveryProjectViewPageComponent = () => {
-  const [tableData, setTableData] = useState<DeliveryProject[]>([]);
+  const [tableData, setTableData] = useState<DeliveryProjectWithActions[]>([]);
   const [key, refetchDeliveryProject] = useReducer(i => {
     return i + 1;
   }, 0);
@@ -31,7 +35,23 @@ export const DeliveryProjectViewPageComponent = () => {
   const getAllDeliveryProjects = async () => {
     try {
       const data = await client.getDeliveryProjects();
-      setTableData(data);
+      setTableData(
+        data.map(d => ({
+          ...d,
+          title: deliveryProjectDisplayName(d),
+          actions: (
+            <EditDeliveryProjectButton
+              variant="contained"
+              color="default"
+              deliveryProject={d}
+              data-testid={`delivery-programme-edit-button-${d.id}`}
+              onEdited={refetchDeliveryProject}
+            >
+              Edit
+            </EditDeliveryProjectButton>
+          ),
+        })),
+      );
     } catch (e: any) {
       errorApi.post(e);
     }
@@ -41,11 +61,12 @@ export const DeliveryProjectViewPageComponent = () => {
     getAllDeliveryProjects();
   }, [key]);
 
-  const columns: TableColumn<DeliveryProject>[] = [
+  const columns: TableColumn<DeliveryProjectWithActions>[] = [
     {
       title: 'Title',
       highlight: true,
-      render: deliveryProjectDisplayName,
+      field: 'title',
+      type: 'string',
     },
     {
       title: 'Alias',
@@ -78,16 +99,7 @@ export const DeliveryProjectViewPageComponent = () => {
     {
       width: '',
       highlight: true,
-      render: data => (
-        <EditDeliveryProjectButton
-          variant="contained"
-          color="default"
-          deliveryProject={data}
-          data-testid={`delivery-programme-edit-button-${data.id}`}
-        >
-          Edit
-        </EditDeliveryProjectButton>
-      ),
+      field: 'actions',
     },
   ];
 
@@ -103,6 +115,7 @@ export const DeliveryProjectViewPageComponent = () => {
             variant="contained"
             size="large"
             color="primary"
+            data-testid="add-delivery-project-btn"
             startIcon={<AddBoxIcon />}
             onCreated={refetchDeliveryProject}
           >
