@@ -8,6 +8,7 @@ import {
   SupportButton,
   TableColumn,
   LinkButton,
+  Link,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils/Table';
 import { ActionsModal } from '../../utils/ActionsModal';
@@ -26,18 +27,18 @@ import CreateDeliveryProgramme from './CreateDeliveryProgramme';
 import { DeliveryProgrammeClient } from './api/DeliveryProgrammeClient';
 import { DeliveryProgrammeApi } from './api/DeliveryProgrammeApi';
 import { DeliveryProgrammeFormFields } from './DeliveryProgrammeFormFields';
-import { useArmsLengthBodyList } from '../../hooks/useArmsLengthBodyList';
-import {
-  transformedData,
-  useProgrammeManagersList,
-} from '../../hooks/useProgrammeManagersList';
 import { usePermission } from '@backstage/plugin-permission-react';
 import {
   isCodeUnique,
   isNameUnique,
 } from '../../utils/DeliveryProgramme/DeliveryProgrammeUtils';
-import { EntityRefLink } from '@backstage/plugin-catalog-react';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import {
+  useEntityRoute,
+  useArmsLengthBodyList,
+  transformedData,
+  useProgrammeManagersList,
+} from '../../hooks';
 
 type FormDataModel =
   | Record<string, never>
@@ -173,14 +174,8 @@ export const DeliveryProgrammeViewPageComponent = () => {
       highlight: true,
       type: 'string',
       render: (row: Partial<DeliveryProgramme>) => {
-        return (
-          <EntityRefLink
-            entityRef={`group:default/${row.name!}`}
-            defaultKind="group"
-            defaultNamespace="default"
-            title={row.title!}
-          />
-        );
+        const target = useEntityRoute(row.name!, 'group', 'default');
+        return <Link to={target}>{row.title!}</Link>;
       },
     },
     {
@@ -213,19 +208,25 @@ export const DeliveryProgrammeViewPageComponent = () => {
     {
       highlight: true,
       align: 'right',
-      render: (rowData: Partial<DeliveryProgramme>) => {
+      render: (row: Partial<DeliveryProgramme>) => {
+        const target = useEntityRoute(row.name!, 'group', 'default');
         return (
           <>
-            <LinkButton to='/' variant='outlined' color='default' title='View Delivery Programme Admins'>
-            <AccountBoxIcon />
+            <LinkButton
+              to={`${target}/manage-members`}
+              variant="outlined"
+              color="default"
+              title="View Delivery Programme Admins"
+            >
+              <AccountBoxIcon />
             </LinkButton>
             <>&nbsp;</>
             {allowedToEditAdpProgramme && (
               <Button
                 variant="contained"
                 color="default"
-                onClick={() => handleEdit(rowData as DeliveryProgramme)}
-                data-testid={`delivery-programme-edit-button-${rowData.id}`}
+                onClick={() => handleEdit(row as DeliveryProgramme)}
+                data-testid={`delivery-programme-edit-button-${row.id}`}
               >
                 Edit
               </Button>
