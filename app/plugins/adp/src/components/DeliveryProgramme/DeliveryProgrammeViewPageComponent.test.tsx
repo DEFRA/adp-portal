@@ -13,7 +13,7 @@ jest.mock(
     ({
       EditDeliveryProgrammeButton: ({ deliveryProgramme, ...props }) => (
         <div>
-          {JSON.stringify(deliveryProgramme)} <Button {...props} />
+          {JSON.stringify(noTableData(deliveryProgramme))} <Button {...props} />
         </div>
       ),
     } satisfies typeof import('./EditDeliveryProgrammeButton')),
@@ -22,9 +22,16 @@ jest.mock(
   './CreateDeliveryProgrammeButton',
   () =>
     ({
-      CreateDeliveryProgrammeButton: Button,
+      CreateDeliveryProgrammeButton: ({ onCreated, ...props }) => (
+        <Button {...props} />
+      ),
     } satisfies typeof import('./CreateDeliveryProgrammeButton')),
 );
+
+function noTableData(value: Record<string, unknown>) {
+  const { tableData, ...result } = value;
+  return result;
+}
 
 beforeEach(() => {
   jest.spyOn(global.Math, 'random').mockReturnValue(0);
@@ -76,7 +83,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
 
   it('Should render the page correctly', async () => {
     // arrange
-    const { render, mockDeliveryProgrammeApi } = setup();
+    const { render, mockDeliveryProgrammeApi, mockErrorApi } = setup();
     mockDeliveryProgrammeApi.getDeliveryProgrammes.mockResolvedValueOnce([
       {
         arms_length_body_id: '123',
@@ -98,7 +105,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
         created_at: new Date(0),
         delivery_programme_code: 'ABC',
         description: 'My description',
-        id: '123',
+        id: '456',
         name: 'programme-2',
         programme_managers: [],
         title: 'Programme 2',
@@ -113,7 +120,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
         created_at: new Date(0),
         delivery_programme_code: 'ABC',
         description: 'My description',
-        id: '123',
+        id: '789',
         name: 'programme-3',
         programme_managers: [],
         title: 'Programme 3',
@@ -130,5 +137,10 @@ describe('DeliveryProgrammeViewPageComponent', () => {
 
     // assert
     expect(rendered).toMatchSnapshot();
+    expect(
+      mockDeliveryProgrammeApi.getDeliveryProgrammes.mock.calls,
+    ).toMatchObject([[]]);
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
   });
 });
