@@ -1,8 +1,4 @@
-import {
-  ArmsLengthBody,
-  DeliveryProgramme,
-  DeliveryProject,
-} from '@internal/plugin-adp-common';
+import { DeliveryProject } from '@internal/plugin-adp-common';
 import { IdentityApi } from '@backstage/plugin-auth-node';
 import express from 'express';
 import { AlbRouterOptions } from '../service/armsLengthBodyRouter';
@@ -10,44 +6,6 @@ import { AlbRouterOptions } from '../service/armsLengthBodyRouter';
 export function createName(name: string) {
   const nameValue = name.replace(/\s+/g, '-').toLowerCase().substring(0, 64);
   return nameValue;
-}
-
-export async function checkForDuplicateTitle(
-  store: DeliveryProgramme[] | ArmsLengthBody[] | DeliveryProject[],
-  title: string,
-): Promise<boolean> {
-  title = title.trim().toLowerCase();
-  const duplicate = store.find(
-    object => object.title.trim().toLowerCase() === title,
-  );
-
-  return duplicate !== undefined;
-}
-
-export async function checkForDuplicateProjectCode(
-  store: DeliveryProject[],
-  code: string,
-): Promise<boolean> {
-  code = code.trim().toLowerCase();
-  const duplicate = store.find(
-    object => object.delivery_project_code.trim().toLowerCase() === code,
-  );
-
-  return duplicate !== undefined;
-}
-
-export async function checkForDuplicateProgrammeCode(
-  store: DeliveryProgramme[],
-  delivery_programme_code: string,
-): Promise<boolean> {
-  delivery_programme_code = delivery_programme_code.trim().toLowerCase();
-  const duplicate = store.find(
-    object =>
-      object.delivery_programme_code.trim().toLowerCase() ===
-      delivery_programme_code,
-  );
-
-  return duplicate !== undefined;
 }
 
 export async function getCurrentUsername(
@@ -64,8 +22,6 @@ export function getOwner(options: AlbRouterOptions): string {
   const owner = ownerGroup.getString('programmeAdminGroup');
   return owner;
 }
-
-export type { CreateDeliveryProgrammeAdmin } from './types';
 
 export function createGithubTeamDetails(deliveryProject: DeliveryProject) {
   return {

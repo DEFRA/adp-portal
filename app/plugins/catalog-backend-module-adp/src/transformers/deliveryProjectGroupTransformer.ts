@@ -1,5 +1,8 @@
 import { GroupEntity } from '@backstage/catalog-model';
-import { DeliveryProject } from '@internal/plugin-adp-common';
+import {
+  DeliveryProject,
+  deliveryProjectDisplayName,
+} from '@internal/plugin-adp-common';
 import { createTransformerTitle } from './utils';
 
 export type DeliveryProjectGroupTransformer = (
@@ -14,7 +17,7 @@ export const deliveryProjectGroupTransformer: DeliveryProjectGroupTransformer =
       metadata: {
         name: deliveryProject.name,
         title: createTransformerTitle(
-          deliveryProject.title,
+          deliveryProjectDisplayName(deliveryProject),
           deliveryProject.alias,
         ),
         description: deliveryProject.description,
@@ -22,7 +25,7 @@ export const deliveryProjectGroupTransformer: DeliveryProjectGroupTransformer =
         annotations: {
           'backstage.io/managed-by-location': `adp:delivery-project\\${deliveryProject.name}`,
           'backstage.io/managed-by-origin-location': `adp:delivery-project\\${deliveryProject.name}`,
-          'adp.defra.gov.uk/delivery-project-id': deliveryProject.id
+          'adp.defra.gov.uk/delivery-project-id': deliveryProject.id,
         },
         links: [],
       },

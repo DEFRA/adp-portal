@@ -10,6 +10,7 @@ import { usePermission } from '@backstage/plugin-permission-react';
 import {
   DeliveryProject,
   adpProjectCreatePermission,
+  deliveryProjectDisplayName,
 } from '@internal/plugin-adp-common';
 import {
   DialogForm,
@@ -81,7 +82,9 @@ export function EditDeliveryProjectButton({
           }}
           title={
             <TitleWithHelp href="https://defra.github.io/adp-documentation/Getting-Started/onboarding-a-delivery-project/">
-              {`Update Delivery Project ${deliveryProject.title}`}
+              {`Update Delivery Project ${deliveryProjectDisplayName(
+                deliveryProject,
+              )}`}
             </TitleWithHelp>
           }
           confirm="Edit"

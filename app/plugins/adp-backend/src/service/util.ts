@@ -19,7 +19,7 @@ export function respond<Request, Success, Error extends string>(
   } else if (message.value === undefined) {
     response.status(statuses?.ok ?? 204).end();
   } else {
-    response.status(statuses?.ok ?? 200).json(message);
+    response.status(statuses?.ok ?? 200).json(message.value);
   }
 }
 

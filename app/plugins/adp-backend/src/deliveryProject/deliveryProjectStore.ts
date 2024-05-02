@@ -33,8 +33,12 @@ type Row = {
   service_owner: string;
   github_team_visibility: 'public' | 'private' | null;
 };
+type DeliveryProgrammeRow = {
+  id: string;
+  delivery_programme_code: string;
+};
 
-const allColumns = [
+const allColumns = addTableName('delivery_project', [
   'id',
   'title',
   'name',
@@ -51,7 +55,10 @@ const allColumns = [
   'team_type',
   'service_owner',
   'github_team_visibility',
-] as const satisfies Array<keyof Row>;
+] as const satisfies Array<keyof Row>);
+const programmeColumns = addTableName('delivery_programme', [
+  'delivery_programme_code',
+] as const satisfies Array<keyof DeliveryProgrammeRow>);
 
 export type PartialDeliveryProject = Partial<DeliveryProject>;
 export type IDeliveryProjectStore = {
@@ -69,9 +76,18 @@ export class DeliveryProjectStore {
     return this.#client<Row>('delivery_project');
   }
 
+  get #tableWithProgrammes() {
+    return this.#table.join<DeliveryProgrammeRow>(
+      'delivery_programme',
+      'delivery_programme.id',
+      '=',
+      'delivery_project.delivery_programme_id',
+    );
+  }
+
   async getAll(): Promise<DeliveryProject[]> {
-    const result = await this.#table
-      .select(...allColumns)
+    const result = await this.#tableWithProgrammes
+      .select(...allColumns, ...programmeColumns)
       .orderBy('created_at');
 
     return result.map(r => this.#normalize(r));
@@ -79,9 +95,9 @@ export class DeliveryProjectStore {
 
   async get(id: string): Promise<DeliveryProject> {
     if (!isUUID(id)) throw notFound();
-    const result = await this.#table
+    const result = await this.#tableWithProgrammes
       .where('id', id)
-      .select(...allColumns)
+      .select(...allColumns, ...programmeColumns)
       .first();
 
     if (result === undefined) throw notFound();
@@ -90,9 +106,9 @@ export class DeliveryProjectStore {
   }
 
   async getByName(name: string): Promise<DeliveryProject> {
-    const result = await this.#table
+    const result = await this.#tableWithProgrammes
       .where('name', name)
-      .select(...allColumns)
+      .select(...allColumns, ...programmeColumns)
       .first();
 
     if (result === undefined) throw notFound();
@@ -141,7 +157,6 @@ export class DeliveryProjectStore {
       duplicateName: this.#nameExists(name),
       duplicateProjectCode: this.#projectCodeExists(
         delivery_project_code,
-        delivery_programme_id,
         emptyUUID,
       ),
     });
@@ -166,7 +181,13 @@ export class DeliveryProjectStore {
 
     if (result.length < 1) return { success: false, errors: ['unknown'] };
 
-    return { success: true, value: this.#normalize(result[0]) };
+    return {
+      success: true,
+      value: this.#normalize({
+        ...result[0],
+        delivery_programme_code: programmeCode,
+      }),
+    };
   }
 
   async update(
@@ -204,7 +225,7 @@ export class DeliveryProjectStore {
         title !== undefined && this.#titleExists(title, programmeId, id),
       duplicateProjectCode:
         delivery_project_code !== undefined &&
-        this.#projectCodeExists(delivery_project_code, programmeId, id),
+        this.#projectCodeExists(delivery_project_code, id),
     });
 
     const result = await this.#table.where('id', id).update(
@@ -227,7 +248,17 @@ export class DeliveryProjectStore {
 
     if (result.length < 1) return { success: false, errors: ['unknown'] };
 
-    return { success: true, value: this.#normalize(result[0]) };
+    const programmeCode =
+      (await this.#getDeliveryProgrammeCode(result[0].delivery_programme_id)) ??
+      '';
+
+    return {
+      success: true,
+      value: this.#normalize({
+        ...result[0],
+        delivery_programme_code: programmeCode,
+      }),
+    };
   }
 
   async #getDeliveryProgrammeId(id: UUID) {
@@ -241,7 +272,7 @@ export class DeliveryProjectStore {
     return result.delivery_programme_id;
   }
 
-  #normalize(row: Row): DeliveryProject {
+  #normalize(row: Row & DeliveryProgrammeRow): DeliveryProject {
     return {
       ...row,
       alias: row.alias ?? undefined,
@@ -293,11 +324,9 @@ export class DeliveryProjectStore {
     return Number(count) > 0;
   }
 
-  async #projectCodeExists(code: string, programmeId: string, ignoreId: UUID) {
-    if (!isUUID(programmeId)) return false;
+  async #projectCodeExists(code: string, ignoreId: UUID) {
     const [{ count }] = await this.#table
-      .where('delivery_programme_code', code)
-      .andWhere('delivery_programme_id', programmeId)
+      .where('delivery_project_code', code)
       .andWhereNot('id', ignoreId)
       .limit(1)
       .count('*', { as: 'count' });
@@ -311,4 +340,12 @@ function notFound() {
 
 async function not(value: Promise<boolean>) {
   return !(await value);
+}
+
+function addTableName<T extends readonly string[]>(
+  tableName: string,
+  columns: T,
+) {
+  // Fake return as T because knex typing cant deal with the table name prefix
+  return columns.map(c => `${tableName}.${c}`) as unknown as T;
 }

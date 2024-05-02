@@ -11,7 +11,10 @@ import {
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils';
 import { useApi, errorApiRef } from '@backstage/core-plugin-api';
-import { DeliveryProject } from '@internal/plugin-adp-common';
+import {
+  DeliveryProject,
+  deliveryProjectDisplayName,
+} from '@internal/plugin-adp-common';
 import { deliveryProjectApiRef } from './api/DeliveryProjectApi';
 import { CreateDeliveryProjectButton } from './CreateDeliveryProjectButton';
 import { EditDeliveryProjectButton } from './EditDeliveryProjectButton';
@@ -41,9 +44,8 @@ export const DeliveryProjectViewPageComponent = () => {
   const columns: TableColumn<DeliveryProject>[] = [
     {
       title: 'Title',
-      field: 'title',
       highlight: true,
-      type: 'string',
+      render: deliveryProjectDisplayName,
     },
     {
       title: 'Alias',

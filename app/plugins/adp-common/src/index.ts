@@ -7,7 +7,7 @@
 
 export * from './permissions';
 
-export type * from './types/validation';
-export type * from './types/arms-length-body';
-export type * from './types/delivery-project';
-export type * from './types/delivery-programme';
+export * from './types/validation';
+export * from './types/arms-length-body';
+export * from './types/delivery-project';
+export * from './types/delivery-programme';
