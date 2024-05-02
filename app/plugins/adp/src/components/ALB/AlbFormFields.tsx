@@ -70,7 +70,7 @@ export function AlbFormFields({
         errors={errors}
         index={i++}
         name="description"
-        label="ALB Description"
+        label="Description"
         helperText="Max 200 characters"
         disabled={disabled}
         maxRows={4}
