@@ -1,3 +1,9 @@
+import {
+  ANNOTATION_LOCATION,
+  ANNOTATION_ORIGIN_LOCATION,
+} from '@backstage/catalog-model';
+import { ARMS_LENGTH_BODY_ID_ANNOTATION } from '../transformers';
+
 export const armsLengthBody = {
   creator: 'ADP',
   owner: 'ADP',
@@ -21,11 +27,9 @@ export const expectedAlbEntity = {
     description: 'testDescription',
     tags: [],
     annotations: {
-      'backstage.io/managed-by-location':
-        'adp:arms-length-body\\environment-agency',
-      'backstage.io/managed-by-origin-location':
-        'adp:arms-length-body\\environment-agency',
-      'adp.defra.gov.uk/arms-length-body-id': '1234'
+      [ANNOTATION_LOCATION]: 'adp:arms-length-body\\environment-agency',
+      [ANNOTATION_ORIGIN_LOCATION]: 'adp:arms-length-body\\environment-agency',
+      [ARMS_LENGTH_BODY_ID_ANNOTATION]: '1234',
     },
     links: [{ url: 'https://www.example.uk/' }],
   },

@@ -6,7 +6,10 @@ import {
   createApiFactory,
 } from '@backstage/core-plugin-api';
 
-import { rootRouteRef } from './routes';
+import {
+  manageProgrammeAdminEntityContentRouteRef,
+  rootRouteRef,
+} from './routes';
 import {
   ArmsLengthBodyClient,
   armsLengthBodyApiRef,
@@ -19,9 +22,16 @@ import {
   DeliveryProjectClient,
   deliveryProjectApiRef,
 } from './components/DeliveryProject/api';
+import {
+  DeliveryProgrammeAdminClient,
+  deliveryProgrammeAdminApiRef,
+} from './components/DeliveryProgrammeAdmin/api';
 
 export const adpPlugin = createPlugin({
   id: 'adp',
+  routes: {
+    root: rootRouteRef,
+  },
   apis: [
     createApiFactory({
       api: armsLengthBodyApiRef,
@@ -41,10 +51,13 @@ export const adpPlugin = createPlugin({
       factory: ({ discoveryApiRef, fetchApiRef }) =>
         new DeliveryProjectClient(discoveryApiRef, fetchApiRef),
     }),
+    createApiFactory({
+      api: deliveryProgrammeAdminApiRef,
+      deps: { discoveryApiRef, fetchApiRef },
+      factory: ({ discoveryApiRef, fetchApiRef }) =>
+        new DeliveryProgrammeAdminClient(discoveryApiRef, fetchApiRef),
+    }),
   ],
-  routes: {
-    root: rootRouteRef,
-  },
 });
 
 export const AdpPage = adpPlugin.provide(
@@ -76,6 +89,14 @@ export const DeliveryProjectViewPage = adpPlugin.provide(
     name: 'DeliveryProjectViewPage',
     component: getComponent('DeliveryProjectViewPageComponent'),
     mountPoint: rootRouteRef,
+  }),
+);
+
+export const EntityPageManageProgrammeAdminContent = adpPlugin.provide(
+  createRoutableExtension({
+    name: 'EntityPageManageDeliveryProgrammeAdminContent',
+    component: getComponent('DeliveryProgrammeAdminViewPage'),
+    mountPoint: manageProgrammeAdminEntityContentRouteRef,
   }),
 );
 

@@ -18,6 +18,7 @@ export const expectedProgrammeDataWithManager: DeliveryProgramme = {
       email: '',
       id: '',
       name: '',
+      updated_at: new Date(),
     },
     {
       aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73422',
@@ -25,6 +26,7 @@ export const expectedProgrammeDataWithManager: DeliveryProgramme = {
       email: '',
       id: '',
       name: '',
+      updated_at: new Date(),
     },
     {
       aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73423',
@@ -32,6 +34,7 @@ export const expectedProgrammeDataWithManager: DeliveryProgramme = {
       email: '',
       id: '',
       name: '',
+      updated_at: new Date(),
     },
   ],
   title: 'Test title expectedProgrammeDataWithManager',
@@ -80,6 +83,7 @@ export const programmeManagerList = [
     aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
     email: 'test1.test@onmicrosoft.com',
     name: 'test 1',
+    updated_at: new Date(),
   },
   {
     id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
@@ -87,6 +91,7 @@ export const programmeManagerList = [
     aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73422',
     email: 'test2.test@onmicrosoft.com',
     name: 'test 2',
+    updated_at: new Date(),
   },
   {
     id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
@@ -94,6 +99,7 @@ export const programmeManagerList = [
     aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73423',
     email: 'test3.test@onmicrosoft.com',
     name: 'test 3',
+    updated_at: new Date(),
   },
   {
     id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
@@ -101,6 +107,7 @@ export const programmeManagerList = [
     aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73424',
     email: 'test4.test@onmicrosoft.com',
     name: 'test 4',
+    updated_at: new Date(),
   },
   {
     id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
@@ -108,5 +115,6 @@ export const programmeManagerList = [
     aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73423',
     email: 'test3.test@onmicrosoft.com',
     name: 'test 3',
+    updated_at: new Date(),
   },
 ];

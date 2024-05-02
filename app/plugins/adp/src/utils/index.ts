@@ -8,6 +8,7 @@ export * from './FormSelectField';
 export * from './FormMultiSelectField';
 export * from './DialogForm';
 export * from './TitleWithHelp';
+export * from './SelectedChipsRenderer';
 export * as albUtil from './Alb';
 export * as deliveryProgrammeUtil from './DeliveryProgramme';
 export * as deliveryProjectUtil from './DeliveryProject';
