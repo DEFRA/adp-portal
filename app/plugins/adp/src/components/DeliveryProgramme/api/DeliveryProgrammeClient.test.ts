@@ -68,14 +68,17 @@ describe('deliveryProgrammeClient', () => {
     });
 
     it('throws an error when the fetch fails', async () => {
+      const errorMessage = 'Failed to get delivery programmes';
       fetchApi.fetch.mockResolvedValue({
         ok: false,
         status: 400,
-        statusText: 'BadRequest',
-        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
+        statusText: 'Bad Request',
+        json: jest.fn().mockResolvedValue({ error: errorMessage }),
       });
 
-      await expect(client.getDeliveryProgrammes()).rejects.toThrow();
+      await expect(client.getDeliveryProgrammes()).rejects.toThrow(
+        'Request failed with 400 Bad Request',
+      );
     });
   });
 
@@ -103,7 +106,7 @@ describe('deliveryProgrammeClient', () => {
 
       const updateData = { name: 'New Name' };
       await expect(client.updateDeliveryProgramme(updateData)).rejects.toThrow(
-        'Request failed with 400 Error',
+        'Request failed with 400 Bad Request',
       );
     });
   });
@@ -141,7 +144,7 @@ describe('deliveryProgrammeClient', () => {
       });
 
       await expect(client.createDeliveryProgramme(newData)).rejects.toThrow(
-        'Request failed with 400 Error',
+        'Request failed with 400 Bad Request',
       );
     });
   });
@@ -172,7 +175,7 @@ describe('deliveryProgrammeClient', () => {
 
       await expect(
         client.getDeliveryProgrammeById('nonexistent-id'),
-      ).rejects.toThrow('Failed to fetch Delivery Programme by ID');
+      ).rejects.toThrow('Request failed with 404 Not Found');
     });
   });
 
@@ -197,7 +200,7 @@ describe('deliveryProgrammeClient', () => {
         json: jest.fn().mockResolvedValue({ error: 'unknown error' }),
       });
       await expect(client.getDeliveryProgrammeAdmins()).rejects.toThrow(
-        'Failed to fetch Delivery Programme Admins',
+        'Request failed with 404 Not Found',
       );
     });
   });

@@ -105,6 +105,7 @@ describe('checkForDuplicateProgrammeCode', () => {
           aad_entity_ref_id: 'testUserId1',
           email: 'name1@email.com',
           name: 'name1',
+          updated_at: new Date(),
         },
         {
           id: '2',
@@ -112,6 +113,7 @@ describe('checkForDuplicateProgrammeCode', () => {
           aad_entity_ref_id: 'testUserId2',
           email: 'name2@email.com',
           name: 'name2',
+          updated_at: new Date(),
         },
       ],
       id: '24fcc156-a86c-4905-980a-90b73b218881',
