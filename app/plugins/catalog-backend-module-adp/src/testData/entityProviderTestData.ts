@@ -7,6 +7,7 @@ import {
   DELIVERY_PROGRAMME_ID_ANNOTATION,
   DELIVERY_PROJECT_ID_ANNOTATION,
 } from '../transformers';
+import { DeliveryProject } from '@internal/plugin-adp-common';
 
 export const armsLengthBody = [
   {
@@ -72,7 +73,7 @@ export const deliveryProgramme = [
   },
 ];
 
-export const deliveryProject = [
+export const deliveryProject: DeliveryProject[] = [
   {
     id: '123',
     created_at: new Date(),
@@ -88,6 +89,7 @@ export const deliveryProject = [
     namespace: 'Test namespace',
     team_type: 'Test team_type',
     service_owner: 'Test service_owner',
+    delivery_programme_code: 'Test delivery_programme_code',
   },
 
   {
@@ -101,10 +103,11 @@ export const deliveryProject = [
     finance_code: 'Test finance_code',
     delivery_programme_code: 'Test delivery_programme_code',
     delivery_programme_id: '1234',
-    children: ['test-project-2'],
     namespace: 'Test namespace',
     team_type: 'Test team_type',
     service_owner: 'Test service_owner',
+    ado_project: 'Test ado project',
+    delivery_project_code: 'Test delivery_project_code',
   },
 ];
 
@@ -200,7 +203,7 @@ export const mockProjectTransformerData = [
     kind: 'Group',
     metadata: {
       name: 'test-project-1',
-      title: 'Test Project 1',
+      title: 'Test delivery_programme_code Test Project 1',
       description: 'Test description 1',
       tags: [],
       annotations: {
@@ -220,7 +223,7 @@ export const mockProjectTransformerData = [
     kind: 'Group',
     metadata: {
       name: 'test-project-2',
-      title: 'Test Project 2',
+      title: 'Test delivery_programme_code Test Project 2',
       description: 'Test description 2',
       tags: [],
       annotations: {

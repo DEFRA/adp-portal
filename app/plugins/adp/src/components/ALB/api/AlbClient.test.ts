@@ -84,7 +84,7 @@ describe('armsLengthBodyClient', () => {
         title: 'My Arms Length Body',
       };
       await expect(client.updateArmsLengthBody(updateData)).rejects.toThrow(
-        'Request failed with 400 Bad Request',
+        'Validation failed',
       );
     });
   });
@@ -128,7 +128,7 @@ describe('armsLengthBodyClient', () => {
       });
 
       await expect(client.createArmsLengthBody(newData)).rejects.toThrow(
-        'Request failed with 400 Bad Request',
+        'Validation failed',
       );
     });
   });

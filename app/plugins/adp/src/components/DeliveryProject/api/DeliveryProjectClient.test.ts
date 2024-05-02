@@ -173,7 +173,7 @@ describe('deliveryProjectClient', () => {
         ok: false,
       });
       await expect(client.createDeliveryProject(newData)).rejects.toThrow(
-        'Failed to create Delivery Project',
+        'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
       );
     });
 
@@ -188,7 +188,7 @@ describe('deliveryProjectClient', () => {
         service_owner: 'test@email.com',
         team_type: 'delivery',
       };
-      const errorMessage = 'Failed to create Delivery Project';
+      const errorMessage = 'Failed to fetch ADO Project details';
       fetchApi.fetch.mockRejectedValue('Unknown error');
       await expect(client.createDeliveryProject(newData)).rejects.toThrow(
         errorMessage,
@@ -226,7 +226,7 @@ describe('deliveryProjectClient', () => {
         });
 
       await expect(client.createDeliveryProject(newData)).rejects.toThrow(
-        'Failed to create Delivery Project',
+        'Failed to create Entra ID Groups for Project',
       );
     });
 
@@ -241,7 +241,7 @@ describe('deliveryProjectClient', () => {
         service_owner: 'test@email.com',
         team_type: 'delivery',
       };
-      const errorMessage = 'Failed to create Delivery Project';
+      const errorMessage = 'Failed to fetch ADO Project details';
       fetchApi.fetch.mockRejectedValue('Unknown error');
       await expect(client.createDeliveryProject(newData)).rejects.toThrow(
         errorMessage,

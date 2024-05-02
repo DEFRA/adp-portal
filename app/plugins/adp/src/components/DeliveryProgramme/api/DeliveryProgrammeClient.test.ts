@@ -117,7 +117,7 @@ describe('deliveryProgrammeClient', () => {
         title: 'My programme',
       };
       await expect(client.updateDeliveryProgramme(updateData)).rejects.toThrow(
-        'Request failed with 400 Bad Request',
+        'Validation failed',
       );
     });
   });
@@ -165,7 +165,7 @@ describe('deliveryProgrammeClient', () => {
       });
 
       await expect(client.createDeliveryProgramme(newData)).rejects.toThrow(
-        'Request failed with 400 Bad Request',
+        'Validation failed',
       );
     });
   });
