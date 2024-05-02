@@ -8,7 +8,7 @@ import {
 
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
-import { ValidationError } from '../../../utils/ValidationError';
+import { ValidationError } from '../../../utils';
 
 export class DeliveryProgrammeClient implements DeliveryProgrammeApi {
   private discoveryApi: DiscoveryApi;
@@ -30,41 +30,38 @@ export class DeliveryProgrammeClient implements DeliveryProgrammeApi {
   }
 
   async getDeliveryProgrammes(): Promise<DeliveryProgramme[]> {
-    
-      const url = await this.getApiUrl();
+    const url = await this.getApiUrl();
 
-      const albNamesUrl = `${await this.discoveryApi.getBaseUrl(
-        'adp',
-      )}/armslengthbodynames`;
+    const albNamesUrl = `${await this.discoveryApi.getBaseUrl(
+      'adp',
+    )}/armslengthbodynames`;
 
-      const [deliveryProgrammesResponse, albNamesResponse] = await Promise.all([
-        this.fetchApi.fetch(url),
-        this.fetchApi.fetch(albNamesUrl),
-      ]);
+    const [deliveryProgrammesResponse, albNamesResponse] = await Promise.all([
+      this.fetchApi.fetch(url),
+      this.fetchApi.fetch(albNamesUrl),
+    ]);
 
-      if (!deliveryProgrammesResponse.ok) {
-        throw await ResponseError.fromResponse(deliveryProgrammesResponse);
-      } else if (!albNamesResponse.ok) {
-        throw await ResponseError.fromResponse(albNamesResponse);
-      }
+    if (!deliveryProgrammesResponse.ok) {
+      throw await ResponseError.fromResponse(deliveryProgrammesResponse);
+    } else if (!albNamesResponse.ok) {
+      throw await ResponseError.fromResponse(albNamesResponse);
+    }
 
-      const [deliveryProgrammes, albNamesMapping] = await Promise.all([
-        deliveryProgrammesResponse.json(),
-        albNamesResponse.json(),
-      ]);
+    const [deliveryProgrammes, albNamesMapping] = await Promise.all([
+      deliveryProgrammesResponse.json(),
+      albNamesResponse.json(),
+    ]);
 
-      const deliveryProgrammesWithNames = deliveryProgrammes.map(
-        (programme: { arms_length_body_id: string | number }) => ({
-          ...programme,
+    const deliveryProgrammesWithNames = deliveryProgrammes.map(
+      (programme: { arms_length_body_id: string | number }) => ({
+        ...programme,
 
-          arms_length_body_id_name:
-            albNamesMapping[programme.arms_length_body_id] ||
-            'Unknown ALB Name',
-        }),
-      );
+        arms_length_body_id_name:
+          albNamesMapping[programme.arms_length_body_id] || 'Unknown ALB Name',
+      }),
+    );
 
-      return deliveryProgrammesWithNames;
-    
+    return deliveryProgrammesWithNames;
   }
 
   async createDeliveryProgramme(

@@ -5,13 +5,6 @@ import {
 import { DeliveryProjectClient } from './DeliveryProjectClient';
 import { randomUUID } from 'node:crypto';
 
-jest.mock('@backstage/core-plugin-api', () => ({
-  DiscoveryApi: jest.fn(),
-  FetchApi: jest.fn(() => ({
-    fetch: jest.fn(),
-  })),
-}));
-
 describe('deliveryProjectClient', () => {
   let client: DeliveryProjectClient;
   let discoveryApi: { getBaseUrl: any };

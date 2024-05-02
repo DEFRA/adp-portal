@@ -33,7 +33,7 @@ describe('AlbFormFields', () => {
 
     const { result } = await render();
 
-    expect(result).toMatchSnapshot();
+    expect(result.baseElement).toMatchSnapshot();
   });
 
   it('Should render populated fields', async () => {
@@ -63,7 +63,7 @@ describe('AlbFormFields', () => {
       }
     });
 
-    expect(result).toMatchSnapshot();
+    expect(result.baseElement).toMatchSnapshot();
   });
 
   it('Should render default fields', async () => {
@@ -85,7 +85,7 @@ describe('AlbFormFields', () => {
 
     const { result } = await render(fields);
 
-    expect(result).toMatchSnapshot();
+    expect(result.baseElement).toMatchSnapshot();
   });
 
   it('Should write values back to the form', async () => {
@@ -107,21 +107,21 @@ describe('AlbFormFields', () => {
 
     const { form, result } = await render();
 
-    expect(result).toMatchSnapshot('Empty');
+    expect(result.baseElement).toMatchSnapshot('Empty');
     setTextField(result, 'Name', fields.title);
-    expect(result).toMatchSnapshot('Title set');
+    expect(result.baseElement).toMatchSnapshot('Title set');
     setTextField(result, 'Alias', fields.alias);
-    expect(result).toMatchSnapshot('Alias set');
+    expect(result.baseElement).toMatchSnapshot('Alias set');
     setTextField(result, 'Website', fields.url);
-    expect(result).toMatchSnapshot('Website set');
+    expect(result.baseElement).toMatchSnapshot('Website set');
     setTextField(result, 'Description', fields.description);
-    expect(result).toMatchSnapshot('Description set');
+    expect(result.baseElement).toMatchSnapshot('Description set');
     setTextField(
       result,
       'Delivery Programme Code / Abbreviation',
       fields.delivery_programme_code,
     );
-    expect(result).toMatchSnapshot('Programme Code set');
+    expect(result.baseElement).toMatchSnapshot('Programme Code set');
 
     await setSelectField(
       result,
@@ -130,7 +130,7 @@ describe('AlbFormFields', () => {
       'Alb 1',
       'arms_length_body_id',
     );
-    expect(result).toMatchSnapshot('Alb selected');
+    expect(result.baseElement).toMatchSnapshot('Alb selected');
 
     expect(form.getValues()).toMatchObject(fields);
   });

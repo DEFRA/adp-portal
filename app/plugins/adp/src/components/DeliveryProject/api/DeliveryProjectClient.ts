@@ -7,7 +7,7 @@ import {
 } from '@internal/plugin-adp-common';
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
-import { ValidationError } from '../../../utils/ValidationError';
+import { ValidationError } from '../../../utils';
 
 export class DeliveryProjectClient implements DeliveryProjectApi {
   private discoveryApi: DiscoveryApi;

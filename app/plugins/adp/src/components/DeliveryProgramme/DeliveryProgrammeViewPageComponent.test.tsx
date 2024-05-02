@@ -82,7 +82,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     const rendered = await render();
 
     // assert
-    expect(rendered).toMatchSnapshot();
+    expect(rendered.baseElement).toMatchSnapshot();
     expect(
       mockDeliveryProgrammeApi.getDeliveryProgrammes.mock.calls,
     ).toMatchObject([[]]);
@@ -100,7 +100,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     const rendered = await render();
 
     // assert
-    expect(rendered).toMatchSnapshot();
+    expect(rendered.baseElement).toMatchSnapshot();
     expect(
       mockDeliveryProgrammeApi.getDeliveryProgrammes.mock.calls,
     ).toMatchObject([[]]);
@@ -119,7 +119,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     const rendered = await render();
 
     // assert
-    expect(rendered).toMatchSnapshot();
+    expect(rendered.baseElement).toMatchSnapshot();
     expect(
       mockDeliveryProgrammeApi.getDeliveryProgrammes.mock.calls,
     ).toMatchObject([[]]);
@@ -139,7 +139,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     // act
     const rendered = await render();
 
-    expect(rendered).toMatchSnapshot('initial load');
+    expect(rendered.baseElement).toMatchSnapshot('initial load');
     expect(
       mockDeliveryProgrammeApi.getDeliveryProgrammes.mock.calls,
     ).toMatchObject([[]]);
@@ -155,7 +155,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
       ).toMatchObject([[], []]),
     );
 
-    expect(rendered).toMatchSnapshot('after create');
+    expect(rendered.baseElement).toMatchSnapshot('after create');
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
     assertEditDeliveryProgrammeButtonCalls(programmes);
@@ -172,7 +172,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     // act
     const rendered = await render();
 
-    expect(rendered).toMatchSnapshot('initial load');
+    expect(rendered.baseElement).toMatchSnapshot('initial load');
     expect(
       mockDeliveryProgrammeApi.getDeliveryProgrammes.mock.calls,
     ).toMatchObject([[]]);
@@ -188,7 +188,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
       ).toMatchObject([[], []]),
     );
 
-    expect(rendered).toMatchSnapshot('after edit');
+    expect(rendered.baseElement).toMatchSnapshot('after edit');
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
     assertEditDeliveryProgrammeButtonCalls([programmes[0], ...programmes]);

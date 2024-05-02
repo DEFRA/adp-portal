@@ -63,7 +63,7 @@ describe('AlbFormFields', () => {
 
     const { result } = await render();
 
-    expect(result).toMatchSnapshot();
+    expect(result.baseElement).toMatchSnapshot();
   });
 
   it('Should render populated fields', async () => {
@@ -120,7 +120,7 @@ describe('AlbFormFields', () => {
       }
     });
 
-    expect(result).toMatchSnapshot();
+    expect(result.baseElement).toMatchSnapshot();
   });
 
   it('Should render default fields', async () => {
@@ -169,7 +169,7 @@ describe('AlbFormFields', () => {
 
     const { result } = await render(fields);
 
-    expect(result).toMatchSnapshot();
+    expect(result.baseElement).toMatchSnapshot();
   });
 
   it('Should write values back to the form', async () => {
@@ -221,7 +221,7 @@ describe('AlbFormFields', () => {
       team_type: 'delivery',
     });
 
-    expect(result).toMatchSnapshot('Empty');
+    expect(result.baseElement).toMatchSnapshot('Empty');
     await setSelectField(
       result,
       form,
@@ -229,13 +229,13 @@ describe('AlbFormFields', () => {
       'Programme 1',
       'delivery_programme_id',
     );
-    expect(result).toMatchSnapshot('Programme set');
+    expect(result.baseElement).toMatchSnapshot('Programme set');
     setTextField(result, 'Name', fields.title);
-    expect(result).toMatchSnapshot('Title set');
+    expect(result.baseElement).toMatchSnapshot('Title set');
     setTextField(result, 'Alias', fields.alias);
-    expect(result).toMatchSnapshot('Alias set');
+    expect(result.baseElement).toMatchSnapshot('Alias set');
     setTextField(result, 'Description', fields.description);
-    expect(result).toMatchSnapshot('Description set');
+    expect(result.baseElement).toMatchSnapshot('Description set');
     await setSelectField(
       result,
       form,
@@ -243,15 +243,15 @@ describe('AlbFormFields', () => {
       'Publicly visible',
       'github_team_visibility',
     );
-    expect(result).toMatchSnapshot('Github visibility set');
+    expect(result.baseElement).toMatchSnapshot('Github visibility set');
     setTextField(result, 'CCoE Service Code', fields.delivery_project_code);
-    expect(result).toMatchSnapshot('Project code set');
+    expect(result.baseElement).toMatchSnapshot('Project code set');
     setTextField(result, 'CCoE Finance Cost Center Code', fields.finance_code);
-    expect(result).toMatchSnapshot('Finance code set');
+    expect(result.baseElement).toMatchSnapshot('Finance code set');
     setTextField(result, 'Business Service Owner', fields.service_owner);
-    expect(result).toMatchSnapshot('Service owner set');
+    expect(result.baseElement).toMatchSnapshot('Service owner set');
     setTextField(result, 'Azure DevOps Project', fields.ado_project);
-    expect(result).toMatchSnapshot('Ado project set');
+    expect(result.baseElement).toMatchSnapshot('Ado project set');
 
     expect(form.getValues()).toMatchObject(fields);
   });

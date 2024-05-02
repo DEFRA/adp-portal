@@ -5,13 +5,6 @@ import {
 import { ArmsLengthBodyClient } from './AlbClient';
 import { randomUUID } from 'node:crypto';
 
-jest.mock('@backstage/core-plugin-api', () => ({
-  DiscoveryApi: jest.fn(),
-  FetchApi: jest.fn(() => ({
-    fetch: jest.fn(),
-  })),
-}));
-
 describe('armsLengthBodyClient', () => {
   let client: ArmsLengthBodyClient;
   let discoveryApi: { getBaseUrl: any };

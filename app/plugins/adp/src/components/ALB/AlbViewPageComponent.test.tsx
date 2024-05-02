@@ -77,7 +77,7 @@ describe('ArmsLengthBodyViewPageComponent', () => {
     const rendered = await render();
 
     // assert
-    expect(rendered).toMatchSnapshot();
+    expect(rendered.baseElement).toMatchSnapshot();
     expect(mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls).toMatchObject([
       [],
     ]);
@@ -95,7 +95,7 @@ describe('ArmsLengthBodyViewPageComponent', () => {
     const rendered = await render();
 
     // assert
-    expect(rendered).toMatchSnapshot();
+    expect(rendered.baseElement).toMatchSnapshot();
     expect(mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls).toMatchObject([
       [],
     ]);
@@ -114,7 +114,7 @@ describe('ArmsLengthBodyViewPageComponent', () => {
     const rendered = await render();
 
     // assert
-    expect(rendered).toMatchSnapshot();
+    expect(rendered.baseElement).toMatchSnapshot();
     expect(mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls).toMatchObject([
       [],
     ]);
@@ -134,7 +134,7 @@ describe('ArmsLengthBodyViewPageComponent', () => {
     // act
     const rendered = await render();
 
-    expect(rendered).toMatchSnapshot('initial load');
+    expect(rendered.baseElement).toMatchSnapshot('initial load');
     expect(mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls).toMatchObject([
       [],
     ]);
@@ -150,7 +150,7 @@ describe('ArmsLengthBodyViewPageComponent', () => {
       ).toMatchObject([[], []]),
     );
 
-    expect(rendered).toMatchSnapshot('after create');
+    expect(rendered.baseElement).toMatchSnapshot('after create');
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
     assertEditArmsLengthBodyButtonCalls(projects);
@@ -167,7 +167,7 @@ describe('ArmsLengthBodyViewPageComponent', () => {
     // act
     const rendered = await render();
 
-    expect(rendered).toMatchSnapshot('initial load');
+    expect(rendered.baseElement).toMatchSnapshot('initial load');
     expect(mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls).toMatchObject([
       [],
     ]);
@@ -183,7 +183,7 @@ describe('ArmsLengthBodyViewPageComponent', () => {
       ).toMatchObject([[], []]),
     );
 
-    expect(rendered).toMatchSnapshot('after edit');
+    expect(rendered.baseElement).toMatchSnapshot('after edit');
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
     assertEditArmsLengthBodyButtonCalls([projects[0], ...projects]);

@@ -7,7 +7,7 @@ import {
 
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
-import { ValidationError } from '../../../utils/ValidationError';
+import { ValidationError } from '../../../utils';
 
 export class ArmsLengthBodyClient implements ArmsLengthBodyApi {
   private discoveryApi: DiscoveryApi;
