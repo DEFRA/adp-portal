@@ -1,301 +1,269 @@
 import React from 'react';
-import { act, fireEvent, waitFor } from '@testing-library/react';
+
+import { Button } from '@material-ui/core';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import {
-  PermissionApi,
-  permissionApiRef,
-  usePermission,
-} from '@backstage/plugin-permission-react';
-import { AuthorizeResult } from '@backstage/plugin-permission-common';
+import { DeliveryProjectApi, deliveryProjectApiRef } from './api';
+import { ErrorApi, errorApiRef } from '@backstage/core-plugin-api';
 import { DeliveryProjectViewPageComponent } from './DeliveryProjectViewPageComponent';
-import {
-  alertApiRef,
-  errorApiRef,
-  discoveryApiRef,
-  fetchApiRef,
-} from '@backstage/core-plugin-api';
+import { waitFor } from '@testing-library/react';
+import { DeliveryProject } from '@internal/plugin-adp-common';
 
-const mockErrorApi = { post: jest.fn() };
-const mockDiscoveryApi = { getBaseUrl: jest.fn() };
-const mockFetchApi = { fetch: jest.fn() };
-const mockAlertApi = { post: jest.fn() };
+beforeEach(() => {
+  jest.spyOn(global.Math, 'random').mockReturnValue(0);
 
-const mockAuthorize = jest
-  .fn()
-  .mockImplementation(async () => ({ result: AuthorizeResult.ALLOW }));
-const permissionApi: Partial<PermissionApi> = { authorize: mockAuthorize };
-
-jest.mock('@backstage/plugin-permission-react', () => ({
-  ...jest.requireActual('@backstage/plugin-permission-react'),
-  usePermission: jest.fn().mockReturnValue({ allowed: true }),
-}));
-
-jest.mock('../../hooks/useDeliveryProgrammesList', () => ({
-  useDeliveryProgrammesList: jest.fn().mockReturnValue([
-    {
-      dropdownItem: { label: 'Programme1', value: '1' },
-      programme: { id: '1', delivery_programme_code: 'prg' },
-    },
-  ]),
-}));
-
-const mockTableData = [
-  {
-    id: '1',
-    title: 'Project',
-    delivery_programme_id: '1',
-    description: 'Description 1',
-    delivery_project_code: 'tst',
-    team_type: 'delivery',
-    service_owner: 'x@y.com',
-    ado_project: 'defra-ffc',
-    github_team_visibility: 'public',
-    namespace: 'prg-tst',
-    created_at: new Date(),
-    updated_at: new Date(),
-  },
-];
-
-const updatedTableData = [
-  {
-    id: '1',
-    title: 'Project',
-    delivery_programme_id: '1',
-    description: 'Description 1 updated',
-    delivery_project_code: 'tst',
-    team_type: 'delivery',
-    service_owner: 'x@y.com',
-    ado_project: 'defra-ffc',
-    github_team_visibility: 'public',
-    namespace: 'prg-tst',
-    created_at: new Date(),
-    updated_at: new Date(),
-  },
-];
-
-const mockGetDeliveryProjects = jest.fn();
-const mockUpdateDeliveryProject = jest.fn().mockResolvedValue({});
-const mockGetDeliveryProjectById = jest.fn().mockResolvedValue({
-  id: '1',
-  title: 'Project',
-  delivery_programme_id: '1',
-  description: 'Description 1 updated',
-  delivery_project_code: 'tst',
-  team_type: 'delivery',
-  service_owner: 'x@y.com',
-  ado_project: 'defra-ffc',
-  github_team_visibility: 'public',
-  namespace: 'prg-tst',
-  created_at: new Date(),
-  updated_at: new Date(),
+  CreateDeliveryProjectButton.mockImplementation(({ onCreated, ...props }) => (
+    <Button {...props} onClick={onCreated} />
+  ));
+  EditDeliveryProjectButton.mockImplementation(
+    ({ deliveryProject, onEdited, ...props }) => (
+      <div>
+        {JSON.stringify(noTableData(deliveryProject))}
+        <Button {...props} onClick={onEdited} />
+      </div>
+    ),
+  );
 });
-jest.mock('./api/DeliveryProjectClient', () => ({
-  DeliveryProjectClient: jest.fn().mockImplementation(() => ({
-    getDeliveryProjects: mockGetDeliveryProjects,
-    updateDeliveryProject: mockUpdateDeliveryProject,
-    getDeliveryProjectById: mockGetDeliveryProjectById,
-  })),
-}));
+
+afterEach(() => {
+  jest.spyOn(global.Math, 'random').mockRestore();
+  jest.resetAllMocks();
+});
 
 describe('DeliveryProjectViewPageComponent', () => {
-  beforeEach(() => {
-    mockGetDeliveryProjects.mockClear();
-    mockUpdateDeliveryProject.mockClear();
-    mockAuthorize.mockClear();
-    (usePermission as jest.Mock).mockReturnValue({ allowed: true });
-  });
+  function setup() {
+    const mockErrorApi: jest.Mocked<ErrorApi> = {
+      error$: jest.fn(),
+      post: jest.fn(),
+    };
+    const mockDeliveryProjectApi: jest.Mocked<DeliveryProjectApi> = {
+      createDeliveryProject: jest.fn(),
+      getDeliveryProjectById: jest.fn(),
+      updateDeliveryProject: jest.fn(),
+      getDeliveryProjects: jest.fn(),
+    };
 
-  const element = (
-    <TestApiProvider
-      apis={[
-        [alertApiRef, mockAlertApi],
-        [errorApiRef, mockErrorApi],
-        [discoveryApiRef, mockDiscoveryApi],
-        [fetchApiRef, mockFetchApi],
-        [permissionApiRef, permissionApi],
-      ]}
-    >
-      <DeliveryProjectViewPageComponent />
-    </TestApiProvider>
-  );
-  const render = async () => renderInTestApp(element);
+    return {
+      mockErrorApi,
+      mockDeliveryProjectApi,
+      async render() {
+        const result = await renderInTestApp(
+          <TestApiProvider
+            apis={[
+              [errorApiRef, mockErrorApi],
+              [deliveryProjectApiRef, mockDeliveryProjectApi],
+            ]}
+          >
+            <DeliveryProjectViewPageComponent />
+          </TestApiProvider>,
+        );
 
-  afterEach(() => {
-    mockGetDeliveryProjects.mockReset();
-    jest.clearAllMocks();
-  });
+        await waitFor(() => {
+          expect(
+            result.getByText('Azure Development Platform: Onboarding'),
+          ).toBeInTheDocument();
+        });
 
-  afterAll(() => {
-    jest.resetAllMocks();
-  });
-
-  it('fetches and displays delivery projects in the table upon loading', async () => {
-    mockGetDeliveryProjects.mockResolvedValue(mockTableData);
-    const rendered = await render();
-
-    await waitFor(() => {
-      expect(rendered.getByText('Project')).toBeInTheDocument();
-    });
-  });
-
-  it('should throw error when DeliveryProjectClient throws error', async () => {
-    mockGetDeliveryProjects.mockImplementation(() => {
-      throw new Error('Cannot fetch Delivery Project');
-    });
-
-    const rendered = await render();
-
-    await waitFor(async () => {
-      expect(
-        await rendered.findByText('Delivery Projects'),
-      ).toBeInTheDocument();
-      expect(mockErrorApi.post).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: 'Cannot fetch Delivery Project',
-        }),
-      );
-    });
-  });
-
-  it('should open edit modal when edit button is clicked', async () => {
-    mockGetDeliveryProjects.mockResolvedValue(mockTableData);
-    const rendered = await render();
-    act(() => {
-      fireEvent.click(rendered.getByTestId('delivery-project-edit-button-1'));
-    });
-
-    await waitFor(() => {
-      expect(rendered.getByText('Edit: Project')).toBeInTheDocument();
-    });
-  });
-
-  it('should close edit modal when cancel button is clicked', async () => {
-    mockGetDeliveryProjects.mockResolvedValue(mockTableData);
-    const rendered = await render();
-    act(() => {
-      fireEvent.click(rendered.getByTestId('delivery-project-edit-button-1'));
-    });
-
-    await waitFor(() => {
-      expect(
-        rendered.getByTestId('actions-modal-cancel-button'),
-      ).toBeInTheDocument();
-    });
-
-    act(() => {
-      fireEvent.click(rendered.getByTestId('actions-modal-cancel-button'));
-    });
-
-    await waitFor(() => {
-      expect(rendered.queryByText('Edit: Project')).not.toBeInTheDocument();
-    });
-  });
-
-  it('should open add modal when add button is clicked', async () => {
-    mockGetDeliveryProjects.mockResolvedValue(mockTableData);
-    const rendered = await render();
-
-    fireEvent.click(rendered.getByTestId('create-delivery-project-button'));
-
-    await waitFor(() => {
-      expect(rendered.getByText('Create:')).toBeInTheDocument();
-    });
-  });
-
-  it('should update the item when update button is clicked', async () => {
-    mockGetDeliveryProjects.mockResolvedValue(mockTableData);
-    const rendered = await render();
-
-    fireEvent.click(rendered.getByTestId('delivery-project-edit-button-1'));
-
-    await waitFor(() => {
-      expect(rendered.queryByText('Title')).toBeInTheDocument();
-      expect(rendered.queryByText('Project')).toBeInTheDocument();
-    });
-
-    fireEvent.change(rendered.getByLabelText('Title'), {
-      target: { value: 'Project updated' },
-    });
-
-    fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
-
-    mockGetDeliveryProjects.mockResolvedValue(updatedTableData);
-
-    await waitFor(() => {
-      expect(mockUpdateDeliveryProject).toHaveBeenCalled();
-      expect(mockAlertApi.post).toHaveBeenNthCalledWith(1, {
-        display: 'transient',
-        message: 'Updated',
-        severity: 'success',
-      });
-    });
-  });
-
-  it('should not update the item when update button is clicked and has a non-unique title', async () => {
-    mockGetDeliveryProjects.mockResolvedValue(mockTableData);
-    const updatedTableData = [
-      {
-        id: '1',
-        title: 'Project',
-        delivery_programme_id: '1',
-        description: 'Description 1',
-        delivery_project_code: 'tst',
-        team_type: 'delivery',
-        service_owner: 'x@y.com',
-        ado_project: 'defra-ffc',
-        github_team_visibility: 'public',
-        namespace: 'prg-tst',
-        created_at: new Date(),
-        updated_at: new Date(),
+        return result;
       },
-    ];
-    mockUpdateDeliveryProject.mockResolvedValue(updatedTableData);
+    };
+  }
+
+  it('Should render the page with many projects correctly', async () => {
+    // arrange
+    const { render, mockDeliveryProjectApi, mockErrorApi } = setup();
+    const projects = createDeliveryProjects(17);
+
+    mockDeliveryProjectApi.getDeliveryProjects.mockResolvedValueOnce(projects);
+
+    // act
     const rendered = await render();
-    act(() => {
-      fireEvent.click(rendered.getByTestId('delivery-project-edit-button-1'));
-    });
-    await waitFor(() => {
-      expect(rendered.queryByText('Title')).toBeInTheDocument();
-    });
-    act(() => {
-      fireEvent.change(rendered.getByLabelText('Title'), {
-        target: { value: 'Project' },
-      });
-    });
 
-    act(() => {
-      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
-    });
-    mockGetDeliveryProjects.mockResolvedValue(updatedTableData);
-
-    await waitFor(() => {
-      expect(rendered.queryByText('Edit: Project')).toBeInTheDocument();
-      expect(mockAlertApi.post).toHaveBeenCalledTimes(1);
-    });
+    // assert
+    expect(rendered).toMatchSnapshot();
+    expect(mockDeliveryProjectApi.getDeliveryProjects.mock.calls).toMatchObject(
+      [[]],
+    );
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    assertEditDeliveryProjectButtonCalls(projects.slice(0, 5));
   });
 
-  it('should call ErrorApi when update fails', async () => {
-    mockGetDeliveryProjects.mockResolvedValue(mockTableData);
-    mockUpdateDeliveryProject.mockRejectedValue(new Error('Update failed'));
+  it('Should render the page with no projects correctly', async () => {
+    // arrange
+    const { render, mockDeliveryProjectApi, mockErrorApi } = setup();
+    mockDeliveryProjectApi.getDeliveryProjects.mockResolvedValueOnce([]);
+
+    // act
     const rendered = await render();
-    act(() => {
-      fireEvent.click(rendered.getByTestId('delivery-project-edit-button-1'));
-    });
-    await waitFor(() => {
-      expect(rendered.queryByText('Title')).toBeInTheDocument();
-    });
-    act(() => {
-      fireEvent.change(rendered.getByLabelText('Title'), {
-        target: { value: 'Project updated' },
-      });
-    });
 
-    act(() => {
-      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
-    });
+    // assert
+    expect(rendered).toMatchSnapshot();
+    expect(mockDeliveryProjectApi.getDeliveryProjects.mock.calls).toMatchObject(
+      [[]],
+    );
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    expect(EditDeliveryProjectButton.mock.calls).toMatchObject([]);
+  });
 
-    await waitFor(() => {
-      expect(mockErrorApi.post).toHaveBeenCalledTimes(1);
-    });
+  it('Should render the page when the projects fail to load correctly', async () => {
+    // arrange
+    const { render, mockDeliveryProjectApi, mockErrorApi } = setup();
+    const error = new Error();
+    mockDeliveryProjectApi.getDeliveryProjects.mockRejectedValueOnce(error);
+
+    // act
+    const rendered = await render();
+
+    // assert
+    expect(rendered).toMatchSnapshot();
+    expect(mockDeliveryProjectApi.getDeliveryProjects.mock.calls).toMatchObject(
+      [[]],
+    );
+    expect(mockErrorApi.post.mock.calls).toMatchObject([[error]]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    expect(EditDeliveryProjectButton.mock.calls).toMatchObject([]);
+  });
+
+  it('Should refresh when a project is created', async () => {
+    // arrange
+    const { render, mockDeliveryProjectApi, mockErrorApi } = setup();
+    const projects = createDeliveryProjects(1);
+    mockDeliveryProjectApi.getDeliveryProjects
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce(projects);
+
+    // act
+    const rendered = await render();
+
+    expect(rendered).toMatchSnapshot('initial load');
+    expect(mockDeliveryProjectApi.getDeliveryProjects.mock.calls).toMatchObject(
+      [[]],
+    );
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    expect(EditDeliveryProjectButton.mock.calls).toMatchObject([]);
+
+    rendered.getByTestId('delivery-project-add-button').click();
+
+    await waitFor(() =>
+      expect(
+        mockDeliveryProjectApi.getDeliveryProjects.mock.calls,
+      ).toMatchObject([[], []]),
+    );
+
+    expect(rendered).toMatchSnapshot('after create');
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    assertEditDeliveryProjectButtonCalls(projects);
+  });
+
+  it('Should refresh when a project is edited', async () => {
+    // arrange
+    const { render, mockDeliveryProjectApi, mockErrorApi } = setup();
+    const projects = createDeliveryProjects(2);
+    mockDeliveryProjectApi.getDeliveryProjects
+      .mockResolvedValueOnce(projects.slice(0, 1))
+      .mockResolvedValueOnce(projects);
+
+    // act
+    const rendered = await render();
+
+    expect(rendered).toMatchSnapshot('initial load');
+    expect(mockDeliveryProjectApi.getDeliveryProjects.mock.calls).toMatchObject(
+      [[]],
+    );
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    assertEditDeliveryProjectButtonCalls(projects.slice(0, 1));
+
+    rendered.getByTestId('delivery-project-edit-button-0').click();
+
+    await waitFor(() =>
+      expect(
+        mockDeliveryProjectApi.getDeliveryProjects.mock.calls,
+      ).toMatchObject([[], []]),
+    );
+
+    expect(rendered).toMatchSnapshot('after edit');
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    assertEditDeliveryProjectButtonCalls([projects[0], ...projects]);
   });
 });
+
+let EditDeliveryProjectButton: jest.MockedFn<
+  typeof import('./EditDeliveryProjectButton').EditDeliveryProjectButton
+> = jest.fn();
+jest.mock(
+  './EditDeliveryProjectButton',
+  () =>
+    ({
+      get EditDeliveryProjectButton() {
+        return EditDeliveryProjectButton;
+      },
+    } satisfies typeof import('./EditDeliveryProjectButton')),
+);
+
+let CreateDeliveryProjectButton: jest.MockedFn<
+  typeof import('./CreateDeliveryProjectButton').CreateDeliveryProjectButton
+> = jest.fn();
+jest.mock(
+  './CreateDeliveryProjectButton',
+  () =>
+    ({
+      get CreateDeliveryProjectButton() {
+        return CreateDeliveryProjectButton;
+      },
+    } satisfies typeof import('./CreateDeliveryProjectButton')),
+);
+
+function noTableData(value: unknown) {
+  if (typeof value !== 'object' || value === null) return value;
+  const { tableData, ...result } = value as Record<string, unknown>;
+  return result;
+}
+
+function assertEditDeliveryProjectButtonCalls(projects: DeliveryProject[]) {
+  expect(
+    EditDeliveryProjectButton.mock.calls.map(
+      ([{ deliveryProject, onEdited, ...props }, ...rest]) => [
+        { ...props, deliveryProject: noTableData(deliveryProject) },
+        ...rest,
+      ],
+    ),
+  ).toMatchObject(
+    projects.map(p => [
+      {
+        children: 'Edit',
+        color: 'default',
+        'data-testid': `delivery-project-edit-button-${p.id}`,
+        variant: 'contained',
+        deliveryProject: p,
+      },
+      {},
+    ]),
+  );
+}
+
+function createDeliveryProjects(count: number) {
+  return [...new Array(count)].map<DeliveryProject>((_, i) => ({
+    id: i.toString(),
+    name: 'project-' + i,
+    title: 'Project ' + i,
+    ado_project: 'My ado project',
+    created_at: new Date(0),
+    delivery_programme_code: 'ABC',
+    delivery_programme_id: '123',
+    delivery_project_code: 'DEF',
+    description: 'My project',
+    namespace: 'ABC-DEF',
+    service_owner: 'test@email.com',
+    team_type: 'delivery',
+    updated_at: new Date(0),
+    alias: 'Cool project',
+    finance_code: 'Money number',
+    github_team_visibility: 'public',
+    updated_by: 'Me',
+  }));
+}

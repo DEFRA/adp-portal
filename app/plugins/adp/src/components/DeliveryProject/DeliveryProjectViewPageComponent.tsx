@@ -44,7 +44,7 @@ export const DeliveryProjectViewPageComponent = () => {
               variant="contained"
               color="default"
               deliveryProject={d}
-              data-testid={`delivery-programme-edit-button-${d.id}`}
+              data-testid={`delivery-project-edit-button-${d.id}`}
               onEdited={refetchDeliveryProject}
             >
               Edit
@@ -115,7 +115,7 @@ export const DeliveryProjectViewPageComponent = () => {
             variant="contained"
             size="large"
             color="primary"
-            data-testid="add-delivery-project-btn"
+            data-testid="delivery-project-add-button"
             startIcon={<AddBoxIcon />}
             onCreated={refetchDeliveryProject}
           >

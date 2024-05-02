@@ -106,6 +106,7 @@ export const AlbViewPageComponent = () => {
             color="primary"
             startIcon={<AddBoxIcon />}
             onCreated={refetchArmsLengthBody}
+            data-testid="alb-add-button"
           >
             Add ALB
           </CreateAlbButton>
