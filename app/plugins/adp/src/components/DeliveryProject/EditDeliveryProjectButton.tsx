@@ -16,8 +16,8 @@ import {
   DialogForm,
   SubmitResult,
   TitleWithHelp,
-  deliveryProjectUtil,
   populate,
+  readValidationError,
 } from '../../utils';
 import { deliveryProjectApiRef } from './api';
 
@@ -53,7 +53,7 @@ export function EditDeliveryProjectButton({
         ...fields,
       });
     } catch (e: any) {
-      return deliveryProjectUtil.readValidationError(e);
+      return readValidationError(e);
     }
     alertApi.post({
       message: 'Delivery Project updated successfully.',

@@ -4,7 +4,7 @@ import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import { AlbFields, AlbFormFields, emptyForm } from './AlbFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
 import { adpProgrammmeCreatePermission } from '@internal/plugin-adp-common';
-import { DialogForm, SubmitResult, albUtil } from '../../utils';
+import { DialogForm, SubmitResult, readValidationError } from '../../utils';
 import { armsLengthBodyApiRef } from './api';
 
 export type CreateAlbButtonProps = Readonly<
@@ -33,7 +33,7 @@ export function CreateAlbButton({
     try {
       await client.createArmsLengthBody(fields);
     } catch (e: any) {
-      return albUtil.readValidationError(e);
+      return readValidationError(e);
     }
     alertApi.post({
       message: 'ALB created successfully.',

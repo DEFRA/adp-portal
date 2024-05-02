@@ -12,7 +12,7 @@ import {
   DialogForm,
   SubmitResult,
   TitleWithHelp,
-  deliveryProgrammeUtil,
+  readValidationError,
 } from '../../utils';
 import { deliveryProgrammeApiRef } from './api';
 
@@ -42,7 +42,7 @@ export function CreateDeliveryProgrammeButton({
     try {
       await client.createDeliveryProgramme(fields);
     } catch (e: any) {
-      return deliveryProgrammeUtil.readValidationError(e);
+      return readValidationError(e);
     }
     alertApi.post({
       message: 'Delivery Programme created successfully.',

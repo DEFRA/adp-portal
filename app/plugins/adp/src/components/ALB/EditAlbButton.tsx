@@ -7,7 +7,7 @@ import {
   ArmsLengthBody,
   adpProgrammmeCreatePermission,
 } from '@internal/plugin-adp-common';
-import { DialogForm, SubmitResult, albUtil } from '../../utils';
+import { DialogForm, SubmitResult, readValidationError } from '../../utils';
 import { armsLengthBodyApiRef } from './api';
 
 export type EditAlbProps = Readonly<
@@ -41,7 +41,7 @@ export function EditAlbButton({
         id: armsLengthBody.id,
       });
     } catch (e: any) {
-      return albUtil.readValidationError(e);
+      return readValidationError(e);
     }
     alertApi.post({
       message: 'ALB edited successfully.',

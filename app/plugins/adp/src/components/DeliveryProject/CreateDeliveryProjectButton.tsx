@@ -12,7 +12,7 @@ import {
   DialogForm,
   SubmitResult,
   TitleWithHelp,
-  deliveryProjectUtil,
+  readValidationError,
 } from '../../utils';
 import { deliveryProjectApiRef } from './api';
 
@@ -43,7 +43,7 @@ export function CreateDeliveryProjectButton({
     try {
       await client.createDeliveryProject(fields);
     } catch (e: any) {
-      return deliveryProjectUtil.readValidationError(e);
+      return readValidationError(e);
     }
     alertApi.post({
       message: 'Delivery Project created successfully.',
