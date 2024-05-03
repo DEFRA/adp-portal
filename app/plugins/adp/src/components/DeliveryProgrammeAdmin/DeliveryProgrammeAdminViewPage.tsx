@@ -120,13 +120,8 @@ function normalizeUsername(name: string): string {
     .toLocaleLowerCase()
     .replace(/[^a-zA-Z0-9_\-.]/g, '_');
 
-  while (cleaned.endsWith('_')) {
-    cleaned = cleaned.substring(0, cleaned.length - 1);
-  }
-
-  while (cleaned.includes('__')) {
-    cleaned = cleaned.replace('__', '_');
-  }
+  cleaned = cleaned.replace(/_+$/g, '');
+  cleaned = cleaned.replaceAll(/__+/g, '_');
 
   return cleaned;
 }
