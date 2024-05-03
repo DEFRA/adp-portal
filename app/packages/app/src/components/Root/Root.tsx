@@ -77,7 +77,7 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarScrollWrapper>
           {/* <SidebarItem icon={FluxIcon} to="flux-runtime" text="Flux Runtime" /> */}
           <SidebarItem icon={MapIcon} to="tech-radar" text="Tech Radar" />
-          <SidebarItem icon={BusinessIcon} to="adp" text="ADP Onboarding" />
+          <SidebarItem icon={BusinessIcon} to="onboarding" text="ADP Onboarding" />
         </SidebarScrollWrapper>
       </SidebarGroup>
       <SidebarSpace />

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import {
   Content,
   ContentHeader,
+  Link,
   Page,
   TableColumn,
 } from '@backstage/core-components';
@@ -11,6 +12,7 @@ import { DefaultTable } from '@internal/plugin-adp/src/utils';
 import { errorApiRef, useApi } from '@backstage/core-plugin-api';
 import { deliveryProgrammeAdminApiRef } from './api';
 import { useEntity } from '@backstage/plugin-catalog-react';
+import { useEntityRoute } from '../../hooks';
 
 export const DeliveryProgrammeAdminViewPage = () => {
   const [tableData, setTableData] = useState<DeliveryProgrammeAdmin[]>([]);
@@ -18,6 +20,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
     return i + 1;
   }, 0);
   const { entity } = useEntity();
+  const entityRoute = useEntityRoute;
 
   const deliveryProgrammeAdminApi = useApi(deliveryProgrammeAdminApiRef);
   const errorApi = useApi(errorApiRef);
@@ -45,6 +48,11 @@ export const DeliveryProgrammeAdminViewPage = () => {
       field: 'name',
       highlight: true,
       type: 'string',
+      render: (row: Partial<DeliveryProgrammeAdmin>) => {
+        const username = normalizeUsername(row.email!);
+        const target = entityRoute(username, 'user', 'default');
+        return <Link to={target}>{row.name!}</Link>;
+      },
     },
     {
       title: 'Contact',
@@ -52,7 +60,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
       highlight: false,
       type: 'string',
       render: (row: Partial<DeliveryProgrammeAdmin>) => (
-        <a href={`mailto:${row.email}`}>{row.email}</a>
+        <Link to={`mailto:${row.email}`}> {row.email}</Link>
       ),
     },
     {
@@ -87,8 +95,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
   return (
     <Page themeId="tool">
       <Content>
-        <ContentHeader title="Delivery Programme Admins">
-        </ContentHeader>
+        <ContentHeader title="Delivery Programme Admins"></ContentHeader>
         <Grid item>
           <div>
             <DefaultTable
@@ -103,3 +110,18 @@ export const DeliveryProgrammeAdminViewPage = () => {
     </Page>
   );
 };
+
+function normalizeUsername(name: string): string {
+  // Implementation based on Backstage's implementation - importing this
+  // causes startup errors as trying to pull a backend module in to a front end.
+  // https://github.com/backstage/backstage/blob/master/plugins/catalog-backend-module-msgraph/src/microsoftGraph/helper.ts
+  let cleaned = name
+    .trim()
+    .toLocaleLowerCase()
+    .replace(/[^a-zA-Z0-9_\-.]/g, '_');
+
+  cleaned = cleaned.replace(/_+$/g, '');
+  cleaned = cleaned.replaceAll(/__+/g, '_');
+
+  return cleaned;
+}

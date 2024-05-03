@@ -7,6 +7,8 @@ import {
   ContentHeader,
   SupportButton,
   TableColumn,
+  LinkButton,
+  Link,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils/Table';
 import { ActionsModal } from '../../utils/ActionsModal';
@@ -25,16 +27,18 @@ import CreateDeliveryProgramme from './CreateDeliveryProgramme';
 import { DeliveryProgrammeClient } from './api/DeliveryProgrammeClient';
 import { DeliveryProgrammeApi } from './api/DeliveryProgrammeApi';
 import { DeliveryProgrammeFormFields } from './DeliveryProgrammeFormFields';
-import { useArmsLengthBodyList } from '../../hooks/useArmsLengthBodyList';
-import {
-  transformedData,
-  useProgrammeManagersList,
-} from '../../hooks/useProgrammeManagersList';
 import { usePermission } from '@backstage/plugin-permission-react';
 import {
   isCodeUnique,
   isNameUnique,
 } from '../../utils/DeliveryProgramme/DeliveryProgrammeUtils';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import {
+  useEntityRoute,
+  useArmsLengthBodyList,
+  transformedData,
+  useProgrammeManagersList,
+} from '../../hooks';
 
 type FormDataModel =
   | Record<string, never>
@@ -56,6 +60,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
   const fetchApi = useApi(fetchApiRef);
   const getArmsLengthBodyDropDown = useArmsLengthBodyList();
   const getProgrammeManagerDropDown = useProgrammeManagersList();
+  const entityRoute = useEntityRoute;
 
   const deliveryprogClient: DeliveryProgrammeApi = new DeliveryProgrammeClient(
     discoveryApi,
@@ -169,6 +174,10 @@ export const DeliveryProgrammeViewPageComponent = () => {
       field: 'title',
       highlight: true,
       type: 'string',
+      render: (row: Partial<DeliveryProgramme>) => {
+        const target = entityRoute(row.name!, 'group', 'default');
+        return <Link to={target}>{row.title!}</Link>;
+      },
     },
     {
       title: 'Alias',
@@ -197,23 +206,33 @@ export const DeliveryProgrammeViewPageComponent = () => {
       highlight: false,
       type: 'datetime',
     },
-
     {
-      width: '',
       highlight: true,
-      render: (rowData: any) => {
-        const data = rowData as DeliveryProgramme;
+      align: 'right',
+      render: (row: Partial<DeliveryProgramme>) => {
+        const target = entityRoute(row.name!, 'group', 'default');
         return (
-          allowedToEditAdpProgramme && (
-            <Button
-              variant="contained"
+          <>
+            <LinkButton
+              to={`${target}/manage-members`}
+              variant="outlined"
               color="default"
-              onClick={() => handleEdit(data)}
-              data-testid={`delivery-programme-edit-button-${data.id}`}
+              title="View Delivery Programme Admins"
             >
-              Edit
-            </Button>
-          )
+              <AccountBoxIcon />
+            </LinkButton>
+            &nbsp;
+            {allowedToEditAdpProgramme && (
+              <Button
+                variant="contained"
+                color="default"
+                onClick={() => handleEdit(row as DeliveryProgramme)}
+                data-testid={`delivery-programme-edit-button-${row.id}`}
+              >
+                Edit
+              </Button>
+            )}
+          </>
         );
       },
     },

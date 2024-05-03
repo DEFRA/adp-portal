@@ -14,6 +14,7 @@ import {
   discoveryApiRef,
   fetchApiRef,
 } from '@backstage/core-plugin-api';
+import { entityRouteRef } from '@backstage/plugin-catalog-react';
 
 const mockErrorApi = { post: jest.fn() };
 const mockDiscoveryApi = { getBaseUrl: jest.fn() };
@@ -49,6 +50,7 @@ const mockTableData = [
     id: '1',
     title: 'Delivery Programme 1',
     alias: 'DeliveryProgramme1',
+    name: 'delivery-programme-1',
     description: 'Description 1',
     finance_code: '',
     delivery_programme_code: '1',
@@ -62,6 +64,7 @@ const mockTableData = [
     id: '2',
     title: 'Delivery Programme 2',
     alias: 'DeliveryProgramme2',
+    name: 'delivery-programme-2',
     description: 'Description 2',
     finance_code: '',
     delivery_programme_code: '2',
@@ -78,6 +81,7 @@ const updatedTableData = [
     id: '1',
     title: 'Delivery Programme 1 edited',
     alias: 'DeliveryProgramme1',
+    name: 'delivery-programme-1',
     programme_managers: [],
     arms_length_body_id: '1',
     finance_code: '',
@@ -91,6 +95,7 @@ const updatedTableData = [
     id: '2',
     title: 'Delivery Programme 2',
     alias: 'DeliveryProgramme2',
+    name: 'delivery-programme-2',
     finance_code: '',
     delivery_programme_code: '1',
     programme_managers: [],
@@ -154,7 +159,13 @@ describe('DeliveryProgrammeViewPageComponent', () => {
       <DeliveryProgrammeViewPageComponent />
     </TestApiProvider>
   );
-  const render = async () => renderInTestApp(element);
+  const render = async () => renderInTestApp(element,
+    {
+      mountedRoutes: {
+        '/catalog/:namespace/:kind/:name/*': entityRouteRef
+      }
+    }
+  );
 
   afterEach(() => {
     mockGetDeliveryProgrammes.mockReset();

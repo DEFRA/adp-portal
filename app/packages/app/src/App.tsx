@@ -222,16 +222,12 @@ const routes = (
   <FlatRoutes>
     <Route path="/" element={<Navigate to="catalog" />} />
     <Route path="/catalog" element={<CatalogIndexPage />} />
-    <Route path="/alb" element={<AlbViewPageComponent />} />
-    <Route path="/deliveryprogramme" element={<DeliveryProgrammeViewPageComponent />} />
-    <Route path="/deliveryproject" element={<DeliveryProjectViewPageComponent />} />
     <Route
       path="/catalog/:namespace/:kind/:name"
       element={<CatalogEntityPage />}
     >
       {entityPage}
     </Route>
-    {/* <Route path="/create" element={<ScaffolderPage />} /> */}
     <Route
       path="/create"
       element={
@@ -285,7 +281,10 @@ const routes = (
       </TechDocsAddons>
     </Route>
     <Route path="/flux-runtime" element={<FluxRuntimePage />} />
-    <Route path="/adp" element={<AdpPage />} />
+    <Route path="/onboarding" element={<AdpPage />} />
+    <Route path="/onboarding/arms-length-bodies" element={<AlbViewPageComponent />} />
+    <Route path="/onboarding/delivery-programmes" element={<DeliveryProgrammeViewPageComponent />} />
+    <Route path="/onboarding/delivery-projects" element={<DeliveryProjectViewPageComponent />} />
   </FlatRoutes>
 );
 
