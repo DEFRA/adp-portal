@@ -9,7 +9,7 @@ import {
   getPersonalAccessTokenHandler,
 } from 'azure-devops-node-api';
 import { IRequestOptions, IRestResponse, RestClient } from 'typed-rest-client';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import {
   Build,
   Pipeline,
@@ -116,7 +116,7 @@ export class AzureDevOpsApi {
   }
 
   public async getServiceConnections(
-    adoOptions: {organization: string, project: string},
+    adoOptions: { organization: string; project: string },
     serviceConnectionNames: string,
     apiVersion = '7.2-preview.4',
   ): Promise<ServiceEndpointResponse> {
@@ -143,7 +143,7 @@ export class AzureDevOpsApi {
   }
 
   public async createPipeline(
-    adoOptions: {organization: string, project: string},
+    adoOptions: { organization: string; project: string },
     pipelineName: string,
     folder: string,
     repositoryName: string,
@@ -186,7 +186,7 @@ export class AzureDevOpsApi {
   }
 
   public async permitPipeline(
-    adoOptions: {organization: string, project: string},
+    adoOptions: { organization: string; project: string },
     pipelineId: number,
     pipelineResources: ResourceOptions[],
     apiVersion = '7.2-preview.1',
@@ -226,7 +226,7 @@ export class AzureDevOpsApi {
   }
 
   public async runPipeline(
-    adoOptions: {organization: string, project: string},
+    adoOptions: { organization: string; project: string },
     pipelineId: number,
     parameters?: Record<string, string>,
     branch: string = 'main',
@@ -263,7 +263,7 @@ export class AzureDevOpsApi {
   }
 
   public async getBuild(
-    adoOptions: {organization: string, project: string},
+    adoOptions: { organization: string; project: string },
     runId: number,
     apiVersion: string = '7.2-preview.7',
   ): Promise<Build> {

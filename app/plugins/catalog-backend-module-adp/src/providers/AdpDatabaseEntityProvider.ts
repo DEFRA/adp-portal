@@ -3,12 +3,12 @@ import {
   EntityProvider,
   EntityProviderConnection,
 } from '@backstage/plugin-catalog-node';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import * as uuid from 'uuid';
 import { DiscoveryService } from '@backstage/backend-plugin-api';
 import { Entity, GroupEntity } from '@backstage/catalog-model';
 import fetch from 'node-fetch';
-import {
+import type {
   ArmsLengthBody,
   DeliveryProgramme,
   DeliveryProject,

@@ -3,7 +3,7 @@ import { InputError } from '@backstage/errors';
 import { ScmIntegrationRegistry } from '@backstage/integration';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { BuildStatus } from './types';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
 
 type RunPipelineOptions = {
@@ -176,7 +176,6 @@ async function checkPipelineStatus(
       logger,
       apiVersion,
     );
-  } 
-    return false;
-  
+  }
+  return false;
 }

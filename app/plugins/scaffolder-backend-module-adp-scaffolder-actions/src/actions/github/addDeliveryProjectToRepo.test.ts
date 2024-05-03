@@ -5,7 +5,7 @@ import { PassThrough } from 'node:stream';
 import { randomUUID } from 'node:crypto';
 import { mockedOctokit } from './mockedOctokit';
 import { getVoidLogger } from '@backstage/backend-common';
-import {
+import type {
   DeliveryProjectTeamsSyncResult,
   IAdpClient,
 } from '@internal/plugin-adp-common';

@@ -1,8 +1,8 @@
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { Octokit } from 'octokit';
 import { Config } from '@backstage/config';
-import { IAdpClient } from '@internal/plugin-adp-common';
+import type { IAdpClient } from '@internal/plugin-adp-common';
 
 export function addDeliveryProjectToRepo(options: {
   config: Config;
