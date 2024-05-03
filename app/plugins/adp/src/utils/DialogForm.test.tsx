@@ -7,8 +7,6 @@ import { FieldValues } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 
-console.log(process.env);
-
 describe('DialogForm', () => {
   it('Should not render when closed', async () => {
     // arrange
