@@ -2,5 +2,6 @@
   "sonarlint.connectedMode.project": {
     "connectionId": "defra",
     "projectKey": "adp-portal"
-  }
+  },
+  "eslint.workingDirectories": [{ "mode": "auto" }]
 }

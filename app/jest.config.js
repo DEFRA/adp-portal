@@ -1,12 +1,10 @@
 process.env.TZ = 'UTC';
 
 /** @type {Promise<import('jest').Config>} */
-const baseConfig = require('@backstage/cli/config/jest.js');
-
 module.exports = (async function () {
   /** @type {import('jest').Config} */
   return {
-    ...(await baseConfig),
+    ...(await require('@backstage/cli/config/jest.js')),
     testPathIgnorePatterns: [
       '/packages/backend/src/plugins/',
       '/packages/backend/src/index.ts',
