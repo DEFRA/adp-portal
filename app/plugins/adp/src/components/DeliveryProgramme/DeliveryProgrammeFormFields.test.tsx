@@ -157,13 +157,9 @@ async function setSelectField<
   field: TPath,
 ) {
   const oldValue = form.getValues(field);
-  userEvent.click(result.getByLabelText(label));
-  await waitFor(() => {
-    userEvent.click(result.getByText(option));
-  });
-  await waitFor(() => {
-    expect(form.getValues(field)).not.toBe(oldValue);
-  });
+  await userEvent.click(result.getByLabelText(label));
+  await waitFor(() => userEvent.click(result.getByText(option)));
+  await waitFor(() => expect(form.getValues(field)).not.toBe(oldValue));
 }
 
 type Context = {
