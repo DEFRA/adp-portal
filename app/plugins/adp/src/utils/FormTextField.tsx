@@ -8,6 +8,8 @@ import {
   FieldPath,
   FieldValues,
   UseControllerProps,
+  ValidationRule,
+  ValidationValue,
 } from 'react-hook-form';
 import { isFieldDisabled } from './isFieldDisabled';
 
@@ -66,8 +68,28 @@ export function FormTextField<
           maxRows={maxRows}
           data-testid={name}
           disabled={isFieldDisabled(disabled, name)}
+          inputProps={{
+            'aria-required': getValidationRule(rules?.required)
+              ? true
+              : undefined,
+            maxLength: getValidationRule(rules?.maxLength),
+          }}
         />
       )}
     />
   );
+}
+
+function getValidationRule<T extends ValidationValue>(
+  rule?: ValidationRule<T>,
+) {
+  switch (typeof rule) {
+    case 'undefined':
+      return undefined;
+    case 'object':
+      if (rule instanceof RegExp) return rule as T;
+      return rule.value;
+    default:
+      return rule;
+  }
 }

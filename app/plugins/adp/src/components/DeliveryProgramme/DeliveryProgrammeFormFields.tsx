@@ -52,6 +52,7 @@ export function DeliveryProgrammeFormFields({
         disabled={disabled}
         rules={{
           ...formRules.required,
+          ...formRules.maxLength(100),
         }}
       />
 

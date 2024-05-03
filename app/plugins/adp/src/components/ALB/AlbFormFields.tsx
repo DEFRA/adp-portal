@@ -39,6 +39,7 @@ export function AlbFormFields({
         disabled={disabled}
         rules={{
           ...formRules.required,
+          ...formRules.maxLength(100),
         }}
       />
 

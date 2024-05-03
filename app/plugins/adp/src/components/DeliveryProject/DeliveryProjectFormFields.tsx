@@ -95,6 +95,7 @@ export function DeliveryProjectFormFields({
         disabled={disabled}
         rules={{
           ...formRules.required,
+          ...formRules.maxLength(100),
         }}
         InputProps={{
           startAdornment: (

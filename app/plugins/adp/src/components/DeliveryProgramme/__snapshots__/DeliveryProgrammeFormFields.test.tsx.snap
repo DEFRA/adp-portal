@@ -21,8 +21,10 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         <input
           aria-describedby="title-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="title"
+          maxlength="100"
           name="title"
           type="text"
           value=""
@@ -220,6 +222,7 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         <input
           aria-describedby="delivery_programme_code-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="delivery_programme_code"
           name="delivery_programme_code"
@@ -266,8 +269,10 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         <textarea
           aria-describedby="description-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="description"
+          maxlength="200"
           name="description"
           rows="1"
           style="height: 0px; overflow: hidden;"
@@ -324,8 +329,10 @@ exports[`AlbFormFields Should render default fields 1`] = `
         <input
           aria-describedby="title-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="title"
+          maxlength="100"
           name="title"
           type="text"
           value="My title"
@@ -521,6 +528,7 @@ exports[`AlbFormFields Should render default fields 1`] = `
         <input
           aria-describedby="delivery_programme_code-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="delivery_programme_code"
           name="delivery_programme_code"
@@ -567,8 +575,10 @@ exports[`AlbFormFields Should render default fields 1`] = `
         <textarea
           aria-describedby="description-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="description"
+          maxlength="200"
           name="description"
           rows="1"
           style="height: 0px; overflow: hidden;"
@@ -627,8 +637,10 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         <input
           aria-describedby="title-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="title"
+          maxlength="100"
           name="title"
           type="text"
           value="My title"
@@ -824,6 +836,7 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         <input
           aria-describedby="delivery_programme_code-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="delivery_programme_code"
           name="delivery_programme_code"
@@ -870,8 +883,10 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         <textarea
           aria-describedby="description-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="description"
+          maxlength="200"
           name="description"
           rows="1"
           style="height: 0px; overflow: hidden;"
@@ -932,8 +947,10 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         <input
           aria-describedby="title-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="title"
+          maxlength="100"
           name="title"
           type="text"
           value="My title"
@@ -1129,6 +1146,7 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         <input
           aria-describedby="delivery_programme_code-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="delivery_programme_code"
           name="delivery_programme_code"
@@ -1175,8 +1193,10 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         <textarea
           aria-describedby="description-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="description"
+          maxlength="200"
           name="description"
           rows="1"
           style="height: 0px; overflow: hidden;"
@@ -1235,8 +1255,10 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         <input
           aria-describedby="title-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="title"
+          maxlength="100"
           name="title"
           type="text"
           value="My title"
@@ -1434,6 +1456,7 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         <input
           aria-describedby="delivery_programme_code-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="delivery_programme_code"
           name="delivery_programme_code"
@@ -1480,8 +1503,10 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         <textarea
           aria-describedby="description-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="description"
+          maxlength="200"
           name="description"
           rows="1"
           style="height: 0px; overflow: hidden;"
@@ -1538,8 +1563,10 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         <input
           aria-describedby="title-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="title"
+          maxlength="100"
           name="title"
           type="text"
           value="My title"
@@ -1737,6 +1764,7 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         <input
           aria-describedby="delivery_programme_code-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="delivery_programme_code"
           name="delivery_programme_code"
@@ -1783,8 +1811,10 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         <textarea
           aria-describedby="description-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="description"
+          maxlength="200"
           name="description"
           rows="1"
           style="height: 0px; overflow: hidden;"
@@ -1843,8 +1873,10 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         <input
           aria-describedby="title-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="title"
+          maxlength="100"
           name="title"
           type="text"
           value=""
@@ -2042,6 +2074,7 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         <input
           aria-describedby="delivery_programme_code-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="delivery_programme_code"
           name="delivery_programme_code"
@@ -2088,8 +2121,10 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         <textarea
           aria-describedby="description-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="description"
+          maxlength="200"
           name="description"
           rows="1"
           style="height: 0px; overflow: hidden;"
@@ -2146,8 +2181,10 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
         <input
           aria-describedby="title-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="title"
+          maxlength="100"
           name="title"
           type="text"
           value="My title"
@@ -2345,6 +2382,7 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
         <input
           aria-describedby="delivery_programme_code-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="delivery_programme_code"
           name="delivery_programme_code"
@@ -2391,8 +2429,10 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
         <textarea
           aria-describedby="description-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="description"
+          maxlength="200"
           name="description"
           rows="1"
           style="height: 0px; overflow: hidden;"
@@ -2451,8 +2491,10 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         <input
           aria-describedby="title-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="title"
+          maxlength="100"
           name="title"
           type="text"
           value="My title"
@@ -2650,6 +2692,7 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         <input
           aria-describedby="delivery_programme_code-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="delivery_programme_code"
           name="delivery_programme_code"
@@ -2696,8 +2739,10 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         <textarea
           aria-describedby="description-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="description"
+          maxlength="200"
           name="description"
           rows="1"
           style="height: 0px; overflow: hidden;"
@@ -2754,8 +2799,10 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         <input
           aria-describedby="title-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="title"
+          maxlength="100"
           name="title"
           type="text"
           value="My title"
@@ -2953,6 +3000,7 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         <input
           aria-describedby="delivery_programme_code-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="delivery_programme_code"
           name="delivery_programme_code"
@@ -2999,8 +3047,10 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         <textarea
           aria-describedby="description-helper-text"
           aria-invalid="false"
+          aria-required="true"
           class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
           id="description"
+          maxlength="200"
           name="description"
           rows="1"
           style="height: 0px; overflow: hidden;"
