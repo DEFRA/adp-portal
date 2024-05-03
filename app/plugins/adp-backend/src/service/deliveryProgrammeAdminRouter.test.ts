@@ -101,6 +101,29 @@ describe('createRouter', () => {
     });
   });
 
+  describe('GET /deliveryProgrammeAdmins/:deliveryProgrammeId', () => {
+    it('returns ok', async () => {
+      mockDeliveryProgrammeAdminStore.getByDeliveryProgramme.mockResolvedValueOnce(
+        programmeManagerList,
+      );
+      const response = await request(deliveryProgrammeAdminApp).get(
+        '/deliveryProgrammeAdmins/123',
+      );
+      expect(response.status).toEqual(200);
+    });
+
+    it('returns bad request', async () => {
+      mockDeliveryProgrammeAdminStore.getByDeliveryProgramme.mockRejectedValueOnce(
+        new InputError('error'),
+      );
+
+      const response = await request(deliveryProgrammeAdminApp).get(
+        '/deliveryProgrammeAdmins/123q',
+      );
+      expect(response.status).toEqual(400);
+    });
+  });
+
   describe('POST /deliveryProgrammeAdmin/:deliveryProgrammeId', () => {
     it('returns a 201 response when programme managers are created', async () => {
       mockDeliveryProgrammeAdminStore.addMany.mockResolvedValueOnce(
