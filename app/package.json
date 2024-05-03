@@ -59,23 +59,5 @@
     "*.{json,md}": [
       "prettier --write"
     ]
-  },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "/packages/backend/src/plugins/",
-      "/packages/backend/src/index.ts",
-      "/packages/app/src/apis.ts",
-      "module.ts",
-      "run.ts",
-      "standaloneServer.ts"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/packages/backend/src/plugins/",
-      "/packages/backend/src/index.ts",
-      "/packages/app/src/apis.ts",
-      "module.ts",
-      "run.ts",
-      "standaloneServer.ts"
-    ]
   }
 }
