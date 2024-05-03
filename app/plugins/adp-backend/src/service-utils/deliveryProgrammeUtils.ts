@@ -72,7 +72,7 @@ export async function getProgrammeManagerDetails(
     const managerEmail =
       managerById.metadata.annotations['microsoft.com/email'];
     return { name: managerName, email: managerEmail };
-  } else {
+  } 
     throw new NotFoundError(`Could not find Programme Managers details`);
-  }
+  
 }

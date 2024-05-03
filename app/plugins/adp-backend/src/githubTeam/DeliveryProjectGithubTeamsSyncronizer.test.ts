@@ -1,9 +1,12 @@
-import { DeliveryProject } from '@internal/plugin-adp-common';
+import {
+  DeliveryProject,
+  GithubTeamDetails,
+} from '@internal/plugin-adp-common';
 import { DeliveryProjectGithubTeamsSyncronizer } from './DeliveryProjectGithubTeamsSyncronizer';
-import { GithubTeamDetails, IGitHubTeamsApi } from './GithubTeamsApi';
+import { IGitHubTeamsApi } from './GithubTeamsApi';
 import { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
 import { randomUUID } from 'node:crypto';
-import { GithubTeamRef, IGithubTeamStore } from '.';
+import { GithubTeamRef, IGithubTeamStore } from './GithubTeamStore';
 
 describe('DeliveryProjectGithubTeamsSyncronizer', () => {
   function setup() {

@@ -176,7 +176,7 @@ async function checkPipelineStatus(
       logger,
       apiVersion,
     );
-  } else {
+  } 
     return false;
-  }
+  
 }

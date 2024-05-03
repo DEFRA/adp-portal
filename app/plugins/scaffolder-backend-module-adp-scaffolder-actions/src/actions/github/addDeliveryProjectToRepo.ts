@@ -2,7 +2,7 @@ import { Logger } from 'winston';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { Octokit } from 'octokit';
 import { Config } from '@backstage/config';
-import { IAdpClient } from '@internal/plugin-adp-backend';
+import { IAdpClient } from '@internal/plugin-adp-common';
 
 export function addDeliveryProjectToRepo(options: {
   config: Config;
@@ -67,14 +67,6 @@ export function addDeliveryProjectToRepo(options: {
     },
   });
 
-  function getOrganisation(config: Config) {
-    return config.getString('github.organization');
-  }
-
-  function getPlatformAdminsSlug(config: Config) {
-    return config.getString('github.platformAdmins');
-  }
-
   async function addTeamsToRepository(
     logger: Logger,
     organization: string,
@@ -106,4 +98,12 @@ export function addDeliveryProjectToRepo(options: {
       throw new Error('Failed to add the teams to the repository');
     }
   }
+}
+
+function getOrganisation(config: Config) {
+  return config.getString('github.organization');
+}
+
+function getPlatformAdminsSlug(config: Config) {
+  return config.getString('github.platformAdmins');
 }

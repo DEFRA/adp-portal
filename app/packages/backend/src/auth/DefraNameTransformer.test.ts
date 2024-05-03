@@ -52,14 +52,14 @@ describe('Test original Function', () => {
 });
 
 describe('Defra ADO User Transformer', () => {
-  it('Same Default Behavior as defaultUserTransformer ', async () => {
+  it('Same Default Behavior as defaultUserTransformer', async () => {
     const {mockGraphUser, mockUserPhoto} = defaultDataSetup();
     const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
     test_default_assertions(result);
 
   });
 
-  it('Parses UPN correctly for email is blank ', async () => {
+  it('Parses UPN correctly for email is blank', async () => {
     const {mockGraphUser, mockUserPhoto} = createTestData('freds@example.com', '');
 
     const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
@@ -69,7 +69,7 @@ describe('Defra ADO User Transformer', () => {
     expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBe('freds@example.com');
 
   });
-  it('Parses UPN correctly for email is undefined ', async () => {
+  it('Parses UPN correctly for email is undefined', async () => {
 
     const {mockGraphUser, mockUserPhoto} = createTestData('freds@example.com', undefined );
 
@@ -81,7 +81,7 @@ describe('Defra ADO User Transformer', () => {
 
   });
 
-  it('Parses UPN correctly for email is null ', async () => {
+  it('Parses UPN correctly for email is null', async () => {
 
     const {mockGraphUser, mockUserPhoto} = createTestData('freds@example.com', null );
 

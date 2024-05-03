@@ -9,7 +9,7 @@ import { PassThrough } from 'stream';
 import { Octokit } from 'octokit';
 
 jest.mock('octokit');
-let mockedOctokit = Octokit as unknown as jest.Mock;
+const mockedOctokit = Octokit as unknown as jest.Mock;
 mockedOctokit.mockImplementation(() => ({
   rest: {
     teams: {

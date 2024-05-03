@@ -150,7 +150,7 @@ describe('FluxConfigApi', () => {
       mockDeliveryProgrammeStore,
     );
 
-    expect(fluxConfigApi.getFluxConfig('test-team')).rejects.toThrow(
+    await expect(fluxConfigApi.getFluxConfig('test-team')).rejects.toThrow(
       /Unexpected response from FluxConfig API/,
     );
   });
@@ -260,8 +260,8 @@ describe('FluxConfigApi', () => {
       mockDeliveryProgrammeStore,
     );
 
-    expect(fluxConfigApi.createFluxConfig(deliveryProject)).rejects.toThrow(
-      /Unexpected response from FluxConfig API/,
-    );
+    await expect(
+      fluxConfigApi.createFluxConfig(deliveryProject),
+    ).rejects.toThrow(/Unexpected response from FluxConfig API/);
   });
 });

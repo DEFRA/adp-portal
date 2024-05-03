@@ -76,7 +76,7 @@ describe('armsLengthBodyStore', () => {
       const { knex, store } = await createDatabase(databaseId);
       await knex<arms_length_body>(arms_length_body_name).insert(albSeedData);
       const getResult = store.get('12345');
-      expect(getResult).rejects.toBeInstanceOf(NotFoundError);
+      await expect(getResult).rejects.toBeInstanceOf(NotFoundError);
     },
   );
 

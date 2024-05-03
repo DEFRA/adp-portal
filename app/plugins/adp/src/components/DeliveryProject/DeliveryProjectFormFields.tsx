@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   DisabledFields,
   FormSelectField,
@@ -260,6 +260,6 @@ function useComputedNamespace({
     computedValue: autoNamespace,
     currentValue: namespace,
     emptyValue: '',
-    setValue: v => setValue('namespace', v),
+    setValue: useCallback((v: string) => setValue('namespace', v), [setValue]),
   });
 }

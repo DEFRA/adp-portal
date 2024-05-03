@@ -107,7 +107,7 @@ describe('DeliveryProgrammeStore', () => {
 
       const getResult = programmeStore.get('12345');
 
-      expect(getResult).rejects.toBeInstanceOf(NotFoundError);
+      await expect(getResult).rejects.toBeInstanceOf(NotFoundError);
     },
   );
 

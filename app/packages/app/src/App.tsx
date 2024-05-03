@@ -59,10 +59,12 @@ import {
 import { FluxRuntimePage } from '@weaveworksoss/backstage-plugin-flux';
 
 import styles from 'style-loader!css-loader?{"modules": {"auto": true}}!sass-loader?{"sassOptions": {"quietDeps": true}}!./style.module.scss';
-import { AdpPage } from '@internal/plugin-adp';
-import { AlbViewPageComponent } from '@internal/plugin-adp/src/components/ALB/AlbViewPageComponent';
-import { DeliveryProgrammeViewPageComponent } from '@internal/plugin-adp/src/components/DeliveryProgramme/DeliveryProgrammeViewPageComponent';
-import { DeliveryProjectViewPageComponent } from '@internal/plugin-adp/src/components/DeliveryProject/DeliveryProjectViewPageComponent';
+import {
+  AdpPage,
+  AlbViewPageComponent,
+  DeliveryProgrammeViewPageComponent,
+  DeliveryProjectViewPageComponent,
+} from '@internal/plugin-adp';
 
 const lightTheme = createUnifiedTheme({
   palette: {
@@ -282,9 +284,18 @@ const routes = (
     </Route>
     <Route path="/flux-runtime" element={<FluxRuntimePage />} />
     <Route path="/onboarding" element={<AdpPage />} />
-    <Route path="/onboarding/arms-length-bodies" element={<AlbViewPageComponent />} />
-    <Route path="/onboarding/delivery-programmes" element={<DeliveryProgrammeViewPageComponent />} />
-    <Route path="/onboarding/delivery-projects" element={<DeliveryProjectViewPageComponent />} />
+    <Route
+      path="/onboarding/arms-length-bodies"
+      element={<AlbViewPageComponent />}
+    />
+    <Route
+      path="/onboarding/delivery-programmes"
+      element={<DeliveryProgrammeViewPageComponent />}
+    />
+    <Route
+      path="/onboarding/delivery-projects"
+      element={<DeliveryProjectViewPageComponent />}
+    />
   </FlatRoutes>
 );
 

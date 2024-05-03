@@ -3,7 +3,7 @@ import { AlbFields, AlbFormFields, emptyForm } from './AlbFormFields';
 import {
   RenderResult,
   fireEvent,
-  render,
+  render as testRender,
   waitFor,
 } from '@testing-library/react';
 import { UseFormReturn, useForm } from 'react-hook-form';
@@ -99,7 +99,7 @@ function setup() {
   return {
     async render(defaultValues?: AlbFields) {
       const context: Context = {};
-      const result = render(
+      const result = testRender(
         <Sut context={context} defaultValues={defaultValues} />,
       );
       await waitFor(() => expect(result.baseElement).not.toBeEmptyDOMElement());

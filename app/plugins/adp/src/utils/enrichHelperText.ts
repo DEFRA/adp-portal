@@ -7,10 +7,11 @@ export function enrichHelperText<
   helperText: string | undefined,
   rules: UseControllerProps<TFieldValues, TName>['rules'],
 ) {
+  let result = helperText;
   if (!rules?.required) {
-    if (!helperText) helperText = 'Optional';
-    else helperText = 'Optional - ' + helperText;
+    if (!result) result = 'Optional';
+    else result = `Optional - ${result}`;
   }
 
-  return helperText;
+  return result;
 }

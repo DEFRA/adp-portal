@@ -7,7 +7,7 @@ import {
 import {
   RenderResult,
   fireEvent,
-  render,
+  render as testRender,
   waitFor,
 } from '@testing-library/react';
 import {
@@ -310,7 +310,7 @@ function setup() {
     mockIdentityApi,
     async render(defaultValues?: DeliveryProjectFields) {
       const context: Context = {};
-      const result = render(
+      const result = testRender(
         <TestApiProvider
           apis={[
             [deliveryProgrammeApiRef, mockProgrammeApi],

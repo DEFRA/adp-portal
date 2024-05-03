@@ -7,7 +7,7 @@ describe('populate', () => {
       replacements: { abc: 'xyz', other: false },
       expected: { abc: 'xyz', def: '123' },
     },
-  ])('', ({ base, replacements, expected }) => {
+  ])('Should correctly populate', ({ base, replacements, expected }) => {
     expect(populate(base, replacements)).toMatchObject(expected);
   });
 });

@@ -14,6 +14,7 @@ import { getCurrentUsername } from '../utils/index';
 import { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { FluxConfigApi } from '../deliveryProject';
 import { Config } from '@backstage/config';
+
 export interface ProjectRouterOptions {
   logger: Logger;
   identity: IdentityApi;
@@ -25,6 +26,71 @@ export interface ProjectRouterOptions {
 import { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import { createParser, respond } from './util';
 import { z } from 'zod';
+
+const errorMapping = {
+  duplicateName: (req: { title?: string }) => ({
+    path: 'title',
+    error: {
+      message: `The name '${req.title}' is already in use. Please choose a different name.`,
+    },
+  }),
+  duplicateTitle: (req: { title?: string }) => ({
+    path: 'title',
+    error: {
+      message: `The name '${req.title}' is already in use. Please choose a different name.`,
+    },
+  }),
+  duplicateProjectCode: () => ({
+    path: 'delivery_project_code',
+    error: {
+      message: `The project code is already in use by another delivery project.`,
+    },
+  }),
+  unknownDeliveryProgramme: () => ({
+    path: 'delivery_programme_id',
+    error: {
+      message: `The delivery programme does not exist.`,
+    },
+  }),
+  unknown: () => ({
+    path: 'root',
+    error: {
+      message: `An unexpected error occurred.`,
+    },
+  }),
+} as const satisfies ValidationErrorMapping;
+
+const parseCreateDeliveryProjectRequest =
+  createParser<CreateDeliveryProjectRequest>(
+    z.object({
+      title: z.string(),
+      alias: z.string().optional(),
+      description: z.string(),
+      finance_code: z.string().optional(),
+      delivery_programme_id: z.string(),
+      delivery_project_code: z.string(),
+      ado_project: z.string(),
+      team_type: z.string(),
+      service_owner: z.string(),
+      github_team_visibility: z.enum(['public', 'private']),
+    }),
+  );
+const parseUpdateDeliveryProjectRequest =
+  createParser<UpdateDeliveryProjectRequest>(
+    z.object({
+      id: z.string(),
+      title: z.string().optional(),
+      alias: z.string().optional(),
+      description: z.string().optional(),
+      finance_code: z.string().optional(),
+      delivery_programme_id: z.string().optional(),
+      delivery_project_code: z.string().optional(),
+      ado_project: z.string().optional(),
+      team_type: z.string().optional(),
+      service_owner: z.string().optional(),
+      github_team_visibility: z.enum(['public', 'private']).optional(),
+    }),
+  );
 
 export function createProjectRouter(
   options: ProjectRouterOptions,
@@ -105,68 +171,3 @@ export function createProjectRouter(
   router.use(errorHandler());
   return router;
 }
-
-const parseCreateDeliveryProjectRequest =
-  createParser<CreateDeliveryProjectRequest>(
-    z.object({
-      title: z.string(),
-      alias: z.string().optional(),
-      description: z.string(),
-      finance_code: z.string().optional(),
-      delivery_programme_id: z.string(),
-      delivery_project_code: z.string(),
-      ado_project: z.string(),
-      team_type: z.string(),
-      service_owner: z.string(),
-      github_team_visibility: z.enum(['public', 'private']),
-    }),
-  );
-const parseUpdateDeliveryProjectRequest =
-  createParser<UpdateDeliveryProjectRequest>(
-    z.object({
-      id: z.string(),
-      title: z.string().optional(),
-      alias: z.string().optional(),
-      description: z.string().optional(),
-      finance_code: z.string().optional(),
-      delivery_programme_id: z.string().optional(),
-      delivery_project_code: z.string().optional(),
-      ado_project: z.string().optional(),
-      team_type: z.string().optional(),
-      service_owner: z.string().optional(),
-      github_team_visibility: z.enum(['public', 'private']).optional(),
-    }),
-  );
-
-const errorMapping = {
-  duplicateName: (req: { title?: string }) => ({
-    path: 'title',
-    error: {
-      message: `The name '${req.title}' is already in use. Please choose a different name.`,
-    },
-  }),
-  duplicateTitle: (req: { title?: string }) => ({
-    path: 'title',
-    error: {
-      message: `The name '${req.title}' is already in use. Please choose a different name.`,
-    },
-  }),
-  duplicateProjectCode: () => ({
-    path: 'delivery_project_code',
-    error: {
-      message: `The project code is already in use by another delivery project.`,
-    },
-  }),
-  unknownDeliveryProgramme: () => ({
-    path: 'delivery_programme_id',
-    error: {
-      message: `The delivery programme does not exist.`,
-    },
-  }),
-  unknown: () => ({
-    path: 'root',
-    error: {
-      message: `An unexpected error occurred.`,
-    },
-  }),
-} as const satisfies ValidationErrorMapping;

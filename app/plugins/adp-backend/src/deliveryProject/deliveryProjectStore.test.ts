@@ -102,7 +102,7 @@ describe('DeliveryProjectStore', () => {
       const createResult = await projectStore.add(expectedProject, 'test');
       if (!createResult.success)
         throw new Error(
-          'Failed to seed project: ' + JSON.stringify(createResult.errors),
+          `Failed to seed project: ${JSON.stringify(createResult.errors)}`,
         );
       const createdProject = createResult.value;
 
@@ -124,7 +124,7 @@ describe('DeliveryProjectStore', () => {
 
       const getResult = projectStore.get('12345');
 
-      expect(getResult).rejects.toBeInstanceOf(NotFoundError);
+      await expect(getResult).rejects.toBeInstanceOf(NotFoundError);
     },
   );
 
@@ -216,7 +216,7 @@ describe('DeliveryProjectStore', () => {
         const actual = projectStore.getByName('abc');
 
         // assert
-        expect(actual).rejects.toBeInstanceOf(NotFoundError);
+        await expect(actual).rejects.toBeInstanceOf(NotFoundError);
       },
     );
   });

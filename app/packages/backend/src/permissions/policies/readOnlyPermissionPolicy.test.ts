@@ -28,7 +28,7 @@ describe('readOnlyPermissionPolicy', () => {
       const policy = new ReadOnlyPermissionPolicy();
       const request: PolicyQuery = { permission: permission };
 
-      let policyResult = await policy.handle(request);
+      const policyResult = await policy.handle(request);
       expect(policyResult.result).toBe(expected);
     },
   );

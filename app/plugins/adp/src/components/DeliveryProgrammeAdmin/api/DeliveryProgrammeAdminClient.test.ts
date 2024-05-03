@@ -21,8 +21,8 @@ function createDeliveryProgrammeAdmin(): DeliveryProgrammeAdmin {
 }
 
 describe('DeliveryProgrammeAdminApiClient', () => {
-  let discoveryApi = { getBaseUrl: jest.fn() };
-  let fetchApi = { fetch: jest.fn() };
+  const discoveryApi = { getBaseUrl: jest.fn() };
+  const fetchApi = { fetch: jest.fn() };
   const sut = new DeliveryProgrammeAdminClient(discoveryApi, fetchApi);
 
   beforeEach(() => {

@@ -3,7 +3,7 @@ import DefraLogo from './DefraLogo.png';
 
 const LogoFull = () => {
   return (
-     <img src={DefraLogo} width={'auto'} height={80} alt="DEFRA logo"/>
+     <img src={DefraLogo} width="auto" height={80} alt="DEFRA logo"/>
   );
 };
 

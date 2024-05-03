@@ -3,6 +3,7 @@ module.exports = {
   root: true,
   extends: ['plugin:@backstage/recommended'],
   parserOptions: {
-    ecmaVersion: 6,
+    ecmaVersion: 'latest',
   },
+  ignorePatterns: ['**/seedData/', '**/migrations/'],
 };

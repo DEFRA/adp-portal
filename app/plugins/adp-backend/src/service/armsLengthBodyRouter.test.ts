@@ -107,7 +107,7 @@ describe('createRouter', () => {
       const response = await request(app).get('/armsLengthBodyNames');
       expect(response.status).toEqual(200);
     });
-    it('returns ok', async () => {
+    it('returns bad request when internal error', async () => {
       mockArmsLengthBodyStore.getAll.mockRejectedValueOnce([
         expectedAlbWithName,
       ]);

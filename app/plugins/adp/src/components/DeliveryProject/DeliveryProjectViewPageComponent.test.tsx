@@ -8,6 +8,13 @@ import { DeliveryProjectViewPageComponent } from './DeliveryProjectViewPageCompo
 import { waitFor } from '@testing-library/react';
 import { DeliveryProject } from '@internal/plugin-adp-common';
 
+const EditDeliveryProjectButton: jest.MockedFn<
+  typeof import('./EditDeliveryProjectButton').EditDeliveryProjectButton
+> = jest.fn();
+const CreateDeliveryProjectButton: jest.MockedFn<
+  typeof import('./CreateDeliveryProjectButton').CreateDeliveryProjectButton
+> = jest.fn();
+
 beforeEach(() => {
   jest.spyOn(global.Math, 'random').mockReturnValue(0);
 
@@ -109,7 +116,7 @@ describe('DeliveryProjectViewPageComponent', () => {
   it('Should render the page when the projects fail to load correctly', async () => {
     // arrange
     const { render, mockDeliveryProjectApi, mockErrorApi } = setup();
-    const error = new Error();
+    const error = new Error('My error');
     mockDeliveryProjectApi.getDeliveryProjects.mockRejectedValueOnce(error);
 
     // act
@@ -120,7 +127,15 @@ describe('DeliveryProjectViewPageComponent', () => {
     expect(mockDeliveryProjectApi.getDeliveryProjects.mock.calls).toMatchObject(
       [[]],
     );
-    expect(mockErrorApi.post.mock.calls).toMatchObject([[error]]);
+    expect(mockErrorApi.post.mock.calls).toMatchObject([
+      [
+        {
+          message: 'Error: My error',
+          name: 'Error while getting the list of delivery projects.',
+          stack: undefined,
+        },
+      ],
+    ]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
     expect(EditDeliveryProjectButton.mock.calls).toMatchObject([]);
   });
@@ -192,9 +207,6 @@ describe('DeliveryProjectViewPageComponent', () => {
   });
 });
 
-let EditDeliveryProjectButton: jest.MockedFn<
-  typeof import('./EditDeliveryProjectButton').EditDeliveryProjectButton
-> = jest.fn();
 jest.mock(
   './EditDeliveryProjectButton',
   () =>
@@ -205,9 +217,6 @@ jest.mock(
     } satisfies typeof import('./EditDeliveryProjectButton')),
 );
 
-let CreateDeliveryProjectButton: jest.MockedFn<
-  typeof import('./CreateDeliveryProjectButton').CreateDeliveryProjectButton
-> = jest.fn();
 jest.mock(
   './CreateDeliveryProjectButton',
   () =>
@@ -226,12 +235,12 @@ function noTableData(value: unknown) {
 
 function assertEditDeliveryProjectButtonCalls(projects: DeliveryProject[]) {
   expect(
-    EditDeliveryProjectButton.mock.calls.map(
-      ([{ deliveryProject, onEdited, ...props }, ...rest]) => [
+    EditDeliveryProjectButton.mock.calls
+      .map(([{ deliveryProject, onEdited, ...props }, ...rest]) => [
         { ...props, deliveryProject: noTableData(deliveryProject) },
         ...rest,
-      ],
-    ),
+      ])
+      .slice(-projects.length),
   ).toMatchObject(
     projects.map(p => [
       {
@@ -249,8 +258,8 @@ function assertEditDeliveryProjectButtonCalls(projects: DeliveryProject[]) {
 function createDeliveryProjects(count: number) {
   return [...new Array(count)].map<DeliveryProject>((_, i) => ({
     id: i.toString(),
-    name: 'project-' + i,
-    title: 'Project ' + i,
+    name: `project-${i}`,
+    title: `Project ${i}`,
     ado_project: 'My ado project',
     created_at: new Date(0),
     delivery_programme_code: 'ABC',

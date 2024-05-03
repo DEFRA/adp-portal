@@ -1,5 +1,5 @@
 import { TechRadarApi } from './techradarapi';
-import { Config } from '@backstage/config';
+import type { Config } from '@backstage/config';
 
 export class AdpDataTechRadarApi implements TechRadarApi {
   private configApi: Config;
@@ -15,7 +15,7 @@ export class AdpDataTechRadarApi implements TechRadarApi {
 
     return {
       ...data,
-      entries: data.entries.map((entry: { timeline: any[]; }) => ({
+      entries: data.entries.map((entry: { timeline: any[] }) => ({
         ...entry,
         timeline: entry.timeline.map(timeline => ({
           ...timeline,

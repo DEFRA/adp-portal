@@ -7,7 +7,7 @@ import {
 import {
   RenderResult,
   fireEvent,
-  render,
+  render as testRender,
   waitFor,
 } from '@testing-library/react';
 import {
@@ -181,7 +181,7 @@ function setup() {
     mockErrorApi,
     async render(defaultValues?: DeliveryProgrammeFields) {
       const context: Context = {};
-      const result = render(
+      const result = testRender(
         <TestApiProvider
           apis={[
             [armsLengthBodyApiRef, mockAlbApi],

@@ -26,6 +26,64 @@ export interface ProgrammeRouterOptions {
   catalog: CatalogApi;
 }
 
+const errorMapping = {
+  duplicateName: (req: { title?: string }) => ({
+    path: 'title',
+    error: {
+      message: `The name '${req.title}' is already in use. Please choose a different name.`,
+    },
+  }),
+  duplicateTitle: (req: { title?: string }) => ({
+    path: 'title',
+    error: {
+      message: `The name '${req.title}' is already in use. Please choose a different name.`,
+    },
+  }),
+  duplicateProgrammeCode: () => ({
+    path: 'delivery_programme_code',
+    error: {
+      message: `The programme code is already in use by another delivery programme.`,
+    },
+  }),
+  unknownArmsLengthBody: () => ({
+    path: 'arms_length_body_id',
+    error: {
+      message: `The arms length body does not exist.`,
+    },
+  }),
+  unknown: () => ({
+    path: 'root',
+    error: {
+      message: `An unexpected error occurred.`,
+    },
+  }),
+} as const satisfies ValidationErrorMapping;
+
+const parseCreateDeliveryProgrammeRequest =
+  createParser<CreateDeliveryProgrammeRequest>(
+    z.object({
+      title: z.string(),
+      alias: z.string().optional(),
+      description: z.string(),
+      arms_length_body_id: z.string(),
+      delivery_programme_code: z.string(),
+      url: z.string().optional(),
+    }),
+  );
+
+const parseUpdateDeliveryProgrammeRequest =
+  createParser<UpdateDeliveryProgrammeRequest>(
+    z.object({
+      id: z.string(),
+      title: z.string().optional(),
+      alias: z.string().optional(),
+      description: z.string().optional(),
+      arms_length_body_id: z.string().optional(),
+      delivery_programme_code: z.string().optional(),
+      url: z.string().optional(),
+    }),
+  );
+
 export function createProgrammeRouter(
   options: ProgrammeRouterOptions,
 ): express.Router {
@@ -51,7 +109,7 @@ export function createProgrammeRouter(
       const programmeData = await deliveryProgrammeStore.getAll();
       const projectData = await deliveryProjectStore.getAll();
       for (const programme of programmeData) {
-        let programmeChildren = [];
+        const programmeChildren = [];
         for (const project of projectData) {
           if (project.delivery_programme_id === programme.id) {
             programmeChildren.push(project.name);
@@ -134,60 +192,3 @@ export function createProgrammeRouter(
   router.use(errorHandler());
   return router;
 }
-
-const parseCreateDeliveryProgrammeRequest =
-  createParser<CreateDeliveryProgrammeRequest>(
-    z.object({
-      title: z.string(),
-      alias: z.string().optional(),
-      description: z.string(),
-      arms_length_body_id: z.string(),
-      delivery_programme_code: z.string(),
-      url: z.string().optional(),
-    }),
-  );
-const parseUpdateDeliveryProgrammeRequest =
-  createParser<UpdateDeliveryProgrammeRequest>(
-    z.object({
-      id: z.string(),
-      title: z.string().optional(),
-      alias: z.string().optional(),
-      description: z.string().optional(),
-      arms_length_body_id: z.string().optional(),
-      delivery_programme_code: z.string().optional(),
-      url: z.string().optional(),
-    }),
-  );
-
-const errorMapping = {
-  duplicateName: (req: { title?: string }) => ({
-    path: 'title',
-    error: {
-      message: `The name '${req.title}' is already in use. Please choose a different name.`,
-    },
-  }),
-  duplicateTitle: (req: { title?: string }) => ({
-    path: 'title',
-    error: {
-      message: `The name '${req.title}' is already in use. Please choose a different name.`,
-    },
-  }),
-  duplicateProgrammeCode: () => ({
-    path: 'delivery_programme_code',
-    error: {
-      message: `The programme code is already in use by another delivery programme.`,
-    },
-  }),
-  unknownArmsLengthBody: () => ({
-    path: 'arms_length_body_id',
-    error: {
-      message: `The arms length body does not exist.`,
-    },
-  }),
-  unknown: () => ({
-    path: 'root',
-    error: {
-      message: `An unexpected error occurred.`,
-    },
-  }),
-} as const satisfies ValidationErrorMapping;

@@ -45,7 +45,7 @@ describe('GithubTeamStore', () => {
       alb.owner ?? randomUUID(),
     );
     if (!result.success)
-      throw new Error('Failed to seed ALB: ' + JSON.stringify(result.errors));
+      throw new Error(`Failed to seed ALB: ${  JSON.stringify(result.errors)}`);
     return result.value;
   }
   async function seedProgramme(
@@ -67,7 +67,7 @@ describe('GithubTeamStore', () => {
     );
     if (!result.success)
       throw new Error(
-        'Failed to seed Delivery Programme ' + JSON.stringify(result.errors),
+        `Failed to seed Delivery Programme ${  JSON.stringify(result.errors)}`,
       );
     return result.value;
   }
@@ -96,7 +96,7 @@ describe('GithubTeamStore', () => {
     );
     if (!result.success)
       throw new Error(
-        'Failed to seed Delivery Project ' + JSON.stringify(result.errors),
+        `Failed to seed Delivery Project ${  JSON.stringify(result.errors)}`,
       );
     return result.value;
   }

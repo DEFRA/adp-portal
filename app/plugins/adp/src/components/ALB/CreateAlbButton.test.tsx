@@ -1,7 +1,7 @@
 import { AlertApi, alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
 import { ArmsLengthBodyApi, armsLengthBodyApiRef } from './api';
-import { render, waitFor } from '@testing-library/react';
+import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
 import { CreateAlbButton, CreateAlbButtonProps } from './CreateAlbButton';
 import userEvent from '@testing-library/user-event';
@@ -9,6 +9,20 @@ import { AlbFields, AlbFormFields, emptyForm } from './AlbFormFields';
 import { act } from 'react-dom/test-utils';
 import { ValidationError as IValidationError } from '@internal/plugin-adp-common';
 import { ValidationError } from '../../utils';
+
+const usePermission: jest.MockedFn<
+  typeof import('@backstage/plugin-permission-react').usePermission
+> = jest.fn();
+const DialogForm: jest.MockedFn<
+  typeof import('../../utils/DialogForm').DialogForm
+> = jest.fn();
+
+const fields: AlbFields = {
+  alias: 'abc',
+  description: 'def',
+  title: 'ghi',
+  url: 'jkl',
+};
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -213,13 +227,6 @@ describe('CreateAlbButton', () => {
   });
 });
 
-const fields: AlbFields = {
-  alias: 'abc',
-  description: 'def',
-  title: 'ghi',
-  url: 'jkl',
-};
-
 function setup() {
   const mockAlertApi: jest.Mocked<AlertApi> = {
     alert$: jest.fn(),
@@ -236,7 +243,7 @@ function setup() {
     mockAlertApi,
     mockArmsLengthBodyApi,
     async render(props: CreateAlbButtonProps) {
-      const result = render(
+      const result = testRender(
         <TestApiProvider
           apis={[
             [alertApiRef, mockAlertApi],
@@ -252,9 +259,6 @@ function setup() {
   };
 }
 
-const usePermission: jest.MockedFn<
-  typeof import('@backstage/plugin-permission-react').usePermission
-> = jest.fn();
 jest.mock(
   '@backstage/plugin-permission-react',
   () =>
@@ -277,9 +281,6 @@ jest.mock(
     } satisfies typeof import('@backstage/plugin-permission-react')),
 );
 
-const DialogForm: jest.MockedFn<
-  typeof import('../../utils/DialogForm').DialogForm
-> = jest.fn();
 jest.mock(
   '../../utils/DialogForm',
   () =>

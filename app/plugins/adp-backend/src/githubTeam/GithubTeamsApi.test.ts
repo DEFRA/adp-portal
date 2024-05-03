@@ -1,6 +1,7 @@
 import { Config } from '@backstage/config';
-import { GitHubTeamsApi, GithubTeamDetails } from './GithubTeamsApi';
+import { GitHubTeamsApi } from './GithubTeamsApi';
 import fetch, { Response } from 'node-fetch';
+import { GithubTeamDetails } from '@internal/plugin-adp-common';
 
 describe('GitHubTeamsApi', () => {
   function setup() {

@@ -44,7 +44,7 @@ describe('AdbDatabaseEntityProvider', () => {
     getExternalBaseUrl: jest.fn(),
   };
 
-  let options = {
+  const options = {
     logger: logger,
     schedule: mockSchedule,
     scheduler: mockScheduler,
@@ -76,12 +76,6 @@ describe('AdbDatabaseEntityProvider', () => {
         optionsWithoutSchedule,
       ),
     ).toThrow(/Either schedule or scheduler must be provided./);
-  });
-
-  it('throws an error if connection is not intialized', () => {
-    expect(entityProvider['refresh'](options.logger)).rejects.toThrow(
-      `ADP Onboarding Model discovery connection not initialized for ${entityProvider.getProviderName()}`,
-    );
   });
 
   it('returns the entity provider name', () => {

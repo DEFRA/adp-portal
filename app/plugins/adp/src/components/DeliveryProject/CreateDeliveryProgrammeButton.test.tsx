@@ -1,7 +1,7 @@
 import { AlertApi, alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
 import { DeliveryProjectApi, deliveryProjectApiRef } from './api';
-import { render, waitFor } from '@testing-library/react';
+import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
 import {
   CreateDeliveryProjectButton,
@@ -16,6 +16,27 @@ import {
 import { act } from 'react-dom/test-utils';
 import { ValidationError as IValidationError } from '@internal/plugin-adp-common';
 import { ValidationError } from '../../utils';
+
+const usePermission: jest.MockedFn<
+  typeof import('@backstage/plugin-permission-react').usePermission
+> = jest.fn();
+const DialogForm: jest.MockedFn<
+  typeof import('../../utils/DialogForm').DialogForm
+> = jest.fn();
+
+const fields: DeliveryProjectFields = {
+  ado_project: 'abc',
+  delivery_programme_id: 'def',
+  delivery_project_code: 'ghi',
+  description: 'jkl',
+  github_team_visibility: 'private',
+  namespace: 'mno',
+  service_owner: 'pqr',
+  team_type: 'stu',
+  title: 'vwx',
+  alias: 'yz0',
+  finance_code: '123',
+};
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -225,20 +246,6 @@ describe('CreateDeliveryProjectButton', () => {
   });
 });
 
-const fields: DeliveryProjectFields = {
-  ado_project: 'abc',
-  delivery_programme_id: 'def',
-  delivery_project_code: 'ghi',
-  description: 'jkl',
-  github_team_visibility: 'private',
-  namespace: 'mno',
-  service_owner: 'pqr',
-  team_type: 'stu',
-  title: 'vwx',
-  alias: 'yz0',
-  finance_code: '123',
-};
-
 function setup() {
   const mockAlertApi: jest.Mocked<AlertApi> = {
     alert$: jest.fn(),
@@ -255,7 +262,7 @@ function setup() {
     mockAlertApi,
     mockProjectApi,
     async render(props: CreateDeliveryProjectButtonProps) {
-      const result = render(
+      const result = testRender(
         <TestApiProvider
           apis={[
             [alertApiRef, mockAlertApi],
@@ -271,9 +278,6 @@ function setup() {
   };
 }
 
-const usePermission: jest.MockedFn<
-  typeof import('@backstage/plugin-permission-react').usePermission
-> = jest.fn();
 jest.mock(
   '@backstage/plugin-permission-react',
   () =>
@@ -296,9 +300,6 @@ jest.mock(
     } satisfies typeof import('@backstage/plugin-permission-react')),
 );
 
-const DialogForm: jest.MockedFn<
-  typeof import('../../utils/DialogForm').DialogForm
-> = jest.fn();
 jest.mock(
   '../../utils/DialogForm',
   () =>

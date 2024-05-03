@@ -18,6 +18,7 @@
       "problemMatcher": []
     },
     {
+      "label": "tsc: watch",
       "type": "typescript",
       "tsconfig": "app/tsconfig.json",
       "option": "watch",
@@ -25,8 +26,35 @@
       "group": {
         "isDefault": true,
         "kind": "build"
+      }
+    },
+    {
+      "label": "test: watch",
+      "type": "shell",
+      "command": "yarn test --color=false --reporters=\"${workspaceFolder}/.vscode/code-reporter.js\"",
+      "group": {
+        "isDefault": true,
+        "kind": "test"
       },
-      "label": "tsc: watch - app/tsconfig.json"
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "javascript",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^-- failed;([^;]+);([^;]+);(.+)$",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^-- RUN START",
+          "endsPattern": "^-- RUN COMPLETE"
+        }
+      }
     }
   ]
 }

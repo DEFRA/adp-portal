@@ -13,7 +13,7 @@ describe('getProgrammeManagerDetails', () => {
   });
 
   it('returns error if name is not found', async () => {
-    expect(
+    await expect(
       getProgrammeManagerDetails(
         'a9dc2414-0626-43d2-993d-a53aac4d7341',
         catalogTestData.items,

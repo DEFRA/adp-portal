@@ -131,7 +131,7 @@ describe('DeliveryProgrammeAdminStore', () => {
         '888afa93-aaf4-4fec-acca-1b0995ca6eaf',
         deliveryProgrammes[0].id,
       );
-      expect(getResult).toBeDefined;
+      expect(getResult).toBeDefined();
       expect(getResult?.email).toEqual('test1.test@onmicrosoft.com');
     },
   );

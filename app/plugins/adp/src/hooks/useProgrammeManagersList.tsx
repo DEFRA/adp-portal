@@ -22,7 +22,7 @@ export const useProgrammeManagersList = (): ProgrammeManagersListOptions[] => {
     const fetchProgrammeManagersList = async () => {
       try {
         const ProgrammeManagersListUrl =
-          (await discoveryApi.getBaseUrl('adp')) + '/catalogentities';
+          `${await discoveryApi.getBaseUrl('adp')  }/catalogentities`;
         const response = await fetchApi.fetch(ProgrammeManagersListUrl);
         if (!response.ok) {
           throw new Error('Failed to fetch programme managers list');
@@ -54,9 +54,9 @@ export const transformedData = async (deliveryProgramme: any) => {
     (manager: any) => {
       if (manager.aad_entity_ref_id === undefined) {
         return { aad_entity_ref_id: manager };
-      } else {
+      } 
         return manager;
-      }
+      
     },
   );
   const data = {

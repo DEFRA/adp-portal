@@ -1,7 +1,7 @@
 import { AlertApi, alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
 import { DeliveryProgrammeApi, deliveryProgrammeApiRef } from './api';
-import { render, waitFor } from '@testing-library/react';
+import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
 import {
   EditDeliveryProgrammeButton,
@@ -18,6 +18,38 @@ import {
   ValidationError as IValidationError,
 } from '@internal/plugin-adp-common';
 import { ValidationError } from '../../utils';
+
+const usePermission: jest.MockedFn<
+  typeof import('@backstage/plugin-permission-react').usePermission
+> = jest.fn();
+const DialogForm: jest.MockedFn<
+  typeof import('../../utils/DialogForm').DialogForm
+> = jest.fn();
+
+const deliveryProgramme: DeliveryProgramme = {
+  arms_length_body_id: '00000000-0000-0000-0000-000000000001',
+  created_at: new Date(0),
+  delivery_programme_code: 'ADP',
+  description: 'My programme',
+  id: '00000000-0000-0000-0000-000000000002',
+  name: 'my-cool-programme',
+  programme_managers: [],
+  title: 'My cool Programme',
+  updated_at: new Date(0),
+  alias: 'best programme',
+  children: [],
+  updated_by: 'Someone',
+  url: 'https://test.com',
+};
+
+const fields: DeliveryProgrammeFields = {
+  alias: 'abc',
+  arms_length_body_id: 'def',
+  delivery_programme_code: 'ghi',
+  description: 'jkl',
+  title: 'mno',
+  url: 'pqr',
+};
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -256,31 +288,6 @@ describe('EditDeliveryProgrammeButton', () => {
   });
 });
 
-const deliveryProgramme: DeliveryProgramme = {
-  arms_length_body_id: '00000000-0000-0000-0000-000000000001',
-  created_at: new Date(0),
-  delivery_programme_code: 'ADP',
-  description: 'My programme',
-  id: '00000000-0000-0000-0000-000000000002',
-  name: 'my-cool-programme',
-  programme_managers: [],
-  title: 'My cool Programme',
-  updated_at: new Date(0),
-  alias: 'best programme',
-  children: [],
-  updated_by: 'Someone',
-  url: 'https://test.com',
-};
-
-const fields: DeliveryProgrammeFields = {
-  alias: 'abc',
-  arms_length_body_id: 'def',
-  delivery_programme_code: 'ghi',
-  description: 'jkl',
-  title: 'mno',
-  url: 'pqr',
-};
-
 function setup() {
   const mockAlertApi: jest.Mocked<AlertApi> = {
     alert$: jest.fn(),
@@ -298,7 +305,7 @@ function setup() {
     mockAlertApi,
     mockProgrammeApi,
     async render(props: EditDeliveryProgrammeButtonProps) {
-      const result = render(
+      const result = testRender(
         <TestApiProvider
           apis={[
             [alertApiRef, mockAlertApi],
@@ -314,9 +321,6 @@ function setup() {
   };
 }
 
-const usePermission: jest.MockedFn<
-  typeof import('@backstage/plugin-permission-react').usePermission
-> = jest.fn();
 jest.mock(
   '@backstage/plugin-permission-react',
   () =>
@@ -339,9 +343,6 @@ jest.mock(
     } satisfies typeof import('@backstage/plugin-permission-react')),
 );
 
-const DialogForm: jest.MockedFn<
-  typeof import('../../utils/DialogForm').DialogForm
-> = jest.fn();
 jest.mock(
   '../../utils/DialogForm',
   () =>

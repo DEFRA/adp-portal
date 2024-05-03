@@ -4,6 +4,9 @@ import {
   discoveryApiRef,
   fetchApiRef,
   createApiFactory,
+  ApiRef,
+  DiscoveryApi,
+  FetchApi,
 } from '@backstage/core-plugin-api';
 
 import {
@@ -33,30 +36,10 @@ export const adpPlugin = createPlugin({
     root: rootRouteRef,
   },
   apis: [
-    createApiFactory({
-      api: armsLengthBodyApiRef,
-      deps: { discoveryApiRef, fetchApiRef },
-      factory: ({ discoveryApiRef, fetchApiRef }) =>
-        new ArmsLengthBodyClient(discoveryApiRef, fetchApiRef),
-    }),
-    createApiFactory({
-      api: deliveryProgrammeApiRef,
-      deps: { discoveryApiRef, fetchApiRef },
-      factory: ({ discoveryApiRef, fetchApiRef }) =>
-        new DeliveryProgrammeClient(discoveryApiRef, fetchApiRef),
-    }),
-    createApiFactory({
-      api: deliveryProjectApiRef,
-      deps: { discoveryApiRef, fetchApiRef },
-      factory: ({ discoveryApiRef, fetchApiRef }) =>
-        new DeliveryProjectClient(discoveryApiRef, fetchApiRef),
-    }),
-    createApiFactory({
-      api: deliveryProgrammeAdminApiRef,
-      deps: { discoveryApiRef, fetchApiRef },
-      factory: ({ discoveryApiRef, fetchApiRef }) =>
-        new DeliveryProgrammeAdminClient(discoveryApiRef, fetchApiRef),
-    }),
+    pluginHttpApi(armsLengthBodyApiRef, ArmsLengthBodyClient),
+    pluginHttpApi(deliveryProgrammeApiRef, DeliveryProgrammeClient),
+    pluginHttpApi(deliveryProjectApiRef, DeliveryProjectClient),
+    pluginHttpApi(deliveryProgrammeAdminApiRef, DeliveryProgrammeAdminClient),
   ],
 });
 
@@ -105,4 +88,16 @@ function getComponent<T extends keyof typeof import('./components')>(name: T) {
     const components = await import('./components');
     return components[name];
   };
+}
+
+function pluginHttpApi<T>(
+  ref: ApiRef<T>,
+  ApiType: new (discoveryApi: DiscoveryApi, fetchApi: FetchApi) => T,
+) {
+  return createApiFactory({
+    api: ref,
+    deps: { discoveryApi: discoveryApiRef, fetchApi: fetchApiRef },
+    factory: ({ discoveryApi, fetchApi }) =>
+      new ApiType(discoveryApi, fetchApi),
+  });
 }

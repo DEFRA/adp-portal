@@ -182,7 +182,7 @@ async function addUsersToTeam(
   await Promise.all(
     usernames.map(async user => {
       try {
-        let userAdded =
+        const userAdded =
           await octokit.rest.teams.addOrUpdateMembershipForUserInOrg({
             org: organization,
             team_slug: githubTeamName,

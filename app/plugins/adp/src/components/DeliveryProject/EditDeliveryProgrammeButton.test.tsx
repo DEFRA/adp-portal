@@ -1,7 +1,7 @@
 import { AlertApi, alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
 import { DeliveryProjectApi, deliveryProjectApiRef } from './api';
-import { render, waitFor } from '@testing-library/react';
+import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
 import {
   EditDeliveryProjectButton,
@@ -18,6 +18,47 @@ import {
   ValidationError as IValidationError,
 } from '@internal/plugin-adp-common';
 import { ValidationError } from '../../utils';
+
+const usePermission: jest.MockedFn<
+  typeof import('@backstage/plugin-permission-react').usePermission
+> = jest.fn();
+const DialogForm: jest.MockedFn<
+  typeof import('../../utils/DialogForm').DialogForm
+> = jest.fn();
+
+const deliveryProject: DeliveryProject = {
+  ado_project: 'my ado project',
+  created_at: new Date(0),
+  delivery_programme_code: 'ADP',
+  delivery_programme_id: '00000000-0000-0000-0000-000000000001',
+  delivery_project_code: 'TRD',
+  description: 'My project',
+  id: '00000000-0000-0000-0000-000000000002',
+  name: 'my-cool-project',
+  namespace: 'ADP-TRD',
+  service_owner: 'someone else',
+  team_type: 'delivery',
+  title: 'My cool Project',
+  updated_at: new Date(0),
+  alias: 'ABC',
+  finance_code: '123',
+  github_team_visibility: 'public',
+  updated_by: 'Me',
+};
+
+const fields: DeliveryProjectFields = {
+  ado_project: 'abc',
+  delivery_programme_id: 'def',
+  delivery_project_code: 'ghi',
+  description: 'jkl',
+  github_team_visibility: 'private',
+  namespace: 'mno',
+  service_owner: 'pqr',
+  team_type: 'stu',
+  title: 'vwx',
+  alias: 'yz0',
+  finance_code: '123',
+};
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -257,40 +298,6 @@ describe('EditDeliveryProjectButton', () => {
   });
 });
 
-const deliveryProject: DeliveryProject = {
-  ado_project: 'my ado project',
-  created_at: new Date(0),
-  delivery_programme_code: 'ADP',
-  delivery_programme_id: '00000000-0000-0000-0000-000000000001',
-  delivery_project_code: 'TRD',
-  description: 'My project',
-  id: '00000000-0000-0000-0000-000000000002',
-  name: 'my-cool-project',
-  namespace: 'ADP-TRD',
-  service_owner: 'someone else',
-  team_type: 'delivery',
-  title: 'My cool Project',
-  updated_at: new Date(0),
-  alias: 'ABC',
-  finance_code: '123',
-  github_team_visibility: 'public',
-  updated_by: 'Me',
-};
-
-const fields: DeliveryProjectFields = {
-  ado_project: 'abc',
-  delivery_programme_id: 'def',
-  delivery_project_code: 'ghi',
-  description: 'jkl',
-  github_team_visibility: 'private',
-  namespace: 'mno',
-  service_owner: 'pqr',
-  team_type: 'stu',
-  title: 'vwx',
-  alias: 'yz0',
-  finance_code: '123',
-};
-
 function setup() {
   const mockAlertApi: jest.Mocked<AlertApi> = {
     alert$: jest.fn(),
@@ -307,7 +314,7 @@ function setup() {
     mockAlertApi,
     mockProjectApi,
     async render(props: EditDeliveryProjectButtonProps) {
-      const result = render(
+      const result = testRender(
         <TestApiProvider
           apis={[
             [alertApiRef, mockAlertApi],
@@ -323,9 +330,6 @@ function setup() {
   };
 }
 
-const usePermission: jest.MockedFn<
-  typeof import('@backstage/plugin-permission-react').usePermission
-> = jest.fn();
 jest.mock(
   '@backstage/plugin-permission-react',
   () =>
@@ -348,9 +352,6 @@ jest.mock(
     } satisfies typeof import('@backstage/plugin-permission-react')),
 );
 
-const DialogForm: jest.MockedFn<
-  typeof import('../../utils/DialogForm').DialogForm
-> = jest.fn();
 jest.mock(
   '../../utils/DialogForm',
   () =>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { MenuItem, TextField } from '@material-ui/core';
-import { enrichHelperText } from '.';
 import {
   Control,
   Controller,
@@ -11,6 +10,7 @@ import {
   UseControllerProps,
 } from 'react-hook-form';
 import { isFieldDisabled } from './isFieldDisabled';
+import { enrichHelperText } from './enrichHelperText';
 
 export type FormSelectFieldProps<
   TFields extends FieldValues,

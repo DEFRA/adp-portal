@@ -91,7 +91,7 @@ export function DialogForm<TFields extends FieldValues>({
       if (validationErrors.length > 0) return;
 
       const submitResult = await submit(fields);
-      if (submitResult.type == 'validationError')
+      if (submitResult.type === 'validationError')
         setErrors(submitResult.errors);
       else handleComplete(fields);
     } catch (err) {

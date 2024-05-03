@@ -36,7 +36,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
     );
 
     // exempting admins from permission checks as they're allowed to do everything
-    if (user != null && this.rbacUtilites.isInPlatformAdminGroup(user)) {
+    if (user !== undefined && this.rbacUtilites.isInPlatformAdminGroup(user)) {
       this.logger.debug(`This is a platform admin user with the ad group`);
       return { result: AuthorizeResult.ALLOW };
     }
@@ -47,7 +47,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
         isPermission(request.permission, actionExecutePermission) ||
         isPermission(request.permission, templateParameterReadPermission) ||
         isPermission(request.permission, templateStepReadPermission)) &&
-      user != null &&
+      user !== undefined &&
       this.rbacUtilites.isInProgrammeAdminGroup(user)
     ) {
       this.logger.debug(
@@ -59,7 +59,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
     // gives permission to create for ADP Programmes if in Admin Group
     if (
       isPermission(request.permission, adpProgrammmeCreatePermission) &&
-      user != null &&
+      user !== undefined &&
       this.rbacUtilites.isInProgrammeAdminGroup(user)
     ) {
       this.logger.debug(
