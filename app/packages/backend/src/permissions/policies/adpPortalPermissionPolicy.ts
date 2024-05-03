@@ -1,10 +1,11 @@
-import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
+import type { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
+import type {
+  PolicyDecision} from '@backstage/plugin-permission-common';
 import {
   AuthorizeResult,
-  PolicyDecision,
   isPermission,
 } from '@backstage/plugin-permission-common';
-import {
+import type {
   PermissionPolicy,
   PolicyQuery,
 } from '@backstage/plugin-permission-node';
@@ -21,8 +22,8 @@ import {
   templateStepReadPermission,
 } from '@backstage/plugin-scaffolder-common/alpha';
 import { adpProgrammmeCreatePermission } from '@internal/plugin-adp-common';
-import { RbacUtilities } from '../rbacUtilites';
-import { Logger } from 'winston';
+import type { RbacUtilities } from '../rbacUtilites';
+import type { Logger } from 'winston';
 
 export class AdpPortalPermissionPolicy implements PermissionPolicy {
   constructor(private rbacUtilites: RbacUtilities, private logger: Logger) {}

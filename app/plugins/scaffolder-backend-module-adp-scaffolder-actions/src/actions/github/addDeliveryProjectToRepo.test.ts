@@ -1,6 +1,6 @@
-import { Config } from '@backstage/config';
+import type { Config } from '@backstage/config';
 import { addDeliveryProjectToRepo } from './addDeliveryProjectToRepo';
-import { Octokit } from 'octokit';
+import type { Octokit } from 'octokit';
 import { PassThrough } from 'node:stream';
 import { randomUUID } from 'node:crypto';
 import { mockedOctokit } from './mockedOctokit';

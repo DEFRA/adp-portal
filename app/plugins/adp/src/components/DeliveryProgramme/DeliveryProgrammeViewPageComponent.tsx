@@ -1,19 +1,21 @@
-import React, { ReactNode, useCallback, useMemo } from 'react';
+import type { ReactNode} from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import type {
+  TableColumn} from '@backstage/core-components';
 import {
   Header,
   Page,
   Content,
   ContentHeader,
   SupportButton,
-  TableColumn,
   LinkButton,
   Link,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils';
 import { useApi } from '@backstage/core-plugin-api';
-import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import type { DeliveryProgramme } from '@internal/plugin-adp-common';
 import { deliveryProgrammeApiRef } from './api/DeliveryProgrammeApi';
 import { CreateDeliveryProgrammeButton } from './CreateDeliveryProgrammeButton';
 import { EditDeliveryProgrammeButton } from './EditDeliveryProgrammeButton';

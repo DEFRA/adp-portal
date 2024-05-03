@@ -1,8 +1,9 @@
-import { Config } from '@backstage/config';
+import type { Config } from '@backstage/config';
 import { InputError } from '@backstage/errors';
+import type {
+  ScmIntegrationRegistry} from '@backstage/integration';
 import {
-  DefaultGithubCredentialsProvider,
-  ScmIntegrationRegistry,
+  DefaultGithubCredentialsProvider
 } from '@backstage/integration';
 import { Octokit } from 'octokit';
 

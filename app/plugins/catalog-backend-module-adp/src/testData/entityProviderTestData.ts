@@ -7,7 +7,7 @@ import {
   DELIVERY_PROGRAMME_ID_ANNOTATION,
   DELIVERY_PROJECT_ID_ANNOTATION,
 } from '../transformers';
-import { DeliveryProject } from '@internal/plugin-adp-common';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
 
 export const armsLengthBody = [
   {

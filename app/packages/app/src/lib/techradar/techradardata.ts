@@ -1,4 +1,4 @@
-import { TechRadarApi } from './techradarapi';
+import type { TechRadarApi } from './techradarapi';
 import type { Config } from '@backstage/config';
 
 export class AdpDataTechRadarApi implements TechRadarApi {

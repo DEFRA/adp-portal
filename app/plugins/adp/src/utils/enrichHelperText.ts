@@ -1,4 +1,4 @@
-import { FieldPath, FieldValues, UseControllerProps } from 'react-hook-form';
+import type { FieldPath, FieldValues, UseControllerProps } from 'react-hook-form';
 
 export function enrichHelperText<
   TFieldValues extends FieldValues,

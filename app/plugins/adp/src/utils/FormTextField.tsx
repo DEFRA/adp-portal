@@ -1,14 +1,15 @@
 import React from 'react';
 import { type InputProps, TextField } from '@material-ui/core';
-import {
+import type {
   Control,
-  Controller,
   FieldErrors,
   FieldPath,
   FieldValues,
   UseControllerProps,
   ValidationRule,
-  ValidationValue,
+  ValidationValue} from 'react-hook-form';
+import {
+  Controller
 } from 'react-hook-form';
 import { isFieldDisabled } from './isFieldDisabled';
 import { enrichHelperText } from './enrichHelperText';

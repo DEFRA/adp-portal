@@ -1,5 +1,6 @@
-import { GroupEntity, ANNOTATION_LOCATION, ANNOTATION_ORIGIN_LOCATION } from '@backstage/catalog-model';
-import { ArmsLengthBody } from '@internal/plugin-adp-common';
+import type { GroupEntity} from '@backstage/catalog-model';
+import { ANNOTATION_LOCATION, ANNOTATION_ORIGIN_LOCATION } from '@backstage/catalog-model';
+import type { ArmsLengthBody } from '@internal/plugin-adp-common';
 import { createTransformerTitle } from './utils';
 import { ARMS_LENGTH_BODY_ID_ANNOTATION } from './constants';
 

@@ -1,4 +1,4 @@
-import {
+import type {
   CreateArmsLengthBodyRequest,
   UpdateArmsLengthBodyRequest,
 } from '@internal/plugin-adp-common';

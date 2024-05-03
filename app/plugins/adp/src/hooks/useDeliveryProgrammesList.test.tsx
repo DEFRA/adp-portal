@@ -1,17 +1,19 @@
 import React from 'react';
 import { TestApiProvider } from '@backstage/test-utils';
+import type {
+  AlertApi,
+  ErrorApi,
+  IdentityApi} from '@backstage/core-plugin-api';
 import {
   alertApiRef,
   errorApiRef,
-  identityApiRef,
-  AlertApi,
-  ErrorApi,
-  IdentityApi,
+  identityApiRef
 } from '@backstage/core-plugin-api';
 import { renderHook } from '@testing-library/react-hooks';
 import { useDeliveryProgrammesList } from './useDeliveryProgrammesList';
+import type {
+  DeliveryProgrammeApi} from '../components/DeliveryProgramme/api';
 import {
-  DeliveryProgrammeApi,
   deliveryProgrammeApiRef,
 } from '../components/DeliveryProgramme/api';
 

@@ -1,5 +1,5 @@
 import { defraADONameTransformer } from './DefraNameTransformer'; // Import the function to be tested
-import { UserEntity } from '@backstage/catalog-model';
+import type { UserEntity } from '@backstage/catalog-model';
 import {
   defaultUserTransformer,
 } from '@backstage/plugin-catalog-backend-module-msgraph';

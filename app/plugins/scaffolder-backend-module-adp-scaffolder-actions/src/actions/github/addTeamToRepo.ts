@@ -1,10 +1,12 @@
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
+import type {
+  ScmIntegrationRegistry} from '@backstage/integration';
 import {
-  ScmIntegrationRegistry,
   DefaultGithubCredentialsProvider,
 } from '@backstage/integration';
-import { Octokit, RequestError } from 'octokit';
-import { Config } from '@backstage/config';
+import type { RequestError } from 'octokit';
+import { Octokit } from 'octokit';
+import type { Config } from '@backstage/config';
 import { InputError } from '@backstage/errors';
 
 export function addGithubTeamToRepoAction(options: {

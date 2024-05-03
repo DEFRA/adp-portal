@@ -1,32 +1,37 @@
 import React from 'react';
+import type {
+  DeliveryProjectFields} from './DeliveryProjectFormFields';
 import {
   DeliveryProjectFormFields,
-  DeliveryProjectFields,
   emptyForm,
 } from './DeliveryProjectFormFields';
+import type {
+  RenderResult} from '@testing-library/react';
 import {
-  RenderResult,
   fireEvent,
   render as testRender,
   waitFor,
 } from '@testing-library/react';
-import {
+import type {
   FieldPath,
   FieldValues,
-  UseFormReturn,
+  UseFormReturn} from 'react-hook-form';
+import {
   useForm,
 } from 'react-hook-form';
 import { act } from 'react-dom/test-utils';
 import { TestApiProvider } from '@backstage/test-utils';
-import {
+import type {
   ErrorApi,
-  IdentityApi,
+  IdentityApi} from '@backstage/core-plugin-api';
+import {
   errorApiRef,
   identityApiRef,
 } from '@backstage/core-plugin-api';
 import userEvent from '@testing-library/user-event';
+import type {
+  DeliveryProgrammeApi} from '../DeliveryProgramme/api';
 import {
-  DeliveryProgrammeApi,
   deliveryProgrammeApiRef,
 } from '../DeliveryProgramme/api';
 

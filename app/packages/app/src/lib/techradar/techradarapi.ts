@@ -1,4 +1,5 @@
-import { ApiRef, createApiRef } from '@backstage/core-plugin-api';
+import type { ApiRef} from '@backstage/core-plugin-api';
+import { createApiRef } from '@backstage/core-plugin-api';
 
 /**
  * {@link @backstage/core-plugin-api#ApiRef} for the {@link TechRadarApi}

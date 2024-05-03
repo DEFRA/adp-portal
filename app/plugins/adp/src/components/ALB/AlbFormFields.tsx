@@ -1,6 +1,7 @@
 import React from 'react';
-import { DisabledFields, FormTextField, formRules } from '../../utils';
-import { UseFormReturn } from 'react-hook-form';
+import type { DisabledFields} from '../../utils';
+import { FormTextField, formRules } from '../../utils';
+import type { UseFormReturn } from 'react-hook-form';
 
 export type AlbFields = {
   title: string;

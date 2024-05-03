@@ -1,7 +1,7 @@
 import { CatalogBuilder } from '@backstage/plugin-catalog-backend';
 import { ScaffolderEntitiesProcessor } from '@backstage/plugin-catalog-backend-module-scaffolder-entity-model';
-import { Router } from 'express';
-import { PluginEnvironment } from '../types';
+import type { Router } from 'express';
+import type { PluginEnvironment } from '../types';
 import { MicrosoftGraphOrgEntityProvider } from '@backstage/plugin-catalog-backend-module-msgraph';
 import { GithubEntityProvider } from '@backstage/plugin-catalog-backend-module-github';
 import { defraADONameTransformer } from '../auth/DefraNameTransformer';

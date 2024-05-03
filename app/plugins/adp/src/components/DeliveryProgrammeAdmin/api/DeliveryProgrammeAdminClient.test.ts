@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { DeliveryProgrammeAdminClient } from './DeliveryProgrammeAdminClient';
 
 jest.mock('@backstage/core-plugin-api', () => ({

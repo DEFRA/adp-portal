@@ -1,11 +1,11 @@
-import { DeliveryProjectApi } from './DeliveryProjectApi';
-import {
+import type { DeliveryProjectApi } from './DeliveryProjectApi';
+import type {
   CreateDeliveryProjectRequest,
   DeliveryProgramme,
   DeliveryProject,
   UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
-import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
+import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
 import { ValidationError } from '../../../utils';
 

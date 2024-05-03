@@ -1,7 +1,7 @@
-import { Response } from 'express';
-import { ValidationErrorMapping } from '@internal/plugin-adp-common';
+import type { Response } from 'express';
+import type { ValidationErrorMapping } from '@internal/plugin-adp-common';
 import { InputError } from '@backstage/errors';
-import { z } from 'zod';
+import type { z } from 'zod';
 import { type UUID } from 'node:crypto';
 
 export function respond<Request, Success, Error extends string>(

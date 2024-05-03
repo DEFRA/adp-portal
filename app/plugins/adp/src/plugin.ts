@@ -1,13 +1,15 @@
+import type {
+  ApiRef,
+  DiscoveryApi,
+  FetchApi} from '@backstage/core-plugin-api';
 import {
   createPlugin,
   createRoutableExtension,
   discoveryApiRef,
   fetchApiRef,
-  createApiFactory,
-  ApiRef,
-  DiscoveryApi,
-  FetchApi,
+  createApiFactory
 } from '@backstage/core-plugin-api';
+import type * as Components from './components';
 
 import {
   manageProgrammeAdminEntityContentRouteRef,
@@ -83,7 +85,7 @@ export const EntityPageManageProgrammeAdminContent = adpPlugin.provide(
   }),
 );
 
-function getComponent<T extends keyof typeof import('./components')>(name: T) {
+function getComponent<T extends keyof typeof Components>(name: T) {
   return async () => {
     const components = await import('./components');
     return components[name];

@@ -1,12 +1,15 @@
 import React from 'react';
-import { AlbFields, AlbFormFields, emptyForm } from './AlbFormFields';
+import type { AlbFields} from './AlbFormFields';
+import { AlbFormFields, emptyForm } from './AlbFormFields';
+import type {
+  RenderResult} from '@testing-library/react';
 import {
-  RenderResult,
   fireEvent,
   render as testRender,
   waitFor,
 } from '@testing-library/react';
-import { UseFormReturn, useForm } from 'react-hook-form';
+import type { UseFormReturn} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { act } from 'react-dom/test-utils';
 
 describe('AlbFormFields', () => {

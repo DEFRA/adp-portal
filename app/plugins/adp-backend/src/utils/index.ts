@@ -1,7 +1,7 @@
-import { DeliveryProject } from '@internal/plugin-adp-common';
-import { IdentityApi } from '@backstage/plugin-auth-node';
-import express from 'express';
-import { AlbRouterOptions } from '../service/armsLengthBodyRouter';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
+import type { IdentityApi } from '@backstage/plugin-auth-node';
+import type express from 'express';
+import type { AlbRouterOptions } from '../service/armsLengthBodyRouter';
 import * as urlSlug from 'url-slug';
 
 export * from './types';

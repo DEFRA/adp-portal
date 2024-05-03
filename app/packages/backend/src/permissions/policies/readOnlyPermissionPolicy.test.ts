@@ -1,4 +1,4 @@
-import { PolicyQuery } from '@backstage/plugin-permission-node';
+import type { PolicyQuery } from '@backstage/plugin-permission-node';
 import {
   catalogEntityReadPermission,
   catalogLocationReadPermission,

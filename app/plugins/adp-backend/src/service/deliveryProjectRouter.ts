@@ -1,19 +1,19 @@
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
-import { IdentityApi } from '@backstage/plugin-auth-node';
-import { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
-import {
+import type { IdentityApi } from '@backstage/plugin-auth-node';
+import type { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
+import type {
   CreateDeliveryProjectRequest,
   UpdateDeliveryProjectRequest,
   ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
 import { getCurrentUsername } from '../utils/index';
-import { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { FluxConfigApi } from '../deliveryProject';
-import { Config } from '@backstage/config';
+import type { Config } from '@backstage/config';
 
 export interface ProjectRouterOptions {
   logger: Logger;
@@ -23,7 +23,7 @@ export interface ProjectRouterOptions {
   deliveryProjectStore: IDeliveryProjectStore;
   deliveryProgrammeStore: IDeliveryProgrammeStore;
 }
-import { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
+import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import { createParser, respond } from './util';
 import { z } from 'zod';
 

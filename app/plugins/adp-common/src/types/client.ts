@@ -1,4 +1,4 @@
-import { DeliveryProjectTeamsSyncResult } from './github';
+import type { DeliveryProjectTeamsSyncResult } from './github';
 
 export type IAdpClient = {
   syncDeliveryProjectWithGithubTeams: (

@@ -2,8 +2,9 @@ import { ConfigReader } from '@backstage/config';
 import { FluxConfigApi } from './fluxConfigApi';
 import { expectedProgrammeDataWithManager } from '../testData/programmeTestData';
 import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
-import fetch, { Response } from 'node-fetch';
-import { DeliveryProject } from '@internal/plugin-adp-common';
+import type { Response } from 'node-fetch';
+import fetch from 'node-fetch';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
 
 jest.mock('node-fetch', () => jest.fn());
 const mockedFetch: jest.MockedFunction<typeof fetch> =

@@ -1,5 +1,5 @@
-import { Config } from '@backstage/config';
-import { GithubTeamDetails } from '@internal/plugin-adp-common';
+import type { Config } from '@backstage/config';
+import type { GithubTeamDetails } from '@internal/plugin-adp-common';
 import fetch from 'node-fetch';
 
 export type SetTeamRequest = {

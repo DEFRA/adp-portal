@@ -1,29 +1,35 @@
-import { AlertApi, alertApiRef } from '@backstage/core-plugin-api';
+import type { AlertApi} from '@backstage/core-plugin-api';
+import { alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
-import { DeliveryProgrammeApi, deliveryProgrammeApiRef } from './api';
+import type { DeliveryProgrammeApi} from './api';
+import { deliveryProgrammeApiRef } from './api';
 import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
+import type {
+  EditDeliveryProgrammeButtonProps} from './EditDeliveryProgrammeButton';
 import {
-  EditDeliveryProgrammeButton,
-  EditDeliveryProgrammeButtonProps,
+  EditDeliveryProgrammeButton
 } from './EditDeliveryProgrammeButton';
 import userEvent from '@testing-library/user-event';
+import type {
+  DeliveryProgrammeFields} from './DeliveryProgrammeFormFields';
 import {
-  DeliveryProgrammeFields,
   DeliveryProgrammeFormFields,
 } from './DeliveryProgrammeFormFields';
 import { act } from 'react-dom/test-utils';
-import {
+import type {
   DeliveryProgramme,
   ValidationError as IValidationError,
 } from '@internal/plugin-adp-common';
 import { ValidationError } from '../../utils';
+import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
+import type * as DialogFormModule from '../../utils/DialogForm';
 
 const usePermission: jest.MockedFn<
-  typeof import('@backstage/plugin-permission-react').usePermission
+  typeof PluginPermissionReactModule.usePermission
 > = jest.fn();
 const DialogForm: jest.MockedFn<
-  typeof import('../../utils/DialogForm').DialogForm
+  typeof DialogFormModule.DialogForm
 > = jest.fn();
 
 const deliveryProgramme: DeliveryProgramme = {
@@ -340,7 +346,7 @@ jest.mock(
       get permissionApiRef(): never {
         throw new Error('Not mocked');
       },
-    } satisfies typeof import('@backstage/plugin-permission-react')),
+    } satisfies typeof PluginPermissionReactModule),
 );
 
 jest.mock(
@@ -348,7 +354,7 @@ jest.mock(
   () =>
     ({
       get DialogForm() {
-        return DialogForm as typeof import('../../utils/DialogForm').DialogForm;
+        return DialogForm as typeof DialogFormModule.DialogForm;
       },
-    } satisfies typeof import('../../utils/DialogForm')),
+    } satisfies typeof DialogFormModule),
 );

@@ -1,4 +1,4 @@
-import { UseControllerProps } from 'react-hook-form';
+import type { UseControllerProps } from 'react-hook-form';
 
 export const formRules = {
   required: { required: 'This field is required' },

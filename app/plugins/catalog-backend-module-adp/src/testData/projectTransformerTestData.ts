@@ -3,7 +3,7 @@ import {
   ANNOTATION_ORIGIN_LOCATION,
 } from '@backstage/catalog-model';
 import { DELIVERY_PROJECT_ID_ANNOTATION } from '../transformers';
-import { DeliveryProject } from '@internal/plugin-adp-common';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
 
 export const deliveryProject: DeliveryProject = {
   delivery_programme_id: '05aa36b6-c7a2-4c35-820e-c31d20011f47',

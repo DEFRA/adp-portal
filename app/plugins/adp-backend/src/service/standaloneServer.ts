@@ -4,8 +4,8 @@ import {
   createServiceBuilder,
   loadBackendConfig,
 } from '@backstage/backend-common';
-import { Server } from 'http';
-import { Logger } from 'winston';
+import type { Server } from 'http';
+import type { Logger } from 'winston';
 import { ConfigReader } from '@backstage/config';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 import { createAlbRouter } from './armsLengthBodyRouter';

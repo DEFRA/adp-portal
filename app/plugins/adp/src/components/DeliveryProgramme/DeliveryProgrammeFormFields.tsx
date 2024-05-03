@@ -1,11 +1,12 @@
 import React from 'react';
+import type {
+  DisabledFields} from '../../utils';
 import {
-  DisabledFields,
   FormSelectField,
   FormTextField,
   formRules,
 } from '../../utils';
-import { UseFormReturn } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
 import { useArmsLengthBodyList } from '../../hooks';
 
 export type DeliveryProgrammeFields = {

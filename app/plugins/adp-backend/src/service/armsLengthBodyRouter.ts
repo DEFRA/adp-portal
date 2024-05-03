@@ -1,15 +1,15 @@
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
-import { IdentityApi } from '@backstage/plugin-auth-node';
-import { IArmsLengthBodyStore } from '../armsLengthBody';
-import { Config } from '@backstage/config';
+import type { IdentityApi } from '@backstage/plugin-auth-node';
+import type { IArmsLengthBodyStore } from '../armsLengthBody';
+import type { Config } from '@backstage/config';
 import { getCurrentUsername, getOwner } from '../utils/index';
-import { IDeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
+import type { IDeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
 import z from 'zod';
-import {
+import type {
   CreateArmsLengthBodyRequest,
   UpdateArmsLengthBodyRequest,
   ValidationErrorMapping,

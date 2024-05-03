@@ -1,12 +1,14 @@
-import React, { ReactNode, useCallback, useMemo } from 'react';
+import type { ReactNode} from 'react';
+import React, { useCallback, useMemo } from 'react';
+import type {
+  TableColumn} from '@backstage/core-components';
 import {
   Content,
   ContentHeader,
   Link,
-  Page,
-  TableColumn,
+  Page
 } from '@backstage/core-components';
-import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { Button, Grid } from '@material-ui/core';
 import { useApi } from '@backstage/core-plugin-api';
 import { deliveryProgrammeAdminApiRef } from './api';

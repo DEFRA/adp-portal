@@ -1,7 +1,7 @@
-import { DiscoveryService } from '@backstage/backend-plugin-api';
+import type { DiscoveryService } from '@backstage/backend-plugin-api';
 import { InputError } from '@backstage/errors';
 import fetch from 'node-fetch';
-import {
+import type {
   DeliveryProjectTeamsSyncResult,
   IAdpClient,
 } from '@internal/plugin-adp-common';

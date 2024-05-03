@@ -2,19 +2,19 @@ import React from 'react';
 
 import { Button } from '@material-ui/core';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import { DeliveryProgrammeApi, deliveryProgrammeApiRef } from './api';
-import { ErrorApi, errorApiRef } from '@backstage/core-plugin-api';
+import type { DeliveryProgrammeApi} from './api';
+import { deliveryProgrammeApiRef } from './api';
+import type { ErrorApi} from '@backstage/core-plugin-api';
+import { errorApiRef } from '@backstage/core-plugin-api';
 import { DeliveryProgrammeViewPageComponent } from './DeliveryProgrammeViewPageComponent';
 import { waitFor } from '@testing-library/react';
-import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import type { DeliveryProgramme } from '@internal/plugin-adp-common';
 import { entityRouteRef } from '@backstage/plugin-catalog-react';
+import type * as EditDeliveryProgrammeButtonModule from './EditDeliveryProgrammeButton';
+import type * as CreateDeliveryProgrammeButtonModule from './CreateDeliveryProgrammeButton';
 
-const EditDeliveryProgrammeButton: jest.MockedFn<
-  typeof import('./EditDeliveryProgrammeButton').EditDeliveryProgrammeButton
-> = jest.fn();
-const CreateDeliveryProgrammeButton: jest.MockedFn<
-  typeof import('./CreateDeliveryProgrammeButton').CreateDeliveryProgrammeButton
-> = jest.fn();
+const EditDeliveryProgrammeButton: jest.MockedFn<typeof EditDeliveryProgrammeButtonModule['EditDeliveryProgrammeButton']> = jest.fn();
+const CreateDeliveryProgrammeButton: jest.MockedFn<typeof CreateDeliveryProgrammeButtonModule['CreateDeliveryProgrammeButton']> = jest.fn();
 
 beforeEach(() => {
   jest.spyOn(global.Math, 'random').mockReturnValue(0);
@@ -223,7 +223,7 @@ jest.mock(
       get EditDeliveryProgrammeButton() {
         return EditDeliveryProgrammeButton;
       },
-    } satisfies typeof import('./EditDeliveryProgrammeButton')),
+    } satisfies typeof EditDeliveryProgrammeButtonModule),
 );
 
 jest.mock(
@@ -233,7 +233,7 @@ jest.mock(
       get CreateDeliveryProgrammeButton() {
         return CreateDeliveryProgrammeButton;
       },
-    } satisfies typeof import('./CreateDeliveryProgrammeButton')),
+    } satisfies typeof CreateDeliveryProgrammeButtonModule),
 );
 
 function noTableData(value: unknown) {

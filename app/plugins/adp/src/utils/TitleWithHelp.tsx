@@ -1,6 +1,7 @@
 import { Button } from '@material-ui/core';
 import Help from '@mui/icons-material/Help';
-import React, { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
+import React from 'react';
 
 export type TitleWithHelpProps = PropsWithChildren<
   Readonly<{

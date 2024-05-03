@@ -1,6 +1,7 @@
+import type {
+  PluginDatabaseManager} from '@backstage/backend-common';
 import {
   DatabaseManager,
-  PluginDatabaseManager,
   getVoidLogger,
 } from '@backstage/backend-common';
 import express from 'express';
@@ -10,12 +11,12 @@ import { ConfigReader } from '@backstage/config';
 import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { InputError } from '@backstage/errors';
 import { expectedProgrammeDataWithName } from '../testData/programmeTestData';
-import { IDeliveryProjectStore } from '../deliveryProject';
-import { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import type { IDeliveryProjectStore } from '../deliveryProject';
+import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 import { randomUUID } from 'node:crypto';
-import { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
-import {
+import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
+import type {
   CreateDeliveryProjectRequest,
   UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';

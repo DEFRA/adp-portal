@@ -1,13 +1,13 @@
 import { errorHandler } from '@backstage/backend-common';
-import { IdentityApi } from '@backstage/plugin-auth-node';
-import { Logger } from 'winston';
-import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import type { IdentityApi } from '@backstage/plugin-auth-node';
+import type { Logger } from 'winston';
+import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import express from 'express';
 import Router from 'express-promise-router';
 import { InputError } from '@backstage/errors';
-import { CatalogApi } from '@backstage/catalog-client';
-import { UserEntityV1alpha1 } from '@backstage/catalog-model';
-import { CreateDeliveryProgrammeAdmin } from '../utils';
+import type { CatalogApi } from '@backstage/catalog-client';
+import type { UserEntityV1alpha1 } from '@backstage/catalog-model';
+import type { CreateDeliveryProgrammeAdmin } from '../utils';
 
 type CreateDeliveryProgrammeAdminRequest = {
   aadEntityRefId: string;

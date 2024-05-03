@@ -1,16 +1,18 @@
-import { Config } from '@backstage/config';
+import type { Config } from '@backstage/config';
 import { InputError, ServiceUnavailableError } from '@backstage/errors';
+import type {
+  ScmIntegrationRegistry} from '@backstage/integration';
 import {
-  DefaultAzureDevOpsCredentialsProvider,
-  ScmIntegrationRegistry,
+  DefaultAzureDevOpsCredentialsProvider
 } from '@backstage/integration';
 import {
   getHandlerFromToken,
   getPersonalAccessTokenHandler,
 } from 'azure-devops-node-api';
-import { IRequestOptions, IRestResponse, RestClient } from 'typed-rest-client';
+import type { IRequestOptions, IRestResponse} from 'typed-rest-client';
+import { RestClient } from 'typed-rest-client';
 import type { Logger } from 'winston';
-import {
+import type {
   Build,
   Pipeline,
   PipelineRun,
@@ -18,7 +20,7 @@ import {
   ResourcePipelinePermissions,
   ServiceEndpointResponse,
 } from './types';
-import { IRequestHandler } from 'typed-rest-client/Interfaces';
+import type { IRequestHandler } from 'typed-rest-client/Interfaces';
 
 type CreatePipelineRequest = {
   folder: string;

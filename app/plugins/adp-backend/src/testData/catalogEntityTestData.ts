@@ -1,4 +1,4 @@
-import { GetEntitiesResponse } from '@backstage/catalog-client';
+import type { GetEntitiesResponse } from '@backstage/catalog-client';
 
 export const catalogTestData: GetEntitiesResponse = {
   items: [

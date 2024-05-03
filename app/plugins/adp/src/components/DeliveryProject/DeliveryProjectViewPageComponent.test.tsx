@@ -2,18 +2,18 @@ import React from 'react';
 
 import { Button } from '@material-ui/core';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import { DeliveryProjectApi, deliveryProjectApiRef } from './api';
-import { ErrorApi, errorApiRef } from '@backstage/core-plugin-api';
+import type { DeliveryProjectApi} from './api';
+import { deliveryProjectApiRef } from './api';
+import type { ErrorApi} from '@backstage/core-plugin-api';
+import { errorApiRef } from '@backstage/core-plugin-api';
 import { DeliveryProjectViewPageComponent } from './DeliveryProjectViewPageComponent';
 import { waitFor } from '@testing-library/react';
-import { DeliveryProject } from '@internal/plugin-adp-common';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
+import type * as EditDeliveryProjectButtonModule from './EditDeliveryProjectButton';
+import type * as CreateDeliveryProjectButtonModule from './CreateDeliveryProjectButton';
 
-const EditDeliveryProjectButton: jest.MockedFn<
-  typeof import('./EditDeliveryProjectButton').EditDeliveryProjectButton
-> = jest.fn();
-const CreateDeliveryProjectButton: jest.MockedFn<
-  typeof import('./CreateDeliveryProjectButton').CreateDeliveryProjectButton
-> = jest.fn();
+const EditDeliveryProjectButton: jest.MockedFn<typeof EditDeliveryProjectButtonModule['EditDeliveryProjectButton']> = jest.fn();
+const CreateDeliveryProjectButton: jest.MockedFn<typeof CreateDeliveryProjectButtonModule['CreateDeliveryProjectButton']> = jest.fn();
 
 beforeEach(() => {
   jest.spyOn(global.Math, 'random').mockReturnValue(0);
@@ -214,7 +214,7 @@ jest.mock(
       get EditDeliveryProjectButton() {
         return EditDeliveryProjectButton;
       },
-    } satisfies typeof import('./EditDeliveryProjectButton')),
+    } satisfies typeof EditDeliveryProjectButtonModule),
 );
 
 jest.mock(
@@ -224,7 +224,7 @@ jest.mock(
       get CreateDeliveryProjectButton() {
         return CreateDeliveryProjectButton;
       },
-    } satisfies typeof import('./CreateDeliveryProjectButton')),
+    } satisfies typeof CreateDeliveryProjectButtonModule),
 );
 
 function noTableData(value: unknown) {

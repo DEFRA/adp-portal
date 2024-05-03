@@ -1,4 +1,4 @@
-import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { createApiRef } from '@backstage/core-plugin-api';
 
 export const deliveryProgrammeAdminApiRef =

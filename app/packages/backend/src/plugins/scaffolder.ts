@@ -3,7 +3,7 @@ import {
   createBuiltinActions,
   createRouter,
 } from '@backstage/plugin-scaffolder-backend';
-import { Router } from 'express';
+import type { Router } from 'express';
 import type { PluginEnvironment } from '../types';
 import { ScmIntegrations } from '@backstage/integration';
 import {

@@ -1,6 +1,7 @@
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
+import type {
+  delivery_project_github_team} from './delivery_project_github_team';
 import {
-  delivery_project_github_team,
   delivery_project_github_teams_name,
 } from './delivery_project_github_team';
 import { type UUID } from 'node:crypto';

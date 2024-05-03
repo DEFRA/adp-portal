@@ -1,4 +1,4 @@
-import { Entity } from '@backstage/catalog-model';
+import type { Entity } from '@backstage/catalog-model';
 
 import type { DocsBuildStrategy } from '@backstage/plugin-techdocs-node';
 

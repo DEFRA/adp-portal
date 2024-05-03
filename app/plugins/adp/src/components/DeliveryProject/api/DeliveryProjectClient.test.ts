@@ -1,4 +1,4 @@
-import {
+import type {
   CreateDeliveryProjectRequest,
   UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';

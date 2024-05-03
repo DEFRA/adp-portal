@@ -1,16 +1,17 @@
 import React from 'react';
 import { errorApiRef } from '@backstage/core-plugin-api';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import { DeliveryProgrammeAdminApi, deliveryProgrammeAdminApiRef } from './api';
+import type { DeliveryProgrammeAdminApi} from './api';
+import { deliveryProgrammeAdminApiRef } from './api';
 import { DeliveryProgrammeAdminViewPage } from './DeliveryProgrammeAdminViewPage';
 import { waitFor } from '@testing-library/react';
-import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { faker } from '@faker-js/faker';
 import {
   EntityProvider,
   entityRouteRef,
 } from '@backstage/plugin-catalog-react';
-import { Entity } from '@backstage/catalog-model';
+import type { Entity } from '@backstage/catalog-model';
 
 function setup() {
   const mockDeliveryProgrameAdminApi: jest.Mocked<DeliveryProgrammeAdminApi> = {

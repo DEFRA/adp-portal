@@ -1,18 +1,19 @@
 import React, { useCallback, useMemo } from 'react';
+import type {
+  DisabledFields} from '../../utils';
 import {
-  DisabledFields,
   FormSelectField,
   FormTextField,
   emailRegex,
   formRules,
 } from '../../utils';
-import { UseFormReturn, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import type { UseFormReturn, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import {
   useDeliveryProgrammesList,
   useComputedUntilChanged,
 } from '../../hooks';
 import { InputAdornment } from '@material-ui/core';
-import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import type { DeliveryProgramme } from '@internal/plugin-adp-common';
 
 export type DeliveryProjectFields = {
   title: string;

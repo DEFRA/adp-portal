@@ -1,4 +1,5 @@
-import { AlertApi, alertApiRef } from '@backstage/core-plugin-api';
+import type { AlertApi} from '@backstage/core-plugin-api';
+import { alertApiRef } from '@backstage/core-plugin-api';
 import { TestApiProvider } from '@backstage/test-utils';
 import {
   prettyFormat,
@@ -6,8 +7,9 @@ import {
   waitFor,
 } from '@testing-library/react';
 import React from 'react';
-import { DialogForm, DialogFormProps, SubmitResult } from './DialogForm';
-import { FieldValues } from 'react-hook-form';
+import type { DialogFormProps, SubmitResult } from './DialogForm';
+import { DialogForm } from './DialogForm';
+import type { FieldValues } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 

@@ -1,19 +1,19 @@
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
-import { IdentityApi } from '@backstage/plugin-auth-node';
-import { CatalogApi } from '@backstage/catalog-client';
-import { IDeliveryProgrammeStore } from '../deliveryProgramme';
-import {
+import type { IdentityApi } from '@backstage/plugin-auth-node';
+import type { CatalogApi } from '@backstage/catalog-client';
+import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import type {
   CreateDeliveryProgrammeRequest,
   UpdateDeliveryProgrammeRequest,
   ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
 import { getCurrentUsername } from '../utils/index';
-import { IDeliveryProjectStore } from '../deliveryProject';
-import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import type { IDeliveryProjectStore } from '../deliveryProject';
+import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import { createParser, respond } from './util';
 import { z } from 'zod';
 

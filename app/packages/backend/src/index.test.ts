@@ -1,4 +1,4 @@
-import { PluginEnvironment } from './types';
+import type { PluginEnvironment } from './types';
 
 describe('test', () => {
   it('unbreaks the test runner', () => {

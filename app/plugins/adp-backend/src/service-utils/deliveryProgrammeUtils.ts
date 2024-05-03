@@ -1,7 +1,7 @@
-import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
-import { Entity } from '@backstage/catalog-model';
+import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import type { Entity } from '@backstage/catalog-model';
 import { NotFoundError } from '@backstage/errors';
-import {
+import type {
   DeliveryProgramme,
   DeliveryProgrammeAdmin,
 } from '@internal/plugin-adp-common';

@@ -1,13 +1,14 @@
 import { getVoidLogger } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
-import { AlbRouterOptions, createAlbRouter } from './armsLengthBodyRouter';
+import type { AlbRouterOptions} from './armsLengthBodyRouter';
+import { createAlbRouter } from './armsLengthBodyRouter';
 import { ConfigReader } from '@backstage/config';
 import { expectedAlbWithName } from '../testData/albTestData';
 import { InputError } from '@backstage/errors';
-import { IArmsLengthBodyStore } from '../armsLengthBody';
-import { IDeliveryProgrammeStore } from '../deliveryProgramme';
-import {
+import type { IArmsLengthBodyStore } from '../armsLengthBody';
+import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import type {
   CreateArmsLengthBodyRequest,
   UpdateArmsLengthBodyRequest,
 } from '@internal/plugin-adp-common';

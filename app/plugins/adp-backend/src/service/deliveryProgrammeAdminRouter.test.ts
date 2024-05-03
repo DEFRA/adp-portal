@@ -2,14 +2,15 @@ import express from 'express';
 import request from 'supertest';
 import { programmeManagerList } from '../testData/programmeTestData';
 import { getVoidLogger } from '@backstage/backend-common';
+import type {
+  DeliveryProgrammeAdminRouterOptions} from './deliveryProgrammeAdminRouter';
 import {
-  DeliveryProgrammeAdminRouterOptions,
   createDeliveryProgrammeAdminRouter,
 } from './deliveryProgrammeAdminRouter';
 import { InputError } from '@backstage/errors';
 import { catalogTestData } from '../testData/catalogEntityTestData';
-import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
-import { CatalogApi } from '@backstage/catalog-client';
+import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import type { CatalogApi } from '@backstage/catalog-client';
 
 const programmeManagerByAADEntityRef = programmeManagerList[0];
 

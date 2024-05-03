@@ -1,4 +1,4 @@
-import { ValidationError as Item } from '@internal/plugin-adp-common';
+import type { ValidationError as Item } from '@internal/plugin-adp-common';
 import { ValidationError } from './ValidationError';
 
 describe('ValidationError', () => {

@@ -1,4 +1,4 @@
-import { RbacGroups } from '../types';
+import type { RbacGroups } from '../types';
 import type { BackstageIdentityResponse } from '@backstage/core-plugin-api';
 
 export class RbacTestData {

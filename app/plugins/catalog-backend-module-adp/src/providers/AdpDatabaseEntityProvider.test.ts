@@ -1,12 +1,12 @@
 import { getVoidLogger } from '@backstage/backend-common';
-import {
+import type {
   PluginTaskScheduler,
   TaskInvocationDefinition,
   TaskRunner,
 } from '@backstage/backend-tasks';
 import { AdpDatabaseEntityProvider } from './AdpDatabaseEntityProvider';
-import { EntityProviderConnection } from '@backstage/plugin-catalog-node';
-import { DiscoveryService } from '@backstage/backend-plugin-api';
+import type { EntityProviderConnection } from '@backstage/plugin-catalog-node';
+import type { DiscoveryService } from '@backstage/backend-plugin-api';
 import {
   armsLengthBody,
   deliveryProgramme,
@@ -15,7 +15,8 @@ import {
   mockProgrammeTransformerData,
   mockProjectTransformerData,
 } from '../testData/entityProviderTestData';
-import fetch, { Response } from 'node-fetch';
+import type { Response } from 'node-fetch';
+import fetch from 'node-fetch';
 
 class MockTaskRunner implements TaskRunner {
   private tasks: TaskInvocationDefinition[] = [];
