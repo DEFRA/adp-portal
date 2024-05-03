@@ -48,7 +48,6 @@ export type DialogFormProps<TFields extends FieldValues> = Readonly<{
   confirm?: ReactNode;
   cancel?: ReactNode;
   defaultValues: UseFormProps<TFields>['defaultValues'];
-  mask?: EachRequired<TFields>;
   disabled?: DisabledFields<TFields>;
   validate?: (
     form: TFields,

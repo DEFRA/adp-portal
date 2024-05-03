@@ -10,7 +10,7 @@ import {
 import { DialogForm, SubmitResult, readValidationError } from '../../utils';
 import { armsLengthBodyApiRef } from './api';
 
-export type EditAlbProps = Readonly<
+export type EditAlbButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
     armsLengthBody: ArmsLengthBody;
     onEdited?: () => void;
@@ -22,7 +22,7 @@ export function EditAlbButton({
   armsLengthBody,
   children,
   ...buttonProps
-}: EditAlbProps) {
+}: EditAlbButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
   const client = useApi(armsLengthBodyApiRef);
