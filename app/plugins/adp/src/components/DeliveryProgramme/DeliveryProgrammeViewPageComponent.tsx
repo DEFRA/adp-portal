@@ -8,6 +8,8 @@ import {
   ContentHeader,
   SupportButton,
   TableColumn,
+  LinkButton,
+  Link,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils';
 import { useApi, errorApiRef } from '@backstage/core-plugin-api';
@@ -15,6 +17,8 @@ import { DeliveryProgramme } from '@internal/plugin-adp-common';
 import { deliveryProgrammeApiRef } from './api/DeliveryProgrammeApi';
 import { CreateDeliveryProgrammeButton } from './CreateDeliveryProgrammeButton';
 import { EditDeliveryProgrammeButton } from './EditDeliveryProgrammeButton';
+import { useEntityRoute } from '../../hooks';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 type DeliveryProgrammeWithActions = DeliveryProgramme & {
   actions: ReactNode;
@@ -30,14 +34,27 @@ export const DeliveryProgrammeViewPageComponent = () => {
 
   const errorApi = useApi(errorApiRef);
   const client = useApi(deliveryProgrammeApiRef);
+  const entityRoute = useEntityRoute;
 
   const getAllDeliveryProgrammes = async () => {
     try {
       const data = await client.getDeliveryProgrammes();
       setTableData(
-        data.map(d => ({
+        data.map(d => {
+          const target = entityRoute(d.name, 'group', 'default');
+          return {
           ...d,
           actions: (
+            <>
+            <LinkButton
+              to={`${target}/manage-members`}
+              variant="outlined"
+              color="default"
+              title="View Delivery Programme Admins"
+            >
+              <AccountBoxIcon />
+            </LinkButton>
+            &nbsp;
             <EditDeliveryProgrammeButton
               variant="contained"
               color="default"
@@ -47,8 +64,10 @@ export const DeliveryProgrammeViewPageComponent = () => {
             >
               Edit
             </EditDeliveryProgrammeButton>
+            </>
           ),
-        })),
+        };
+    }),
       );
     } catch (e: any) {
       errorApi.post(e);
@@ -65,6 +84,10 @@ export const DeliveryProgrammeViewPageComponent = () => {
       field: 'title',
       highlight: true,
       type: 'string',
+      render: (row: Partial<DeliveryProgramme>) => {
+        const target = entityRoute(row.name!, 'group', 'default');
+        return <Link to={target}>{row.title!}</Link>;
+      },
     },
     {
       title: 'Alias',
@@ -93,9 +116,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
       highlight: false,
       type: 'datetime',
     },
-
     {
-      width: '',
       highlight: true,
       field: 'actions',
     },

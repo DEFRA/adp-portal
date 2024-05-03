@@ -9,7 +9,7 @@ import { DeliveryProgrammeAdminViewPage } from './DeliveryProgrammeAdminViewPage
 import { waitFor } from '@testing-library/react';
 import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { faker } from '@faker-js/faker';
-import { EntityProvider } from '@backstage/plugin-catalog-react';
+import { EntityProvider, entityRouteRef } from '@backstage/plugin-catalog-react';
 import { Entity } from '@backstage/catalog-model';
 
 function setup() {
@@ -72,7 +72,13 @@ describe('DeliveryProgrammeAdminViewPage', () => {
       expectedDeliveryProgrammeAdmins,
     );
 
-    const rendered = await renderInTestApp(Provider);
+    const rendered = await renderInTestApp(Provider,
+      {
+        mountedRoutes: {
+          '/catalog/:namespace/:kind/:name/*': entityRouteRef
+        }
+      }
+    );
 
     await waitFor(() => {
       for (let i = 0; i < expectedDeliveryProgrammeAdmins.length; i++) {
@@ -89,7 +95,13 @@ describe('DeliveryProgrammeAdminViewPage', () => {
     const {mockDeliveryProgrameAdminApi, Provider} = setup();
     mockDeliveryProgrameAdminApi.getByDeliveryProgrammeId.mockResolvedValue([]);
 
-    const rendered = await renderInTestApp(Provider);
+    const rendered = await renderInTestApp(Provider,
+      {
+        mountedRoutes: {
+          '/catalog/:namespace/:kind/:name/*': entityRouteRef
+        }
+      }
+    );
 
     await waitFor(() => {
       expect(rendered.getByText('No records to display')).toBeInTheDocument();
@@ -103,7 +115,13 @@ describe('DeliveryProgrammeAdminViewPage', () => {
       new Error(expectedError),
     );
 
-    await renderInTestApp(Provider);
+    await renderInTestApp(Provider,
+      {
+        mountedRoutes: {
+          '/catalog/:namespace/:kind/:name/*': entityRouteRef
+        }
+      }
+    );
 
     await waitFor(() => {
       expect(mockErrorApi.post).toHaveBeenCalledWith(

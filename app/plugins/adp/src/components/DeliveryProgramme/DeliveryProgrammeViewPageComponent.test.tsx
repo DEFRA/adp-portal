@@ -7,6 +7,7 @@ import { ErrorApi, errorApiRef } from '@backstage/core-plugin-api';
 import { DeliveryProgrammeViewPageComponent } from './DeliveryProgrammeViewPageComponent';
 import { waitFor } from '@testing-library/react';
 import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import { entityRouteRef } from '@backstage/plugin-catalog-react';
 
 beforeEach(() => {
   jest.spyOn(global.Math, 'random').mockReturnValue(0);
@@ -56,6 +57,11 @@ describe('DeliveryProgrammeViewPageComponent', () => {
           >
             <DeliveryProgrammeViewPageComponent />
           </TestApiProvider>,
+    {
+      mountedRoutes: {
+        '/catalog/:namespace/:kind/:name/*': entityRouteRef
+      }
+    }
         );
 
         await waitFor(() => {
