@@ -20,6 +20,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
     return i + 1;
   }, 0);
   const { entity } = useEntity();
+  const entityRoute = useEntityRoute;
 
   const deliveryProgrammeAdminApi = useApi(deliveryProgrammeAdminApiRef);
   const errorApi = useApi(errorApiRef);
@@ -49,7 +50,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
       type: 'string',
       render: (row: Partial<DeliveryProgrammeAdmin>) => {
         const username = normalizeUsername(row.email!);
-        const target = useEntityRoute(username, 'user', 'default');
+        const target = entityRoute(username, 'user', 'default');
         return <Link to={target}>{row.name!}</Link>;
       },
     },
@@ -117,7 +118,7 @@ function normalizeUsername(name: string): string {
   let cleaned = name
     .trim()
     .toLocaleLowerCase()
-    .replace(/[^a-zA-Z0-9_\-\.]/g, '_');
+    .replace(/[^a-zA-Z0-9_\-.]/g, '_');
 
   while (cleaned.endsWith('_')) {
     cleaned = cleaned.substring(0, cleaned.length - 1);

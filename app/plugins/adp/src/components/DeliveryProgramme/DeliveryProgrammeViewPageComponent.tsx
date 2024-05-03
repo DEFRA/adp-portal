@@ -60,6 +60,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
   const fetchApi = useApi(fetchApiRef);
   const getArmsLengthBodyDropDown = useArmsLengthBodyList();
   const getProgrammeManagerDropDown = useProgrammeManagersList();
+  const entityRoute = useEntityRoute;
 
   const deliveryprogClient: DeliveryProgrammeApi = new DeliveryProgrammeClient(
     discoveryApi,
@@ -174,7 +175,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
       highlight: true,
       type: 'string',
       render: (row: Partial<DeliveryProgramme>) => {
-        const target = useEntityRoute(row.name!, 'group', 'default');
+        const target = entityRoute(row.name!, 'group', 'default');
         return <Link to={target}>{row.title!}</Link>;
       },
     },
@@ -209,7 +210,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
       highlight: true,
       align: 'right',
       render: (row: Partial<DeliveryProgramme>) => {
-        const target = useEntityRoute(row.name!, 'group', 'default');
+        const target = entityRoute(row.name!, 'group', 'default');
         return (
           <>
             <LinkButton
@@ -220,7 +221,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
             >
               <AccountBoxIcon />
             </LinkButton>
-            <>&nbsp;</>
+            &nbsp;
             {allowedToEditAdpProgramme && (
               <Button
                 variant="contained"

@@ -7,22 +7,27 @@ import { entityRouteRef } from '@backstage/plugin-catalog-react';
 describe('useEntityRoute', () => {
   const Wrapper: React.FC<{ children: React.ReactNode }> = ({
     children,
-  }: React.PropsWithChildren<{}>) => (
+  }: React.PropsWithChildren<{}>) =>
     wrapInTestApp(<>{children}</>, {
       mountedRoutes: {
         '/catalog/:namespace/:kind/:name/*': entityRouteRef,
       },
-    })
-  );
+    });
 
   it('should return route with default namespace', () => {
     const name = 'entity-name';
     const kind = 'group';
     const expectedNamespace = 'default';
 
-    const { result } = renderHook(() => useEntityRoute(name, kind), {
-      wrapper: Wrapper,
-    });
+    const { result } = renderHook(
+      () => {
+        const entityRoute = useEntityRoute;
+        return entityRoute(name, kind);
+      },
+      {
+        wrapper: Wrapper,
+      },
+    );
 
     expect(result.current).toBe(
       `/catalog/${expectedNamespace}/${kind}/${name}`,
@@ -34,9 +39,15 @@ describe('useEntityRoute', () => {
     const kind = 'group';
     const namespace = 'custom-namespace';
 
-    const { result } = renderHook(() => useEntityRoute(name, kind, namespace), {
-      wrapper: Wrapper,
-    });
+    const { result } = renderHook(
+      () => {
+        const entityRoute = useEntityRoute;
+        return entityRoute(name, kind, namespace);
+      },
+      {
+        wrapper: Wrapper,
+      },
+    );
 
     expect(result.current).toBe(`/catalog/${namespace}/${kind}/${name}`);
   });
