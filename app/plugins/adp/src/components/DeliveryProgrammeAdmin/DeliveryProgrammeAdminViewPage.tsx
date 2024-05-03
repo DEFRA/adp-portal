@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, ReactNode } from 'react';
 import {
   Content,
   ContentHeader,
@@ -14,13 +14,22 @@ import { deliveryProgrammeAdminApiRef } from './api';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { useEntityRoute } from '../../hooks';
 
+type DeliveryProgrammeAdminWithActions = DeliveryProgrammeAdmin & {
+  actions: ReactNode;
+  nameLink: ReactNode;
+  emailLink: ReactNode;
+  role: string;
+};
+
 export const DeliveryProgrammeAdminViewPage = () => {
-  const [tableData, setTableData] = useState<DeliveryProgrammeAdmin[]>([]);
+  const [tableData, setTableData] = useState<
+    DeliveryProgrammeAdminWithActions[]
+  >([]);
   const [key, _refetchProgrammeAdmin] = useReducer(i => {
     return i + 1;
   }, 0);
   const { entity } = useEntity();
-  const entityRoute = useEntityRoute;
+  const entityRoute = useEntityRoute();
 
   const deliveryProgrammeAdminApi = useApi(deliveryProgrammeAdminApiRef);
   const errorApi = useApi(errorApiRef);
@@ -32,7 +41,27 @@ export const DeliveryProgrammeAdminViewPage = () => {
       const data = await deliveryProgrammeAdminApi.getByDeliveryProgrammeId(
         deliveryProgrammeId,
       );
-      setTableData(data);
+      setTableData(
+        data.map(d => {
+          const username = normalizeUsername(d.email);
+          const target = entityRoute(username, 'user', 'default');
+          return {
+            ...d,
+            emailLink: <Link to={`mailto:${d.email}`}> {d.email}</Link>,
+            nameLink: <Link to={target}>{d.name}</Link>,
+            role: 'Delivery Programme Admin',
+            actions: (
+              <Button
+                variant="contained"
+                color="secondary"
+                data-testid={`programme-admin-edit-button-${d.id}`}
+              >
+                Remove
+              </Button>
+            ),
+          };
+        }),
+      );
     } catch (error: any) {
       errorApi.post(error);
     }
@@ -45,30 +74,19 @@ export const DeliveryProgrammeAdminViewPage = () => {
   const columns: TableColumn[] = [
     {
       title: 'Name',
-      field: 'name',
+      field: 'nameLink',
       highlight: true,
-      type: 'string',
-      render: (row: Partial<DeliveryProgrammeAdmin>) => {
-        const username = normalizeUsername(row.email!);
-        const target = entityRoute(username, 'user', 'default');
-        return <Link to={target}>{row.name!}</Link>;
-      },
     },
     {
       title: 'Contact',
-      field: 'email',
+      field: 'emailLink',
       highlight: false,
-      type: 'string',
-      render: (row: Partial<DeliveryProgrammeAdmin>) => (
-        <Link to={`mailto:${row.email}`}> {row.email}</Link>
-      ),
     },
     {
       title: 'role',
       field: 'role',
       highlight: false,
       type: 'string',
-      render: () => <>Delivery Programme Admin</>,
     },
     {
       title: 'Updated At',
@@ -78,17 +96,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
     },
     {
       highlight: true,
-      render: (row: Partial<DeliveryProgrammeAdmin>) => {
-        return (
-          <Button
-            variant="contained"
-            color="secondary"
-            data-testid={`programme-admin-edit-button-${row.id}`}
-          >
-            Remove
-          </Button>
-        );
-      },
+      field: 'actions',
     },
   ];
 

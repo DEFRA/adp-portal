@@ -57,11 +57,11 @@ describe('DeliveryProgrammeViewPageComponent', () => {
           >
             <DeliveryProgrammeViewPageComponent />
           </TestApiProvider>,
-    {
-      mountedRoutes: {
-        '/catalog/:namespace/:kind/:name/*': entityRouteRef
-      }
-    }
+          {
+            mountedRoutes: {
+              '/catalog/:namespace/:kind/:name/*': entityRouteRef,
+            },
+          },
         );
 
         await waitFor(() => {

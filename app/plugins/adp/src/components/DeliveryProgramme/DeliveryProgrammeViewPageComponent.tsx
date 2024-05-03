@@ -21,6 +21,7 @@ import { useEntityRoute } from '../../hooks';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 type DeliveryProgrammeWithActions = DeliveryProgramme & {
+  titleLink: ReactNode;
   actions: ReactNode;
 };
 
@@ -34,7 +35,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
 
   const errorApi = useApi(errorApiRef);
   const client = useApi(deliveryProgrammeApiRef);
-  const entityRoute = useEntityRoute;
+  const entityRoute = useEntityRoute();
 
   const getAllDeliveryProgrammes = async () => {
     try {
@@ -43,31 +44,32 @@ export const DeliveryProgrammeViewPageComponent = () => {
         data.map(d => {
           const target = entityRoute(d.name, 'group', 'default');
           return {
-          ...d,
-          actions: (
-            <>
-            <LinkButton
-              to={`${target}/manage-members`}
-              variant="outlined"
-              color="default"
-              title="View Delivery Programme Admins"
-            >
-              <AccountBoxIcon />
-            </LinkButton>
-            &nbsp;
-            <EditDeliveryProgrammeButton
-              variant="contained"
-              color="default"
-              deliveryProgramme={d}
-              data-testid={`delivery-programme-edit-button-${d.id}`}
-              onEdited={refetchDeliveryProgramme}
-            >
-              Edit
-            </EditDeliveryProgrammeButton>
-            </>
-          ),
-        };
-    }),
+            ...d,
+            titleLink: <Link to={target}>{d.title}</Link>,
+            actions: (
+              <>
+                <LinkButton
+                  to={`${target}/manage-members`}
+                  variant="outlined"
+                  color="default"
+                  title="View Delivery Programme Admins"
+                >
+                  <AccountBoxIcon />
+                </LinkButton>
+                &nbsp;
+                <EditDeliveryProgrammeButton
+                  variant="contained"
+                  color="default"
+                  deliveryProgramme={d}
+                  data-testid={`delivery-programme-edit-button-${d.id}`}
+                  onEdited={refetchDeliveryProgramme}
+                >
+                  Edit
+                </EditDeliveryProgrammeButton>
+              </>
+            ),
+          };
+        }),
       );
     } catch (e: any) {
       errorApi.post(e);
@@ -81,13 +83,8 @@ export const DeliveryProgrammeViewPageComponent = () => {
   const columns: TableColumn<DeliveryProgrammeWithActions>[] = [
     {
       title: 'Title',
-      field: 'title',
+      field: 'titleLink',
       highlight: true,
-      type: 'string',
-      render: (row: Partial<DeliveryProgramme>) => {
-        const target = entityRoute(row.name!, 'group', 'default');
-        return <Link to={target}>{row.title!}</Link>;
-      },
     },
     {
       title: 'Alias',

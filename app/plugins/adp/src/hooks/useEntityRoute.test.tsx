@@ -21,7 +21,7 @@ describe('useEntityRoute', () => {
 
     const { result } = renderHook(
       () => {
-        const entityRoute = useEntityRoute;
+        const entityRoute = useEntityRoute();
         return entityRoute(name, kind);
       },
       {
@@ -41,7 +41,7 @@ describe('useEntityRoute', () => {
 
     const { result } = renderHook(
       () => {
-        const entityRoute = useEntityRoute;
+        const entityRoute = useEntityRoute();
         return entityRoute(name, kind, namespace);
       },
       {
