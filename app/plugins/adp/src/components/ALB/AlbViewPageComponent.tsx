@@ -1,15 +1,14 @@
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import type {
-  TableColumn} from '@backstage/core-components';
+import type { TableColumn } from '@backstage/core-components';
 import {
   Header,
   Page,
   Content,
   ContentHeader,
-  SupportButton
+  SupportButton,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils';
 import { useApi } from '@backstage/core-plugin-api';
@@ -34,7 +33,7 @@ export const AlbViewPageComponent = () => {
 
   const tableData = useMemo(
     () =>
-      data?.map(d => ({
+      data?.map<ArmsLengthBodyWithActions>(d => ({
         ...d,
         actions: (
           <EditAlbButton

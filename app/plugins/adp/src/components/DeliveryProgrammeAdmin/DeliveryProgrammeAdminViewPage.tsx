@@ -1,13 +1,7 @@
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import React, { useCallback, useMemo } from 'react';
-import type {
-  TableColumn} from '@backstage/core-components';
-import {
-  Content,
-  ContentHeader,
-  Link,
-  Page
-} from '@backstage/core-components';
+import type { TableColumn } from '@backstage/core-components';
+import { Content, ContentHeader, Link, Page } from '@backstage/core-components';
 import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { Button, Grid } from '@material-ui/core';
 import { useApi } from '@backstage/core-plugin-api';
@@ -70,7 +64,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
     [data, entityRoute],
   );
 
-  const columns: TableColumn[] = [
+  const columns: TableColumn<DeliveryProgrammeAdminWithActions>[] = [
     {
       title: 'Name',
       field: 'nameLink',
