@@ -246,9 +246,7 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        <span>
-          ​
-        </span>
+        This must be unique. Example: FCP
       </p>
     </div>
     <div
@@ -552,9 +550,7 @@ exports[`AlbFormFields Should render default fields 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        <span>
-          ​
-        </span>
+        This must be unique. Example: FCP
       </p>
     </div>
     <div
@@ -860,9 +856,7 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        <span>
-          ​
-        </span>
+        This must be unique. Example: FCP
       </p>
     </div>
     <div
@@ -1170,9 +1164,7 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        <span>
-          ​
-        </span>
+        This must be unique. Example: FCP
       </p>
     </div>
     <div
@@ -1480,9 +1472,7 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        <span>
-          ​
-        </span>
+        This must be unique. Example: FCP
       </p>
     </div>
     <div
@@ -1788,9 +1778,7 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        <span>
-          ​
-        </span>
+        This must be unique. Example: FCP
       </p>
     </div>
     <div
@@ -2098,9 +2086,7 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        <span>
-          ​
-        </span>
+        This must be unique. Example: FCP
       </p>
     </div>
     <div
@@ -2406,9 +2392,7 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        <span>
-          ​
-        </span>
+        This must be unique. Example: FCP
       </p>
     </div>
     <div
@@ -2716,9 +2700,7 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        <span>
-          ​
-        </span>
+        This must be unique. Example: FCP
       </p>
     </div>
     <div
@@ -3024,9 +3006,7 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        <span>
-          ​
-        </span>
+        This must be unique. Example: FCP
       </p>
     </div>
     <div
