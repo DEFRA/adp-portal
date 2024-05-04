@@ -49,7 +49,6 @@
     "@internal/plugin-adp-common": "^0.1.0",
     "@internal/plugin-catalog-backend-module-adp": "^0.1.0",
     "@roadiehq/scaffolder-backend-module-http-request": "^4.1.4",
-    "app": "link:../app",
     "better-sqlite3": "^9.0.0",
     "dockerode": "^3.3.1",
     "express": "^4.17.1",
