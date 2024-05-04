@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Button } from '@material-ui/core';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import type { ArmsLengthBodyApi} from './api';
+import type { ArmsLengthBodyApi } from './api';
 import { armsLengthBodyApiRef } from './api';
-import type { ErrorApi} from '@backstage/core-plugin-api';
+import type { ErrorApi } from '@backstage/core-plugin-api';
 import { errorApiRef } from '@backstage/core-plugin-api';
 import { AlbViewPageComponent } from './AlbViewPageComponent';
 import { waitFor } from '@testing-library/react';
@@ -12,8 +12,12 @@ import type { ArmsLengthBody } from '@internal/plugin-adp-common';
 import type * as EditAlbButtonModule from './EditAlbButton';
 import type * as CreateAlbButtonModule from './CreateAlbButton';
 
-const EditAlbButton: jest.MockedFn<typeof EditAlbButtonModule['EditAlbButton']> = jest.fn();
-const CreateAlbButton: jest.MockedFn<typeof CreateAlbButtonModule['CreateAlbButton']> = jest.fn();
+const EditAlbButton: jest.MockedFn<
+  (typeof EditAlbButtonModule)['EditAlbButton']
+> = jest.fn();
+const CreateAlbButton: jest.MockedFn<
+  (typeof CreateAlbButtonModule)['CreateAlbButton']
+> = jest.fn();
 
 beforeEach(() => {
   jest.spyOn(global.Math, 'random').mockReturnValue(0);
