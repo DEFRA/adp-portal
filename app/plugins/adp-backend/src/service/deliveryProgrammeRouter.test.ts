@@ -11,12 +11,10 @@ import {
   expectedProgrammeDataWithName,
 } from '../testData/programmeTestData';
 import { InputError } from '@backstage/errors';
-import { catalogTestData } from '../testData/catalogEntityTestData';
 import { IDeliveryProjectStore } from '../deliveryProject';
 import { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
-import { CatalogApi } from '@backstage/catalog-client';
 import {
   CreateDeliveryProgrammeRequest,
   UpdateDeliveryProgrammeRequest,
@@ -59,30 +57,12 @@ describe('createRouter', () => {
       delete: jest.fn(),
     };
 
-  const mockCatalogClient: jest.Mocked<CatalogApi> = {
-    addLocation: jest.fn(),
-    getEntities: jest.fn(),
-    getEntitiesByRefs: jest.fn(),
-    getEntityAncestors: jest.fn(),
-    getEntityByRef: jest.fn(),
-    getEntityFacets: jest.fn(),
-    getLocationByEntity: jest.fn(),
-    getLocationById: jest.fn(),
-    getLocationByRef: jest.fn(),
-    queryEntities: jest.fn(),
-    refreshEntity: jest.fn(),
-    removeEntityByUid: jest.fn(),
-    removeLocationById: jest.fn(),
-    validateEntity: jest.fn(),
-  };
-
   const mockOptions: ProgrammeRouterOptions = {
     logger: getVoidLogger(),
     identity: mockIdentityApi,
     deliveryProjectStore: mockDeliveryProjectStore,
     deliveryProgrammeStore: mockDeliveryProgrammeStore,
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
-    catalog: mockCatalogClient,
   };
 
   beforeAll(async () => {
@@ -115,11 +95,6 @@ describe('createRouter', () => {
     mockDeliveryProgrammeAdminStore.getByDeliveryProgramme.mockResolvedValue(
       managerByProgrammeId,
     );
-    mockCatalogClient.getEntities.mockResolvedValue(catalogTestData);
-  });
-
-  afterEach(() => {
-    mockCatalogClient.getEntities.mockClear();
   });
 
   describe('GET /health', () => {
@@ -172,19 +147,6 @@ describe('createRouter', () => {
       const response = await request(programmeApp).get(
         '/deliveryProgramme/4321',
       );
-      expect(response.status).toEqual(400);
-    });
-  });
-
-  describe('GET /catalogEntities', () => {
-    it('returns ok', async () => {
-      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      const response = await request(programmeApp).get('/catalogEntities');
-      expect(response.status).toEqual(200);
-    });
-    it('returns bad request', async () => {
-      mockCatalogClient.getEntities.mockRejectedValueOnce(catalogTestData);
-      const response = await request(programmeApp).get('/catalogEntities');
       expect(response.status).toEqual(400);
     });
   });

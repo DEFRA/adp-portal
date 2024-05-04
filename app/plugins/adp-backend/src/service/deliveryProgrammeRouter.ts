@@ -4,7 +4,6 @@ import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import { IdentityApi } from '@backstage/plugin-auth-node';
-import { CatalogApi } from '@backstage/catalog-client';
 import { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import {
   CreateDeliveryProgrammeRequest,
@@ -23,7 +22,6 @@ export interface ProgrammeRouterOptions {
   deliveryProgrammeStore: IDeliveryProgrammeStore;
   deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
   deliveryProjectStore: IDeliveryProjectStore;
-  catalog: CatalogApi;
 }
 
 export function createProgrammeRouter(
@@ -35,7 +33,6 @@ export function createProgrammeRouter(
     deliveryProgrammeStore,
     deliveryProjectStore,
     deliveryProgrammeAdminStore,
-    catalog,
   } = options;
 
   const router = Router();
@@ -87,30 +84,6 @@ export function createProgrammeRouter(
       const deliveryProgramError = error as Error;
       logger.error(
         'Error in retrieving delivery programme: ',
-        deliveryProgramError,
-      );
-      throw new InputError(deliveryProgramError.message);
-    }
-  });
-
-  router.get('/catalogEntities', async (_req, res) => {
-    try {
-      const catalogApiResponse = await catalog.getEntities({
-        filter: {
-          kind: 'User',
-        },
-        fields: [
-          'metadata.name',
-          'metadata.annotations.graph.microsoft.com/user-id',
-          'metadata.annotations.microsoft.com/email',
-          'spec.profile.displayName',
-        ],
-      });
-      res.json(catalogApiResponse);
-    } catch (error) {
-      const deliveryProgramError = error as Error;
-      logger.error(
-        'Error in retrieving catalog entities: ',
         deliveryProgramError,
       );
       throw new InputError(deliveryProgramError.message);
