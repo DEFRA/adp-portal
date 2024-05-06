@@ -16,7 +16,7 @@ import type { ArmsLengthBody } from '@internal/plugin-adp-common';
 import { armsLengthBodyApiRef } from './api';
 import { CreateAlbButton } from './CreateAlbButton';
 import { EditAlbButton } from './EditAlbButton';
-import { useApiCall, useErrorCallback } from '../../hooks';
+import { useAsyncDataSource, useErrorCallback } from '../../hooks';
 
 type ArmsLengthBodyWithActions = ArmsLengthBody & {
   actions: ReactNode;
@@ -24,7 +24,7 @@ type ArmsLengthBodyWithActions = ArmsLengthBody & {
 
 export const AlbViewPageComponent = () => {
   const client = useApi(armsLengthBodyApiRef);
-  const { data, refresh, loading } = useApiCall(
+  const { data, refresh, loading } = useAsyncDataSource(
     useCallback(() => client.getArmsLengthBodies(), [client]),
     useErrorCallback({
       name: 'Error while getting the list of arms length bodies.',

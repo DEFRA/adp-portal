@@ -1,7 +1,7 @@
 import React from 'react';
 import { errorApiRef } from '@backstage/core-plugin-api';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import type { DeliveryProgrammeAdminApi} from './api';
+import type { DeliveryProgrammeAdminApi } from './api';
 import { deliveryProgrammeAdminApiRef } from './api';
 import { DeliveryProgrammeAdminViewPage } from './DeliveryProgrammeAdminViewPage';
 import { waitFor } from '@testing-library/react';
@@ -82,9 +82,7 @@ describe('DeliveryProgrammeAdminViewPage', () => {
     });
 
     await waitFor(() => {
-      for (let i = 0; i < expectedDeliveryProgrammeAdmins.length; i++) {
-        const expectedDeliveryProgrammeAdmin =
-          expectedDeliveryProgrammeAdmins[i];
+      for (const expectedDeliveryProgrammeAdmin of expectedDeliveryProgrammeAdmins) {
         expect(
           rendered.getByText(expectedDeliveryProgrammeAdmin.name),
         ).toBeInTheDocument();

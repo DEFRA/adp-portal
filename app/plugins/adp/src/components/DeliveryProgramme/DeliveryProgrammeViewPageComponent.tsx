@@ -1,9 +1,8 @@
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import type {
-  TableColumn} from '@backstage/core-components';
+import type { TableColumn } from '@backstage/core-components';
 import {
   Header,
   Page,
@@ -19,7 +18,11 @@ import type { DeliveryProgramme } from '@internal/plugin-adp-common';
 import { deliveryProgrammeApiRef } from './api/DeliveryProgrammeApi';
 import { CreateDeliveryProgrammeButton } from './CreateDeliveryProgrammeButton';
 import { EditDeliveryProgrammeButton } from './EditDeliveryProgrammeButton';
-import { useApiCall, useEntityRoute, useErrorCallback } from '../../hooks';
+import {
+  useAsyncDataSource,
+  useEntityRoute,
+  useErrorCallback,
+} from '../../hooks';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 type DeliveryProgrammeWithActions = DeliveryProgramme & {
@@ -30,7 +33,7 @@ type DeliveryProgrammeWithActions = DeliveryProgramme & {
 export const DeliveryProgrammeViewPageComponent = () => {
   const client = useApi(deliveryProgrammeApiRef);
   const entityRoute = useEntityRoute();
-  const { data, refresh, loading } = useApiCall(
+  const { data, refresh, loading } = useAsyncDataSource(
     useCallback(() => client.getDeliveryProgrammes(), [client]),
     useErrorCallback({
       name: 'Error while getting the list of delivery programmes.',

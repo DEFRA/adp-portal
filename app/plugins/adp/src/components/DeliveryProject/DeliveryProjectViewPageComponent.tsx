@@ -1,27 +1,23 @@
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import type {
-  TableColumn} from '@backstage/core-components';
+import type { TableColumn } from '@backstage/core-components';
 import {
   Header,
   Page,
   Content,
   ContentHeader,
-  SupportButton
+  SupportButton,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils';
 import { useApi } from '@backstage/core-plugin-api';
-import type {
-  DeliveryProject} from '@internal/plugin-adp-common';
-import {
-  deliveryProjectDisplayName,
-} from '@internal/plugin-adp-common';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
+import { deliveryProjectDisplayName } from '@internal/plugin-adp-common';
 import { deliveryProjectApiRef } from './api/DeliveryProjectApi';
 import { CreateDeliveryProjectButton } from './CreateDeliveryProjectButton';
 import { EditDeliveryProjectButton } from './EditDeliveryProjectButton';
-import { useApiCall, useErrorCallback } from '../../hooks';
+import { useAsyncDataSource, useErrorCallback } from '../../hooks';
 
 type DeliveryProjectWithActions = DeliveryProject & {
   actions: ReactNode;
@@ -29,7 +25,7 @@ type DeliveryProjectWithActions = DeliveryProject & {
 
 export const DeliveryProjectViewPageComponent = () => {
   const client = useApi(deliveryProjectApiRef);
-  const { data, refresh, loading } = useApiCall(
+  const { data, refresh, loading } = useAsyncDataSource(
     useCallback(() => client.getDeliveryProjects(), [client]),
     useErrorCallback({
       name: 'Error while getting the list of delivery projects.',

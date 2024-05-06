@@ -1,5 +1,5 @@
-import { useReducer, useState } from 'react';
-import useAsync from 'react-use/lib/useAsync';
+import { useReducer } from 'react';
+import { useAsync } from 'react-use';
 
 export type UseApiCallReturn<T> = {
   data: Awaited<T> | undefined;
@@ -7,30 +7,29 @@ export type UseApiCallReturn<T> = {
   loading: boolean;
 };
 
-export function useApiCall<T>(
-  apiCall: () => T | Promise<T>,
+export function useAsyncDataSource<T>(
+  load: () => T | Promise<T>,
   onError?: (error: unknown) => void,
 ): UseApiCallReturn<T>;
-export function useApiCall<T>(options: {
-  apiCall: () => T | Promise<T>;
+export function useAsyncDataSource<T>(options: {
+  load: () => T | Promise<T>;
   onError?: (error: unknown) => void;
 }): UseApiCallReturn<T>;
-export function useApiCall<T>(
+export function useAsyncDataSource<T>(
   ...args:
     | [apiCall: () => Promise<T>, onError?: (error: unknown) => void]
     | [
         options: {
-          apiCall: () => Promise<T>;
+          load: () => Promise<T>;
           onError?: (error: unknown) => void;
         },
       ]
 ): UseApiCallReturn<T> {
-  const [lastError, setLastError] = useState<unknown>();
-  const { apiCall, onError } =
+  const { load, onError } =
     typeof args[0] === 'object'
       ? args[0]
       : {
-          apiCall: args[0],
+          load: args[0],
           onError: args[1],
         };
 
@@ -39,17 +38,17 @@ export function useApiCall<T>(
     0,
   );
 
-  const {
-    loading,
-    error,
-    value: data,
-  } = useAsync(() => Promise.resolve(apiCall()), [signal]);
-
-  if (error && lastError !== error) {
-    setLastError(error);
-    if (!onError) throw error;
-    onError(error);
-  }
+  const { loading, value: data } = useAsync(async (): Promise<
+    Awaited<T | undefined>
+  > => {
+    try {
+      return await load();
+    } catch (err) {
+      if (!onError) throw err;
+      onError(err);
+      return undefined;
+    }
+  }, [signal]);
 
   return { data, refresh, loading };
 }

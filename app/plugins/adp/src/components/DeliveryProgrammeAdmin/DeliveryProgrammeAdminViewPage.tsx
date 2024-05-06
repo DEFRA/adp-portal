@@ -7,7 +7,11 @@ import { Button, Grid } from '@material-ui/core';
 import { useApi } from '@backstage/core-plugin-api';
 import { deliveryProgrammeAdminApiRef } from './api';
 import { useEntity } from '@backstage/plugin-catalog-react';
-import { useApiCall, useEntityRoute, useErrorCallback } from '../../hooks';
+import {
+  useAsyncDataSource,
+  useEntityRoute,
+  useErrorCallback,
+} from '../../hooks';
 import { DefaultTable } from '../../utils';
 
 type DeliveryProgrammeAdminWithActions = DeliveryProgrammeAdmin & {
@@ -25,8 +29,8 @@ export const DeliveryProgrammeAdminViewPage = () => {
   const deliveryProgrammeId =
     entity.metadata.annotations?.['adp.defra.gov.uk/delivery-programme-id'];
 
-  const { data, loading } = useApiCall({
-    apiCall: useCallback(
+  const { data, loading } = useAsyncDataSource({
+    load: useCallback(
       () =>
         !deliveryProgrammeId
           ? undefined
