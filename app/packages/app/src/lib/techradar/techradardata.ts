@@ -8,8 +8,7 @@ export class AdpDataTechRadarApi implements TechRadarApi {
     this.configApi = configApi;
   }
 
-  // @ts-ignore
-  async load(id: string | undefined) {
+  async load() {
     const rawData = this.configApi.getString('techRadar.data');
     const data = await fetch(rawData).then(res => res.json());
 

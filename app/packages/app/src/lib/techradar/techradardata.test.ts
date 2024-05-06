@@ -1,10 +1,6 @@
 import { AdpDataTechRadarApi } from './techradardata';
 import { ConfigReader } from '@backstage/config';
 
-declare const global: {
-  fetch: jest.Mock;
-};
-
 describe('AdpDataTechRadarApi', () => {
   const mockData = {
     entries: [
@@ -28,9 +24,16 @@ describe('AdpDataTechRadarApi', () => {
   };
 
   beforeEach(() => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({ json: () => Promise.resolve(mockData) }),
-    );
+    const fetch = jest.spyOn(global, 'fetch');
+    fetch.mockImplementation(() => {
+      return Promise.resolve(
+        new Response(JSON.stringify(mockData), {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }),
+      );
+    });
   });
 
   afterEach(() => {
@@ -45,7 +48,7 @@ describe('AdpDataTechRadarApi', () => {
     });
 
     const techradarapi = new AdpDataTechRadarApi(config);
-    const data = await techradarapi.load(undefined);
+    const data = await techradarapi.load();
 
     expect(global.fetch).toHaveBeenCalledWith('value');
     expect(data).toEqual(mockData);
