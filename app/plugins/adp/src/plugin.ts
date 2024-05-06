@@ -105,7 +105,7 @@ function getComponent<T extends keyof typeof Components>(name: T) {
   };
 }
 
-type ExtractKeys<T extends readonly unknown[], Key extends keyof T> = {
+type ExtractKeys<T, Key extends keyof T> = {
   [P in Key & keyof T]: T[P];
 };
 function createApiRegistration<
@@ -116,7 +116,7 @@ function createApiRegistration<
   api: ApiRef<Api>,
   Implementation: new (...args: Args) => Impl,
   dependencies: TypesToApiRefs<Args>,
-): ApiFactory<Api, Impl, ExtractKeys<Args, number>> {
+): ApiFactory<Api, Impl, ExtractKeys<Args, keyof Args>> {
   return {
     api,
     deps: { ...dependencies },
