@@ -1,13 +1,13 @@
 import type {
+  ApiFactory,
   ApiRef,
-  DiscoveryApi,
-  FetchApi} from '@backstage/core-plugin-api';
+  TypesToApiRefs,
+} from '@backstage/core-plugin-api';
 import {
   createPlugin,
   createRoutableExtension,
   discoveryApiRef,
   fetchApiRef,
-  createApiFactory
 } from '@backstage/core-plugin-api';
 import type * as Components from './components';
 
@@ -38,10 +38,23 @@ export const adpPlugin = createPlugin({
     root: rootRouteRef,
   },
   apis: [
-    pluginHttpApi(armsLengthBodyApiRef, ArmsLengthBodyClient),
-    pluginHttpApi(deliveryProgrammeApiRef, DeliveryProgrammeClient),
-    pluginHttpApi(deliveryProjectApiRef, DeliveryProjectClient),
-    pluginHttpApi(deliveryProgrammeAdminApiRef, DeliveryProgrammeAdminClient),
+    createApiRegistration(armsLengthBodyApiRef, ArmsLengthBodyClient, [
+      discoveryApiRef,
+      fetchApiRef,
+    ]),
+    createApiRegistration(deliveryProgrammeApiRef, DeliveryProgrammeClient, [
+      discoveryApiRef,
+      fetchApiRef,
+    ]),
+    createApiRegistration(deliveryProjectApiRef, DeliveryProjectClient, [
+      discoveryApiRef,
+      fetchApiRef,
+    ]),
+    createApiRegistration(
+      deliveryProgrammeAdminApiRef,
+      DeliveryProgrammeAdminClient,
+      [discoveryApiRef, fetchApiRef],
+    ),
   ],
 });
 
@@ -92,14 +105,25 @@ function getComponent<T extends keyof typeof Components>(name: T) {
   };
 }
 
-function pluginHttpApi<T>(
-  ref: ApiRef<T>,
-  ApiType: new (discoveryApi: DiscoveryApi, fetchApi: FetchApi) => T,
-) {
-  return createApiFactory({
-    api: ref,
-    deps: { discoveryApi: discoveryApiRef, fetchApi: fetchApiRef },
-    factory: ({ discoveryApi, fetchApi }) =>
-      new ApiType(discoveryApi, fetchApi),
-  });
+type ExtractKeys<T extends readonly unknown[], Key extends keyof T> = {
+  [P in Key & keyof T]: T[P];
+};
+function createApiRegistration<
+  Api,
+  Impl extends Api,
+  Args extends readonly unknown[],
+>(
+  api: ApiRef<Api>,
+  Implementation: new (...args: Args) => Impl,
+  dependencies: TypesToApiRefs<Args>,
+): ApiFactory<Api, Impl, ExtractKeys<Args, number>> {
+  return {
+    api,
+    deps: { ...dependencies },
+    factory(deps) {
+      return new Implementation(
+        ...(dependencies.map((_, i) => deps[i]) as unknown as Args),
+      );
+    },
+  };
 }
