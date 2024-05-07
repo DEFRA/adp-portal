@@ -1,9 +1,5 @@
-import type {
-  PluginDatabaseManager} from '@backstage/backend-common';
-import {
-  DatabaseManager,
-  getVoidLogger,
-} from '@backstage/backend-common';
+import type { PluginDatabaseManager } from '@backstage/backend-common';
+import { DatabaseManager, getVoidLogger } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
 import { createProjectRouter } from './deliveryProjectRouter';
@@ -206,7 +202,6 @@ describe('createRouter', () => {
         success: false,
         errors: [
           'duplicateName',
-          'duplicateProjectCode',
           'duplicateTitle',
           'unknown',
           'unknownDeliveryProgramme',
@@ -236,13 +231,6 @@ describe('createRouter', () => {
             error: {
               message:
                 "The name 'def' is already in use. Please choose a different name.",
-            },
-          },
-          {
-            path: 'delivery_project_code',
-            error: {
-              message:
-                'The project code is already in use by another delivery project.',
             },
           },
           {
@@ -317,12 +305,7 @@ describe('createRouter', () => {
       // arrange
       mockDeliveryProjectStore.update.mockResolvedValue({
         success: false,
-        errors: [
-          'duplicateProjectCode',
-          'duplicateTitle',
-          'unknown',
-          'unknownDeliveryProgramme',
-        ],
+        errors: ['duplicateTitle', 'unknown', 'unknownDeliveryProgramme'],
       });
 
       // act
@@ -338,13 +321,6 @@ describe('createRouter', () => {
       expect(response.status).toEqual(400);
       expect(response.body).toMatchObject({
         errors: [
-          {
-            path: 'delivery_project_code',
-            error: {
-              message:
-                'The project code is already in use by another delivery project.',
-            },
-          },
           {
             path: 'title',
             error: {

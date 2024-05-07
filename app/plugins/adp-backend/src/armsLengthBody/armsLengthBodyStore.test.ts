@@ -1,13 +1,15 @@
-import type { TestDatabaseId} from '@backstage/backend-test-utils';
+import type { TestDatabaseId } from '@backstage/backend-test-utils';
 import { TestDatabases } from '@backstage/backend-test-utils';
 import { ArmsLengthBodyStore } from './armsLengthBodyStore';
 import { NotFoundError } from '@backstage/errors';
-import { createName } from '../utils/index';
 import { albSeedData, expectedAlbWithName } from '../testData/albTestData';
 import { initializeAdpDatabase } from '../database';
-import type { UpdateArmsLengthBodyRequest } from '@internal/plugin-adp-common';
+import {
+  createName,
+  type UpdateArmsLengthBodyRequest,
+} from '@internal/plugin-adp-common';
 import { randomUUID } from 'node:crypto';
-import type { arms_length_body} from './arms_length_body';
+import type { arms_length_body } from './arms_length_body';
 import { arms_length_body_name } from './arms_length_body';
 
 describe('armsLengthBodyStore', () => {

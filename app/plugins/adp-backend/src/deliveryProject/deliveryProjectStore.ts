@@ -1,13 +1,12 @@
 import type { Knex } from 'knex';
 import { NotFoundError } from '@backstage/errors';
-import type {
-  CreateDeliveryProjectRequest,
-  DeliveryProject,
-  UpdateDeliveryProjectRequest,
+import {
+  createName,
+  type CreateDeliveryProjectRequest,
+  type DeliveryProject,
+  type UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
-import { createName } from '../utils/index';
-import type {
-  SafeResult} from '../service/util';
+import type { SafeResult } from '../service/util';
 import {
   assertUUID,
   checkMany,
@@ -16,13 +15,10 @@ import {
   isUUID,
 } from '../service/util';
 import { type UUID } from 'node:crypto';
-import type { delivery_project} from './delivery_project';
+import type { delivery_project } from './delivery_project';
 import { delivery_project_name } from './delivery_project';
-import type {
-  delivery_programme} from '../deliveryProgramme/delivery_programme';
-import {
-  delivery_programme_name,
-} from '../deliveryProgramme/delivery_programme';
+import type { delivery_programme } from '../deliveryProgramme/delivery_programme';
+import { delivery_programme_name } from '../deliveryProgramme/delivery_programme';
 
 const allColumns = addTableName(delivery_project_name, [
   'id',
@@ -108,10 +104,7 @@ export class DeliveryProjectStore {
   ): Promise<
     SafeResult<
       DeliveryProject,
-      | 'duplicateTitle'
-      | 'duplicateName'
-      | 'duplicateProjectCode'
-      | 'unknownDeliveryProgramme'
+      'duplicateTitle' | 'duplicateName' | 'unknownDeliveryProgramme'
     >
   > {
     const {
@@ -141,10 +134,6 @@ export class DeliveryProjectStore {
         emptyUUID,
       ),
       duplicateName: this.#nameExists(name),
-      duplicateProjectCode: this.#projectCodeExists(
-        delivery_project_code,
-        emptyUUID,
-      ),
     });
     if (!valid.success) return valid;
 
@@ -159,7 +148,7 @@ export class DeliveryProjectStore {
         finance_code,
         delivery_programme_id,
         delivery_project_code,
-        namespace: `${programmeCode}-${delivery_project_code}`,
+        namespace: name,
         ado_project,
         updated_by: author,
         team_type,
@@ -184,10 +173,7 @@ export class DeliveryProjectStore {
     request: UpdateDeliveryProjectRequest,
     updatedBy: string,
   ): Promise<
-    SafeResult<
-      DeliveryProject,
-      'duplicateTitle' | 'duplicateProjectCode' | 'unknownDeliveryProgramme'
-    >
+    SafeResult<DeliveryProject, 'duplicateTitle' | 'unknownDeliveryProgramme'>
   > {
     const {
       id,
@@ -213,9 +199,6 @@ export class DeliveryProjectStore {
         not(this.#deliveryProgrammeExists(delivery_programme_id)),
       duplicateTitle:
         title !== undefined && this.#titleExists(title, programmeId, id),
-      duplicateProjectCode:
-        delivery_project_code !== undefined &&
-        this.#projectCodeExists(delivery_project_code, id),
     });
     if (!valid.success) return valid;
 
@@ -316,15 +299,6 @@ export class DeliveryProjectStore {
       delivery_programme_name,
     )
       .where('id', id)
-      .limit(1)
-      .count('*', { as: 'count' });
-    return Number(count) > 0;
-  }
-
-  async #projectCodeExists(code: string, ignoreId: UUID) {
-    const [{ count }] = await this.#table
-      .where('delivery_project_code', code)
-      .andWhereNot('id', ignoreId)
       .limit(1)
       .count('*', { as: 'count' });
     return Number(count) > 0;

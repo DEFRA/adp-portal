@@ -1,12 +1,12 @@
-import type { TestDatabaseId} from '@backstage/backend-test-utils';
+import type { TestDatabaseId } from '@backstage/backend-test-utils';
 import { TestDatabases } from '@backstage/backend-test-utils';
 import { DeliveryProgrammeStore } from './deliveryProgrammeStore';
 import { NotFoundError } from '@backstage/errors';
-import { createName } from '../utils/index';
 import { albSeedData } from '../testData/albTestData';
-import type {
-  CreateDeliveryProgrammeRequest,
-  UpdateDeliveryProgrammeRequest,
+import {
+  createName,
+  type CreateDeliveryProgrammeRequest,
+  type UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
 import {
   deliveryProgrammeSeedData,
@@ -14,16 +14,10 @@ import {
   expectedProgrammeDataWithoutManager,
 } from '../testData/programmeTestData';
 import { initializeAdpDatabase } from '../database';
-import type {
-  delivery_programme} from './delivery_programme';
-import {
-  delivery_programme_name,
-} from './delivery_programme';
-import type {
-  arms_length_body} from '../armsLengthBody/arms_length_body';
-import {
-  arms_length_body_name,
-} from '../armsLengthBody/arms_length_body';
+import type { delivery_programme } from './delivery_programme';
+import { delivery_programme_name } from './delivery_programme';
+import type { arms_length_body } from '../armsLengthBody/arms_length_body';
+import { arms_length_body_name } from '../armsLengthBody/arms_length_body';
 import type { Knex } from 'knex';
 
 describe('DeliveryProgrammeStore', () => {

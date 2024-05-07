@@ -39,7 +39,7 @@ import {
   catalogLocationCreatePermission,
 } from '@backstage/plugin-catalog-common/alpha';
 
-import type { IconComponent} from '@backstage/core-plugin-api';
+import type { IconComponent } from '@backstage/core-plugin-api';
 import { microsoftAuthApiRef } from '@backstage/core-plugin-api';
 
 import LightIcon from '@material-ui/icons/WbSunnyRounded';
@@ -85,6 +85,7 @@ const lightTheme = createUnifiedTheme({
     link: styles.linkColour,
     linkHover: styles.linkHoverColour,
     errorText: styles.errorColour,
+    contrastThreshold: 4.5,
   },
   defaultPageTheme: 'home',
   pageTheme: {
@@ -129,6 +130,10 @@ const lightTheme = createUnifiedTheme({
 const darkTheme = createUnifiedTheme({
   palette: {
     ...palettes.dark,
+    background: {
+      default: styles.darkBackground,
+      paper: styles.darkPaper,
+    },
     navigation: {
       background: styles.darkThemeNav,
       indicator: styles.primaryColour,
@@ -141,6 +146,7 @@ const darkTheme = createUnifiedTheme({
     link: styles.linkColour,
     linkHover: styles.linkHoverColour,
     errorText: styles.errorColour,
+    contrastThreshold: 4.5,
   },
   defaultPageTheme: 'home',
   pageTheme: {

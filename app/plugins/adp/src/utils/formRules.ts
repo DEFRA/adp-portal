@@ -10,6 +10,14 @@ export const formRules = {
       },
     };
   },
+  minLength(count: number) {
+    return {
+      minLength: {
+        value: count,
+        message: `Minimum length is ${count} characters`,
+      },
+    };
+  },
   pattern(pattern: RegExp, message: string) {
     return {
       pattern: {

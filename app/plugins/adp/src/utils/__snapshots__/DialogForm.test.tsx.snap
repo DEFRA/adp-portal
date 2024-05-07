@@ -199,7 +199,7 @@ exports[`DialogForm Should block the form while submitting: Submitted 1`] = `
               />
             </button>
             <div
-              class="MuiBox-root MuiBox-root-4"
+              class="MuiBox-root MuiBox-root"
             />
           </div>
         </form>
@@ -380,7 +380,7 @@ exports[`DialogForm Should block the form while submitting: Submitting 1`] = `
             class="MuiDialogActions-root MuiDialogActions-spacing"
           >
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-disabled MuiButtonBase-disabled"
               data-testid="actions-modal-cancel-button"
               disabled=""
               tabindex="-1"
@@ -393,7 +393,7 @@ exports[`DialogForm Should block the form while submitting: Submitting 1`] = `
               </span>
             </button>
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-disabled MuiButtonBase-disabled"
               data-testid="actions-modal-submit-button"
               disabled=""
               tabindex="-1"
@@ -406,7 +406,7 @@ exports[`DialogForm Should block the form while submitting: Submitting 1`] = `
               </span>
             </button>
             <div
-              class="MuiBox-root MuiBox-root-4"
+              class="MuiBox-root MuiBox-root"
             >
               <div
                 class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
@@ -648,7 +648,7 @@ exports[`DialogForm Should call completed when cancel is clicked 1`] = `
               />
             </button>
             <div
-              class="MuiBox-root MuiBox-root-2"
+              class="MuiBox-root MuiBox-root"
             />
           </div>
         </form>
@@ -829,7 +829,7 @@ exports[`DialogForm Should call submit when confirm is clicked 1`] = `
             class="MuiDialogActions-root MuiDialogActions-spacing"
           >
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-disabled MuiButtonBase-disabled"
               data-testid="actions-modal-cancel-button"
               disabled=""
               tabindex="-1"
@@ -842,7 +842,7 @@ exports[`DialogForm Should call submit when confirm is clicked 1`] = `
               </span>
             </button>
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-disabled MuiButtonBase-disabled"
               data-testid="actions-modal-submit-button"
               disabled=""
               tabindex="-1"
@@ -855,7 +855,7 @@ exports[`DialogForm Should call submit when confirm is clicked 1`] = `
               </span>
             </button>
             <div
-              class="MuiBox-root MuiBox-root-3"
+              class="MuiBox-root MuiBox-root"
             >
               <div
                 class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
@@ -1086,7 +1086,7 @@ exports[`DialogForm Should not call completed when submit returns a validation e
               />
             </button>
             <div
-              class="MuiBox-root MuiBox-root-6"
+              class="MuiBox-root MuiBox-root"
             />
           </div>
         </form>
@@ -1267,7 +1267,7 @@ exports[`DialogForm Should not call completed when submit returns a validation e
             class="MuiDialogActions-root MuiDialogActions-spacing"
           >
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-disabled MuiButtonBase-disabled"
               data-testid="actions-modal-cancel-button"
               disabled=""
               tabindex="-1"
@@ -1280,7 +1280,7 @@ exports[`DialogForm Should not call completed when submit returns a validation e
               </span>
             </button>
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-disabled MuiButtonBase-disabled"
               data-testid="actions-modal-submit-button"
               disabled=""
               tabindex="-1"
@@ -1293,7 +1293,7 @@ exports[`DialogForm Should not call completed when submit returns a validation e
               </span>
             </button>
             <div
-              class="MuiBox-root MuiBox-root-6"
+              class="MuiBox-root MuiBox-root"
             >
               <div
                 class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
@@ -1530,7 +1530,7 @@ exports[`DialogForm Should raise an alert when submitting throws an error: Submi
               />
             </button>
             <div
-              class="MuiBox-root MuiBox-root-5"
+              class="MuiBox-root MuiBox-root"
             />
           </div>
         </form>
@@ -1711,7 +1711,7 @@ exports[`DialogForm Should raise an alert when submitting throws an error: Submi
             class="MuiDialogActions-root MuiDialogActions-spacing"
           >
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-disabled MuiButtonBase-disabled"
               data-testid="actions-modal-cancel-button"
               disabled=""
               tabindex="-1"
@@ -1724,7 +1724,7 @@ exports[`DialogForm Should raise an alert when submitting throws an error: Submi
               </span>
             </button>
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary Mui-disabled Mui-disabled"
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-disabled MuiButtonBase-disabled"
               data-testid="actions-modal-submit-button"
               disabled=""
               tabindex="-1"
@@ -1737,7 +1737,7 @@ exports[`DialogForm Should raise an alert when submitting throws an error: Submi
               </span>
             </button>
             <div
-              class="MuiBox-root MuiBox-root-5"
+              class="MuiBox-root MuiBox-root"
             >
               <div
                 class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
@@ -1963,7 +1963,7 @@ exports[`DialogForm Should render when open 1`] = `
               />
             </button>
             <div
-              class="MuiBox-root MuiBox-root-1"
+              class="MuiBox-root MuiBox-root"
             />
           </div>
         </form>

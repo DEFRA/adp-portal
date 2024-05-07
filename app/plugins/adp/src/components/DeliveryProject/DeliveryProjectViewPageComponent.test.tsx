@@ -2,18 +2,23 @@ import React from 'react';
 
 import { Button } from '@material-ui/core';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import type { DeliveryProjectApi} from './api';
+import type { DeliveryProjectApi } from './api';
 import { deliveryProjectApiRef } from './api';
-import type { ErrorApi} from '@backstage/core-plugin-api';
+import type { ErrorApi } from '@backstage/core-plugin-api';
 import { errorApiRef } from '@backstage/core-plugin-api';
 import { DeliveryProjectViewPageComponent } from './DeliveryProjectViewPageComponent';
 import { waitFor } from '@testing-library/react';
 import type { DeliveryProject } from '@internal/plugin-adp-common';
 import type * as EditDeliveryProjectButtonModule from './EditDeliveryProjectButton';
 import type * as CreateDeliveryProjectButtonModule from './CreateDeliveryProjectButton';
+import { SnapshotFriendlyStylesProvider } from '../../utils';
 
-const EditDeliveryProjectButton: jest.MockedFn<typeof EditDeliveryProjectButtonModule['EditDeliveryProjectButton']> = jest.fn();
-const CreateDeliveryProjectButton: jest.MockedFn<typeof CreateDeliveryProjectButtonModule['CreateDeliveryProjectButton']> = jest.fn();
+const EditDeliveryProjectButton: jest.MockedFn<
+  (typeof EditDeliveryProjectButtonModule)['EditDeliveryProjectButton']
+> = jest.fn();
+const CreateDeliveryProjectButton: jest.MockedFn<
+  (typeof CreateDeliveryProjectButtonModule)['CreateDeliveryProjectButton']
+> = jest.fn();
 
 beforeEach(() => {
   jest.spyOn(global.Math, 'random').mockReturnValue(0);
@@ -60,7 +65,9 @@ describe('DeliveryProjectViewPageComponent', () => {
               [deliveryProjectApiRef, mockDeliveryProjectApi],
             ]}
           >
-            <DeliveryProjectViewPageComponent />
+            <SnapshotFriendlyStylesProvider>
+              <DeliveryProjectViewPageComponent />
+            </SnapshotFriendlyStylesProvider>
           </TestApiProvider>,
         );
 

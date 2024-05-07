@@ -1,14 +1,13 @@
 import type { Knex } from 'knex';
 import { NotFoundError } from '@backstage/errors';
-import type {
-  CreateDeliveryProgrammeRequest,
-  DeliveryProgramme,
-  DeliveryProgrammeAdmin,
-  UpdateDeliveryProgrammeRequest,
+import {
+  createName,
+  type CreateDeliveryProgrammeRequest,
+  type DeliveryProgramme,
+  type DeliveryProgrammeAdmin,
+  type UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
-import { createName } from '../utils/index';
-import type {
-  SafeResult} from '../service/util';
+import type { SafeResult } from '../service/util';
 import {
   assertUUID,
   checkMany,
@@ -17,16 +16,10 @@ import {
   isUUID,
 } from '../service/util';
 import { type UUID } from 'node:crypto';
-import type {
-  delivery_programme} from './delivery_programme';
-import {
-  delivery_programme_name,
-} from './delivery_programme';
-import type {
-  arms_length_body} from '../armsLengthBody/arms_length_body';
-import {
-  arms_length_body_name,
-} from '../armsLengthBody/arms_length_body';
+import type { delivery_programme } from './delivery_programme';
+import { delivery_programme_name } from './delivery_programme';
+import type { arms_length_body } from '../armsLengthBody/arms_length_body';
+import { arms_length_body_name } from '../armsLengthBody/arms_length_body';
 
 export type PartialDeliveryProgramme = Partial<DeliveryProgramme>;
 export type IDeliveryProgrammeStore = {

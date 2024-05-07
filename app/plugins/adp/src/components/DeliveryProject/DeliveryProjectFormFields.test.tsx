@@ -1,41 +1,27 @@
 import React from 'react';
-import type {
-  DeliveryProjectFields} from './DeliveryProjectFormFields';
+import type { DeliveryProjectFields } from './DeliveryProjectFormFields';
 import {
   DeliveryProjectFormFields,
   emptyForm,
 } from './DeliveryProjectFormFields';
-import type {
-  RenderResult} from '@testing-library/react';
+import type { RenderResult } from '@testing-library/react';
 import {
   fireEvent,
   render as testRender,
   waitFor,
 } from '@testing-library/react';
-import type {
-  FieldPath,
-  FieldValues,
-  UseFormReturn} from 'react-hook-form';
-import {
-  useForm,
-} from 'react-hook-form';
+import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { act } from 'react-dom/test-utils';
 import { TestApiProvider } from '@backstage/test-utils';
-import type {
-  ErrorApi,
-  IdentityApi} from '@backstage/core-plugin-api';
-import {
-  errorApiRef,
-  identityApiRef,
-} from '@backstage/core-plugin-api';
+import type { ErrorApi, IdentityApi } from '@backstage/core-plugin-api';
+import { errorApiRef, identityApiRef } from '@backstage/core-plugin-api';
 import userEvent from '@testing-library/user-event';
-import type {
-  DeliveryProgrammeApi} from '../DeliveryProgramme/api';
-import {
-  deliveryProgrammeApiRef,
-} from '../DeliveryProgramme/api';
+import type { DeliveryProgrammeApi } from '../DeliveryProgramme/api';
+import { deliveryProgrammeApiRef } from '../DeliveryProgramme/api';
+import { SnapshotFriendlyStylesProvider } from '../../utils';
 
-describe('AlbFormFields', () => {
+describe('DeliveryProjectFormFields', () => {
   it('Should render all fields correctly', async () => {
     const { mockProgrammeApi, mockIdentityApi, render } = setup();
 
@@ -215,7 +201,7 @@ describe('AlbFormFields', () => {
       delivery_programme_id: '1',
       delivery_project_code: 'ABC',
       github_team_visibility: 'public',
-      namespace: 'XYZ-ABC',
+      namespace: '',
       service_owner: 'test@email.com',
       team_type: 'delivery',
       finance_code: '123',
@@ -323,7 +309,9 @@ function setup() {
             [errorApiRef, mockErrorApi],
           ]}
         >
-          <Sut context={context} defaultValues={defaultValues} />
+          <SnapshotFriendlyStylesProvider>
+            <Sut context={context} defaultValues={defaultValues} />
+          </SnapshotFriendlyStylesProvider>
         </TestApiProvider>,
       );
       await waitFor(() => expect(result.baseElement).not.toBeEmptyDOMElement());

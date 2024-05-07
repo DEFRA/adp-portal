@@ -40,12 +40,6 @@ const errorMapping = {
       message: `The name '${req.title}' is already in use. Please choose a different name.`,
     },
   }),
-  duplicateProjectCode: () => ({
-    path: 'delivery_project_code',
-    error: {
-      message: `The project code is already in use by another delivery project.`,
-    },
-  }),
   unknownDeliveryProgramme: () => ({
     path: 'delivery_programme_id',
     error: {

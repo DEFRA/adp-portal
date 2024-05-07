@@ -6,13 +6,13 @@ import type {
   FieldPath,
   FieldPathValue,
   FieldValues,
-  UseControllerProps} from 'react-hook-form';
-import {
-  Controller
+  UseControllerProps,
 } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { isFieldDisabled } from './isFieldDisabled';
 import SelectedChipsRenderer from './SelectedChipsRenderer';
 import { enrichHelperText } from './enrichHelperText';
+import { rulesToHtmlProperties } from './rulesToHtmlProperties';
 
 export type FormMultiSelectFieldProps<
   TFields extends FieldValues,
@@ -76,6 +76,9 @@ export function FormMultiSelectField<
           }
           data-testid={name}
           disabled={isFieldDisabled(disabled, name)}
+          inputProps={{
+            ...rulesToHtmlProperties(rules),
+          }}
         >
           {options.map(x => (
             <MenuItem

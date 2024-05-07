@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AlbFormFields Should render all fields correctly 1`] = `
+exports[`DeliveryProgrammeFormFields Should render all fields correctly 1`] = `
 <body>
   <div>
     <div
@@ -31,10 +31,10 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-3"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Name
@@ -75,10 +75,10 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-3"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Alias
@@ -119,10 +119,10 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-3"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Website
@@ -167,6 +167,7 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         <input
           aria-describedby="arms_length_body_id-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="arms_length_body_id"
           tabindex="-1"
@@ -184,10 +185,10 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         </svg>
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-3"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Arms Length Body
@@ -231,10 +232,10 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-3"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Delivery Programme Code / Abbreviation
@@ -284,10 +285,10 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-3"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Description
@@ -306,7 +307,7 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
 </body>
 `;
 
-exports[`AlbFormFields Should render default fields 1`] = `
+exports[`DeliveryProgrammeFormFields Should render default fields 1`] = `
 <body>
   <div>
     <div
@@ -337,10 +338,10 @@ exports[`AlbFormFields Should render default fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-11 PrivateNotchedOutline-legendNotched-12"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -381,10 +382,10 @@ exports[`AlbFormFields Should render default fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-11 PrivateNotchedOutline-legendNotched-12"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Alias
@@ -425,10 +426,10 @@ exports[`AlbFormFields Should render default fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-11 PrivateNotchedOutline-legendNotched-12"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Website
@@ -471,6 +472,7 @@ exports[`AlbFormFields Should render default fields 1`] = `
         <input
           aria-describedby="arms_length_body_id-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="arms_length_body_id"
           tabindex="-1"
@@ -488,10 +490,10 @@ exports[`AlbFormFields Should render default fields 1`] = `
         </svg>
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-11 PrivateNotchedOutline-legendNotched-12"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Arms Length Body
@@ -535,10 +537,10 @@ exports[`AlbFormFields Should render default fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-11 PrivateNotchedOutline-legendNotched-12"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Delivery Programme Code / Abbreviation
@@ -590,10 +592,10 @@ exports[`AlbFormFields Should render default fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-11 PrivateNotchedOutline-legendNotched-12"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Description
@@ -612,7 +614,7 @@ exports[`AlbFormFields Should render default fields 1`] = `
 </body>
 `;
 
-exports[`AlbFormFields Should render populated fields 1`] = `
+exports[`DeliveryProgrammeFormFields Should render populated fields 1`] = `
 <body>
   <div>
     <div
@@ -643,10 +645,10 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -687,10 +689,10 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Alias
@@ -731,10 +733,10 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Website
@@ -777,6 +779,7 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         <input
           aria-describedby="arms_length_body_id-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="arms_length_body_id"
           tabindex="-1"
@@ -794,10 +797,10 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         </svg>
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Arms Length Body
@@ -841,10 +844,10 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Delivery Programme Code / Abbreviation
@@ -896,10 +899,10 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Description
@@ -918,7 +921,7 @@ exports[`AlbFormFields Should render populated fields 1`] = `
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Alb selected 1`] = `
 <body
   style=""
 >
@@ -951,10 +954,10 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -995,10 +998,10 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Alias
@@ -1039,10 +1042,10 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Website
@@ -1062,7 +1065,7 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
       data-testid="arms_length_body_id"
     >
       <label
-        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled Mui-focused Mui-focused"
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled MuiFormLabel-focused MuiInputLabel-focused"
         data-shrink="true"
         for="arms_length_body_id"
         id="arms_length_body_id-label"
@@ -1070,7 +1073,7 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         Arms Length Body
       </label>
       <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-focused MuiOutlinedInput-focused MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
       >
         <div
           aria-haspopup="listbox"
@@ -1085,6 +1088,7 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         <input
           aria-describedby="arms_length_body_id-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="arms_length_body_id"
           tabindex="-1"
@@ -1102,10 +1106,10 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         </svg>
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Arms Length Body
@@ -1114,7 +1118,7 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         </fieldset>
       </div>
       <p
-        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled Mui-focused MuiFormHelperText-marginDense"
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-focused MuiFormHelperText-marginDense"
         id="arms_length_body_id-helper-text"
       >
         <span>
@@ -1149,10 +1153,10 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Delivery Programme Code / Abbreviation
@@ -1204,10 +1208,10 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Description
@@ -1226,7 +1230,7 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Alias set 1`] = `
 <body>
   <div>
     <div
@@ -1257,10 +1261,10 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -1301,10 +1305,10 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Alias
@@ -1345,10 +1349,10 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Website
@@ -1393,6 +1397,7 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         <input
           aria-describedby="arms_length_body_id-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="arms_length_body_id"
           tabindex="-1"
@@ -1410,10 +1415,10 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         </svg>
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Arms Length Body
@@ -1457,10 +1462,10 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Delivery Programme Code / Abbreviation
@@ -1510,10 +1515,10 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Description
@@ -1532,7 +1537,7 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Description set 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Description set 1`] = `
 <body>
   <div>
     <div
@@ -1563,10 +1568,10 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -1607,10 +1612,10 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Alias
@@ -1651,10 +1656,10 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Website
@@ -1699,6 +1704,7 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         <input
           aria-describedby="arms_length_body_id-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="arms_length_body_id"
           tabindex="-1"
@@ -1716,10 +1722,10 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         </svg>
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Arms Length Body
@@ -1763,10 +1769,10 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Delivery Programme Code / Abbreviation
@@ -1818,10 +1824,10 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Description
@@ -1840,7 +1846,7 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Empty 1`] = `
 <body>
   <div>
     <div
@@ -1871,10 +1877,10 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Name
@@ -1915,10 +1921,10 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Alias
@@ -1959,10 +1965,10 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Website
@@ -2007,6 +2013,7 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         <input
           aria-describedby="arms_length_body_id-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="arms_length_body_id"
           tabindex="-1"
@@ -2024,10 +2031,10 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         </svg>
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Arms Length Body
@@ -2071,10 +2078,10 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Delivery Programme Code / Abbreviation
@@ -2124,10 +2131,10 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Description
@@ -2146,7 +2153,7 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Programme Code set 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Programme Code set 1`] = `
 <body>
   <div>
     <div
@@ -2177,10 +2184,10 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -2221,10 +2228,10 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Alias
@@ -2265,10 +2272,10 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Website
@@ -2313,6 +2320,7 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
         <input
           aria-describedby="arms_length_body_id-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="arms_length_body_id"
           tabindex="-1"
@@ -2330,10 +2338,10 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
         </svg>
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Arms Length Body
@@ -2377,10 +2385,10 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Delivery Programme Code / Abbreviation
@@ -2432,10 +2440,10 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Description
@@ -2454,7 +2462,7 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Title set 1`] = `
 <body>
   <div>
     <div
@@ -2485,10 +2493,10 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -2529,10 +2537,10 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Alias
@@ -2573,10 +2581,10 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Website
@@ -2621,6 +2629,7 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         <input
           aria-describedby="arms_length_body_id-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="arms_length_body_id"
           tabindex="-1"
@@ -2638,10 +2647,10 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         </svg>
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Arms Length Body
@@ -2685,10 +2694,10 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Delivery Programme Code / Abbreviation
@@ -2738,10 +2747,10 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Description
@@ -2760,7 +2769,7 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Website set 1`] = `
 <body>
   <div>
     <div
@@ -2791,10 +2800,10 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -2835,10 +2844,10 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Alias
@@ -2879,10 +2888,10 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Website
@@ -2927,6 +2936,7 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         <input
           aria-describedby="arms_length_body_id-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="arms_length_body_id"
           tabindex="-1"
@@ -2944,10 +2954,10 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         </svg>
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Arms Length Body
@@ -2991,10 +3001,10 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Delivery Programme Code / Abbreviation
@@ -3044,10 +3054,10 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Description
