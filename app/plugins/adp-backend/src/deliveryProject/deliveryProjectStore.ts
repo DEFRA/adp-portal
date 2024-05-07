@@ -1,13 +1,14 @@
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
 import { NotFoundError } from '@backstage/errors';
-import {
+import type {
   CreateDeliveryProjectRequest,
   DeliveryProject,
   UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
 import { createName } from '../utils/index';
+import type {
+  SafeResult} from '../service/util';
 import {
-  SafeResult,
   assertUUID,
   checkMany,
   containsAnyValue,
@@ -15,9 +16,11 @@ import {
   isUUID,
 } from '../service/util';
 import { type UUID } from 'node:crypto';
-import { delivery_project, delivery_project_name } from './delivery_project';
+import type { delivery_project} from './delivery_project';
+import { delivery_project_name } from './delivery_project';
+import type {
+  delivery_programme} from '../deliveryProgramme/delivery_programme';
 import {
-  delivery_programme,
   delivery_programme_name,
 } from '../deliveryProgramme/delivery_programme';
 

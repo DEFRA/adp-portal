@@ -1,8 +1,8 @@
-import {
+import type {
   DeliveryProgramme,
   DeliveryProgrammeAdmin,
 } from '@internal/plugin-adp-common';
-import { delivery_programme } from '../deliveryProgramme/delivery_programme';
+import type { delivery_programme } from '../deliveryProgramme/delivery_programme';
 
 export const expectedProgrammeData = {
   programme_managers: [],

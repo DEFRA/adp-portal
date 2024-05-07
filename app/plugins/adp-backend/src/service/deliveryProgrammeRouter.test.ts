@@ -1,21 +1,19 @@
 import { getVoidLogger } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
-import {
-  ProgrammeRouterOptions,
-  createProgrammeRouter,
-} from './deliveryProgrammeRouter';
+import type { ProgrammeRouterOptions } from './deliveryProgrammeRouter';
+import { createProgrammeRouter } from './deliveryProgrammeRouter';
 import {
   expectedProgrammeDataWithManager,
   programmeManagerList,
   expectedProgrammeDataWithName,
 } from '../testData/programmeTestData';
 import { InputError } from '@backstage/errors';
-import { IDeliveryProjectStore } from '../deliveryProject';
-import { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import type { IDeliveryProjectStore } from '../deliveryProject';
+import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { expectedProjectDataWithName } from '../testData/projectTestData';
-import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
-import {
+import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import type {
   CreateDeliveryProgrammeRequest,
   UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';

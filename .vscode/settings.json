@@ -3,5 +3,13 @@
     "connectionId": "defra",
     "projectKey": "adp-portal"
   },
-  "eslint.workingDirectories": [{ "mode": "auto" }]
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "jest.jestCommandLine": "yarn test",
+  "jest.rootPath": "app"
 }

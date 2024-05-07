@@ -1,9 +1,10 @@
-import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
+import type { TestDatabaseId} from '@backstage/backend-test-utils';
+import { TestDatabases } from '@backstage/backend-test-utils';
 import { DeliveryProgrammeStore } from './deliveryProgrammeStore';
 import { NotFoundError } from '@backstage/errors';
 import { createName } from '../utils/index';
 import { albSeedData } from '../testData/albTestData';
-import {
+import type {
   CreateDeliveryProgrammeRequest,
   UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
@@ -13,15 +14,17 @@ import {
   expectedProgrammeDataWithoutManager,
 } from '../testData/programmeTestData';
 import { initializeAdpDatabase } from '../database';
+import type {
+  delivery_programme} from './delivery_programme';
 import {
-  delivery_programme,
   delivery_programme_name,
 } from './delivery_programme';
+import type {
+  arms_length_body} from '../armsLengthBody/arms_length_body';
 import {
-  arms_length_body,
   arms_length_body_name,
 } from '../armsLengthBody/arms_length_body';
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
 
 describe('DeliveryProgrammeStore', () => {
   const databases = TestDatabases.create();
@@ -107,7 +110,7 @@ describe('DeliveryProgrammeStore', () => {
 
       const getResult = programmeStore.get('12345');
 
-      expect(getResult).rejects.toBeInstanceOf(NotFoundError);
+      await expect(getResult).rejects.toBeInstanceOf(NotFoundError);
     },
   );
 

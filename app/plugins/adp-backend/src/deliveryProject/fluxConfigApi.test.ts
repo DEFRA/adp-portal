@@ -2,8 +2,9 @@ import { ConfigReader } from '@backstage/config';
 import { FluxConfigApi } from './fluxConfigApi';
 import { expectedProgrammeDataWithManager } from '../testData/programmeTestData';
 import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
-import fetch, { Response } from 'node-fetch';
-import { DeliveryProject } from '@internal/plugin-adp-common';
+import type { Response } from 'node-fetch';
+import fetch from 'node-fetch';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
 
 jest.mock('node-fetch', () => jest.fn());
 const mockedFetch: jest.MockedFunction<typeof fetch> =
@@ -150,7 +151,7 @@ describe('FluxConfigApi', () => {
       mockDeliveryProgrammeStore,
     );
 
-    expect(fluxConfigApi.getFluxConfig('test-team')).rejects.toThrow(
+    await expect(fluxConfigApi.getFluxConfig('test-team')).rejects.toThrow(
       /Unexpected response from FluxConfig API/,
     );
   });
@@ -260,8 +261,8 @@ describe('FluxConfigApi', () => {
       mockDeliveryProgrammeStore,
     );
 
-    expect(fluxConfigApi.createFluxConfig(deliveryProject)).rejects.toThrow(
-      /Unexpected response from FluxConfig API/,
-    );
+    await expect(
+      fluxConfigApi.createFluxConfig(deliveryProject),
+    ).rejects.toThrow(/Unexpected response from FluxConfig API/);
   });
 });

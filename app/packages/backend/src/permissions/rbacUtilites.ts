@@ -1,7 +1,7 @@
-import {
+import type {
   BackstageIdentityResponse
 } from '@backstage/plugin-auth-node';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import type { RbacGroups } from './types'
 
 /**

@@ -1,4 +1,4 @@
-import { DeliveryProject } from '@internal/plugin-adp-common';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
 import {
   createName,
   getCurrentUsername,

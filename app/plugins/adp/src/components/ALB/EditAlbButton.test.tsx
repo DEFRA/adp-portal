@@ -1,17 +1,50 @@
-import { AlertApi, alertApiRef } from '@backstage/core-plugin-api';
+import type { AlertApi} from '@backstage/core-plugin-api';
+import { alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
-import { ArmsLengthBodyApi, armsLengthBodyApiRef } from './api';
-import { render, waitFor } from '@testing-library/react';
+import type { ArmsLengthBodyApi} from './api';
+import { armsLengthBodyApiRef } from './api';
+import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
-import { EditAlbButton, EditAlbButtonProps } from './EditAlbButton';
+import type { EditAlbButtonProps } from './EditAlbButton';
+import { EditAlbButton } from './EditAlbButton';
 import userEvent from '@testing-library/user-event';
-import { AlbFields, AlbFormFields } from './AlbFormFields';
+import type { AlbFields} from './AlbFormFields';
+import { AlbFormFields } from './AlbFormFields';
 import { act } from 'react-dom/test-utils';
-import {
+import type {
   ArmsLengthBody,
   ValidationError as IValidationError,
 } from '@internal/plugin-adp-common';
 import { ValidationError } from '../../utils';
+import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
+import type * as DialogFormModule from '../../utils/DialogForm';
+
+const usePermission: jest.MockedFn<
+  typeof PluginPermissionReactModule.usePermission
+> = jest.fn();
+const DialogForm: jest.MockedFn<
+  typeof DialogFormModule.DialogForm
+> = jest.fn();
+
+const armsLengthBody: ArmsLengthBody = {
+  created_at: new Date(0),
+  creator: 'Me',
+  description: 'My ALB',
+  id: '00000000-0000-0000-0000-000000000001',
+  name: 'my-cool-alb',
+  owner: 'Someone',
+  title: 'My cool ALB',
+  updated_at: new Date(0),
+  alias: 'CAB',
+  url: 'https://test.com',
+};
+
+const fields: AlbFields = {
+  alias: 'abc',
+  description: 'def',
+  title: 'ghi',
+  url: 'jkl',
+};
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -225,25 +258,6 @@ describe('EditAlbButton', () => {
   });
 });
 
-const armsLengthBody: ArmsLengthBody = {
-  created_at: new Date(0),
-  creator: 'Me',
-  description: 'My ALB',
-  id: '00000000-0000-0000-0000-000000000001',
-  name: 'my-cool-alb',
-  owner: 'Someone',
-  title: 'My cool ALB',
-  updated_at: new Date(0),
-  alias: 'CAB',
-  url: 'https://test.com',
-};
-const fields: AlbFields = {
-  alias: 'abc',
-  description: 'def',
-  title: 'ghi',
-  url: 'jkl',
-};
-
 function setup() {
   const mockAlertApi: jest.Mocked<AlertApi> = {
     alert$: jest.fn(),
@@ -260,7 +274,7 @@ function setup() {
     mockAlertApi,
     mockArmsLengthBodyApi,
     async render(props: EditAlbButtonProps) {
-      const result = render(
+      const result = testRender(
         <TestApiProvider
           apis={[
             [alertApiRef, mockAlertApi],
@@ -276,9 +290,6 @@ function setup() {
   };
 }
 
-const usePermission: jest.MockedFn<
-  typeof import('@backstage/plugin-permission-react').usePermission
-> = jest.fn();
 jest.mock(
   '@backstage/plugin-permission-react',
   () =>
@@ -298,18 +309,15 @@ jest.mock(
       get permissionApiRef(): never {
         throw new Error('Not mocked');
       },
-    } satisfies typeof import('@backstage/plugin-permission-react')),
+    } satisfies typeof PluginPermissionReactModule),
 );
 
-const DialogForm: jest.MockedFn<
-  typeof import('../../utils/DialogForm').DialogForm
-> = jest.fn();
 jest.mock(
   '../../utils/DialogForm',
   () =>
     ({
       get DialogForm() {
-        return DialogForm as typeof import('../../utils/DialogForm').DialogForm;
+        return DialogForm as typeof DialogFormModule.DialogForm;
       },
-    } satisfies typeof import('../../utils/DialogForm')),
+    } satisfies typeof DialogFormModule),
 );

@@ -1,58 +1,54 @@
-import React, { useState, useEffect, useReducer, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import type { TableColumn } from '@backstage/core-components';
 import {
   Header,
   Page,
   Content,
   ContentHeader,
   SupportButton,
-  TableColumn,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils';
-import { useApi, errorApiRef } from '@backstage/core-plugin-api';
-import { ArmsLengthBody } from '@internal/plugin-adp-common';
+import { useApi } from '@backstage/core-plugin-api';
+import type { ArmsLengthBody } from '@internal/plugin-adp-common';
 import { armsLengthBodyApiRef } from './api';
 import { CreateAlbButton } from './CreateAlbButton';
 import { EditAlbButton } from './EditAlbButton';
+import { useAsyncDataSource, useErrorCallback } from '../../hooks';
 
 type ArmsLengthBodyWithActions = ArmsLengthBody & {
   actions: ReactNode;
 };
 
 export const AlbViewPageComponent = () => {
-  const [tableData, setTableData] = useState<ArmsLengthBodyWithActions[]>([]);
-  const [key, refetchArmsLengthBody] = useReducer(i => i + 1, 0);
-  const errorApi = useApi(errorApiRef);
   const client = useApi(armsLengthBodyApiRef);
+  const { data, refresh, loading } = useAsyncDataSource(
+    useCallback(() => client.getArmsLengthBodies(), [client]),
+    useErrorCallback({
+      name: 'Error while getting the list of arms length bodies.',
+    }),
+  );
 
-  const getAllArmsLengthBodies = async () => {
-    try {
-      const data = await client.getArmsLengthBodies();
-      setTableData(
-        data.map(d => ({
-          ...d,
-          actions: (
-            <EditAlbButton
-              variant="contained"
-              color="default"
-              data-testid={`alb-edit-button-${d.id}`}
-              armsLengthBody={d}
-              onEdited={refetchArmsLengthBody}
-            >
-              Edit
-            </EditAlbButton>
-          ),
-        })),
-      );
-    } catch (e: any) {
-      errorApi.post(e);
-    }
-  };
-
-  useEffect(() => {
-    getAllArmsLengthBodies();
-  }, [key]);
+  const tableData = useMemo(
+    () =>
+      data?.map<ArmsLengthBodyWithActions>(d => ({
+        ...d,
+        actions: (
+          <EditAlbButton
+            variant="contained"
+            color="default"
+            data-testid={`alb-edit-button-${d.id}`}
+            armsLengthBody={d}
+            onEdited={refresh}
+          >
+            Edit
+          </EditAlbButton>
+        ),
+      })),
+    [data, refresh],
+  );
 
   const columns: TableColumn<ArmsLengthBodyWithActions>[] = [
     {
@@ -105,7 +101,7 @@ export const AlbViewPageComponent = () => {
             size="large"
             color="primary"
             startIcon={<AddBoxIcon />}
-            onCreated={refetchArmsLengthBody}
+            onCreated={refresh}
             data-testid="alb-add-button"
           >
             Add ALB
@@ -119,10 +115,11 @@ export const AlbViewPageComponent = () => {
           View or add Arms Length Bodies to the Azure Developer Platform.
         </Typography>
         <DefaultTable
-          data={tableData}
+          data={tableData ?? []}
           columns={columns}
           title="View all"
-          isCompact={true}
+          isCompact
+          isLoading={loading}
         />
       </Content>
     </Page>

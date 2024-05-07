@@ -1,10 +1,12 @@
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
+import type {
+  ScmIntegrationRegistry} from '@backstage/integration';
 import {
-  ScmIntegrationRegistry,
   DefaultGithubCredentialsProvider,
 } from '@backstage/integration';
-import { Octokit, RequestError } from 'octokit';
-import { Config } from '@backstage/config';
+import type { RequestError } from 'octokit';
+import { Octokit } from 'octokit';
+import type { Config } from '@backstage/config';
 import { InputError } from '@backstage/errors';
 
 export function addGithubTeamToRepoAction(options: {
@@ -79,7 +81,7 @@ export function addGithubTeamToRepoAction(options: {
       const teams = teamNames.split(',').map(t => t.trim());
       const teamResponse = await Promise.all(
         teams.map(async team => {
-          let exists = await checkTeamExists(octokit, organization, team, ctx);
+          const exists = await checkTeamExists(octokit, organization, team, ctx);
           return { team: team, exists: exists };
         }),
       );
@@ -143,7 +145,7 @@ async function addTeamToRepo(
   ctx: any,
 ) {
   try {
-    let teamAdded = await octokit.rest.teams.addOrUpdateRepoPermissionsInOrg({
+    const teamAdded = await octokit.rest.teams.addOrUpdateRepoPermissionsInOrg({
       org: organization,
       team_slug: team,
       owner: owner,

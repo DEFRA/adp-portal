@@ -1,13 +1,13 @@
 import { errorHandler } from '@backstage/backend-common';
-import { IdentityApi } from '@backstage/plugin-auth-node';
-import { Logger } from 'winston';
-import { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import type { IdentityApi } from '@backstage/plugin-auth-node';
+import type { Logger } from 'winston';
+import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import express from 'express';
 import Router from 'express-promise-router';
 import { InputError } from '@backstage/errors';
-import { CatalogApi } from '@backstage/catalog-client';
-import { UserEntityV1alpha1 } from '@backstage/catalog-model';
-import { CreateDeliveryProgrammeAdmin } from '../utils';
+import type { CatalogApi } from '@backstage/catalog-client';
+import type { UserEntityV1alpha1 } from '@backstage/catalog-model';
+import type { CreateDeliveryProgrammeAdmin } from '../utils';
 
 type CreateDeliveryProgrammeAdminRequest = {
   aadEntityRefIds: string[];
@@ -21,8 +21,8 @@ type DeleteDeliveryProgrammeAdminRequest = {
 export interface DeliveryProgrammeAdminRouterOptions {
   logger: Logger;
   identity: IdentityApi;
-  deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore
-  catalog: CatalogApi
+  deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
+  catalog: CatalogApi;
 }
 
 export function createDeliveryProgrammeAdminRouter(
@@ -51,20 +51,25 @@ export function createDeliveryProgrammeAdminRouter(
     }
   });
 
-  router.get('/deliveryProgrammeAdmins/:deliveryProgrammeId', async (req, res) => {
-    try {
-      const deliveryProgrammeId = req.params.deliveryProgrammeId;
-      const data = await deliveryProgrammeAdminStore.getByDeliveryProgramme(deliveryProgrammeId);
-      res.json(data);
-    } catch (error) {
-      const typedError = error as Error;
+  router.get(
+    '/deliveryProgrammeAdmins/:deliveryProgrammeId',
+    async (req, res) => {
+      try {
+        const deliveryProgrammeId = req.params.deliveryProgrammeId;
+        const data = await deliveryProgrammeAdminStore.getByDeliveryProgramme(
+          deliveryProgrammeId,
+        );
+        res.json(data);
+      } catch (error) {
+        const typedError = error as Error;
         logger.error(
           `GET /deliveryProgrammeAdmins/:deliveryProgrammeId. Could not get delivery programme admins for delivery programme: ${typedError.message}`,
           typedError,
         );
         throw new InputError(typedError.message);
-    }
-  })
+      }
+    },
+  );
 
   router.post(
     '/deliveryProgrammeAdmin/:deliveryProgrammeId',
@@ -161,20 +166,18 @@ async function getDeliveryProgrammeAdminsFromCatalog(
       return userId === aadEntityRef;
     }) as UserEntityV1alpha1;
 
-    if (catalogUser !== undefined) {
-      const name = catalogUser.spec.profile!.displayName!;
-      const email = catalogUser.metadata.annotations!['microsoft.com/email'];
-      const deliveryProgrammeAdmin: CreateDeliveryProgrammeAdmin = {
-        aad_entity_ref_id: aadEntityRef,
-        email: email,
-        name: name,
-        delivery_programme_id: deliveryProgrammeId,
-      };
+    if (catalogUser === undefined) return undefined;
 
-      return deliveryProgrammeAdmin;
-    } else {
-      return;
-    }
+    const name = catalogUser.spec.profile!.displayName!;
+    const email = catalogUser.metadata.annotations!['microsoft.com/email'];
+    const deliveryProgrammeAdmin: CreateDeliveryProgrammeAdmin = {
+      aad_entity_ref_id: aadEntityRef,
+      email: email,
+      name: name,
+      delivery_programme_id: deliveryProgrammeId,
+    };
+
+    return deliveryProgrammeAdmin;
   });
 
   return users.filter(

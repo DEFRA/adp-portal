@@ -1,21 +1,43 @@
-import { AlertApi, alertApiRef } from '@backstage/core-plugin-api';
+import type { AlertApi} from '@backstage/core-plugin-api';
+import { alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
-import { DeliveryProgrammeApi, deliveryProgrammeApiRef } from './api';
-import { render, waitFor } from '@testing-library/react';
+import type { DeliveryProgrammeApi} from './api';
+import { deliveryProgrammeApiRef } from './api';
+import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
+import type {
+  CreateDeliveryProgrammeButtonProps} from './CreateDeliveryProgrammeButton';
 import {
-  CreateDeliveryProgrammeButton,
-  CreateDeliveryProgrammeButtonProps,
+  CreateDeliveryProgrammeButton
 } from './CreateDeliveryProgrammeButton';
 import userEvent from '@testing-library/user-event';
+import type {
+  DeliveryProgrammeFields} from './DeliveryProgrammeFormFields';
 import {
-  DeliveryProgrammeFields,
   DeliveryProgrammeFormFields,
   emptyForm,
 } from './DeliveryProgrammeFormFields';
 import { act } from 'react-dom/test-utils';
-import { ValidationError as IValidationError } from '@internal/plugin-adp-common';
+import type { ValidationError as IValidationError } from '@internal/plugin-adp-common';
 import { ValidationError } from '../../utils';
+import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
+import type * as DialogFormModule from '../../utils/DialogForm';
+
+const usePermission: jest.MockedFn<
+  typeof PluginPermissionReactModule.usePermission
+> = jest.fn();
+const DialogForm: jest.MockedFn<
+  typeof DialogFormModule.DialogForm
+> = jest.fn();
+
+const fields: DeliveryProgrammeFields = {
+  alias: 'abc',
+  arms_length_body_id: 'def',
+  delivery_programme_code: 'ghi',
+  description: 'jkl',
+  title: 'mno',
+  url: 'pqr',
+};
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -237,15 +259,6 @@ describe('CreateDeliveryProgrammeButton', () => {
   });
 });
 
-const fields: DeliveryProgrammeFields = {
-  alias: 'abc',
-  arms_length_body_id: 'def',
-  delivery_programme_code: 'ghi',
-  description: 'jkl',
-  title: 'mno',
-  url: 'pqr',
-};
-
 function setup() {
   const mockAlertApi: jest.Mocked<AlertApi> = {
     alert$: jest.fn(),
@@ -263,7 +276,7 @@ function setup() {
     mockAlertApi,
     mockProgrammeApi,
     async render(props: CreateDeliveryProgrammeButtonProps) {
-      const result = render(
+      const result = testRender(
         <TestApiProvider
           apis={[
             [alertApiRef, mockAlertApi],
@@ -279,9 +292,6 @@ function setup() {
   };
 }
 
-const usePermission: jest.MockedFn<
-  typeof import('@backstage/plugin-permission-react').usePermission
-> = jest.fn();
 jest.mock(
   '@backstage/plugin-permission-react',
   () =>
@@ -301,18 +311,15 @@ jest.mock(
       get permissionApiRef(): never {
         throw new Error('Not mocked');
       },
-    } satisfies typeof import('@backstage/plugin-permission-react')),
+    } satisfies typeof PluginPermissionReactModule),
 );
 
-const DialogForm: jest.MockedFn<
-  typeof import('../../utils/DialogForm').DialogForm
-> = jest.fn();
 jest.mock(
   '../../utils/DialogForm',
   () =>
     ({
       get DialogForm() {
-        return DialogForm as typeof import('../../utils/DialogForm').DialogForm;
+        return DialogForm as typeof DialogFormModule.DialogForm;
       },
-    } satisfies typeof import('../../utils/DialogForm')),
+    } satisfies typeof DialogFormModule),
 );

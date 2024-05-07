@@ -1,5 +1,5 @@
-import { DeliveryProject } from '@internal/plugin-adp-common';
-import { delivery_project } from '../deliveryProject/delivery_project';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
+import type { delivery_project } from '../deliveryProject/delivery_project';
 
 export const expectedProjectData = {
   title: 'Test title',

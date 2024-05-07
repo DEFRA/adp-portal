@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { DeliveryProgrammeAdminClient } from './DeliveryProgrammeAdminClient';
 
 jest.mock('@backstage/core-plugin-api', () => ({
@@ -21,8 +21,8 @@ function createDeliveryProgrammeAdmin(): DeliveryProgrammeAdmin {
 }
 
 describe('DeliveryProgrammeAdminApiClient', () => {
-  let discoveryApi = { getBaseUrl: jest.fn() };
-  let fetchApi = { fetch: jest.fn() };
+  const discoveryApi = { getBaseUrl: jest.fn() };
+  const fetchApi = { fetch: jest.fn() };
   const sut = new DeliveryProgrammeAdminClient(discoveryApi, fetchApi);
 
   beforeEach(() => {

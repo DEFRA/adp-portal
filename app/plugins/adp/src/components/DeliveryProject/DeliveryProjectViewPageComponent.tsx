@@ -1,65 +1,55 @@
-import React, { useState, useEffect, useReducer, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import type { TableColumn } from '@backstage/core-components';
 import {
   Header,
   Page,
   Content,
   ContentHeader,
   SupportButton,
-  TableColumn,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils';
-import { useApi, errorApiRef } from '@backstage/core-plugin-api';
-import {
-  DeliveryProject,
-  deliveryProjectDisplayName,
-} from '@internal/plugin-adp-common';
+import { useApi } from '@backstage/core-plugin-api';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
+import { deliveryProjectDisplayName } from '@internal/plugin-adp-common';
 import { deliveryProjectApiRef } from './api/DeliveryProjectApi';
 import { CreateDeliveryProjectButton } from './CreateDeliveryProjectButton';
 import { EditDeliveryProjectButton } from './EditDeliveryProjectButton';
+import { useAsyncDataSource, useErrorCallback } from '../../hooks';
 
 type DeliveryProjectWithActions = DeliveryProject & {
   actions: ReactNode;
 };
 
 export const DeliveryProjectViewPageComponent = () => {
-  const [tableData, setTableData] = useState<DeliveryProjectWithActions[]>([]);
-  const [key, refetchDeliveryProject] = useReducer(i => {
-    return i + 1;
-  }, 0);
-
-  const errorApi = useApi(errorApiRef);
   const client = useApi(deliveryProjectApiRef);
-
-  const getAllDeliveryProjects = async () => {
-    try {
-      const data = await client.getDeliveryProjects();
-      setTableData(
-        data.map(d => ({
-          ...d,
-          title: deliveryProjectDisplayName(d),
-          actions: (
-            <EditDeliveryProjectButton
-              variant="contained"
-              color="default"
-              deliveryProject={d}
-              data-testid={`delivery-project-edit-button-${d.id}`}
-              onEdited={refetchDeliveryProject}
-            >
-              Edit
-            </EditDeliveryProjectButton>
-          ),
-        })),
-      );
-    } catch (e: any) {
-      errorApi.post(e);
-    }
-  };
-
-  useEffect(() => {
-    getAllDeliveryProjects();
-  }, [key]);
+  const { data, refresh, loading } = useAsyncDataSource(
+    useCallback(() => client.getDeliveryProjects(), [client]),
+    useErrorCallback({
+      name: 'Error while getting the list of delivery projects.',
+    }),
+  );
+  const tableData = useMemo(
+    () =>
+      data?.map<DeliveryProjectWithActions>(d => ({
+        ...d,
+        title: deliveryProjectDisplayName(d),
+        actions: (
+          <EditDeliveryProjectButton
+            variant="contained"
+            color="default"
+            deliveryProject={d}
+            data-testid={`delivery-project-edit-button-${d.id}`}
+            onEdited={refresh}
+          >
+            Edit
+          </EditDeliveryProjectButton>
+        ),
+      })),
+    [data, refresh],
+  );
 
   const columns: TableColumn<DeliveryProjectWithActions>[] = [
     {
@@ -117,7 +107,7 @@ export const DeliveryProjectViewPageComponent = () => {
             color="primary"
             data-testid="delivery-project-add-button"
             startIcon={<AddBoxIcon />}
-            onCreated={refetchDeliveryProject}
+            onCreated={refresh}
           >
             Add Delivery Project
           </CreateDeliveryProjectButton>
@@ -131,10 +121,11 @@ export const DeliveryProjectViewPageComponent = () => {
         </Typography>
 
         <DefaultTable
-          data={tableData}
+          data={tableData ?? []}
           columns={columns}
           title="View all"
-          isCompact={true}
+          isCompact
+          isLoading={loading}
         />
       </Content>
     </Page>

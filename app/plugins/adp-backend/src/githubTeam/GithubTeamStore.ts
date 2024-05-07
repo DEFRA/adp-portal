@@ -1,6 +1,7 @@
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
+import type {
+  delivery_project_github_team} from './delivery_project_github_team';
 import {
-  delivery_project_github_team,
   delivery_project_github_teams_name,
 } from './delivery_project_github_team';
 import { type UUID } from 'node:crypto';
@@ -30,8 +31,9 @@ export class GithubTeamStore {
   }
 
   #table(context?: <T extends {}>(name: string) => Knex.QueryBuilder<T>) {
-    context ??= this.#connection;
-    return context<delivery_project_github_team>(
+    const query: Exclude<typeof context, undefined> =
+      context ?? this.#connection;
+    return query<delivery_project_github_team>(
       delivery_project_github_teams_name,
     );
   }
@@ -57,7 +59,10 @@ export class GithubTeamStore {
     await this.#deleteInternal(this.#table(), projectId);
   }
 
-  #deleteInternal(builder: Knex.QueryBuilder<delivery_project_github_team>, projectId: string) {
+  #deleteInternal(
+    builder: Knex.QueryBuilder<delivery_project_github_team>,
+    projectId: string,
+  ) {
     return builder.where('delivery_project_id', projectId).delete();
   }
 }

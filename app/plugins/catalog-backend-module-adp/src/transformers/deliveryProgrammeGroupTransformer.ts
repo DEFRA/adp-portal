@@ -1,5 +1,6 @@
-import { ANNOTATION_LOCATION, ANNOTATION_ORIGIN_LOCATION, GroupEntity } from '@backstage/catalog-model';
-import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import type { GroupEntity } from '@backstage/catalog-model';
+import { ANNOTATION_LOCATION, ANNOTATION_ORIGIN_LOCATION } from '@backstage/catalog-model';
+import type { DeliveryProgramme } from '@internal/plugin-adp-common';
 import { createTransformerTitle } from './utils';
 import { DELIVERY_PROGRAMME_ID_ANNOTATION } from './constants';
 

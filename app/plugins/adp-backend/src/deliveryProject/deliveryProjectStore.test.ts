@@ -1,7 +1,8 @@
-import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
+import type { TestDatabaseId} from '@backstage/backend-test-utils';
+import { TestDatabases } from '@backstage/backend-test-utils';
 import { DeliveryProjectStore } from './deliveryProjectStore';
 import { NotFoundError } from '@backstage/errors';
-import {
+import type {
   CreateDeliveryProjectRequest,
   UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
@@ -12,17 +13,20 @@ import {
 import { albSeedData } from '../testData/albTestData';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 import { randomUUID } from 'node:crypto';
+import type {
+  arms_length_body} from '../armsLengthBody/arms_length_body';
 import {
-  arms_length_body,
   arms_length_body_name,
 } from '../armsLengthBody/arms_length_body';
+import type {
+  delivery_programme} from '../deliveryProgramme/delivery_programme';
 import {
-  delivery_programme,
   delivery_programme_name,
 } from '../deliveryProgramme/delivery_programme';
-import { delivery_project, delivery_project_name } from './delivery_project';
+import type { delivery_project} from './delivery_project';
+import { delivery_project_name } from './delivery_project';
 import { deliveryProgrammeSeedData } from '../testData/programmeTestData';
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
 
 describe('DeliveryProjectStore', () => {
   const databases = TestDatabases.create();
@@ -102,7 +106,7 @@ describe('DeliveryProjectStore', () => {
       const createResult = await projectStore.add(expectedProject, 'test');
       if (!createResult.success)
         throw new Error(
-          'Failed to seed project: ' + JSON.stringify(createResult.errors),
+          `Failed to seed project: ${JSON.stringify(createResult.errors)}`,
         );
       const createdProject = createResult.value;
 
@@ -124,7 +128,7 @@ describe('DeliveryProjectStore', () => {
 
       const getResult = projectStore.get('12345');
 
-      expect(getResult).rejects.toBeInstanceOf(NotFoundError);
+      await expect(getResult).rejects.toBeInstanceOf(NotFoundError);
     },
   );
 
@@ -216,7 +220,7 @@ describe('DeliveryProjectStore', () => {
         const actual = projectStore.getByName('abc');
 
         // assert
-        expect(actual).rejects.toBeInstanceOf(NotFoundError);
+        await expect(actual).rejects.toBeInstanceOf(NotFoundError);
       },
     );
   });

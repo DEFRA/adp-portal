@@ -58,4 +58,4 @@ e2e-test-report/
 *.private-key.pem
 env.sh
 rsaprivkey.txt
-
+/yarn.lock

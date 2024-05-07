@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table, TableProps } from '@backstage/core-components';
+import type { TableProps } from '@backstage/core-components';
+import { Table } from '@backstage/core-components';
 
 export type DefaultTableProps<T extends object> = Readonly<
   Omit<TableProps<T>, 'options'> & {

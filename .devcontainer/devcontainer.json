@@ -16,7 +16,8 @@
         "dbaeumer.vscode-eslint",
         "ms-playwright.playwright",
         "esbenp.prettier-vscode",
-        "sonarsource.sonarlint-vscode"
+        "sonarsource.sonarlint-vscode",
+        "orta.vscode-jest"
       ]
     }
   },

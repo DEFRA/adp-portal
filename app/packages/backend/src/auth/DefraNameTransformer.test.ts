@@ -1,5 +1,4 @@
 import { defraADONameTransformer } from './DefraNameTransformer'; // Import the function to be tested
-import { UserEntity } from '@backstage/catalog-model';
 import {
   defaultUserTransformer,
 } from '@backstage/plugin-catalog-backend-module-msgraph';
@@ -18,15 +17,6 @@ function createTestData(userPrincipalName: string | undefined | null, mail: stri
   return {mockGraphUser, mockUserPhoto};
 }
 
-function test_default_assertions(result: UserEntity | undefined) {
-  expect(result?.apiVersion).toBe('backstage.io/v1alpha1'); // Example assertion
-  expect(result?.kind).toBe('User');
-  expect(result?.metadata?.name).toBe('pz6p6_example.com');
-  expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBe('pZ6p6@example.com');
-  expect(result?.metadata?.annotations?.[MICROSOFT_GRAPH_USER_ID_ANNOTATION]).toBe('mockGraphUser');
-  expect(result?.spec?.profile?.displayName).toBe('User' );
-  expect(result?.spec?.profile?.email).toBe('pZ6p6@example.com' );
-  expect(result?.spec?.profile?.picture).toBe('mockUserPhoto' );}
 /**
  * Tests to confirm behaviour of the original function
  */
@@ -36,7 +26,14 @@ describe('Test original Function', () => {
     const {mockGraphUser, mockUserPhoto} = defaultDataSetup();
 
     const result = await defaultUserTransformer(mockGraphUser, mockUserPhoto);
-    test_default_assertions(result);
+    expect(result?.apiVersion).toBe('backstage.io/v1alpha1');
+    expect(result?.kind).toBe('User');
+    expect(result?.metadata?.name).toBe('pz6p6_example.com');
+    expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBe('pZ6p6@example.com');
+    expect(result?.metadata?.annotations?.[MICROSOFT_GRAPH_USER_ID_ANNOTATION]).toBe('mockGraphUser');
+    expect(result?.spec?.profile?.displayName).toBe('User' );
+    expect(result?.spec?.profile?.email).toBe('pZ6p6@example.com' );
+    expect(result?.spec?.profile?.picture).toBe('mockUserPhoto' );
 
   });
   it('If missing email does not transform the at all', async () => {
@@ -52,14 +49,21 @@ describe('Test original Function', () => {
 });
 
 describe('Defra ADO User Transformer', () => {
-  it('Same Default Behavior as defaultUserTransformer ', async () => {
+  it('Same Default Behavior as defaultUserTransformer', async () => {
     const {mockGraphUser, mockUserPhoto} = defaultDataSetup();
     const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
-    test_default_assertions(result);
+    expect(result?.apiVersion).toBe('backstage.io/v1alpha1');
+    expect(result?.kind).toBe('User');
+    expect(result?.metadata?.name).toBe('pz6p6_example.com');
+    expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBe('pZ6p6@example.com');
+    expect(result?.metadata?.annotations?.[MICROSOFT_GRAPH_USER_ID_ANNOTATION]).toBe('mockGraphUser');
+    expect(result?.spec?.profile?.displayName).toBe('User' );
+    expect(result?.spec?.profile?.email).toBe('pZ6p6@example.com' );
+    expect(result?.spec?.profile?.picture).toBe('mockUserPhoto' );
 
   });
 
-  it('Parses UPN correctly for email is blank ', async () => {
+  it('Parses UPN correctly for email is blank', async () => {
     const {mockGraphUser, mockUserPhoto} = createTestData('freds@example.com', '');
 
     const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
@@ -69,7 +73,7 @@ describe('Defra ADO User Transformer', () => {
     expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBe('freds@example.com');
 
   });
-  it('Parses UPN correctly for email is undefined ', async () => {
+  it('Parses UPN correctly for email is undefined', async () => {
 
     const {mockGraphUser, mockUserPhoto} = createTestData('freds@example.com', undefined );
 
@@ -81,7 +85,7 @@ describe('Defra ADO User Transformer', () => {
 
   });
 
-  it('Parses UPN correctly for email is null ', async () => {
+  it('Parses UPN correctly for email is null', async () => {
 
     const {mockGraphUser, mockUserPhoto} = createTestData('freds@example.com', null );
 

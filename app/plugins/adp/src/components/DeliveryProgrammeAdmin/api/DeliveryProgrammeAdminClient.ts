@@ -1,7 +1,7 @@
-import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
-import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
+import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
-import { DeliveryProgrammeAdminApi } from './DeliveryProgrammeAdminApi';
+import type { DeliveryProgrammeAdminApi } from './DeliveryProgrammeAdminApi';
 
 export class DeliveryProgrammeAdminClient
   implements DeliveryProgrammeAdminApi

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
-import { AlbFields, AlbFormFields } from './AlbFormFields';
+import type { AlbFields } from './AlbFormFields';
+import { AlbFormFields, emptyForm } from './AlbFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
-import {
-  ArmsLengthBody,
-  adpProgrammmeCreatePermission,
-} from '@internal/plugin-adp-common';
-import { DialogForm, SubmitResult, readValidationError } from '../../utils';
+import type { ArmsLengthBody } from '@internal/plugin-adp-common';
+import { adpProgrammmeCreatePermission } from '@internal/plugin-adp-common';
+import type { SubmitResult } from '../../utils';
+import { DialogForm, populate, readValidationError } from '../../utils';
 import { armsLengthBodyApiRef } from './api';
 
 export type EditAlbButtonProps = Readonly<
@@ -63,7 +63,7 @@ export function EditAlbButton({
       {isModalOpen && (
         <DialogForm
           renderFields={AlbFormFields}
-          defaultValues={armsLengthBody}
+          defaultValues={populate(emptyForm, armsLengthBody)}
           completed={form => {
             setIsModalOpen(false);
             if (form) onEdited?.();

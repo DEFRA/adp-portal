@@ -1,11 +1,7 @@
 import React from 'react';
-import {
-  DisabledFields,
-  FormSelectField,
-  FormTextField,
-  formRules,
-} from '../../utils';
-import { UseFormReturn } from 'react-hook-form';
+import type { DisabledFields } from '../../utils';
+import { FormSelectField, FormTextField, formRules } from '../../utils';
+import type { UseFormReturn } from 'react-hook-form';
 import { useArmsLengthBodyList } from '../../hooks';
 
 export type DeliveryProgrammeFields = {
@@ -98,6 +94,7 @@ export function DeliveryProgrammeFormFields({
         index={i++}
         name="delivery_programme_code"
         label="Delivery Programme Code / Abbreviation"
+        helperText="This must be unique. Example: FCP"
         disabled={disabled}
         rules={{
           ...formRules.required,

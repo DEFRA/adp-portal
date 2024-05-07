@@ -21,9 +21,7 @@ function SelectedChipsRenderer<TSelected, TOptionValue>({
   }
 
   const getLabel = (value: TSelected) => {
-    const option = options.find(option => {
-      return comparer(value, option.value);
-    });
+    const option = options.find(op => comparer(value, op.value));
     return option ? option.label : String(value);
   };
 

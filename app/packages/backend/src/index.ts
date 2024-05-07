@@ -20,7 +20,7 @@ import {
   ServerTokenManager,
 } from '@backstage/backend-common';
 import { TaskScheduler } from '@backstage/backend-tasks';
-import { Config } from '@backstage/config';
+import type { Config } from '@backstage/config';
 import app from './plugins/app';
 import auth from './plugins/auth';
 import catalog from './plugins/catalog';
@@ -30,7 +30,7 @@ import techdocs from './plugins/techdocs';
 import search from './plugins/search';
 import permission from './plugins/permission';
 import adp from './plugins/adp';
-import { PluginEnvironment } from './types';
+import type { PluginEnvironment } from './types';
 import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 import azureDevOps from './plugins/azure-devops';

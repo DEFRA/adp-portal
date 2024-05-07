@@ -1,23 +1,28 @@
-import React, { useState, useEffect, useReducer, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import type { TableColumn } from '@backstage/core-components';
 import {
   Header,
   Page,
   Content,
   ContentHeader,
   SupportButton,
-  TableColumn,
   LinkButton,
   Link,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils';
-import { useApi, errorApiRef } from '@backstage/core-plugin-api';
-import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import { useApi } from '@backstage/core-plugin-api';
+import type { DeliveryProgramme } from '@internal/plugin-adp-common';
 import { deliveryProgrammeApiRef } from './api/DeliveryProgrammeApi';
 import { CreateDeliveryProgrammeButton } from './CreateDeliveryProgrammeButton';
 import { EditDeliveryProgrammeButton } from './EditDeliveryProgrammeButton';
-import { useEntityRoute } from '../../hooks';
+import {
+  useAsyncDataSource,
+  useEntityRoute,
+  useErrorCallback,
+} from '../../hooks';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 type DeliveryProgrammeWithActions = DeliveryProgramme & {
@@ -26,59 +31,48 @@ type DeliveryProgrammeWithActions = DeliveryProgramme & {
 };
 
 export const DeliveryProgrammeViewPageComponent = () => {
-  const [tableData, setTableData] = useState<DeliveryProgrammeWithActions[]>(
-    [],
-  );
-  const [key, refetchDeliveryProgramme] = useReducer(i => {
-    return i + 1;
-  }, 0);
-
-  const errorApi = useApi(errorApiRef);
   const client = useApi(deliveryProgrammeApiRef);
   const entityRoute = useEntityRoute();
+  const { data, refresh, loading } = useAsyncDataSource(
+    useCallback(() => client.getDeliveryProgrammes(), [client]),
+    useErrorCallback({
+      name: 'Error while getting the list of delivery programmes.',
+    }),
+  );
 
-  const getAllDeliveryProgrammes = async () => {
-    try {
-      const data = await client.getDeliveryProgrammes();
-      setTableData(
-        data.map(d => {
-          const target = entityRoute(d.name, 'group', 'default');
-          return {
-            ...d,
-            titleLink: <Link to={target}>{d.title}</Link>,
-            actions: (
-              <>
-                <LinkButton
-                  to={`${target}/manage-members`}
-                  variant="outlined"
-                  color="default"
-                  title="View Delivery Programme Admins"
-                >
-                  <AccountBoxIcon />
-                </LinkButton>
-                &nbsp;
-                <EditDeliveryProgrammeButton
-                  variant="contained"
-                  color="default"
-                  deliveryProgramme={d}
-                  data-testid={`delivery-programme-edit-button-${d.id}`}
-                  onEdited={refetchDeliveryProgramme}
-                >
-                  Edit
-                </EditDeliveryProgrammeButton>
-              </>
-            ),
-          };
-        }),
-      );
-    } catch (e: any) {
-      errorApi.post(e);
-    }
-  };
-
-  useEffect(() => {
-    getAllDeliveryProgrammes();
-  }, [key]);
+  const tableData = useMemo(
+    () =>
+      data?.map<DeliveryProgrammeWithActions>(d => {
+        const target = entityRoute(d.name, 'group', 'default');
+        return {
+          ...d,
+          titleLink: <Link to={target}>{d.title}</Link>,
+          actions: (
+            <>
+              <LinkButton
+                to={`${target}/manage-members`}
+                variant="outlined"
+                color="default"
+                title="View Delivery Programme Admins"
+              >
+                <AccountBoxIcon />
+              </LinkButton>
+              &nbsp;
+              <EditDeliveryProgrammeButton
+                variant="contained"
+                color="default"
+                deliveryProgramme={d}
+                data-testid={`delivery-programme-edit-button-${d.id}`}
+                onEdited={refresh}
+              >
+                Edit
+              </EditDeliveryProgrammeButton>
+            </>
+          ),
+        };
+      }),
+    [data, refresh, entityRoute],
+  );
 
   const columns: TableColumn<DeliveryProgrammeWithActions>[] = [
     {
@@ -133,7 +127,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
             color="primary"
             data-testid="delivery-programme-add-button"
             startIcon={<AddBoxIcon />}
-            onCreated={refetchDeliveryProgramme}
+            onCreated={refresh}
           >
             Add Delivery Programme
           </CreateDeliveryProgrammeButton>
@@ -147,10 +141,11 @@ export const DeliveryProgrammeViewPageComponent = () => {
         </Typography>
 
         <DefaultTable
-          data={tableData}
+          data={tableData ?? []}
           columns={columns}
           title="View all"
           isCompact
+          isLoading={loading}
         />
       </Content>
     </Page>

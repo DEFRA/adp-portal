@@ -1,10 +1,15 @@
+import type {
+  ApiFactory,
+  ApiRef,
+  TypesToApiRefs,
+} from '@backstage/core-plugin-api';
 import {
   createPlugin,
   createRoutableExtension,
   discoveryApiRef,
   fetchApiRef,
-  createApiFactory,
 } from '@backstage/core-plugin-api';
+import type * as Components from './components';
 
 import {
   manageProgrammeAdminEntityContentRouteRef,
@@ -33,30 +38,23 @@ export const adpPlugin = createPlugin({
     root: rootRouteRef,
   },
   apis: [
-    createApiFactory({
-      api: armsLengthBodyApiRef,
-      deps: { discoveryApiRef, fetchApiRef },
-      factory: ({ discoveryApiRef, fetchApiRef }) =>
-        new ArmsLengthBodyClient(discoveryApiRef, fetchApiRef),
-    }),
-    createApiFactory({
-      api: deliveryProgrammeApiRef,
-      deps: { discoveryApiRef, fetchApiRef },
-      factory: ({ discoveryApiRef, fetchApiRef }) =>
-        new DeliveryProgrammeClient(discoveryApiRef, fetchApiRef),
-    }),
-    createApiFactory({
-      api: deliveryProjectApiRef,
-      deps: { discoveryApiRef, fetchApiRef },
-      factory: ({ discoveryApiRef, fetchApiRef }) =>
-        new DeliveryProjectClient(discoveryApiRef, fetchApiRef),
-    }),
-    createApiFactory({
-      api: deliveryProgrammeAdminApiRef,
-      deps: { discoveryApiRef, fetchApiRef },
-      factory: ({ discoveryApiRef, fetchApiRef }) =>
-        new DeliveryProgrammeAdminClient(discoveryApiRef, fetchApiRef),
-    }),
+    createApiRegistration(armsLengthBodyApiRef, ArmsLengthBodyClient, [
+      discoveryApiRef,
+      fetchApiRef,
+    ]),
+    createApiRegistration(deliveryProgrammeApiRef, DeliveryProgrammeClient, [
+      discoveryApiRef,
+      fetchApiRef,
+    ]),
+    createApiRegistration(deliveryProjectApiRef, DeliveryProjectClient, [
+      discoveryApiRef,
+      fetchApiRef,
+    ]),
+    createApiRegistration(
+      deliveryProgrammeAdminApiRef,
+      DeliveryProgrammeAdminClient,
+      [discoveryApiRef, fetchApiRef],
+    ),
   ],
 });
 
@@ -100,9 +98,32 @@ export const EntityPageManageProgrammeAdminContent = adpPlugin.provide(
   }),
 );
 
-function getComponent<T extends keyof typeof import('./components')>(name: T) {
+function getComponent<T extends keyof typeof Components>(name: T) {
   return async () => {
     const components = await import('./components');
     return components[name];
+  };
+}
+
+type ExtractKeys<T, Key extends keyof T> = {
+  [P in Key & keyof T]: T[P];
+};
+function createApiRegistration<
+  Api,
+  Impl extends Api,
+  Args extends readonly unknown[],
+>(
+  api: ApiRef<Api>,
+  Implementation: new (...args: Args) => Impl,
+  dependencies: TypesToApiRefs<Args>,
+): ApiFactory<Api, Impl, ExtractKeys<Args, keyof Args>> {
+  return {
+    api,
+    deps: { ...dependencies },
+    factory(deps) {
+      return new Implementation(
+        ...(dependencies.map((_, i) => deps[i]) as unknown as Args),
+      );
+    },
   };
 }

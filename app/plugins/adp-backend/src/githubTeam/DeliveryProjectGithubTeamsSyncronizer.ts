@@ -1,17 +1,12 @@
-import { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
-import {
+import type { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
+import type { IGitHubTeamsApi, SetTeamRequest } from './GithubTeamsApi';
+import type {
+  DeliveryProject,
+  DeliveryProjectTeamsSyncResult,
   GithubTeamDetails,
-  IGitHubTeamsApi,
-  SetTeamRequest,
-} from './GithubTeamsApi';
-import { DeliveryProject } from '@internal/plugin-adp-common';
-import { IGithubTeamStore } from '.';
+} from '@internal/plugin-adp-common';
 import { createGithubTeamDetails } from '../utils';
-
-export type DeliveryProjectTeamsSyncResult = {
-  contributors: GithubTeamDetails;
-  admins: GithubTeamDetails;
-};
+import type { IGithubTeamStore } from './GithubTeamStore';
 
 export type IDeliveryProjectGithubTeamsSyncronizer = {
   [P in keyof DeliveryProjectGithubTeamsSyncronizer]: DeliveryProjectGithubTeamsSyncronizer[P];

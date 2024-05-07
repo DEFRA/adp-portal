@@ -1,5 +1,5 @@
-import { ArmsLengthBody } from '@internal/plugin-adp-common';
-import { arms_length_body } from '../armsLengthBody/arms_length_body';
+import type { ArmsLengthBody } from '@internal/plugin-adp-common';
+import type { arms_length_body } from '../armsLengthBody/arms_length_body';
 
 export const expectedAlbWithName = {
   creator: 'john',

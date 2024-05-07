@@ -1,14 +1,14 @@
-import { Config } from '@backstage/config';
+import type { Config } from '@backstage/config';
 import { addDeliveryProjectToRepo } from './addDeliveryProjectToRepo';
-import { Octokit } from 'octokit';
-import {
-  DeliveryProjectTeamsSyncResult,
-  IAdpClient,
-} from '@internal/plugin-adp-backend';
+import type { Octokit } from 'octokit';
 import { PassThrough } from 'node:stream';
 import { randomUUID } from 'node:crypto';
 import { mockedOctokit } from './mockedOctokit';
 import { getVoidLogger } from '@backstage/backend-common';
+import type {
+  DeliveryProjectTeamsSyncResult,
+  IAdpClient,
+} from '@internal/plugin-adp-common';
 
 describe('addDeliveryProjectToRepo', () => {
   function setup() {

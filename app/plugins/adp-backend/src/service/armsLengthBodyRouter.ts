@@ -1,15 +1,15 @@
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
-import { IdentityApi } from '@backstage/plugin-auth-node';
-import { IArmsLengthBodyStore } from '../armsLengthBody';
-import { Config } from '@backstage/config';
+import type { IdentityApi } from '@backstage/plugin-auth-node';
+import type { IArmsLengthBodyStore } from '../armsLengthBody';
+import type { Config } from '@backstage/config';
 import { getCurrentUsername, getOwner } from '../utils/index';
-import { IDeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
+import type { IDeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
 import z from 'zod';
-import {
+import type {
   CreateArmsLengthBodyRequest,
   UpdateArmsLengthBodyRequest,
   ValidationErrorMapping,
@@ -23,6 +23,48 @@ export interface AlbRouterOptions {
   deliveryProgrammeStore: IDeliveryProgrammeStore;
   config: Config;
 }
+
+const errorMapping = {
+  duplicateName: (req: { title?: string }) => ({
+    path: 'title',
+    error: {
+      message: `The name '${req.title}' is already in use. Please choose a different name.`,
+    },
+  }),
+  duplicateTitle: (req: { title?: string }) => ({
+    path: 'title',
+    error: {
+      message: `The name '${req.title}' is already in use. Please choose a different name.`,
+    },
+  }),
+  unknown: () => ({
+    path: 'root',
+    error: {
+      message: `An unexpected error occurred.`,
+    },
+  }),
+} as const satisfies ValidationErrorMapping;
+
+const parseCreateArmsLengthBodyRequest =
+  createParser<CreateArmsLengthBodyRequest>(
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      alias: z.string().optional(),
+      url: z.string().optional(),
+    }),
+  );
+
+const parseUpdateArmsLengthBodyRequest =
+  createParser<UpdateArmsLengthBodyRequest>(
+    z.object({
+      id: z.string(),
+      title: z.string().optional(),
+      alias: z.string().optional(),
+      description: z.string().optional(),
+      url: z.string().optional(),
+    }),
+  );
 
 export async function createAlbRouter(
   options: AlbRouterOptions,
@@ -46,7 +88,7 @@ export async function createAlbRouter(
       const programmeData = await deliveryProgrammeStore.getAll();
 
       for (const alb of albData) {
-        let albChildren = [];
+        const albChildren = [];
         for (const programme of programmeData) {
           if (programme.arms_length_body_id === alb.id) {
             albChildren.push(programme.name);
@@ -104,45 +146,3 @@ export async function createAlbRouter(
   router.use(errorHandler());
   return router;
 }
-
-const parseCreateArmsLengthBodyRequest =
-  createParser<CreateArmsLengthBodyRequest>(
-    z.object({
-      title: z.string(),
-      description: z.string(),
-      alias: z.string().optional(),
-      url: z.string().optional(),
-    }),
-  );
-
-const parseUpdateArmsLengthBodyRequest =
-  createParser<UpdateArmsLengthBodyRequest>(
-    z.object({
-      id: z.string(),
-      title: z.string().optional(),
-      alias: z.string().optional(),
-      description: z.string().optional(),
-      url: z.string().optional(),
-    }),
-  );
-
-const errorMapping = {
-  duplicateName: (req: { title?: string }) => ({
-    path: 'title',
-    error: {
-      message: `The name '${req.title}' is already in use. Please choose a different name.`,
-    },
-  }),
-  duplicateTitle: (req: { title?: string }) => ({
-    path: 'title',
-    error: {
-      message: `The name '${req.title}' is already in use. Please choose a different name.`,
-    },
-  }),
-  unknown: () => ({
-    path: 'root',
-    error: {
-      message: `An unexpected error occurred.`,
-    },
-  }),
-} as const satisfies ValidationErrorMapping;

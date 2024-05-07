@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
+import type { DeliveryProjectFields } from './DeliveryProjectFormFields';
 import {
-  DeliveryProjectFields,
   DeliveryProjectFormFields,
   emptyForm,
 } from './DeliveryProjectFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
 import {
-  DeliveryProject,
   adpProjectCreatePermission,
   deliveryProjectDisplayName,
 } from '@internal/plugin-adp-common';
+import type { SubmitResult } from '../../utils';
 import {
   DialogForm,
-  SubmitResult,
   TitleWithHelp,
   populate,
   readValidationError,
@@ -87,7 +87,7 @@ export function EditDeliveryProjectButton({
               )}`}
             </TitleWithHelp>
           }
-          confirm="Edit"
+          confirm="Update"
           submit={handleSubmit}
           disabled={{
             namespace: true,

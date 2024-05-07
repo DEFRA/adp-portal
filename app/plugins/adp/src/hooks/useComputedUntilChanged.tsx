@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 
+const strictEquals = (left: unknown, right: unknown) => left === right;
+
 export function useComputedUntilChanged<T>({
   currentValue,
   computedValue,
   emptyValue,
-  equals = (l, r) => l === r,
+  equals,
   setValue,
 }: {
   emptyValue: T;
@@ -16,10 +18,12 @@ export function useComputedUntilChanged<T>({
   const [replaceable, setReplaceable] = useState(currentValue);
   const [previousCompute, setPreviousCompute] = useState(computedValue);
 
+  const realEquals = equals ?? strictEquals;
+
   useEffect(() => {
-    const isReplaceable = equals(currentValue, replaceable);
-    const isEmptyReplaceable = equals(emptyValue, replaceable);
-    const computedChanged = !equals(computedValue, previousCompute);
+    const isReplaceable = realEquals(currentValue, replaceable);
+    const isEmptyReplaceable = realEquals(emptyValue, replaceable);
+    const computedChanged = !realEquals(computedValue, previousCompute);
 
     if (isReplaceable) {
       if (computedChanged) {
@@ -33,5 +37,13 @@ export function useComputedUntilChanged<T>({
     if (computedChanged) {
       setPreviousCompute(computedValue);
     }
-  }, [currentValue, computedValue, replaceable, previousCompute]);
+  }, [
+    currentValue,
+    computedValue,
+    realEquals,
+    replaceable,
+    emptyValue,
+    previousCompute,
+    setValue,
+  ]);
 }

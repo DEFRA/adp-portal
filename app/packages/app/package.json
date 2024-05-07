@@ -59,6 +59,7 @@
   },
   "devDependencies": {
     "@babel/runtime": "^7.11.0",
+    "@backstage/config": "^1.1.1",
     "@backstage/test-utils": "^1.4.6",
     "@codemirror/autocomplete": "^6.0.0",
     "@codemirror/language": "6.0.0",

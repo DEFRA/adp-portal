@@ -2,11 +2,22 @@ import React from 'react';
 
 import { Button } from '@material-ui/core';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import { ArmsLengthBodyApi, armsLengthBodyApiRef } from './api';
-import { ErrorApi, errorApiRef } from '@backstage/core-plugin-api';
+import type { ArmsLengthBodyApi } from './api';
+import { armsLengthBodyApiRef } from './api';
+import type { ErrorApi } from '@backstage/core-plugin-api';
+import { errorApiRef } from '@backstage/core-plugin-api';
 import { AlbViewPageComponent } from './AlbViewPageComponent';
 import { waitFor } from '@testing-library/react';
-import { ArmsLengthBody } from '@internal/plugin-adp-common';
+import type { ArmsLengthBody } from '@internal/plugin-adp-common';
+import type * as EditAlbButtonModule from './EditAlbButton';
+import type * as CreateAlbButtonModule from './CreateAlbButton';
+
+const EditAlbButton: jest.MockedFn<
+  (typeof EditAlbButtonModule)['EditAlbButton']
+> = jest.fn();
+const CreateAlbButton: jest.MockedFn<
+  (typeof CreateAlbButtonModule)['CreateAlbButton']
+> = jest.fn();
 
 beforeEach(() => {
   jest.spyOn(global.Math, 'random').mockReturnValue(0);
@@ -107,7 +118,7 @@ describe('ArmsLengthBodyViewPageComponent', () => {
   it('Should render the page when the projects fail to load correctly', async () => {
     // arrange
     const { render, mockArmsLengthBodyApi, mockErrorApi } = setup();
-    const error = new Error();
+    const error = new Error('My error');
     mockArmsLengthBodyApi.getArmsLengthBodies.mockRejectedValueOnce(error);
 
     // act
@@ -118,7 +129,15 @@ describe('ArmsLengthBodyViewPageComponent', () => {
     expect(mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls).toMatchObject([
       [],
     ]);
-    expect(mockErrorApi.post.mock.calls).toMatchObject([[error]]);
+    expect(mockErrorApi.post.mock.calls).toMatchObject([
+      [
+        {
+          message: 'Error: My error',
+          name: 'Error while getting the list of arms length bodies.',
+          stack: undefined,
+        },
+      ],
+    ]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
     expect(EditAlbButton.mock.calls).toMatchObject([]);
   });
@@ -190,9 +209,6 @@ describe('ArmsLengthBodyViewPageComponent', () => {
   });
 });
 
-let EditAlbButton: jest.MockedFn<
-  typeof import('./EditAlbButton').EditAlbButton
-> = jest.fn();
 jest.mock(
   './EditAlbButton',
   () =>
@@ -200,12 +216,9 @@ jest.mock(
       get EditAlbButton() {
         return EditAlbButton;
       },
-    } satisfies typeof import('./EditAlbButton')),
+    } satisfies typeof EditAlbButtonModule),
 );
 
-let CreateAlbButton: jest.MockedFn<
-  typeof import('./CreateAlbButton').CreateAlbButton
-> = jest.fn();
 jest.mock(
   './CreateAlbButton',
   () =>
@@ -213,7 +226,7 @@ jest.mock(
       get CreateAlbButton() {
         return CreateAlbButton;
       },
-    } satisfies typeof import('./CreateAlbButton')),
+    } satisfies typeof CreateAlbButtonModule),
 );
 
 function noTableData(value: unknown) {
@@ -224,12 +237,12 @@ function noTableData(value: unknown) {
 
 function assertEditArmsLengthBodyButtonCalls(projects: ArmsLengthBody[]) {
   expect(
-    EditAlbButton.mock.calls.map(
-      ([{ armsLengthBody, onEdited, ...props }, ...rest]) => [
+    EditAlbButton.mock.calls
+      .map(([{ armsLengthBody, onEdited, ...props }, ...rest]) => [
         { ...props, armsLengthBody: noTableData(armsLengthBody) },
         ...rest,
-      ],
-    ),
+      ])
+      .slice(-projects.length),
   ).toMatchObject(
     projects.map(p => [
       {
@@ -247,14 +260,14 @@ function assertEditArmsLengthBodyButtonCalls(projects: ArmsLengthBody[]) {
 function createArmsLengthBodys(count: number) {
   return [...new Array(count)].map<ArmsLengthBody>((_, i) => ({
     id: i.toString(),
-    name: 'project-' + i,
-    title: 'Project ' + i,
+    name: `project-${i}`,
+    title: `Project ${i}`,
     created_at: new Date(0),
     creator: 'me',
     description: 'My cool arms length body',
     owner: 'not me',
     updated_at: new Date(0),
-    alias: 'ALB ' + i,
+    alias: `ALB ${i}`,
     children: [],
     updated_by: 'Me',
     url: 'https://test.com',

@@ -5,6 +5,6 @@
  * @returns A string containing the title and short name
  */
 export function createTransformerTitle(title: string, alias?: string) {
-  const titleValue = alias ? title + ' ' + `(${alias})` : title;
+  const titleValue = alias ? `${title  } ` + `(${alias})` : title;
   return titleValue;
 }

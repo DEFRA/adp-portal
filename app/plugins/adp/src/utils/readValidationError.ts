@@ -1,6 +1,6 @@
-import { SubmitResult, ValidateResult } from './DialogForm';
+import type { SubmitResult, ValidateResult } from './DialogForm';
 import { ValidationError } from './ValidationError';
-import { FieldValues } from 'react-hook-form';
+import type { FieldValues } from 'react-hook-form';
 
 export function readValidationError<TFields extends FieldValues>(
   error: unknown,

@@ -1,14 +1,15 @@
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
 import { NotFoundError } from '@backstage/errors';
-import {
+import type {
   CreateDeliveryProgrammeRequest,
   DeliveryProgramme,
   DeliveryProgrammeAdmin,
   UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
 import { createName } from '../utils/index';
+import type {
+  SafeResult} from '../service/util';
 import {
-  SafeResult,
   assertUUID,
   checkMany,
   containsAnyValue,
@@ -16,12 +17,14 @@ import {
   isUUID,
 } from '../service/util';
 import { type UUID } from 'node:crypto';
+import type {
+  delivery_programme} from './delivery_programme';
 import {
-  delivery_programme,
   delivery_programme_name,
 } from './delivery_programme';
+import type {
+  arms_length_body} from '../armsLengthBody/arms_length_body';
 import {
-  arms_length_body,
   arms_length_body_name,
 } from '../armsLengthBody/arms_length_body';
 

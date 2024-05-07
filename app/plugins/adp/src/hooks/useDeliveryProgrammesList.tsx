@@ -5,7 +5,7 @@ import {
   identityApiRef,
 } from '@backstage/core-plugin-api';
 import { deliveryProgrammeApiRef } from '../components/DeliveryProgramme/api';
-import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import type { DeliveryProgramme } from '@internal/plugin-adp-common';
 
 export const useDeliveryProgrammesList = (): Map<string, DeliveryProgramme> => {
   const [options, setOptions] = useState(new Map<string, DeliveryProgramme>());

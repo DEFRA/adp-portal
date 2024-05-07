@@ -1,4 +1,5 @@
-import React, { ReactNode, useState } from 'react';
+import type { ReactNode} from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -9,16 +10,17 @@ import {
   DialogContent,
   DialogTitle,
 } from '@material-ui/core';
-import {
+import type {
   FieldPath,
   FieldValues,
   UseFormProps,
-  UseFormReturn,
+  UseFormReturn} from 'react-hook-form';
+import {
   useForm,
 } from 'react-hook-form';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
-import { DisabledFields } from './isFieldDisabled';
-import { ValidationError } from '@internal/plugin-adp-common';
+import type { DisabledFields } from './isFieldDisabled';
+import type { ValidationError } from '@internal/plugin-adp-common';
 
 export type ValidateResult<TForm extends FieldValues> = Array<
   ValidationError<FieldPath<TForm> | 'root' | `root.${string}`>
@@ -91,7 +93,7 @@ export function DialogForm<TFields extends FieldValues>({
       if (validationErrors.length > 0) return;
 
       const submitResult = await submit(fields);
-      if (submitResult.type == 'validationError')
+      if (submitResult.type === 'validationError')
         setErrors(submitResult.errors);
       else handleComplete(fields);
     } catch (err) {

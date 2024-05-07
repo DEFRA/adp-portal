@@ -1,16 +1,17 @@
 import React from 'react';
 import { errorApiRef } from '@backstage/core-plugin-api';
-import {
-  TestApiProvider,
-  renderInTestApp,
-} from '@backstage/test-utils';
-import { DeliveryProgrammeAdminApi, deliveryProgrammeAdminApiRef } from './api';
+import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
+import type { DeliveryProgrammeAdminApi } from './api';
+import { deliveryProgrammeAdminApiRef } from './api';
 import { DeliveryProgrammeAdminViewPage } from './DeliveryProgrammeAdminViewPage';
 import { waitFor } from '@testing-library/react';
-import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { faker } from '@faker-js/faker';
-import { EntityProvider, entityRouteRef } from '@backstage/plugin-catalog-react';
-import { Entity } from '@backstage/catalog-model';
+import {
+  EntityProvider,
+  entityRouteRef,
+} from '@backstage/plugin-catalog-react';
+import type { Entity } from '@backstage/catalog-model';
 
 function setup() {
   const mockDeliveryProgrameAdminApi: jest.Mocked<DeliveryProgrammeAdminApi> = {
@@ -20,21 +21,23 @@ function setup() {
     delete: jest.fn(),
   };
   const mockErrorApi = { post: jest.fn() };
-  
+
   const groupEntity = {
     apiVersion: 'backstage.io/v1beta1',
     kind: 'Group',
     metadata: {
       name: 'test-group',
-      annotations: {},
+      annotations: {
+        'adp.defra.gov.uk/delivery-programme-id': '123',
+      },
     },
   } as Entity;
-  
+
   const apis = [
     [errorApiRef, mockErrorApi],
     [deliveryProgrammeAdminApiRef, mockDeliveryProgrameAdminApi],
   ] as const;
-  
+
   const Provider = (
     <TestApiProvider apis={apis}>
       <EntityProvider entity={groupEntity}>
@@ -43,7 +46,7 @@ function setup() {
     </TestApiProvider>
   );
 
-  return {mockDeliveryProgrameAdminApi, mockErrorApi, Provider};
+  return { mockDeliveryProgrameAdminApi, mockErrorApi, Provider };
 }
 
 function createDeliveryProgrammeAdmin(): DeliveryProgrammeAdmin {
@@ -63,7 +66,7 @@ describe('DeliveryProgrammeAdminViewPage', () => {
   });
 
   it('fetches and displays Delivery Programme Admins in the table upon loading', async () => {
-    const {mockDeliveryProgrameAdminApi, Provider} = setup();
+    const { mockDeliveryProgrameAdminApi, Provider } = setup();
     const expectedDeliveryProgrammeAdmins = faker.helpers.multiple(
       createDeliveryProgrammeAdmin,
       { count: 5 },
@@ -72,18 +75,14 @@ describe('DeliveryProgrammeAdminViewPage', () => {
       expectedDeliveryProgrammeAdmins,
     );
 
-    const rendered = await renderInTestApp(Provider,
-      {
-        mountedRoutes: {
-          '/catalog/:namespace/:kind/:name/*': entityRouteRef
-        }
-      }
-    );
+    const rendered = await renderInTestApp(Provider, {
+      mountedRoutes: {
+        '/catalog/:namespace/:kind/:name/*': entityRouteRef,
+      },
+    });
 
     await waitFor(() => {
-      for (let i = 0; i < expectedDeliveryProgrammeAdmins.length; i++) {
-        const expectedDeliveryProgrammeAdmin =
-          expectedDeliveryProgrammeAdmins[i];
+      for (const expectedDeliveryProgrammeAdmin of expectedDeliveryProgrammeAdmins) {
         expect(
           rendered.getByText(expectedDeliveryProgrammeAdmin.name),
         ).toBeInTheDocument();
@@ -92,16 +91,14 @@ describe('DeliveryProgrammeAdminViewPage', () => {
   });
 
   it('fetches and displays a message if no Delivery Programme Admins are returned', async () => {
-    const {mockDeliveryProgrameAdminApi, Provider} = setup();
+    const { mockDeliveryProgrameAdminApi, Provider } = setup();
     mockDeliveryProgrameAdminApi.getByDeliveryProgrammeId.mockResolvedValue([]);
 
-    const rendered = await renderInTestApp(Provider,
-      {
-        mountedRoutes: {
-          '/catalog/:namespace/:kind/:name/*': entityRouteRef
-        }
-      }
-    );
+    const rendered = await renderInTestApp(Provider, {
+      mountedRoutes: {
+        '/catalog/:namespace/:kind/:name/*': entityRouteRef,
+      },
+    });
 
     await waitFor(() => {
       expect(rendered.getByText('No records to display')).toBeInTheDocument();
@@ -109,26 +106,24 @@ describe('DeliveryProgrammeAdminViewPage', () => {
   });
 
   it('returns an error message when the API returns an error', async () => {
-    const {mockDeliveryProgrameAdminApi, mockErrorApi, Provider} = setup();
+    const { mockDeliveryProgrameAdminApi, mockErrorApi, Provider } = setup();
     const expectedError = 'Something broke';
     mockDeliveryProgrameAdminApi.getByDeliveryProgrammeId.mockRejectedValue(
       new Error(expectedError),
     );
 
-    await renderInTestApp(Provider,
-      {
-        mountedRoutes: {
-          '/catalog/:namespace/:kind/:name/*': entityRouteRef
-        }
-      }
-    );
+    await renderInTestApp(Provider, {
+      mountedRoutes: {
+        '/catalog/:namespace/:kind/:name/*': entityRouteRef,
+      },
+    });
 
     await waitFor(() => {
-      expect(mockErrorApi.post).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: expectedError,
-        }),
-      );
+      expect(mockErrorApi.post).toHaveBeenCalledWith({
+        message: `Error: ${expectedError}`,
+        name: 'Error while getting the list of delivery programme admins.',
+        stack: undefined,
+      });
     });
   });
 });

@@ -1,18 +1,20 @@
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
 import { GithubTeamStore } from './GithubTeamStore';
+import type {
+  delivery_project_github_team} from './delivery_project_github_team';
 import {
-  delivery_project_github_team,
   delivery_project_github_teams_name,
 } from './delivery_project_github_team';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 import { ArmsLengthBodyStore } from '../armsLengthBody';
-import {
+import type {
   ArmsLengthBody,
   DeliveryProgramme,
   DeliveryProject,
 } from '@internal/plugin-adp-common';
 import { randomUUID } from 'node:crypto';
-import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
+import type { TestDatabaseId} from '@backstage/backend-test-utils';
+import { TestDatabases } from '@backstage/backend-test-utils';
 import { DeliveryProgrammeStore } from '../deliveryProgramme';
 import { DeliveryProjectStore } from '../deliveryProject';
 import { assertUUID } from '../service/util';
@@ -45,7 +47,7 @@ describe('GithubTeamStore', () => {
       alb.owner ?? randomUUID(),
     );
     if (!result.success)
-      throw new Error('Failed to seed ALB: ' + JSON.stringify(result.errors));
+      throw new Error(`Failed to seed ALB: ${  JSON.stringify(result.errors)}`);
     return result.value;
   }
   async function seedProgramme(
@@ -67,7 +69,7 @@ describe('GithubTeamStore', () => {
     );
     if (!result.success)
       throw new Error(
-        'Failed to seed Delivery Programme ' + JSON.stringify(result.errors),
+        `Failed to seed Delivery Programme ${  JSON.stringify(result.errors)}`,
       );
     return result.value;
   }
@@ -96,7 +98,7 @@ describe('GithubTeamStore', () => {
     );
     if (!result.success)
       throw new Error(
-        'Failed to seed Delivery Project ' + JSON.stringify(result.errors),
+        `Failed to seed Delivery Project ${  JSON.stringify(result.errors)}`,
       );
     return result.value;
   }

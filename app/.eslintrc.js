@@ -1,8 +1,11 @@
 /** @type {import('eslint').Linter.Config} */
-module.exports = {
-  root: true,
-  extends: ['plugin:@backstage/recommended'],
-  parserOptions: {
-    ecmaVersion: 6,
+module.exports = require('@backstage/cli/config/eslint-factory').createConfig(
+  __dirname,
+  {
+    root: true,
+    ignorePatterns: ['**/seedData/', '**/migrations/'],
+    rules: {
+      '@typescript-eslint/consistent-type-imports': 'error',
+    },
   },
-};
+);

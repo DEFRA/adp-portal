@@ -1,17 +1,18 @@
 import React from 'react';
 import { MenuItem, TextField } from '@material-ui/core';
-import { enrichHelperText } from '.';
-import {
+import type {
   Control,
-  Controller,
   FieldErrors,
   FieldPath,
   FieldPathValue,
   FieldValues,
-  UseControllerProps,
+  UseControllerProps} from 'react-hook-form';
+import {
+  Controller
 } from 'react-hook-form';
 import { isFieldDisabled } from './isFieldDisabled';
 import SelectedChipsRenderer from './SelectedChipsRenderer';
+import { enrichHelperText } from './enrichHelperText';
 
 export type FormMultiSelectFieldProps<
   TFields extends FieldValues,

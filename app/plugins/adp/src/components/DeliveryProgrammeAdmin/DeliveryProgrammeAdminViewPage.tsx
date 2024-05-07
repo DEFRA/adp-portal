@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useReducer, ReactNode } from 'react';
-import {
-  Content,
-  ContentHeader,
-  Link,
-  Page,
-  TableColumn,
-} from '@backstage/core-components';
-import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type { ReactNode } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import type { TableColumn } from '@backstage/core-components';
+import { Content, ContentHeader, Link, Page } from '@backstage/core-components';
+import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { Button, Grid } from '@material-ui/core';
-import { errorApiRef, useApi } from '@backstage/core-plugin-api';
+import { useApi } from '@backstage/core-plugin-api';
 import { deliveryProgrammeAdminApiRef } from './api';
 import { useEntity } from '@backstage/plugin-catalog-react';
-import { useEntityRoute } from '../../hooks';
+import {
+  useAsyncDataSource,
+  useEntityRoute,
+  useErrorCallback,
+} from '../../hooks';
 import { DefaultTable } from '../../utils';
 import { AddProgrammeAdminButton } from './AddProgrammeAdminButton';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -24,55 +24,53 @@ type DeliveryProgrammeAdminWithActions = DeliveryProgrammeAdmin & {
 };
 
 export const DeliveryProgrammeAdminViewPage = () => {
-  const [tableData, setTableData] = useState<
-    DeliveryProgrammeAdminWithActions[]
-  >([]);
-  const [key, refetchProgrammeAdmin] = useReducer(i => {
-    return i + 1;
-  }, 0);
   const { entity } = useEntity();
-  const deliveryProgrammeId = entity.metadata.annotations!['adp.defra.gov.uk/delivery-programme-id'];
   const entityRoute = useEntityRoute();
 
   const deliveryProgrammeAdminApi = useApi(deliveryProgrammeAdminApiRef);
-  const errorApi = useApi(errorApiRef);
+  const deliveryProgrammeId =
+    entity.metadata.annotations?.['adp.defra.gov.uk/delivery-programme-id'];
 
-  const getDeliveryProgrammeAdmins = async () => {
-    try {
-      const data = await deliveryProgrammeAdminApi.getByDeliveryProgrammeId(
-        deliveryProgrammeId,
-      );
-      setTableData(
-        data.map(d => {
-          const username = normalizeUsername(d.email);
-          const target = entityRoute(username, 'user', 'default');
-          return {
-            ...d,
-            emailLink: <Link to={`mailto:${d.email}`}> {d.email}</Link>,
-            nameLink: <Link to={target}>{d.name}</Link>,
-            role: 'Delivery Programme Admin',
-            actions: (
-              <Button
-                variant="contained"
-                color="secondary"
-                data-testid={`programme-admin-edit-button-${d.id}`}
-              >
-                Remove
-              </Button>
+  const { data, refresh, loading } = useAsyncDataSource({
+    load: useCallback(
+      () =>
+        !deliveryProgrammeId
+          ? undefined
+          : deliveryProgrammeAdminApi.getByDeliveryProgrammeId(
+              deliveryProgrammeId,
             ),
-          };
-        }),
-      );
-    } catch (error: any) {
-      errorApi.post(error);
-    }
-  };
+      [deliveryProgrammeAdminApi, deliveryProgrammeId],
+    ),
+    onError: useErrorCallback({
+      name: 'Error while getting the list of delivery programme admins.',
+    }),
+  });
 
-  useEffect(() => {
-    getDeliveryProgrammeAdmins();
-  }, [key]);
+  const tableData = useMemo(
+    () =>
+      data?.map<DeliveryProgrammeAdminWithActions>(d => {
+        const username = normalizeUsername(d.email);
+        const target = entityRoute(username, 'user', 'default');
+        return {
+          ...d,
+          emailLink: <Link to={`mailto:${d.email}`}> {d.email}</Link>,
+          nameLink: <Link to={target}>{d.name}</Link>,
+          role: 'Delivery Programme Admin',
+          actions: (
+            <Button
+              variant="contained"
+              color="secondary"
+              data-testid={`programme-admin-edit-button-${d.id}`}
+            >
+              Remove
+            </Button>
+          ),
+        };
+      }),
+    [data, entityRoute],
+  );
 
-  const columns: TableColumn[] = [
+  const columns: TableColumn<DeliveryProgrammeAdminWithActions>[] = [
     {
       title: 'Name',
       field: 'nameLink',
@@ -106,22 +104,24 @@ export const DeliveryProgrammeAdminViewPage = () => {
       <Content>
         <ContentHeader title="Delivery Programme Admins">
           <AddProgrammeAdminButton
-            deliveryProgrammeId={deliveryProgrammeId}
-            variant='contained'
-            size='large'
-            color='primary'
+            deliveryProgrammeId={deliveryProgrammeId!}
+            variant="contained"
+            size="large"
+            color="primary"
             startIcon={<AddBoxIcon />}
-            onCreated={refetchProgrammeAdmin}>
+            onCreated={refresh}
+          >
             Add Delivery Programme Admin
           </AddProgrammeAdminButton>
         </ContentHeader>
         <Grid item>
           <div>
             <DefaultTable
-              data={tableData}
+              data={tableData ?? []}
               columns={columns}
               title="View all"
               isCompact
+              isLoading={loading}
             />
           </div>
         </Grid>
@@ -139,7 +139,7 @@ function normalizeUsername(name: string): string {
     .toLocaleLowerCase()
     .replace(/[^a-zA-Z0-9_\-.]/g, '_');
 
-  cleaned = cleaned.replace(/_+$/g, '');
+  cleaned = cleaned.replace(/(?<=^|[^_])_+$/g, '');
   cleaned = cleaned.replaceAll(/__+/g, '_');
 
   return cleaned;

@@ -1,25 +1,30 @@
 import React from 'react';
+import type {
+  DeliveryProgrammeFields} from './DeliveryProgrammeFormFields';
 import {
   DeliveryProgrammeFormFields,
-  DeliveryProgrammeFields,
   emptyForm,
 } from './DeliveryProgrammeFormFields';
+import type {
+  RenderResult} from '@testing-library/react';
 import {
-  RenderResult,
   fireEvent,
-  render,
+  render as testRender,
   waitFor,
 } from '@testing-library/react';
-import {
+import type {
   FieldPath,
   FieldValues,
-  UseFormReturn,
+  UseFormReturn} from 'react-hook-form';
+import {
   useForm,
 } from 'react-hook-form';
 import { act } from 'react-dom/test-utils';
-import { ArmsLengthBodyApi, armsLengthBodyApiRef } from '../ALB/api';
+import type { ArmsLengthBodyApi} from '../ALB/api';
+import { armsLengthBodyApiRef } from '../ALB/api';
 import { TestApiProvider } from '@backstage/test-utils';
-import { ErrorApi, errorApiRef } from '@backstage/core-plugin-api';
+import type { ErrorApi} from '@backstage/core-plugin-api';
+import { errorApiRef } from '@backstage/core-plugin-api';
 import userEvent from '@testing-library/user-event';
 
 describe('DeliveryProgrammeFormFields', () => {
@@ -181,7 +186,7 @@ function setup() {
     mockErrorApi,
     async render(defaultValues?: DeliveryProgrammeFields) {
       const context: Context = {};
-      const result = render(
+      const result = testRender(
         <TestApiProvider
           apis={[
             [armsLengthBodyApiRef, mockAlbApi],

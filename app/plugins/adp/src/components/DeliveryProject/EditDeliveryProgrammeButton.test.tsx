@@ -1,23 +1,62 @@
-import { AlertApi, alertApiRef } from '@backstage/core-plugin-api';
+import type { AlertApi } from '@backstage/core-plugin-api';
+import { alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
-import { DeliveryProjectApi, deliveryProjectApiRef } from './api';
-import { render, waitFor } from '@testing-library/react';
+import type { DeliveryProjectApi } from './api';
+import { deliveryProjectApiRef } from './api';
+import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
-import {
-  EditDeliveryProjectButton,
-  EditDeliveryProjectButtonProps,
-} from './EditDeliveryProjectButton';
+import type { EditDeliveryProjectButtonProps } from './EditDeliveryProjectButton';
+import { EditDeliveryProjectButton } from './EditDeliveryProjectButton';
 import userEvent from '@testing-library/user-event';
-import {
-  DeliveryProjectFields,
-  DeliveryProjectFormFields,
-} from './DeliveryProjectFormFields';
+import type { DeliveryProjectFields } from './DeliveryProjectFormFields';
+import { DeliveryProjectFormFields } from './DeliveryProjectFormFields';
 import { act } from 'react-dom/test-utils';
-import {
+import type {
   DeliveryProject,
   ValidationError as IValidationError,
 } from '@internal/plugin-adp-common';
 import { ValidationError } from '../../utils';
+import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
+import type * as DialogFormModule from '../../utils/DialogForm';
+
+const usePermission: jest.MockedFn<
+  typeof PluginPermissionReactModule.usePermission
+> = jest.fn();
+const DialogForm: jest.MockedFn<typeof DialogFormModule.DialogForm> = jest.fn();
+
+const deliveryProject: DeliveryProject = {
+  ado_project: 'my ado project',
+  created_at: new Date(0),
+  delivery_programme_code: 'ADP',
+  delivery_programme_id: '00000000-0000-0000-0000-000000000001',
+  delivery_project_code: 'TRD',
+  description: 'My project',
+  id: '00000000-0000-0000-0000-000000000002',
+  name: 'my-cool-project',
+  namespace: 'ADP-TRD',
+  service_owner: 'someone else',
+  team_type: 'delivery',
+  title: 'My cool Project',
+  updated_at: new Date(0),
+  alias: 'ABC',
+  finance_code: '123',
+  github_team_visibility: 'public',
+  updated_by: 'Me',
+};
+
+const fields: DeliveryProjectFields = {
+  ado_project: 'abc',
+  delivery_programme_id: 'def',
+  delivery_project_code: 'ghi',
+  description: 'jkl',
+  github_team_visibility: 'private',
+  namespace: 'mno',
+  service_owner: 'pqr',
+  team_type: 'stu',
+  title: 'vwx',
+  alias: 'yz0',
+  finance_code: '123',
+};
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -83,7 +122,7 @@ describe('EditDeliveryProjectButton', () => {
     }).toMatchObject({
       open: undefined,
       renderFields: DeliveryProjectFormFields,
-      confirm: 'Edit',
+      confirm: 'Update',
       cancel: undefined,
       defaultValues: {
         ado_project: deliveryProject.ado_project,
@@ -257,40 +296,6 @@ describe('EditDeliveryProjectButton', () => {
   });
 });
 
-const deliveryProject: DeliveryProject = {
-  ado_project: 'my ado project',
-  created_at: new Date(0),
-  delivery_programme_code: 'ADP',
-  delivery_programme_id: '00000000-0000-0000-0000-000000000001',
-  delivery_project_code: 'TRD',
-  description: 'My project',
-  id: '00000000-0000-0000-0000-000000000002',
-  name: 'my-cool-project',
-  namespace: 'ADP-TRD',
-  service_owner: 'someone else',
-  team_type: 'delivery',
-  title: 'My cool Project',
-  updated_at: new Date(0),
-  alias: 'ABC',
-  finance_code: '123',
-  github_team_visibility: 'public',
-  updated_by: 'Me',
-};
-
-const fields: DeliveryProjectFields = {
-  ado_project: 'abc',
-  delivery_programme_id: 'def',
-  delivery_project_code: 'ghi',
-  description: 'jkl',
-  github_team_visibility: 'private',
-  namespace: 'mno',
-  service_owner: 'pqr',
-  team_type: 'stu',
-  title: 'vwx',
-  alias: 'yz0',
-  finance_code: '123',
-};
-
 function setup() {
   const mockAlertApi: jest.Mocked<AlertApi> = {
     alert$: jest.fn(),
@@ -307,7 +312,7 @@ function setup() {
     mockAlertApi,
     mockProjectApi,
     async render(props: EditDeliveryProjectButtonProps) {
-      const result = render(
+      const result = testRender(
         <TestApiProvider
           apis={[
             [alertApiRef, mockAlertApi],
@@ -323,9 +328,6 @@ function setup() {
   };
 }
 
-const usePermission: jest.MockedFn<
-  typeof import('@backstage/plugin-permission-react').usePermission
-> = jest.fn();
 jest.mock(
   '@backstage/plugin-permission-react',
   () =>
@@ -345,18 +347,15 @@ jest.mock(
       get permissionApiRef(): never {
         throw new Error('Not mocked');
       },
-    } satisfies typeof import('@backstage/plugin-permission-react')),
+    } satisfies typeof PluginPermissionReactModule),
 );
 
-const DialogForm: jest.MockedFn<
-  typeof import('../../utils/DialogForm').DialogForm
-> = jest.fn();
 jest.mock(
   '../../utils/DialogForm',
   () =>
     ({
       get DialogForm() {
-        return DialogForm as typeof import('../../utils/DialogForm').DialogForm;
+        return DialogForm as typeof DialogFormModule.DialogForm;
       },
-    } satisfies typeof import('../../utils/DialogForm')),
+    } satisfies typeof DialogFormModule),
 );

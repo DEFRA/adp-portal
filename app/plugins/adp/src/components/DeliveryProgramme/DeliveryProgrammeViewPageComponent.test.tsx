@@ -2,12 +2,19 @@ import React from 'react';
 
 import { Button } from '@material-ui/core';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import { DeliveryProgrammeApi, deliveryProgrammeApiRef } from './api';
-import { ErrorApi, errorApiRef } from '@backstage/core-plugin-api';
+import type { DeliveryProgrammeApi} from './api';
+import { deliveryProgrammeApiRef } from './api';
+import type { ErrorApi} from '@backstage/core-plugin-api';
+import { errorApiRef } from '@backstage/core-plugin-api';
 import { DeliveryProgrammeViewPageComponent } from './DeliveryProgrammeViewPageComponent';
 import { waitFor } from '@testing-library/react';
-import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import type { DeliveryProgramme } from '@internal/plugin-adp-common';
 import { entityRouteRef } from '@backstage/plugin-catalog-react';
+import type * as EditDeliveryProgrammeButtonModule from './EditDeliveryProgrammeButton';
+import type * as CreateDeliveryProgrammeButtonModule from './CreateDeliveryProgrammeButton';
+
+const EditDeliveryProgrammeButton: jest.MockedFn<typeof EditDeliveryProgrammeButtonModule['EditDeliveryProgrammeButton']> = jest.fn();
+const CreateDeliveryProgrammeButton: jest.MockedFn<typeof CreateDeliveryProgrammeButtonModule['CreateDeliveryProgrammeButton']> = jest.fn();
 
 beforeEach(() => {
   jest.spyOn(global.Math, 'random').mockReturnValue(0);
@@ -118,7 +125,7 @@ describe('DeliveryProgrammeViewPageComponent', () => {
   it('Should render the page when the programmes fail to load correctly', async () => {
     // arrange
     const { render, mockDeliveryProgrammeApi, mockErrorApi } = setup();
-    const error = new Error();
+    const error = new Error('My error');
     mockDeliveryProgrammeApi.getDeliveryProgrammes.mockRejectedValueOnce(error);
 
     // act
@@ -129,7 +136,15 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     expect(
       mockDeliveryProgrammeApi.getDeliveryProgrammes.mock.calls,
     ).toMatchObject([[]]);
-    expect(mockErrorApi.post.mock.calls).toMatchObject([[error]]);
+    expect(mockErrorApi.post.mock.calls).toMatchObject([
+      [
+        {
+          message: 'Error: My error',
+          name: 'Error while getting the list of delivery programmes.',
+          stack: undefined,
+        },
+      ],
+    ]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
     expect(EditDeliveryProgrammeButton.mock.calls).toMatchObject([]);
   });
@@ -201,9 +216,6 @@ describe('DeliveryProgrammeViewPageComponent', () => {
   });
 });
 
-let EditDeliveryProgrammeButton: jest.MockedFn<
-  typeof import('./EditDeliveryProgrammeButton').EditDeliveryProgrammeButton
-> = jest.fn();
 jest.mock(
   './EditDeliveryProgrammeButton',
   () =>
@@ -211,12 +223,9 @@ jest.mock(
       get EditDeliveryProgrammeButton() {
         return EditDeliveryProgrammeButton;
       },
-    } satisfies typeof import('./EditDeliveryProgrammeButton')),
+    } satisfies typeof EditDeliveryProgrammeButtonModule),
 );
 
-let CreateDeliveryProgrammeButton: jest.MockedFn<
-  typeof import('./CreateDeliveryProgrammeButton').CreateDeliveryProgrammeButton
-> = jest.fn();
 jest.mock(
   './CreateDeliveryProgrammeButton',
   () =>
@@ -224,7 +233,7 @@ jest.mock(
       get CreateDeliveryProgrammeButton() {
         return CreateDeliveryProgrammeButton;
       },
-    } satisfies typeof import('./CreateDeliveryProgrammeButton')),
+    } satisfies typeof CreateDeliveryProgrammeButtonModule),
 );
 
 function noTableData(value: unknown) {
@@ -237,12 +246,12 @@ function assertEditDeliveryProgrammeButtonCalls(
   programmes: DeliveryProgramme[],
 ) {
   expect(
-    EditDeliveryProgrammeButton.mock.calls.map(
-      ([{ deliveryProgramme, onEdited, ...props }, ...rest]) => [
+    EditDeliveryProgrammeButton.mock.calls
+      .map(([{ deliveryProgramme, onEdited, ...props }, ...rest]) => [
         { ...props, deliveryProgramme: noTableData(deliveryProgramme) },
         ...rest,
-      ],
-    ),
+      ])
+      .slice(-programmes.length),
   ).toMatchObject(
     programmes.map(p => [
       {
@@ -264,9 +273,9 @@ function createDeliveryProgrammes(count: number) {
     delivery_programme_code: 'ABC',
     description: 'My description',
     id: i.toString(),
-    name: 'programme-' + i,
+    name: `programme-${i}`,
     programme_managers: [],
-    title: 'Programme ' + i,
+    title: `Programme ${i}`,
     updated_at: new Date(0),
     alias: 'Cool',
     children: [],

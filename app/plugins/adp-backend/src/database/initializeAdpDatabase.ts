@@ -1,5 +1,6 @@
+import type {
+  PluginDatabaseManager} from '@backstage/backend-common';
 import {
-  PluginDatabaseManager,
   resolvePackagePath,
 } from '@backstage/backend-common';
 

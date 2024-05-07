@@ -1,18 +1,22 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import type { DisabledFields } from '../../utils';
 import {
-  DisabledFields,
   FormSelectField,
   FormTextField,
   emailRegex,
   formRules,
 } from '../../utils';
-import { UseFormReturn, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import type {
+  UseFormReturn,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form';
 import {
   useDeliveryProgrammesList,
   useComputedUntilChanged,
 } from '../../hooks';
 import { InputAdornment } from '@material-ui/core';
-import { DeliveryProgramme } from '@internal/plugin-adp-common';
+import type { DeliveryProgramme } from '@internal/plugin-adp-common';
 
 export type DeliveryProjectFields = {
   title: string;
@@ -223,7 +227,7 @@ export function DeliveryProjectFormFields({
         index={i++}
         name="ado_project"
         label="Azure DevOps Project"
-        helperText="Name of the Azure DevOps project in the DEFRA.gov.uk organisation"
+        helperText="Name of the Azure DevOps project in the DefraGovUk organisation"
         disabled={disabled}
         rules={{
           ...formRules.required,
@@ -260,6 +264,6 @@ function useComputedNamespace({
     computedValue: autoNamespace,
     currentValue: namespace,
     emptyValue: '',
-    setValue: v => setValue('namespace', v),
+    setValue: useCallback((v: string) => setValue('namespace', v), [setValue]),
   });
 }

@@ -1,8 +1,9 @@
-import { DiscoveryService } from '@backstage/backend-plugin-api';
+import type { DiscoveryService } from '@backstage/backend-plugin-api';
 import { AdpClient } from './AdpClient';
-import fetch, { Response } from 'node-fetch';
+import type fetch from 'node-fetch';
+import { Response } from 'node-fetch';
 import { randomUUID } from 'node:crypto';
-import { DeliveryProjectTeamsSyncResult } from './githubTeam';
+import type { DeliveryProjectTeamsSyncResult } from '@internal/plugin-adp-common';
 
 describe('AdpClient', () => {
   function setup() {

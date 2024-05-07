@@ -1,12 +1,15 @@
-import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
+import type { TestDatabaseId} from '@backstage/backend-test-utils';
+import { TestDatabases } from '@backstage/backend-test-utils';
 import { DeliveryProgrammeAdminStore } from './deliveryProgrammeAdminStore';
 import { initializeAdpDatabase } from '../database';
+import type {
+  delivery_programme} from '../deliveryProgramme/delivery_programme';
 import {
-  delivery_programme,
   delivery_programme_name,
 } from '../deliveryProgramme/delivery_programme';
+import type {
+  delivery_programme_admin} from './delivery_programme_admin';
 import {
-  delivery_programme_admin,
   delivery_programme_admin_name,
 } from './delivery_programme_admin';
 
@@ -131,7 +134,7 @@ describe('DeliveryProgrammeAdminStore', () => {
         '888afa93-aaf4-4fec-acca-1b0995ca6eaf',
         deliveryProgrammes[0].id,
       );
-      expect(getResult).toBeDefined;
+      expect(getResult).toBeDefined();
       expect(getResult?.email).toEqual('test1.test@onmicrosoft.com');
     },
   );

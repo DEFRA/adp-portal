@@ -1,11 +1,11 @@
-import { ArmsLengthBodyApi } from './AlbApi';
-import {
+import type { ArmsLengthBodyApi } from './AlbApi';
+import type {
   ArmsLengthBody,
   CreateArmsLengthBodyRequest,
   UpdateArmsLengthBodyRequest,
 } from '@internal/plugin-adp-common';
 
-import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
+import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
 import { ValidationError } from '../../../utils';
 

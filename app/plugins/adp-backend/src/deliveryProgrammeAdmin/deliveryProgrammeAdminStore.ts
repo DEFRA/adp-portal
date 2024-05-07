@@ -1,7 +1,7 @@
-import { Knex } from 'knex';
-import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
-import { CreateDeliveryProgrammeAdmin } from '../utils';
-import { delivery_programme_admin } from './delivery_programme_admin';
+import type { Knex } from 'knex';
+import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type { CreateDeliveryProgrammeAdmin } from '../utils';
+import type { delivery_programme_admin } from './delivery_programme_admin';
 import { assertUUID } from '../service/util';
 
 const TABLE_NAME = 'delivery_programme_admin';

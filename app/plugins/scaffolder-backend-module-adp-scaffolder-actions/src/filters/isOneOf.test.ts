@@ -1,6 +1,6 @@
 import { isOneOf } from './isOneOf';
 
-const options = [
+const jsonValue = [
   123,
   'abc',
   true,
@@ -15,9 +15,13 @@ const options = [
 
 describe('isOneOf', () => {
   it.each(
-    options.flatMap(opt => [
-      { target: opt, options, expected: true },
-      { target: opt, options: options.filter(v => v !== opt), expected: false },
+    jsonValue.flatMap(opt => [
+      { target: opt, options: jsonValue, expected: true },
+      {
+        target: opt,
+        options: jsonValue.filter(v => v !== opt),
+        expected: false,
+      },
     ]),
   )(
     'Should return $expected when target = $target and options = $options',

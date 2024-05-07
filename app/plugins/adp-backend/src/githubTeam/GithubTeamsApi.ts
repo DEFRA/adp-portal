@@ -1,4 +1,5 @@
-import { Config } from '@backstage/config';
+import type { Config } from '@backstage/config';
+import type { GithubTeamDetails } from '@internal/plugin-adp-common';
 import fetch from 'node-fetch';
 
 export type SetTeamRequest = {
@@ -7,16 +8,6 @@ export type SetTeamRequest = {
   members?: string[];
   maintainers?: string[];
   isPublic?: boolean;
-};
-
-export type GithubTeamDetails = {
-  id: number;
-  name: string;
-  members: string[];
-  maintainers: string[];
-  description: string;
-  isPublic: boolean;
-  slug: string;
 };
 
 export type IGitHubTeamsApi = {

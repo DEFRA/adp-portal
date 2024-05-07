@@ -1,15 +1,17 @@
 import React from 'react';
 import { TestApiProvider } from '@backstage/test-utils';
 
+import type {
+  AlertApi,
+  ErrorApi} from '@backstage/core-plugin-api';
 import {
   alertApiRef,
-  errorApiRef,
-  AlertApi,
-  ErrorApi,
+  errorApiRef
 } from '@backstage/core-plugin-api';
 import { renderHook } from '@testing-library/react-hooks';
 import { useArmsLengthBodyList } from './useArmsLengthBodyList';
-import { ArmsLengthBodyApi, armsLengthBodyApiRef } from '../components/ALB/api';
+import type { ArmsLengthBodyApi} from '../components/ALB/api';
+import { armsLengthBodyApiRef } from '../components/ALB/api';
 
 it('fetches and formats data correctly', async () => {
   const mockAlertApi: jest.Mocked<AlertApi> = {

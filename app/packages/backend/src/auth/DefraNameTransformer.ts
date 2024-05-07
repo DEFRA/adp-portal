@@ -1,6 +1,6 @@
-import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
+import type * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
 
-import {  UserEntity } from '@backstage/catalog-model';
+import type {  UserEntity } from '@backstage/catalog-model';
 import {
   normalizeEntityName,
   MICROSOFT_EMAIL_ANNOTATION,

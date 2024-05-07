@@ -1,16 +1,17 @@
-import { DiscoveryService } from '@backstage/backend-plugin-api';
+import type { DiscoveryService } from '@backstage/backend-plugin-api';
 import { InputError } from '@backstage/errors';
 import fetch from 'node-fetch';
-import { DeliveryProjectTeamsSyncResult } from './githubTeam';
+import type {
+  DeliveryProjectTeamsSyncResult,
+  IAdpClient,
+} from '@internal/plugin-adp-common';
 
 export interface AdpClientOptions {
   discoveryApi: DiscoveryService;
   fetchApi?: typeof fetch;
 }
 
-export type IAdpClient = { [P in keyof AdpClient]: AdpClient[P] };
-
-export class AdpClient {
+export class AdpClient implements IAdpClient {
   readonly #discoveryApi: DiscoveryService;
   readonly #fetch: typeof fetch;
 
