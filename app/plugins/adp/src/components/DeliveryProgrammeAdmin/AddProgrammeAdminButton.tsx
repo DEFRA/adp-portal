@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
-import { DialogForm, SubmitResult, readValidationError } from '../../utils';
+import type { SubmitResult } from '../../utils';
+import { DialogForm, readValidationError } from '../../utils';
+import type { DeliveryProgrammeAdminFields } from './DeliveryProgrammeAdminFormFields';
 import {
-  DeliveryProgrammeAdminFields,
   DeliveryProgrammeAdminFormFields,
   emptyForm,
 } from './DeliveryProgrammeAdminFormFields';

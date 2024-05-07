@@ -1,6 +1,7 @@
 import React from 'react';
-import { UseFormReturn } from 'react-hook-form';
-import { DisabledFields, FormSelectField, formRules } from '../../utils';
+import type { UseFormReturn } from 'react-hook-form';
+import type { DisabledFields } from '../../utils';
+import { FormSelectField, formRules } from '../../utils';
 import { useCatalogUsersList } from '../../hooks';
 
 export type DeliveryProgrammeAdminFields = {
@@ -19,27 +20,25 @@ export type DeliveryProgrammeAdminFormFieldsProps = Readonly<
 
 export function DeliveryProgrammeAdminFormFields({
   control,
-  formState: {errors},
+  formState: { errors },
   disabled,
 }: DeliveryProgrammeAdminFormFieldsProps) {
   const catalogUserOptions = useCatalogUsersList();
 
   let i = 0;
   return (
-    <>
-      <FormSelectField
-        control={control}
-        errors={errors}
-        index={i++}
-        label='Select User'
-        helperText='Select a user to assign Admin permissions for this delivery programme'
-        name='aadEntityRefId'
-        options={catalogUserOptions}
-        disabled={disabled}
-        rules={{
-          ...formRules.required
-        }}
-        />
-    </>
-  )
+    <FormSelectField
+      control={control}
+      errors={errors}
+      index={i++}
+      label="Select User"
+      helperText="Select a user to assign Admin permissions for this delivery programme"
+      name="aadEntityRefId"
+      options={catalogUserOptions}
+      disabled={disabled}
+      rules={{
+        ...formRules.required,
+      }}
+    />
+  );
 }

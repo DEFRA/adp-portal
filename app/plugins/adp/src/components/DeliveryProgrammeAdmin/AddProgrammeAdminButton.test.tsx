@@ -1,20 +1,21 @@
 import React from 'react';
 import { act, render, waitFor } from '@testing-library/react';
-import {
-  AddProgrammeAdminButton,
-  AddProgrammeAdminButtonProps,
-} from './AddProgrammeAdminButton';
+import type { AddProgrammeAdminButtonProps } from './AddProgrammeAdminButton';
+import { AddProgrammeAdminButton } from './AddProgrammeAdminButton';
 import userEvent from '@testing-library/user-event';
-import { DeliveryProgrammeAdminApi, deliveryProgrammeAdminApiRef } from './api';
-import { AlertApi, alertApiRef } from '@backstage/core-plugin-api';
-import { ValidationError as IValidationError } from '@internal/plugin-adp-common';
+import type { DeliveryProgrammeAdminApi } from './api';
+import { deliveryProgrammeAdminApiRef } from './api';
+import type { AlertApi } from '@backstage/core-plugin-api';
+import { alertApiRef } from '@backstage/core-plugin-api';
+import type { ValidationError as IValidationError } from '@internal/plugin-adp-common';
 import { ValidationError } from '../../utils';
 import { TestApiProvider } from '@backstage/test-utils';
+import type { DeliveryProgrammeAdminFields } from './DeliveryProgrammeAdminFormFields';
 import {
-  DeliveryProgrammeAdminFields,
   DeliveryProgrammeAdminFormFields,
   emptyForm,
 } from './DeliveryProgrammeAdminFormFields';
+import type * as DialogFormModule from '../../utils/DialogForm';
 
 function setup() {
   const mockAlertApi: jest.Mocked<AlertApi> = {
@@ -52,17 +53,16 @@ const fields: DeliveryProgrammeAdminFields = {
   aadEntityRefId: 'user-1234',
 };
 
-const DialogForm: jest.MockedFn<
-  typeof import('../../utils/DialogForm').DialogForm
-> = jest.fn();
+const DialogForm: jest.MockedFn<typeof DialogFormModule.DialogForm> = jest.fn();
+
 jest.mock(
   '../../utils/DialogForm',
   () =>
     ({
       get DialogForm() {
-        return DialogForm as typeof import('../../utils/DialogForm').DialogForm;
+        return DialogForm as typeof DialogFormModule.DialogForm;
       },
-    } satisfies typeof import('../../utils/DialogForm')),
+    } satisfies typeof DialogFormModule),
 );
 
 describe('AddProgrammeAdminButton', () => {

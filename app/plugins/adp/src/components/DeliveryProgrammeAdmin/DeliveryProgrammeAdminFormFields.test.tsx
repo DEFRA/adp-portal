@@ -1,17 +1,15 @@
 import React from 'react';
+import type { DeliveryProgrammeAdminFields } from './DeliveryProgrammeAdminFormFields';
 import {
-  DeliveryProgrammeAdminFields,
   DeliveryProgrammeAdminFormFields,
   emptyForm,
 } from './DeliveryProgrammeAdminFormFields';
-import {
-  FieldPath,
-  FieldValues,
-  UseFormReturn,
-  useForm,
-} from 'react-hook-form';
-import { RenderResult, render, waitFor } from '@testing-library/react';
-import { ErrorApi, errorApiRef } from '@backstage/core-plugin-api';
+import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import type { RenderResult } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
+import type { ErrorApi } from '@backstage/core-plugin-api';
+import { errorApiRef } from '@backstage/core-plugin-api';
 import { catalogApiRef } from '@backstage/plugin-catalog-react';
 import { TestApiProvider } from '@backstage/test-utils';
 import userEvent from '@testing-library/user-event';

@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
-import {
-  useApi,
-  errorApiRef,
-} from '@backstage/core-plugin-api';
+import { useApi, errorApiRef } from '@backstage/core-plugin-api';
 import { catalogApiRef } from '@backstage/plugin-catalog-react';
-import { Entity, UserEntityV1alpha1 } from '@backstage/catalog-model';
+import type { Entity, UserEntityV1alpha1 } from '@backstage/catalog-model';
 
 type CatalogUsersListOptions = {
   label: string;
@@ -22,7 +19,7 @@ export const useCatalogUsersList = (): { label: string; value: string }[] => {
       try {
         const userEntities = await catalog.getEntities({
           filter: {
-            kind: 'User'
+            kind: 'User',
           },
           fields: [
             'metadata.name',
@@ -32,16 +29,18 @@ export const useCatalogUsersList = (): { label: string; value: string }[] => {
           ],
           order: {
             field: 'metadata.annotations.microsoft.com/email',
-            order: 'asc'
-          }
+            order: 'asc',
+          },
         });
 
         const users = userEntities.items.map((entity: Entity) => {
           const userEntity = entity as UserEntityV1alpha1;
-          const displayName = userEntity.spec!.profile!.displayName ?? userEntity.metadata.name;
+          const displayName =
+            userEntity.spec.profile!.displayName ?? userEntity.metadata.name;
           return {
             label: displayName,
-            value: userEntity.metadata.annotations!['graph.microsoft.com/user-id'],
+            value:
+              userEntity.metadata.annotations!['graph.microsoft.com/user-id'],
           };
         });
 
@@ -53,7 +52,7 @@ export const useCatalogUsersList = (): { label: string; value: string }[] => {
   }, [catalog, errorApi]);
 
   return options;
-}
+};
 
 export const transformedData = async (deliveryProgramme: any) => {
   const formattedProgrammeManagers = deliveryProgramme.programme_managers.map(
