@@ -10,7 +10,7 @@ import { UserEntityV1alpha1 } from '@backstage/catalog-model';
 import { CreateDeliveryProgrammeAdmin } from '../utils';
 
 type CreateDeliveryProgrammeAdminRequest = {
-  aadEntityRefId: string;
+  aadEntityRefIds: string[];
 };
 
 type DeleteDeliveryProgrammeAdminRequest = {
@@ -71,13 +71,12 @@ export function createDeliveryProgrammeAdminRouter(
     async (req, res) => {
       try {
         const deliveryProgrammeId = req.params.deliveryProgrammeId;
-        const deliveryProgrammeAADRefs =
-          req.body as CreateDeliveryProgrammeAdminRequest[];
+        const body = req.body as CreateDeliveryProgrammeAdminRequest;
         let deliveryProgrammeAdmins: CreateDeliveryProgrammeAdmin[] = [];
 
-        if (deliveryProgrammeAADRefs !== undefined) {
+        if (body !== undefined) {
           deliveryProgrammeAdmins = await getDeliveryProgrammeAdminsFromCatalog(
-            deliveryProgrammeAADRefs.map(ref => ref.aadEntityRefId),
+            body.aadEntityRefIds,
             deliveryProgrammeId,
             catalog,
           );

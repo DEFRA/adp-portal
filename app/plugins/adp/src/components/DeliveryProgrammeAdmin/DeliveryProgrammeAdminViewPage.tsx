@@ -8,11 +8,13 @@ import {
 } from '@backstage/core-components';
 import { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import { Button, Grid } from '@material-ui/core';
-import { DefaultTable } from '@internal/plugin-adp/src/utils';
 import { errorApiRef, useApi } from '@backstage/core-plugin-api';
 import { deliveryProgrammeAdminApiRef } from './api';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { useEntityRoute } from '../../hooks';
+import { DefaultTable } from '../../utils';
+import { AddProgrammeAdminButton } from './AddProgrammeAdminButton';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 type DeliveryProgrammeAdminWithActions = DeliveryProgrammeAdmin & {
   actions: ReactNode;
@@ -25,10 +27,11 @@ export const DeliveryProgrammeAdminViewPage = () => {
   const [tableData, setTableData] = useState<
     DeliveryProgrammeAdminWithActions[]
   >([]);
-  const [key, _refetchProgrammeAdmin] = useReducer(i => {
+  const [key, refetchProgrammeAdmin] = useReducer(i => {
     return i + 1;
   }, 0);
   const { entity } = useEntity();
+  const deliveryProgrammeId = entity.metadata.annotations!['adp.defra.gov.uk/delivery-programme-id'];
   const entityRoute = useEntityRoute();
 
   const deliveryProgrammeAdminApi = useApi(deliveryProgrammeAdminApiRef);
@@ -36,8 +39,6 @@ export const DeliveryProgrammeAdminViewPage = () => {
 
   const getDeliveryProgrammeAdmins = async () => {
     try {
-      const deliveryProgrammeId =
-        entity.metadata.annotations!['adp.defra.gov.uk/delivery-programme-id'];
       const data = await deliveryProgrammeAdminApi.getByDeliveryProgrammeId(
         deliveryProgrammeId,
       );
@@ -103,14 +104,24 @@ export const DeliveryProgrammeAdminViewPage = () => {
   return (
     <Page themeId="tool">
       <Content>
-        <ContentHeader title="Delivery Programme Admins"></ContentHeader>
+        <ContentHeader title="Delivery Programme Admins">
+          <AddProgrammeAdminButton
+            deliveryProgrammeId={deliveryProgrammeId}
+            variant='contained'
+            size='large'
+            color='primary'
+            startIcon={<AddBoxIcon />}
+            onCreated={refetchProgrammeAdmin}>
+            Add Delivery Programme Admin
+          </AddProgrammeAdminButton>
+        </ContentHeader>
         <Grid item>
           <div>
             <DefaultTable
               data={tableData}
               columns={columns}
               title="View all"
-              isCompact={true}
+              isCompact
             />
           </div>
         </Grid>

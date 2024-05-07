@@ -150,7 +150,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
           data={tableData}
           columns={columns}
           title="View all"
-          isCompact={true}
+          isCompact
         />
       </Content>
     </Page>

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AlbFormFields Should render all fields correctly 1`] = `
+exports[`DeliveryProgrammeFormFields Should render all fields correctly 1`] = `
 <body>
   <div>
     <div
@@ -308,7 +308,7 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
 </body>
 `;
 
-exports[`AlbFormFields Should render default fields 1`] = `
+exports[`DeliveryProgrammeFormFields Should render default fields 1`] = `
 <body>
   <div>
     <div
@@ -616,7 +616,7 @@ exports[`AlbFormFields Should render default fields 1`] = `
 </body>
 `;
 
-exports[`AlbFormFields Should render populated fields 1`] = `
+exports[`DeliveryProgrammeFormFields Should render populated fields 1`] = `
 <body>
   <div>
     <div
@@ -924,7 +924,7 @@ exports[`AlbFormFields Should render populated fields 1`] = `
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Alb selected 1`] = `
 <body
   style=""
 >
@@ -1234,7 +1234,7 @@ exports[`AlbFormFields Should write values back to the form: Alb selected 1`] = 
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Alias set 1`] = `
 <body>
   <div>
     <div
@@ -1542,7 +1542,7 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Description set 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Description set 1`] = `
 <body>
   <div>
     <div
@@ -1852,7 +1852,7 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Empty 1`] = `
 <body>
   <div>
     <div
@@ -2160,7 +2160,7 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Programme Code set 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Programme Code set 1`] = `
 <body>
   <div>
     <div
@@ -2470,7 +2470,7 @@ exports[`AlbFormFields Should write values back to the form: Programme Code set 
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Title set 1`] = `
 <body>
   <div>
     <div
@@ -2778,7 +2778,7 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
 </body>
 `;
 
-exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
+exports[`DeliveryProgrammeFormFields Should write values back to the form: Website set 1`] = `
 <body>
   <div>
     <div

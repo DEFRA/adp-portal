@@ -11,7 +11,7 @@ type CatalogUsersListOptions = {
   value: string;
 };
 
-export const useCatalogUsersList = (): CatalogUsersListOptions[] => {
+export const useCatalogUsersList = (): { label: string; value: string }[] => {
   const [options, setOptions] = useState<CatalogUsersListOptions[]>([]);
 
   const errorApi = useApi(errorApiRef);
@@ -31,7 +31,7 @@ export const useCatalogUsersList = (): CatalogUsersListOptions[] => {
             'spec.profile.displayName',
           ],
           order: {
-            field: 'spec.profile.displayName',
+            field: 'metadata.annotations.microsoft.com/email',
             order: 'asc'
           }
         });

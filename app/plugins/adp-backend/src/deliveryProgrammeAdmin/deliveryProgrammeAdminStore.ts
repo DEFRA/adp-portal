@@ -59,7 +59,8 @@ export class DeliveryProgrammeAdminStore {
         'email',
         'name',
         'updated_at',
-      );
+      )
+      .orderBy('name', 'asc');
 
     return deliveryProgrammeAdmins.map(row => ({
       id: row.id,

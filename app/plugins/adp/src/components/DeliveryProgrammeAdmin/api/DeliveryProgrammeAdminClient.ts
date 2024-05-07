@@ -53,11 +53,11 @@ export class DeliveryProgrammeAdminClient
     aadEntityRefIds: string[],
   ): Promise<DeliveryProgrammeAdmin[]> {
     const baseUrl = await this.getBaseUrl();
-    const url = `${baseUrl}/deliveryProgrammeAdmins/${deliveryProgrammeId}`;
+    const url = `${baseUrl}/deliveryProgrammeAdmin/${deliveryProgrammeId}`;
 
-    const body = aadEntityRefIds.map(ref => ({
-      aadEntityRefId: ref,
-    }));
+    const body = {
+      aadEntityRefIds: aadEntityRefIds
+    };
 
     const response = await this.fetchApi.fetch(url, {
       method: 'POST',

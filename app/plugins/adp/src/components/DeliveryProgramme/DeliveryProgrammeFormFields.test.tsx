@@ -22,7 +22,7 @@ import { TestApiProvider } from '@backstage/test-utils';
 import { ErrorApi, errorApiRef } from '@backstage/core-plugin-api';
 import userEvent from '@testing-library/user-event';
 
-describe('AlbFormFields', () => {
+describe('DeliveryProgrammeFormFields', () => {
   it('Should render all fields correctly', async () => {
     const { mockAlbApi, render } = setup();
 
