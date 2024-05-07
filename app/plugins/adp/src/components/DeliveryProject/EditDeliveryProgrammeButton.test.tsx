@@ -1,21 +1,15 @@
-import type { AlertApi} from '@backstage/core-plugin-api';
+import type { AlertApi } from '@backstage/core-plugin-api';
 import { alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
-import type { DeliveryProjectApi} from './api';
+import type { DeliveryProjectApi } from './api';
 import { deliveryProjectApiRef } from './api';
 import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
-import type {
-  EditDeliveryProjectButtonProps} from './EditDeliveryProjectButton';
-import {
-  EditDeliveryProjectButton
-} from './EditDeliveryProjectButton';
+import type { EditDeliveryProjectButtonProps } from './EditDeliveryProjectButton';
+import { EditDeliveryProjectButton } from './EditDeliveryProjectButton';
 import userEvent from '@testing-library/user-event';
-import type {
-  DeliveryProjectFields} from './DeliveryProjectFormFields';
-import {
-  DeliveryProjectFormFields,
-} from './DeliveryProjectFormFields';
+import type { DeliveryProjectFields } from './DeliveryProjectFormFields';
+import { DeliveryProjectFormFields } from './DeliveryProjectFormFields';
 import { act } from 'react-dom/test-utils';
 import type {
   DeliveryProject,
@@ -28,9 +22,7 @@ import type * as DialogFormModule from '../../utils/DialogForm';
 const usePermission: jest.MockedFn<
   typeof PluginPermissionReactModule.usePermission
 > = jest.fn();
-const DialogForm: jest.MockedFn<
-  typeof DialogFormModule.DialogForm
-> = jest.fn();
+const DialogForm: jest.MockedFn<typeof DialogFormModule.DialogForm> = jest.fn();
 
 const deliveryProject: DeliveryProject = {
   ado_project: 'my ado project',
@@ -130,7 +122,7 @@ describe('EditDeliveryProjectButton', () => {
     }).toMatchObject({
       open: undefined,
       renderFields: DeliveryProjectFormFields,
-      confirm: 'Edit',
+      confirm: 'Update',
       cancel: undefined,
       defaultValues: {
         ado_project: deliveryProject.ado_project,
