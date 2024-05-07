@@ -86,6 +86,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
       field: 'role',
       highlight: false,
       type: 'string',
+      sorting: false,
     },
     {
       title: 'Updated At',
@@ -96,6 +97,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
     {
       highlight: true,
       field: 'actions',
+      sorting: false,
     },
   ];
 

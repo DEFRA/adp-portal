@@ -33,16 +33,20 @@ export const useCatalogUsersList = (): { label: string; value: string }[] => {
           },
         });
 
-        const users = userEntities.items.map((entity: Entity) => {
-          const userEntity = entity as UserEntityV1alpha1;
-          const displayName =
-            userEntity.spec.profile!.displayName ?? userEntity.metadata.name;
-          return {
-            label: displayName,
-            value:
-              userEntity.metadata.annotations!['graph.microsoft.com/user-id'],
-          };
-        });
+        const users = userEntities.items
+          .map((entity: Entity) => {
+            const userEntity = entity as UserEntityV1alpha1;
+            const displayName =
+              userEntity.spec.profile!.displayName ?? userEntity.metadata.name;
+            return {
+              label: displayName,
+              value:
+                userEntity.metadata.annotations!['graph.microsoft.com/user-id'],
+            };
+          })
+          .sort((a: { label: string }, b: { label: string }) =>
+            a.label.localeCompare(b.label),
+          );
 
         setOptions(users);
       } catch (error: any) {
