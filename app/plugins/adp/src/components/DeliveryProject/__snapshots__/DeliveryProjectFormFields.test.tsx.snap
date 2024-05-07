@@ -573,7 +573,7 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>
@@ -1151,7 +1151,7 @@ exports[`AlbFormFields Should render default fields 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>
@@ -1729,7 +1729,7 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>
@@ -2309,7 +2309,7 @@ exports[`AlbFormFields Should write values back to the form: Ado project set 1`]
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>
@@ -2889,7 +2889,7 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>
@@ -3471,7 +3471,7 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>
@@ -4049,7 +4049,7 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>
@@ -4629,7 +4629,7 @@ exports[`AlbFormFields Should write values back to the form: Finance code set 1`
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>
@@ -5209,7 +5209,7 @@ exports[`AlbFormFields Should write values back to the form: Github visibility s
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>
@@ -5789,7 +5789,7 @@ exports[`AlbFormFields Should write values back to the form: Programme set 1`] =
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>
@@ -6369,7 +6369,7 @@ exports[`AlbFormFields Should write values back to the form: Project code set 1`
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>
@@ -6949,7 +6949,7 @@ exports[`AlbFormFields Should write values back to the form: Service owner set 1
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>
@@ -7529,7 +7529,7 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="ado_project-helper-text"
       >
-        Name of the Azure DevOps project in the DEFRA.gov.uk organisation
+        Name of the Azure DevOps project in the DefraGovUk organisation
       </p>
     </div>
   </div>

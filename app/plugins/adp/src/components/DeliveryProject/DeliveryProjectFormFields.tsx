@@ -1,13 +1,16 @@
 import React, { useCallback, useMemo } from 'react';
-import type {
-  DisabledFields} from '../../utils';
+import type { DisabledFields } from '../../utils';
 import {
   FormSelectField,
   FormTextField,
   emailRegex,
   formRules,
 } from '../../utils';
-import type { UseFormReturn, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import type {
+  UseFormReturn,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form';
 import {
   useDeliveryProgrammesList,
   useComputedUntilChanged,
@@ -224,7 +227,7 @@ export function DeliveryProjectFormFields({
         index={i++}
         name="ado_project"
         label="Azure DevOps Project"
-        helperText="Name of the Azure DevOps project in the DEFRA.gov.uk organisation"
+        helperText="Name of the Azure DevOps project in the DefraGovUk organisation"
         disabled={disabled}
         rules={{
           ...formRules.required,
