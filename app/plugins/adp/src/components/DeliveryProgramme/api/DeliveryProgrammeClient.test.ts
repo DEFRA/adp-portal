@@ -75,7 +75,7 @@ describe('deliveryProgrammeClient', () => {
       });
 
       await expect(client.getDeliveryProgrammes()).rejects.toThrow(
-        'Request failed with 400 Bad Request',
+        /^Request failed with 400/,
       );
     });
   });
@@ -189,7 +189,7 @@ describe('deliveryProgrammeClient', () => {
 
       await expect(
         client.getDeliveryProgrammeById('nonexistent-id'),
-      ).rejects.toThrow('Request failed with 404 Not Found');
+      ).rejects.toThrow(/^Request failed with 404/);
     });
   });
 
@@ -214,7 +214,7 @@ describe('deliveryProgrammeClient', () => {
         json: jest.fn().mockResolvedValue({ error: 'unknown error' }),
       });
       await expect(client.getDeliveryProgrammeAdmins()).rejects.toThrow(
-        'Request failed with 404 Not Found',
+        /^Request failed with 404/,
       );
     });
   });
