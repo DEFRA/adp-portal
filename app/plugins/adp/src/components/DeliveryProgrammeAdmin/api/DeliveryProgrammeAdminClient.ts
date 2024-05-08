@@ -1,11 +1,13 @@
-import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type {
+  CreateDeliveryProgrammeAdminRequest,
+  DeleteDeliveryProgrammeAdminRequest,
+  DeliveryProgrammeAdmin,
+} from '@internal/plugin-adp-common';
 import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
 import type { DeliveryProgrammeAdminApi } from './DeliveryProgrammeAdminApi';
 
-export class DeliveryProgrammeAdminClient
-  implements DeliveryProgrammeAdminApi
-{
+export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
   private discoveryApi: DiscoveryApi;
   private fetchApi: FetchApi;
 
@@ -53,10 +55,11 @@ export class DeliveryProgrammeAdminClient
     aadEntityRefIds: string[],
   ): Promise<DeliveryProgrammeAdmin[]> {
     const baseUrl = await this.getBaseUrl();
-    const url = `${baseUrl}/deliveryProgrammeAdmin/${deliveryProgrammeId}`;
+    const url = `${baseUrl}/deliveryProgrammeAdmin`;
 
-    const body = {
-      aadEntityRefIds: aadEntityRefIds
+    const body: CreateDeliveryProgrammeAdminRequest = {
+      aadEntityRefIds: aadEntityRefIds,
+      deliveryProgrammeId: deliveryProgrammeId,
     };
 
     const response = await this.fetchApi.fetch(url, {
@@ -77,16 +80,13 @@ export class DeliveryProgrammeAdminClient
     return deliveryProgrammeAdmins;
   }
 
-  async delete(
-    aadEntityRefId: string,
-    deliveryProgrammeId: string,
-  ) {
+  async delete(aadEntityRefId: string, deliveryProgrammeId: string) {
     const baseUrl = await this.getBaseUrl();
     const url = `${baseUrl}/deliveryProgrammeAdmin`;
 
-    const body = {
+    const body: DeleteDeliveryProgrammeAdminRequest = {
       aadEntityRefId: aadEntityRefId,
-      deliveryProgrammeId: deliveryProgrammeId
+      deliveryProgrammeId: deliveryProgrammeId,
     };
 
     const response = await this.fetchApi.fetch(url, {
