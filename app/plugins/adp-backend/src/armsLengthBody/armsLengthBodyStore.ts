@@ -1,13 +1,12 @@
 import type { Knex } from 'knex';
-import type {
-  ArmsLengthBody,
-  CreateArmsLengthBodyRequest,
-  UpdateArmsLengthBodyRequest,
+import {
+  createName,
+  type ArmsLengthBody,
+  type CreateArmsLengthBodyRequest,
+  type UpdateArmsLengthBodyRequest,
 } from '@internal/plugin-adp-common';
-import { createName } from '../utils/index';
 import { NotFoundError } from '@backstage/errors';
-import type {
-  SafeResult} from '../service/util';
+import type { SafeResult } from '../service/util';
 import {
   checkMany,
   containsAnyValue,
@@ -15,7 +14,7 @@ import {
   isUUID,
 } from '../service/util';
 import { type UUID } from 'node:crypto';
-import type { arms_length_body} from './arms_length_body';
+import type { arms_length_body } from './arms_length_body';
 import { arms_length_body_name } from './arms_length_body';
 
 export type PartialArmsLengthBody = Partial<ArmsLengthBody>;

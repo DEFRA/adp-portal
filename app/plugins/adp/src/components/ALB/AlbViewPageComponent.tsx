@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import { Typography } from '@material-ui/core';
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import type { TableColumn } from '@backstage/core-components';
 import {
   Header,

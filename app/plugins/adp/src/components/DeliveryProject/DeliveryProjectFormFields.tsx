@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React from 'react';
 import type { DisabledFields } from '../../utils';
 import {
   FormSelectField,
@@ -6,17 +6,11 @@ import {
   emailRegex,
   formRules,
 } from '../../utils';
-import type {
-  UseFormReturn,
-  UseFormSetValue,
-  UseFormWatch,
-} from 'react-hook-form';
-import {
-  useDeliveryProgrammesList,
-  useComputedUntilChanged,
-} from '../../hooks';
-import { InputAdornment } from '@material-ui/core';
+import type { UseFormReturn } from 'react-hook-form';
+import { useDeliveryProgrammesList } from '../../hooks';
+import { InputAdornment, TextField } from '@material-ui/core';
 import type { DeliveryProgramme } from '@internal/plugin-adp-common';
+import { createName } from '@internal/plugin-adp-common';
 
 export type DeliveryProjectFields = {
   title: string;
@@ -57,21 +51,22 @@ export function DeliveryProjectFormFields({
   formState: { errors },
   disabled,
   watch,
-  setValue,
 }: DeliveryProjectFormFieldsProps) {
   const deliveryProgrammes = useDeliveryProgrammesList();
-  useComputedNamespace({ watch, setValue, deliveryProgrammes });
 
   function* deliveryProgrammeOptions() {
     for (const { id, title } of deliveryProgrammes.values())
       yield { label: title, value: id };
   }
 
-  function getTitleAdornment() {
-    const programme = deliveryProgrammes.get(watch('delivery_programme_id'));
-    if (programme === undefined) return '';
-    return programme.delivery_programme_code;
-  }
+  const programme = deliveryProgrammes.get(watch('delivery_programme_id'));
+  const titlePrefix = programme?.delivery_programme_code;
+
+  const namespace = computeNamespace(
+    watch('namespace'),
+    programme,
+    watch('title'),
+  );
 
   let i = 0;
   return (
@@ -88,28 +83,37 @@ export function DeliveryProjectFormFields({
           ...formRules.required,
         }}
       />
-
       <FormTextField
         control={control}
         errors={errors}
         index={i++}
         name="title"
         label="Name"
-        helperText="This must be unique and will be automatically prefixed with the delivery programme code."
+        helperText="This must be unique and between 3 and 50 characters. It will be automatically prefixed with the delivery programme code."
         disabled={disabled}
         rules={{
           ...formRules.required,
-          ...formRules.maxLength(100),
+          ...formRules.maxLength(50),
+          ...formRules.minLength(3),
         }}
         InputProps={{
-          startAdornment: (
+          startAdornment: !!titlePrefix && (
             <InputAdornment position="start" style={{ marginTop: '0.15em' }}>
-              {getTitleAdornment()}
+              {titlePrefix}
             </InputAdornment>
           ),
         }}
       />
-
+      <TextField
+        value={namespace}
+        name="namespace"
+        label="Namespace"
+        variant="outlined"
+        fullWidth
+        margin="dense"
+        helperText="A namespace serves as a logical grouping for your applications and/or services, functioning as a security boundary. Each team or project has its own namespace, and editing is not possible after the creation of the project team."
+        disabled
+      />
       <FormTextField
         control={control}
         errors={errors}
@@ -119,7 +123,6 @@ export function DeliveryProjectFormFields({
         helperText="Are there any other names this Delivery Project is also known as?"
         disabled={disabled}
       />
-
       <FormTextField
         control={control}
         errors={errors}
@@ -134,7 +137,6 @@ export function DeliveryProjectFormFields({
           ...formRules.maxLength(500),
         }}
       />
-
       <FormSelectField
         control={control}
         errors={errors}
@@ -150,7 +152,6 @@ export function DeliveryProjectFormFields({
           ...formRules.required,
         }}
       />
-
       <FormSelectField
         control={control}
         errors={errors}
@@ -167,14 +168,13 @@ export function DeliveryProjectFormFields({
           ...formRules.required,
         }}
       />
-
       <FormTextField
         control={control}
         errors={errors}
         index={i++}
         name="delivery_project_code"
         label="CCoE Service Code"
-        helperText="This must be unique and contain exactly 3 alphabetical characters. Example: ADP"
+        helperText="This must contain exactly three alphabetical characters. Example: ADP"
         disabled={disabled}
         rules={{
           ...formRules.required,
@@ -184,7 +184,6 @@ export function DeliveryProjectFormFields({
           ),
         }}
       />
-
       <FormTextField
         control={control}
         errors={errors}
@@ -194,7 +193,6 @@ export function DeliveryProjectFormFields({
         helperText="provide the CCoE Finance Cost Centre Code. E.g. DEFCOOD3P1234"
         disabled={disabled}
       />
-
       <FormTextField
         control={control}
         errors={errors}
@@ -207,20 +205,6 @@ export function DeliveryProjectFormFields({
           ...formRules.pattern(emailRegex, 'Invalid email address'),
         }}
       />
-
-      <FormTextField
-        control={control}
-        errors={errors}
-        index={i++}
-        name="namespace"
-        label="Project Namespace"
-        helperText="It will not be possible to edit the namespace after the project team has been created"
-        disabled={disabled}
-        rules={{
-          ...formRules.required,
-        }}
-      />
-
       <FormTextField
         control={control}
         errors={errors}
@@ -237,33 +221,12 @@ export function DeliveryProjectFormFields({
   );
 }
 
-function useComputedNamespace({
-  watch,
-  setValue,
-  deliveryProgrammes,
-}: {
-  watch: UseFormWatch<DeliveryProjectFields>;
-  setValue: UseFormSetValue<DeliveryProjectFields>;
-  deliveryProgrammes: Map<string, DeliveryProgramme>;
-}) {
-  const [namespace, programmeId, projectCode] = watch([
-    'namespace',
-    'delivery_programme_id',
-    'delivery_project_code',
-  ]);
-
-  const autoNamespace = useMemo(() => {
-    const programmeCode =
-      deliveryProgrammes.get(programmeId)?.delivery_programme_code;
-    return !programmeCode || !projectCode
-      ? ''
-      : `${programmeCode}-${projectCode}`;
-  }, [programmeId, projectCode, deliveryProgrammes]);
-
-  useComputedUntilChanged({
-    computedValue: autoNamespace,
-    currentValue: namespace,
-    emptyValue: '',
-    setValue: useCallback((v: string) => setValue('namespace', v), [setValue]),
-  });
+function computeNamespace(
+  current: string | undefined,
+  programme: DeliveryProgramme | undefined,
+  title: string,
+) {
+  if (current) return current;
+  if (!programme || !title) return '';
+  return createName(`${programme.delivery_programme_code}-${title}`);
 }

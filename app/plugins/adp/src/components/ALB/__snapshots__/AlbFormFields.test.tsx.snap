@@ -31,10 +31,10 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-3"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Name
@@ -75,10 +75,10 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-3"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Alias
@@ -119,10 +119,10 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-3"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Website
@@ -172,10 +172,10 @@ exports[`AlbFormFields Should render all fields correctly 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-3"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Description
@@ -225,10 +225,10 @@ exports[`AlbFormFields Should render default fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-11 PrivateNotchedOutline-legendNotched-12"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -269,10 +269,10 @@ exports[`AlbFormFields Should render default fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-11 PrivateNotchedOutline-legendNotched-12"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Alias
@@ -313,10 +313,10 @@ exports[`AlbFormFields Should render default fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-11 PrivateNotchedOutline-legendNotched-12"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Website
@@ -368,10 +368,10 @@ exports[`AlbFormFields Should render default fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-11 PrivateNotchedOutline-legendNotched-12"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Description
@@ -421,10 +421,10 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -465,10 +465,10 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Alias
@@ -509,10 +509,10 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Website
@@ -564,10 +564,10 @@ exports[`AlbFormFields Should render populated fields 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Description
@@ -617,10 +617,10 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -661,10 +661,10 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Alias
@@ -705,10 +705,10 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Website
@@ -758,10 +758,10 @@ exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Description
@@ -811,10 +811,10 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -855,10 +855,10 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Alias
@@ -899,10 +899,10 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Website
@@ -954,10 +954,10 @@ exports[`AlbFormFields Should write values back to the form: Description set 1`]
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Description
@@ -1007,10 +1007,10 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Name
@@ -1051,10 +1051,10 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Alias
@@ -1095,10 +1095,10 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Website
@@ -1148,10 +1148,10 @@ exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Description
@@ -1201,10 +1201,10 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -1245,10 +1245,10 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Alias
@@ -1289,10 +1289,10 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Website
@@ -1342,10 +1342,10 @@ exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Description
@@ -1395,10 +1395,10 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Name
@@ -1439,10 +1439,10 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Alias
@@ -1483,10 +1483,10 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15 PrivateNotchedOutline-legendNotched-16"
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
           >
             <span>
               Website
@@ -1536,10 +1536,10 @@ exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
         />
         <fieldset
           aria-hidden="true"
-          class="PrivateNotchedOutline-root-13 MuiOutlinedInput-notchedOutline"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
         >
           <legend
-            class="PrivateNotchedOutline-legendLabelled-15"
+            class="PrivateNotchedOutline-legendLabelled"
           >
             <span>
               Description

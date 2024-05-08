@@ -1,4 +1,4 @@
-import type { TestDatabaseId} from '@backstage/backend-test-utils';
+import type { TestDatabaseId } from '@backstage/backend-test-utils';
 import { TestDatabases } from '@backstage/backend-test-utils';
 import { DeliveryProjectStore } from './deliveryProjectStore';
 import { NotFoundError } from '@backstage/errors';
@@ -13,17 +13,11 @@ import {
 import { albSeedData } from '../testData/albTestData';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 import { randomUUID } from 'node:crypto';
-import type {
-  arms_length_body} from '../armsLengthBody/arms_length_body';
-import {
-  arms_length_body_name,
-} from '../armsLengthBody/arms_length_body';
-import type {
-  delivery_programme} from '../deliveryProgramme/delivery_programme';
-import {
-  delivery_programme_name,
-} from '../deliveryProgramme/delivery_programme';
-import type { delivery_project} from './delivery_project';
+import type { arms_length_body } from '../armsLengthBody/arms_length_body';
+import { arms_length_body_name } from '../armsLengthBody/arms_length_body';
+import type { delivery_programme } from '../deliveryProgramme/delivery_programme';
+import { delivery_programme_name } from '../deliveryProgramme/delivery_programme';
+import type { delivery_project } from './delivery_project';
 import { delivery_project_name } from './delivery_project';
 import { deliveryProgrammeSeedData } from '../testData/programmeTestData';
 import type { Knex } from 'knex';
@@ -80,6 +74,9 @@ describe('DeliveryProjectStore', () => {
       expect(addedProject.id).toBeDefined();
       expect(addedProject.created_at).toBeDefined();
       expect(addedProject.updated_at).toBeDefined();
+      expect(addedProject.namespace).toEqual(
+        'test-delivery-programme-code-test-title',
+      );
     },
   );
 

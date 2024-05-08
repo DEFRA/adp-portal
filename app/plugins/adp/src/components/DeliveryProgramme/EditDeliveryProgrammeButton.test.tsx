@@ -1,36 +1,28 @@
-import type { AlertApi} from '@backstage/core-plugin-api';
+import type { AlertApi } from '@backstage/core-plugin-api';
 import { alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
-import type { DeliveryProgrammeApi} from './api';
+import type { DeliveryProgrammeApi } from './api';
 import { deliveryProgrammeApiRef } from './api';
 import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
-import type {
-  EditDeliveryProgrammeButtonProps} from './EditDeliveryProgrammeButton';
-import {
-  EditDeliveryProgrammeButton
-} from './EditDeliveryProgrammeButton';
+import type { EditDeliveryProgrammeButtonProps } from './EditDeliveryProgrammeButton';
+import { EditDeliveryProgrammeButton } from './EditDeliveryProgrammeButton';
 import userEvent from '@testing-library/user-event';
-import type {
-  DeliveryProgrammeFields} from './DeliveryProgrammeFormFields';
-import {
-  DeliveryProgrammeFormFields,
-} from './DeliveryProgrammeFormFields';
+import type { DeliveryProgrammeFields } from './DeliveryProgrammeFormFields';
+import { DeliveryProgrammeFormFields } from './DeliveryProgrammeFormFields';
 import { act } from 'react-dom/test-utils';
 import type {
   DeliveryProgramme,
   ValidationError as IValidationError,
 } from '@internal/plugin-adp-common';
-import { ValidationError } from '../../utils';
+import { SnapshotFriendlyStylesProvider, ValidationError } from '../../utils';
 import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
 import type * as DialogFormModule from '../../utils/DialogForm';
 
 const usePermission: jest.MockedFn<
   typeof PluginPermissionReactModule.usePermission
 > = jest.fn();
-const DialogForm: jest.MockedFn<
-  typeof DialogFormModule.DialogForm
-> = jest.fn();
+const DialogForm: jest.MockedFn<typeof DialogFormModule.DialogForm> = jest.fn();
 
 const deliveryProgramme: DeliveryProgramme = {
   arms_length_body_id: '00000000-0000-0000-0000-000000000001',
@@ -318,7 +310,9 @@ function setup() {
             [deliveryProgrammeApiRef, mockProgrammeApi],
           ]}
         >
-          <EditDeliveryProgrammeButton {...props} />
+          <SnapshotFriendlyStylesProvider>
+            <EditDeliveryProgrammeButton {...props} />
+          </SnapshotFriendlyStylesProvider>
         </TestApiProvider>,
       );
       await waitFor(() => expect(result.baseElement).not.toBeEmptyDOMElement());

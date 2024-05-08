@@ -6,13 +6,11 @@ import type {
   FieldPath,
   FieldValues,
   UseControllerProps,
-  ValidationRule,
-  ValidationValue} from 'react-hook-form';
-import {
-  Controller
 } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { isFieldDisabled } from './isFieldDisabled';
 import { enrichHelperText } from './enrichHelperText';
+import { rulesToHtmlProperties } from './rulesToHtmlProperties';
 
 export type FormTextFieldProps<
   TFields extends FieldValues,
@@ -70,27 +68,10 @@ export function FormTextField<
           data-testid={name}
           disabled={isFieldDisabled(disabled, name)}
           inputProps={{
-            'aria-required': getValidationRule(rules?.required)
-              ? true
-              : undefined,
-            maxLength: getValidationRule(rules?.maxLength),
+            ...rulesToHtmlProperties(rules),
           }}
         />
       )}
     />
   );
-}
-
-function getValidationRule<T extends ValidationValue>(
-  rule?: ValidationRule<T>,
-) {
-  switch (typeof rule) {
-    case 'undefined':
-      return undefined;
-    case 'object':
-      if (rule instanceof RegExp) return rule as T;
-      return rule.value;
-    default:
-      return rule;
-  }
 }

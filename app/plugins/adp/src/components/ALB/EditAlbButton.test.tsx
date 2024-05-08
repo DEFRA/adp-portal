@@ -1,30 +1,28 @@
-import type { AlertApi} from '@backstage/core-plugin-api';
+import type { AlertApi } from '@backstage/core-plugin-api';
 import { alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
-import type { ArmsLengthBodyApi} from './api';
+import type { ArmsLengthBodyApi } from './api';
 import { armsLengthBodyApiRef } from './api';
 import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
 import type { EditAlbButtonProps } from './EditAlbButton';
 import { EditAlbButton } from './EditAlbButton';
 import userEvent from '@testing-library/user-event';
-import type { AlbFields} from './AlbFormFields';
+import type { AlbFields } from './AlbFormFields';
 import { AlbFormFields } from './AlbFormFields';
 import { act } from 'react-dom/test-utils';
 import type {
   ArmsLengthBody,
   ValidationError as IValidationError,
 } from '@internal/plugin-adp-common';
-import { ValidationError } from '../../utils';
+import { SnapshotFriendlyStylesProvider, ValidationError } from '../../utils';
 import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
 import type * as DialogFormModule from '../../utils/DialogForm';
 
 const usePermission: jest.MockedFn<
   typeof PluginPermissionReactModule.usePermission
 > = jest.fn();
-const DialogForm: jest.MockedFn<
-  typeof DialogFormModule.DialogForm
-> = jest.fn();
+const DialogForm: jest.MockedFn<typeof DialogFormModule.DialogForm> = jest.fn();
 
 const armsLengthBody: ArmsLengthBody = {
   created_at: new Date(0),
@@ -281,7 +279,9 @@ function setup() {
             [armsLengthBodyApiRef, mockArmsLengthBodyApi],
           ]}
         >
-          <EditAlbButton {...props} />
+          <SnapshotFriendlyStylesProvider>
+            <EditAlbButton {...props} />
+          </SnapshotFriendlyStylesProvider>
         </TestApiProvider>,
       );
       await waitFor(() => expect(result.baseElement).not.toBeEmptyDOMElement());

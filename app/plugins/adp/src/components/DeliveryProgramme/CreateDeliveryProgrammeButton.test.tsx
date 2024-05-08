@@ -1,34 +1,28 @@
-import type { AlertApi} from '@backstage/core-plugin-api';
+import type { AlertApi } from '@backstage/core-plugin-api';
 import { alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
-import type { DeliveryProgrammeApi} from './api';
+import type { DeliveryProgrammeApi } from './api';
 import { deliveryProgrammeApiRef } from './api';
 import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
-import type {
-  CreateDeliveryProgrammeButtonProps} from './CreateDeliveryProgrammeButton';
-import {
-  CreateDeliveryProgrammeButton
-} from './CreateDeliveryProgrammeButton';
+import type { CreateDeliveryProgrammeButtonProps } from './CreateDeliveryProgrammeButton';
+import { CreateDeliveryProgrammeButton } from './CreateDeliveryProgrammeButton';
 import userEvent from '@testing-library/user-event';
-import type {
-  DeliveryProgrammeFields} from './DeliveryProgrammeFormFields';
+import type { DeliveryProgrammeFields } from './DeliveryProgrammeFormFields';
 import {
   DeliveryProgrammeFormFields,
   emptyForm,
 } from './DeliveryProgrammeFormFields';
 import { act } from 'react-dom/test-utils';
 import type { ValidationError as IValidationError } from '@internal/plugin-adp-common';
-import { ValidationError } from '../../utils';
+import { SnapshotFriendlyStylesProvider, ValidationError } from '../../utils';
 import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
 import type * as DialogFormModule from '../../utils/DialogForm';
 
 const usePermission: jest.MockedFn<
   typeof PluginPermissionReactModule.usePermission
 > = jest.fn();
-const DialogForm: jest.MockedFn<
-  typeof DialogFormModule.DialogForm
-> = jest.fn();
+const DialogForm: jest.MockedFn<typeof DialogFormModule.DialogForm> = jest.fn();
 
 const fields: DeliveryProgrammeFields = {
   alias: 'abc',
@@ -283,7 +277,9 @@ function setup() {
             [deliveryProgrammeApiRef, mockProgrammeApi],
           ]}
         >
-          <CreateDeliveryProgrammeButton {...props} />
+          <SnapshotFriendlyStylesProvider>
+            <CreateDeliveryProgrammeButton {...props} />
+          </SnapshotFriendlyStylesProvider>
         </TestApiProvider>,
       );
       await waitFor(() => expect(result.baseElement).not.toBeEmptyDOMElement());

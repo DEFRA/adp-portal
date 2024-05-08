@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import { Typography } from '@material-ui/core';
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import type { TableColumn } from '@backstage/core-components';
 import {
   Header,
@@ -23,7 +24,6 @@ import {
   useEntityRoute,
   useErrorCallback,
 } from '../../hooks';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 type DeliveryProgrammeWithActions = DeliveryProgramme & {
   titleLink: ReactNode;

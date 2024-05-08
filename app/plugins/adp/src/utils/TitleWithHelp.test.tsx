@@ -1,6 +1,7 @@
 import { render, waitFor } from '@testing-library/react';
 import React from 'react';
 import { TitleWithHelp } from './TitleWithHelp';
+import { SnapshotFriendlyStylesProvider } from './SnapshotFriendlyStylesProvider';
 
 describe('TitleWithHelp', () => {
   it('Should render correctly', async () => {
@@ -8,7 +9,9 @@ describe('TitleWithHelp', () => {
 
     // act
     const result = render(
-      <TitleWithHelp href="https://test.com">My title</TitleWithHelp>,
+      <SnapshotFriendlyStylesProvider>
+        <TitleWithHelp href="https://test.com">My title</TitleWithHelp>
+      </SnapshotFriendlyStylesProvider>,
     );
     await waitFor(() => expect(result.baseElement).not.toBeEmptyDOMElement());
 

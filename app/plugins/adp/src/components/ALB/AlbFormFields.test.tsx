@@ -1,16 +1,16 @@
 import React from 'react';
-import type { AlbFields} from './AlbFormFields';
+import type { AlbFields } from './AlbFormFields';
 import { AlbFormFields, emptyForm } from './AlbFormFields';
-import type {
-  RenderResult} from '@testing-library/react';
+import type { RenderResult } from '@testing-library/react';
 import {
   fireEvent,
   render as testRender,
   waitFor,
 } from '@testing-library/react';
-import type { UseFormReturn} from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { act } from 'react-dom/test-utils';
+import { SnapshotFriendlyStylesProvider } from '../../utils';
 
 describe('AlbFormFields', () => {
   it('Should render all fields correctly', async () => {
@@ -103,7 +103,9 @@ function setup() {
     async render(defaultValues?: AlbFields) {
       const context: Context = {};
       const result = testRender(
-        <Sut context={context} defaultValues={defaultValues} />,
+        <SnapshotFriendlyStylesProvider>
+          <Sut context={context} defaultValues={defaultValues} />
+        </SnapshotFriendlyStylesProvider>,
       );
       await waitFor(() => expect(result.baseElement).not.toBeEmptyDOMElement());
       return { result, form: context.form! };

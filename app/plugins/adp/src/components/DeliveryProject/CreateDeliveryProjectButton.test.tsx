@@ -5,17 +5,17 @@ import type { DeliveryProjectApi } from './api';
 import { deliveryProjectApiRef } from './api';
 import { render as testRender, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
-import type { EditDeliveryProjectButtonProps } from './EditDeliveryProjectButton';
-import { EditDeliveryProjectButton } from './EditDeliveryProjectButton';
+import type { CreateDeliveryProjectButtonProps } from './CreateDeliveryProjectButton';
+import { CreateDeliveryProjectButton } from './CreateDeliveryProjectButton';
 import userEvent from '@testing-library/user-event';
 import type { DeliveryProjectFields } from './DeliveryProjectFormFields';
-import { DeliveryProjectFormFields } from './DeliveryProjectFormFields';
+import {
+  DeliveryProjectFormFields,
+  emptyForm,
+} from './DeliveryProjectFormFields';
 import { act } from 'react-dom/test-utils';
-import type {
-  DeliveryProject,
-  ValidationError as IValidationError,
-} from '@internal/plugin-adp-common';
-import { ValidationError } from '../../utils';
+import type { ValidationError as IValidationError } from '@internal/plugin-adp-common';
+import { SnapshotFriendlyStylesProvider, ValidationError } from '../../utils';
 import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
 import type * as DialogFormModule from '../../utils/DialogForm';
 
@@ -23,26 +23,6 @@ const usePermission: jest.MockedFn<
   typeof PluginPermissionReactModule.usePermission
 > = jest.fn();
 const DialogForm: jest.MockedFn<typeof DialogFormModule.DialogForm> = jest.fn();
-
-const deliveryProject: DeliveryProject = {
-  ado_project: 'my ado project',
-  created_at: new Date(0),
-  delivery_programme_code: 'ADP',
-  delivery_programme_id: '00000000-0000-0000-0000-000000000001',
-  delivery_project_code: 'TRD',
-  description: 'My project',
-  id: '00000000-0000-0000-0000-000000000002',
-  name: 'my-cool-project',
-  namespace: 'ADP-TRD',
-  service_owner: 'someone else',
-  team_type: 'delivery',
-  title: 'My cool Project',
-  updated_at: new Date(0),
-  alias: 'ABC',
-  finance_code: '123',
-  github_team_visibility: 'public',
-  updated_by: 'Me',
-};
 
 const fields: DeliveryProjectFields = {
   ado_project: 'abc',
@@ -62,15 +42,12 @@ beforeEach(() => {
   jest.resetAllMocks();
 });
 
-describe('EditDeliveryProjectButton', () => {
-  it('Should not render when the user is not allowed to edit delivery projects', async () => {
+describe('CreateDeliveryProjectButton', () => {
+  it('Should not render when the user is not allowed to create delivery projects', async () => {
     const { mockAlertApi, mockProjectApi, render } = setup();
     usePermission.mockReturnValue({ allowed: false, loading: false });
 
-    const { result } = await render({
-      content: 'My button',
-      deliveryProject,
-    });
+    const { result } = await render({ content: 'My button' });
 
     expect(result.baseElement).toMatchSnapshot();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
@@ -84,10 +61,7 @@ describe('EditDeliveryProjectButton', () => {
     const { mockAlertApi, mockProjectApi, render } = setup();
     usePermission.mockReturnValue({ allowed: true, loading: false });
 
-    const { result } = await render({
-      content: 'My button',
-      deliveryProject,
-    });
+    const { result } = await render({ content: 'My button' });
 
     expect(result.baseElement).toMatchSnapshot();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
@@ -102,11 +76,8 @@ describe('EditDeliveryProjectButton', () => {
     usePermission.mockReturnValue({ allowed: true, loading: false });
     DialogForm.mockReturnValue(<span>This is a dialog!</span>);
 
-    const { result } = await render({
-      content: 'My button',
-      deliveryProject,
-    });
-    await userEvent.click(result.getByTestId('edit-delivery-project-button'));
+    const { result } = await render({ content: 'My button' });
+    await userEvent.click(result.getByTestId('create-delivery-project-button'));
 
     expect(result.baseElement).toMatchSnapshot();
     expect(DialogForm.mock.calls).toHaveLength(1);
@@ -122,20 +93,12 @@ describe('EditDeliveryProjectButton', () => {
     }).toMatchObject({
       open: undefined,
       renderFields: DeliveryProjectFormFields,
-      confirm: 'Update',
+      confirm: 'Create',
       cancel: undefined,
       defaultValues: {
-        ado_project: deliveryProject.ado_project,
-        delivery_programme_id: deliveryProject.delivery_programme_id,
-        delivery_project_code: deliveryProject.delivery_project_code,
-        description: deliveryProject.description,
-        github_team_visibility: deliveryProject.github_team_visibility,
-        namespace: deliveryProject.namespace,
-        service_owner: deliveryProject.service_owner,
-        team_type: deliveryProject.team_type,
-        title: deliveryProject.title,
-        alias: deliveryProject.alias,
-        finance_code: deliveryProject.finance_code,
+        ...emptyForm,
+        github_team_visibility: 'public',
+        team_type: 'delivery',
       },
       disabled: {
         namespace: true,
@@ -157,11 +120,8 @@ describe('EditDeliveryProjectButton', () => {
     usePermission.mockReturnValue({ allowed: true, loading: false });
     DialogForm.mockReturnValue(<span>This is a dialog!</span>);
 
-    const { result } = await render({
-      content: 'My button',
-      deliveryProject,
-    });
-    await userEvent.click(result.getByTestId('edit-delivery-project-button'));
+    const { result } = await render({ content: 'My button' });
+    await userEvent.click(result.getByTestId('create-delivery-project-button'));
 
     expect(result.baseElement).toMatchSnapshot('Before cancel');
     expect(DialogForm.mock.calls).toHaveLength(1);
@@ -178,24 +138,20 @@ describe('EditDeliveryProjectButton', () => {
     expect(mockProjectApi.getDeliveryProjects).not.toHaveBeenCalled();
     expect(mockProjectApi.updateDeliveryProject).not.toHaveBeenCalled();
   });
-  it('Should call onEditd when the form closes with a value.', async () => {
+  it('Should call onCreated when the form closes with a value.', async () => {
     const { mockAlertApi, mockProjectApi, render } = setup();
     usePermission.mockReturnValue({ allowed: true, loading: false });
     DialogForm.mockReturnValue(<span>This is a dialog!</span>);
-    const onEdited: jest.MockedFn<
-      Exclude<EditDeliveryProjectButtonProps['onEdited'], undefined>
+    const onCreated: jest.MockedFn<
+      Exclude<CreateDeliveryProjectButtonProps['onCreated'], undefined>
     > = jest.fn();
 
-    const { result } = await render({
-      content: 'My button',
-      deliveryProject,
-      onEdited,
-    });
-    await userEvent.click(result.getByTestId('edit-delivery-project-button'));
+    const { result } = await render({ content: 'My button', onCreated });
+    await userEvent.click(result.getByTestId('create-delivery-project-button'));
 
     expect(result.baseElement).toMatchSnapshot('Before complete');
     expect(DialogForm.mock.calls).toHaveLength(1);
-    expect(onEdited).not.toHaveBeenCalled();
+    expect(onCreated).not.toHaveBeenCalled();
     const formProps = DialogForm.mock.calls[0][0];
     act(() => formProps.completed(fields));
     await waitFor(() =>
@@ -204,7 +160,7 @@ describe('EditDeliveryProjectButton', () => {
     expect(result.baseElement).toMatchSnapshot('After complete');
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post).not.toHaveBeenCalled();
-    expect(onEdited).toHaveBeenCalledTimes(1);
+    expect(onCreated).toHaveBeenCalledTimes(1);
     expect(mockProjectApi.createDeliveryProject).not.toHaveBeenCalled();
     expect(mockProjectApi.getDeliveryProjectById).not.toHaveBeenCalled();
     expect(mockProjectApi.getDeliveryProjects).not.toHaveBeenCalled();
@@ -215,11 +171,8 @@ describe('EditDeliveryProjectButton', () => {
     usePermission.mockReturnValue({ allowed: true, loading: false });
     DialogForm.mockReturnValue(<span>This is a dialog!</span>);
 
-    const { result } = await render({
-      content: 'My button',
-      deliveryProject,
-    });
-    await userEvent.click(result.getByTestId('edit-delivery-project-button'));
+    const { result } = await render({ content: 'My button' });
+    await userEvent.click(result.getByTestId('create-delivery-project-button'));
 
     expect(result.baseElement).toMatchSnapshot();
     expect(DialogForm.mock.calls).toHaveLength(1);
@@ -233,17 +186,17 @@ describe('EditDeliveryProjectButton', () => {
 
     const submitResult = await formProps.submit(fields);
     expect(submitResult).toMatchObject({ type: 'success' });
-    expect(mockProjectApi.updateDeliveryProject.mock.calls).toMatchObject([
+    expect(mockProjectApi.createDeliveryProject.mock.calls).toMatchObject([
       [fields],
     ]);
-    expect(mockProjectApi.createDeliveryProject).not.toHaveBeenCalled();
     expect(mockProjectApi.getDeliveryProjectById).not.toHaveBeenCalled();
     expect(mockProjectApi.getDeliveryProjects).not.toHaveBeenCalled();
+    expect(mockProjectApi.updateDeliveryProject).not.toHaveBeenCalled();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post.mock.calls).toMatchObject([
       [
         {
-          message: 'Delivery Project updated successfully.',
+          message: 'Delivery Project created successfully.',
           severity: 'success',
           display: 'transient',
         },
@@ -262,15 +215,12 @@ describe('EditDeliveryProjectButton', () => {
         },
       },
     ];
-    mockProjectApi.updateDeliveryProject.mockRejectedValueOnce(
+    mockProjectApi.createDeliveryProject.mockRejectedValueOnce(
       new ValidationError(validationErrors),
     );
 
-    const { result } = await render({
-      content: 'My button',
-      deliveryProject,
-    });
-    await userEvent.click(result.getByTestId('edit-delivery-project-button'));
+    const { result } = await render({ content: 'My button' });
+    await userEvent.click(result.getByTestId('create-delivery-project-button'));
 
     expect(result.baseElement).toMatchSnapshot();
     expect(DialogForm.mock.calls).toHaveLength(1);
@@ -285,12 +235,12 @@ describe('EditDeliveryProjectButton', () => {
       type: 'validationError',
       errors: validationErrors,
     });
-    expect(mockProjectApi.updateDeliveryProject.mock.calls).toMatchObject([
+    expect(mockProjectApi.createDeliveryProject.mock.calls).toMatchObject([
       [fields],
     ]);
-    expect(mockProjectApi.createDeliveryProject).not.toHaveBeenCalled();
     expect(mockProjectApi.getDeliveryProjectById).not.toHaveBeenCalled();
     expect(mockProjectApi.getDeliveryProjects).not.toHaveBeenCalled();
+    expect(mockProjectApi.updateDeliveryProject).not.toHaveBeenCalled();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post).not.toHaveBeenCalled();
   });
@@ -311,7 +261,7 @@ function setup() {
   return {
     mockAlertApi,
     mockProjectApi,
-    async render(props: EditDeliveryProjectButtonProps) {
+    async render(props: CreateDeliveryProjectButtonProps) {
       const result = testRender(
         <TestApiProvider
           apis={[
@@ -319,7 +269,9 @@ function setup() {
             [deliveryProjectApiRef, mockProjectApi],
           ]}
         >
-          <EditDeliveryProjectButton {...props} />
+          <SnapshotFriendlyStylesProvider>
+            <CreateDeliveryProjectButton {...props} />
+          </SnapshotFriendlyStylesProvider>
         </TestApiProvider>,
       );
       await waitFor(() => expect(result.baseElement).not.toBeEmptyDOMElement());

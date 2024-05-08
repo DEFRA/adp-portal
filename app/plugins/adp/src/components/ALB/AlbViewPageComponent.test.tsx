@@ -11,6 +11,7 @@ import { waitFor } from '@testing-library/react';
 import type { ArmsLengthBody } from '@internal/plugin-adp-common';
 import type * as EditAlbButtonModule from './EditAlbButton';
 import type * as CreateAlbButtonModule from './CreateAlbButton';
+import { SnapshotFriendlyStylesProvider } from '../../utils';
 
 const EditAlbButton: jest.MockedFn<
   (typeof EditAlbButtonModule)['EditAlbButton']
@@ -62,7 +63,9 @@ describe('ArmsLengthBodyViewPageComponent', () => {
               [armsLengthBodyApiRef, mockArmsLengthBodyApi],
             ]}
           >
-            <AlbViewPageComponent />
+            <SnapshotFriendlyStylesProvider>
+              <AlbViewPageComponent />
+            </SnapshotFriendlyStylesProvider>
           </TestApiProvider>,
         );
 

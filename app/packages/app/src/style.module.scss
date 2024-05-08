@@ -1,27 +1,28 @@
-$govuk-assets-path: "~govuk-frontend/govuk/assets/";
-$govuk-assets-path-font-woff2: "~govuk-frontend/govuk/assets/fonts/light-94a07e06a1-v2.woff2";
-$govuk-assets-path-font-woff: "~govuk-frontend/govuk/assets/fonts/light-f591b13f7d-v2.woff";
-@import "~govuk-frontend/govuk/all";
+$govuk-assets-path: '~govuk-frontend/govuk/assets/';
+$govuk-assets-path-font-woff2: '~govuk-frontend/govuk/assets/fonts/light-94a07e06a1-v2.woff2';
+$govuk-assets-path-font-woff: '~govuk-frontend/govuk/assets/fonts/light-f591b13f7d-v2.woff';
+@import '~govuk-frontend/govuk/all';
 
 @font-face {
-  font-family: "GDS Transport";
+  font-family: 'GDS Transport';
   font-weight: normal;
   font-style: normal;
-  src:
-    url('#{$govuk-assets-path-font-woff2}') format("woff2"),
-    url('#{$govuk-assets-path-font-woff}') format("woff")
+  src: url('#{$govuk-assets-path-font-woff2}') format('woff2'),
+    url('#{$govuk-assets-path-font-woff}') format('woff');
 }
 
 :export {
-  primaryColour: $govuk-brand-colour; 
+  primaryColour: $govuk-brand-colour;
   errorColour: $govuk-error-colour;
   linkColour: $govuk-link-colour;
   linkHoverColour: $govuk-link-hover-colour;
   secondaryTextColour: $govuk-secondary-text-colour;
-  lightGrey: govuk-colour("light-grey");
-  white:  govuk-colour("white");
+  lightGrey: govuk-colour('light-grey');
+  white: govuk-colour('white');
   lightThemeNav: #171717;
-  darkThemeNav: #424242;
+  darkThemeNav: #313131;
   unselectedNavText: #b5b5b5;
   navHoverBackground: #404040;
+  darkBackground: #222222;
+  darkPaper: #313131;
 }

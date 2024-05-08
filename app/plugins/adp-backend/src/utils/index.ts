@@ -2,21 +2,8 @@ import type { DeliveryProject } from '@internal/plugin-adp-common';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type express from 'express';
 import type { AlbRouterOptions } from '../service/armsLengthBodyRouter';
-import * as urlSlug from 'url-slug';
 
 export * from './types';
-
-export function createName(name: string) {
-  const nameConversion = urlSlug.convert(name.toLowerCase(), {
-    separator: '-',
-    transformer: (fragments, separator) =>
-      fragments
-        .map(fragment => fragment.replace(/[^a-zA-Z0-9._-]/g, ''))
-        .join(separator),
-  });
-  const nameValue = nameConversion.substring(0, 64);
-  return nameValue;
-}
 
 export async function getCurrentUsername(
   identity: IdentityApi,

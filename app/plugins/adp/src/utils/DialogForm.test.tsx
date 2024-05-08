@@ -1,4 +1,4 @@
-import type { AlertApi} from '@backstage/core-plugin-api';
+import type { AlertApi } from '@backstage/core-plugin-api';
 import { alertApiRef } from '@backstage/core-plugin-api';
 import { TestApiProvider } from '@backstage/test-utils';
 import {
@@ -12,6 +12,7 @@ import { DialogForm } from './DialogForm';
 import type { FieldValues } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
+import { SnapshotFriendlyStylesProvider } from './SnapshotFriendlyStylesProvider';
 
 describe('DialogForm', () => {
   it('Should not render when closed', async () => {
@@ -252,16 +253,18 @@ function setup() {
     async render<TForm extends FieldValues>(props: DialogFormProps<TForm>) {
       const result = testRender(
         <TestApiProvider apis={[[alertApiRef, alertApi]]}>
-          <DialogForm
-            {...props}
-            renderFields={(...args) => {
-              return (
-                props.renderFields(...args) ?? (
-                  <div>{prettyFormat.format(args)}</div>
-                )
-              );
-            }}
-          />
+          <SnapshotFriendlyStylesProvider>
+            <DialogForm
+              {...props}
+              renderFields={(...args) => {
+                return (
+                  props.renderFields(...args) ?? (
+                    <div>{prettyFormat.format(args)}</div>
+                  )
+                );
+              }}
+            />
+          </SnapshotFriendlyStylesProvider>
         </TestApiProvider>,
       );
 
