@@ -4,4 +4,6 @@ export {
   AlbViewPage,
   DeliveryProjectViewPage,
   DeliveryProgrammeViewPage,
+  EntityPageManageProgrammeAdminContent,
 } from './plugin';
+export * from './components';

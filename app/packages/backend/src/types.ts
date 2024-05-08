@@ -1,15 +1,15 @@
-import { Logger } from 'winston';
-import { Config } from '@backstage/config';
-import {
+import type { Logger } from 'winston';
+import type { Config } from '@backstage/config';
+import type {
   PluginCacheManager,
   PluginDatabaseManager,
   PluginEndpointDiscovery,
   TokenManager,
   UrlReader,
 } from '@backstage/backend-common';
-import { PluginTaskScheduler } from '@backstage/backend-tasks';
-import { PermissionEvaluator } from '@backstage/plugin-permission-common';
-import { IdentityApi } from '@backstage/plugin-auth-node';
+import type { PluginTaskScheduler } from '@backstage/backend-tasks';
+import type { PermissionEvaluator } from '@backstage/plugin-permission-common';
+import type { IdentityApi } from '@backstage/plugin-auth-node';
 
 export type PluginEnvironment = {
   logger: Logger;

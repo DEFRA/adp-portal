@@ -1,8 +1,13 @@
-import { ArmsLengthBodyApi } from './AlbApi';
-import { ArmsLengthBody } from '@internal/plugin-adp-common';
+import type { ArmsLengthBodyApi } from './AlbApi';
+import type {
+  ArmsLengthBody,
+  CreateArmsLengthBodyRequest,
+  UpdateArmsLengthBodyRequest,
+} from '@internal/plugin-adp-common';
 
-import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
+import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
+import { ValidationError } from '../../../utils';
 
 export class ArmsLengthBodyClient implements ArmsLengthBodyApi {
   private discoveryApi: DiscoveryApi;
@@ -30,7 +35,9 @@ export class ArmsLengthBodyClient implements ArmsLengthBodyApi {
     }
   }
 
-  async createArmsLengthBody(data: any): Promise<ArmsLengthBody[]> {
+  async createArmsLengthBody(
+    data: CreateArmsLengthBodyRequest,
+  ): Promise<ArmsLengthBody[]> {
     const url = await this.getApiUrl();
 
     const response = await this.fetchApi.fetch(url, {
@@ -41,14 +48,17 @@ export class ArmsLengthBodyClient implements ArmsLengthBodyApi {
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      throw await ResponseError.fromResponse(response);
-    }
+    if (response.ok) return await response.json();
 
-    return response.json();
+    if (response.status === 400)
+      throw new ValidationError((await response.json()).errors);
+
+    throw await ResponseError.fromResponse(response);
   }
 
-  async updateArmsLengthBody(data: any): Promise<ArmsLengthBody[]> {
+  async updateArmsLengthBody(
+    data: UpdateArmsLengthBodyRequest,
+  ): Promise<ArmsLengthBody[]> {
     const url = await this.getApiUrl();
 
     const response = await this.fetchApi.fetch(url, {
@@ -59,25 +69,27 @@ export class ArmsLengthBodyClient implements ArmsLengthBodyApi {
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      throw await ResponseError.fromResponse(response);
-    }
+    if (response.ok) return await response.json();
 
-    const updatedData: ArmsLengthBody[] = await response.json();
-    return updatedData;
+    if (response.status === 400)
+      throw new ValidationError((await response.json()).errors);
+
+    throw await ResponseError.fromResponse(response);
   }
 
-  async getArmsLengthBodyNames(): Promise<Record<string, string>> { 
+  async getArmsLengthBodyNames(): Promise<Record<string, string>> {
     try {
-      const albNamesUrl = `${await this.discoveryApi.getBaseUrl('adp')}/armslengthbodynames`;
-  
+      const albNamesUrl = `${await this.discoveryApi.getBaseUrl(
+        'adp',
+      )}/armslengthbodynames`;
+
       const response = await this.fetchApi.fetch(albNamesUrl);
       if (!response.ok) {
         throw await ResponseError.fromResponse(response);
       }
       return response.json();
     } catch (error) {
-      throw new Error(`Failed to fetch arms length bodies`); 
+      throw new Error(`Failed to fetch arms length bodies`);
     }
   }
 }

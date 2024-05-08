@@ -1,41 +1,34 @@
 import { useState, useEffect } from 'react';
-import { ArmsLengthBodyClient } from '../components/ALB/api/AlbClient';
-import {
-  useApi,
-  discoveryApiRef,
-  fetchApiRef,
-  errorApiRef,
-} from '@backstage/core-plugin-api';
+import { useApi, errorApiRef } from '@backstage/core-plugin-api';
+import { armsLengthBodyApiRef } from '../components/ALB/api';
 
 type ArmsLengthBodyListOptions = {
   label: string;
   value: string;
 };
 
-export const useArmsLengthBodyList = (): { label: string; value: string }[]  => {
+export const useArmsLengthBodyList = (): { label: string; value: string }[] => {
   const [options, setOptions] = useState<ArmsLengthBodyListOptions[]>([]);
 
-  const discoveryApi = useApi(discoveryApiRef);
-  const fetchApi = useApi(fetchApiRef);
   const errorApi = useApi(errorApiRef);
+  const client = useApi(armsLengthBodyApiRef);
 
   useEffect(() => {
-    const albClient = new ArmsLengthBodyClient(discoveryApi, fetchApi);
-    const fetchArmsLengthBodiesList = async () => {
+    (async () => {
       try {
-        const bodies = await albClient.getArmsLengthBodyNames();
-          const formattedBodies = Object.entries(bodies).map(([value, label]) => ({
+        const bodies = await client.getArmsLengthBodyNames();
+        const formattedBodies = Object.entries(bodies).map(
+          ([value, label]) => ({
             label,
             value,
-          }));
+          }),
+        );
         setOptions(formattedBodies);
       } catch (e: any) {
         errorApi.post(e);
       }
-    };
-
-    fetchArmsLengthBodiesList();
-  }, [discoveryApi, fetchApi, errorApi]);
+    })();
+  }, [client, errorApi]);
 
   return options;
 };

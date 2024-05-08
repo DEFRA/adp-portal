@@ -1,288 +1,278 @@
 import React from 'react';
-import { act, fireEvent, waitFor } from '@testing-library/react';
+
+import { Button } from '@material-ui/core';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-
+import type { ArmsLengthBodyApi } from './api';
+import { armsLengthBodyApiRef } from './api';
+import type { ErrorApi } from '@backstage/core-plugin-api';
+import { errorApiRef } from '@backstage/core-plugin-api';
 import { AlbViewPageComponent } from './AlbViewPageComponent';
-import {
-  alertApiRef,
-  errorApiRef,
-  discoveryApiRef,
-  fetchApiRef,
-} from '@backstage/core-plugin-api';
-import {
-  PermissionApi,
-  permissionApiRef,
-  usePermission,
-} from '@backstage/plugin-permission-react';
-import { AuthorizeResult } from '@backstage/plugin-permission-common';
-const mockErrorApi = { post: jest.fn() };
-const mockDiscoveryApi = { getBaseUrl: jest.fn() };
-const mockFetchApi = { fetch: jest.fn() };
-const mockAlertApi = { post: jest.fn() };
+import { waitFor } from '@testing-library/react';
+import type { ArmsLengthBody } from '@internal/plugin-adp-common';
+import type * as EditAlbButtonModule from './EditAlbButton';
+import type * as CreateAlbButtonModule from './CreateAlbButton';
+import { SnapshotFriendlyStylesProvider } from '../../utils';
 
-const mockAuthorize = jest
-  .fn()
-  .mockImplementation(async () => ({ result: AuthorizeResult.ALLOW }));
-const permissionApi: Partial<PermissionApi> = { authorize: mockAuthorize };
+const EditAlbButton: jest.MockedFn<
+  (typeof EditAlbButtonModule)['EditAlbButton']
+> = jest.fn();
+const CreateAlbButton: jest.MockedFn<
+  (typeof CreateAlbButtonModule)['CreateAlbButton']
+> = jest.fn();
 
-jest.mock('@backstage/plugin-permission-react', () => ({
-  ...jest.requireActual('@backstage/plugin-permission-react'),
-  usePermission: jest.fn().mockReturnValue({ allowed: true }),
-}));
+beforeEach(() => {
+  jest.spyOn(global.Math, 'random').mockReturnValue(0);
 
-const mockTableData = [
-  {
-    id: '1',
-    title: 'ALB 1',
-    alias: 'ALB1',
-    description: 'Description 1',
-    url: 'http://alb1.com',
-    created_at: '2021-01-01T00:00:00Z',
-    updated_at: '2021-01-01T00:00:00Z',
-  },
-  {
-    id: '2',
-    title: 'ALB 2',
-    alias: 'ALB2',
-    description: 'Description 2',
-    url: 'http://alb2.com',
-    created_at: '2021-01-02T00:00:00Z',
-    updated_at: '2021-01-02T00:00:00Z',
-  },
-];
+  CreateAlbButton.mockImplementation(({ onCreated, ...props }) => (
+    <Button {...props} onClick={onCreated} />
+  ));
+  EditAlbButton.mockImplementation(({ armsLengthBody, onEdited, ...props }) => (
+    <div>
+      {JSON.stringify(noTableData(armsLengthBody))}
+      <Button {...props} onClick={onEdited} />
+    </div>
+  ));
+});
 
-const mockGetArmsLengthBodies = jest.fn();
-const mockUpdateArmsLengthBody = jest.fn().mockResolvedValue({});
-jest.mock('./api/AlbClient', () => ({
-  ArmsLengthBodyClient: jest.fn().mockImplementation(() => ({
-    getArmsLengthBodies: mockGetArmsLengthBodies,
-    updateArmsLengthBody: mockUpdateArmsLengthBody,
-  })),
-}));
+afterEach(() => {
+  jest.spyOn(global.Math, 'random').mockRestore();
+  jest.resetAllMocks();
+});
 
-describe('AlbViewPageComponent', () => {
-  beforeEach(() => {
-    mockGetArmsLengthBodies.mockClear();
-    mockUpdateArmsLengthBody.mockClear();
-    mockAuthorize.mockClear();
-    (usePermission as jest.Mock).mockReturnValue({ allowed: true });
-  });
+describe('ArmsLengthBodyViewPageComponent', () => {
+  function setup() {
+    const mockErrorApi: jest.Mocked<ErrorApi> = {
+      error$: jest.fn(),
+      post: jest.fn(),
+    };
+    const mockArmsLengthBodyApi: jest.Mocked<ArmsLengthBodyApi> = {
+      createArmsLengthBody: jest.fn(),
+      getArmsLengthBodies: jest.fn(),
+      updateArmsLengthBody: jest.fn(),
+      getArmsLengthBodyNames: jest.fn(),
+    };
 
-  const element = (
-    <TestApiProvider
-      apis={[
-        [alertApiRef, mockAlertApi],
-        [errorApiRef, mockErrorApi],
-        [discoveryApiRef, mockDiscoveryApi],
-        [fetchApiRef, mockFetchApi],
-        [permissionApiRef, permissionApi],
-      ]}
-    >
-      <AlbViewPageComponent />
-    </TestApiProvider>
-  );
-  const render = async () => renderInTestApp(element);
+    return {
+      mockErrorApi,
+      mockArmsLengthBodyApi,
+      async render() {
+        const result = await renderInTestApp(
+          <TestApiProvider
+            apis={[
+              [errorApiRef, mockErrorApi],
+              [armsLengthBodyApiRef, mockArmsLengthBodyApi],
+            ]}
+          >
+            <SnapshotFriendlyStylesProvider>
+              <AlbViewPageComponent />
+            </SnapshotFriendlyStylesProvider>
+          </TestApiProvider>,
+        );
 
-  afterEach(() => {
-    mockGetArmsLengthBodies.mockReset();
-  });
+        await waitFor(() => {
+          expect(
+            result.getByText('Azure Development Platform: Onboarding'),
+          ).toBeInTheDocument();
+        });
 
-  it('fetches and displays arms length bodies in the table upon loading', async () => {
-    mockGetArmsLengthBodies.mockResolvedValue(mockTableData);
+        return result;
+      },
+    };
+  }
+
+  it('Should render the page with many projects correctly', async () => {
+    // arrange
+    const { render, mockArmsLengthBodyApi, mockErrorApi } = setup();
+    const projects = createArmsLengthBodys(17);
+
+    mockArmsLengthBodyApi.getArmsLengthBodies.mockResolvedValueOnce(projects);
+
+    // act
     const rendered = await render();
 
-    await waitFor(() => {
-      expect(rendered.getByText('ALB 1')).toBeInTheDocument();
-      expect(rendered.getByText('ALB 2')).toBeInTheDocument();
-    });
+    // assert
+    expect(rendered.baseElement).toMatchSnapshot();
+    expect(mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls).toMatchObject([
+      [],
+    ]);
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    assertEditArmsLengthBodyButtonCalls(projects.slice(0, 5));
   });
 
-  it('should throw error when albClient throws error', async () => {
-    mockGetArmsLengthBodies.mockImplementation(() => {
-      throw new Error('Cannot fetch ALB');
-    });
+  it('Should render the page with no projects correctly', async () => {
+    // arrange
+    const { render, mockArmsLengthBodyApi, mockErrorApi } = setup();
+    mockArmsLengthBodyApi.getArmsLengthBodies.mockResolvedValueOnce([]);
 
+    // act
     const rendered = await render();
 
-    await waitFor(() => {
+    // assert
+    expect(rendered.baseElement).toMatchSnapshot();
+    expect(mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls).toMatchObject([
+      [],
+    ]);
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    expect(EditAlbButton.mock.calls).toMatchObject([]);
+  });
+
+  it('Should render the page when the projects fail to load correctly', async () => {
+    // arrange
+    const { render, mockArmsLengthBodyApi, mockErrorApi } = setup();
+    const error = new Error('My error');
+    mockArmsLengthBodyApi.getArmsLengthBodies.mockRejectedValueOnce(error);
+
+    // act
+    const rendered = await render();
+
+    // assert
+    expect(rendered.baseElement).toMatchSnapshot();
+    expect(mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls).toMatchObject([
+      [],
+    ]);
+    expect(mockErrorApi.post.mock.calls).toMatchObject([
+      [
+        {
+          message: 'Error: My error',
+          name: 'Error while getting the list of arms length bodies.',
+          stack: undefined,
+        },
+      ],
+    ]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    expect(EditAlbButton.mock.calls).toMatchObject([]);
+  });
+
+  it('Should refresh when a project is created', async () => {
+    // arrange
+    const { render, mockArmsLengthBodyApi, mockErrorApi } = setup();
+    const projects = createArmsLengthBodys(1);
+    mockArmsLengthBodyApi.getArmsLengthBodies
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce(projects);
+
+    // act
+    const rendered = await render();
+
+    expect(rendered.baseElement).toMatchSnapshot('initial load');
+    expect(mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls).toMatchObject([
+      [],
+    ]);
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    expect(EditAlbButton.mock.calls).toMatchObject([]);
+
+    rendered.getByTestId('alb-add-button').click();
+
+    await waitFor(() =>
       expect(
-        rendered.findByText('Arms Length Bodies'),
-      ).resolves.toBeInTheDocument();
-      expect(mockErrorApi.post).toHaveBeenCalledWith(
-        expect.objectContaining({ message: 'Cannot fetch ALB' }),
-      );
-    });
+        mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls,
+      ).toMatchObject([[], []]),
+    );
+
+    expect(rendered.baseElement).toMatchSnapshot('after create');
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    assertEditArmsLengthBodyButtonCalls(projects);
   });
 
-  it('should open edit modal when edit button is clicked', async () => {
-    mockGetArmsLengthBodies.mockResolvedValue(mockTableData);
-    const rendered = await render();
-    act(() => {
-      fireEvent.click(rendered.getByTestId('alb-edit-button-1'));
-    });
+  it('Should refresh when a project is edited', async () => {
+    // arrange
+    const { render, mockArmsLengthBodyApi, mockErrorApi } = setup();
+    const projects = createArmsLengthBodys(2);
+    mockArmsLengthBodyApi.getArmsLengthBodies
+      .mockResolvedValueOnce(projects.slice(0, 1))
+      .mockResolvedValueOnce(projects);
 
-    await waitFor(() => {
-      expect(rendered.getByText('Edit: ALB 1')).toBeInTheDocument();
-    });
-  });
-
-  it('should close edit modal when cancel button is clicked', async () => {
-    mockGetArmsLengthBodies.mockResolvedValue(mockTableData);
-    const rendered = await render();
-    act(() => {
-      fireEvent.click(rendered.getByTestId('alb-edit-button-1'));
-    });
-
-    act(() => {
-      fireEvent.click(rendered.getByTestId('actions-modal-cancel-button'));
-    });
-
-    await waitFor(() => {
-      expect(rendered.queryByText('Edit: ALB 1')).not.toBeInTheDocument();
-    });
-  });
-
-  it('should open add modal when add button is clicked', async () => {
-    mockGetArmsLengthBodies.mockResolvedValue(mockTableData);
+    // act
     const rendered = await render();
 
-    act(() => {
-      fireEvent.click(rendered.getByTestId('create-alb-button'));
-    });
+    expect(rendered.baseElement).toMatchSnapshot('initial load');
+    expect(mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls).toMatchObject([
+      [],
+    ]);
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    assertEditArmsLengthBodyButtonCalls(projects.slice(0, 1));
 
-    await waitFor(() => {
-      expect(rendered.getByText('Create:')).toBeInTheDocument();
-    });
-  });
+    rendered.getByTestId('alb-edit-button-0').click();
 
-  it('should update the item when update button is clicked', async () => {
-    mockGetArmsLengthBodies.mockResolvedValue(mockTableData);
-    const updatedTableData = [
-      {
-        id: '1',
-        title: 'ALB 1 edited',
-        alias: 'ALB1',
-        description: 'Description 1',
-        url: 'http://alb1.com',
-        created_at: '2021-01-01T00:00:00Z',
-        updated_at: '2021-01-01T00:00:00Z',
-      },
-      {
-        id: '2',
-        title: 'ALB 2',
-        alias: 'ALB2',
-        description: 'Description 2',
-        url: 'http://alb2.com',
-        created_at: '2021-01-02T00:00:00Z',
-        updated_at: '2021-01-02T00:00:00Z',
-      },
-    ];
-    mockUpdateArmsLengthBody.mockResolvedValue(updatedTableData);
-    const rendered = await render();
-    act(() => {
-      fireEvent.click(rendered.getByTestId('alb-edit-button-1'));
-    });
+    await waitFor(() =>
+      expect(
+        mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls,
+      ).toMatchObject([[], []]),
+    );
 
-    act(() => {
-      fireEvent.change(rendered.getByLabelText('Title'), {
-        target: { value: 'ALB 1 edited' },
-      });
-    });
-
-    act(() => {
-      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
-    });
-    mockGetArmsLengthBodies.mockResolvedValue(updatedTableData);
-
-    await waitFor(() => {
-      expect(rendered.queryByText('Edit: ALB 1')).not.toBeInTheDocument();
-      expect(rendered.queryByText('ALB 1 edited')).toBeInTheDocument();
-    });
-  });
-
-  it('should not update the item when update button is clicked and has a non-unique title', async () => {
-    mockGetArmsLengthBodies.mockResolvedValue(mockTableData);
-    const updatedTableData = [
-      {
-        id: '1',
-        title: 'ALB 2',
-        alias: 'ALB1',
-        description: 'Description 1',
-        url: 'http://alb1.com',
-        created_at: '2021-01-01T00:00:00Z',
-      },
-      {
-        id: '2',
-        title: 'ALB 2',
-        alias: 'ALB2',
-        description: 'Description 2',
-        url: 'http://alb2.com',
-        created_at: '2021-01-02T00:00:00Z',
-      },
-    ];
-    mockUpdateArmsLengthBody.mockResolvedValue(updatedTableData);
-    const rendered = await render();
-    act(() => {
-      fireEvent.click(rendered.getByTestId('alb-edit-button-1'));
-    });
-
-    act(() => {
-      fireEvent.change(rendered.getByLabelText('Title'), {
-        target: { value: 'ALB 2' },
-      });
-    });
-
-    act(() => {
-      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
-    });
-    mockGetArmsLengthBodies.mockResolvedValue(updatedTableData);
-
-    await waitFor(() => {
-      expect(rendered.queryByText('Edit: ALB 1')).toBeInTheDocument();
-      expect(mockAlertApi.post).toHaveBeenCalledTimes(1);
-      expect(mockErrorApi.post).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  it('should call errorApi when update fails', async () => {
-    mockGetArmsLengthBodies.mockResolvedValue(mockTableData);
-    const updatedTableData = [
-      {
-        id: '1',
-        title: 'ALB 1',
-        alias: 'ALB1',
-        description: 'Description 1',
-        url: 'http://alb1.com',
-        created_at: '2021-01-01T00:00:00Z',
-      },
-      {
-        id: '2',
-        title: 'ALB 2',
-        alias: 'ALB2',
-        description: 'Description 2',
-        url: 'http://alb2.com',
-        created_at: '2021-01-02T00:00:00Z',
-      },
-    ];
-    mockUpdateArmsLengthBody.mockRejectedValue(new Error('Update failed'));
-    const rendered = await render();
-    act(() => {
-      fireEvent.click(rendered.getByTestId('alb-edit-button-1'));
-    });
-
-    act(() => {
-      fireEvent.change(rendered.getByLabelText('Title'), {
-        target: { value: 'ALB 2' },
-      });
-    });
-
-    act(() => {
-      fireEvent.click(rendered.getByTestId('actions-modal-update-button'));
-    });
-    mockGetArmsLengthBodies.mockResolvedValue(updatedTableData);
-
-    await waitFor(() => {
-      expect(mockErrorApi.post).toHaveBeenCalledTimes(1);
-    });
+    expect(rendered.baseElement).toMatchSnapshot('after edit');
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
+    expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
+    assertEditArmsLengthBodyButtonCalls([projects[0], ...projects]);
   });
 });
+
+jest.mock(
+  './EditAlbButton',
+  () =>
+    ({
+      get EditAlbButton() {
+        return EditAlbButton;
+      },
+    } satisfies typeof EditAlbButtonModule),
+);
+
+jest.mock(
+  './CreateAlbButton',
+  () =>
+    ({
+      get CreateAlbButton() {
+        return CreateAlbButton;
+      },
+    } satisfies typeof CreateAlbButtonModule),
+);
+
+function noTableData(value: unknown) {
+  if (typeof value !== 'object' || value === null) return value;
+  const { tableData, ...result } = value as Record<string, unknown>;
+  return result;
+}
+
+function assertEditArmsLengthBodyButtonCalls(projects: ArmsLengthBody[]) {
+  expect(
+    EditAlbButton.mock.calls
+      .map(([{ armsLengthBody, onEdited, ...props }, ...rest]) => [
+        { ...props, armsLengthBody: noTableData(armsLengthBody) },
+        ...rest,
+      ])
+      .slice(-projects.length),
+  ).toMatchObject(
+    projects.map(p => [
+      {
+        children: 'Edit',
+        color: 'default',
+        'data-testid': `alb-edit-button-${p.id}`,
+        variant: 'contained',
+        armsLengthBody: p,
+      },
+      {},
+    ]),
+  );
+}
+
+function createArmsLengthBodys(count: number) {
+  return [...new Array(count)].map<ArmsLengthBody>((_, i) => ({
+    id: i.toString(),
+    name: `project-${i}`,
+    title: `Project ${i}`,
+    created_at: new Date(0),
+    creator: 'me',
+    description: 'My cool arms length body',
+    owner: 'not me',
+    updated_at: new Date(0),
+    alias: `ALB ${i}`,
+    children: [],
+    updated_by: 'Me',
+    url: 'https://test.com',
+  }));
+}

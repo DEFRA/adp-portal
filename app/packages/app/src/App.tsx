@@ -39,7 +39,8 @@ import {
   catalogLocationCreatePermission,
 } from '@backstage/plugin-catalog-common/alpha';
 
-import { IconComponent, microsoftAuthApiRef } from '@backstage/core-plugin-api';
+import type { IconComponent } from '@backstage/core-plugin-api';
+import { microsoftAuthApiRef } from '@backstage/core-plugin-api';
 
 import LightIcon from '@material-ui/icons/WbSunnyRounded';
 import NightIcon from '@material-ui/icons/Brightness2Rounded';
@@ -59,10 +60,12 @@ import {
 import { FluxRuntimePage } from '@weaveworksoss/backstage-plugin-flux';
 
 import styles from 'style-loader!css-loader?{"modules": {"auto": true}}!sass-loader?{"sassOptions": {"quietDeps": true}}!./style.module.scss';
-import { AdpPage } from '@internal/plugin-adp';
-import { AlbViewPageComponent } from '@internal/plugin-adp/src/components/ALB/AlbViewPageComponent';
-import { DeliveryProgrammeViewPageComponent } from '@internal/plugin-adp/src/components/DeliveryProgramme/DeliveryProgrammeViewPageComponent';
-import { DeliveryProjectViewPageComponent } from '@internal/plugin-adp/src/components/DeliveryProject/DeliveryProjectViewPageComponent';
+import {
+  AdpPage,
+  AlbViewPageComponent,
+  DeliveryProgrammeViewPageComponent,
+  DeliveryProjectViewPageComponent,
+} from '@internal/plugin-adp';
 
 const lightTheme = createUnifiedTheme({
   palette: {
@@ -82,6 +85,7 @@ const lightTheme = createUnifiedTheme({
     link: styles.linkColour,
     linkHover: styles.linkHoverColour,
     errorText: styles.errorColour,
+    contrastThreshold: 4.5,
   },
   defaultPageTheme: 'home',
   pageTheme: {
@@ -126,6 +130,10 @@ const lightTheme = createUnifiedTheme({
 const darkTheme = createUnifiedTheme({
   palette: {
     ...palettes.dark,
+    background: {
+      default: styles.darkBackground,
+      paper: styles.darkPaper,
+    },
     navigation: {
       background: styles.darkThemeNav,
       indicator: styles.primaryColour,
@@ -138,6 +146,7 @@ const darkTheme = createUnifiedTheme({
     link: styles.linkColour,
     linkHover: styles.linkHoverColour,
     errorText: styles.errorColour,
+    contrastThreshold: 4.5,
   },
   defaultPageTheme: 'home',
   pageTheme: {
@@ -222,16 +231,12 @@ const routes = (
   <FlatRoutes>
     <Route path="/" element={<Navigate to="catalog" />} />
     <Route path="/catalog" element={<CatalogIndexPage />} />
-    <Route path="/alb" element={<AlbViewPageComponent />} />
-    <Route path="/deliveryprogramme" element={<DeliveryProgrammeViewPageComponent />} />
-    <Route path="/deliveryproject" element={<DeliveryProjectViewPageComponent />} />
     <Route
       path="/catalog/:namespace/:kind/:name"
       element={<CatalogEntityPage />}
     >
       {entityPage}
     </Route>
-    {/* <Route path="/create" element={<ScaffolderPage />} /> */}
     <Route
       path="/create"
       element={
@@ -285,7 +290,19 @@ const routes = (
       </TechDocsAddons>
     </Route>
     <Route path="/flux-runtime" element={<FluxRuntimePage />} />
-    <Route path="/adp" element={<AdpPage />} />
+    <Route path="/onboarding" element={<AdpPage />} />
+    <Route
+      path="/onboarding/arms-length-bodies"
+      element={<AlbViewPageComponent />}
+    />
+    <Route
+      path="/onboarding/delivery-programmes"
+      element={<DeliveryProgrammeViewPageComponent />}
+    />
+    <Route
+      path="/onboarding/delivery-projects"
+      element={<DeliveryProjectViewPageComponent />}
+    />
   </FlatRoutes>
 );
 

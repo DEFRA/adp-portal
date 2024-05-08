@@ -1,0 +1,293 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeliveryProgrammeAdminFormFields should render all fields correctly 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="aadEntityRefId"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="aadEntityRefId"
+        id="aadEntityRefId-label"
+      >
+        Select User
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <div
+          aria-haspopup="listbox"
+          aria-labelledby="aadEntityRefId-label aadEntityRefId"
+          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="aadEntityRefId"
+          role="button"
+          tabindex="0"
+        >
+          <span>
+            ​
+          </span>
+        </div>
+        <input
+          aria-describedby="aadEntityRefId-helper-text"
+          aria-hidden="true"
+          aria-required="true"
+          class="MuiSelect-nativeInput"
+          name="aadEntityRefId"
+          tabindex="-1"
+          value=""
+        />
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M7 10l5 5 5-5z"
+          />
+        </svg>
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled-3"
+          >
+            <span>
+              Select User
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="aadEntityRefId-helper-text"
+      >
+        Select a user to assign Admin permissions for this delivery programme
+      </p>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`DeliveryProgrammeAdminFormFields should render default fields 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="aadEntityRefId"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="aadEntityRefId"
+        id="aadEntityRefId-label"
+      >
+        Select User
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <div
+          aria-haspopup="listbox"
+          aria-labelledby="aadEntityRefId-label aadEntityRefId"
+          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="aadEntityRefId"
+          role="button"
+          tabindex="0"
+        >
+          <span>
+            ​
+          </span>
+        </div>
+        <input
+          aria-describedby="aadEntityRefId-helper-text"
+          aria-hidden="true"
+          aria-required="true"
+          class="MuiSelect-nativeInput"
+          name="aadEntityRefId"
+          tabindex="-1"
+          value="user-1234"
+        />
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M7 10l5 5 5-5z"
+          />
+        </svg>
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+          >
+            <span>
+              Select User
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="aadEntityRefId-helper-text"
+      >
+        Select a user to assign Admin permissions for this delivery programme
+      </p>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`DeliveryProgrammeAdminFormFields should write values back to the form: Empty 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="aadEntityRefId"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="aadEntityRefId"
+        id="aadEntityRefId-label"
+      >
+        Select User
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <div
+          aria-haspopup="listbox"
+          aria-labelledby="aadEntityRefId-label aadEntityRefId"
+          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="aadEntityRefId"
+          role="button"
+          tabindex="0"
+        >
+          <span>
+            ​
+          </span>
+        </div>
+        <input
+          aria-describedby="aadEntityRefId-helper-text"
+          aria-hidden="true"
+          aria-required="true"
+          class="MuiSelect-nativeInput"
+          name="aadEntityRefId"
+          tabindex="-1"
+          value=""
+        />
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M7 10l5 5 5-5z"
+          />
+        </svg>
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled-11"
+          >
+            <span>
+              Select User
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="aadEntityRefId-helper-text"
+      >
+        Select a user to assign Admin permissions for this delivery programme
+      </p>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`DeliveryProgrammeAdminFormFields should write values back to the form: User selected 1`] = `
+<body
+  style=""
+>
+  <div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="aadEntityRefId"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled Mui-focused Mui-focused"
+        data-shrink="true"
+        for="aadEntityRefId"
+        id="aadEntityRefId-label"
+      >
+        Select User
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <div
+          aria-haspopup="listbox"
+          aria-labelledby="aadEntityRefId-label aadEntityRefId"
+          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="aadEntityRefId"
+          role="button"
+          tabindex="0"
+        >
+          Test User 1
+        </div>
+        <input
+          aria-describedby="aadEntityRefId-helper-text"
+          aria-hidden="true"
+          aria-required="true"
+          class="MuiSelect-nativeInput"
+          name="aadEntityRefId"
+          tabindex="-1"
+          value="f8699f8d-e3d5-4822-8979-6b6bce35ff16"
+        />
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M7 10l5 5 5-5z"
+          />
+        </svg>
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled-11 PrivateNotchedOutline-legendNotched-12"
+          >
+            <span>
+              Select User
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled Mui-focused MuiFormHelperText-marginDense"
+        id="aadEntityRefId-helper-text"
+      >
+        Select a user to assign Admin permissions for this delivery programme
+      </p>
+    </div>
+  </div>
+</body>
+`;

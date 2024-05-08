@@ -1,2 +1,2 @@
-export { DeliveryProgrammeClient } from './DeliveryProgrammeClient';
-export type { DeliveryProgrammeApi } from './DeliveryProgrammeApi';
+export * from './DeliveryProgrammeClient';
+export * from './DeliveryProgrammeApi';

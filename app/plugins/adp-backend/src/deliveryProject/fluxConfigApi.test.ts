@@ -2,7 +2,9 @@ import { ConfigReader } from '@backstage/config';
 import { FluxConfigApi } from './fluxConfigApi';
 import { expectedProgrammeDataWithManager } from '../testData/programmeTestData';
 import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
-import fetch, { Response } from 'node-fetch';
+import type { Response } from 'node-fetch';
+import fetch from 'node-fetch';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
 
 jest.mock('node-fetch', () => jest.fn());
 const mockedFetch: jest.MockedFunction<typeof fetch> =
@@ -149,7 +151,7 @@ describe('FluxConfigApi', () => {
       mockDeliveryProgrammeStore,
     );
 
-    expect(fluxConfigApi.getFluxConfig('test-team')).rejects.toThrow(
+    await expect(fluxConfigApi.getFluxConfig('test-team')).rejects.toThrow(
       /Unexpected response from FluxConfig API/,
     );
   });
@@ -160,7 +162,7 @@ describe('FluxConfigApi', () => {
       status: 204,
     } as unknown as Response);
 
-    const deliveryProject = {
+    const deliveryProject: DeliveryProject = {
       name: 'test-project',
       id: '123-456',
       title: 'Test Project',
@@ -169,11 +171,60 @@ describe('FluxConfigApi', () => {
       delivery_project_code: '123',
       created_at: new Date(),
       updated_at: new Date(),
+      namespace: 'test-namespace',
+      service_owner: 'owner@test.com',
+      team_type: 'test',
+      ado_project: 'TEST-ADO',
+      delivery_programme_code: 'ABC',
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
     const fluxConfigApi = new FluxConfigApi(
       mockConfig,
+      mockDeliveryProgrammeStore,
+    );
+    await fluxConfigApi.createFluxConfig(deliveryProject);
+
+    expect(fetch).toHaveBeenCalled();
+  });
+
+  it('should create Flux team configuration with config variables', async () => {
+    mockedFetch.mockResolvedValue({
+      ok: true,
+      status: 204,
+    } as unknown as Response);
+
+    const deliveryProject: DeliveryProject = {
+      name: 'test-project',
+      id: '123-456',
+      title: 'Test Project',
+      description: 'Test Project',
+      delivery_programme_id: '123',
+      delivery_project_code: '123',
+      created_at: new Date(),
+      updated_at: new Date(),
+      namespace: 'test-namespace',
+      service_owner: 'owner@test.com',
+      team_type: 'test',
+      ado_project: 'TEST-ADO',
+      delivery_programme_code: 'ABC',
+    };
+
+    const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
+    const fluxConfigApi = new FluxConfigApi(
+      new ConfigReader({
+        adp: {
+          fluxOnboarding: {
+            apiBaseUrl: 'https://portal-api/FluxOnboarding',
+            defaultConfigVariables: [
+              {
+                key: 'MyConfigVariable',
+                value: 'MyConfigValue',
+              },
+            ],
+          },
+        },
+      }),
       mockDeliveryProgrammeStore,
     );
     await fluxConfigApi.createFluxConfig(deliveryProject);
@@ -188,7 +239,7 @@ describe('FluxConfigApi', () => {
       statusText: 'Something went wrong',
     } as unknown as Response);
 
-    const deliveryProject = {
+    const deliveryProject: DeliveryProject = {
       name: 'test-project',
       id: '123-456',
       title: 'Test Project',
@@ -197,6 +248,11 @@ describe('FluxConfigApi', () => {
       delivery_project_code: '123',
       created_at: new Date(),
       updated_at: new Date(),
+      namespace: 'test-namespace',
+      service_owner: 'owner@test.com',
+      team_type: 'test',
+      ado_project: 'TEST-ADO',
+      delivery_programme_code: 'ABC',
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
@@ -205,8 +261,8 @@ describe('FluxConfigApi', () => {
       mockDeliveryProgrammeStore,
     );
 
-    expect(fluxConfigApi.createFluxConfig(deliveryProject)).rejects.toThrow(
-      /Unexpected response from FluxConfig API/,
-    );
+    await expect(
+      fluxConfigApi.createFluxConfig(deliveryProject),
+    ).rejects.toThrow(/Unexpected response from FluxConfig API/);
   });
 });

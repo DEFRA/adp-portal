@@ -1,5 +1,5 @@
-import { Config } from '@backstage/config';
-import { ScmIntegrationRegistry } from '@backstage/integration';
+import type { Config } from '@backstage/config';
+import type { ScmIntegrationRegistry } from '@backstage/integration';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { InputError } from '@backstage/errors';
 import { AzureDevOpsApi } from './AzureDevOpsApi';

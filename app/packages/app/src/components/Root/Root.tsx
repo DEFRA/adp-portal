@@ -1,4 +1,5 @@
-import React, { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import ExtensionIcon from '@material-ui/icons/Extension';
@@ -77,7 +78,7 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarScrollWrapper>
           {/* <SidebarItem icon={FluxIcon} to="flux-runtime" text="Flux Runtime" /> */}
           <SidebarItem icon={MapIcon} to="tech-radar" text="Tech Radar" />
-          <SidebarItem icon={BusinessIcon} to="adp" text="ADP Onboarding" />
+          <SidebarItem icon={BusinessIcon} to="onboarding" text="ADP Onboarding" />
         </SidebarScrollWrapper>
       </SidebarGroup>
       <SidebarSpace />

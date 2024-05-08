@@ -6,7 +6,9 @@ jest.mock('@backstage/core-plugin-api', () => ({
 
 describe('DeliveryProjectApiRef', () => {
   it('should create an API reference with the correct id', async () => {
-    const { DeliveryProjectApiRef } = await import('./DeliveryProjectApi');
+    const { deliveryProjectApiRef: DeliveryProjectApiRef } = await import(
+      './DeliveryProjectApi'
+    );
     expect(createApiRef).toHaveBeenCalledWith({
       id: 'plugin.adp.deliveryprojectapi',
     });

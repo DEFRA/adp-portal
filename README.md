@@ -70,6 +70,7 @@ export TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_KEY=""
 export ADP_PORTAL_PLATFORM_ADMINS_GROUP=""
 export ADP_PORTAL_PROGRAMME_ADMINS_GROUP=""
 export ADP_PORTAL_USERS_GROUP=""
+export ADP_PORTAL_USERS_GROUP_PREFIX=""
 
 export SND1_CLUSTER_NAME=""
 export SND1_CLUSTER_API_SERVER_ADDRESS=""
@@ -77,6 +78,8 @@ export SND2_CLUSTER_NAME=""
 export SND2_CLUSTER_API_SERVER_ADDRESS=""
 export SND3_CLUSTER_NAME=""
 export SND3_CLUSTER_API_SERVER_ADDRESS=""
+
+export TZ=utc
 ```
 
 To convert a GitHub private key into a format that can be used in the `GITHUB_PRIVATE_KEY` environment variable use one of the following scripts:
@@ -147,4 +150,4 @@ To maintain a consistent code style throughout the project, please adhere to the
 
 ## License
 
-Include information about the project's license and any relevant copyright notices. 
+Include information about the project's license and any relevant copyright notices.

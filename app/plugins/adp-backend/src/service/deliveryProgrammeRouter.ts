@@ -1,55 +1,97 @@
-import { PluginDatabaseManager, errorHandler } from '@backstage/backend-common';
+import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
-import { IdentityApi } from '@backstage/plugin-auth-node';
-import { DiscoveryApi } from '@backstage/core-plugin-api';
-import { CatalogClient } from '@backstage/catalog-client';
-import { AdpDatabase } from '../database/adpDatabase';
-import {
-  DeliveryProgrammeStore,
-  PartialDeliveryProgramme,
-} from '../deliveryProgramme/deliveryProgrammeStore';
-import {
-  DeliveryProgramme,
-  ProgrammeManager,
+import type { IdentityApi } from '@backstage/plugin-auth-node';
+import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import type {
+  CreateDeliveryProgrammeRequest,
+  UpdateDeliveryProgrammeRequest,
+  ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
-import {
-  checkForDuplicateProgrammeCode,
-  checkForDuplicateTitle,
-  getCurrentUsername,
-} from '../utils/index';
-import { ProgrammeManagerStore } from '../deliveryProgramme/deliveryProgrammeManagerStore';
-import { Entity } from '@backstage/catalog-model';
-import {
-  addProgrammeManager,
-  deleteProgrammeManager,
-} from '../service-utils/deliveryProgrammeUtils';
-import { DeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
+import { getCurrentUsername } from '../utils/index';
+import type { IDeliveryProjectStore } from '../deliveryProject';
+import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import { createParser, respond } from './util';
+import { z } from 'zod';
 
 export interface ProgrammeRouterOptions {
   logger: Logger;
   identity: IdentityApi;
-  database: PluginDatabaseManager;
-  discovery: DiscoveryApi;
+  deliveryProgrammeStore: IDeliveryProgrammeStore;
+  deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
+  deliveryProjectStore: IDeliveryProjectStore;
 }
 
-export async function createProgrammeRouter(
+const errorMapping = {
+  duplicateName: (req: { title?: string }) => ({
+    path: 'title',
+    error: {
+      message: `The name '${req.title}' is already in use. Please choose a different name.`,
+    },
+  }),
+  duplicateTitle: (req: { title?: string }) => ({
+    path: 'title',
+    error: {
+      message: `The name '${req.title}' is already in use. Please choose a different name.`,
+    },
+  }),
+  duplicateProgrammeCode: () => ({
+    path: 'delivery_programme_code',
+    error: {
+      message: `The programme code is already in use by another delivery programme.`,
+    },
+  }),
+  unknownArmsLengthBody: () => ({
+    path: 'arms_length_body_id',
+    error: {
+      message: `The arms length body does not exist.`,
+    },
+  }),
+  unknown: () => ({
+    path: 'root',
+    error: {
+      message: `An unexpected error occurred.`,
+    },
+  }),
+} as const satisfies ValidationErrorMapping;
+
+const parseCreateDeliveryProgrammeRequest =
+  createParser<CreateDeliveryProgrammeRequest>(
+    z.object({
+      title: z.string(),
+      alias: z.string().optional(),
+      description: z.string(),
+      arms_length_body_id: z.string(),
+      delivery_programme_code: z.string(),
+      url: z.string().optional(),
+    }),
+  );
+
+const parseUpdateDeliveryProgrammeRequest =
+  createParser<UpdateDeliveryProgrammeRequest>(
+    z.object({
+      id: z.string(),
+      title: z.string().optional(),
+      alias: z.string().optional(),
+      description: z.string().optional(),
+      arms_length_body_id: z.string().optional(),
+      delivery_programme_code: z.string().optional(),
+      url: z.string().optional(),
+    }),
+  );
+
+export function createProgrammeRouter(
   options: ProgrammeRouterOptions,
-): Promise<express.Router> {
-  const { logger, identity, database, discovery } = options;
-  const catalog = new CatalogClient({ discoveryApi: discovery });
-  const adpDatabase = AdpDatabase.create(database);
-  const deliveryProgrammesStore = new DeliveryProgrammeStore(
-    await adpDatabase.get(),
-  );
-  const programmeManagersStore = new ProgrammeManagerStore(
-    await adpDatabase.get(),
-  );
-  const deliveryProjectStore = new DeliveryProjectStore(
-    await adpDatabase.get(),
-  );
+): express.Router {
+  const {
+    logger,
+    identity,
+    deliveryProgrammeStore,
+    deliveryProjectStore,
+    deliveryProgrammeAdminStore,
+  } = options;
 
   const router = Router();
   router.use(express.json());
@@ -61,10 +103,10 @@ export async function createProgrammeRouter(
 
   router.get('/deliveryProgramme', async (_req, res) => {
     try {
-      const programmeData = await deliveryProgrammesStore.getAll();
+      const programmeData = await deliveryProgrammeStore.getAll();
       const projectData = await deliveryProjectStore.getAll();
       for (const programme of programmeData) {
-        let programmeChildren = [];
+        const programmeChildren = [];
         for (const project of projectData) {
           if (project.delivery_programme_id === programme.id) {
             programmeChildren.push(project.name);
@@ -83,26 +125,15 @@ export async function createProgrammeRouter(
     }
   });
 
-  router.get('/programmeManager', async (_req, res) => {
-    try {
-      const data = await programmeManagersStore.getAll();
-      res.json(data);
-    } catch (error) {
-      const deliveryProgramError = error as Error;
-      logger.error(
-        'Error in retrieving programme managers: ',
-        deliveryProgramError,
-      );
-      throw new InputError(deliveryProgramError.message);
-    }
-  });
-
   router.get('/deliveryProgramme/:id', async (_req, res) => {
     try {
-      const deliveryProgramme = await deliveryProgrammesStore.get(
+      const deliveryProgramme = await deliveryProgrammeStore.get(
         _req.params.id,
       );
-      const programmeManager = await programmeManagersStore.get(_req.params.id);
+      const programmeManager =
+        await deliveryProgrammeAdminStore.getByDeliveryProgramme(
+          _req.params.id,
+        );
       if (programmeManager && deliveryProgramme !== null) {
         deliveryProgramme.programme_managers = programmeManager;
         res.json(deliveryProgramme);
@@ -117,224 +148,20 @@ export async function createProgrammeRouter(
     }
   });
 
-  router.get('/catalogEntities', async (_req, res) => {
-    try {
-      const catalogApiResponse = await catalog.getEntities({
-        filter: {
-          kind: 'User',
-        },
-        fields: [
-          'metadata.name',
-          'metadata.annotations.graph.microsoft.com/user-id',
-          'metadata.annotations.microsoft.com/email',
-          'spec.profile.displayName',
-        ],
-      });
-      res.json(catalogApiResponse);
-    } catch (error) {
-      const deliveryProgramError = error as Error;
-      logger.error(
-        'Error in retrieving catalog entities: ',
-        deliveryProgramError,
-      );
-      throw new InputError(deliveryProgramError.message);
-    }
-  });
-
   router.post('/deliveryProgramme', async (req, res) => {
-    try {
-      if (!isDeliveryProgrammeCreateRequest(req.body)) {
-        throw new InputError('Invalid payload');
-      }
-
-      const data: DeliveryProgramme[] = await deliveryProgrammesStore.getAll();
-
-      
-      const isDuplicateTitle: boolean = await checkForDuplicateTitle(
-        data,
-        req.body.title,
-      );
-
-      
-      const isDuplicateCode: boolean = await checkForDuplicateProgrammeCode(
-        data,
-        req.body.delivery_programme_code,
-      );
-
-      if (isDuplicateTitle) {
-        res
-          .status(406)
-          .json({ error: 'Delivery Programme title already exists' });
-        return; 
-      }
-
-      if (isDuplicateCode) {
-        res
-          .status(406)
-          .json({ error: 'Delivery Programme code already exists' });
-        return; 
-      }
-      const author = await getCurrentUsername(identity, req);
-      const deliveryProgramme = await deliveryProgrammesStore.add(
-        req.body,
-        author,
-      );
-      const programmeManagers = req.body.programme_managers;
-      if (programmeManagers !== undefined) {
-        const catalogEntities = await catalog.getEntities({
-          filter: {
-            kind: 'User',
-          },
-          fields: [
-            'metadata.name',
-            'metadata.annotations.graph.microsoft.com/user-id',
-            'metadata.annotations.microsoft.com/email',
-            'spec.profile.displayName',
-          ],
-        });
-
-        const catalogEntity: Entity[] = catalogEntities.items;
-
-        addProgrammeManager(
-          programmeManagers,
-          deliveryProgramme.id,
-          deliveryProgramme,
-          programmeManagersStore,
-          catalogEntity,
-        );
-      } else {
-        req.body.programme_managers = [];
-      }
-      res.status(201).json(deliveryProgramme);
-    } catch (error) {
-      const deliveryProgramError = error as Error;
-      logger.error(
-        'Error in creating a delivery programme: ',
-        deliveryProgramError,
-      );
-      throw new InputError(deliveryProgramError.message);
-    }
+    const body = parseCreateDeliveryProgrammeRequest(req.body);
+    const creator = await getCurrentUsername(identity, req);
+    const result = await deliveryProgrammeStore.add(body, creator);
+    respond(body, res, result, errorMapping, { ok: 201 });
   });
 
   router.patch('/deliveryProgramme', async (req, res) => {
-    try {
-      const requestBody = { ...req.body };
-      delete requestBody.tableData;
-
-      if (!isDeliveryProgrammeUpdateRequest(requestBody)) {
-        throw new InputError('Invalid payload');
-      }
-
-      const allProgrammes: DeliveryProgramme[] =
-        await deliveryProgrammesStore.getAll();
-
-      const currentData = allProgrammes.find(
-        programme => programme.id === req.body.id,
-      );
-
-      const updatedTitle = requestBody?.title;
-      const updatedCode = requestBody?.delivery_programme_code;
-    
-      if (updatedTitle && updatedTitle !== currentData!.title) {
-        const isDuplicateTitle = await checkForDuplicateTitle(allProgrammes, updatedTitle);
-        if (isDuplicateTitle) {
-          return res.status(406).json({ error: 'Delivery Programme title already exists' });
-        }
-      }
-  
-      if (updatedCode && updatedCode !== currentData!.delivery_programme_code) {
-        const isDuplicateCode = await checkForDuplicateProgrammeCode(allProgrammes, updatedCode);
-        if (isDuplicateCode) {
-          return res.status(406).json({ error: 'Delivery Programme code already exists' });
-        }
-      }
-
-
-      const author = await getCurrentUsername(identity, req);
-      const deliveryProgramme = await deliveryProgrammesStore.update(
-        requestBody,
-        author,
-      );
-      const programmeManagers = req.body.programme_managers;
-      if (programmeManagers !== undefined) {
-        const existingProgrammeManagers = await programmeManagersStore.get(
-          deliveryProgramme.id,
-        );
-        const updatedManagers: ProgrammeManager[] = [];
-        for (const updatedManager of programmeManagers) {
-          if (
-            !existingProgrammeManagers.some(
-              manager =>
-                manager.aad_entity_ref_id === updatedManager.aad_entity_ref_id,
-            )
-          ) {
-            updatedManagers.push(updatedManager);
-          }
-        }
-        const catalogEntities = await catalog.getEntities({
-          filter: {
-            kind: 'User',
-          },
-          fields: [
-            'metadata.name',
-            'metadata.annotations.graph.microsoft.com/user-id',
-            'metadata.annotations.microsoft.com/email',
-            'spec.profile.displayName',
-          ],
-        });
-
-        const catalogEntity: Entity[] = catalogEntities.items;
-
-        addProgrammeManager(
-          updatedManagers,
-          deliveryProgramme.id,
-          deliveryProgramme,
-          programmeManagersStore,
-          catalogEntity,
-        );
-
-        const removedManagers: ProgrammeManager[] = [];
-
-        for (const existingManager of existingProgrammeManagers) {
-          if (
-            !programmeManagers.some(
-              (manager: ProgrammeManager) =>
-                manager.aad_entity_ref_id === existingManager.aad_entity_ref_id,
-            )
-          ) {
-            removedManagers.push(existingManager);
-          }
-        }
-
-        deleteProgrammeManager(
-          removedManagers,
-          deliveryProgramme.id,
-          programmeManagersStore,
-        );
-      }
-      res.status(200).json(deliveryProgramme);
-    } catch (error) {
-      const deliveryProgramError = error as Error;
-      logger.error(
-        'Error in updating a delivery project: ',
-        deliveryProgramError,
-      );
-      throw new InputError(deliveryProgramError.message);
-    }
+    const body = parseUpdateDeliveryProgrammeRequest(req.body);
+    const creator = await getCurrentUsername(identity, req);
+    const result = await deliveryProgrammeStore.update(body, creator);
+    respond(body, res, result, errorMapping);
   });
 
   router.use(errorHandler());
   return router;
-}
-
-function isDeliveryProgrammeCreateRequest(
-  request: Omit<DeliveryProgramme, 'id' | 'created_at'>,
-) {
-  return typeof request?.title === 'string';
-}
-
-function isDeliveryProgrammeUpdateRequest(
-  request: Omit<PartialDeliveryProgramme, 'updated_at'>,
-) {
-  return typeof request?.id === 'string';
 }

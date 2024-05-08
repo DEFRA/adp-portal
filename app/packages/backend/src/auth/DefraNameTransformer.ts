@@ -1,10 +1,8 @@
-import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
+import type * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
 
-import {  UserEntity } from '@backstage/catalog-model';
+import type {  UserEntity } from '@backstage/catalog-model';
 import {
-  normalizeEntityName
-} from '@backstage/plugin-catalog-backend-module-msgraph';
-import {
+  normalizeEntityName,
   MICROSOFT_EMAIL_ANNOTATION,
   MICROSOFT_GRAPH_USER_ID_ANNOTATION,
 } from '@backstage/plugin-catalog-backend-module-msgraph';
@@ -28,7 +26,7 @@ function createEntityFromOriginalUser(name: string, user:  MicrosoftGraph.User, 
     spec: {
       profile: {
         displayName: user.displayName!,
-        email: email!,
+        email: email,
       },
       memberOf: [],
     },
@@ -44,7 +42,7 @@ function addPhotoIfRequired(userPhoto: string | undefined, entity: UserEntity) {
   return entity;
 }
 
-function mailIsBlank(user: User) {
+function mailIsBlank(user: MicrosoftGraph.User) {
   return user.mail === undefined || user.mail?.length === 0 || user.mail === null;
 }
 
@@ -60,8 +58,8 @@ export async function defraADONameTransformer(
       return undefined;
     }
     const emailAddress  = chooseUserPrincipalIfEmailIsBlank(user);
-    const name = normalizeEntityName(emailAddress);
-    const entity = createEntityFromOriginalUser(name, user, emailAddress);
+    const name = normalizeEntityName(emailAddress!);
+    const entity = createEntityFromOriginalUser(name, user, emailAddress!);
     return addPhotoIfRequired(userPhoto, entity);
 
 }

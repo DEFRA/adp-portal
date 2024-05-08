@@ -9,6 +9,7 @@ export type DeliveryProject = {
   finance_code?: string;
   delivery_programme_id: string;
   delivery_project_users: DeliveryProjectUser[];
+  delivery_programme_code: string;
   delivery_project_code: string;
   namespace: string;
   ado_project: string;
@@ -16,16 +17,47 @@ export type DeliveryProject = {
   updated_at: Date;
   updated_by?: string;
   children?: string[];
+  github_team_visibility?: 'public' | 'private';
 };
 
+export function deliveryProjectDisplayName(project: DeliveryProject) {
+  return `${project.delivery_programme_code} ${project.title}`;
+}
+
+export type CreateDeliveryProjectRequest = {
+  title: string;
+  alias?: string;
+  description: string;
+  finance_code?: string;
+  delivery_programme_id: string;
+  delivery_project_code: string;
+  ado_project: string;
+  team_type: string;
+  service_owner: string;
+  github_team_visibility: 'public' | 'private';
+};
+
+export type UpdateDeliveryProjectRequest = {
+  id: string;
+  title?: string;
+  alias?: string;
+  description?: string;
+  finance_code?: string;
+  delivery_programme_id?: string;
+  delivery_project_code?: string;
+  ado_project?: string;
+  team_type?: string;
+  service_owner?: string;
+  github_team_visibility?: 'public' | 'private';
+};
 
 export type DeliveryProjectUser = {
   id: string;
   delivery_project_id: string;
   is_technical: boolean;
-  is_admin: boolean 
+  is_admin: boolean;
   aad_entity_ref_id: string;
   name: string;
   email: string;
-  github_username?: string 
-}
+  github_username?: string;
+};

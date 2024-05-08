@@ -7,7 +7,7 @@ function defaultComparer(x: unknown, y: unknown): boolean {
 
 type SelectedChipsRendererProps<TSelected, TOptionValue> = {
   readonly selected: TSelected;
-  readonly options: Array<{ label: string; value: TOptionValue }>;
+  readonly options: ReadonlyArray<{ label: string; value: TOptionValue }>;
   readonly comparer?: (x: TSelected, y: TOptionValue) => boolean;
 };
 
@@ -21,9 +21,7 @@ function SelectedChipsRenderer<TSelected, TOptionValue>({
   }
 
   const getLabel = (value: TSelected) => {
-    const option = options.find(option => {
-      return comparer(value, option.value);
-    });
+    const option = options.find(op => comparer(value, op.value));
     return option ? option.label : String(value);
   };
 

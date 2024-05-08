@@ -21,7 +21,7 @@ properties:
     secrets:
       - name: github-app-id
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-APP-ID
-        identity: {{userAssignedIdentity}}      
+        identity: {{userAssignedIdentity}}
       - name: github-client-id
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-CLIENT-ID
         identity: {{userAssignedIdentity}}
@@ -36,7 +36,7 @@ properties:
         identity: {{userAssignedIdentity}}
       - name: authm-tenant-id
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-AUTH-APP-REG-TENANT-ID
-        identity: {{userAssignedIdentity}}        
+        identity: {{userAssignedIdentity}}
       - name: backend-secret
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/BACKSTAGE-BACKEND-SECRET
         identity: {{userAssignedIdentity}}
@@ -81,6 +81,9 @@ properties:
         identity: {{userAssignedIdentity}}
       - name: adp-portal-users-group
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-USERS-GROUP
+        identity: {{userAssignedIdentity}}
+      - name: adp-portal-users-group-prefix
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-USERS-GROUP-PREFIX
         identity: {{userAssignedIdentity}}
       - name: backend-plugins-secret
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/BACKEND-PLUGINS-SECRET
@@ -136,6 +139,24 @@ properties:
       - name: adp-portal-api-endpoint
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-API-ENDPOINT
         identity: {{userAssignedIdentity}}
+      - name: cluster1-env
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER1-ENV
+        identity: {{userAssignedIdentity}}
+      - name: cluster2-env
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER2-ENV
+        identity: {{userAssignedIdentity}}
+      - name: cluster3-env
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER3-ENV
+        identity: {{userAssignedIdentity}}
+      - name: cluster4-env
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER4-ENV
+        identity: {{userAssignedIdentity}}
+      - name: cluster5-env
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER5-ENV
+        identity: {{userAssignedIdentity}}
+      - name: cluster6-env
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER6-ENV
+        identity: {{userAssignedIdentity}}
   template:
     containers:
       - image: {{acrName}}.azurecr.io/image/{{imageRepoName}}:{{appVersion}}
@@ -143,6 +164,8 @@ properties:
         env:
           - name: POSTGRES_PORT
             value: 5432
+          - name: TZ
+            value: utc
           - name: APP_BASE_URL
             secretRef: app-base-url
           - name: APP_BACKEND_BASE_URL
@@ -153,6 +176,8 @@ properties:
             secretRef: adp-portal-platform-admins-group
           - name: ADP_PORTAL_PROGRAMME_ADMINS_GROUP
             secretRef: adp-portal-programme-admins-group
+          - name: ADP_PORTAL_USERS_GROUP_PREFIX
+            secretRef: adp-portal-users-group-prefix
           - name: ADP_PORTAL_API_ENDPOINT
             secretRef: adp-portal-api-endpoint
           - name: ADP_PORTAL_USERS_GROUP
@@ -169,7 +194,7 @@ properties:
             secretRef: authm-client-secret
           - name: AUTH_MICROSOFT_TENANT_ID
             secretRef: authm-tenant-id
-          
+
           # Required for the Backstage Flux and Kubernetes Plugins
           - name: AZURE_CLIENT_ID
             secretRef: authm-client-id
@@ -232,7 +257,22 @@ properties:
             secretRef: prd1-cluster-name
           - name: PRD1_CLUSTER_API_SERVER_ADDRESS
             secretRef: prd1-cluster-api-server-address
-            
+          - name: CLUSTER1_ENV
+            secretRef: cluster1-env
+          - name: CLUSTER2_ENV
+            secretRef: cluster2-env
+          - name: CLUSTER3_ENV
+            secretRef: cluster3-env
+          - name: CLUSTER4_ENV
+            secretRef: cluster4-env
+          - name: CLUSTER5_ENV
+            secretRef: cluster5-env
+          - name: CLUSTER6_ENV
+            secretRef: cluster6-env
+
+          - name: ADP_PORTAL_TEMPLATE_VERSION
+            value: '1.0.1'
+
         resources:
           cpu: 0.5
           memory: 1Gi

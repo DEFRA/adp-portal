@@ -20,7 +20,7 @@ describe('rbacUtilites.isInPlatformAdminGroup', () => {
     'should return $expected for AD group $group',
     async ({backstageIdentityResponse, expected}) => {
       
-      let actual = sut.isInPlatformAdminGroup(backstageIdentityResponse)
+      const actual = sut.isInPlatformAdminGroup(backstageIdentityResponse)
 
       expect(actual).toBe(expected);
     },
@@ -40,7 +40,7 @@ describe('rbacUtilites.isInProgrammeAdminGroup', () => {
     'should return $expected for AD group $group',
     async ({backstageIdentityResponse, expected}) => {
       
-      let actual = sut.isInProgrammeAdminGroup(backstageIdentityResponse)
+      const actual = sut.isInProgrammeAdminGroup(backstageIdentityResponse)
 
       expect(actual).toBe(expected);
     },
@@ -59,7 +59,7 @@ describe('rbacUtilites.isInAdpUserGroup', () => {
     'should return $expected for AD group $group',
     async ({backstageIdentityResponse, expected}) => {
       
-      let actual = sut.isInAdpUserGroup(backstageIdentityResponse)
+      const actual = sut.isInAdpUserGroup(backstageIdentityResponse)
 
       expect(actual).toBe(expected);
     },

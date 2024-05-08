@@ -1,0 +1,1559 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AlbFormFields Should render all fields correctly 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="title"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="title"
+        id="title-label"
+      >
+        Name
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="title-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="title"
+          maxlength="100"
+          name="title"
+          type="text"
+          value=""
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Name
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="title-helper-text"
+      >
+        This must be unique
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="alias"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="alias"
+        id="alias-label"
+      >
+        Alias
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="alias-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="alias"
+          name="alias"
+          type="text"
+          value=""
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Alias
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="alias-helper-text"
+      >
+        Optional - Are there any other names this Arms Length Body is also known as?
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="url"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="url"
+        id="url-label"
+      >
+        Website
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="url-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="url"
+          name="url"
+          type="text"
+          value=""
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Website
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="url-helper-text"
+      >
+        Optional - A link to a website
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="description"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="description"
+        id="description-label"
+      >
+        Description
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-multiline MuiOutlinedInput-multiline MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <textarea
+          aria-describedby="description-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="description"
+          maxlength="200"
+          name="description"
+          rows="1"
+          style="height: 0px; overflow: hidden;"
+        />
+        <textarea
+          aria-hidden="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          readonly=""
+          style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); width: 100%;"
+          tabindex="-1"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Description
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="description-helper-text"
+      >
+        Max 200 characters
+      </p>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`AlbFormFields Should render default fields 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="title"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="title"
+        id="title-label"
+      >
+        Name
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="title-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="title"
+          maxlength="100"
+          name="title"
+          type="text"
+          value="My title"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Name
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="title-helper-text"
+      >
+        This must be unique
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="alias"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="alias"
+        id="alias-label"
+      >
+        Alias
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="alias-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="alias"
+          name="alias"
+          type="text"
+          value="My alias"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Alias
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="alias-helper-text"
+      >
+        Optional - Are there any other names this Arms Length Body is also known as?
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="url"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="url"
+        id="url-label"
+      >
+        Website
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="url-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="url"
+          name="url"
+          type="text"
+          value="My url"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Website
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="url-helper-text"
+      >
+        Optional - A link to a website
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="description"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="description"
+        id="description-label"
+      >
+        Description
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-multiline MuiOutlinedInput-multiline MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <textarea
+          aria-describedby="description-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="description"
+          maxlength="200"
+          name="description"
+          rows="1"
+          style="height: 0px; overflow: hidden;"
+        >
+          My description
+        </textarea>
+        <textarea
+          aria-hidden="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          readonly=""
+          style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); width: 100%;"
+          tabindex="-1"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Description
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="description-helper-text"
+      >
+        Max 200 characters
+      </p>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`AlbFormFields Should render populated fields 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="title"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="title"
+        id="title-label"
+      >
+        Name
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="title-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="title"
+          maxlength="100"
+          name="title"
+          type="text"
+          value="My title"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Name
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="title-helper-text"
+      >
+        This must be unique
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="alias"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="alias"
+        id="alias-label"
+      >
+        Alias
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="alias-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="alias"
+          name="alias"
+          type="text"
+          value="My alias"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Alias
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="alias-helper-text"
+      >
+        Optional - Are there any other names this Arms Length Body is also known as?
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="url"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="url"
+        id="url-label"
+      >
+        Website
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="url-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="url"
+          name="url"
+          type="text"
+          value="My url"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Website
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="url-helper-text"
+      >
+        Optional - A link to a website
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="description"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="description"
+        id="description-label"
+      >
+        Description
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-multiline MuiOutlinedInput-multiline MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <textarea
+          aria-describedby="description-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="description"
+          maxlength="200"
+          name="description"
+          rows="1"
+          style="height: 0px; overflow: hidden;"
+        >
+          My description
+        </textarea>
+        <textarea
+          aria-hidden="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          readonly=""
+          style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); width: 100%;"
+          tabindex="-1"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Description
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="description-helper-text"
+      >
+        Max 200 characters
+      </p>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`AlbFormFields Should write values back to the form: Alias set 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="title"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="title"
+        id="title-label"
+      >
+        Name
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="title-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="title"
+          maxlength="100"
+          name="title"
+          type="text"
+          value="My title"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Name
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="title-helper-text"
+      >
+        This must be unique
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="alias"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="alias"
+        id="alias-label"
+      >
+        Alias
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="alias-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="alias"
+          name="alias"
+          type="text"
+          value="My alias"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Alias
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="alias-helper-text"
+      >
+        Optional - Are there any other names this Arms Length Body is also known as?
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="url"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="url"
+        id="url-label"
+      >
+        Website
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="url-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="url"
+          name="url"
+          type="text"
+          value=""
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Website
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="url-helper-text"
+      >
+        Optional - A link to a website
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="description"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="description"
+        id="description-label"
+      >
+        Description
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-multiline MuiOutlinedInput-multiline MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <textarea
+          aria-describedby="description-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="description"
+          maxlength="200"
+          name="description"
+          rows="1"
+          style="height: 0px; overflow: hidden;"
+        />
+        <textarea
+          aria-hidden="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          readonly=""
+          style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); width: 100%;"
+          tabindex="-1"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Description
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="description-helper-text"
+      >
+        Max 200 characters
+      </p>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`AlbFormFields Should write values back to the form: Description set 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="title"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="title"
+        id="title-label"
+      >
+        Name
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="title-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="title"
+          maxlength="100"
+          name="title"
+          type="text"
+          value="My title"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Name
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="title-helper-text"
+      >
+        This must be unique
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="alias"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="alias"
+        id="alias-label"
+      >
+        Alias
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="alias-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="alias"
+          name="alias"
+          type="text"
+          value="My alias"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Alias
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="alias-helper-text"
+      >
+        Optional - Are there any other names this Arms Length Body is also known as?
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="url"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="url"
+        id="url-label"
+      >
+        Website
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="url-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="url"
+          name="url"
+          type="text"
+          value="My url"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Website
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="url-helper-text"
+      >
+        Optional - A link to a website
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="description"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="description"
+        id="description-label"
+      >
+        Description
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-multiline MuiOutlinedInput-multiline MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <textarea
+          aria-describedby="description-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="description"
+          maxlength="200"
+          name="description"
+          rows="1"
+          style="height: 0px; overflow: hidden;"
+        >
+          My description
+        </textarea>
+        <textarea
+          aria-hidden="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          readonly=""
+          style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); width: 100%;"
+          tabindex="-1"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Description
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="description-helper-text"
+      >
+        Max 200 characters
+      </p>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`AlbFormFields Should write values back to the form: Empty 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="title"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="title"
+        id="title-label"
+      >
+        Name
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="title-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="title"
+          maxlength="100"
+          name="title"
+          type="text"
+          value=""
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Name
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="title-helper-text"
+      >
+        This must be unique
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="alias"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="alias"
+        id="alias-label"
+      >
+        Alias
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="alias-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="alias"
+          name="alias"
+          type="text"
+          value=""
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Alias
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="alias-helper-text"
+      >
+        Optional - Are there any other names this Arms Length Body is also known as?
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="url"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="url"
+        id="url-label"
+      >
+        Website
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="url-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="url"
+          name="url"
+          type="text"
+          value=""
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Website
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="url-helper-text"
+      >
+        Optional - A link to a website
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="description"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="description"
+        id="description-label"
+      >
+        Description
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-multiline MuiOutlinedInput-multiline MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <textarea
+          aria-describedby="description-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="description"
+          maxlength="200"
+          name="description"
+          rows="1"
+          style="height: 0px; overflow: hidden;"
+        />
+        <textarea
+          aria-hidden="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          readonly=""
+          style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); width: 100%;"
+          tabindex="-1"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Description
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="description-helper-text"
+      >
+        Max 200 characters
+      </p>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`AlbFormFields Should write values back to the form: Title set 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="title"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="title"
+        id="title-label"
+      >
+        Name
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="title-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="title"
+          maxlength="100"
+          name="title"
+          type="text"
+          value="My title"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Name
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="title-helper-text"
+      >
+        This must be unique
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="alias"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="alias"
+        id="alias-label"
+      >
+        Alias
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="alias-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="alias"
+          name="alias"
+          type="text"
+          value=""
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Alias
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="alias-helper-text"
+      >
+        Optional - Are there any other names this Arms Length Body is also known as?
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="url"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="url"
+        id="url-label"
+      >
+        Website
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="url-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="url"
+          name="url"
+          type="text"
+          value=""
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Website
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="url-helper-text"
+      >
+        Optional - A link to a website
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="description"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="description"
+        id="description-label"
+      >
+        Description
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-multiline MuiOutlinedInput-multiline MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <textarea
+          aria-describedby="description-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="description"
+          maxlength="200"
+          name="description"
+          rows="1"
+          style="height: 0px; overflow: hidden;"
+        />
+        <textarea
+          aria-hidden="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          readonly=""
+          style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); width: 100%;"
+          tabindex="-1"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Description
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="description-helper-text"
+      >
+        Max 200 characters
+      </p>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`AlbFormFields Should write values back to the form: Website set 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="title"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="title"
+        id="title-label"
+      >
+        Name
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="title-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="title"
+          maxlength="100"
+          name="title"
+          type="text"
+          value="My title"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Name
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="title-helper-text"
+      >
+        This must be unique
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="alias"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="alias"
+        id="alias-label"
+      >
+        Alias
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="alias-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="alias"
+          name="alias"
+          type="text"
+          value="My alias"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Alias
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="alias-helper-text"
+      >
+        Optional - Are there any other names this Arms Length Body is also known as?
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="url"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink="true"
+        for="url"
+        id="url-label"
+      >
+        Website
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <input
+          aria-describedby="url-helper-text"
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="url"
+          name="url"
+          type="text"
+          value="My url"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+          >
+            <span>
+              Website
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
+        id="url-helper-text"
+      >
+        Optional - A link to a website
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="description"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+        data-shrink="false"
+        for="description"
+        id="description-label"
+      >
+        Description
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-multiline MuiOutlinedInput-multiline MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+      >
+        <textarea
+          aria-describedby="description-helper-text"
+          aria-invalid="false"
+          aria-required="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          id="description"
+          maxlength="200"
+          name="description"
+          rows="1"
+          style="height: 0px; overflow: hidden;"
+        />
+        <textarea
+          aria-hidden="true"
+          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+          readonly=""
+          style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); width: 100%;"
+          tabindex="-1"
+        />
+        <fieldset
+          aria-hidden="true"
+          class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="PrivateNotchedOutline-legendLabelled"
+          >
+            <span>
+              Description
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+      <p
+        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
+        id="description-helper-text"
+      >
+        Max 200 characters
+      </p>
+    </div>
+  </div>
+</body>
+`;

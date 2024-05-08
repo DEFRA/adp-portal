@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateDeliveryProjectButton Should call onCreated when the form closes with a value.: After complete 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="My button"
+      data-testid="create-delivery-project-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      />
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+  </div>
+</body>
+`;
+
+exports[`CreateDeliveryProjectButton Should call onCreated when the form closes with a value.: Before complete 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="My button"
+      data-testid="create-delivery-project-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      />
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+    <span>
+      This is a dialog!
+    </span>
+  </div>
+</body>
+`;
+
+exports[`CreateDeliveryProjectButton Should call the api when submitting. 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="My button"
+      data-testid="create-delivery-project-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      />
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+    <span>
+      This is a dialog!
+    </span>
+  </div>
+</body>
+`;
+
+exports[`CreateDeliveryProjectButton Should catch ValidationErrors when submitting. 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="My button"
+      data-testid="create-delivery-project-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      />
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+    <span>
+      This is a dialog!
+    </span>
+  </div>
+</body>
+`;
+
+exports[`CreateDeliveryProjectButton Should close the form when the form is cancelled.: After cancel 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="My button"
+      data-testid="create-delivery-project-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      />
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+  </div>
+</body>
+`;
+
+exports[`CreateDeliveryProjectButton Should close the form when the form is cancelled.: Before cancel 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="My button"
+      data-testid="create-delivery-project-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      />
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+    <span>
+      This is a dialog!
+    </span>
+  </div>
+</body>
+`;
+
+exports[`CreateDeliveryProjectButton Should not render when the user is not allowed to create delivery projects 1`] = `
+<body>
+  <div />
+</body>
+`;
+
+exports[`CreateDeliveryProjectButton Should only render a button initially 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="My button"
+      data-testid="create-delivery-project-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      />
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+  </div>
+</body>
+`;
+
+exports[`CreateDeliveryProjectButton Should render the dialog when the button is clicked 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="My button"
+      data-testid="create-delivery-project-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      />
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+    <span>
+      This is a dialog!
+    </span>
+  </div>
+</body>
+`;

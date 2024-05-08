@@ -1,3 +1,14 @@
+import {
+  ANNOTATION_LOCATION,
+  ANNOTATION_ORIGIN_LOCATION,
+} from '@backstage/catalog-model';
+import {
+  ARMS_LENGTH_BODY_ID_ANNOTATION,
+  DELIVERY_PROGRAMME_ID_ANNOTATION,
+  DELIVERY_PROJECT_ID_ANNOTATION,
+} from '../transformers';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
+
 export const armsLengthBody = [
   {
     id: '1111',
@@ -62,7 +73,7 @@ export const deliveryProgramme = [
   },
 ];
 
-export const deliveryProject = [
+export const deliveryProject: DeliveryProject[] = [
   {
     id: '123',
     created_at: new Date(),
@@ -78,6 +89,7 @@ export const deliveryProject = [
     namespace: 'Test namespace',
     team_type: 'Test team_type',
     service_owner: 'Test service_owner',
+    delivery_programme_code: 'Test delivery_programme_code',
   },
 
   {
@@ -91,10 +103,11 @@ export const deliveryProject = [
     finance_code: 'Test finance_code',
     delivery_programme_code: 'Test delivery_programme_code',
     delivery_programme_id: '1234',
-    children: ['test-project-2'],
     namespace: 'Test namespace',
     team_type: 'Test team_type',
     service_owner: 'Test service_owner',
+    ado_project: 'Test ado project',
+    delivery_project_code: 'Test delivery_project_code',
   },
 ];
 
@@ -108,9 +121,9 @@ export const mockAlbTransformerData = [
       description: 'Test description 1',
       tags: [],
       annotations: {
-        'backstage.io/managed-by-location': 'adp:arms-length-body\\test-alb-1',
-        'backstage.io/managed-by-origin-location':
-          'adp:arms-length-body\\test-alb-1',
+        [ANNOTATION_LOCATION]: 'adp:arms-length-body\\test-alb-1',
+        [ANNOTATION_ORIGIN_LOCATION]: 'adp:arms-length-body\\test-alb-1',
+        [ARMS_LENGTH_BODY_ID_ANNOTATION]: '1111',
       },
       links: [{ url: 'https://test1.com' }],
     },
@@ -128,9 +141,9 @@ export const mockAlbTransformerData = [
       description: 'Test description 2',
       tags: [],
       annotations: {
-        'backstage.io/managed-by-location': 'adp:arms-length-body\\test-alb-2',
-        'backstage.io/managed-by-origin-location':
-          'adp:arms-length-body\\test-alb-2',
+        [ANNOTATION_LOCATION]: 'adp:arms-length-body\\test-alb-2',
+        [ANNOTATION_ORIGIN_LOCATION]: 'adp:arms-length-body\\test-alb-2',
+        [ARMS_LENGTH_BODY_ID_ANNOTATION]: '2222',
       },
       links: [{ url: 'https://test2.com' }],
     },
@@ -151,9 +164,9 @@ export const mockProgrammeTransformerData = [
       description: 'Test description 1',
       tags: [],
       annotations: {
-        'backstage.io/managed-by-location':
-          'adp:delivery-programme\\test-programme-1',
-        'backstage.io/managed-by-origin-location': `adp:delivery-programme\\test-programme-1`,
+        [ANNOTATION_LOCATION]: 'adp:delivery-programme\\test-programme-1',
+        [ANNOTATION_ORIGIN_LOCATION]: `adp:delivery-programme\\test-programme-1`,
+        [DELIVERY_PROGRAMME_ID_ANNOTATION]: '123',
       },
       links: [{ url: 'https://test1.com' }],
     },
@@ -171,9 +184,9 @@ export const mockProgrammeTransformerData = [
       description: 'Test description 2',
       tags: [],
       annotations: {
-        'backstage.io/managed-by-location':
-          'adp:delivery-programme\\test-programme-2',
-        'backstage.io/managed-by-origin-location': `adp:delivery-programme\\test-programme-2`,
+        [ANNOTATION_LOCATION]: 'adp:delivery-programme\\test-programme-2',
+        [ANNOTATION_ORIGIN_LOCATION]: `adp:delivery-programme\\test-programme-2`,
+        [DELIVERY_PROGRAMME_ID_ANNOTATION]: '1234',
       },
       links: [{ url: 'https://test2.com' }],
     },
@@ -190,13 +203,13 @@ export const mockProjectTransformerData = [
     kind: 'Group',
     metadata: {
       name: 'test-project-1',
-      title: 'Test Project 1',
+      title: 'Test delivery_programme_code Test Project 1',
       description: 'Test description 1',
       tags: [],
       annotations: {
-        'backstage.io/managed-by-location':
-          'adp:delivery-project\\test-project-1',
-        'backstage.io/managed-by-origin-location': `adp:delivery-project\\test-project-1`,
+        [ANNOTATION_LOCATION]: 'adp:delivery-project\\test-project-1',
+        [ANNOTATION_ORIGIN_LOCATION]: `adp:delivery-project\\test-project-1`,
+        [DELIVERY_PROJECT_ID_ANNOTATION]: '123',
       },
       links: [],
     },
@@ -210,13 +223,13 @@ export const mockProjectTransformerData = [
     kind: 'Group',
     metadata: {
       name: 'test-project-2',
-      title: 'Test Project 2',
+      title: 'Test delivery_programme_code Test Project 2',
       description: 'Test description 2',
       tags: [],
       annotations: {
-        'backstage.io/managed-by-location':
-          'adp:delivery-project\\test-project-2',
-        'backstage.io/managed-by-origin-location': `adp:delivery-project\\test-project-2`,
+        [ANNOTATION_LOCATION]: 'adp:delivery-project\\test-project-2',
+        [ANNOTATION_ORIGIN_LOCATION]: `adp:delivery-project\\test-project-2`,
+        [DELIVERY_PROJECT_ID_ANNOTATION]: '1234',
       },
       links: [],
     },

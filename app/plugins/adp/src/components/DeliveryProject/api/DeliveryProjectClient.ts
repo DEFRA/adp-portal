@@ -1,10 +1,13 @@
-import { DeliveryProjectApi } from './DeliveryProjectApi';
-import {
+import type { DeliveryProjectApi } from './DeliveryProjectApi';
+import type {
+  CreateDeliveryProjectRequest,
   DeliveryProgramme,
   DeliveryProject,
+  UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
-import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
+import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
+import { ValidationError } from '../../../utils';
 
 export class DeliveryProjectClient implements DeliveryProjectApi {
   private discoveryApi: DiscoveryApi;
@@ -57,62 +60,63 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
     }
   }
 
-  async createDeliveryProject(data: any): Promise<DeliveryProject> {
-    try {
-      if (await this.checkIfAdoProjectExists(data.ado_project)) {
-        const url = await this.getApiUrl();
-        const response = await this.fetchApi.fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-        const respJson = response.json();
-        const createdProject = await respJson;
-        if (!response.ok) {
-          throw await ResponseError.fromResponse(response);
-        }
-
-        const adGroupPayload = {
-          members: []
-        };
-        await this.createEntraIdGroupsForProject(
-          adGroupPayload,
-          createdProject.namespace.toUpperCase(),
-        );
-        return respJson;
-      } else {
-        throw new Error(
-          'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
-        );
-      }
-    } catch (error) {
-      throw new Error(`Failed to create Delivery Project`);
+  async createDeliveryProject(
+    data: CreateDeliveryProjectRequest,
+  ): Promise<DeliveryProject> {
+    if (!(await this.checkIfAdoProjectExists(data.ado_project))) {
+      throw new Error(
+        'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
+      );
     }
+    const result = await this.#createDeliveryProjectCore(data);
+
+    const adGroupPayload = {
+      members: [],
+    };
+    await this.createEntraIdGroupsForProject(
+      adGroupPayload,
+      result.namespace.toUpperCase(),
+    );
+    return result;
   }
 
-  async updateDeliveryProject(data: any): Promise<DeliveryProject> {
-    try {
-      const url = await this.getApiUrl();
+  async #createDeliveryProjectCore(
+    data: CreateDeliveryProjectRequest,
+  ): Promise<DeliveryProject> {
+    const url = await this.getApiUrl();
+    const response = await this.fetchApi.fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.ok) return await response.json();
 
-      const response = await this.fetchApi.fetch(url, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+    if (response.status === 400)
+      throw new ValidationError((await response.json()).errors);
 
-      if (!response.ok) {
-        throw await ResponseError.fromResponse(response);
-      }
+    throw await ResponseError.fromResponse(response);
+  }
 
-      const updatedData: DeliveryProject = await response.json();
-      return updatedData;
-    } catch (error) {
-      throw new Error(`Failed to update Delivery Project`);
-    }
+  async updateDeliveryProject(
+    data: UpdateDeliveryProjectRequest,
+  ): Promise<DeliveryProject> {
+    const url = await this.getApiUrl();
+
+    const response = await this.fetchApi.fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.ok) return await response.json();
+
+    if (response.status === 400)
+      throw new ValidationError((await response.json()).errors);
+
+    throw await ResponseError.fromResponse(response);
   }
 
   async getDeliveryProjectById(id: string): Promise<DeliveryProject> {
@@ -134,7 +138,7 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
   ): Promise<void> {
     try {
       const adpPortalApiBaseUrl = await this.getPortalApiBaseUrl();
-      const createAdGroupUrl = `${adpPortalApiBaseUrl}/AadGroup/create/${projectName}`;
+      const createAdGroupUrl = `${adpPortalApiBaseUrl}/AadGroup/${projectName}/groups-config`;
       const response = await this.fetchApi.fetch(createAdGroupUrl, {
         method: 'POST',
         headers: {

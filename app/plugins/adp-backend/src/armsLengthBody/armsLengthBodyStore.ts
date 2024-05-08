@@ -1,165 +1,178 @@
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
+import {
+  createName,
+  type ArmsLengthBody,
+  type CreateArmsLengthBodyRequest,
+  type UpdateArmsLengthBodyRequest,
+} from '@internal/plugin-adp-common';
 import { NotFoundError } from '@backstage/errors';
-import { ArmsLengthBody } from '@internal/plugin-adp-common';
-import { createName } from '../utils/index';
-
-const TABLE_NAME = 'arms_length_body';
-type Row = {
-  id: string;
-  creator: string;
-  owner: string;
-  title: string;
-  alias?: string;
-  description: string;
-  url?: string;
-  readonly name: string;
-  created_at: Date;
-  updated_by?: string;
-  updated_at: Date;
-};
+import type { SafeResult } from '../service/util';
+import {
+  checkMany,
+  containsAnyValue,
+  emptyUUID,
+  isUUID,
+} from '../service/util';
+import { type UUID } from 'node:crypto';
+import type { arms_length_body } from './arms_length_body';
+import { arms_length_body_name } from './arms_length_body';
 
 export type PartialArmsLengthBody = Partial<ArmsLengthBody>;
 
-export class ArmsLengthBodyStore {
-  constructor(private readonly client: Knex) {}
-  async getAll(): Promise<ArmsLengthBody[]> {
-    const ArmsLengthBodies = await this.client<Row>(TABLE_NAME)
-      .select(
-        'creator',
-        'owner',
-        'title',
-        'alias',
-        'description',
-        'url',
-        'name',
-        'id',
-        'created_at',
-        'updated_at',
-        'updated_by',
-      )
-      .orderBy('created_at');
+export type IArmsLengthBodyStore = {
+  [P in keyof ArmsLengthBodyStore]: ArmsLengthBodyStore[P];
+};
 
-    return ArmsLengthBodies.map(row => ({
-      creator: row.creator,
-      owner: row.owner,
-      title: row.title,
-      alias: row?.alias,
-      description: row.description,
-      url: row?.url,
-      name: row.name,
-      id: row.id,
-      created_at: new Date(row.created_at),
-      updated_at: row.updated_at
-      ? new Date(row?.updated_at)
-      : new Date(row.created_at),
-      updated_by: row?.updated_by,
-    }));
+const allColumns = [
+  'creator',
+  'owner',
+  'title',
+  'alias',
+  'description',
+  'url',
+  'name',
+  'id',
+  'created_at',
+  'updated_at',
+  'updated_by',
+] as const satisfies ReadonlyArray<keyof arms_length_body>;
+
+export class ArmsLengthBodyStore {
+  readonly #client: Knex;
+  constructor(client: Knex) {
+    this.#client = client;
   }
 
-  async get(id: string): Promise<ArmsLengthBody | null> {
-    const row = await this.client<Row>(TABLE_NAME)
+  get #table() {
+    return this.#client<arms_length_body>(arms_length_body_name);
+  }
+
+  async getAll(): Promise<ArmsLengthBody[]> {
+    const result = await this.#table
+      .select(...allColumns)
+      .orderBy('created_at');
+
+    return result.map(row => this.#normalize(row));
+  }
+
+  async get(id: string): Promise<ArmsLengthBody> {
+    if (!isUUID(id)) throw notFound();
+    const row = await this.#table
       .where('id', id)
-      .select(
-        'creator',
-        'owner',
-        'title',
-        'alias',
-        'description',
-        'url',
-        'name',
-        'id',
-        'created_at',
-        'updated_at',
-        'updated_by',
-      )
+      .select(...allColumns)
       .first();
 
-    return row
-      ? {
-          creator: row.creator,
-          owner: row.owner,
-          title: row.title,
-          alias: row?.alias,
-          description: row.description,
-          url: row?.url,
-          name: row.name,
-          id: row.id,
-          created_at: new Date(row.created_at),
-          updated_at: row.updated_at
-          ? new Date(row?.updated_at)
-          : new Date(row.created_at),
-          updated_by: row?.updated_by,
-        }
-      : null;
+    if (row === undefined) throw notFound();
+
+    return this.#normalize(row);
   }
 
   async add(
-    armsLengthBody: Omit<ArmsLengthBody, 'id' | 'created_at' | 'updated_at'>,
+    request: CreateArmsLengthBodyRequest,
     creator: string,
     owner: string,
-  ): Promise<ArmsLengthBody> {
-    const insertResult = await this.client<Row>(TABLE_NAME).insert(
+  ): Promise<SafeResult<ArmsLengthBody, 'duplicateTitle' | 'duplicateName'>> {
+    const { description, title, alias, url } = request;
+    const name = createName(title);
+    const valid = await checkMany({
+      duplicateTitle: this.#titleExists(title, emptyUUID),
+      duplicateName: this.#nameExists(name),
+    });
+    if (!valid.success) return valid;
+
+    const result = await this.#table.insert(
       {
         creator: creator,
         owner: owner,
-        title: armsLengthBody.title,
-        alias: armsLengthBody?.alias,
-        description: armsLengthBody.description,
-        url: armsLengthBody?.url,
-        name: createName(armsLengthBody.title),
+        title,
+        alias,
+        description,
+        url,
+        name,
         updated_by: creator,
       },
-      ['id', 'created_at', 'updated_at'],
+      allColumns,
     );
 
-    if (insertResult.length < 1) {
-      throw new Error(
-        `Could not insert Arms Length Body ${armsLengthBody.title}`,
-      );
-    }
+    if (result.length < 1) return { success: false, errors: ['unknown'] };
 
     return {
-      ...armsLengthBody,
-      id: insertResult[0].id,
-      created_at: new Date(insertResult[0].created_at),
-      updated_at: new Date(insertResult[0].updated_at),
+      success: true,
+      value: this.#normalize(result[0]),
     };
   }
 
   async update(
-    armsLengthBody: Omit<PartialArmsLengthBody, 'updated_at'>,
+    request: UpdateArmsLengthBodyRequest,
     updatedBy: string,
-  ): Promise<ArmsLengthBody> {
-    if (armsLengthBody.id === undefined) {
-      throw new NotFoundError(
-        `Could not find Arms Length Body with ID ${armsLengthBody.id}`,
-      );
-    }
+  ): Promise<SafeResult<ArmsLengthBody, 'duplicateTitle'>> {
+    const { id, description, title, alias, url } = request;
+    if (!containsAnyValue(request))
+      return { success: true, value: await this.get(id) };
+    if (!isUUID(id) || !(await this.#exists(id))) throw notFound();
 
-    const existingALB = await this.get(armsLengthBody.id);
+    const valid = await checkMany({
+      duplicateTitle: title !== undefined && this.#titleExists(title, id),
+    });
+    if (!valid.success) return valid;
 
-    if (!existingALB) {
-      throw new NotFoundError(
-        `Could not find Arms Length Body with ID ${armsLengthBody.id}`,
-      );
-    }
-
-    const updated = new Date();
-
-    const updatedData: Partial<ArmsLengthBody> = { ...armsLengthBody };
-
-    if (Object.keys(updatedData).length === 0) {
-      return existingALB;
-    }
-
-    await this.client<Row>(TABLE_NAME)
-      .where('id', armsLengthBody.id)
-      .update({
-        ...updatedData,
-        updated_at: updated,
+    const result = await this.#table.where('id', id).update(
+      {
+        alias,
+        description,
+        title,
+        url,
+        updated_at: new Date(),
         updated_by: updatedBy,
-      });
+      },
+      allColumns,
+    );
 
-    return { ...existingALB, ...updatedData, updated_at: updated };
+    if (result.length < 1) return { success: false, errors: ['unknown'] };
+
+    return {
+      success: true,
+      value: this.#normalize(result[0]),
+    };
   }
+
+  #normalize(row: arms_length_body): ArmsLengthBody {
+    return {
+      ...row,
+      alias: row.alias ?? undefined,
+      url: row.url ?? undefined,
+      updated_by: row.updated_by ?? undefined,
+      created_at: new Date(row.created_at),
+      updated_at: new Date(row.updated_at ? row.updated_at : row.created_at),
+    };
+  }
+
+  async #titleExists(title: string, ignoreId: UUID) {
+    const [{ count }] = await this.#table
+      .where('title', title)
+      .andWhereNot('id', ignoreId)
+      .limit(1)
+      .count('*', { as: 'count' });
+    return Number(count) > 0;
+  }
+
+  async #nameExists(name: string) {
+    const [{ count }] = await this.#table
+      .where('name', name)
+      .limit(1)
+      .count('*', { as: 'count' });
+    return Number(count) > 0;
+  }
+
+  async #exists(id: UUID) {
+    const [{ count }] = await this.#table
+      .where('id', id)
+      .limit(1)
+      .count('*', { as: 'count' });
+    return Number(count) > 0;
+  }
+}
+
+function notFound() {
+  return new NotFoundError('Unknown Arms Length Body');
 }

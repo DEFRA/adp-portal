@@ -1,16 +1,18 @@
-import { Config } from '@backstage/config';
+import type { Config } from '@backstage/config';
 import { InputError, ServiceUnavailableError } from '@backstage/errors';
+import type {
+  ScmIntegrationRegistry} from '@backstage/integration';
 import {
-  DefaultAzureDevOpsCredentialsProvider,
-  ScmIntegrationRegistry,
+  DefaultAzureDevOpsCredentialsProvider
 } from '@backstage/integration';
 import {
   getHandlerFromToken,
   getPersonalAccessTokenHandler,
 } from 'azure-devops-node-api';
-import { IRequestOptions, IRestResponse, RestClient } from 'typed-rest-client';
-import { Logger } from 'winston';
-import {
+import type { IRequestOptions, IRestResponse} from 'typed-rest-client';
+import { RestClient } from 'typed-rest-client';
+import type { Logger } from 'winston';
+import type {
   Build,
   Pipeline,
   PipelineRun,
@@ -18,7 +20,7 @@ import {
   ResourcePipelinePermissions,
   ServiceEndpointResponse,
 } from './types';
-import { IRequestHandler } from 'typed-rest-client/Interfaces';
+import type { IRequestHandler } from 'typed-rest-client/Interfaces';
 
 type CreatePipelineRequest = {
   folder: string;
@@ -116,7 +118,7 @@ export class AzureDevOpsApi {
   }
 
   public async getServiceConnections(
-    adoOptions: {organization: string, project: string},
+    adoOptions: { organization: string; project: string },
     serviceConnectionNames: string,
     apiVersion = '7.2-preview.4',
   ): Promise<ServiceEndpointResponse> {
@@ -143,7 +145,7 @@ export class AzureDevOpsApi {
   }
 
   public async createPipeline(
-    adoOptions: {organization: string, project: string},
+    adoOptions: { organization: string; project: string },
     pipelineName: string,
     folder: string,
     repositoryName: string,
@@ -186,7 +188,7 @@ export class AzureDevOpsApi {
   }
 
   public async permitPipeline(
-    adoOptions: {organization: string, project: string},
+    adoOptions: { organization: string; project: string },
     pipelineId: number,
     pipelineResources: ResourceOptions[],
     apiVersion = '7.2-preview.1',
@@ -226,7 +228,7 @@ export class AzureDevOpsApi {
   }
 
   public async runPipeline(
-    adoOptions: {organization: string, project: string},
+    adoOptions: { organization: string; project: string },
     pipelineId: number,
     parameters?: Record<string, string>,
     branch: string = 'main',
@@ -263,7 +265,7 @@ export class AzureDevOpsApi {
   }
 
   public async getBuild(
-    adoOptions: {organization: string, project: string},
+    adoOptions: { organization: string; project: string },
     runId: number,
     apiVersion: string = '7.2-preview.7',
   ): Promise<Build> {

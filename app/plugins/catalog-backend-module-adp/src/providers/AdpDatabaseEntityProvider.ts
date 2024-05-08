@@ -1,21 +1,23 @@
-import { TaskRunner, PluginTaskScheduler } from '@backstage/backend-tasks';
-import {
+import type { TaskRunner, PluginTaskScheduler } from '@backstage/backend-tasks';
+import type {
   EntityProvider,
   EntityProviderConnection,
 } from '@backstage/plugin-catalog-node';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import * as uuid from 'uuid';
-import { DiscoveryService } from '@backstage/backend-plugin-api';
-import { Entity, GroupEntity } from '@backstage/catalog-model';
+import type { DiscoveryService } from '@backstage/backend-plugin-api';
+import type { Entity, GroupEntity } from '@backstage/catalog-model';
 import fetch from 'node-fetch';
-import {
+import type {
   ArmsLengthBody,
   DeliveryProgramme,
   DeliveryProject,
 } from '@internal/plugin-adp-common';
-import { armsLengthBodyGroupTransformer } from '../transformers';
-import { deliveryProgrammeGroupTransformer } from '../transformers/deliveryProgrammeTransformers';
-import { deliveryProjectGroupTransformer } from '../transformers/deliveryProjectTransformer';
+import {
+  armsLengthBodyGroupTransformer,
+  deliveryProgrammeGroupTransformer,
+  deliveryProjectGroupTransformer,
+} from '../transformers';
 
 export class AdpDatabaseEntityProvider implements EntityProvider {
   private readonly logger: Logger;

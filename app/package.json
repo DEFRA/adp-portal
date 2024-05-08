@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "1.0.82",
+  "version": "1.2.3",
   "private": true,
   "engines": {
     "node": "18 || 20"
@@ -17,13 +17,14 @@
     "tsc": "tsc",
     "tsc:full": "tsc --skipLibCheck false --incremental false",
     "clean": "backstage-cli repo clean",
-    "test": "backstage-cli repo test",
-    "test:all": "backstage-cli repo test --coverage",
+    "test": "backstage-cli repo test --config jest.config.js",
+    "test:all": "backstage-cli repo test --coverage --config jest.config.js",
     "test:e2e": "playwright test",
-    "test:cobertura": "backstage-cli repo test --coverage --coverageReporters=cobertura",
+    "test:cobertura": "backstage-cli repo test --coverage --coverageReporters=cobertura --config jest.config.js",
     "fix": "backstage-cli repo fix",
     "lint": "backstage-cli repo lint --since origin/main",
     "lint:all": "backstage-cli repo lint",
+    "prettier": "prettier -w .",
     "prettier:check": "prettier --check .",
     "new": "backstage-cli new --scope internal"
   },
@@ -47,7 +48,8 @@
   },
   "resolutions": {
     "@types/react": "^17",
-    "@types/react-dom": "^17"
+    "@types/react-dom": "^17",
+    "mysql2": "^3.9.4"
   },
   "prettier": "@spotify/prettier-config",
   "lint-staged": {
@@ -57,24 +59,6 @@
     ],
     "*.{json,md}": [
       "prettier --write"
-    ]
-  },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "/packages/backend/src/plugins/",
-      "/packages/backend/src/index.ts",
-      "/packages/app/src/apis.ts",
-      "module.ts",
-      "run.ts",
-      "standaloneServer.ts"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/packages/backend/src/plugins/",
-      "/packages/backend/src/index.ts",
-      "/packages/app/src/apis.ts",
-      "module.ts",
-      "run.ts",
-      "standaloneServer.ts"
     ]
   }
 }

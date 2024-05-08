@@ -1,4 +1,4 @@
-import { PolicyQuery } from '@backstage/plugin-permission-node';
+import type { PolicyQuery } from '@backstage/plugin-permission-node';
 import {
   catalogEntityReadPermission,
   catalogLocationReadPermission,
@@ -28,7 +28,7 @@ describe('readOnlyPermissionPolicy', () => {
       const policy = new ReadOnlyPermissionPolicy();
       const request: PolicyQuery = { permission: permission };
 
-      let policyResult = await policy.handle(request);
+      const policyResult = await policy.handle(request);
       expect(policyResult.result).toBe(expected);
     },
   );

@@ -1,54 +1,9 @@
-import {
-  ArmsLengthBody,
-  DeliveryProgramme,
-  DeliveryProject,
-} from '@internal/plugin-adp-common';
-import { IdentityApi } from '@backstage/plugin-auth-node';
-import express from 'express';
-import { AlbRouterOptions } from '../service/armsLengthBodyRouter';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
+import type { IdentityApi } from '@backstage/plugin-auth-node';
+import type express from 'express';
+import type { AlbRouterOptions } from '../service/armsLengthBodyRouter';
 
-export function createName(name: string) {
-  const nameValue = name.replace(/\s+/g, '-').toLowerCase().substring(0, 64);
-  return nameValue;
-}
-
-export async function checkForDuplicateTitle(
-  store: DeliveryProgramme[] | ArmsLengthBody[] | DeliveryProject[],
-  title: string,
-): Promise<boolean> {
-  title = title.trim().toLowerCase();
-  const duplicate = store.find(
-    object => object.title.trim().toLowerCase() === title,
-  );
-
-  return duplicate !== undefined;
-}
-
-
-export async function checkForDuplicateProjectCode(
-  store: DeliveryProject[],
-  code: string,
-): Promise<boolean> {
-  code = code.trim().toLowerCase();
-  const duplicate = store.find(
-    object => object.delivery_project_code.trim().toLowerCase() === code,
-  );
-
-  return duplicate !== undefined;
-}
-
-
-export async function checkForDuplicateProgrammeCode(
-  store: DeliveryProgramme[],
-  delivery_programme_code: string,
-): Promise<boolean> {
-  delivery_programme_code = delivery_programme_code.trim().toLowerCase();
-  const duplicate = store.find(
-    object => object.delivery_programme_code.trim().toLowerCase() === delivery_programme_code,
-  );
-
-  return duplicate !== undefined;
-}
+export * from './types';
 
 export async function getCurrentUsername(
   identity: IdentityApi,
@@ -63,4 +18,17 @@ export function getOwner(options: AlbRouterOptions): string {
   const ownerGroup = config.getConfig('rbac');
   const owner = ownerGroup.getString('programmeAdminGroup');
   return owner;
+}
+
+export function createGithubTeamDetails(deliveryProject: DeliveryProject) {
+  return {
+    contributors: {
+      name: `${deliveryProject.name}-Contributors`,
+      description: deliveryProject.description,
+    },
+    admins: {
+      name: `${deliveryProject.name}-Admins`,
+      description: deliveryProject.description,
+    },
+  };
 }

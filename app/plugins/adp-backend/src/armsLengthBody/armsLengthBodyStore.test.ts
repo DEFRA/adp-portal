@@ -1,22 +1,26 @@
-import { TestDatabaseId, TestDatabases } from '@backstage/backend-test-utils';
-import { AdpDatabase } from '../database/adpDatabase';
-import {
-  ArmsLengthBodyStore,
-  PartialArmsLengthBody,
-} from './armsLengthBodyStore';
+import type { TestDatabaseId } from '@backstage/backend-test-utils';
+import { TestDatabases } from '@backstage/backend-test-utils';
+import { ArmsLengthBodyStore } from './armsLengthBodyStore';
 import { NotFoundError } from '@backstage/errors';
-import { createName } from '../utils/index';
-import { expectedAlbWithName } from '../testData/albTestData';
+import { albSeedData, expectedAlbWithName } from '../testData/albTestData';
+import { initializeAdpDatabase } from '../database';
+import {
+  createName,
+  type UpdateArmsLengthBodyRequest,
+} from '@internal/plugin-adp-common';
+import { randomUUID } from 'node:crypto';
+import type { arms_length_body } from './arms_length_body';
+import { arms_length_body_name } from './arms_length_body';
 
 describe('armsLengthBodyStore', () => {
   const databases = TestDatabases.create();
 
   async function createDatabase(databaseId: TestDatabaseId) {
     const knex = await databases.init(databaseId);
-    const db = AdpDatabase.create({
+    await initializeAdpDatabase({
       getClient: () => Promise.resolve(knex),
     });
-    const store = new ArmsLengthBodyStore(await db.get());
+    const store = new ArmsLengthBodyStore(knex);
     return { knex, store };
   }
 
@@ -29,10 +33,13 @@ describe('armsLengthBodyStore', () => {
         'test',
         'test group',
       );
-      expect(addResult.name).toEqual(createName(expectedAlbWithName.title));
-      expect(addResult.id).toBeDefined();
-      expect(addResult.created_at).toBeDefined();
-      expect(addResult.updated_at).toBeDefined();
+      if (!addResult.success)
+        throw new Error('Failed to update arms length body');
+      const added = addResult.value;
+      expect(added.name).toEqual(createName(expectedAlbWithName.title));
+      expect(added.id).toBeDefined();
+      expect(added.created_at).toBeDefined();
+      expect(added.updated_at).toBeDefined();
     },
   );
 
@@ -50,10 +57,9 @@ describe('armsLengthBodyStore', () => {
     'should get a ALBs from the database',
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
-      const insertedIds = await knex('arms_length_body').insert(
-        expectedAlbWithName,
-        ['id'],
-      );
+      const insertedIds = await knex<arms_length_body>(
+        arms_length_body_name,
+      ).insert(albSeedData, ['id']);
       const test2Id = insertedIds[0].id;
 
       const getResult = await store.get(test2Id);
@@ -69,12 +75,12 @@ describe('armsLengthBodyStore', () => {
   );
 
   it.each(databases.eachSupportedId())(
-    'should return null if a ALB cannot be found in the database',
+    'should throw NotFound if a ALB cannot be found in the database',
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
-      await knex('arms_length_body').insert(expectedAlbWithName);
-      const getResult = await store.get('12345');
-      expect(getResult).toBeNull();
+      await knex<arms_length_body>(arms_length_body_name).insert(albSeedData);
+      const getResult = store.get('12345');
+      await expect(getResult).rejects.toBeInstanceOf(NotFoundError);
     },
   );
 
@@ -83,12 +89,11 @@ describe('armsLengthBodyStore', () => {
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
 
-      const insertedIds = await knex('arms_length_body').insert(
-        expectedAlbWithName,
-        ['id'],
-      );
+      const insertedIds = await knex<arms_length_body>(
+        arms_length_body_name,
+      ).insert(albSeedData, ['id']);
       const test2Id = insertedIds[0].id;
-      const expectedUpdate: PartialArmsLengthBody = {
+      const expectedUpdate: UpdateArmsLengthBodyRequest = {
         id: test2Id,
         title: 'ALB Example',
         alias: 'ALB',
@@ -97,11 +102,14 @@ describe('armsLengthBodyStore', () => {
       };
 
       const updateResult = await store.update(expectedUpdate, 'test@test.com');
+      if (!updateResult.success)
+        throw new Error('Failed to update arms length body');
+      const updated = updateResult.value;
 
-      expect(updateResult).toBeDefined();
-      expect(updateResult.title).toBe(expectedUpdate.title);
-      expect(updateResult.alias).toBe(expectedUpdate.alias);
-      expect(updateResult.url).toBe(expectedUpdate.url);
+      expect(updated).toBeDefined();
+      expect(updated.title).toBe(expectedUpdate.title);
+      expect(updated.alias).toBe(expectedUpdate.alias);
+      expect(updated.url).toBe(expectedUpdate.url);
     },
   );
 
@@ -110,18 +118,15 @@ describe('armsLengthBodyStore', () => {
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
 
-      await knex('arms_length_body').insert(expectedAlbWithName);
+      await knex<arms_length_body>(arms_length_body_name).insert(albSeedData);
 
       await expect(
         async () =>
           await store.update(
             {
               id: '1234567',
-              creator: 'n/a',
-              owner: 'n/a',
               title: 'Non-existent ALB',
               alias: 'Non-existent ALB',
-              name: 'non-existent-alb',
               description: 'n/a',
             },
             'test@test.com',
@@ -135,14 +140,12 @@ describe('armsLengthBodyStore', () => {
     async databaseId => {
       const { knex, store } = await createDatabase(databaseId);
 
-      await knex('arms_length_body').insert(expectedAlbWithName);
+      await knex<arms_length_body>(arms_length_body_name).insert(albSeedData);
       await store.getAll();
-      const updateWithoutId = {
-        creator: 'n/a',
-        owner: 'n/a',
+      const updateWithoutId: UpdateArmsLengthBodyRequest = {
+        id: randomUUID(),
         title: 'Non-existent ALB',
         alias: 'Non-existent ALB',
-        name: 'non-existent-alb',
         description: 'n/a',
       };
       await expect(

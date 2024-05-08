@@ -1,11 +1,9 @@
+import type {
+  CreateArmsLengthBodyRequest,
+  UpdateArmsLengthBodyRequest,
+} from '@internal/plugin-adp-common';
 import { ArmsLengthBodyClient } from './AlbClient';
-
-jest.mock('@backstage/core-plugin-api', () => ({
-  DiscoveryApi: jest.fn(),
-  FetchApi: jest.fn(() => ({
-    fetch: jest.fn(),
-  })),
-}));
+import { randomUUID } from 'node:crypto';
 
 describe('armsLengthBodyClient', () => {
   let client: ArmsLengthBodyClient;
@@ -57,7 +55,10 @@ describe('armsLengthBodyClient', () => {
         json: jest.fn().mockResolvedValue(mockData),
       });
 
-      const updateData = { name: 'New Name' };
+      const updateData: UpdateArmsLengthBodyRequest = {
+        id: randomUUID(),
+        title: 'My Arms Length Body',
+      };
       const result = await client.updateArmsLengthBody(updateData);
       expect(result).toEqual(mockData);
     });
@@ -71,16 +72,22 @@ describe('armsLengthBodyClient', () => {
         json: jest.fn().mockResolvedValue({ error: errorMessage }),
       });
 
-      const updateData = { name: 'New Name' };
+      const updateData: UpdateArmsLengthBodyRequest = {
+        id: randomUUID(),
+        title: 'My Arms Length Body',
+      };
       await expect(client.updateArmsLengthBody(updateData)).rejects.toThrow(
-        'Request failed with 400 Error',
+        'Validation failed',
       );
     });
   });
 
   describe('createArmsLengthBody', () => {
     it('creates an arms length body successfully', async () => {
-      const newData = { name: 'New Body' };
+      const newData: CreateArmsLengthBodyRequest = {
+        description: 'Test arms length body',
+        title: 'New Body',
+      };
       const mockResponseData = [{ id: 1, name: 'New Body' }];
 
       fetchApi.fetch.mockResolvedValue({
@@ -101,7 +108,10 @@ describe('armsLengthBodyClient', () => {
     });
 
     it('throws an error when the creation fails', async () => {
-      const newData = { name: 'New Body' };
+      const newData: CreateArmsLengthBodyRequest = {
+        description: 'Test arms length body',
+        title: 'New Body',
+      };
       const errorMessage = 'Failed to create Arms Length Body';
       fetchApi.fetch.mockResolvedValue({
         ok: false,
@@ -111,7 +121,7 @@ describe('armsLengthBodyClient', () => {
       });
 
       await expect(client.createArmsLengthBody(newData)).rejects.toThrow(
-        'Request failed with 400 Error',
+        'Validation failed',
       );
     });
   });

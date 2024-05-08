@@ -4,6 +4,11 @@ const TABLE_NAME = 'delivery_programme';
  * @param {import('knex').Knex} knex
  */
 exports.seed = async function seed(knex) {
+  const recordsWithEmptyFields = await knex(TABLE_NAME)
+    .select('name')
+    .where('description', '')
+    .orWhere('delivery_programme_code', '');
+
   for (const record of records) {
     const [{ count }] = await knex(TABLE_NAME)
       .where('name', record.name)
@@ -11,6 +16,15 @@ exports.seed = async function seed(knex) {
       .count('*', { as: 'count' });
     if (parseInt(count) === 0) {
       await knex(TABLE_NAME).insert(await resolveReferences(record));
+    }
+    const recordsToUpdate = recordsWithEmptyFields.filter(
+      d => d.name === record.name,
+    );
+    if (recordsToUpdate.length > 0) {
+      await knex(TABLE_NAME).where('name', record.name).update({
+        description: record.description,
+        delivery_programme_code: record.delivery_programme_code,
+      });
     }
   }
 
@@ -32,10 +46,10 @@ const records = [
     name: 'europe-trade',
     title: 'Europe & Trade',
     alias: 'EUTD',
-    description: '',
-    finance_code: null,
+    description:
+      'The Europe and Trade Programme, or Biodiversity, Borders & Trade (BBaT) deals with trade between GB and the EU. Covers a collection of all previous EU-Exit projects and programmes.',
     arms_length_body_id: 'animal-plant-health-agency',
-    delivery_programme_code: '',
+    delivery_programme_code: 'ETD',
     url: null,
     updated_by: 'ADP',
   },
@@ -43,10 +57,10 @@ const records = [
     name: 'coreai',
     title: 'Core AI',
     alias: 'CAI',
-    description: '',
-    finance_code: null,
+    description:
+      'The Core Artificial Intelligence (AI) programme is a collection of projects looking at the benefits and use cases of Gen AI, Machine Learning, etc.',
     arms_length_body_id: 'core-defra',
-    delivery_programme_code: '',
+    delivery_programme_code: 'CAI',
     url: null,
     updated_by: 'ADP',
   },
@@ -54,10 +68,10 @@ const records = [
     name: 'extended-producer-responsibility',
     title: 'Extended Producer Responsibility',
     alias: 'EPR',
-    description: '',
-    finance_code: null,
+    description:
+      'EPR will move the full cost of dealing with packaging waste from households away from local taxpayers and councils to the packaging producers, giving producers responsibility for the costs of their packaging throughout its life cycle.',
     arms_length_body_id: 'environment-agency',
-    delivery_programme_code: '',
+    delivery_programme_code: 'EPR',
     url: null,
     updated_by: 'ADP',
   },
@@ -65,10 +79,10 @@ const records = [
     name: 'fisheries',
     title: 'Fisheries',
     alias: '',
-    description: '',
-    finance_code: null,
+    description:
+      'The Marine Management Organisation (MMO) was created in 2009 by the Marine and Coastal Access Act. MMO is an executive non-departmental public body.',
     arms_length_body_id: 'marine-management-organisation',
-    delivery_programme_code: '',
+    delivery_programme_code: 'MMO',
     url: null,
     updated_by: 'ADP',
   },
@@ -76,10 +90,10 @@ const records = [
     name: 'biodiversity-net-gains',
     title: 'Biodiversity & Net Gains',
     alias: 'BNG',
-    description: '',
-    finance_code: null,
+    description:
+      'Biodiversity net gain (BNG) is a way of creating and improving natural habitats. BNG makes sure development has a measurably positive impact (‘net gain’) on biodiversity, compared to what was there before development.',
     arms_length_body_id: 'natural-england',
-    delivery_programme_code: '',
+    delivery_programme_code: 'BNG',
     url: null,
     updated_by: 'ADP',
   },
@@ -87,10 +101,10 @@ const records = [
     name: 'farming-countryside-programme',
     title: 'Farming & Countryside Programme',
     alias: 'FCP',
-    description: '',
-    finance_code: null,
+    description:
+      'The Farming and Countryside Programme is responsible for designing and delivering the new farming schemes in England.',
     arms_length_body_id: 'rural-payments-agency',
-    delivery_programme_code: '',
+    delivery_programme_code: 'FCP',
     url: null,
     updated_by: 'ADP',
   },
@@ -98,10 +112,10 @@ const records = [
     name: 'legacy-applications-programme',
     title: 'Legacy Applications Programme',
     alias: 'LAP',
-    description: '',
-    finance_code: null,
+    description:
+      'The Legacy Application Programme deals with shifting IT services into the cloud from legacy datacentres.',
     arms_length_body_id: 'rural-payments-agency',
-    delivery_programme_code: '',
+    delivery_programme_code: 'LAP',
     url: null,
     updated_by: 'ADP',
   },
