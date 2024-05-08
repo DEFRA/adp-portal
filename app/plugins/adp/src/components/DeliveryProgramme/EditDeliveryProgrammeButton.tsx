@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
-import type {
-  DeliveryProgrammeFields} from './DeliveryProgrammeFormFields';
+import type { DeliveryProgrammeFields } from './DeliveryProgrammeFormFields';
 import {
   DeliveryProgrammeFormFields,
   emptyForm,
 } from './DeliveryProgrammeFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
-import type {
-  DeliveryProgramme} from '@internal/plugin-adp-common';
-import {
-  adpProgrammmeCreatePermission,
-} from '@internal/plugin-adp-common';
-import type {
-  SubmitResult} from '../../utils';
+import type { DeliveryProgramme } from '@internal/plugin-adp-common';
+import { adpProgrammmeCreatePermission } from '@internal/plugin-adp-common';
+import type { SubmitResult } from '../../utils';
 import {
   DialogForm,
   TitleWithHelp,

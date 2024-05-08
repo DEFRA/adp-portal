@@ -7,6 +7,6 @@ createDevApp()
   .addPage({
     element: <AdpPage />,
     title: 'Root Page',
-    path: '/adp'
+    path: '/adp',
   })
   .render();

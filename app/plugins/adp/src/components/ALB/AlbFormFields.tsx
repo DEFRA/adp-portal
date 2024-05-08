@@ -1,5 +1,5 @@
 import React from 'react';
-import type { DisabledFields} from '../../utils';
+import type { DisabledFields } from '../../utils';
 import { FormTextField, formRules } from '../../utils';
 import type { UseFormReturn } from 'react-hook-form';
 

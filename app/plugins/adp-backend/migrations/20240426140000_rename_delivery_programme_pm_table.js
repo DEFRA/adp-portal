@@ -3,7 +3,10 @@
  * @returns { Promise<void> }
  */
 exports.up = function (knex) {
-  return knex.schema.renameTable('delivery_programme_pm', 'delivery_programme_admin');
+  return knex.schema.renameTable(
+    'delivery_programme_pm',
+    'delivery_programme_admin',
+  );
 };
 
 /**
@@ -11,5 +14,8 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-  return knex.schema.renameTable('delivery_programme_admin', 'delivery_programme_pm');
+  return knex.schema.renameTable(
+    'delivery_programme_admin',
+    'delivery_programme_pm',
+  );
 };

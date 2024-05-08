@@ -30,4 +30,8 @@ export const adpProjectUserCreatePermission = createPermission({
   attributes: { action: 'create' },
 });
 
-export const adpPluginPermissions = [adpProgrammmeCreatePermission, adpProjectCreatePermission, adpProjectUserCreatePermission];
+export const adpPluginPermissions = [
+  adpProgrammmeCreatePermission,
+  adpProjectCreatePermission,
+  adpProjectUserCreatePermission,
+];

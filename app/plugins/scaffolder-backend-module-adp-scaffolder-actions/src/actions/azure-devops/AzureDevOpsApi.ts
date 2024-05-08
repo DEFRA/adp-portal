@@ -1,15 +1,12 @@
 import type { Config } from '@backstage/config';
 import { InputError, ServiceUnavailableError } from '@backstage/errors';
-import type {
-  ScmIntegrationRegistry} from '@backstage/integration';
-import {
-  DefaultAzureDevOpsCredentialsProvider
-} from '@backstage/integration';
+import type { ScmIntegrationRegistry } from '@backstage/integration';
+import { DefaultAzureDevOpsCredentialsProvider } from '@backstage/integration';
 import {
   getHandlerFromToken,
   getPersonalAccessTokenHandler,
 } from 'azure-devops-node-api';
-import type { IRequestOptions, IRestResponse} from 'typed-rest-client';
+import type { IRequestOptions, IRestResponse } from 'typed-rest-client';
 import { RestClient } from 'typed-rest-client';
 import type { Logger } from 'winston';
 import type {

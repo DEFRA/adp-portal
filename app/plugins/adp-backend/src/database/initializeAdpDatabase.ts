@@ -1,8 +1,5 @@
-import type {
-  PluginDatabaseManager} from '@backstage/backend-common';
-import {
-  resolvePackagePath,
-} from '@backstage/backend-common';
+import type { PluginDatabaseManager } from '@backstage/backend-common';
+import { resolvePackagePath } from '@backstage/backend-common';
 
 const migrationsDir = resolvePackagePath(
   '@internal/plugin-adp-backend',

@@ -82,17 +82,19 @@ describe('adp:azure:pipeline:create', () => {
   });
 
   it('should store the pipeline URL in the action context output', async () => {
-    const createSpy = jest.spyOn(AzureDevOpsApi.prototype, 'createPipeline').mockResolvedValue({
-      _links: {
-        web: {
-          href: 'http://dev.azure.com/link/to/pipeline',
+    const createSpy = jest
+      .spyOn(AzureDevOpsApi.prototype, 'createPipeline')
+      .mockResolvedValue({
+        _links: {
+          web: {
+            href: 'http://dev.azure.com/link/to/pipeline',
+          },
         },
-      },
-      url: 'http://dev.azure.com/link/to/pipeline',
-      id: 1234,
-      name: 'pipeline-name',
-      folder: 'folder\\path',
-    });
+        url: 'http://dev.azure.com/link/to/pipeline',
+        id: 1234,
+        name: 'pipeline-name',
+        folder: 'folder\\path',
+      });
 
     await action.handler(mockContext);
 

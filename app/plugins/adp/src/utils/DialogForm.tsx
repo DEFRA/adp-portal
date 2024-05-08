@@ -1,4 +1,4 @@
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import React, { useState } from 'react';
 
 import {
@@ -14,10 +14,9 @@ import type {
   FieldPath,
   FieldValues,
   UseFormProps,
-  UseFormReturn} from 'react-hook-form';
-import {
-  useForm,
+  UseFormReturn,
 } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import type { DisabledFields } from './isFieldDisabled';
 import type { ValidationError } from '@internal/plugin-adp-common';

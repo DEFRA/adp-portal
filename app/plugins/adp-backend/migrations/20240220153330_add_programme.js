@@ -7,15 +7,11 @@ exports.up = async function up(knex) {
     table
       .string('name')
       .notNullable()
-      .comment('Delivery Programme title in lower case and hyphens instead of spaces');
-    table
-      .string('title')
-      .notNullable()
-      .comment('Delivery Programme title');
-    table
-      .string('alias')
-      .nullable()
-      .comment('Alias of Delivery Programme');
+      .comment(
+        'Delivery Programme title in lower case and hyphens instead of spaces',
+      );
+    table.string('title').notNullable().comment('Delivery Programme title');
+    table.string('alias').nullable().comment('Alias of Delivery Programme');
     table
       .string('description')
       .notNullable()
@@ -29,15 +25,14 @@ exports.up = async function up(knex) {
       .notNullable()
       .comment('ID of the ALB owning the delivery programme');
     table
-      .foreign('arms_length_body_id').references('id').inTable('arms_length_body')
+      .foreign('arms_length_body_id')
+      .references('id')
+      .inTable('arms_length_body');
     table
       .string('delivery_programme_code')
       .notNullable()
       .comment('Delivery programme code');
-    table
-      .string('url')
-      .nullable()
-      .comment('Delivery Programme URL');
+    table.string('url').nullable().comment('Delivery Programme URL');
     table
       .timestamp('created_at', { useTz: false })
       .notNullable()

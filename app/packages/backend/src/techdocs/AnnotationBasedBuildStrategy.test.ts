@@ -8,8 +8,8 @@ describe('AnnotationBasedBuildStrategy', () => {
       uid: '0',
       name: 'test',
       annotations: {
-        'defra.com/techdocs-builder': 'local'
-      }
+        'defra.com/techdocs-builder': 'local',
+      },
     },
   };
 
@@ -25,6 +25,5 @@ describe('AnnotationBasedBuildStrategy', () => {
 
       expect(result).toBe(true);
     });
-
   });
 });

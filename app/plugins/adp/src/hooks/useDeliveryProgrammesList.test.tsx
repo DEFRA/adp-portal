@@ -3,19 +3,17 @@ import { TestApiProvider } from '@backstage/test-utils';
 import type {
   AlertApi,
   ErrorApi,
-  IdentityApi} from '@backstage/core-plugin-api';
+  IdentityApi,
+} from '@backstage/core-plugin-api';
 import {
   alertApiRef,
   errorApiRef,
-  identityApiRef
+  identityApiRef,
 } from '@backstage/core-plugin-api';
 import { renderHook } from '@testing-library/react-hooks';
 import { useDeliveryProgrammesList } from './useDeliveryProgrammesList';
-import type {
-  DeliveryProgrammeApi} from '../components/DeliveryProgramme/api';
-import {
-  deliveryProgrammeApiRef,
-} from '../components/DeliveryProgramme/api';
+import type { DeliveryProgrammeApi } from '../components/DeliveryProgramme/api';
+import { deliveryProgrammeApiRef } from '../components/DeliveryProgramme/api';
 
 it('fetches and formats data correctly', async () => {
   const mockAlertApi: jest.Mocked<AlertApi> = {

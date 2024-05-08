@@ -57,36 +57,40 @@ describe('adp:azure:pipeline:run', () => {
   });
 
   it('should store the build ID in the action context output', async () => {
-    const runSpy = jest.spyOn(AzureDevOpsApi.prototype, 'runPipeline').mockResolvedValue({
-      _links: {
-        web: {
-          href: 'http://dev.azure.com/link/to/build',
+    const runSpy = jest
+      .spyOn(AzureDevOpsApi.prototype, 'runPipeline')
+      .mockResolvedValue({
+        _links: {
+          web: {
+            href: 'http://dev.azure.com/link/to/build',
+          },
         },
-      },
-      url: 'http://dev.azure.com/link/to/build',
-      id: 1234,
-      name: 'pipeline-name',
-      templateParameters: {},
-      pipeline: {
         url: 'http://dev.azure.com/link/to/build',
-        id: 5678,
-        name: 'pipeline',
-        revision: 1,
-        folder: '/path/to/pipeline',
-      },
-      state: 'inProgress',
-      createdDate: new Date('2024-01-26T12:06:00.1728415Z'),
-      resources: {},
-    });
+        id: 1234,
+        name: 'pipeline-name',
+        templateParameters: {},
+        pipeline: {
+          url: 'http://dev.azure.com/link/to/build',
+          id: 5678,
+          name: 'pipeline',
+          revision: 1,
+          folder: '/path/to/pipeline',
+        },
+        state: 'inProgress',
+        createdDate: new Date('2024-01-26T12:06:00.1728415Z'),
+        resources: {},
+      });
 
-    const getSpy = jest.spyOn(AzureDevOpsApi.prototype, 'getBuild').mockResolvedValue({
-      id: 1234,
-      buildNumber: '1234.1',
-      url: 'http://dev.azure.com/link/to/pipeline/run',
-      reason: 'manual',
-      status: BuildStatus.InProgress,
-      result: BuildResult.None,
-    });
+    const getSpy = jest
+      .spyOn(AzureDevOpsApi.prototype, 'getBuild')
+      .mockResolvedValue({
+        id: 1234,
+        buildNumber: '1234.1',
+        url: 'http://dev.azure.com/link/to/pipeline/run',
+        reason: 'manual',
+        status: BuildStatus.InProgress,
+        result: BuildResult.None,
+      });
 
     await action.handler(mockContext);
 
@@ -96,36 +100,40 @@ describe('adp:azure:pipeline:run', () => {
   });
 
   it('should store the pipeline run URL in the action context output', async () => {
-    const runSpy = jest.spyOn(AzureDevOpsApi.prototype, 'runPipeline').mockResolvedValue({
-      _links: {
-        web: {
-          href: 'http://dev.azure.com/link/to/build',
+    const runSpy = jest
+      .spyOn(AzureDevOpsApi.prototype, 'runPipeline')
+      .mockResolvedValue({
+        _links: {
+          web: {
+            href: 'http://dev.azure.com/link/to/build',
+          },
         },
-      },
-      url: 'http://dev.azure.com/link/to/build',
-      id: 1234,
-      name: 'pipeline-name',
-      templateParameters: {},
-      pipeline: {
         url: 'http://dev.azure.com/link/to/build',
-        id: 5678,
-        name: 'pipeline',
-        revision: 1,
-        folder: '/path/to/pipeline',
-      },
-      state: 'inProgress',
-      createdDate: new Date('2024-01-26T12:06:00.1728415Z'),
-      resources: {},
-    });
+        id: 1234,
+        name: 'pipeline-name',
+        templateParameters: {},
+        pipeline: {
+          url: 'http://dev.azure.com/link/to/build',
+          id: 5678,
+          name: 'pipeline',
+          revision: 1,
+          folder: '/path/to/pipeline',
+        },
+        state: 'inProgress',
+        createdDate: new Date('2024-01-26T12:06:00.1728415Z'),
+        resources: {},
+      });
 
-    const getSpy = jest.spyOn(AzureDevOpsApi.prototype, 'getBuild').mockResolvedValue({
-      id: 1234,
-      buildNumber: '1234.1',
-      url: 'http://dev.azure.com/link/to/pipeline/run',
-      reason: 'manual',
-      status: BuildStatus.InProgress,
-      result: BuildResult.None,
-    });
+    const getSpy = jest
+      .spyOn(AzureDevOpsApi.prototype, 'getBuild')
+      .mockResolvedValue({
+        id: 1234,
+        buildNumber: '1234.1',
+        url: 'http://dev.azure.com/link/to/pipeline/run',
+        reason: 'manual',
+        status: BuildStatus.InProgress,
+        result: BuildResult.None,
+      });
 
     await action.handler(mockContext);
 
@@ -138,36 +146,40 @@ describe('adp:azure:pipeline:run', () => {
   });
 
   it('should log an info message if the build completes successfully', async () => {
-    const runSpy = jest.spyOn(AzureDevOpsApi.prototype, 'runPipeline').mockResolvedValue({
-      _links: {
-        web: {
-          href: 'http://dev.azure.com/link/to/build',
+    const runSpy = jest
+      .spyOn(AzureDevOpsApi.prototype, 'runPipeline')
+      .mockResolvedValue({
+        _links: {
+          web: {
+            href: 'http://dev.azure.com/link/to/build',
+          },
         },
-      },
-      url: 'http://dev.azure.com/link/to/build',
-      id: 1234,
-      name: 'pipeline-name',
-      templateParameters: {},
-      pipeline: {
         url: 'http://dev.azure.com/link/to/build',
-        id: 5678,
-        name: 'pipeline',
-        revision: 1,
-        folder: '/path/to/pipeline',
-      },
-      state: 'inProgress',
-      createdDate: new Date('2024-01-26T12:06:00.1728415Z'),
-      resources: {},
-    });
+        id: 1234,
+        name: 'pipeline-name',
+        templateParameters: {},
+        pipeline: {
+          url: 'http://dev.azure.com/link/to/build',
+          id: 5678,
+          name: 'pipeline',
+          revision: 1,
+          folder: '/path/to/pipeline',
+        },
+        state: 'inProgress',
+        createdDate: new Date('2024-01-26T12:06:00.1728415Z'),
+        resources: {},
+      });
 
-    const getSpy = jest.spyOn(AzureDevOpsApi.prototype, 'getBuild').mockResolvedValue({
-      id: 1234,
-      buildNumber: '1234.1',
-      url: 'http://dev.azure.com/link/to/pipeline/run',
-      reason: 'manual',
-      status: BuildStatus.InProgress,
-      result: BuildResult.None,
-    });
+    const getSpy = jest
+      .spyOn(AzureDevOpsApi.prototype, 'getBuild')
+      .mockResolvedValue({
+        id: 1234,
+        buildNumber: '1234.1',
+        url: 'http://dev.azure.com/link/to/pipeline/run',
+        reason: 'manual',
+        status: BuildStatus.InProgress,
+        result: BuildResult.None,
+      });
 
     const loggerSpy = jest.spyOn(mockContext.logger, 'info');
 
@@ -182,36 +194,40 @@ describe('adp:azure:pipeline:run', () => {
   });
 
   it('should log a warning message if there is an issue with the build', async () => {
-    const runSpy = jest.spyOn(AzureDevOpsApi.prototype, 'runPipeline').mockResolvedValue({
-      _links: {
-        web: {
-          href: 'http://dev.azure.com/link/to/build',
+    const runSpy = jest
+      .spyOn(AzureDevOpsApi.prototype, 'runPipeline')
+      .mockResolvedValue({
+        _links: {
+          web: {
+            href: 'http://dev.azure.com/link/to/build',
+          },
         },
-      },
-      url: 'http://dev.azure.com/link/to/build',
-      id: 1234,
-      name: 'pipeline-name',
-      templateParameters: {},
-      pipeline: {
         url: 'http://dev.azure.com/link/to/build',
-        id: 5678,
-        name: 'pipeline',
-        revision: 1,
-        folder: '/path/to/pipeline',
-      },
-      state: 'inProgress',
-      createdDate: new Date('2024-01-26T12:06:00.1728415Z'),
-      resources: {},
-    });
+        id: 1234,
+        name: 'pipeline-name',
+        templateParameters: {},
+        pipeline: {
+          url: 'http://dev.azure.com/link/to/build',
+          id: 5678,
+          name: 'pipeline',
+          revision: 1,
+          folder: '/path/to/pipeline',
+        },
+        state: 'inProgress',
+        createdDate: new Date('2024-01-26T12:06:00.1728415Z'),
+        resources: {},
+      });
 
-    const getSpy = jest.spyOn(AzureDevOpsApi.prototype, 'getBuild').mockResolvedValue({
-      id: 1234,
-      buildNumber: '1234.1',
-      url: 'http://dev.azure.com/link/to/pipeline/run',
-      reason: 'manual',
-      status: BuildStatus.Failed,
-      result: BuildResult.None,
-    });
+    const getSpy = jest
+      .spyOn(AzureDevOpsApi.prototype, 'getBuild')
+      .mockResolvedValue({
+        id: 1234,
+        buildNumber: '1234.1',
+        url: 'http://dev.azure.com/link/to/pipeline/run',
+        reason: 'manual',
+        status: BuildStatus.Failed,
+        result: BuildResult.None,
+      });
 
     const loggerSpy = jest.spyOn(mockContext.logger, 'warn');
 

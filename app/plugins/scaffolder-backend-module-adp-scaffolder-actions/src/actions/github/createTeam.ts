@@ -1,9 +1,6 @@
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
-import type {
-  ScmIntegrationRegistry} from '@backstage/integration';
-import {
-  DefaultGithubCredentialsProvider,
-} from '@backstage/integration';
+import type { ScmIntegrationRegistry } from '@backstage/integration';
+import { DefaultGithubCredentialsProvider } from '@backstage/integration';
 import type { RequestError } from 'octokit';
 import { Octokit } from 'octokit';
 import type { Config } from '@backstage/config';
