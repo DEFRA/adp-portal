@@ -33,6 +33,7 @@ exports[`DeliveryProgrammeAdminFormFields should render all fields correctly 1`]
         <input
           aria-describedby="aadEntityRefId-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="aadEntityRefId"
           tabindex="-1"
@@ -105,6 +106,7 @@ exports[`DeliveryProgrammeAdminFormFields should render default fields 1`] = `
         <input
           aria-describedby="aadEntityRefId-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="aadEntityRefId"
           tabindex="-1"
@@ -177,6 +179,7 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
         <input
           aria-describedby="aadEntityRefId-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="aadEntityRefId"
           tabindex="-1"
@@ -249,6 +252,7 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
         <input
           aria-describedby="aadEntityRefId-helper-text"
           aria-hidden="true"
+          aria-required="true"
           class="MuiSelect-nativeInput"
           name="aadEntityRefId"
           tabindex="-1"
