@@ -30,6 +30,7 @@
     "@backstage/config": "^1.1.1",
     "@backstage/errors": "^1.2.3",
     "@backstage/plugin-auth-node": "^0.4.1",
+    "@faker-js/faker": "^8.4.1",
     "@internal/plugin-adp-common": "^0.1.0",
     "@types/express": "*",
     "@types/uuid": "^9.0.7",

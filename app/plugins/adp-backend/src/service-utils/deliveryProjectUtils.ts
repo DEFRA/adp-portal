@@ -1,4 +1,4 @@
-import { DeliveryProjectUserStore } from '../deliveryProject/deliveryProjectUserStore';
+import { DeliveryProjectUserStore } from '../deliveryProjectUser/deliveryProjectUserStore';
 import { Entity } from '@backstage/catalog-model';
 import { NotFoundError } from '@backstage/errors';
 import {
@@ -45,7 +45,6 @@ export async function addProjectUser(
         is_admin: isAdmin,
         name: userDetails.name,
         email: userDetails.email,
-       
       };
       const projectUser = await ProjectUserStore.add(store);
       deliveryProject.delivery_project_users.push(projectUser);
@@ -53,11 +52,7 @@ export async function addProjectUser(
   }
 }
 
-
-export async function getProjectUsersDetails(
-  email: string,
-  catalog: Entity[],
-) {
+export async function getProjectUsersDetails(email: string, catalog: Entity[]) {
   const findUserByEmail = catalog.find(object => {
     const userEmail = object.metadata.annotations!['microsoft.com/email'];
     return userEmail === email;
@@ -68,7 +63,7 @@ export async function getProjectUsersDetails(
     const userName = userByEmail.spec.profile.displayName;
     const userEntity =
       userByEmail.metadata.annotations['graph.microsoft.com/user-id'];
-    return { name: userName, aad_entity_ref: userEntity , email: email};
+    return { name: userName, aad_entity_ref: userEntity, email: email };
   } else {
     throw new NotFoundError(`Could not find Project Users details`);
   }

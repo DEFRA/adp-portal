@@ -6,3 +6,4 @@ export * from './deliveryProgrammeAdmin';
 export * from './githubTeam';
 export * from './AdpClient';
 export * from './database';
+export * from './deliveryProjectUser';

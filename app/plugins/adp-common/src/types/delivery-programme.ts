@@ -1,3 +1,5 @@
+import type { DeliveryProgrammeAdmin } from './delivery-programme-admin';
+
 export type DeliveryProgramme = {
   id: string;
   created_at: Date;
@@ -12,15 +14,6 @@ export type DeliveryProgramme = {
   url?: string;
   updated_by?: string;
   children?: string[];
-};
-
-export type DeliveryProgrammeAdmin = {
-  id: string;
-  delivery_programme_id: string;
-  aad_entity_ref_id: string;
-  email: string;
-  name: string;
-  updated_at: Date;
 };
 
 export type CreateDeliveryProgrammeRequest = {
