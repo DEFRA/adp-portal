@@ -12,26 +12,25 @@ exports.up = async function up(knex) {
     table
       .uuid('delivery_programme_id')
       .notNullable()
-      .comment('ID of the Delivery Programme the Programme Manager is assigned to');
+      .comment(
+        'ID of the Delivery Programme the Programme Manager is assigned to',
+      );
     table
-      .foreign('delivery_programme_id').references('id').inTable('delivery_programme')
+      .foreign('delivery_programme_id')
+      .references('id')
+      .inTable('delivery_programme');
     table
       .string('aad_entity_ref_id')
       .notNullable()
       .comment('ID AAD entity ref');
-    table
-      .string('email')
-      .notNullable()
-      .comment('Email of programme manager');
-    table
-      .string('name')
-      .notNullable()
-      .comment('Name of programme manager');
-  })}
+    table.string('email').notNullable().comment('Email of programme manager');
+    table.string('name').notNullable().comment('Name of programme manager');
+  });
+};
 
 /**
  * @param {import('knex').Knex} knex
  */
 exports.down = async function down(knex) {
-    return knex.schema.dropTable('delivery_programme_pm');
-  };
+  return knex.schema.dropTable('delivery_programme_pm');
+};

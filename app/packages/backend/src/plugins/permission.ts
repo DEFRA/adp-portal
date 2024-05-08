@@ -1,12 +1,8 @@
 import { createRouter } from '@backstage/plugin-permission-backend';
 import type { Router } from 'express';
 import type { PluginEnvironment } from '../types';
-import type {
-  RbacGroups} from '../permissions';
-import {
-  AdpPortalPermissionPolicy,
-  RbacUtilities
-} from '../permissions';
+import type { RbacGroups } from '../permissions';
+import { AdpPortalPermissionPolicy, RbacUtilities } from '../permissions';
 
 export default async function createPlugin(
   env: PluginEnvironment,

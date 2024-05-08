@@ -1,10 +1,7 @@
 import type { Config } from '@backstage/config';
 import { InputError } from '@backstage/errors';
-import type {
-  ScmIntegrationRegistry} from '@backstage/integration';
-import {
-  DefaultGithubCredentialsProvider
-} from '@backstage/integration';
+import type { ScmIntegrationRegistry } from '@backstage/integration';
+import { DefaultGithubCredentialsProvider } from '@backstage/integration';
 import { Octokit } from 'octokit';
 
 export async function createGithubClient(

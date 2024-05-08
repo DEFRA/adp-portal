@@ -1,7 +1,7 @@
 import {
   createRouter,
   providers,
-  defaultAuthProviderFactories
+  defaultAuthProviderFactories,
 } from '@backstage/plugin-auth-backend';
 import type { Router } from 'express';
 import type { PluginEnvironment } from '../types';
@@ -23,8 +23,7 @@ export default async function createPlugin(
           resolver:
             providers.microsoft.resolvers.emailMatchingUserEntityProfileEmail(),
         },
-      })
+      }),
     },
   });
 }
-

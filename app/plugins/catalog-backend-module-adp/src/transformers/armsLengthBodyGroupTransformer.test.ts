@@ -26,5 +26,4 @@ describe('armsLengthBodyGroupTransformer', () => {
     });
     expect(result).toEqual(expectedAlbEntityNoChild);
   });
-  
 });

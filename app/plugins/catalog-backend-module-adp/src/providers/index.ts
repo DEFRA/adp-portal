@@ -1,1 +1,1 @@
-export {AdpDatabaseEntityProvider} from './AdpDatabaseEntityProvider'
+export { AdpDatabaseEntityProvider } from './AdpDatabaseEntityProvider';

@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
-import type {
-  DeliveryProjectFields} from './DeliveryProjectFormFields';
+import type { DeliveryProjectFields } from './DeliveryProjectFormFields';
 import {
   DeliveryProjectFormFields,
   emptyForm,
 } from './DeliveryProjectFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
 import { adpProjectCreatePermission } from '@internal/plugin-adp-common';
-import type {
-  SubmitResult} from '../../utils';
-import {
-  DialogForm,
-  TitleWithHelp,
-  readValidationError,
-} from '../../utils';
+import type { SubmitResult } from '../../utils';
+import { DialogForm, TitleWithHelp, readValidationError } from '../../utils';
 import { deliveryProjectApiRef } from './api';
 
 export type CreateDeliveryProjectButtonProps = Readonly<

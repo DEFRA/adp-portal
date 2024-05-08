@@ -1,17 +1,17 @@
 {
-    "$schema": "https://backstage.io/schema/config-v1",
-    "type": "object",
-    "properties": {
-      "techRadar": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "string",
-            "description": "https://raw.githubusercontent.com/defra-adp-sandpit/adp-software-templates/main/tech-radars/development-tech-radar",
-            "visibility": "frontend"
-          }
-        },
-        "required": ["data"]
-      }
+  "$schema": "https://backstage.io/schema/config-v1",
+  "type": "object",
+  "properties": {
+    "techRadar": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string",
+          "description": "https://raw.githubusercontent.com/defra-adp-sandpit/adp-software-templates/main/tech-radars/development-tech-radar",
+          "visibility": "frontend"
+        }
+      },
+      "required": ["data"]
     }
+  }
 }

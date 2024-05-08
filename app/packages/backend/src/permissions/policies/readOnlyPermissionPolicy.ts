@@ -1,5 +1,4 @@
-import type {
-  PolicyDecision} from '@backstage/plugin-permission-common';
+import type { PolicyDecision } from '@backstage/plugin-permission-common';
 import {
   AuthorizeResult,
   isPermission,

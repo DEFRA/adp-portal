@@ -1,4 +1,3 @@
-
 ### Techdocs
 
 A hybrid strategy is implemented for techdocs as detailed in the following guide.
@@ -6,10 +5,12 @@ A hybrid strategy is implemented for techdocs as detailed in the following guide
 
 Blob storage added as an external data store for documentations. This storage will hold the html documents generate by the build pipeline.
 
-
 # To refer a documentation within the existing repo use the following approach
+
 [techdocs-local](https://github.com/defra-adp-sandpit/techdocs-local)
+
 - docs
+
   - index.md
 
   ```

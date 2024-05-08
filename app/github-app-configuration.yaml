@@ -5,4 +5,3 @@ clientId: ${GITHUB_CLIENT_ID}
 clientSecret: ${GITHUB_CLIENT_SECRET}
 webhookSecret: ThisIsRequiredButNotUsed
 privateKey: ${GITHUB_PRIVATE_KEY}
-
