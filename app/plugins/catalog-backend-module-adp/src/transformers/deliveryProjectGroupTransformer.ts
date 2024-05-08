@@ -1,14 +1,10 @@
-import type {
-  GroupEntity} from '@backstage/catalog-model';
+import type { GroupEntity } from '@backstage/catalog-model';
 import {
   ANNOTATION_LOCATION,
-  ANNOTATION_ORIGIN_LOCATION
+  ANNOTATION_ORIGIN_LOCATION,
 } from '@backstage/catalog-model';
-import type {
-  DeliveryProject} from '@internal/plugin-adp-common';
-import {
-  deliveryProjectDisplayName,
-} from '@internal/plugin-adp-common';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
+import { deliveryProjectDisplayName } from '@internal/plugin-adp-common';
 import { createTransformerTitle } from './utils';
 import { DELIVERY_PROJECT_ID_ANNOTATION } from './constants';
 

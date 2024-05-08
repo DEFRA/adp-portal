@@ -1,6 +1,6 @@
 import type * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
 
-import type {  UserEntity } from '@backstage/catalog-model';
+import type { UserEntity } from '@backstage/catalog-model';
 import {
   normalizeEntityName,
   MICROSOFT_EMAIL_ANNOTATION,
@@ -8,11 +8,15 @@ import {
 } from '@backstage/plugin-catalog-backend-module-msgraph';
 // Can we write a test for theis function in tha file with the same name
 
-function hasEmailOrUserPrincipalName(user:  MicrosoftGraph.User) {
-  return user.mail || user.userPrincipalName ;
+function hasEmailOrUserPrincipalName(user: MicrosoftGraph.User) {
+  return user.mail || user.userPrincipalName;
 }
 
-function createEntityFromOriginalUser(name: string, user:  MicrosoftGraph.User, email: string ) {
+function createEntityFromOriginalUser(
+  name: string,
+  user: MicrosoftGraph.User,
+  email: string,
+) {
   const entity: UserEntity = {
     apiVersion: 'backstage.io/v1alpha1',
     kind: 'User',
@@ -20,7 +24,7 @@ function createEntityFromOriginalUser(name: string, user:  MicrosoftGraph.User, 
       name,
       annotations: {
         [MICROSOFT_GRAPH_USER_ID_ANNOTATION]: user.id!,
-        [MICROSOFT_EMAIL_ANNOTATION] :email,
+        [MICROSOFT_EMAIL_ANNOTATION]: email,
       },
     },
     spec: {
@@ -43,23 +47,24 @@ function addPhotoIfRequired(userPhoto: string | undefined, entity: UserEntity) {
 }
 
 function mailIsBlank(user: MicrosoftGraph.User) {
-  return user.mail === undefined || user.mail?.length === 0 || user.mail === null;
+  return (
+    user.mail === undefined || user.mail?.length === 0 || user.mail === null
+  );
 }
 
-function chooseUserPrincipalIfEmailIsBlank(user:  MicrosoftGraph.User) {
-  return mailIsBlank(user) ? (user.userPrincipalName):  user.mail;
+function chooseUserPrincipalIfEmailIsBlank(user: MicrosoftGraph.User) {
+  return mailIsBlank(user) ? user.userPrincipalName : user.mail;
 }
 
 export async function defraADONameTransformer(
   user: MicrosoftGraph.User,
   userPhoto?: string,
 ): Promise<UserEntity | undefined> {
-    if (!hasEmailOrUserPrincipalName(user) ) {
-      return undefined;
-    }
-    const emailAddress  = chooseUserPrincipalIfEmailIsBlank(user);
-    const name = normalizeEntityName(emailAddress!);
-    const entity = createEntityFromOriginalUser(name, user, emailAddress!);
-    return addPhotoIfRequired(userPhoto, entity);
-
+  if (!hasEmailOrUserPrincipalName(user)) {
+    return undefined;
+  }
+  const emailAddress = chooseUserPrincipalIfEmailIsBlank(user);
+  const name = normalizeEntityName(emailAddress!);
+  const entity = createEntityFromOriginalUser(name, user, emailAddress!);
+  return addPhotoIfRequired(userPhoto, entity);
 }

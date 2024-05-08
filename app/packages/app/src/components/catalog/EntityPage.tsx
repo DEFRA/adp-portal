@@ -69,9 +69,14 @@ import {
 } from '@k-phoen/backstage-plugin-grafana';
 import { EntityGithubPullRequestsContent } from '@roadiehq/backstage-plugin-github-pull-requests';
 
-import { EntityTeamPullRequestsCard } from '@backstage/plugin-github-pull-requests-board';
-import { EntityTeamPullRequestsContent } from '@backstage/plugin-github-pull-requests-board';
-import { EntityKubernetesContent, isKubernetesAvailable  } from '@backstage/plugin-kubernetes';
+import {
+  EntityTeamPullRequestsCard,
+  EntityTeamPullRequestsContent,
+} from '@backstage/plugin-github-pull-requests-board';
+import {
+  EntityKubernetesContent,
+  isKubernetesAvailable,
+} from '@backstage/plugin-kubernetes';
 import {
   EntityFluxHelmReleasesCard,
   EntityFluxHelmRepositoriesCard,
@@ -80,44 +85,7 @@ import {
 } from '@weaveworksoss/backstage-plugin-flux';
 import { EntityPageManageProgrammeAdminContent } from '@internal/plugin-adp';
 
-const techdocsContent = (
-  <EntityTechdocsContent>
-    <TechDocsAddons>
-      <ReportIssue />
-    </TechDocsAddons>
-  </EntityTechdocsContent>
-);
-
-const cicdContent = (
-  <EntitySwitch>
-    <EntitySwitch.Case if={isAzurePipelinesAvailable}>
-      <EntityAzurePipelinesContent defaultLimit={25} />
-    </EntitySwitch.Case>
-
-    <EntitySwitch.Case if={isGithubActionsAvailable}>
-      <EntityGithubActionsContent />
-    </EntitySwitch.Case>
-
-    <EntitySwitch.Case>
-      <EmptyState
-        title="No CI/CD available for this entity"
-        missing="info"
-        description="You need to add an annotation to your component if you want to enable CI/CD for it. You can read more about annotations in Backstage by clicking the button below."
-        action={
-          <Button
-            variant="contained"
-            color="primary"
-            href="https://backstage.io/docs/features/software-catalog/well-known-annotations"
-          >
-            Read more
-          </Button>
-        }
-      />
-    </EntitySwitch.Case>
-  </EntitySwitch>
-);
-
-const entityWarningContent = (
+const EntityWarnings = () => (
   <>
     <EntitySwitch>
       <EntitySwitch.Case if={isOrphan}>
@@ -145,201 +113,179 @@ const entityWarningContent = (
   </>
 );
 
-const overviewContent = (
-  <Grid container spacing={3} alignItems="stretch">
-    {entityWarningContent}
-    <Grid item md={6}>
-      <EntityAboutCard variant="gridItem" />
+const overviewRoute = () => (
+  <EntityLayout.Route path="/" title="Overview">
+    <Grid container spacing={3} alignItems="stretch">
+      <EntityWarnings />
+      <Grid item md={6}>
+        <EntityAboutCard variant="gridItem" />
+      </Grid>
+      <Grid item md={6} xs={12}>
+        <EntityCatalogGraphCard variant="gridItem" height={400} />
+      </Grid>
+      <Grid item md={4} xs={12}>
+        <EntityLinksCard />
+      </Grid>
+      <Grid item md={8} xs={12}>
+        <EntityHasSubcomponentsCard variant="gridItem" />
+      </Grid>
     </Grid>
-    <Grid item md={6} xs={12}>
-      <EntityCatalogGraphCard variant="gridItem" height={400} />
-    </Grid>
-    <Grid item md={4} xs={12}>
-      <EntityLinksCard />
-    </Grid>
-    <Grid item md={8} xs={12}>
-      <EntityHasSubcomponentsCard variant="gridItem" />
-    </Grid>
-  </Grid>
-  
+  </EntityLayout.Route>
 );
 
-const grafanaContent = (
-  <Grid container spacing={3} alignItems='stretch'>
-    <Grid item md={6}>
-      <EntityGrafanaDashboardsCard />
-    </Grid>
-    <Grid item md={6}>
-      <EntityGrafanaAlertsCard />
-    </Grid>
-  </Grid>
-)
+const cicdRoute = () => (
+  <EntityLayout.Route path="/ci-cd" title="CI/CD">
+    <EntitySwitch>
+      <EntitySwitch.Case if={isAzurePipelinesAvailable}>
+        <EntityAzurePipelinesContent defaultLimit={25} />
+      </EntitySwitch.Case>
 
-const pullRequest = (
-  <Grid container spacing={3} alignItems='stretch'>
-    <Grid item md={12}>
-      < EntityGithubPullRequestsContent />
-    </Grid>
-  </Grid>
-)
+      <EntitySwitch.Case if={isGithubActionsAvailable}>
+        <EntityGithubActionsContent />
+      </EntitySwitch.Case>
 
-const serviceEntityPage = (
+      <EntitySwitch.Case>
+        <EmptyState
+          title="No CI/CD available for this entity"
+          missing="info"
+          description="You need to add an annotation to your component if you want to enable CI/CD for it. You can read more about annotations in Backstage by clicking the button below."
+          action={
+            <Button
+              variant="contained"
+              color="primary"
+              href="https://backstage.io/docs/features/software-catalog/well-known-annotations"
+            >
+              Read more
+            </Button>
+          }
+        />
+      </EntitySwitch.Case>
+    </EntitySwitch>
+  </EntityLayout.Route>
+);
+
+const pullRequestsRoute = () => (
+  <EntityLayout.Route path="/pull-requests" title="Pull Requests">
+    <Grid container spacing={3} alignItems="stretch">
+      <Grid item md={12}>
+        <EntityGithubPullRequestsContent />
+      </Grid>
+    </Grid>
+  </EntityLayout.Route>
+);
+
+const grafanaRoute = () => (
+  <EntityLayout.Route path="/grafana" title="Grafana">
+    <Grid container spacing={3} alignItems="stretch">
+      <Grid item md={6}>
+        <EntityGrafanaDashboardsCard />
+      </Grid>
+      <Grid item md={6}>
+        <EntityGrafanaAlertsCard />
+      </Grid>
+    </Grid>
+  </EntityLayout.Route>
+);
+
+const apiRoute = () => (
+  <EntityLayout.Route path="/api" title="API">
+    <Grid container spacing={3} alignItems="stretch">
+      <Grid item md={6}>
+        <EntityProvidedApisCard />
+      </Grid>
+      <Grid item md={6}>
+        <EntityConsumedApisCard />
+      </Grid>
+    </Grid>
+  </EntityLayout.Route>
+);
+
+const dependenciesRoute = () => (
+  <EntityLayout.Route path="/dependencies" title="Dependencies">
+    <Grid container spacing={3} alignItems="stretch">
+      <Grid item md={6}>
+        <EntityDependsOnComponentsCard variant="gridItem" />
+      </Grid>
+      <Grid item md={6}>
+        <EntityDependsOnResourcesCard variant="gridItem" />
+      </Grid>
+    </Grid>
+  </EntityLayout.Route>
+);
+
+const docsRoute = () => (
+  <EntityLayout.Route path="/docs" title="Docs">
+    <EntityTechdocsContent>
+      <TechDocsAddons>
+        <ReportIssue />
+      </TechDocsAddons>
+    </EntityTechdocsContent>
+  </EntityLayout.Route>
+);
+
+const releasesRoute = () => (
+  <EntityLayout.Route
+    path="/releases"
+    title="Deployments"
+    if={isKubernetesAvailable}
+  >
+    <Grid container spacing={3} alignItems="stretch">
+      <Grid item md={12}>
+        <EntityFluxHelmReleasesCard />
+      </Grid>
+      <Grid item md={12}>
+        <EntityFluxKustomizationsCard />
+      </Grid>
+    </Grid>
+  </EntityLayout.Route>
+);
+
+const kubernetesRoute = () => (
+  <EntityLayout.Route
+    path="/kubernetes"
+    title="Kubernetes"
+    if={isKubernetesAvailable}
+  >
+    <EntityKubernetesContent refreshIntervalMs={30000} />
+  </EntityLayout.Route>
+);
+
+const ServiceEntityPage = () => (
   <EntityLayout>
-    <EntityLayout.Route path="/" title="Overview">
-      {overviewContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/ci-cd" title="CI/CD">
-      {cicdContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/pull-requests" title="Pull Requests">
-      {pullRequest}
-    </EntityLayout.Route>
-    
-    <EntityLayout.Route path="/grafana" title="Grafana">
-      {grafanaContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/api" title="API">
-      <Grid container spacing={3} alignItems="stretch">
-        <Grid item md={6}>
-          <EntityProvidedApisCard />
-        </Grid>
-        <Grid item md={6}>
-          <EntityConsumedApisCard />
-        </Grid>
-      </Grid>
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/dependencies" title="Dependencies">
-      <Grid container spacing={3} alignItems="stretch">
-        <Grid item md={6}>
-          <EntityDependsOnComponentsCard variant="gridItem" />
-        </Grid>
-        <Grid item md={6}>
-          <EntityDependsOnResourcesCard variant="gridItem" />
-        </Grid>
-      </Grid>
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/docs" title="Docs">
-      {techdocsContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/releases" title="Deployments" if={isKubernetesAvailable}>
-      <Grid container spacing={3} alignItems="stretch">
-        <Grid item md={12}>
-          <EntityFluxHelmReleasesCard />
-        </Grid>
-        <Grid item md={12}>
-          <EntityFluxKustomizationsCard />
-        </Grid>
-      </Grid>
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/kubernetes" title="Kubernetes" if={isKubernetesAvailable}>
-      <EntityKubernetesContent refreshIntervalMs={30000} />
-    </EntityLayout.Route>
-
+    {overviewRoute()}
+    {cicdRoute()}
+    {pullRequestsRoute()}
+    {grafanaRoute()}
+    {apiRoute()}
+    {dependenciesRoute()}
+    {docsRoute()}
+    {releasesRoute()}
+    {kubernetesRoute()}
   </EntityLayout>
 );
 
-const helmEntityPage = (
+const HelmEntityPage = () => (
   <EntityLayout>
-    <EntityLayout.Route path="/" title="Overview">
-      {overviewContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/ci-cd" title="CI/CD">
-      {cicdContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/pull-requests" title="Pull Requests">
-      {pullRequest}
-    </EntityLayout.Route>
-    
-    <EntityLayout.Route path="/dependencies" title="Dependencies">
-      <Grid container spacing={3} alignItems="stretch">
-        <Grid item md={6}>
-          <EntityDependsOnComponentsCard variant="gridItem" />
-        </Grid>
-        <Grid item md={6}>
-          <EntityDependsOnResourcesCard variant="gridItem" />
-        </Grid>
-      </Grid>
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/docs" title="Docs">
-      {techdocsContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/releases" title="Deployments" if={isKubernetesAvailable}>
-      <Grid container spacing={3} alignItems="stretch">
-        <Grid item md={12}>
-          <EntityFluxHelmReleasesCard />
-        </Grid>
-        <Grid item md={12}>
-          <EntityFluxKustomizationsCard />
-        </Grid>
-      </Grid>
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/kubernetes" title="Kubernetes" if={isKubernetesAvailable}>
-      <EntityKubernetesContent refreshIntervalMs={30000} />
-    </EntityLayout.Route>
-
+    {overviewRoute()}
+    {cicdRoute()}
+    {pullRequestsRoute()}
+    {dependenciesRoute()}
+    {docsRoute()}
+    {releasesRoute()}
+    {kubernetesRoute()}
   </EntityLayout>
 );
 
-const websiteEntityPage = (
+const WebsiteEntityPage = () => (
   <EntityLayout>
-    <EntityLayout.Route path="/" title="Overview">
-      {overviewContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/ci-cd" title="CI/CD">
-      {cicdContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/pull-requests" title="Pull Requests">
-      {pullRequest}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/grafana" title="Grafana">
-      {grafanaContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/dependencies" title="Dependencies">
-      <Grid container spacing={3} alignItems="stretch">
-        <Grid item md={6}>
-          <EntityDependsOnComponentsCard variant="gridItem" />
-        </Grid>
-        <Grid item md={6}>
-          <EntityDependsOnResourcesCard variant="gridItem" />
-        </Grid>
-      </Grid>
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/docs" title="Docs">
-      {techdocsContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/releases" title="Deployments" if={isKubernetesAvailable}>
-      <Grid container spacing={3} alignItems="stretch">
-        <Grid item md={12}>
-          <EntityFluxHelmReleasesCard />
-        </Grid>
-        <Grid item md={12}>
-          <EntityFluxKustomizationsCard />
-        </Grid>
-      </Grid>
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/kubernetes" title="Kubernetes" if={isKubernetesAvailable}>
-      <EntityKubernetesContent refreshIntervalMs={30000} />
-    </EntityLayout.Route>
-    
+    {overviewRoute()}
+    {cicdRoute()}
+    {pullRequestsRoute()}
+    {grafanaRoute()}
+    {dependenciesRoute()}
+    {docsRoute()}
+    {releasesRoute()}
+    {kubernetesRoute()}
   </EntityLayout>
 );
 
@@ -352,36 +298,31 @@ const websiteEntityPage = (
 
 const defaultEntityPage = (
   <EntityLayout>
-    <EntityLayout.Route path="/" title="Overview">
-      {overviewContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/docs" title="Docs">
-      {techdocsContent}
-    </EntityLayout.Route>
+    {overviewRoute()}
+    {docsRoute()}
   </EntityLayout>
 );
 
 const componentPage = (
   <EntitySwitch>
     <EntitySwitch.Case if={isComponentType('backend')}>
-      {serviceEntityPage}
+      <ServiceEntityPage />
     </EntitySwitch.Case>
 
     <EntitySwitch.Case if={isComponentType('service')}>
-      {serviceEntityPage}
+      <ServiceEntityPage />
     </EntitySwitch.Case>
 
     <EntitySwitch.Case if={isComponentType('frontend')}>
-      {websiteEntityPage}
+      <WebsiteEntityPage />
     </EntitySwitch.Case>
 
     <EntitySwitch.Case if={isComponentType('website')}>
-      {websiteEntityPage}
+      <WebsiteEntityPage />
     </EntitySwitch.Case>
 
     <EntitySwitch.Case if={isComponentType('helm')}>
-      {helmEntityPage}
+      <HelmEntityPage />
     </EntitySwitch.Case>
 
     <EntitySwitch.Case>{defaultEntityPage}</EntitySwitch.Case>
@@ -392,7 +333,7 @@ const apiPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3}>
-        {entityWarningContent}
+        <EntityWarnings />
         <Grid item md={6}>
           <EntityAboutCard />
         </Grid>
@@ -427,7 +368,7 @@ const userPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3}>
-        {entityWarningContent}
+        <EntityWarnings />
         <Grid item xs={12} md={6}>
           <EntityUserProfileCard variant="gridItem" />
         </Grid>
@@ -443,7 +384,7 @@ const groupPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3}>
-        {entityWarningContent}
+        <EntityWarnings />
         <Grid item xs={12} md={6}>
           <EntityGroupProfileCard variant="gridItem" />
         </Grid>
@@ -462,27 +403,39 @@ const groupPage = (
       <EntityTeamPullRequestsContent />
     </EntityLayout.Route>
 
-    <EntityLayout.Route path="/manage-members" title="Manage Members" if={isEntityWith({kind: 'group', type: 'delivery-programme'})}>
+    <EntityLayout.Route
+      path="/manage-members"
+      title="Manage Members"
+      if={isEntityWith({ kind: 'group', type: 'delivery-programme' })}
+    >
       <EntityPageManageProgrammeAdminContent />
     </EntityLayout.Route>
-    
-    <EntityLayout.Route path="/releases" title="Deployments" if={isKubernetesAvailable}>
+
+    <EntityLayout.Route
+      path="/releases"
+      title="Deployments"
+      if={isKubernetesAvailable}
+    >
       <Grid container spacing={3} alignItems="stretch">
         <Grid item md={12}>
-          <EntityFluxHelmReleasesCard  />
+          <EntityFluxHelmReleasesCard />
         </Grid>
-        <Grid item md={12} >
+        <Grid item md={12}>
           <EntityFluxHelmRepositoriesCard />
         </Grid>
-        <Grid item md={12} >
+        <Grid item md={12}>
           <EntityFluxImagePoliciesCard />
-        </Grid> 
+        </Grid>
         <Grid item md={12}>
           <EntityFluxKustomizationsCard />
-        </Grid>       
+        </Grid>
       </Grid>
     </EntityLayout.Route>
-    <EntityLayout.Route path="/kubernetes" title="Kubernetes" if={isKubernetesAvailable}>
+    <EntityLayout.Route
+      path="/kubernetes"
+      title="Kubernetes"
+      if={isKubernetesAvailable}
+    >
       <EntityKubernetesContent refreshIntervalMs={30000} />
     </EntityLayout.Route>
   </EntityLayout>
@@ -492,7 +445,7 @@ const systemPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3} alignItems="stretch">
-        {entityWarningContent}
+        <EntityWarnings />
         <Grid item md={6}>
           <EntityAboutCard variant="gridItem" />
         </Grid>
@@ -539,7 +492,7 @@ const domainPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3} alignItems="stretch">
-        {entityWarningContent}
+        <EntityWarnings />
         <Grid item md={6}>
           <EntityAboutCard variant="gridItem" />
         </Grid>

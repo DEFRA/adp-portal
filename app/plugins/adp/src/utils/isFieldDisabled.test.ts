@@ -1,5 +1,5 @@
 import type { FieldPath } from 'react-hook-form';
-import type { DisabledFields} from './isFieldDisabled';
+import type { DisabledFields } from './isFieldDisabled';
 import { isFieldDisabled } from './isFieldDisabled';
 
 type Fields = {

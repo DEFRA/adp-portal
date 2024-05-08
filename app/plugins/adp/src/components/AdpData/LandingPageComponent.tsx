@@ -15,7 +15,7 @@ export const LandingPageComponent = () => (
     <Header
       title="Azure Development Platform: Onboarding"
       subtitle="ADP Onboarding"
-     />
+    />
     <Content>
       <ContentHeader title="ADP Onboarding">
         <SupportButton>

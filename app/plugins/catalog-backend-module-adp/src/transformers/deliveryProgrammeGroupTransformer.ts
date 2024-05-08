@@ -1,5 +1,8 @@
 import type { GroupEntity } from '@backstage/catalog-model';
-import { ANNOTATION_LOCATION, ANNOTATION_ORIGIN_LOCATION } from '@backstage/catalog-model';
+import {
+  ANNOTATION_LOCATION,
+  ANNOTATION_ORIGIN_LOCATION,
+} from '@backstage/catalog-model';
 import type { DeliveryProgramme } from '@internal/plugin-adp-common';
 import { createTransformerTitle } from './utils';
 import { DELIVERY_PROGRAMME_ID_ANNOTATION } from './constants';
@@ -7,7 +10,6 @@ import { DELIVERY_PROGRAMME_ID_ANNOTATION } from './constants';
 export type DeliveryProgrammeGroupTransformer = (
   deliveryProgramme: DeliveryProgramme,
 ) => Promise<GroupEntity | undefined>;
-
 
 export const deliveryProgrammeGroupTransformer: DeliveryProgrammeGroupTransformer =
   async (deliveryProgramme): Promise<GroupEntity | undefined> => {
@@ -25,7 +27,7 @@ export const deliveryProgrammeGroupTransformer: DeliveryProgrammeGroupTransforme
         annotations: {
           [ANNOTATION_LOCATION]: `adp:delivery-programme\\${deliveryProgramme.name}`,
           [ANNOTATION_ORIGIN_LOCATION]: `adp:delivery-programme\\${deliveryProgramme.name}`,
-          [DELIVERY_PROGRAMME_ID_ANNOTATION]: deliveryProgramme.id
+          [DELIVERY_PROGRAMME_ID_ANNOTATION]: deliveryProgramme.id,
         },
         links: [],
       },

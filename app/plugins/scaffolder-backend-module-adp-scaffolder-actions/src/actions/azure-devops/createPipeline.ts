@@ -16,7 +16,6 @@ type CreatePipelineOptions = {
   serviceConnectionId: string;
 };
 
-
 export function createPipelineAction(options: {
   integrations: ScmIntegrationRegistry;
   config: Config;

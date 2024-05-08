@@ -178,7 +178,7 @@ describe('adp:github:team:add', () => {
     });
 
     expect(mockContext.logger.error).toHaveBeenCalledWith(
-      "Error in getting GitHub team: [object Object]",
+      'Error in getting GitHub team: [object Object]',
     );
   });
 

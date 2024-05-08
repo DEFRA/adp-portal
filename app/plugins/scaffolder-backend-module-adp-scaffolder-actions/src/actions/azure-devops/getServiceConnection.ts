@@ -4,7 +4,6 @@ import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { InputError } from '@backstage/errors';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
 
-
 type GetServiceConnectionOptions = {
   serviceEndpointApiVersion?: string;
   server?: string;
@@ -72,7 +71,6 @@ export function getServiceConnectionAction(options: {
     },
 
     async handler(ctx) {
-
       const server = ctx.input.server ?? config.getString('azureDevOps.host');
       const organization =
         ctx.input.organization ?? config.getString('azureDevOps.organization');
@@ -92,7 +90,6 @@ export function getServiceConnectionAction(options: {
       if (!serviceConnections || serviceConnections.count < 1) {
         throw new InputError(
           `Unable to find service connection named ${ctx.input.serviceConnectionName} in project ${ctx.input.project}`,
-
         );
       }
 

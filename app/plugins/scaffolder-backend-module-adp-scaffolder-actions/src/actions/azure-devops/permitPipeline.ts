@@ -109,7 +109,7 @@ export function permitPipelineAction(options: {
         ...serviceConnections,
         ...environments,
         ...variableGroups,
-        ...agentQueues
+        ...agentQueues,
       ];
 
       const adoApi = await AzureDevOpsApi.fromIntegrations(

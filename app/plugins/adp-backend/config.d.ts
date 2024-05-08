@@ -16,9 +16,9 @@ export interface Config {
        * Default configuration values applied to the project team
        */
       defaultConfigVariables?: Array<{
-        key: string,
-        value: string
+        key: string;
+        value: string;
       }>;
-    }
-  }
+    };
+  };
 }

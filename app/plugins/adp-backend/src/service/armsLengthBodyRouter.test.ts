@@ -1,7 +1,7 @@
 import { getVoidLogger } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
-import type { AlbRouterOptions} from './armsLengthBodyRouter';
+import type { AlbRouterOptions } from './armsLengthBodyRouter';
 import { createAlbRouter } from './armsLengthBodyRouter';
 import { ConfigReader } from '@backstage/config';
 import { expectedAlbWithName } from '../testData/albTestData';

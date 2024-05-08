@@ -8,30 +8,15 @@ exports.up = async function up(knex) {
       .string('creator')
       .notNullable()
       .comment('Username of the ALB creator');
-    table
-      .string('owner')
-      .notNullable()
-      .comment('Username of the ALB owner');
+    table.string('owner').notNullable().comment('Username of the ALB owner');
     table
       .string('name')
       .notNullable()
       .comment('ALB name in lower case and hyphens instead of spaces');
-    table
-      .string('title')
-      .notNullable()
-      .comment('ALB name');
-    table
-      .string('short_name')
-      .nullable()
-      .comment('Short form of ALB name');
-    table
-      .string('description')
-      .notNullable()
-      .comment('Description of the ALB');
-    table
-      .string('url')
-      .nullable()
-      .comment('ALB URL');
+    table.string('title').notNullable().comment('ALB name');
+    table.string('short_name').nullable().comment('Short form of ALB name');
+    table.string('description').notNullable().comment('Description of the ALB');
+    table.string('url').nullable().comment('ALB URL');
     table
       .timestamp('created_at', { useTz: false })
       .notNullable()
@@ -50,9 +35,7 @@ exports.up = async function up(knex) {
     table
       .string('updated_by')
       .notNullable()
-      .comment(
-        'Username of the person who last updated the ALB',
-      );
+      .comment('Username of the person who last updated the ALB');
   });
 };
 

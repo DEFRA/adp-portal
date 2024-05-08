@@ -1,9 +1,6 @@
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
-import type {
-  ScmIntegrationRegistry} from '@backstage/integration';
-import {
-  DefaultGithubCredentialsProvider,
-} from '@backstage/integration';
+import type { ScmIntegrationRegistry } from '@backstage/integration';
+import { DefaultGithubCredentialsProvider } from '@backstage/integration';
 import type { RequestError } from 'octokit';
 import { Octokit } from 'octokit';
 import type { Config } from '@backstage/config';
@@ -81,7 +78,12 @@ export function addGithubTeamToRepoAction(options: {
       const teams = teamNames.split(',').map(t => t.trim());
       const teamResponse = await Promise.all(
         teams.map(async team => {
-          const exists = await checkTeamExists(octokit, organization, team, ctx);
+          const exists = await checkTeamExists(
+            octokit,
+            organization,
+            team,
+            ctx,
+          );
           return { team: team, exists: exists };
         }),
       );

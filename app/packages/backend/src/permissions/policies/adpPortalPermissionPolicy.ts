@@ -1,6 +1,5 @@
 import type { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
-import type {
-  PolicyDecision} from '@backstage/plugin-permission-common';
+import type { PolicyDecision } from '@backstage/plugin-permission-common';
 import {
   AuthorizeResult,
   isPermission,

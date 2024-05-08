@@ -13,7 +13,7 @@ describe('SelectedChipsRenderer', () => {
       value: '1234',
     },
   ];
-  
+
   it('renders nothing if selected is not an array', () => {
     const { container } = render(
       <SelectedChipsRenderer selected={null} options={mockOptions} />,

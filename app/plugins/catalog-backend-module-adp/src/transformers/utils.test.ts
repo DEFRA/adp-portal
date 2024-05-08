@@ -1,4 +1,4 @@
-import { createTransformerTitle } from "./utils";
+import { createTransformerTitle } from './utils';
 
 describe('createTransformerTitle', () => {
   it('returns the title as is if no alias is provided', () => {

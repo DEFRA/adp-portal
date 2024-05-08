@@ -103,15 +103,14 @@ export type ResourcePipelinePermissions = {
 };
 
 export type AuthorizedResources = {
-  serviceConnectionIds?: string[],
-  variableGroupIds?: number[],
-  environmentIds?: number[],
-  agentQueueIds?: number[]
-}
+  serviceConnectionIds?: string[];
+  variableGroupIds?: number[];
+  environmentIds?: number[];
+  agentQueueIds?: number[];
+};
 
 export type ResourceOptions = {
   resourceType: string;
   resourceId: string;
   authorized: boolean;
 };
-

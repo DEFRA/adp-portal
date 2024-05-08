@@ -3,12 +3,8 @@ import {
   scmIntegrationsApiRef,
   ScmAuth,
 } from '@backstage/integration-react';
-import type {
-  AnyApiFactory} from '@backstage/core-plugin-api';
-import {
-  configApiRef,
-  createApiFactory,
-} from '@backstage/core-plugin-api';
+import type { AnyApiFactory } from '@backstage/core-plugin-api';
+import { configApiRef, createApiFactory } from '@backstage/core-plugin-api';
 import { AdpDataTechRadarApi } from './lib/techradar/techradardata';
 import { techRadarApiRef } from '@backstage/plugin-tech-radar';
 
@@ -20,8 +16,8 @@ export const apis: AnyApiFactory[] = [
   }),
   createApiFactory({
     api: techRadarApiRef,
-    deps: {configApi: configApiRef},
-    factory: ({configApi}) => new AdpDataTechRadarApi(configApi),
+    deps: { configApi: configApiRef },
+    factory: ({ configApi }) => new AdpDataTechRadarApi(configApi),
   }),
   ScmAuth.createDefaultApiFactory(),
 ];
