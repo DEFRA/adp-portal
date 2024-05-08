@@ -2,15 +2,13 @@ import express from 'express';
 import request from 'supertest';
 import { programmeManagerList } from '../testData/programmeTestData';
 import { getVoidLogger } from '@backstage/backend-common';
-import type {
-  DeliveryProgrammeAdminRouterOptions} from './deliveryProgrammeAdminRouter';
-import {
-  createDeliveryProgrammeAdminRouter,
-} from './deliveryProgrammeAdminRouter';
+import type { DeliveryProgrammeAdminRouterOptions } from './deliveryProgrammeAdminRouter';
+import { createDeliveryProgrammeAdminRouter } from './deliveryProgrammeAdminRouter';
 import { InputError } from '@backstage/errors';
 import { catalogTestData } from '../testData/catalogEntityTestData';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import type { CatalogApi } from '@backstage/catalog-client';
+import type { CreateDeliveryProgrammeAdminRequest } from '@internal/plugin-adp-common';
 
 const programmeManagerByAADEntityRef = programmeManagerList[0];
 
@@ -132,15 +130,17 @@ describe('createRouter', () => {
       );
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
 
-      const deliveryProgrammeId = '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46';
-      const requestBody = [
-        { aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421' },
-        { aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73422' },
-        { aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73423' },
-      ];
+      const requestBody: CreateDeliveryProgrammeAdminRequest = {
+        aadEntityRefIds: [
+          '01e26f6b-0164-4a97-8c42-feda6f12f17a',
+          '42444681-1f40-4bf4-a88a-5701b30aa2ac',
+          '42a25dbf-5758-46fe-a8c9-a5f5ead165fe',
+        ],
+        deliveryProgrammeId: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
+      };
 
       const response = await request(deliveryProgrammeAdminApp)
-        .post(`/deliveryProgrammeAdmin/${deliveryProgrammeId}`)
+        .post('/deliveryProgrammeAdmin')
         .send(requestBody);
       expect(response.status).toEqual(201);
     });
@@ -150,15 +150,17 @@ describe('createRouter', () => {
         new InputError('error'),
       );
 
-      const deliveryProgrammeId = '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46';
-      const requestBody = [
-        { aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421' },
-        { aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73422' },
-        { aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73423' },
-      ];
+      const requestBody: CreateDeliveryProgrammeAdminRequest = {
+        aadEntityRefIds: [
+          '01e26f6b-0164-4a97-8c42-feda6f12f17a',
+          '42444681-1f40-4bf4-a88a-5701b30aa2ac',
+          '42a25dbf-5758-46fe-a8c9-a5f5ead165fe',
+        ],
+        deliveryProgrammeId: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
+      };
 
       const response = await request(deliveryProgrammeAdminApp)
-        .post(`/deliveryProgrammeAdmin/${deliveryProgrammeId}`)
+        .post('/deliveryProgrammeAdmin')
         .send(requestBody);
       expect(response.status).toEqual(400);
     });

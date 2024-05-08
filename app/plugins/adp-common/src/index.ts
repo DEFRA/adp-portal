@@ -13,4 +13,5 @@ export * from './types/validation';
 export * from './types/arms-length-body';
 export * from './types/delivery-project';
 export * from './types/delivery-programme';
+export * from './types/delivery-programme-admin';
 export * from './util/createName';

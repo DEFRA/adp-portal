@@ -73,7 +73,9 @@ describe('deliveryProjectClient', () => {
         json: jest.fn().mockResolvedValue({ error: 'Not found' }),
       });
 
-      await expect(client.getDeliveryProjects()).rejects.toThrow();
+      await expect(client.getDeliveryProjects()).rejects.toThrow(
+        'Failed to fetch Delivery Project',
+      );
     });
   });
 
@@ -106,7 +108,9 @@ describe('deliveryProjectClient', () => {
         title: 'New Name',
         id: randomUUID(),
       };
-      await expect(client.updateDeliveryProject(updateData)).rejects.toThrow();
+      await expect(client.updateDeliveryProject(updateData)).rejects.toThrow(
+        'Validation failed',
+      );
     });
   });
 

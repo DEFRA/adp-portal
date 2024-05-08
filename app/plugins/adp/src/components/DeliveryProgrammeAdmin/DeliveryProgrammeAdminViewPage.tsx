@@ -13,6 +13,8 @@ import {
   useErrorCallback,
 } from '../../hooks';
 import { DefaultTable } from '../../utils';
+import { AddProgrammeAdminButton } from './AddProgrammeAdminButton';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 type DeliveryProgrammeAdminWithActions = DeliveryProgrammeAdmin & {
   actions: ReactNode;
@@ -29,7 +31,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
   const deliveryProgrammeId =
     entity.metadata.annotations?.['adp.defra.gov.uk/delivery-programme-id'];
 
-  const { data, loading } = useAsyncDataSource({
+  const { data, refresh, loading } = useAsyncDataSource({
     load: useCallback(
       () =>
         !deliveryProgrammeId
@@ -84,6 +86,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
       field: 'role',
       highlight: false,
       type: 'string',
+      sorting: false,
     },
     {
       title: 'Updated At',
@@ -94,13 +97,25 @@ export const DeliveryProgrammeAdminViewPage = () => {
     {
       highlight: true,
       field: 'actions',
+      sorting: false,
     },
   ];
 
   return (
     <Page themeId="tool">
       <Content>
-        <ContentHeader title="Delivery Programme Admins" />
+        <ContentHeader title="Delivery Programme Admins">
+          <AddProgrammeAdminButton
+            deliveryProgrammeId={deliveryProgrammeId!}
+            variant="contained"
+            size="large"
+            color="primary"
+            startIcon={<AddBoxIcon />}
+            onCreated={refresh}
+          >
+            Add Delivery Programme Admin
+          </AddProgrammeAdminButton>
+        </ContentHeader>
         <Grid item>
           <div>
             <DefaultTable

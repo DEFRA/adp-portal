@@ -54,7 +54,7 @@ describe('DeliveryProgrammeAdminApiClient', () => {
         json: jest.fn().mockResolvedValue({ error: 'Not found' }),
       });
 
-      await expect(sut.getAll()).rejects.toThrow();
+      await expect(sut.getAll()).rejects.toThrow(/^Request failed with 400/);
     });
   });
 
@@ -85,7 +85,9 @@ describe('DeliveryProgrammeAdminApiClient', () => {
         json: jest.fn().mockResolvedValue({ error: 'Not found' }),
       });
 
-      await expect(sut.getByDeliveryProgrammeId('1234')).rejects.toThrow();
+      await expect(sut.getByDeliveryProgrammeId('1234')).rejects.toThrow(
+        /^Request failed with 400/,
+      );
     });
   });
 
@@ -128,7 +130,9 @@ describe('DeliveryProgrammeAdminApiClient', () => {
         json: jest.fn().mockResolvedValue({ error: 'Not found' }),
       });
 
-      await expect(sut.create(deliveryProgrammeId, aadEntityRefIds)).rejects.toThrow();
+      await expect(
+        sut.create(deliveryProgrammeId, aadEntityRefIds),
+      ).rejects.toThrow(/^Request failed with 400/);
     });
   });
 
@@ -144,7 +148,7 @@ describe('DeliveryProgrammeAdminApiClient', () => {
       await sut.delete(deliveryProgrammeAdminId, deliveryProgrammeId);
 
       expect(fetchApi.fetch).toHaveBeenCalled();
-    })
+    });
 
     it('throws when Fetch fails', async () => {
       const deliveryProgrammeId = faker.string.uuid();
@@ -157,7 +161,9 @@ describe('DeliveryProgrammeAdminApiClient', () => {
         json: jest.fn().mockResolvedValue({ error: 'Not found' }),
       });
 
-      await expect(sut.delete(deliveryProgrammeAdminId, deliveryProgrammeId)).rejects.toThrow();
+      await expect(
+        sut.delete(deliveryProgrammeAdminId, deliveryProgrammeId),
+      ).rejects.toThrow(/^Request failed with 400/);
     });
-  })
+  });
 });

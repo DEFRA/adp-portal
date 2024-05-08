@@ -8,15 +8,28 @@ import { InputError } from '@backstage/errors';
 import type { CatalogApi } from '@backstage/catalog-client';
 import type { UserEntityV1alpha1 } from '@backstage/catalog-model';
 import type { CreateDeliveryProgrammeAdmin } from '../utils';
+import { createParser } from './util';
+import { z } from 'zod';
+import type {
+  CreateDeliveryProgrammeAdminRequest,
+  DeleteDeliveryProgrammeAdminRequest,
+} from '@internal/plugin-adp-common';
 
-type CreateDeliveryProgrammeAdminRequest = {
-  aadEntityRefId: string;
-};
+const parseCreateDeliveryProgrammeAdminRequest =
+  createParser<CreateDeliveryProgrammeAdminRequest>(
+    z.object({
+      aadEntityRefIds: z.string().array(),
+      deliveryProgrammeId: z.string(),
+    }),
+  );
 
-type DeleteDeliveryProgrammeAdminRequest = {
-  aadEntityRefId: string;
-  deliveryProgrammeId: string;
-};
+const parseDeleteDeliveryProgrammeAdminRequest =
+  createParser<DeleteDeliveryProgrammeAdminRequest>(
+    z.object({
+      aadEntityRefId: z.string(),
+      deliveryProgrammeId: z.string(),
+    }),
+  );
 
 export interface DeliveryProgrammeAdminRouterOptions {
   logger: Logger;
@@ -71,60 +84,51 @@ export function createDeliveryProgrammeAdminRouter(
     },
   );
 
-  router.post(
-    '/deliveryProgrammeAdmin/:deliveryProgrammeId',
-    async (req, res) => {
-      try {
-        const deliveryProgrammeId = req.params.deliveryProgrammeId;
-        const deliveryProgrammeAADRefs =
-          req.body as CreateDeliveryProgrammeAdminRequest[];
-        let deliveryProgrammeAdmins: CreateDeliveryProgrammeAdmin[] = [];
+  router.post('/deliveryProgrammeAdmin', async (req, res) => {
+    try {
+      const body = parseCreateDeliveryProgrammeAdminRequest(req.body);
+      let deliveryProgrammeAdmins = await getDeliveryProgrammeAdminsFromCatalog(
+        body.aadEntityRefIds,
+        body.deliveryProgrammeId,
+        catalog,
+      );
 
-        if (deliveryProgrammeAADRefs !== undefined) {
-          deliveryProgrammeAdmins = await getDeliveryProgrammeAdminsFromCatalog(
-            deliveryProgrammeAADRefs.map(ref => ref.aadEntityRefId),
-            deliveryProgrammeId,
-            catalog,
-          );
+      deliveryProgrammeAdmins = await deliveryProgrammeAdminStore.addMany(
+        deliveryProgrammeAdmins,
+      );
 
-          deliveryProgrammeAdmins = await deliveryProgrammeAdminStore.addMany(
-            deliveryProgrammeAdmins,
-          );
-        }
-
-        res.status(201).json(deliveryProgrammeAdmins);
-      } catch (error) {
-        const typedError = error as Error;
-        logger.error(
-          `POST /deliveryProgrammeAdmin. Could not create new delivery programme admins: ${typedError.message}`,
-          typedError,
-        );
-        throw new InputError(typedError.message);
-      }
-    },
-  );
+      res.status(201).json(deliveryProgrammeAdmins);
+    } catch (error) {
+      const typedError = error as Error;
+      logger.error(
+        `POST /deliveryProgrammeAdmin. Could not create new delivery programme admins: ${typedError.message}`,
+        typedError,
+      );
+      throw new InputError(typedError.message);
+    }
+  });
 
   router.delete('/deliveryProgrammeAdmin', async (req, res) => {
     try {
-      const deleteRequest = req.body as DeleteDeliveryProgrammeAdminRequest;
+      const body = parseDeleteDeliveryProgrammeAdminRequest(req.body);
 
       const deliveryProgrammeAdmin =
         await deliveryProgrammeAdminStore.getByAADEntityRef(
-          deleteRequest.aadEntityRefId,
-          deleteRequest.deliveryProgrammeId,
+          body.aadEntityRefId,
+          body.deliveryProgrammeId,
         );
 
       if (deliveryProgrammeAdmin !== undefined) {
         await deliveryProgrammeAdminStore.delete(deliveryProgrammeAdmin.id);
 
         logger.info(
-          `DELETE /deliveryProgrammeAdmin: Deleted Delivery Programme Admin with aadEntityRefId ${deleteRequest.aadEntityRefId} and deliveryProgrammeId ${deleteRequest.deliveryProgrammeId}`,
+          `DELETE /deliveryProgrammeAdmin: Deleted Delivery Programme Admin with aadEntityRefId ${body.aadEntityRefId} and deliveryProgrammeId ${body.deliveryProgrammeId}`,
         );
 
         res.status(204).end();
       } else {
         logger.warn(
-          `DELETE /deliveryProgrammeAdmin: Could not find Delivery Programme Admin with aadEntityRefId ${deleteRequest.aadEntityRefId} and deliveryProgrammeId ${deleteRequest.deliveryProgrammeId}`,
+          `DELETE /deliveryProgrammeAdmin: Could not find Delivery Programme Admin with aadEntityRefId ${body.aadEntityRefId} and deliveryProgrammeId ${body.deliveryProgrammeId}`,
         );
         res.status(404).end();
       }

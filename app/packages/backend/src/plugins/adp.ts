@@ -51,7 +51,6 @@ export default async function createPlugin({
     deliveryProgrammeStore,
     deliveryProjectStore,
     deliveryProgrammeAdminStore,
-    catalog,
   });
 
   const deliveryProjectRouter = createProjectRouter({

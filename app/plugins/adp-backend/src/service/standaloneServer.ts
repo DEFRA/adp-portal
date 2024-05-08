@@ -74,7 +74,6 @@ export async function startStandaloneServer(
     deliveryProgrammeStore,
     deliveryProjectStore,
     deliveryProgrammeAdminStore,
-    catalog,
   });
 
   const deliveryProgrammeAdminRouter = createDeliveryProgrammeAdminRouter({
