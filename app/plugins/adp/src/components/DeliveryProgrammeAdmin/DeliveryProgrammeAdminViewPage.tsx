@@ -14,7 +14,7 @@ import {
 } from '../../hooks';
 import { DefaultTable } from '../../utils';
 import { AddProgrammeAdminButton } from './AddProgrammeAdminButton';
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 type DeliveryProgrammeAdminWithActions = DeliveryProgrammeAdmin & {
   actions: ReactNode;
