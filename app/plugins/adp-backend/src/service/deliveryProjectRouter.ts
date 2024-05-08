@@ -12,6 +12,7 @@ import type {
 } from '@internal/plugin-adp-common';
 import { getCurrentUsername } from '../utils/index';
 import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import type { IDeliveryProjectUserStore } from '../deliveryProject';
 import { FluxConfigApi } from '../deliveryProject';
 import type { Config } from '@backstage/config';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
@@ -22,10 +23,10 @@ export interface ProjectRouterOptions {
   logger: Logger;
   identity: IdentityApi;
   config: Config;
-  discovery: DiscoveryApi;
   teamSyncronizer: IDeliveryProjectGithubTeamsSyncronizer;
   deliveryProjectStore: IDeliveryProjectStore;
   deliveryProgrammeStore: IDeliveryProgrammeStore;
+  deliveryProjectUserStore: IDeliveryProjectUserStore;
 }
 
 const errorMapping = {
@@ -97,7 +98,7 @@ export function createProjectRouter(
     teamSyncronizer,
     deliveryProgrammeStore,
     deliveryProjectStore,
-    discovery,
+    deliveryProjectUserStore,
   } = options;
   const fluxConfigApi = new FluxConfigApi(config, deliveryProgrammeStore);
 

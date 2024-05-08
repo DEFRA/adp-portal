@@ -85,13 +85,13 @@ export const deliveryProject: DeliveryProject[] = [
     finance_code: 'Test finance_code',
     delivery_project_code: 'Test delivery_project_code',
     delivery_programme_id: '123',
+    delivery_project_users: [],
     ado_project: 'Test ado_project',
     namespace: 'Test namespace',
     team_type: 'Test team_type',
     service_owner: 'Test service_owner',
     delivery_programme_code: 'Test delivery_programme_code',
   },
-
   {
     id: '1234',
     created_at: new Date(),
@@ -103,6 +103,7 @@ export const deliveryProject: DeliveryProject[] = [
     finance_code: 'Test finance_code',
     delivery_programme_code: 'Test delivery_programme_code',
     delivery_programme_id: '1234',
+    delivery_project_users: [],
     namespace: 'Test namespace',
     team_type: 'Test team_type',
     service_owner: 'Test service_owner',

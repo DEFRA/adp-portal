@@ -68,26 +68,19 @@ export class DeliveryProjectStore {
     );
   }
 
-  async get(id: string): Promise<DeliveryProject | null> {
-    const row = await this.client<Row>(TABLE_NAME)
-      .where('id', id)
-      .select(
-        'id',
-        'title',
-        'name',
-        'alias',
-        'description',
-        'finance_code',
-        'delivery_programme_id',
-        'delivery_project_code',
-        'namespace',
-        'ado_project',
-        'created_at',
-        'updated_at',
-        'updated_by',
-        'team_type',
-        'service_owner',
-      )
+  async getAll(): Promise<DeliveryProject[]> {
+    const result = await this.#tableWithProgrammes
+      .select(...allColumns, ...programmeColumns)
+      .orderBy(`${delivery_project_name}.created_at`);
+
+    return result.map(r => this.#normalize(r));
+  }
+
+  async get(id: string): Promise<DeliveryProject> {
+    if (!isUUID(id)) throw notFound();
+    const result = await this.#tableWithProgrammes
+      .where(`${delivery_project_name}.id`, id)
+      .select(...allColumns, ...programmeColumns)
       .first();
 
     if (result === undefined) throw notFound();
@@ -237,9 +230,37 @@ export class DeliveryProjectStore {
       '';
 
     return {
-      ...existingProject,
-      ...updatedData,
-      updated_at: updated,
+      success: true,
+      value: this.#normalize({
+        ...result[0],
+        delivery_programme_code: programmeCode,
+      }),
+    };
+  }
+
+  async #getDeliveryProgrammeId(id: UUID) {
+    const result = await this.#table
+      .where('id', id)
+      .select('delivery_programme_id')
+      .first();
+
+    if (result === undefined) throw notFound();
+
+    return result.delivery_programme_id;
+  }
+
+  #normalize(
+    row: delivery_project & Pick<delivery_programme, 'delivery_programme_code'>,
+  ): DeliveryProject {
+    return {
+      ...row,
+      alias: row.alias ?? undefined,
+      finance_code: row.finance_code ?? undefined,
+      github_team_visibility: row.github_team_visibility ?? undefined,
+      updated_by: row.updated_by ?? undefined,
+      created_at: new Date(row.created_at),
+      updated_at: new Date(row.updated_at ? row.updated_at : row.created_at),
+      delivery_project_users: [],
     };
   }
 

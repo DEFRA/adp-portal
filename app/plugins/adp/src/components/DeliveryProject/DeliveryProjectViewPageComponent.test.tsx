@@ -281,5 +281,6 @@ function createDeliveryProjects(count: number) {
     finance_code: 'Money number',
     github_team_visibility: 'public',
     updated_by: 'Me',
+    delivery_project_users: [],
   }));
 }
