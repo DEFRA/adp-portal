@@ -7,6 +7,7 @@ jest.mock('style.module.scss', () => {
     linkColour: '#fff',
     linkHoverColour: '#fff',
     secondaryTextColour: '#fff',
+    warningColour: '#fff',
     lightGrey: '#fff',
     white: '#fff',
     lightThemeNav: '#fff',

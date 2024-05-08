@@ -85,7 +85,7 @@ import {
 } from '@weaveworksoss/backstage-plugin-flux';
 import { EntityPageManageProgrammeAdminContent } from '@internal/plugin-adp';
 
-const EntityWarnings = () => (
+const entityWarnings = () => (
   <>
     <EntitySwitch>
       <EntitySwitch.Case if={isOrphan}>
@@ -116,7 +116,7 @@ const EntityWarnings = () => (
 const overviewRoute = () => (
   <EntityLayout.Route path="/" title="Overview">
     <Grid container spacing={3} alignItems="stretch">
-      <EntityWarnings />
+      {entityWarnings()}
       <Grid item md={6}>
         <EntityAboutCard variant="gridItem" />
       </Grid>
@@ -250,7 +250,7 @@ const kubernetesRoute = () => (
   </EntityLayout.Route>
 );
 
-const ServiceEntityPage = () => (
+const serviceEntityPage = () => (
   <EntityLayout>
     {overviewRoute()}
     {cicdRoute()}
@@ -264,7 +264,7 @@ const ServiceEntityPage = () => (
   </EntityLayout>
 );
 
-const HelmEntityPage = () => (
+const helmEntityPage = () => (
   <EntityLayout>
     {overviewRoute()}
     {cicdRoute()}
@@ -276,7 +276,7 @@ const HelmEntityPage = () => (
   </EntityLayout>
 );
 
-const WebsiteEntityPage = () => (
+const websiteEntityPage = () => (
   <EntityLayout>
     {overviewRoute()}
     {cicdRoute()}
@@ -296,44 +296,44 @@ const WebsiteEntityPage = () => (
  * https://material-ui.com/components/grid/#basic-grid.
  */
 
-const defaultEntityPage = (
+const defaultEntityPage = () => (
   <EntityLayout>
     {overviewRoute()}
     {docsRoute()}
   </EntityLayout>
 );
 
-const componentPage = (
+const componentPage = () => (
   <EntitySwitch>
     <EntitySwitch.Case if={isComponentType('backend')}>
-      <ServiceEntityPage />
+      {serviceEntityPage()}
     </EntitySwitch.Case>
 
     <EntitySwitch.Case if={isComponentType('service')}>
-      <ServiceEntityPage />
+      {serviceEntityPage()}
     </EntitySwitch.Case>
 
     <EntitySwitch.Case if={isComponentType('frontend')}>
-      <WebsiteEntityPage />
+      {websiteEntityPage()}
     </EntitySwitch.Case>
 
     <EntitySwitch.Case if={isComponentType('website')}>
-      <WebsiteEntityPage />
+      {websiteEntityPage()}
     </EntitySwitch.Case>
 
     <EntitySwitch.Case if={isComponentType('helm')}>
-      <HelmEntityPage />
+      {helmEntityPage()}
     </EntitySwitch.Case>
 
-    <EntitySwitch.Case>{defaultEntityPage}</EntitySwitch.Case>
+    <EntitySwitch.Case>{defaultEntityPage()}</EntitySwitch.Case>
   </EntitySwitch>
 );
 
-const apiPage = (
+const apiPage = () => (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3}>
-        <EntityWarnings />
+        {entityWarnings()}
         <Grid item md={6}>
           <EntityAboutCard />
         </Grid>
@@ -364,11 +364,11 @@ const apiPage = (
   </EntityLayout>
 );
 
-const userPage = (
+const userPage = () => (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3}>
-        <EntityWarnings />
+        {entityWarnings()}
         <Grid item xs={12} md={6}>
           <EntityUserProfileCard variant="gridItem" />
         </Grid>
@@ -380,11 +380,11 @@ const userPage = (
   </EntityLayout>
 );
 
-const groupPage = (
+const groupPage = () => (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3}>
-        <EntityWarnings />
+        {entityWarnings()}
         <Grid item xs={12} md={6}>
           <EntityGroupProfileCard variant="gridItem" />
         </Grid>
@@ -441,11 +441,11 @@ const groupPage = (
   </EntityLayout>
 );
 
-const systemPage = (
+const systemPage = () => (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3} alignItems="stretch">
-        <EntityWarnings />
+        {entityWarnings()}
         <Grid item md={6}>
           <EntityAboutCard variant="gridItem" />
         </Grid>
@@ -488,11 +488,11 @@ const systemPage = (
   </EntityLayout>
 );
 
-const domainPage = (
+const domainPage = () => (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       <Grid container spacing={3} alignItems="stretch">
-        <EntityWarnings />
+        {entityWarnings()}
         <Grid item md={6}>
           <EntityAboutCard variant="gridItem" />
         </Grid>
@@ -509,13 +509,13 @@ const domainPage = (
 
 export const entityPage = (
   <EntitySwitch>
-    <EntitySwitch.Case if={isKind('component')} children={componentPage} />
-    <EntitySwitch.Case if={isKind('api')} children={apiPage} />
-    <EntitySwitch.Case if={isKind('group')} children={groupPage} />
-    <EntitySwitch.Case if={isKind('user')} children={userPage} />
-    <EntitySwitch.Case if={isKind('system')} children={systemPage} />
-    <EntitySwitch.Case if={isKind('domain')} children={domainPage} />
+    <EntitySwitch.Case if={isKind('component')} children={componentPage()} />
+    <EntitySwitch.Case if={isKind('api')} children={apiPage()} />
+    <EntitySwitch.Case if={isKind('group')} children={groupPage()} />
+    <EntitySwitch.Case if={isKind('user')} children={userPage()} />
+    <EntitySwitch.Case if={isKind('system')} children={systemPage()} />
+    <EntitySwitch.Case if={isKind('domain')} children={domainPage()} />
 
-    <EntitySwitch.Case>{defaultEntityPage}</EntitySwitch.Case>
+    <EntitySwitch.Case>{defaultEntityPage()}</EntitySwitch.Case>
   </EntitySwitch>
 );
