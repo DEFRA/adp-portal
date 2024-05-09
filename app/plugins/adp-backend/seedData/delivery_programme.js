@@ -49,7 +49,7 @@ const records = [
     description:
       'The Europe and Trade Programme, or Biodiversity, Borders & Trade (BBaT) deals with trade between GB and the EU. Covers a collection of all previous EU-Exit projects and programmes.',
     arms_length_body_id: 'animal-plant-health-agency',
-    delivery_programme_code: 'ETD',
+    delivery_programme_code: 'EUTD',
     url: null,
     updated_by: 'ADP',
   },
@@ -60,7 +60,7 @@ const records = [
     description:
       'The Core Artificial Intelligence (AI) programme is a collection of projects looking at the benefits and use cases of Gen AI, Machine Learning, etc.',
     arms_length_body_id: 'core-defra',
-    delivery_programme_code: 'CAI',
+    delivery_programme_code: 'COREAI',
     url: null,
     updated_by: 'ADP',
   },
@@ -104,7 +104,7 @@ const records = [
     description:
       'The Farming and Countryside Programme is responsible for designing and delivering the new farming schemes in England.',
     arms_length_body_id: 'rural-payments-agency',
-    delivery_programme_code: 'FCP',
+    delivery_programme_code: 'FFC',
     url: null,
     updated_by: 'ADP',
   },
