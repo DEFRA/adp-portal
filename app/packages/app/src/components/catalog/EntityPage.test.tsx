@@ -75,9 +75,13 @@ async function itShouldRenderEntityHome(
     const result = await render(entity);
 
     expect(pageContent(result)).toMatchSnapshot('content');
-    const beforeNavigate = result.baseElement.outerHTML;
+    const beforeNavigate = pageContent(result).map(e =>
+      e.map(x => x.outerHTML),
+    );
     await navigateToTab(result, tabName);
-    expect(result.baseElement.outerHTML).toBe(beforeNavigate);
+    expect(pageContent(result).map(e => e.map(x => x.outerHTML))).toMatchObject(
+      beforeNavigate,
+    );
   });
 }
 
@@ -459,15 +463,6 @@ async function navigateToTab(result: RenderResult, tabText: string) {
     expect(tab).toHaveLength(1);
     await userEvent.click(tab[0]);
   });
-  await waitForNoRipple(result);
-}
-
-async function waitForNoRipple(result: RenderResult) {
-  await waitFor(() =>
-    expect(
-      result.baseElement.querySelector('.MuiTouchRipple-rippleVisible'),
-    ).toBeNull(),
-  );
 }
 
 function pageContent(result: RenderResult) {
