@@ -50,7 +50,7 @@ exports[`[kind: ???] /docs Should render correctly: content 1`] = `
 ]
 `;
 
-exports[`[kind: ???] tabs Should render correctly: tabs 1`] = `
+exports[`[kind: ???] tabs Should render tabs: tabs 1`] = `
 [
   [
     <button
@@ -646,7 +646,7 @@ exports[`[kind: api] /definition Should render correctly: content 1`] = `
 ]
 `;
 
-exports[`[kind: api] tabs Should render correctly: tabs 1`] = `
+exports[`[kind: api] tabs Should render tabs: tabs 1`] = `
 [
   [
     <button
@@ -737,7 +737,7 @@ exports[`[kind: component] [type: ???] /docs Should render correctly: content 1`
 ]
 `;
 
-exports[`[kind: component] [type: ???] tabs Should render correctly when kubernetes is available: content 1`] = `
+exports[`[kind: component] [type: ???] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -778,7 +778,7 @@ exports[`[kind: component] [type: ???] tabs Should render correctly when kuberne
 ]
 `;
 
-exports[`[kind: component] [type: ???] tabs Should render correctly when kubernetes is not available: tabs 1`] = `
+exports[`[kind: component] [type: ???] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -1066,7 +1066,7 @@ exports[`[kind: component] [type: backend] /releases Should render correctly: co
 ]
 `;
 
-exports[`[kind: component] [type: backend] tabs Should render correctly when kubernetes is available: content 1`] = `
+exports[`[kind: component] [type: backend] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -1226,7 +1226,7 @@ exports[`[kind: component] [type: backend] tabs Should render correctly when kub
 ]
 `;
 
-exports[`[kind: component] [type: backend] tabs Should render correctly when kubernetes is not available: tabs 1`] = `
+exports[`[kind: component] [type: backend] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -1578,7 +1578,7 @@ exports[`[kind: component] [type: frontend] /releases Should render correctly: c
 ]
 `;
 
-exports[`[kind: component] [type: frontend] tabs Should render correctly when kubernetes is available: content 1`] = `
+exports[`[kind: component] [type: frontend] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -1721,7 +1721,7 @@ exports[`[kind: component] [type: frontend] tabs Should render correctly when ku
 ]
 `;
 
-exports[`[kind: component] [type: frontend] tabs Should render correctly when kubernetes is not available: tabs 1`] = `
+exports[`[kind: component] [type: frontend] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -2035,7 +2035,7 @@ exports[`[kind: component] [type: helm] /releases Should render correctly: conte
 ]
 `;
 
-exports[`[kind: component] [type: helm] tabs Should render correctly when kubernetes is available: content 1`] = `
+exports[`[kind: component] [type: helm] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -2161,7 +2161,7 @@ exports[`[kind: component] [type: helm] tabs Should render correctly when kubern
 ]
 `;
 
-exports[`[kind: component] [type: helm] tabs Should render correctly when kubernetes is not available: tabs 1`] = `
+exports[`[kind: component] [type: helm] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -2500,7 +2500,7 @@ exports[`[kind: component] [type: service] /releases Should render correctly: co
 ]
 `;
 
-exports[`[kind: component] [type: service] tabs Should render correctly when kubernetes is available: content 1`] = `
+exports[`[kind: component] [type: service] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -2660,7 +2660,7 @@ exports[`[kind: component] [type: service] tabs Should render correctly when kub
 ]
 `;
 
-exports[`[kind: component] [type: service] tabs Should render correctly when kubernetes is not available: tabs 1`] = `
+exports[`[kind: component] [type: service] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -3012,7 +3012,7 @@ exports[`[kind: component] [type: website] /releases Should render correctly: co
 ]
 `;
 
-exports[`[kind: component] [type: website] tabs Should render correctly when kubernetes is available: content 1`] = `
+exports[`[kind: component] [type: website] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -3155,7 +3155,7 @@ exports[`[kind: component] [type: website] tabs Should render correctly when kub
 ]
 `;
 
-exports[`[kind: component] [type: website] tabs Should render correctly when kubernetes is not available: tabs 1`] = `
+exports[`[kind: component] [type: website] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -3297,7 +3297,7 @@ exports[`[kind: domain] / Should render correctly: content 1`] = `
 ]
 `;
 
-exports[`[kind: domain] tabs Should render correctly: tabs 1`] = `
+exports[`[kind: domain] tabs Should render tabs: tabs 1`] = `
 [
   [
     <button
@@ -3413,7 +3413,65 @@ exports[`[kind: group] /releases Should render correctly: content 1`] = `
 ]
 `;
 
-exports[`[kind: group] tabs Should render correctly with kubernetes: tabs 1`] = `
+exports[`[kind: group] tabs Should render tabs when is a delivery programme: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Manage Members
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: group] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
     <button
@@ -3488,65 +3546,7 @@ exports[`[kind: group] tabs Should render correctly with kubernetes: tabs 1`] = 
 ]
 `;
 
-exports[`[kind: group] tabs Should render correctly with manage members: tabs 1`] = `
-[
-  [
-    <button
-      aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
-      data-testid="header-tab-0"
-      role="tab"
-      tabindex="0"
-      type="button"
-    >
-      <span
-        class="MuiTab-wrapper"
-      >
-        Overview
-      </span>
-      <span
-        class="MuiTouchRipple-root"
-      />
-    </button>,
-    <button
-      aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
-      data-testid="header-tab-1"
-      role="tab"
-      tabindex="-1"
-      type="button"
-    >
-      <span
-        class="MuiTab-wrapper"
-      >
-        Pull Requests
-      </span>
-      <span
-        class="MuiTouchRipple-root"
-      />
-    </button>,
-    <button
-      aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
-      data-testid="header-tab-2"
-      role="tab"
-      tabindex="-1"
-      type="button"
-    >
-      <span
-        class="MuiTab-wrapper"
-      >
-        Manage Members
-      </span>
-      <span
-        class="MuiTouchRipple-root"
-      />
-    </button>,
-  ],
-]
-`;
-
-exports[`[kind: group] tabs Should render correctly: tabs 1`] = `
+exports[`[kind: group] tabs Should render tabs: tabs 1`] = `
 [
   [
     <button
@@ -3654,7 +3654,7 @@ exports[`[kind: system] /diagram Should render correctly: content 1`] = `
 ]
 `;
 
-exports[`[kind: system] tabs Should render correctly: tabs 1`] = `
+exports[`[kind: system] tabs Should render tabs: tabs 1`] = `
 [
   [
     <button
@@ -3720,7 +3720,7 @@ exports[`[kind: user] / Should render correctly: content 1`] = `
 ]
 `;
 
-exports[`[kind: user] tabs Should render correctly: tabs 1`] = `
+exports[`[kind: user] tabs Should render tabs: tabs 1`] = `
 [
   [
     <button

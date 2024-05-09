@@ -43,1162 +43,419 @@ import userEvent from '@testing-library/user-event';
 import type { RenderResult } from '@testing-library/react';
 import { randomUUID } from 'node:crypto';
 
+async function itShouldRenderTabs(when: string, entity: Entity): Promise<void>;
+async function itShouldRenderTabs(entity: Entity): Promise<void>;
+async function itShouldRenderTabs(...args: [string, Entity] | [Entity]) {
+  const [when, entity] = args.length === 1 ? ['', ...args] : args;
+  // eslint-disable-next-line jest/valid-title
+  it(`Should render tabs ${when}`.trim(), async () => {
+    const { render } = setup();
+    const result = await render(entity);
+    expect(pageTabs(result)).toMatchSnapshot('tabs');
+  });
+}
+
+async function itShouldRenderEntityHome(
+  when: string,
+  tabName: string,
+  entity: Entity,
+): Promise<void>;
+async function itShouldRenderEntityHome(
+  tabName: string,
+  entity: Entity,
+): Promise<void>;
+async function itShouldRenderEntityHome(
+  ...args: [string, string, Entity] | [string, Entity]
+) {
+  const [when, tabName, entity] = args.length === 2 ? ['', ...args] : args;
+  // eslint-disable-next-line jest/valid-title
+  it(`Should render correctly ${when}`.trim(), async () => {
+    const { render } = setup();
+
+    const result = await render(entity);
+
+    expect(pageContent(result)).toMatchSnapshot('content');
+    const beforeNavigate = result.baseElement.outerHTML;
+    await navigateToTab(result, tabName);
+    expect(result.baseElement.outerHTML).toBe(beforeNavigate);
+  });
+}
+
+async function itShouldRenderEntityPage(
+  when: string,
+  tabName: string,
+  entity: Entity,
+): Promise<void>;
+async function itShouldRenderEntityPage(
+  tabName: string,
+  entity: Entity,
+): Promise<void>;
+async function itShouldRenderEntityPage(
+  ...args: [string, string, Entity] | [string, Entity]
+) {
+  const [when, tabName, entity] = args.length === 2 ? ['', ...args] : args;
+  // eslint-disable-next-line jest/valid-title
+  it(`Should render correctly ${when}`.trim(), async () => {
+    const { render } = setup();
+
+    const result = await render(entity);
+    await navigateToTab(result, tabName);
+
+    expect(pageContent(result)).toMatchSnapshot('content');
+  });
+}
+
 describe('[kind: component]', () => {
+  function getEntities(type: string) {
+    return {
+      base: {
+        kind: 'component',
+        apiVersion: '1',
+        metadata: {
+          name: 'my-entity',
+        },
+        spec: {
+          type,
+        },
+      },
+      kubernetes: {
+        kind: 'component',
+        apiVersion: '1',
+        metadata: {
+          name: 'my-entity',
+          annotations: {
+            'backstage.io/kubernetes-id': '123',
+          },
+        },
+        spec: {
+          type,
+        },
+      },
+      azurePipelines: {
+        kind: 'component',
+        apiVersion: '1',
+        metadata: {
+          name: 'my-entity',
+          annotations: {
+            'dev.azure.com/project': 'DEFRA-TEST',
+            'dev.azure.com/build-definition': '123',
+          },
+        },
+        spec: {
+          type,
+        },
+      },
+      githubActions: {
+        kind: 'component',
+        apiVersion: '1',
+        metadata: {
+          name: 'my-entity',
+          annotations: {
+            'github.com/project-slug': 'my-project',
+          },
+        },
+        spec: {
+          type,
+        },
+      },
+    } as const satisfies Record<string, Entity>;
+  }
   describe.each(['backend', 'service'])('[type: %s]', type => {
+    const entities = getEntities(type);
     describe('tabs', () => {
-      it('Should render correctly when kubernetes is not available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        expect(pageTabs(result)).toMatchSnapshot('tabs');
-      });
-      it('Should render correctly when kubernetes is available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'backstage.io/kubernetes-id': '123',
-            },
-          },
-          spec: {
-            type,
-          },
-        });
-
-        expect(pageTabs(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderTabs('when there is no kubernetes', entities.base);
+      itShouldRenderTabs('when there is kubernetes', entities.kubernetes);
     });
     describe('/', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-
-        const beforeNavigate = result.baseElement.outerHTML;
-        await navigateToTab(result, 'Overview');
-        expect(result.baseElement.outerHTML).toBe(beforeNavigate);
-      });
+      itShouldRenderEntityHome('Overview', entities.base);
     });
     describe('/ci-cd', () => {
-      it('Should render correctly when cicd is not available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'CI/CD');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
-      it('Should render correctly when azure pipelines are available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'dev.azure.com/project': 'DEFRA-TEST',
-              'dev.azure.com/build-definition': '123',
-            },
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'CI/CD');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
-      it('Should render correctly when github actions are available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'github.com/project-slug': 'my-project',
-            },
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'CI/CD');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage(
+        'when cicd is not available',
+        'CI/CD',
+        entities.base,
+      );
+      itShouldRenderEntityPage(
+        'when azure pipelines are available',
+        'CI/CD',
+        entities.azurePipelines,
+      );
+      itShouldRenderEntityPage(
+        'when github actions are available',
+        'CI/CD',
+        entities.githubActions,
+      );
     });
     describe('/pull-requests', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'Pull Requests');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Pull Requests', entities.base);
     });
     describe('/grafana', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'Grafana');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Grafana', entities.base);
     });
     describe('/api', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'API');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('API', entities.base);
     });
     describe('/dependencies', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'Dependencies');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Dependencies', entities.base);
     });
     describe('/docs', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'Docs');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Docs', entities.base);
     });
     describe('/releases', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'backstage.io/kubernetes-id': '123',
-            },
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'Deployments');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Deployments', entities.kubernetes);
     });
     describe('/kubernetes', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'backstage.io/kubernetes-id': '123',
-            },
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'Kubernetes');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Kubernetes', entities.kubernetes);
     });
   });
   describe.each(['frontend', 'website'])('[type: %s]', type => {
+    const entities = getEntities(type);
     describe('tabs', () => {
-      it('Should render correctly when kubernetes is not available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        expect(pageTabs(result)).toMatchSnapshot('tabs');
-      });
-      it('Should render correctly when kubernetes is available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'backstage.io/kubernetes-id': '123',
-            },
-          },
-          spec: {
-            type,
-          },
-        });
-
-        expect(pageTabs(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderTabs('when there is no kubernetes', entities.base);
+      itShouldRenderTabs('when there is kubernetes', entities.kubernetes);
     });
     describe('/', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-
-        const beforeNavigate = result.baseElement.outerHTML;
-        await navigateToTab(result, 'Overview');
-        expect(result.baseElement.outerHTML).toBe(beforeNavigate);
-      });
+      itShouldRenderEntityHome('Overview', entities.base);
     });
     describe('/ci-cd', () => {
-      it('Should render correctly when cicd is not available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'CI/CD');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
-      it('Should render correctly when azure pipelines are available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'dev.azure.com/project': 'DEFRA-TEST',
-              'dev.azure.com/build-definition': '123',
-            },
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'CI/CD');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
-      it('Should render correctly when github actions are available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'github.com/project-slug': 'my-project',
-            },
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'CI/CD');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage(
+        'when cicd is not available',
+        'CI/CD',
+        entities.base,
+      );
+      itShouldRenderEntityPage(
+        'when azure pipelines are available',
+        'CI/CD',
+        entities.azurePipelines,
+      );
+      itShouldRenderEntityPage(
+        'when github actions are available',
+        'CI/CD',
+        entities.githubActions,
+      );
     });
     describe('/pull-requests', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'Pull Requests');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Pull Requests', entities.base);
     });
     describe('/grafana', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'Grafana');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Grafana', entities.base);
     });
     describe('/dependencies', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'Dependencies');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Dependencies', entities.base);
     });
     describe('/docs', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'Docs');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Docs', entities.base);
     });
     describe('/releases', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'backstage.io/kubernetes-id': '123',
-            },
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'Deployments');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Deployments', entities.kubernetes);
     });
     describe('/kubernetes', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'backstage.io/kubernetes-id': '123',
-            },
-          },
-          spec: {
-            type,
-          },
-        });
-
-        await navigateToTab(result, 'Kubernetes');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Kubernetes', entities.kubernetes);
     });
   });
   describe('[type: helm]', () => {
+    const entities = getEntities('helm');
     describe('tabs', () => {
-      it('Should render correctly when kubernetes is not available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type: 'helm',
-          },
-        });
-
-        expect(pageTabs(result)).toMatchSnapshot('tabs');
-      });
-      it('Should render correctly when kubernetes is available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'backstage.io/kubernetes-id': '123',
-            },
-          },
-          spec: {
-            type: 'helm',
-          },
-        });
-
-        expect(pageTabs(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderTabs('when there is no kubernetes', entities.base);
+      itShouldRenderTabs('when there is kubernetes', entities.kubernetes);
     });
     describe('/', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type: 'helm',
-          },
-        });
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-
-        const beforeNavigate = result.baseElement.outerHTML;
-        await navigateToTab(result, 'Overview');
-        expect(result.baseElement.outerHTML).toBe(beforeNavigate);
-      });
+      itShouldRenderEntityHome('Overview', entities.base);
     });
     describe('/ci-cd', () => {
-      it('Should render correctly when cicd is not available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type: 'helm',
-          },
-        });
-
-        await navigateToTab(result, 'CI/CD');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
-      it('Should render correctly when azure pipelines are available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'dev.azure.com/project': 'DEFRA-TEST',
-              'dev.azure.com/build-definition': '123',
-            },
-          },
-          spec: {
-            type: 'helm',
-          },
-        });
-
-        await navigateToTab(result, 'CI/CD');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
-      it('Should render correctly when github actions are available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'github.com/project-slug': 'my-project',
-            },
-          },
-          spec: {
-            type: 'helm',
-          },
-        });
-
-        await navigateToTab(result, 'CI/CD');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage(
+        'when cicd is not available',
+        'CI/CD',
+        entities.base,
+      );
+      itShouldRenderEntityPage(
+        'when azure pipelines are available',
+        'CI/CD',
+        entities.azurePipelines,
+      );
+      itShouldRenderEntityPage(
+        'when github actions are available',
+        'CI/CD',
+        entities.githubActions,
+      );
     });
     describe('/pull-requests', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type: 'helm',
-          },
-        });
-
-        await navigateToTab(result, 'Pull Requests');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Pull Requests', entities.base);
     });
     describe('/dependencies', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type: 'helm',
-          },
-        });
-
-        await navigateToTab(result, 'Dependencies');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Dependencies', entities.base);
     });
     describe('/docs', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type: 'helm',
-          },
-        });
-
-        await navigateToTab(result, 'Docs');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Docs', entities.base);
     });
     describe('/releases', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'backstage.io/kubernetes-id': '123',
-            },
-          },
-          spec: {
-            type: 'helm',
-          },
-        });
-
-        await navigateToTab(result, 'Deployments');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Deployments', entities.kubernetes);
     });
     describe('/kubernetes', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'backstage.io/kubernetes-id': '123',
-            },
-          },
-          spec: {
-            type: 'helm',
-          },
-        });
-
-        await navigateToTab(result, 'Kubernetes');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Kubernetes', entities.kubernetes);
     });
   });
   describe('[type: ???]', () => {
+    const entities = getEntities(randomUUID());
     describe('tabs', () => {
-      it('Should render correctly when kubernetes is not available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type: randomUUID(),
-          },
-        });
-
-        expect(pageTabs(result)).toMatchSnapshot('tabs');
-      });
-      it('Should render correctly when kubernetes is available', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-            annotations: {
-              'backstage.io/kubernetes-id': '123',
-            },
-          },
-          spec: {
-            type: randomUUID(),
-          },
-        });
-
-        expect(pageTabs(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderTabs('when there is no kubernetes', entities.base);
+      itShouldRenderTabs('when there is kubernetes', entities.kubernetes);
     });
     describe('/', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type: randomUUID(),
-          },
-        });
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-
-        const beforeNavigate = result.baseElement.outerHTML;
-        await navigateToTab(result, 'Overview');
-        expect(result.baseElement.outerHTML).toBe(beforeNavigate);
-      });
+      itShouldRenderEntityHome('Overview', entities.base);
     });
     describe('/docs', () => {
-      it('Should render correctly', async () => {
-        const { render } = setup();
-        const result = await render({
-          kind: 'component',
-          apiVersion: '1',
-          metadata: {
-            name: 'my-entity',
-          },
-          spec: {
-            type: randomUUID(),
-          },
-        });
-
-        await navigateToTab(result, 'Docs');
-
-        expect(pageContent(result)).toMatchSnapshot('content');
-      });
+      itShouldRenderEntityPage('Docs', entities.base);
     });
   });
 });
 describe('[kind: api]', () => {
+  const entity = {
+    kind: 'api',
+    apiVersion: '1',
+    metadata: {
+      name: 'my-entity',
+    },
+  } as const satisfies Entity;
   describe('tabs', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'api',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      expect(pageTabs(result)).toMatchSnapshot('tabs');
-    });
+    itShouldRenderTabs(entity);
   });
   describe('/', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'api',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-
-      const beforeNavigate = result.baseElement.outerHTML;
-      await navigateToTab(result, 'Overview');
-      expect(result.baseElement.outerHTML).toBe(beforeNavigate);
-    });
+    itShouldRenderEntityHome('Overview', entity);
   });
   describe('/definition', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'api',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      await navigateToTab(result, 'Definition');
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-    });
+    itShouldRenderEntityPage('Definition', entity);
   });
 });
 describe('[kind: group]', () => {
+  const entities = {
+    base: {
+      kind: 'group',
+      apiVersion: '1',
+      metadata: {
+        name: 'my-entity',
+      },
+    },
+    deliveryProgramme: {
+      kind: 'group',
+      apiVersion: '1',
+      metadata: {
+        name: 'my-entity',
+      },
+      spec: {
+        type: 'delivery-programme',
+      },
+    },
+    kubernetes: {
+      kind: 'group',
+      apiVersion: '1',
+      metadata: {
+        name: 'my-entity',
+        annotations: {
+          'backstage.io/kubernetes-id': '123',
+        },
+      },
+    },
+  } as const satisfies Record<string, Entity>;
   describe('tabs', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'group',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      expect(pageTabs(result)).toMatchSnapshot('tabs');
-    });
-    it('Should render correctly with manage members', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'group',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-        spec: {
-          type: 'delivery-programme',
-        },
-      });
-
-      expect(pageTabs(result)).toMatchSnapshot('tabs');
-    });
-    it('Should render correctly with kubernetes', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'group',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-          annotations: {
-            'backstage.io/kubernetes-id': '123',
-          },
-        },
-      });
-
-      expect(pageTabs(result)).toMatchSnapshot('tabs');
-    });
+    itShouldRenderTabs(entities.base);
+    itShouldRenderTabs(
+      'when is a delivery programme',
+      entities.deliveryProgramme,
+    );
+    itShouldRenderTabs('when there is kubernetes', entities.kubernetes);
   });
   describe('/', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'group',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-
-      const beforeNavigate = result.baseElement.outerHTML;
-      await navigateToTab(result, 'Overview');
-      expect(result.baseElement.outerHTML).toBe(beforeNavigate);
-    });
+    itShouldRenderEntityHome('Overview', entities.base);
   });
   describe('/pull-requests', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'group',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      await navigateToTab(result, 'Pull Requests');
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-    });
+    itShouldRenderEntityPage('Pull Requests', entities.base);
   });
   describe('/manage-members', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'group',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-        spec: {
-          type: 'delivery-programme',
-        },
-      });
-
-      await navigateToTab(result, 'Manage Members');
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-    });
+    itShouldRenderEntityPage('Manage Members', entities.deliveryProgramme);
   });
   describe('/releases', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'group',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-          annotations: {
-            'backstage.io/kubernetes-id': '123',
-          },
-        },
-      });
-
-      await navigateToTab(result, 'Deployments');
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-    });
+    itShouldRenderEntityPage('Deployments', entities.kubernetes);
   });
   describe('/kubernetes', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'group',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-          annotations: {
-            'backstage.io/kubernetes-id': '123',
-          },
-        },
-      });
-
-      await navigateToTab(result, 'Kubernetes');
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-    });
+    itShouldRenderEntityPage('Kubernetes', entities.kubernetes);
   });
 });
 describe('[kind: user]', () => {
+  const entity = {
+    kind: 'user',
+    apiVersion: '1',
+    metadata: {
+      name: 'my-entity',
+    },
+  } as const satisfies Entity;
   describe('tabs', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'user',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      expect(pageTabs(result)).toMatchSnapshot('tabs');
-    });
+    itShouldRenderTabs(entity);
   });
   describe('/', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'user',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-
-      const beforeNavigate = result.baseElement.outerHTML;
-      await navigateToTab(result, 'Overview');
-      expect(result.baseElement.outerHTML).toBe(beforeNavigate);
-    });
+    itShouldRenderEntityHome('Overview', entity);
   });
 });
 describe('[kind: system]', () => {
+  const entity = {
+    kind: 'system',
+    apiVersion: '1',
+    metadata: {
+      name: 'my-entity',
+    },
+  } as const satisfies Entity;
   describe('tabs', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'system',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      expect(pageTabs(result)).toMatchSnapshot('tabs');
-    });
+    itShouldRenderTabs(entity);
   });
   describe('/', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'system',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-
-      const beforeNavigate = result.baseElement.outerHTML;
-      await navigateToTab(result, 'Overview');
-      expect(result.baseElement.outerHTML).toBe(beforeNavigate);
-    });
+    itShouldRenderEntityHome('Overview', entity);
   });
   describe('/diagram', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'system',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      await navigateToTab(result, 'Diagram');
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-    });
+    itShouldRenderEntityPage('Diagram', entity);
   });
 });
 describe('[kind: domain]', () => {
+  const entity = {
+    kind: 'domain',
+    apiVersion: '1',
+    metadata: {
+      name: 'my-entity',
+    },
+  } as const satisfies Entity;
   describe('tabs', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'domain',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      expect(pageTabs(result)).toMatchSnapshot('tabs');
-    });
+    itShouldRenderTabs(entity);
   });
   describe('/', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: 'domain',
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-
-      const beforeNavigate = result.baseElement.outerHTML;
-      await navigateToTab(result, 'Overview');
-      expect(result.baseElement.outerHTML).toBe(beforeNavigate);
-    });
+    itShouldRenderEntityHome('Overview', entity);
   });
 });
 describe('[kind: ???]', () => {
+  const entity = {
+    kind: randomUUID(),
+    apiVersion: '1',
+    metadata: {
+      name: 'my-entity',
+    },
+  } as const satisfies Entity;
   describe('tabs', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: randomUUID(),
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      expect(pageTabs(result)).toMatchSnapshot('tabs');
-    });
+    itShouldRenderTabs(entity);
   });
   describe('/', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: randomUUID(),
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-
-      const beforeNavigate = result.baseElement.outerHTML;
-      await navigateToTab(result, 'Overview');
-      expect(result.baseElement.outerHTML).toBe(beforeNavigate);
-    });
+    itShouldRenderEntityHome('Overview', entity);
   });
   describe('/docs', () => {
-    it('Should render correctly', async () => {
-      const { render } = setup();
-      const result = await render({
-        kind: randomUUID(),
-        apiVersion: '1',
-        metadata: {
-          name: 'my-entity',
-        },
-      });
-
-      await navigateToTab(result, 'Docs');
-
-      expect(pageContent(result)).toMatchSnapshot('content');
-    });
+    itShouldRenderEntityPage('Docs', entity);
   });
 });
 
 async function navigateToTab(result: RenderResult, tabText: string) {
   await act(async () => {
-    const tabs = result.baseElement.querySelectorAll(
-      `.MuiTabs-flexContainer > button`,
-    );
+    const tabs = [
+      ...result.baseElement.querySelectorAll(`.MuiTabs-flexContainer > button`),
+    ];
     expect(tabs).not.toBeNull();
-    const tab = [...tabs].filter(t => t.textContent === tabText);
+    expect(tabs.map(x => x.textContent)).toContain(tabText);
+    const tab = tabs.filter(t => t.textContent === tabText);
     expect(tab).toHaveLength(1);
     await userEvent.click(tab[0]);
   });
