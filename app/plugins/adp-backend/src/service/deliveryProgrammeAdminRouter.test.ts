@@ -205,5 +205,22 @@ describe('createRouter', () => {
         .send(requestBody);
       expect(response.status).toEqual(400);
     });
+
+    it('returns 404 not found if the delivery programme admin cannot be found', async () => {
+      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(
+        undefined,
+      );
+
+      const deliveryProgrammeAdmin = programmeManagerByAADEntityRef;
+      const requestBody = {
+        aadEntityRefId: deliveryProgrammeAdmin.aad_entity_ref_id,
+        deliveryProgrammeId: deliveryProgrammeAdmin.delivery_programme_id,
+      };
+
+      const response = await request(deliveryProgrammeAdminApp)
+        .del(`/deliveryProgrammeAdmin`)
+        .send(requestBody);
+      expect(response.status).toEqual(404);
+    });
   });
 });

@@ -13,10 +13,7 @@ import { createProgrammeRouter } from './deliveryProgrammeRouter';
 import { Router } from 'express';
 import { createProjectRouter } from './deliveryProjectRouter';
 import { createDeliveryProgrammeAdminRouter } from './deliveryProgrammeAdminRouter';
-import {
-  DeliveryProjectStore,
-  DeliveryProjectUserStore,
-} from '../deliveryProject';
+import { DeliveryProjectStore } from '../deliveryProject';
 import { DeliveryProgrammeStore } from '../deliveryProgramme';
 import { DeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import { CatalogClient } from '@backstage/catalog-client';
@@ -26,6 +23,7 @@ import {
   GithubTeamStore,
 } from '../githubTeam';
 import { ArmsLengthBodyStore } from '../armsLengthBody';
+import { DeliveryProjectUserStore } from '../deliveryProjectUser';
 
 export interface ServerOptions {
   port: number;

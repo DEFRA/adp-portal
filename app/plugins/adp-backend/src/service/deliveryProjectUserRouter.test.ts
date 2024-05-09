@@ -80,8 +80,9 @@ describe('createRouter', () => {
 
   describe('GET /deliveryProjectUsers/:deliveryProjectId', () => {
     it('returns ok', async () => {
+      const projectId = faker.string.uuid();
       const projectUsers = faker.helpers.multiple(
-        () => createDeliveryProjectUser(faker.string.uuid()),
+        () => createDeliveryProjectUser(projectId),
         { count: 5 },
       );
       mockDeliveryProjectUserStore.getByDeliveryProject.mockResolvedValueOnce(
@@ -89,7 +90,7 @@ describe('createRouter', () => {
       );
 
       const response = await request(deliveryProjectUserApp).get(
-        '/deliveryProjectUsers',
+        `/deliveryProjectUsers/${projectId}`,
       );
       expect(response.status).toEqual(200);
     });
@@ -98,7 +99,10 @@ describe('createRouter', () => {
   describe('POST /deliveryProjectUser', () => {
     it('returns a 201 response when project users are created', async () => {
       const projectUser = createDeliveryProjectUser(faker.string.uuid());
-      mockDeliveryProjectUserStore.add.mockResolvedValueOnce(projectUser);
+      mockDeliveryProjectUserStore.add.mockResolvedValueOnce({
+        success: true,
+        value: projectUser,
+      });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
 
       const requestBody: CreateDeliveryProjectUserRequest = {
@@ -113,6 +117,50 @@ describe('createRouter', () => {
         .post('/deliveryProjectUser')
         .send(requestBody);
       expect(response.status).toEqual(201);
+    });
+
+    it('returns a 400 response with errors', async () => {
+      mockDeliveryProjectUserStore.add.mockResolvedValueOnce({
+        success: false,
+        errors: ['duplicateUser', 'unknown', 'unknownDeliveryProject'],
+      });
+      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+
+      const requestBody: CreateDeliveryProjectUserRequest = {
+        delivery_project_id: faker.string.uuid(),
+        is_admin: faker.datatype.boolean(),
+        is_technical: faker.datatype.boolean(),
+        user_catalog_name: faker.internet.userName(),
+        github_username: faker.internet.userName(),
+      };
+
+      const response = await request(deliveryProjectUserApp)
+        .post('/deliveryProjectUser')
+        .send(requestBody);
+
+      expect(response.status).toEqual(400);
+      expect(response.body).toMatchObject({
+        errors: [
+          {
+            path: 'user_catalog_name',
+            error: {
+              message: `The user ${requestBody.user_catalog_name} has already been added to this delivery project`,
+            },
+          },
+          {
+            path: 'root',
+            error: {
+              message: 'An unexpected error occurred.',
+            },
+          },
+          {
+            path: 'delivery_project_id',
+            error: {
+              message: 'The delivery project does not exist.',
+            },
+          },
+        ],
+      });
     });
   });
 });

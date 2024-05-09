@@ -4,7 +4,12 @@ import type { CatalogApi } from '@backstage/catalog-client';
 import express from 'express';
 import Router from 'express-promise-router';
 import { errorHandler } from '@backstage/backend-common';
-import { assertUUID, createParser, getUserEntityFromCatalog } from './util';
+import {
+  assertUUID,
+  createParser,
+  getUserEntityFromCatalog,
+  respond,
+} from './util';
 import type {
   CreateDeliveryProjectUserRequest,
   ValidationErrorMapping,
@@ -24,10 +29,16 @@ const parseCreateDeliveryProjectUserRequest =
   );
 
 const errorMapping = {
-  duplicateUser: (req: { userEntityRef?: string }) => ({
-    path: 'userEntityRef',
+  duplicateUser: (req: { user_catalog_name?: string }) => ({
+    path: 'user_catalog_name',
     error: {
-      message: `The user ${req.userEntityRef} has already been added to this delivery project`,
+      message: `The user ${req.user_catalog_name} has already been added to this delivery project`,
+    },
+  }),
+  unknownDeliveryProject: () => ({
+    path: 'delivery_project_id',
+    error: {
+      message: `The delivery project does not exist.`,
     },
   }),
   unknown: () => ({
@@ -87,8 +98,7 @@ export function createDeliveryProjectUserRouter(
     };
 
     const addedUser = await deliveryProjectUserStore.add(addUser);
-
-    res.status(201).json(addedUser);
+    respond(body, res, addedUser, errorMapping, { ok: 201 });
   });
 
   router.use(errorHandler());

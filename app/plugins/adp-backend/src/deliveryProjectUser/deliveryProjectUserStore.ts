@@ -2,8 +2,11 @@ import type { Knex } from 'knex';
 import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
 import type { delivery_project_user } from './delivery_project_user';
 import { delivery_project_user_name } from './delivery_project_user';
-import { assertUUID } from '../service/util';
+import type { SafeResult } from '../service/util';
+import { assertUUID, checkMany, isUUID } from '../service/util';
 import type { AddDeliveryProjectUser } from '../utils';
+import type { delivery_project } from '../deliveryProject/delivery_project';
+import { delivery_project_name } from '../deliveryProject/delivery_project';
 
 export type IDeliveryProjectUserStore = {
   [P in keyof DeliveryProjectUserStore]: DeliveryProjectUserStore[P];
@@ -50,7 +53,11 @@ export class DeliveryProjectUserStore {
     return deliveryProjectUsers.map(row => this.#normalize(row));
   }
 
-  async add(projectUser: AddDeliveryProjectUser): Promise<DeliveryProjectUser> {
+  async add(
+    projectUser: AddDeliveryProjectUser,
+  ): Promise<
+    SafeResult<DeliveryProjectUser, 'duplicateUser' | 'unknownDeliveryProject'>
+  > {
     const {
       aad_entity_ref_id,
       delivery_project_id,
@@ -60,6 +67,18 @@ export class DeliveryProjectUserStore {
       name,
       github_username,
     } = projectUser;
+
+    const valid = await checkMany({
+      duplicateUser: this.#deliveryProjectUserExists(
+        aad_entity_ref_id,
+        delivery_project_id,
+      ),
+      unknownDeliveryProject: not(
+        this.#deliveryProjectExists(delivery_project_id),
+      ),
+    });
+
+    if (!valid.success) return valid;
 
     assertUUID(delivery_project_id);
 
@@ -76,7 +95,14 @@ export class DeliveryProjectUserStore {
       allColumns,
     );
 
-    return this.#normalize({ ...insertResult[0] });
+    if (insertResult.length < 1) {
+      return { success: false, errors: ['unknown'] };
+    }
+
+    return {
+      success: true,
+      value: this.#normalize({ ...insertResult[0] }),
+    };
   }
 
   #normalize(row: delivery_project_user): DeliveryProjectUser {
@@ -87,4 +113,36 @@ export class DeliveryProjectUserStore {
       github_username: row.github_username ?? undefined,
     };
   }
+
+  async #deliveryProjectExists(id: string) {
+    if (!isUUID(id)) return false;
+    const [{ count }] = await this.#client<delivery_project>(
+      delivery_project_name,
+    )
+      .where('id', id)
+      .limit(1)
+      .count('*', { as: 'count' });
+    return Number(count) > 0;
+  }
+
+  async #deliveryProjectUserExists(
+    aadEntityRefId: string,
+    deliveryProjectId: string,
+  ) {
+    if (!isUUID(deliveryProjectId)) return false;
+    const [{ count }] = await this.#client<delivery_project_user>(
+      delivery_project_user_name,
+    )
+      .where({
+        aad_entity_ref_id: aadEntityRefId,
+        delivery_project_id: deliveryProjectId,
+      })
+      .limit(1)
+      .count('*', { as: 'count' });
+    return Number(count) > 0;
+  }
+}
+
+async function not(value: Promise<boolean>) {
+  return !(await value);
 }

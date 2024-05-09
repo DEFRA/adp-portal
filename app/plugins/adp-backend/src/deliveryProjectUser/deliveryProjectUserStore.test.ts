@@ -19,6 +19,7 @@ import {
   createDeliveryProjectUserEntity,
 } from '../testData/projectUserTestData';
 import { faker } from '@faker-js/faker';
+import { assertUUID } from '../service/util';
 
 describe('DeliveryProjectUserStore', () => {
   const databases = TestDatabases.create();
@@ -84,21 +85,33 @@ describe('DeliveryProjectUserStore', () => {
       );
       const projectId = await seedProject(knex);
       const expectedUser = createDeliveryProjectUser(projectId);
+      assertUUID(expectedUser.delivery_project_id);
 
-      const addResult = await deliveryProjectUserStore.add(expectedUser);
+      const addResult = await deliveryProjectUserStore.add({
+        ...expectedUser,
+        delivery_project_id: expectedUser.delivery_project_id,
+      });
 
-      expect(addResult.aad_entity_ref_id).toEqual(
+      if (!addResult.success) {
+        throw new Error('Failed to seed project');
+      }
+
+      const addedProjectUser = addResult.value;
+
+      expect(addedProjectUser.aad_entity_ref_id).toEqual(
         expectedUser.aad_entity_ref_id,
       );
-      expect(addResult.delivery_project_id).toEqual(
+      expect(addedProjectUser.delivery_project_id).toEqual(
         expectedUser.delivery_project_id,
       );
-      expect(addResult.email).toEqual(expectedUser.email);
-      expect(addResult.github_username).toEqual(expectedUser.github_username);
-      expect(addResult.id).toBeDefined();
-      expect(addResult.is_admin).toEqual(expectedUser.is_admin);
-      expect(addResult.is_technical).toEqual(expectedUser.is_technical);
-      expect(addResult.name).toEqual(expectedUser.name);
+      expect(addedProjectUser.email).toEqual(expectedUser.email);
+      expect(addedProjectUser.github_username).toEqual(
+        expectedUser.github_username,
+      );
+      expect(addedProjectUser.id).toBeDefined();
+      expect(addedProjectUser.is_admin).toEqual(expectedUser.is_admin);
+      expect(addedProjectUser.is_technical).toEqual(expectedUser.is_technical);
+      expect(addedProjectUser.name).toEqual(expectedUser.name);
     },
   );
 
