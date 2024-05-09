@@ -66,33 +66,3 @@ export async function checkMany<
 export function containsAnyValue(obj: object) {
   return Object.entries(obj).some(e => e[1] !== undefined);
 }
-
-export async function getUserEntityFromCatalog(
-  userCatalogName: string,
-  catalog: CatalogApi,
-): Promise<UserEntityV1alpha1> {
-  const catalogUsersResponse = await catalog.getEntities({
-    filter: [
-      {
-        kind: 'User',
-        'metadata.name': userCatalogName,
-      },
-    ],
-    fields: [
-      'metadata.name',
-      'metadata.annotations.graph.microsoft.com/user-id',
-      'metadata.annotations.microsoft.com/email',
-      'spec.profile.displayName',
-    ],
-  });
-
-  const catalogUser = catalogUsersResponse.items?.[0];
-
-  if (catalogUser === undefined) {
-    throw new NotFoundError(
-      `User ${userCatalogName} does not exist in the catalog`,
-    );
-  }
-
-  return catalogUser as UserEntityV1alpha1;
-}

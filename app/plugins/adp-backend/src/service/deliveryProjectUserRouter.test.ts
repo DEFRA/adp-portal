@@ -119,6 +119,24 @@ describe('createRouter', () => {
       expect(response.status).toEqual(201);
     });
 
+    it('returns a 400 response if catalog user cannot be found', async () => {
+      mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
+
+      const requestBody: CreateDeliveryProjectUserRequest = {
+        delivery_project_id: faker.string.uuid(),
+        is_admin: faker.datatype.boolean(),
+        is_technical: faker.datatype.boolean(),
+        user_catalog_name: faker.internet.userName(),
+        github_username: faker.internet.userName(),
+      };
+
+      const response = await request(deliveryProjectUserApp)
+        .post('/deliveryProjectUser')
+        .send(requestBody);
+
+      expect(response.status).toEqual(400);
+    });
+
     it('returns a 400 response with errors', async () => {
       mockDeliveryProjectUserStore.add.mockResolvedValueOnce({
         success: false,

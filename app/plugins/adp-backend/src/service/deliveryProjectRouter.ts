@@ -119,20 +119,6 @@ export function createProjectRouter(
     }
   });
 
-  router.get('/projectUser', async (_req, res) => {
-    try {
-      const data = await deliveryProjectUserStore.getAll();
-      res.json(data);
-    } catch (error) {
-      const deliveryProjectError = error as Error;
-      logger.error(
-        'Error in retrieving a delivery project users: ',
-        deliveryProjectError,
-      );
-      throw new InputError(deliveryProjectError.message);
-    }
-  });
-
   router.get('/deliveryProject/:id', async (_req, res) => {
     try {
       const deliveryProject = await deliveryProjectStore.get(_req.params.id);

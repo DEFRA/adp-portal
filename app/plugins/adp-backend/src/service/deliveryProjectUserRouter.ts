@@ -4,18 +4,14 @@ import type { CatalogApi } from '@backstage/catalog-client';
 import express from 'express';
 import Router from 'express-promise-router';
 import { errorHandler } from '@backstage/backend-common';
-import {
-  assertUUID,
-  createParser,
-  getUserEntityFromCatalog,
-  respond,
-} from './util';
+import { assertUUID, createParser, respond } from './util';
 import type {
   CreateDeliveryProjectUserRequest,
   ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
 import { z } from 'zod';
 import type { AddDeliveryProjectUser } from '../utils';
+import { getUserEntityFromCatalog } from './catalog';
 
 const parseCreateDeliveryProjectUserRequest =
   createParser<CreateDeliveryProjectUserRequest>(
@@ -39,6 +35,12 @@ const errorMapping = {
     path: 'delivery_project_id',
     error: {
       message: `The delivery project does not exist.`,
+    },
+  }),
+  unknownCatalogUser: (req: { user_catalog_name?: string }) => ({
+    path: 'user_catalog_name',
+    error: {
+      message: `The user ${req.user_catalog_name} has could not be found in the Catalog`,
     },
   }),
   unknown: () => ({
@@ -88,17 +90,23 @@ export function createDeliveryProjectUserRouter(
       body.user_catalog_name,
       catalog,
     );
-    const addUser: AddDeliveryProjectUser = {
-      ...body,
-      name: catalogUser.spec.profile!.displayName!,
-      email: catalogUser.metadata.annotations!['microsoft.com/email'],
-      aad_entity_ref_id:
-        catalogUser.metadata.annotations!['graph.microsoft.com/user-id'],
-      delivery_project_id: body.delivery_project_id,
-    };
+    if (catalogUser.success) {
+      const addUser: AddDeliveryProjectUser = {
+        ...body,
+        name: catalogUser.value.spec.profile!.displayName!,
+        email: catalogUser.value.metadata.annotations!['microsoft.com/email'],
+        aad_entity_ref_id:
+          catalogUser.value.metadata.annotations![
+            'graph.microsoft.com/user-id'
+          ],
+        delivery_project_id: body.delivery_project_id,
+      };
 
-    const addedUser = await deliveryProjectUserStore.add(addUser);
-    respond(body, res, addedUser, errorMapping, { ok: 201 });
+      const addedUser = await deliveryProjectUserStore.add(addUser);
+      respond(body, res, addedUser, errorMapping, { ok: 201 });
+    }
+
+    respond(body, res, catalogUser, errorMapping);
   });
 
   router.use(errorHandler());
