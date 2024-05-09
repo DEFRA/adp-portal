@@ -44,8 +44,8 @@ exports.seed = async function seed(knex) {
 const records = [
   {
     name: 'eutd',
-    title: 'EUTD',
-    alias: 'Europe & Trade',
+    title: 'Europe & Trade',
+    alias: 'EUTD',
     description:
       'The Europe and Trade Programme, or Biodiversity, Borders & Trade (BBaT) deals with trade between GB and the EU. Covers a collection of all previous EU-Exit projects and programmes.',
     arms_length_body_id: 'animal-plant-health-agency',
@@ -55,8 +55,8 @@ const records = [
   },
   {
     name: 'crai',
-    title: 'CRAI',
-    alias: 'Core AI',
+    title: 'Core AI',
+    alias: 'CRAI',
     description:
       'The Core Artificial Intelligence (AI) programme is a collection of projects looking at the benefits and use cases of Gen AI, Machine Learning, etc.',
     arms_length_body_id: 'core-defra',
@@ -66,8 +66,8 @@ const records = [
   },
   {
     name: 'epr',
-    title: 'EPR',
-    alias: 'Extended Producer Responsibility',
+    title: 'Extended Producer Responsibility',
+    alias: 'EPR',
     description:
       'EPR will move the full cost of dealing with packaging waste from households away from local taxpayers and councils to the packaging producers, giving producers responsibility for the costs of their packaging throughout its life cycle.',
     arms_length_body_id: 'environment-agency',
@@ -88,8 +88,8 @@ const records = [
   },
   {
     name: 'bng',
-    title: 'BNG',
-    alias: 'Biodiversity & Net Gains',
+    title: 'Biodiversity & Net Gains',
+    alias: 'BNG',
     description:
       'Biodiversity net gain (BNG) is a way of creating and improving natural habitats. BNG makes sure development has a measurably positive impact (‘net gain’) on biodiversity, compared to what was there before development.',
     arms_length_body_id: 'natural-england',
@@ -99,8 +99,8 @@ const records = [
   },
   {
     name: 'ffc',
-    title: 'FFC',
-    alias: 'Farming & Countryside Programme',
+    title: 'Farming & Countryside Programme',
+    alias: 'FFC',
     description:
       'The Farming and Countryside Programme is responsible for designing and delivering the new farming schemes in England.',
     arms_length_body_id: 'rural-payments-agency',
@@ -110,8 +110,8 @@ const records = [
   },
   {
     name: 'lap',
-    title: 'LAP',
-    alias: 'Legacy Applications Programme',
+    title: 'Legacy Applications Programme',
+    alias: 'LAP',
     description:
       'The Legacy Application Programme deals with shifting IT services into the cloud from legacy datacentres.',
     arms_length_body_id: 'rural-payments-agency',
@@ -121,8 +121,8 @@ const records = [
   },
   {
     name: 'ncea',
-    title: 'NCEA',
-    alias: 'Natural Capital and Ecosystem Assessment',
+    title: 'Natural Capital and Ecosystem Assessment',
+    alias: 'NCEA',
     description:
       'Natural Capital and Ecosystem Assessment (NCEA) is a science innovation and transformation programme, which spans across land and water environments.',
     arms_length_body_id: 'natural-england',
