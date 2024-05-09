@@ -13,6 +13,7 @@ import {
   GithubTeamStore,
   ArmsLengthBodyStore,
   DeliveryProjectUserStore,
+  createDeliveryProjectUserRouter,
 } from '@internal/plugin-adp-backend';
 import { Router } from 'express';
 import type { PluginEnvironment } from '../types';
@@ -69,6 +70,12 @@ export default async function createPlugin({
     deliveryProjectUserStore,
   });
 
+  const deliveryProjectUserRouter = createDeliveryProjectUserRouter({
+    catalog,
+    deliveryProjectUserStore,
+    logger,
+  });
+
   const deliveryProgrameAdminRouter = createDeliveryProgrammeAdminRouter({
     deliveryProgrammeAdminStore,
     catalog,
@@ -81,6 +88,7 @@ export default async function createPlugin({
   combinedRouter.use(deliveryProgrammeRouter);
   combinedRouter.use(deliveryProjectRouter);
   combinedRouter.use(deliveryProgrameAdminRouter);
+  combinedRouter.use(deliveryProjectUserRouter);
 
   return combinedRouter;
 }

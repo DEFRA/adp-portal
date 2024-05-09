@@ -77,7 +77,7 @@ export async function createAlbRouter(
   const router = Router();
   router.use(express.json());
 
-  router.get('/health', (_, response) => {
+  router.get('/armsLengthBody/health', (_, response) => {
     logger.info('PONG!');
     response.json({ status: 'ok' });
   });

@@ -69,9 +69,11 @@ describe('createRouter', () => {
     mockCatalogClient.getEntities.mockClear();
   });
 
-  describe('GET /health', () => {
+  describe('GET /deliveryProgrammeAdmins/health', () => {
     it('returns ok', async () => {
-      const response = await request(deliveryProgrammeAdminApp).get('/health');
+      const response = await request(deliveryProgrammeAdminApp).get(
+        '/deliveryProgrammeAdmins/health',
+      );
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({ status: 'ok' });
     });

@@ -7,8 +7,8 @@ import Router from 'express-promise-router';
 import { InputError } from '@backstage/errors';
 import type { CatalogApi } from '@backstage/catalog-client';
 import type { UserEntityV1alpha1 } from '@backstage/catalog-model';
-import type { CreateDeliveryProgrammeAdmin } from '../utils';
-import { createParser } from './util';
+import type { AddDeliveryProgrammeAdmin } from '../utils';
+import { assertUUID, createParser } from './util';
 import { z } from 'zod';
 import type {
   CreateDeliveryProgrammeAdminRequest,
@@ -46,7 +46,7 @@ export function createDeliveryProgrammeAdminRouter(
   const router = Router();
   router.use(express.json());
 
-  router.get('/health', (_, response) => {
+  router.get('/deliveryProgrammeAdmins/health', (_, response) => {
     response.json({ status: 'ok' });
   });
 
@@ -87,17 +87,17 @@ export function createDeliveryProgrammeAdminRouter(
   router.post('/deliveryProgrammeAdmin', async (req, res) => {
     try {
       const body = parseCreateDeliveryProgrammeAdminRequest(req.body);
-      let deliveryProgrammeAdmins = await getDeliveryProgrammeAdminsFromCatalog(
-        body.aadEntityRefIds,
-        body.deliveryProgrammeId,
-        catalog,
-      );
+      const deliveryProgrammeAdmins =
+        await getDeliveryProgrammeAdminsFromCatalog(
+          body.aadEntityRefIds,
+          body.deliveryProgrammeId,
+          catalog,
+        );
 
-      deliveryProgrammeAdmins = await deliveryProgrammeAdminStore.addMany(
-        deliveryProgrammeAdmins,
-      );
+      const addedDeliveryProgrammeAdmins =
+        await deliveryProgrammeAdminStore.addMany(deliveryProgrammeAdmins);
 
-      res.status(201).json(deliveryProgrammeAdmins);
+      res.status(201).json(addedDeliveryProgrammeAdmins);
     } catch (error) {
       const typedError = error as Error;
       logger.error(
@@ -150,7 +150,9 @@ async function getDeliveryProgrammeAdminsFromCatalog(
   aadEntityRefs: string[],
   deliveryProgrammeId: string,
   catalog: CatalogApi,
-): Promise<CreateDeliveryProgrammeAdmin[]> {
+): Promise<AddDeliveryProgrammeAdmin[]> {
+  assertUUID(deliveryProgrammeId);
+
   const catalogUsersResponse = await catalog.getEntities({
     filter: {
       kind: 'User',
@@ -175,7 +177,7 @@ async function getDeliveryProgrammeAdminsFromCatalog(
 
     const name = catalogUser.spec.profile!.displayName!;
     const email = catalogUser.metadata.annotations!['microsoft.com/email'];
-    const deliveryProgrammeAdmin: CreateDeliveryProgrammeAdmin = {
+    const deliveryProgrammeAdmin: AddDeliveryProgrammeAdmin = {
       aad_entity_ref_id: aadEntityRef,
       email: email,
       name: name,
@@ -187,5 +189,5 @@ async function getDeliveryProgrammeAdminsFromCatalog(
 
   return users.filter(
     user => user !== undefined,
-  ) as CreateDeliveryProgrammeAdmin[];
+  ) as AddDeliveryProgrammeAdmin[];
 }

@@ -95,9 +95,11 @@ describe('createRouter', () => {
     );
   });
 
-  describe('GET /health', () => {
+  describe('GET /deliveryProgramme/health', () => {
     it('returns ok', async () => {
-      const response = await request(programmeApp).get('/health');
+      const response = await request(programmeApp).get(
+        '/deliveryProgramme/health',
+      );
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({ status: 'ok' });
     });

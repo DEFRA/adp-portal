@@ -3,6 +3,7 @@ import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
 import type { delivery_project_user } from './delivery_project_user';
 import { delivery_project_user_name } from './delivery_project_user';
 import { assertUUID } from '../service/util';
+import type { AddDeliveryProjectUser } from '../utils';
 
 export type IDeliveryProjectUserStore = {
   [P in keyof DeliveryProjectUserStore]: DeliveryProjectUserStore[P];
@@ -17,6 +18,7 @@ const allColumns = [
   'name',
   'email',
   'github_username',
+  'updated_at',
 ] as const satisfies ReadonlyArray<keyof delivery_project_user>;
 
 export class DeliveryProjectUserStore {
@@ -48,9 +50,7 @@ export class DeliveryProjectUserStore {
     return deliveryProjectUsers.map(row => this.#normalize(row));
   }
 
-  async add(
-    projectUser: Omit<DeliveryProjectUser, 'id'>,
-  ): Promise<DeliveryProjectUser> {
+  async add(projectUser: AddDeliveryProjectUser): Promise<DeliveryProjectUser> {
     const {
       aad_entity_ref_id,
       delivery_project_id,
@@ -76,7 +76,7 @@ export class DeliveryProjectUserStore {
       allColumns,
     );
 
-    return this.#normalize(insertResult[0]);
+    return this.#normalize({ ...insertResult[0] });
   }
 
   #normalize(row: delivery_project_user): DeliveryProjectUser {

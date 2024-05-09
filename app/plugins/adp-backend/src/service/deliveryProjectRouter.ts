@@ -12,12 +12,12 @@ import type {
 } from '@internal/plugin-adp-common';
 import { getCurrentUsername } from '../utils/index';
 import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
-import type { IDeliveryProjectUserStore } from '../deliveryProject';
 import { FluxConfigApi } from '../deliveryProject';
 import type { Config } from '@backstage/config';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import { createParser, respond } from './util';
 import { z } from 'zod';
+import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 
 export interface ProjectRouterOptions {
   logger: Logger;
@@ -136,7 +136,9 @@ export function createProjectRouter(
   router.get('/deliveryProject/:id', async (_req, res) => {
     try {
       const deliveryProject = await deliveryProjectStore.get(_req.params.id);
-      const projectUser = await deliveryProjectUserStore.get(_req.params.id);
+      const projectUser = await deliveryProjectUserStore.getByDeliveryProject(
+        _req.params.id,
+      );
       if (projectUser && deliveryProject !== null) {
         deliveryProject.delivery_project_users = projectUser;
         res.json(deliveryProject);

@@ -1,8 +1,10 @@
 import type { Response } from 'express';
 import type { ValidationErrorMapping } from '@internal/plugin-adp-common';
-import { InputError } from '@backstage/errors';
+import { InputError, NotFoundError } from '@backstage/errors';
 import type { z } from 'zod';
 import { type UUID } from 'node:crypto';
+import type { CatalogApi } from '@backstage/catalog-client';
+import type { UserEntityV1alpha1 } from '@backstage/catalog-model';
 
 export function respond<Request, Success, Error extends string>(
   request: Request,
@@ -63,4 +65,34 @@ export async function checkMany<
 
 export function containsAnyValue(obj: object) {
   return Object.entries(obj).some(e => e[1] !== undefined);
+}
+
+export async function getUserEntityFromCatalog(
+  userCatalogName: string,
+  catalog: CatalogApi,
+): Promise<UserEntityV1alpha1> {
+  const catalogUsersResponse = await catalog.getEntities({
+    filter: [
+      {
+        kind: 'User',
+        'metadata.name': userCatalogName,
+      },
+    ],
+    fields: [
+      'metadata.name',
+      'metadata.annotations.graph.microsoft.com/user-id',
+      'metadata.annotations.microsoft.com/email',
+      'spec.profile.displayName',
+    ],
+  });
+
+  const catalogUser = catalogUsersResponse.items?.[0];
+
+  if (catalogUser === undefined) {
+    throw new NotFoundError(
+      `User ${userCatalogName} does not exist in the catalog`,
+    );
+  }
+
+  return catalogUser as UserEntityV1alpha1;
 }

@@ -58,9 +58,9 @@ describe('createRouter', () => {
     jest.resetAllMocks();
   });
 
-  describe('GET /health', () => {
+  describe('GET /armsLengthBody/health', () => {
     it('returns ok', async () => {
-      const response = await request(app).get('/health');
+      const response = await request(app).get('/armsLengthBody/health');
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({ status: 'ok' });
     });

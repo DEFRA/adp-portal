@@ -9,6 +9,6 @@ export type delivery_project_user = {
   aad_entity_ref_id: string;
   name: string;
   email: string;
-  github_username: string;
+  github_username?: string;
   updated_at: Date;
 };
