@@ -16,8 +16,8 @@ describe('DefaultTable', () => {
   ];
 
   const data = [
-    { name: 'Zoe', age: 30 },
-    { name: 'Angela', age: 65 },
+    { id: 1, name: 'Zoe', age: 30 },
+    { id: 2, name: 'Angela', age: 65 },
   ];
 
   it('renders the table with the correct title', () => {
