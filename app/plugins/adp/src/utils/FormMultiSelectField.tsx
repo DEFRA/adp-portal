@@ -102,7 +102,7 @@ function ensureSelectionsNotMissing<T>(
 ) {
   const available = new Set(options.map(x => x.value));
   const missing = values.filter(v => !empty.includes(v) && !available.has(v));
-  if (missing.length) return options;
+  if (missing.length === 0) return options;
 
   return [
     ...options,
