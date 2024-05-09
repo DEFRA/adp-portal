@@ -14,6 +14,7 @@ $govuk-assets-path-font-woff: '~govuk-frontend/govuk/assets/fonts/light-f591b13f
 :export {
   primaryColour: $govuk-brand-colour;
   errorColour: $govuk-error-colour;
+  warningColour: $govuk-error-colour;
   linkColour: $govuk-link-colour;
   linkHoverColour: $govuk-link-hover-colour;
   secondaryTextColour: $govuk-secondary-text-colour;

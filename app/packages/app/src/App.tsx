@@ -82,6 +82,9 @@ const lightTheme = createUnifiedTheme({
     primary: {
       main: styles.primaryColour,
     },
+    secondary: {
+      main: styles.warningColour,
+    },
     link: styles.linkColour,
     linkHover: styles.linkHoverColour,
     errorText: styles.errorColour,

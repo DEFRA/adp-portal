@@ -43,29 +43,29 @@ exports.seed = async function seed(knex) {
 
 const records = [
   {
-    name: 'europe-trade',
+    name: 'eutd',
     title: 'Europe & Trade',
     alias: 'EUTD',
     description:
       'The Europe and Trade Programme, or Biodiversity, Borders & Trade (BBaT) deals with trade between GB and the EU. Covers a collection of all previous EU-Exit projects and programmes.',
     arms_length_body_id: 'animal-plant-health-agency',
-    delivery_programme_code: 'ETD',
+    delivery_programme_code: 'EUTD',
     url: null,
     updated_by: 'ADP',
   },
   {
-    name: 'coreai',
+    name: 'crai',
     title: 'Core AI',
-    alias: 'CAI',
+    alias: 'CRAI',
     description:
       'The Core Artificial Intelligence (AI) programme is a collection of projects looking at the benefits and use cases of Gen AI, Machine Learning, etc.',
     arms_length_body_id: 'core-defra',
-    delivery_programme_code: 'CAI',
+    delivery_programme_code: 'CRAI',
     url: null,
     updated_by: 'ADP',
   },
   {
-    name: 'extended-producer-responsibility',
+    name: 'epr',
     title: 'Extended Producer Responsibility',
     alias: 'EPR',
     description:
@@ -87,7 +87,7 @@ const records = [
     updated_by: 'ADP',
   },
   {
-    name: 'biodiversity-net-gains',
+    name: 'bng',
     title: 'Biodiversity & Net Gains',
     alias: 'BNG',
     description:
@@ -98,24 +98,35 @@ const records = [
     updated_by: 'ADP',
   },
   {
-    name: 'farming-countryside-programme',
+    name: 'ffc',
     title: 'Farming & Countryside Programme',
-    alias: 'FCP',
+    alias: 'FFC',
     description:
       'The Farming and Countryside Programme is responsible for designing and delivering the new farming schemes in England.',
     arms_length_body_id: 'rural-payments-agency',
-    delivery_programme_code: 'FCP',
+    delivery_programme_code: 'FFC',
     url: null,
     updated_by: 'ADP',
   },
   {
-    name: 'legacy-applications-programme',
+    name: 'lap',
     title: 'Legacy Applications Programme',
     alias: 'LAP',
     description:
       'The Legacy Application Programme deals with shifting IT services into the cloud from legacy datacentres.',
     arms_length_body_id: 'rural-payments-agency',
     delivery_programme_code: 'LAP',
+    url: null,
+    updated_by: 'ADP',
+  },
+  {
+    name: 'ncea',
+    title: 'Natural Capital and Ecosystem Assessment',
+    alias: 'NCEA',
+    description:
+      'Natural Capital and Ecosystem Assessment (NCEA) is a science innovation and transformation programme, which spans across land and water environments.',
+    arms_length_body_id: 'natural-england',
+    delivery_programme_code: 'NCEA',
     url: null,
     updated_by: 'ADP',
   },
