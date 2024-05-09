@@ -54,13 +54,13 @@ const records = [
     updated_by: 'ADP',
   },
   {
-    name: 'coreai',
-    title: 'COREAI',
+    name: 'crai',
+    title: 'CRAI',
     alias: 'Core AI',
     description:
       'The Core Artificial Intelligence (AI) programme is a collection of projects looking at the benefits and use cases of Gen AI, Machine Learning, etc.',
     arms_length_body_id: 'core-defra',
-    delivery_programme_code: 'COREAI',
+    delivery_programme_code: 'CRAI',
     url: null,
     updated_by: 'ADP',
   },
