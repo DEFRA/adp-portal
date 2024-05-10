@@ -5,7 +5,10 @@ import {
   delivery_programme_admin_name,
   type delivery_programme_admin,
 } from './delivery_programme_admin';
-import { assertUUID } from '../service/util';
+import type { SafeResult } from '../service/util';
+import { assertUUID, checkMany, isUUID } from '../service/util';
+import type { delivery_programme } from '../deliveryProgramme/delivery_programme';
+import { delivery_programme_name } from '../deliveryProgramme/delivery_programme';
 
 export type IDeliveryProgrammeAdminStore = {
   [P in keyof DeliveryProgrammeAdminStore]: DeliveryProgrammeAdminStore[P];
@@ -42,14 +45,7 @@ export class DeliveryProgrammeAdminStore {
       .select(...allColumns)
       .orderBy('delivery_programme_id');
 
-    return deliveryProgrammeAdmins.map(row => ({
-      id: row.id,
-      delivery_programme_id: row.delivery_programme_id,
-      aad_entity_ref_id: row.aad_entity_ref_id,
-      email: row.email,
-      name: row.name,
-      updated_at: row.updated_at,
-    }));
+    return deliveryProgrammeAdmins.map(row => this.#normalize(row));
   }
 
   /**
@@ -65,14 +61,7 @@ export class DeliveryProgrammeAdminStore {
       .select(...allColumns)
       .orderBy('name', 'asc');
 
-    return deliveryProgrammeAdmins.map(row => ({
-      id: row.id,
-      delivery_programme_id: row.delivery_programme_id,
-      aad_entity_ref_id: row.aad_entity_ref_id,
-      email: row.email,
-      name: row.name,
-      updated_at: row.updated_at,
-    }));
+    return deliveryProgrammeAdmins.map(row => this.#normalize(row));
   }
 
   /**
@@ -91,14 +80,7 @@ export class DeliveryProgrammeAdminStore {
       .first(...allColumns);
 
     return deliveryProgrammeAdmin !== undefined
-      ? {
-          id: deliveryProgrammeAdmin.id,
-          delivery_programme_id: deliveryProgrammeAdmin.delivery_programme_id,
-          aad_entity_ref_id: deliveryProgrammeAdmin.aad_entity_ref_id,
-          email: deliveryProgrammeAdmin.email,
-          name: deliveryProgrammeAdmin.name,
-          updated_at: deliveryProgrammeAdmin.updated_at,
-        }
+      ? this.#normalize(deliveryProgrammeAdmin)
       : undefined;
   }
 
@@ -109,22 +91,47 @@ export class DeliveryProgrammeAdminStore {
    */
   async add(
     deliveryProgrammeAdmin: CreateDeliveryProgrammeAdmin,
-  ): Promise<DeliveryProgrammeAdmin> {
-    assertUUID(deliveryProgrammeAdmin.delivery_programme_id);
+  ): Promise<
+    SafeResult<
+      DeliveryProgrammeAdmin,
+      'duplicateUser' | 'unknownDeliveryProgramme'
+    >
+  > {
+    const { aad_entity_ref_id, delivery_programme_id, email, name } =
+      deliveryProgrammeAdmin;
+
+    const valid = await checkMany({
+      duplicateUser: this.#deliveryProgrammeAdminExists(
+        aad_entity_ref_id,
+        delivery_programme_id,
+      ),
+      unknownDeliveryProgramme: not(
+        this.#deliveryProgrammeExists(delivery_programme_id),
+      ),
+    });
+
+    if (!valid.success) {
+      return valid;
+    }
+
+    assertUUID(delivery_programme_id);
     const insertResult = await this.#table.insert(
       {
-        delivery_programme_id: deliveryProgrammeAdmin.delivery_programme_id,
-        aad_entity_ref_id: deliveryProgrammeAdmin.aad_entity_ref_id,
-        email: deliveryProgrammeAdmin.email,
-        name: deliveryProgrammeAdmin.name,
+        delivery_programme_id: delivery_programme_id,
+        aad_entity_ref_id: aad_entity_ref_id,
+        email: email,
+        name: name,
       },
-      ['id', 'updated_at'],
+      allColumns,
     );
 
+    if (insertResult.length < 1) {
+      return { success: false, errors: ['unknown'] };
+    }
+
     return {
-      ...deliveryProgrammeAdmin,
-      id: insertResult[0].id,
-      updated_at: insertResult[0].updated_at,
+      success: true,
+      value: this.#normalize({ ...insertResult[0] }),
     };
   }
 
@@ -145,14 +152,7 @@ export class DeliveryProgrammeAdminStore {
       [...allColumns],
     );
 
-    return insertResult.map(row => ({
-      id: row.id,
-      delivery_programme_id: row.delivery_programme_id,
-      aad_entity_ref_id: row.aad_entity_ref_id,
-      email: row.email,
-      name: row.name,
-      updated_at: row.updated_at,
-    }));
+    return insertResult.map(row => this.#normalize(row));
   }
 
   /**
@@ -167,4 +167,42 @@ export class DeliveryProgrammeAdminStore {
 
     return deleteResult;
   }
+
+  #normalize(row: delivery_programme_admin): DeliveryProgrammeAdmin {
+    return {
+      ...row,
+    };
+  }
+
+  async #deliveryProgrammeExists(id: string) {
+    if (!isUUID(id)) return false;
+    const [{ count }] = await this.#client<delivery_programme>(
+      delivery_programme_name,
+    )
+      .where('id', id)
+      .limit(1)
+      .count('*', { as: 'count' });
+    return Number(count) > 0;
+  }
+
+  async #deliveryProgrammeAdminExists(
+    aadEntityRefId: string,
+    deliveryProgrammeId: string,
+  ) {
+    if (!isUUID(deliveryProgrammeId)) return false;
+    const [{ count }] = await this.#client<delivery_programme_admin>(
+      delivery_programme_admin_name,
+    )
+      .where({
+        aad_entity_ref_id: aadEntityRefId,
+        delivery_programme_id: deliveryProgrammeId,
+      })
+      .limit(1)
+      .count('*', { as: 'count' });
+    return Number(count) > 0;
+  }
+}
+
+async function not(value: Promise<boolean>) {
+  return !(await value);
 }

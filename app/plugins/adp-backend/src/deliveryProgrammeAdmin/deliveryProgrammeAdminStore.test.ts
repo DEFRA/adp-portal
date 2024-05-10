@@ -6,6 +6,17 @@ import type { delivery_programme } from '../deliveryProgramme/delivery_programme
 import { delivery_programme_name } from '../deliveryProgramme/delivery_programme';
 import type { delivery_programme_admin } from './delivery_programme_admin';
 import { delivery_programme_admin_name } from './delivery_programme_admin';
+import type { arms_length_body } from '../armsLengthBody/arms_length_body';
+import { arms_length_body_name } from '../armsLengthBody/arms_length_body';
+import { albSeedData } from '../testData/albTestData';
+import type { Knex } from 'knex';
+import { deliveryProgrammeSeedData } from '../testData/programmeTestData';
+import {
+  createDeliveryProgrammeAdmin,
+  createDeliveryProgrammeAdminEntity,
+} from '../testData/programmeAdminTestData';
+import { AddressModule, faker } from '@faker-js/faker';
+import { assertUUID } from '../service/util';
 
 describe('DeliveryProgrammeAdminStore', () => {
   const databases = TestDatabases.create();
@@ -20,36 +31,38 @@ describe('DeliveryProgrammeAdminStore', () => {
     return { knex, deliveryProgrammeAdminStore };
   }
 
+  async function seedAlb(knex: Knex) {
+    await knex<arms_length_body>(arms_length_body_name).insert(albSeedData);
+    return albSeedData.id;
+  }
+
+  async function seedProgramme(knex: Knex) {
+    await seedAlb(knex);
+    await knex<delivery_programme>(delivery_programme_name).insert(
+      deliveryProgrammeSeedData,
+    );
+    return deliveryProgrammeSeedData.id;
+  }
+
+  async function seedProgrammeAdmin(knex: Knex) {
+    const programmeId = await seedProgramme(knex);
+    const programmeAdmin = createDeliveryProgrammeAdminEntity(programmeId);
+    await knex<delivery_programme_admin>(delivery_programme_admin_name).insert(
+      programmeAdmin,
+    );
+    return programmeAdmin.id;
+  }
+
   it.each(databases.eachSupportedId())(
     'should get all Delivery Programme Admins from the database',
     async databaseId => {
       const { deliveryProgrammeAdminStore, knex } = await createDatabase(
         databaseId,
       );
+      await seedProgrammeAdmin(knex);
 
-      // Arrange - test case setup
-      const deliveryProgramme = await knex
-        .first('id')
-        .from<delivery_programme>(delivery_programme_name);
-
-      await deliveryProgrammeAdminStore.addMany([
-        {
-          delivery_programme_id: deliveryProgramme.id,
-          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
-          email: 'test1.test@onmicrosoft.com',
-          name: 'test 1',
-        },
-        {
-          delivery_programme_id: deliveryProgramme.id,
-          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73422',
-          email: 'test2.test@onmicrosoft.com',
-          name: 'test 2',
-        },
-      ]);
-
-      // Act & assert
       const getAllResult = await deliveryProgrammeAdminStore.getAll();
-      expect(getAllResult).toHaveLength(2);
+      expect(getAllResult).toHaveLength(1);
     },
   );
 
@@ -59,40 +72,19 @@ describe('DeliveryProgrammeAdminStore', () => {
       const { deliveryProgrammeAdminStore, knex } = await createDatabase(
         databaseId,
       );
-
-      // Arrange - test case setup
-      const deliveryProgrammes = await knex
-        .select('id')
-        .from<delivery_programme>(delivery_programme_name);
-
-      await deliveryProgrammeAdminStore.addMany([
-        {
-          delivery_programme_id: deliveryProgrammes[0].id,
-          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
-          email: 'test1.test@onmicrosoft.com',
-          name: 'test 1',
-        },
-        {
-          delivery_programme_id: deliveryProgrammes[1].id,
-          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73422',
-          email: 'test2.test@onmicrosoft.com',
-          name: 'test 2',
-        },
-      ]);
-
-      // Act and assert
-      const getResult =
-        await deliveryProgrammeAdminStore.getByDeliveryProgramme(
-          deliveryProgrammes[0].id,
-        );
-      expect(getResult).toHaveLength(1);
-      expect(getResult).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            email: 'test1.test@onmicrosoft.com',
-          }),
-        ]),
+      const programmeId = await seedProgramme(knex);
+      const programmeAdmins = faker.helpers.multiple(
+        () => createDeliveryProgrammeAdminEntity(programmeId),
+        { count: 4 },
       );
+      await knex<delivery_programme_admin>(
+        delivery_programme_admin_name,
+      ).insert(programmeAdmins);
+
+      const getResult =
+        await deliveryProgrammeAdminStore.getByDeliveryProgramme(programmeId);
+
+      expect(getResult).toHaveLength(4);
     },
   );
 
@@ -102,34 +94,18 @@ describe('DeliveryProgrammeAdminStore', () => {
       const { deliveryProgrammeAdminStore, knex } = await createDatabase(
         databaseId,
       );
+      const programmeId = await seedProgramme(knex);
+      const programmeAdmin = createDeliveryProgrammeAdminEntity(programmeId);
+      await knex<delivery_programme_admin>(
+        delivery_programme_admin_name,
+      ).insert(programmeAdmin);
 
-      // Arrange - test case setup
-      const deliveryProgrammes = await knex
-        .select('id')
-        .from<delivery_programme>(delivery_programme_name);
-
-      await deliveryProgrammeAdminStore.addMany([
-        {
-          delivery_programme_id: deliveryProgrammes[0].id,
-          aad_entity_ref_id: '888afa93-aaf4-4fec-acca-1b0995ca6eaf',
-          email: 'test1.test@onmicrosoft.com',
-          name: 'test 1',
-        },
-        {
-          delivery_programme_id: deliveryProgrammes[1].id,
-          aad_entity_ref_id: '789d7a1a-998e-40f9-81b4-51a39be02c17',
-          email: 'test2.test@onmicrosoft.com',
-          name: 'test 2',
-        },
-      ]);
-
-      // Act and assert
       const getResult = await deliveryProgrammeAdminStore.getByAADEntityRef(
-        '888afa93-aaf4-4fec-acca-1b0995ca6eaf',
-        deliveryProgrammes[0].id,
+        programmeAdmin.aad_entity_ref_id,
+        programmeId,
       );
       expect(getResult).toBeDefined();
-      expect(getResult?.email).toEqual('test1.test@onmicrosoft.com');
+      expect(getResult?.email).toEqual(programmeAdmin.email);
     },
   );
 
@@ -139,36 +115,29 @@ describe('DeliveryProgrammeAdminStore', () => {
       const { deliveryProgrammeAdminStore, knex } = await createDatabase(
         databaseId,
       );
+      const programmeId = await seedProgramme(knex);
+      const expectedProgrammeAdmin = createDeliveryProgrammeAdmin(programmeId);
+      assertUUID(expectedProgrammeAdmin.delivery_programme_id);
 
-      // Arrange - test case setup
-      const deliveryProgramme = await knex
-        .first('id')
-        .from<delivery_programme>(delivery_programme_name);
+      const addResult = await deliveryProgrammeAdminStore.add({
+        ...expectedProgrammeAdmin,
+        delivery_programme_id: programmeId,
+      });
 
-      // Act
-      const deliveryProgrammeAdmin = {
-        delivery_programme_id: deliveryProgramme.id,
-        aad_entity_ref_id: '6b55146d-50c3-473c-bfe5-758ee75e55c1',
-        email: 'test1.test@onmicrosoft.com',
-        name: 'test 1',
-      };
-      const addResult = await deliveryProgrammeAdminStore.add(
-        deliveryProgrammeAdmin,
+      if (!addResult.success) {
+        throw new Error('Failed to seed project');
+      }
+
+      const addedProgrammeAdmin = addResult.value;
+      expect(addedProgrammeAdmin.aad_entity_ref_id).toBe(
+        expectedProgrammeAdmin.aad_entity_ref_id,
       );
-
-      const expectedEntity = await knex
-        .first('id', 'name')
-        .where('id', addResult.id)
-        .from<delivery_programme_admin>(delivery_programme_admin_name);
-
-      // Assert - check return value
-      expect(addResult).toBeDefined();
-      expect(addResult.id).toBeDefined();
-
-      // Assert - check row in DB
-      expect(expectedEntity).toBeDefined();
-      expect(expectedEntity.id).toBe(addResult.id);
-      expect(expectedEntity.name).toBe(deliveryProgrammeAdmin.name);
+      expect(addedProgrammeAdmin.delivery_programme_id).toBe(
+        expectedProgrammeAdmin.delivery_programme_id,
+      );
+      expect(addedProgrammeAdmin.email).toBe(expectedProgrammeAdmin.email);
+      expect(addedProgrammeAdmin.id).toBeDefined();
+      expect(addedProgrammeAdmin.name).toBe(expectedProgrammeAdmin.name);
     },
   );
 
@@ -178,35 +147,19 @@ describe('DeliveryProgrammeAdminStore', () => {
       const { deliveryProgrammeAdminStore, knex } = await createDatabase(
         databaseId,
       );
-
-      // Arrange - test case setup
-      const deliveryProgramme = await knex
-        .first('id')
-        .from<delivery_programme>(delivery_programme_name);
+      const programmeId = await seedProgramme(knex);
+      const expectedProgrammeAdmins = faker.helpers.multiple(
+        () => createDeliveryProgrammeAdmin(programmeId),
+        { count: 4 },
+      );
 
       // Act
       const addResult = await deliveryProgrammeAdminStore.addMany([
-        {
-          delivery_programme_id: deliveryProgramme.id,
-          aad_entity_ref_id: '2163f597-25cb-4dc3-a617-9f87d140542c',
-          email: 'test1.test@onmicrosoft.com',
-          name: 'test 1',
-        },
-        {
-          delivery_programme_id: deliveryProgramme.id,
-          aad_entity_ref_id: '47862635-9673-45c4-aa5a-81843d5df9de',
-          email: 'test2.test@onmicrosoft.com',
-          name: 'test 2',
-        },
+        ...expectedProgrammeAdmins,
       ]);
 
-      const expectedEntities = await knex
-        .where('delivery_programme_id', deliveryProgramme.id)
-        .from<delivery_programme_admin>(delivery_programme_admin_name);
-
       // Assert - check return value
-      expect(addResult).toHaveLength(2);
-      expect(expectedEntities).toHaveLength(2);
+      expect(addResult).toHaveLength(expectedProgrammeAdmins.length);
     },
   );
 
@@ -216,27 +169,15 @@ describe('DeliveryProgrammeAdminStore', () => {
       const { deliveryProgrammeAdminStore, knex } = await createDatabase(
         databaseId,
       );
+      const programmeAdminId = await seedProgrammeAdmin(knex);
 
-      // Arrange - test case setup
-      const deliveryProgramme = await knex
-        .first('id')
-        .from<delivery_programme>(delivery_programme_name);
-
-      const deliveryProgrammeAdmin = {
-        delivery_programme_id: deliveryProgramme.id,
-        aad_entity_ref_id: '43d2bf46-2d30-45e9-b5ca-d5f5e9f3f5e8',
-        email: 'test1.test@onmicrosoft.com',
-        name: 'test 1',
-      };
-      const addResult = await deliveryProgrammeAdminStore.add(
-        deliveryProgrammeAdmin,
-      );
+      assertUUID(programmeAdminId);
 
       // Act - delete the record
-      await deliveryProgrammeAdminStore.delete(addResult.id);
+      await deliveryProgrammeAdminStore.delete(programmeAdminId);
 
       const expectedEntities = await knex
-        .where('id', addResult.id)
+        .where('id', programmeAdminId)
         .from<delivery_programme_admin>(delivery_programme_admin_name);
 
       // Assert
