@@ -23,6 +23,7 @@ import {
   GithubTeamStore,
 } from '../githubTeam';
 import { ArmsLengthBodyStore } from '../armsLengthBody';
+import { DeliveryProjectUserStore } from '../deliveryProjectUser';
 
 export interface ServerOptions {
   port: number;
@@ -57,6 +58,7 @@ export async function startStandaloneServer(
   const deliveryProjectStore = new DeliveryProjectStore(dbClient);
   const deliveryProgrammeStore = new DeliveryProgrammeStore(dbClient);
   const deliveryProgrammeAdminStore = new DeliveryProgrammeAdminStore(dbClient);
+  const deliveryProjectUserStore = new DeliveryProjectUserStore(dbClient);
   const githubTeamStore = new GithubTeamStore(dbClient);
   const catalog = new CatalogClient({ discoveryApi: discovery });
 
@@ -94,6 +96,7 @@ export async function startStandaloneServer(
       deliveryProjectStore,
       githubTeamStore,
     ),
+    deliveryProjectUserStore,
   });
 
   const router = Router();

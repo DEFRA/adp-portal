@@ -80,7 +80,7 @@ export function FormMultiSelectField<
             ...rulesToHtmlProperties(rules),
           }}
         >
-          {options.map(x => (
+          {ensureSelectionsNotMissing(options, field.value).map(x => (
             <MenuItem
               key={String(x.value)}
               value={x.value as string}
@@ -93,4 +93,19 @@ export function FormMultiSelectField<
       )}
     />
   );
+}
+
+const empty: unknown[] = [null, undefined, ''];
+function ensureSelectionsNotMissing<T>(
+  options: ReadonlyArray<{ label: string; value: T }>,
+  values: readonly T[],
+) {
+  const available = new Set(options.map(x => x.value));
+  const missing = values.filter(v => !empty.includes(v) && !available.has(v));
+  if (missing.length === 0) return options;
+
+  return [
+    ...options,
+    ...missing.map(value => ({ label: String(value), value })),
+  ];
 }

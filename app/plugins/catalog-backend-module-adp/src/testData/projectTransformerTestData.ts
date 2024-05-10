@@ -21,6 +21,7 @@ export const deliveryProject: DeliveryProject = {
   created_at: new Date(),
   updated_at: new Date(),
   delivery_programme_code: 'ABC',
+  delivery_project_users: [],
 };
 
 export const expectedProjectEntity = {

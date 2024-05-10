@@ -14,6 +14,10 @@ import { getCurrentUsername } from '../utils/index';
 import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import { FluxConfigApi } from '../deliveryProject';
 import type { Config } from '@backstage/config';
+import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
+import { createParser, respond } from './util';
+import { z } from 'zod';
+import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 
 export interface ProjectRouterOptions {
   logger: Logger;
@@ -22,10 +26,8 @@ export interface ProjectRouterOptions {
   teamSyncronizer: IDeliveryProjectGithubTeamsSyncronizer;
   deliveryProjectStore: IDeliveryProjectStore;
   deliveryProgrammeStore: IDeliveryProgrammeStore;
+  deliveryProjectUserStore: IDeliveryProjectUserStore;
 }
-import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
-import { createParser, respond } from './util';
-import { z } from 'zod';
 
 const errorMapping = {
   duplicateName: (req: { title?: string }) => ({
@@ -96,6 +98,7 @@ export function createProjectRouter(
     teamSyncronizer,
     deliveryProgrammeStore,
     deliveryProjectStore,
+    deliveryProjectUserStore,
   } = options;
   const fluxConfigApi = new FluxConfigApi(config, deliveryProgrammeStore);
 
@@ -119,7 +122,13 @@ export function createProjectRouter(
   router.get('/deliveryProject/:id', async (_req, res) => {
     try {
       const deliveryProject = await deliveryProjectStore.get(_req.params.id);
-      res.json(deliveryProject);
+      const projectUser = await deliveryProjectUserStore.getByDeliveryProject(
+        _req.params.id,
+      );
+      if (projectUser && deliveryProject !== null) {
+        deliveryProject.delivery_project_users = projectUser;
+        res.json(deliveryProject);
+      }
     } catch (error) {
       const deliveryProjectError = error as Error;
       logger.error(

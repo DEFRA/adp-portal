@@ -59,10 +59,8 @@ import {
   EntityAzurePipelinesContent,
   isAzurePipelinesAvailable,
 } from '@backstage/plugin-azure-devops';
-
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
-
 import {
   EntityGrafanaDashboardsCard,
   EntityGrafanaAlertsCard,
@@ -507,7 +505,7 @@ const domainPage = () => (
   </EntityLayout>
 );
 
-export const entityPage = (
+export const entityPage = () => (
   <EntitySwitch>
     <EntitySwitch.Case if={isKind('component')} children={componentPage()} />
     <EntitySwitch.Case if={isKind('api')} children={apiPage()} />

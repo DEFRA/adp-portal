@@ -16,6 +16,7 @@ import type {
   CreateDeliveryProjectRequest,
   UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
+import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 
 let mockCreateFluxConfig: jest.Mock;
 let mockGetFluxConfig: jest.Mock;
@@ -72,6 +73,12 @@ describe('createRouter', () => {
     update: jest.fn(),
   };
 
+  const mockDeliveryProjectUserStore: jest.Mocked<IDeliveryProjectUserStore> = {
+    add: jest.fn(),
+    getByDeliveryProject: jest.fn(),
+    getAll: jest.fn(),
+  };
+
   const mockOptions = {
     logger: getVoidLogger(),
     identity: mockIdentityApi,
@@ -80,6 +87,7 @@ describe('createRouter', () => {
     teamSyncronizer: mockSyncronizer,
     deliveryProjectStore: mockDeliveryProjectStore,
     deliveryProgrammeStore: mockDeliveryProgrammeStore,
+    deliveryProjectUserStore: mockDeliveryProjectUserStore,
   };
 
   function createTestDatabase(): PluginDatabaseManager {
@@ -154,6 +162,19 @@ describe('createRouter', () => {
       mockDeliveryProjectStore.get.mockResolvedValueOnce(
         expectedProjectDataWithName,
       );
+      mockDeliveryProjectUserStore.getByDeliveryProject.mockResolvedValueOnce([
+        {
+          aad_entity_ref_id: '88c83c80-5bfd-4b04-9f5f-a50b559b22a5',
+          delivery_project_id: 'project-1',
+          email: 'user@test.com',
+          id: '775e0c95-4521-4a92-8f3c-7340b946688e',
+          is_admin: false,
+          is_technical: true,
+          name: 'Test user',
+          github_username: 'test-user',
+          updated_at: new Date(),
+        },
+      ]);
       const response = await request(projectApp).get('/deliveryProject/1234');
       expect(response.status).toEqual(200);
     });

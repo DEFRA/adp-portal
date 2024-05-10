@@ -38,6 +38,7 @@ const allColumns = addTableName(delivery_project_name, [
   'service_owner',
   'github_team_visibility',
 ] as const satisfies ReadonlyArray<keyof delivery_project>);
+
 const programmeColumns = addTableName(delivery_programme_name, [
   'delivery_programme_code',
 ] as const satisfies ReadonlyArray<keyof delivery_programme>);
@@ -259,6 +260,7 @@ export class DeliveryProjectStore {
       updated_by: row.updated_by ?? undefined,
       created_at: new Date(row.created_at),
       updated_at: new Date(row.updated_at ? row.updated_at : row.created_at),
+      delivery_project_users: [],
     };
   }
 

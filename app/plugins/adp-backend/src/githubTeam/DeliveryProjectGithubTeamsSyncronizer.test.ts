@@ -78,6 +78,7 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
         updated_at: new Date(),
         github_team_visibility: 'private',
         delivery_programme_code: 'ABC',
+        delivery_project_users: [],
       };
       const storedTeams: Record<string, GithubTeamRef> = {
         admins: {

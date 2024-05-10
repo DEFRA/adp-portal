@@ -17,6 +17,7 @@ export const expectedProjectData = {
   created_at: new Date(),
   updated_at: new Date(),
   delivery_programme_code: 'ABC',
+  delivery_project_users: [],
 } satisfies Omit<DeliveryProject, 'name'>;
 
 export const expectedProjectDataWithName = {
@@ -36,6 +37,7 @@ export const expectedProjectDataWithName = {
   created_at: new Date(),
   updated_at: new Date(),
   delivery_programme_code: 'ABC',
+  delivery_project_users: [],
 } satisfies DeliveryProject;
 
 export const deliveryProjectSeedData: delivery_project = {

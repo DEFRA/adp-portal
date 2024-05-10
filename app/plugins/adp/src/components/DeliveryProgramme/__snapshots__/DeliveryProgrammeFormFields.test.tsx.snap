@@ -247,7 +247,7 @@ exports[`DeliveryProgrammeFormFields Should render all fields correctly 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        This must be unique. Example: FCP
+        This must be unique and contain exactly three or four alphabetical characters. Example: FCP
       </p>
     </div>
     <div
@@ -552,7 +552,7 @@ exports[`DeliveryProgrammeFormFields Should render default fields 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        This must be unique. Example: FCP
+        This must be unique and contain exactly three or four alphabetical characters. Example: FCP
       </p>
     </div>
     <div
@@ -859,7 +859,7 @@ exports[`DeliveryProgrammeFormFields Should render populated fields 1`] = `
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        This must be unique. Example: FCP
+        This must be unique and contain exactly three or four alphabetical characters. Example: FCP
       </p>
     </div>
     <div
@@ -1168,7 +1168,7 @@ exports[`DeliveryProgrammeFormFields Should write values back to the form: Alb s
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        This must be unique. Example: FCP
+        This must be unique and contain exactly three or four alphabetical characters. Example: FCP
       </p>
     </div>
     <div
@@ -1477,7 +1477,7 @@ exports[`DeliveryProgrammeFormFields Should write values back to the form: Alias
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        This must be unique. Example: FCP
+        This must be unique and contain exactly three or four alphabetical characters. Example: FCP
       </p>
     </div>
     <div
@@ -1784,7 +1784,7 @@ exports[`DeliveryProgrammeFormFields Should write values back to the form: Descr
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        This must be unique. Example: FCP
+        This must be unique and contain exactly three or four alphabetical characters. Example: FCP
       </p>
     </div>
     <div
@@ -2093,7 +2093,7 @@ exports[`DeliveryProgrammeFormFields Should write values back to the form: Empty
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        This must be unique. Example: FCP
+        This must be unique and contain exactly three or four alphabetical characters. Example: FCP
       </p>
     </div>
     <div
@@ -2400,7 +2400,7 @@ exports[`DeliveryProgrammeFormFields Should write values back to the form: Progr
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        This must be unique. Example: FCP
+        This must be unique and contain exactly three or four alphabetical characters. Example: FCP
       </p>
     </div>
     <div
@@ -2709,7 +2709,7 @@ exports[`DeliveryProgrammeFormFields Should write values back to the form: Title
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        This must be unique. Example: FCP
+        This must be unique and contain exactly three or four alphabetical characters. Example: FCP
       </p>
     </div>
     <div
@@ -3016,7 +3016,7 @@ exports[`DeliveryProgrammeFormFields Should write values back to the form: Websi
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
         id="delivery_programme_code-helper-text"
       >
-        This must be unique. Example: FCP
+        This must be unique and contain exactly three or four alphabetical characters. Example: FCP
       </p>
     </div>
     <div

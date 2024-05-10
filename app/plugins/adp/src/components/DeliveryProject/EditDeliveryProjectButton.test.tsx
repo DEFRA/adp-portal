@@ -42,6 +42,7 @@ const deliveryProject: DeliveryProject = {
   finance_code: '123',
   github_team_visibility: 'public',
   updated_by: 'Me',
+  delivery_project_users: [],
 };
 
 const fields: DeliveryProjectFields = {

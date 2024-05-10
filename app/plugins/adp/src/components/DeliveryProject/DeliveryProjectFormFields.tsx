@@ -180,7 +180,7 @@ export function DeliveryProjectFormFields({
           ...formRules.required,
           ...formRules.pattern(
             /^[a-zA-Z]{3}$/,
-            'Must contain exactly 3 alphabetical characters',
+            'Must contain exactly three alphabetical characters',
           ),
         }}
       />
