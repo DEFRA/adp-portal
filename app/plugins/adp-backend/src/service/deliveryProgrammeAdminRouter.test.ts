@@ -25,7 +25,6 @@ describe('createRouter', () => {
       add: jest.fn(),
       getByAADEntityRef: jest.fn(),
       getByDeliveryProgramme: jest.fn(),
-      addMany: jest.fn(),
       getAll: jest.fn(),
       delete: jest.fn(),
     };
@@ -125,20 +124,24 @@ describe('createRouter', () => {
     });
   });
 
-  describe('POST /deliveryProgrammeAdmin/:deliveryProgrammeId', () => {
+  describe('POST /deliveryProgrammeAdmin/', () => {
     it('returns a 201 response when programme managers are created', async () => {
-      mockDeliveryProgrammeAdminStore.addMany.mockResolvedValueOnce(
-        programmeManagerList,
-      );
+      mockDeliveryProgrammeAdminStore.add.mockResolvedValueOnce({
+        value: {
+          id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
+          delivery_programme_id: '123',
+          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
+          email: 'test1.test@onmicrosoft.com',
+          name: 'test 1',
+          updated_at: new Date(),
+        },
+        success: true,
+      });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
 
       const requestBody: CreateDeliveryProgrammeAdminRequest = {
-        aadEntityRefIds: [
-          '01e26f6b-0164-4a97-8c42-feda6f12f17a',
-          '42444681-1f40-4bf4-a88a-5701b30aa2ac',
-          '42a25dbf-5758-46fe-a8c9-a5f5ead165fe',
-        ],
-        deliveryProgrammeId: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
+        delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
+        user_catalog_name: 'test@test.com',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
@@ -147,24 +150,60 @@ describe('createRouter', () => {
       expect(response.status).toEqual(201);
     });
 
-    it('returns a 400 bad request response if an error occurs', async () => {
-      mockDeliveryProgrammeAdminStore.addMany.mockRejectedValueOnce(
-        new InputError('error'),
-      );
+    it('returns a 400 response if catalog user cannot be found', async () => {
+      mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
 
       const requestBody: CreateDeliveryProgrammeAdminRequest = {
-        aadEntityRefIds: [
-          '01e26f6b-0164-4a97-8c42-feda6f12f17a',
-          '42444681-1f40-4bf4-a88a-5701b30aa2ac',
-          '42a25dbf-5758-46fe-a8c9-a5f5ead165fe',
-        ],
-        deliveryProgrammeId: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
+        delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
+        user_catalog_name: 'test@test.com',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
         .post('/deliveryProgrammeAdmin')
         .send(requestBody);
+
       expect(response.status).toEqual(400);
+    });
+
+    it('returns a 400 response with errors', async () => {
+      mockDeliveryProgrammeAdminStore.add.mockResolvedValueOnce({
+        success: false,
+        errors: ['duplicateUser', 'unknown', 'unknownDeliveryProgramme'],
+      });
+      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+
+      const requestBody: CreateDeliveryProgrammeAdminRequest = {
+        delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
+        user_catalog_name: 'test@test.com',
+      };
+
+      const response = await request(deliveryProgrammeAdminApp)
+        .post('/deliveryProgrammeAdmin')
+        .send(requestBody);
+
+      expect(response.status).toEqual(400);
+      expect(response.body).toMatchObject({
+        errors: [
+          {
+            path: 'user_catalog_name',
+            error: {
+              message: `The user ${requestBody.user_catalog_name} has already been added to this delivery programme`,
+            },
+          },
+          {
+            path: 'root',
+            error: {
+              message: 'An unexpected error occurred.',
+            },
+          },
+          {
+            path: 'delivery_programme_id',
+            error: {
+              message: 'The delivery programme does not exist.',
+            },
+          },
+        ],
+      });
     });
   });
 

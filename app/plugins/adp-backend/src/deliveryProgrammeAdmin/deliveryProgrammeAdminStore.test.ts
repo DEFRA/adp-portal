@@ -15,7 +15,7 @@ import {
   createDeliveryProgrammeAdmin,
   createDeliveryProgrammeAdminEntity,
 } from '../testData/programmeAdminTestData';
-import { AddressModule, faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { assertUUID } from '../service/util';
 
 describe('DeliveryProgrammeAdminStore', () => {
@@ -138,28 +138,6 @@ describe('DeliveryProgrammeAdminStore', () => {
       expect(addedProgrammeAdmin.email).toBe(expectedProgrammeAdmin.email);
       expect(addedProgrammeAdmin.id).toBeDefined();
       expect(addedProgrammeAdmin.name).toBe(expectedProgrammeAdmin.name);
-    },
-  );
-
-  it.each(databases.eachSupportedId())(
-    'should insert multiple Delivery Programme Admins into the database',
-    async databaseId => {
-      const { deliveryProgrammeAdminStore, knex } = await createDatabase(
-        databaseId,
-      );
-      const programmeId = await seedProgramme(knex);
-      const expectedProgrammeAdmins = faker.helpers.multiple(
-        () => createDeliveryProgrammeAdmin(programmeId),
-        { count: 4 },
-      );
-
-      // Act
-      const addResult = await deliveryProgrammeAdminStore.addMany([
-        ...expectedProgrammeAdmins,
-      ]);
-
-      // Assert - check return value
-      expect(addResult).toHaveLength(expectedProgrammeAdmins.length);
     },
   );
 

@@ -40,8 +40,7 @@ export const useCatalogUsersList = (): { label: string; value: string }[] => {
               userEntity.spec.profile!.displayName ?? userEntity.metadata.name;
             return {
               label: displayName,
-              value:
-                userEntity.metadata.annotations!['graph.microsoft.com/user-id'],
+              value: userEntity.metadata.name,
             };
           })
           .sort((a: { label: string }, b: { label: string }) =>

@@ -50,7 +50,6 @@ describe('createRouter', () => {
       add: jest.fn(),
       getByAADEntityRef: jest.fn(),
       getByDeliveryProgramme: jest.fn(),
-      addMany: jest.fn(),
       getAll: jest.fn(),
       delete: jest.fn(),
     };
@@ -87,9 +86,10 @@ describe('createRouter', () => {
     mockDeliveryProgrammeAdminStore.getAll.mockResolvedValue(
       programmeManagerList,
     );
-    mockDeliveryProgrammeAdminStore.add.mockResolvedValue(
-      programmeManagerList[0],
-    );
+    mockDeliveryProgrammeAdminStore.add.mockResolvedValue({
+      value: programmeManagerList[0],
+      success: true,
+    });
     mockDeliveryProgrammeAdminStore.getByDeliveryProgramme.mockResolvedValue(
       managerByProgrammeId,
     );

@@ -31,10 +31,9 @@ export function AddProgrammeAdminButton({
     fields: DeliveryProgrammeAdminFields,
   ): Promise<SubmitResult<DeliveryProgrammeAdminFields>> {
     try {
-      const aadEntityRefIds = [fields.aadEntityRefId];
-      await client.create(deliveryProgrammeId, aadEntityRefIds);
-    } catch (error: any) {
-      return readValidationError(error);
+      await client.create(deliveryProgrammeId, fields.user_catalog_name);
+    } catch (e: any) {
+      return readValidationError(e);
     }
     alertApi.post({
       message: 'Delivery Programme Admin added successfully',

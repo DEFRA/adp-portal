@@ -13,7 +13,7 @@ export interface DeliveryProgrammeAdminApi {
   ): Promise<DeliveryProgrammeAdmin[]>;
   create(
     deliveryProgrammeId: string,
-    aadEntityRefIds: string[],
+    userCatalogName: string,
   ): Promise<DeliveryProgrammeAdmin[]>;
   delete(aadEntityRefId: string, deliveryProgrammeId: string): void;
 }

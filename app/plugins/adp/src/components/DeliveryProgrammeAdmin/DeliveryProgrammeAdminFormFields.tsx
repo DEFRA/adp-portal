@@ -5,11 +5,11 @@ import { FormSelectField, formRules } from '../../utils';
 import { useCatalogUsersList } from '../../hooks';
 
 export type DeliveryProgrammeAdminFields = {
-  aadEntityRefId: string;
+  user_catalog_name: string;
 };
 
 export const emptyForm = Object.freeze<DeliveryProgrammeAdminFields>({
-  aadEntityRefId: '',
+  user_catalog_name: '',
 });
 
 export type DeliveryProgrammeAdminFormFieldsProps = Readonly<
@@ -33,7 +33,7 @@ export function DeliveryProgrammeAdminFormFields({
       index={i++}
       label="Select User"
       helperText="Select a user to assign Admin permissions for this delivery programme"
-      name="aadEntityRefId"
+      name="user_catalog_name"
       options={catalogUserOptions}
       disabled={disabled}
       rules={{

@@ -5,13 +5,13 @@ exports[`DeliveryProgrammeAdminFormFields should render all fields correctly 1`]
   <div>
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
-      data-testid="aadEntityRefId"
+      data-testid="user_catalog_name"
     >
       <label
         class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
         data-shrink="false"
-        for="aadEntityRefId"
-        id="aadEntityRefId-label"
+        for="user_catalog_name"
+        id="user_catalog_name-label"
       >
         Select User
       </label>
@@ -20,9 +20,9 @@ exports[`DeliveryProgrammeAdminFormFields should render all fields correctly 1`]
       >
         <div
           aria-haspopup="listbox"
-          aria-labelledby="aadEntityRefId-label aadEntityRefId"
+          aria-labelledby="user_catalog_name-label user_catalog_name"
           class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
-          id="aadEntityRefId"
+          id="user_catalog_name"
           role="button"
           tabindex="0"
         >
@@ -31,11 +31,11 @@ exports[`DeliveryProgrammeAdminFormFields should render all fields correctly 1`]
           </span>
         </div>
         <input
-          aria-describedby="aadEntityRefId-helper-text"
+          aria-describedby="user_catalog_name-helper-text"
           aria-hidden="true"
           aria-required="true"
           class="MuiSelect-nativeInput"
-          name="aadEntityRefId"
+          name="user_catalog_name"
           tabindex="-1"
           value=""
         />
@@ -64,7 +64,7 @@ exports[`DeliveryProgrammeAdminFormFields should render all fields correctly 1`]
       </div>
       <p
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
-        id="aadEntityRefId-helper-text"
+        id="user_catalog_name-helper-text"
       >
         Select a user to assign Admin permissions for this delivery programme
       </p>
@@ -78,13 +78,13 @@ exports[`DeliveryProgrammeAdminFormFields should render default fields 1`] = `
   <div>
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
-      data-testid="aadEntityRefId"
+      data-testid="user_catalog_name"
     >
       <label
         class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
         data-shrink="true"
-        for="aadEntityRefId"
-        id="aadEntityRefId-label"
+        for="user_catalog_name"
+        id="user_catalog_name-label"
       >
         Select User
       </label>
@@ -93,20 +93,20 @@ exports[`DeliveryProgrammeAdminFormFields should render default fields 1`] = `
       >
         <div
           aria-haspopup="listbox"
-          aria-labelledby="aadEntityRefId-label aadEntityRefId"
+          aria-labelledby="user_catalog_name-label user_catalog_name"
           class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
-          id="aadEntityRefId"
+          id="user_catalog_name"
           role="button"
           tabindex="0"
         >
           user-1234
         </div>
         <input
-          aria-describedby="aadEntityRefId-helper-text"
+          aria-describedby="user_catalog_name-helper-text"
           aria-hidden="true"
           aria-required="true"
           class="MuiSelect-nativeInput"
-          name="aadEntityRefId"
+          name="user_catalog_name"
           tabindex="-1"
           value="user-1234"
         />
@@ -135,7 +135,7 @@ exports[`DeliveryProgrammeAdminFormFields should render default fields 1`] = `
       </div>
       <p
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
-        id="aadEntityRefId-helper-text"
+        id="user_catalog_name-helper-text"
       >
         Select a user to assign Admin permissions for this delivery programme
       </p>
@@ -149,13 +149,13 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
   <div>
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
-      data-testid="aadEntityRefId"
+      data-testid="user_catalog_name"
     >
       <label
         class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
         data-shrink="false"
-        for="aadEntityRefId"
-        id="aadEntityRefId-label"
+        for="user_catalog_name"
+        id="user_catalog_name-label"
       >
         Select User
       </label>
@@ -164,9 +164,9 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
       >
         <div
           aria-haspopup="listbox"
-          aria-labelledby="aadEntityRefId-label aadEntityRefId"
+          aria-labelledby="user_catalog_name-label user_catalog_name"
           class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
-          id="aadEntityRefId"
+          id="user_catalog_name"
           role="button"
           tabindex="0"
         >
@@ -175,11 +175,11 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
           </span>
         </div>
         <input
-          aria-describedby="aadEntityRefId-helper-text"
+          aria-describedby="user_catalog_name-helper-text"
           aria-hidden="true"
           aria-required="true"
           class="MuiSelect-nativeInput"
-          name="aadEntityRefId"
+          name="user_catalog_name"
           tabindex="-1"
           value=""
         />
@@ -208,7 +208,7 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
       </div>
       <p
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
-        id="aadEntityRefId-helper-text"
+        id="user_catalog_name-helper-text"
       >
         Select a user to assign Admin permissions for this delivery programme
       </p>
@@ -224,13 +224,13 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
   <div>
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
-      data-testid="aadEntityRefId"
+      data-testid="user_catalog_name"
     >
       <label
         class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled Mui-focused Mui-focused"
         data-shrink="true"
-        for="aadEntityRefId"
-        id="aadEntityRefId-label"
+        for="user_catalog_name"
+        id="user_catalog_name-label"
       >
         Select User
       </label>
@@ -239,22 +239,22 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
       >
         <div
           aria-haspopup="listbox"
-          aria-labelledby="aadEntityRefId-label aadEntityRefId"
+          aria-labelledby="user_catalog_name-label user_catalog_name"
           class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
-          id="aadEntityRefId"
+          id="user_catalog_name"
           role="button"
           tabindex="0"
         >
           Test User 1
         </div>
         <input
-          aria-describedby="aadEntityRefId-helper-text"
+          aria-describedby="user_catalog_name-helper-text"
           aria-hidden="true"
           aria-required="true"
           class="MuiSelect-nativeInput"
-          name="aadEntityRefId"
+          name="user_catalog_name"
           tabindex="-1"
-          value="f8699f8d-e3d5-4822-8979-6b6bce35ff16"
+          value="test-user-1"
         />
         <svg
           aria-hidden="true"
@@ -281,7 +281,7 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
       </div>
       <p
         class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled Mui-focused MuiFormHelperText-marginDense"
-        id="aadEntityRefId-helper-text"
+        id="user_catalog_name-helper-text"
       >
         Select a user to assign Admin permissions for this delivery programme
       </p>

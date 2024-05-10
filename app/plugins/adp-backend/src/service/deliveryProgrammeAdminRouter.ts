@@ -6,20 +6,20 @@ import express from 'express';
 import Router from 'express-promise-router';
 import { InputError } from '@backstage/errors';
 import type { CatalogApi } from '@backstage/catalog-client';
-import type { UserEntityV1alpha1 } from '@backstage/catalog-model';
 import type { AddDeliveryProgrammeAdmin } from '../utils';
-import { assertUUID, createParser } from './util';
+import { assertUUID, createParser, respond } from './util';
 import { z } from 'zod';
 import type {
   CreateDeliveryProgrammeAdminRequest,
   DeleteDeliveryProgrammeAdminRequest,
 } from '@internal/plugin-adp-common';
+import { getUserEntityFromCatalog } from './catalog';
 
 const parseCreateDeliveryProgrammeAdminRequest =
   createParser<CreateDeliveryProgrammeAdminRequest>(
     z.object({
-      aadEntityRefIds: z.string().array(),
-      deliveryProgrammeId: z.string(),
+      delivery_programme_id: z.string(),
+      user_catalog_name: z.string(),
     }),
   );
 
@@ -30,6 +30,33 @@ const parseDeleteDeliveryProgrammeAdminRequest =
       deliveryProgrammeId: z.string(),
     }),
   );
+
+const errorMapping = {
+  duplicateUser: (req: { user_catalog_name?: string }) => ({
+    path: 'user_catalog_name',
+    error: {
+      message: `The user ${req.user_catalog_name} has already been added to this delivery programme`,
+    },
+  }),
+  unknownDeliveryProgramme: () => ({
+    path: 'delivery_programme_id',
+    error: {
+      message: `The delivery programme does not exist.`,
+    },
+  }),
+  unknownCatalogUser: (req: { user_catalog_name?: string }) => ({
+    path: 'user_catalog_name',
+    error: {
+      message: `The user ${req.user_catalog_name} has could not be found in the Catalog`,
+    },
+  }),
+  unknown: () => ({
+    path: 'root',
+    error: {
+      message: `An unexpected error occurred.`,
+    },
+  }),
+};
 
 export interface DeliveryProgrammeAdminRouterOptions {
   logger: Logger;
@@ -85,27 +112,30 @@ export function createDeliveryProgrammeAdminRouter(
   );
 
   router.post('/deliveryProgrammeAdmin', async (req, res) => {
-    try {
-      const body = parseCreateDeliveryProgrammeAdminRequest(req.body);
-      const deliveryProgrammeAdmins =
-        await getDeliveryProgrammeAdminsFromCatalog(
-          body.aadEntityRefIds,
-          body.deliveryProgrammeId,
-          catalog,
-        );
+    const body = parseCreateDeliveryProgrammeAdminRequest(req.body);
+    assertUUID(body.delivery_programme_id);
 
-      const addedDeliveryProgrammeAdmins =
-        await deliveryProgrammeAdminStore.addMany(deliveryProgrammeAdmins);
+    const catalogUser = await getUserEntityFromCatalog(
+      body.user_catalog_name,
+      catalog,
+    );
 
-      res.status(201).json(addedDeliveryProgrammeAdmins);
-    } catch (error) {
-      const typedError = error as Error;
-      logger.error(
-        `POST /deliveryProgrammeAdmin. Could not create new delivery programme admins: ${typedError.message}`,
-        typedError,
-      );
-      throw new InputError(typedError.message);
+    if (catalogUser.success) {
+      const addUser: AddDeliveryProgrammeAdmin = {
+        name: catalogUser.value.spec.profile!.displayName!,
+        email: catalogUser.value.metadata.annotations!['microsoft.com/email'],
+        aad_entity_ref_id:
+          catalogUser.value.metadata.annotations![
+            'graph.microsoft.com/user-id'
+          ],
+        delivery_programme_id: body.delivery_programme_id,
+      };
+
+      const addedUser = await deliveryProgrammeAdminStore.add(addUser);
+      respond(body, res, addedUser, errorMapping, { ok: 201 });
     }
+
+    respond(body, res, catalogUser, errorMapping);
   });
 
   router.delete('/deliveryProgrammeAdmin', async (req, res) => {
@@ -144,50 +174,4 @@ export function createDeliveryProgrammeAdminRouter(
 
   router.use(errorHandler());
   return router;
-}
-
-async function getDeliveryProgrammeAdminsFromCatalog(
-  aadEntityRefs: string[],
-  deliveryProgrammeId: string,
-  catalog: CatalogApi,
-): Promise<AddDeliveryProgrammeAdmin[]> {
-  assertUUID(deliveryProgrammeId);
-
-  const catalogUsersResponse = await catalog.getEntities({
-    filter: {
-      kind: 'User',
-    },
-    fields: [
-      'metadata.name',
-      'metadata.annotations.graph.microsoft.com/user-id',
-      'metadata.annotations.microsoft.com/email',
-      'spec.profile.displayName',
-    ],
-  });
-  const catalogUsers = catalogUsersResponse.items;
-
-  const users = aadEntityRefs.map(aadEntityRef => {
-    const catalogUser = catalogUsers.find(object => {
-      const userId =
-        object.metadata.annotations!['graph.microsoft.com/user-id'];
-      return userId === aadEntityRef;
-    }) as UserEntityV1alpha1;
-
-    if (catalogUser === undefined) return undefined;
-
-    const name = catalogUser.spec.profile!.displayName!;
-    const email = catalogUser.metadata.annotations!['microsoft.com/email'];
-    const deliveryProgrammeAdmin: AddDeliveryProgrammeAdmin = {
-      aad_entity_ref_id: aadEntityRef,
-      email: email,
-      name: name,
-      delivery_programme_id: deliveryProgrammeId,
-    };
-
-    return deliveryProgrammeAdmin;
-  });
-
-  return users.filter(
-    user => user !== undefined,
-  ) as AddDeliveryProgrammeAdmin[];
 }

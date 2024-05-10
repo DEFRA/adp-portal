@@ -8,8 +8,8 @@ export type DeliveryProgrammeAdmin = {
 };
 
 export type CreateDeliveryProgrammeAdminRequest = {
-  aadEntityRefIds: string[];
-  deliveryProgrammeId: string;
+  delivery_programme_id: string;
+  user_catalog_name: string;
 };
 
 export type DeleteDeliveryProgrammeAdminRequest = {

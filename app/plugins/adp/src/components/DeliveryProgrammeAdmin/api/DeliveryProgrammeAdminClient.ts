@@ -6,6 +6,7 @@ import type {
 import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
 import type { DeliveryProgrammeAdminApi } from './DeliveryProgrammeAdminApi';
+import { ValidationError } from '../../../utils';
 
 export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
   private discoveryApi: DiscoveryApi;
@@ -52,14 +53,14 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
 
   async create(
     deliveryProgrammeId: string,
-    aadEntityRefIds: string[],
+    userCatalogName: string,
   ): Promise<DeliveryProgrammeAdmin[]> {
     const baseUrl = await this.getBaseUrl();
     const url = `${baseUrl}/deliveryProgrammeAdmin`;
 
     const body: CreateDeliveryProgrammeAdminRequest = {
-      aadEntityRefIds: aadEntityRefIds,
-      deliveryProgrammeId: deliveryProgrammeId,
+      user_catalog_name: userCatalogName,
+      delivery_programme_id: deliveryProgrammeId,
     };
 
     const response = await this.fetchApi.fetch(url, {
@@ -69,6 +70,9 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
       },
       body: JSON.stringify(body),
     });
+
+    if (response.status === 400)
+      throw new ValidationError((await response.json()).errors);
 
     if (!response.ok) {
       throw await ResponseError.fromResponse(response);

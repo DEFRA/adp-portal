@@ -94,34 +94,30 @@ describe('DeliveryProgrammeAdminApiClient', () => {
   describe('create', () => {
     it('should create new Delivery Programme Admins', async () => {
       const deliveryProgrammeId = faker.string.uuid();
-      const aadEntityRefIds = faker.helpers.multiple(faker.string.uuid, {
-        count: 4,
-      });
+      const userRef = faker.internet.userName();
 
-      const expectedDeliveryProgrammeAdmins = aadEntityRefIds.map(ref => ({
+      const expectedDeliveryProgrammeAdmin = {
         id: faker.string.uuid(),
         delivery_programme_id: deliveryProgrammeId,
-        aad_entity_ref_id: ref,
+        aad_entity_ref_id: faker.string.uuid(),
         email: faker.internet.email(),
         name: faker.person.fullName(),
         updated_at: faker.date.past(),
-      }));
+      };
 
       fetchApi.fetch.mockResolvedValue({
         ok: true,
-        json: jest.fn().mockResolvedValue(expectedDeliveryProgrammeAdmins),
+        json: jest.fn().mockResolvedValue(expectedDeliveryProgrammeAdmin),
       });
 
-      const result = await sut.create(deliveryProgrammeId, aadEntityRefIds);
+      const result = await sut.create(deliveryProgrammeId, userRef);
 
-      expect(result).toEqual(expectedDeliveryProgrammeAdmins);
+      expect(result).toEqual(expectedDeliveryProgrammeAdmin);
     });
 
     it('throws when Fetch fails', async () => {
       const deliveryProgrammeId = faker.string.uuid();
-      const aadEntityRefIds = faker.helpers.multiple(faker.string.uuid, {
-        count: 4,
-      });
+      const userRef = faker.internet.userName();
 
       fetchApi.fetch.mockResolvedValue({
         ok: false,
@@ -130,9 +126,9 @@ describe('DeliveryProgrammeAdminApiClient', () => {
         json: jest.fn().mockResolvedValue({ error: 'Not found' }),
       });
 
-      await expect(
-        sut.create(deliveryProgrammeId, aadEntityRefIds),
-      ).rejects.toThrow(/^Request failed with 400/);
+      await expect(sut.create(deliveryProgrammeId, userRef)).rejects.toThrow(
+        /^Request failed with 400/,
+      );
     });
   });
 

@@ -90,7 +90,7 @@ describe('DeliveryProgrammeAdminFormFields', () => {
     const { renderComponent } = setup();
 
     const fields: DeliveryProgrammeAdminFields = {
-      aadEntityRefId: 'user-1234',
+      user_catalog_name: 'user-1234',
     };
 
     const { result } = await renderComponent(fields);
@@ -124,7 +124,7 @@ describe('DeliveryProgrammeAdminFormFields', () => {
     });
 
     const fields: DeliveryProgrammeAdminFields = {
-      aadEntityRefId: 'f8699f8d-e3d5-4822-8979-6b6bce35ff16',
+      user_catalog_name: 'test-user-1',
     };
 
     const { form, result } = await renderComponent();
@@ -136,7 +136,7 @@ describe('DeliveryProgrammeAdminFormFields', () => {
       form,
       'Select User',
       'Test User 1',
-      'aadEntityRefId',
+      'user_catalog_name',
     );
     expect(result.baseElement).toMatchSnapshot('User selected');
     expect(form.getValues()).toMatchObject(fields);
