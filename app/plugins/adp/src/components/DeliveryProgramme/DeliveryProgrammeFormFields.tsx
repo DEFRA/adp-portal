@@ -94,10 +94,14 @@ export function DeliveryProgrammeFormFields({
         index={i++}
         name="delivery_programme_code"
         label="Delivery Programme Code / Abbreviation"
-        helperText="This must be unique. Example: FCP"
+        helperText="This must be unique and contain exactly three or four alphabetical characters. Example: FCP"
         disabled={disabled}
         rules={{
           ...formRules.required,
+          ...formRules.pattern(
+            /^[a-zA-Z]{3,4}$/,
+            'Must contain exactly three or four alphabetical characters',
+          ),
         }}
       />
 

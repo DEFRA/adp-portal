@@ -71,7 +71,7 @@ export function FormSelectField<
             ...rulesToHtmlProperties(rules),
           }}
         >
-          {options.map(x => (
+          {ensureSelectionNotMissing(options, field.value).map(x => (
             <MenuItem
               key={String(x.value)}
               value={x.value}
@@ -84,4 +84,15 @@ export function FormSelectField<
       )}
     />
   );
+}
+
+const empty: unknown[] = [null, undefined, ''];
+function ensureSelectionNotMissing<T>(
+  options: ReadonlyArray<{ label: string; value: T }>,
+  value: T,
+) {
+  if (empty.includes(value) || options.some(x => x.value === value))
+    return options;
+
+  return [...options, { label: String(value), value }];
 }

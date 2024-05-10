@@ -1,0 +1,3745 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[kind: ???] / Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-about-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-catalog-graph-card
+          height="400"
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4"
+      >
+        <mocked-entity-links-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8"
+      >
+        <mocked-entity-has-subcomponents-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: ???] /docs Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-techdocs-content>
+      <mocked-tech-docs-addons>
+        <mocked-report-issue />
+      </mocked-tech-docs-addons>
+    </mocked-entity-techdocs-content>,
+  ],
+]
+`;
+
+exports[`[kind: ???] tabs Should render tabs: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: api] / Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-about-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-catalog-graph-card
+          height="400"
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4"
+      >
+        <mocked-entity-links-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+        >
+          <div
+            class="MuiBox-root MuiBox-root BackstageTable-root"
+          >
+            <div
+              class="MuiPaper-root MuiPaper-elevation2 MuiPaper-rounded"
+              style="position: relative; min-width: 0; width: 100%; height: calc(100% - 10px);"
+            >
+              <div
+                class="MuiToolbar-root MuiToolbar-regular ForwardRef(MTableToolbarRef)-root BackstageTableToolbar-root MuiToolbar-gutters"
+              >
+                <div
+                  class="ForwardRef(MTableToolbarRef)-title BackstageTableToolbar-title"
+                >
+                  <h2
+                    class="MuiTypography-root MuiTypography-h5"
+                  >
+                    Providers
+                  </h2>
+                </div>
+                <div
+                  class="ForwardRef(MTableToolbarRef)-spacer"
+                />
+                <div
+                  class="ForwardRef(MTableToolbarRef)-actions"
+                >
+                  <div>
+                    <div
+                      style="display: flex;"
+                    >
+                      <span>
+                        <div
+                          style="display: flex;"
+                        />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="Component-horizontalScrollContainer"
+                style="overflow-x: auto; position: relative;"
+              >
+                <div>
+                  <div
+                    style="overflow-y: auto;"
+                  >
+                    <div>
+                      <table
+                        class="MuiTable-root"
+                        style="table-layout: auto;"
+                      >
+                        <thead
+                          class="MuiTableHead-root"
+                        >
+                          <tr
+                            class="MuiTableRow-root MuiTableRow-head"
+                          >
+                            <th
+                              class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
+                              scope="col"
+                              style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiTableSortLabel-root"
+                                role="button"
+                                tabindex="0"
+                              >
+                                Name
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                  />
+                                </svg>
+                              </span>
+                            </th>
+                            <th
+                              class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
+                              scope="col"
+                              style="text-transform: uppercase; box-sizing: border-box;"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiTableSortLabel-root"
+                                role="button"
+                                tabindex="0"
+                              >
+                                System
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                  />
+                                </svg>
+                              </span>
+                            </th>
+                            <th
+                              class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
+                              scope="col"
+                              style="text-transform: uppercase; box-sizing: border-box;"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiTableSortLabel-root"
+                                role="button"
+                                tabindex="0"
+                              >
+                                Owner
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                  />
+                                </svg>
+                              </span>
+                            </th>
+                            <th
+                              class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
+                              scope="col"
+                              style="text-transform: uppercase; box-sizing: border-box;"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiTableSortLabel-root"
+                                role="button"
+                                tabindex="0"
+                              >
+                                Type
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                  />
+                                </svg>
+                              </span>
+                            </th>
+                            <th
+                              class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
+                              scope="col"
+                              style="text-transform: uppercase; box-sizing: border-box;"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiTableSortLabel-root"
+                                role="button"
+                                tabindex="0"
+                              >
+                                Lifecycle
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                  />
+                                </svg>
+                              </span>
+                            </th>
+                            <th
+                              class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
+                              scope="col"
+                              style="text-transform: uppercase; box-sizing: border-box;"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiTableSortLabel-root"
+                                role="button"
+                                tabindex="0"
+                              >
+                                Description
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                  />
+                                </svg>
+                              </span>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td
+                              colspan="6"
+                            >
+                              <div
+                                class="makeStyles-empty"
+                              >
+                                <div
+                                  style="text-align: center;"
+                                >
+                                  <p
+                                    class="MuiTypography-root MuiTypography-body1"
+                                  >
+                                    No component provides this API.
+                                  </p>
+                                  <p
+                                    class="MuiTypography-root MuiTypography-body2"
+                                  >
+                                    <a
+                                      class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
+                                      href="https://backstage.io/docs/features/software-catalog/descriptor-format#specprovidesapis-optional"
+                                      rel="noopener"
+                                      target="_blank"
+                                      to="https://backstage.io/docs/features/software-catalog/descriptor-format#specprovidesapis-optional"
+                                    >
+                                      Learn how to change this.
+                                      <span
+                                        class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
+                                      >
+                                        , Opens in a new window
+                                      </span>
+                                    </a>
+                                  </p>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+        >
+          <div
+            class="MuiBox-root MuiBox-root BackstageTable-root"
+          >
+            <div
+              class="MuiPaper-root MuiPaper-elevation2 MuiPaper-rounded"
+              style="position: relative; min-width: 0; width: 100%; height: calc(100% - 10px);"
+            >
+              <div
+                class="MuiToolbar-root MuiToolbar-regular ForwardRef(MTableToolbarRef)-root BackstageTableToolbar-root MuiToolbar-gutters"
+              >
+                <div
+                  class="ForwardRef(MTableToolbarRef)-title BackstageTableToolbar-title"
+                >
+                  <h2
+                    class="MuiTypography-root MuiTypography-h5"
+                  >
+                    Consumers
+                  </h2>
+                </div>
+                <div
+                  class="ForwardRef(MTableToolbarRef)-spacer"
+                />
+                <div
+                  class="ForwardRef(MTableToolbarRef)-actions"
+                >
+                  <div>
+                    <div
+                      style="display: flex;"
+                    >
+                      <span>
+                        <div
+                          style="display: flex;"
+                        />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="Component-horizontalScrollContainer"
+                style="overflow-x: auto; position: relative;"
+              >
+                <div>
+                  <div
+                    style="overflow-y: auto;"
+                  >
+                    <div>
+                      <table
+                        class="MuiTable-root"
+                        style="table-layout: auto;"
+                      >
+                        <thead
+                          class="MuiTableHead-root"
+                        >
+                          <tr
+                            class="MuiTableRow-root MuiTableRow-head"
+                          >
+                            <th
+                              class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
+                              scope="col"
+                              style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiTableSortLabel-root"
+                                role="button"
+                                tabindex="0"
+                              >
+                                Name
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                  />
+                                </svg>
+                              </span>
+                            </th>
+                            <th
+                              class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
+                              scope="col"
+                              style="text-transform: uppercase; box-sizing: border-box;"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiTableSortLabel-root"
+                                role="button"
+                                tabindex="0"
+                              >
+                                System
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                  />
+                                </svg>
+                              </span>
+                            </th>
+                            <th
+                              class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
+                              scope="col"
+                              style="text-transform: uppercase; box-sizing: border-box;"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiTableSortLabel-root"
+                                role="button"
+                                tabindex="0"
+                              >
+                                Owner
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                  />
+                                </svg>
+                              </span>
+                            </th>
+                            <th
+                              class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
+                              scope="col"
+                              style="text-transform: uppercase; box-sizing: border-box;"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiTableSortLabel-root"
+                                role="button"
+                                tabindex="0"
+                              >
+                                Type
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                  />
+                                </svg>
+                              </span>
+                            </th>
+                            <th
+                              class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
+                              scope="col"
+                              style="text-transform: uppercase; box-sizing: border-box;"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiTableSortLabel-root"
+                                role="button"
+                                tabindex="0"
+                              >
+                                Lifecycle
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                  />
+                                </svg>
+                              </span>
+                            </th>
+                            <th
+                              class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
+                              scope="col"
+                              style="text-transform: uppercase; box-sizing: border-box;"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiTableSortLabel-root"
+                                role="button"
+                                tabindex="0"
+                              >
+                                Description
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                  />
+                                </svg>
+                              </span>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td
+                              colspan="6"
+                            >
+                              <div
+                                class="makeStyles-empty"
+                              >
+                                <div
+                                  style="text-align: center;"
+                                >
+                                  <p
+                                    class="MuiTypography-root MuiTypography-body1"
+                                  >
+                                    No component consumes this API.
+                                  </p>
+                                  <p
+                                    class="MuiTypography-root MuiTypography-body2"
+                                  >
+                                    <a
+                                      class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
+                                      href="https://backstage.io/docs/features/software-catalog/descriptor-format#specconsumesapis-optional"
+                                      rel="noopener"
+                                      target="_blank"
+                                      to="https://backstage.io/docs/features/software-catalog/descriptor-format#specconsumesapis-optional"
+                                    >
+                                      Learn how to change this.
+                                      <span
+                                        class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
+                                      >
+                                        , Opens in a new window
+                                      </span>
+                                    </a>
+                                  </p>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: api] /definition Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+      >
+        <mocked-entity-api-definition-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: api] tabs Should render tabs: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Definition
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: ???] / Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-about-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-catalog-graph-card
+          height="400"
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4"
+      >
+        <mocked-entity-links-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8"
+      >
+        <mocked-entity-has-subcomponents-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: ???] /docs Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-techdocs-content>
+      <mocked-tech-docs-addons>
+        <mocked-report-issue />
+      </mocked-tech-docs-addons>
+    </mocked-entity-techdocs-content>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: ???] tabs Should render tabs when there is kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: ???] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] / Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-about-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-catalog-graph-card
+          height="400"
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4"
+      >
+        <mocked-entity-links-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8"
+      >
+        <mocked-entity-has-subcomponents-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] /api Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-provided-apis-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-consumed-apis-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] /ci-cd Should render correctly when azure pipelines are available: content 1`] = `
+[
+  [
+    <mocked-entity-azure-pipelines-content
+      defaultlimit="25"
+    />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] /ci-cd Should render correctly when cicd is not available: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root BackstageEmptyState-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-align-items-xs-flex-start MuiGrid-justify-content-xs-space-around"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-direction-xs-column"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <h5
+              class="MuiTypography-root MuiTypography-h5"
+            >
+              No CI/CD available for this entity
+            </h5>
+          </div>
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1"
+            >
+              You need to add an annotation to your component if you want to enable CI/CD for it. You can read more about annotations in Backstage by clicking the button below.
+            </p>
+          </div>
+          <div
+            class="MuiGrid-root BackstageEmptyState-action MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <a
+              aria-disabled="false"
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
+              href="https://backstage.io/docs/features/software-catalog/well-known-annotations"
+              tabindex="0"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Read more
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root BackstageEmptyState-imageContainer MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <img
+          alt="no Information"
+          class="BackstageEmptyStateImage-generalImg"
+          src="noInformation.svg"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] /ci-cd Should render correctly when github actions are available: content 1`] = `
+[
+  [
+    <mocked-entity-github-actions-content />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] /dependencies Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-depends-on-components-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-depends-on-resources-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] /docs Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-techdocs-content>
+      <mocked-tech-docs-addons>
+        <mocked-report-issue />
+      </mocked-tech-docs-addons>
+    </mocked-entity-techdocs-content>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] /grafana Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-grafana-dashboards-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-grafana-alerts-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] /kubernetes Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-kubernetes-content
+      refreshintervalms="30000"
+    />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] /pull-requests Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-github-pull-requests-content />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] /releases Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-helm-releases-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-kustomizations-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] tabs Should render tabs when there is kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        CI/CD
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-3"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Grafana
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-4"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        API
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-5"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Dependencies
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-6"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-7"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Deployments
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-8"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Kubernetes
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: backend] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        CI/CD
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-3"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Grafana
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-4"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        API
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-5"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Dependencies
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-6"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: frontend] / Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-about-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-catalog-graph-card
+          height="400"
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4"
+      >
+        <mocked-entity-links-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8"
+      >
+        <mocked-entity-has-subcomponents-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: frontend] /ci-cd Should render correctly when azure pipelines are available: content 1`] = `
+[
+  [
+    <mocked-entity-azure-pipelines-content
+      defaultlimit="25"
+    />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: frontend] /ci-cd Should render correctly when cicd is not available: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root BackstageEmptyState-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-align-items-xs-flex-start MuiGrid-justify-content-xs-space-around"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-direction-xs-column"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <h5
+              class="MuiTypography-root MuiTypography-h5"
+            >
+              No CI/CD available for this entity
+            </h5>
+          </div>
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1"
+            >
+              You need to add an annotation to your component if you want to enable CI/CD for it. You can read more about annotations in Backstage by clicking the button below.
+            </p>
+          </div>
+          <div
+            class="MuiGrid-root BackstageEmptyState-action MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <a
+              aria-disabled="false"
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
+              href="https://backstage.io/docs/features/software-catalog/well-known-annotations"
+              tabindex="0"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Read more
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root BackstageEmptyState-imageContainer MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <img
+          alt="no Information"
+          class="BackstageEmptyStateImage-generalImg"
+          src="noInformation.svg"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: frontend] /ci-cd Should render correctly when github actions are available: content 1`] = `
+[
+  [
+    <mocked-entity-github-actions-content />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: frontend] /dependencies Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-depends-on-components-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-depends-on-resources-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: frontend] /docs Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-techdocs-content>
+      <mocked-tech-docs-addons>
+        <mocked-report-issue />
+      </mocked-tech-docs-addons>
+    </mocked-entity-techdocs-content>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: frontend] /grafana Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-grafana-dashboards-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-grafana-alerts-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: frontend] /kubernetes Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-kubernetes-content
+      refreshintervalms="30000"
+    />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: frontend] /pull-requests Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-github-pull-requests-content />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: frontend] /releases Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-helm-releases-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-kustomizations-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: frontend] tabs Should render tabs when there is kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        CI/CD
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-3"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Grafana
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-4"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Dependencies
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-5"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-6"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Deployments
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-7"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Kubernetes
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: frontend] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        CI/CD
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-3"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Grafana
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-4"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Dependencies
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-5"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: helm] / Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-about-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-catalog-graph-card
+          height="400"
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4"
+      >
+        <mocked-entity-links-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8"
+      >
+        <mocked-entity-has-subcomponents-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: helm] /ci-cd Should render correctly when azure pipelines are available: content 1`] = `
+[
+  [
+    <mocked-entity-azure-pipelines-content
+      defaultlimit="25"
+    />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: helm] /ci-cd Should render correctly when cicd is not available: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root BackstageEmptyState-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-align-items-xs-flex-start MuiGrid-justify-content-xs-space-around"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-direction-xs-column"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <h5
+              class="MuiTypography-root MuiTypography-h5"
+            >
+              No CI/CD available for this entity
+            </h5>
+          </div>
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1"
+            >
+              You need to add an annotation to your component if you want to enable CI/CD for it. You can read more about annotations in Backstage by clicking the button below.
+            </p>
+          </div>
+          <div
+            class="MuiGrid-root BackstageEmptyState-action MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <a
+              aria-disabled="false"
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
+              href="https://backstage.io/docs/features/software-catalog/well-known-annotations"
+              tabindex="0"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Read more
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root BackstageEmptyState-imageContainer MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <img
+          alt="no Information"
+          class="BackstageEmptyStateImage-generalImg"
+          src="noInformation.svg"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: helm] /ci-cd Should render correctly when github actions are available: content 1`] = `
+[
+  [
+    <mocked-entity-github-actions-content />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: helm] /dependencies Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-depends-on-components-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-depends-on-resources-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: helm] /docs Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-techdocs-content>
+      <mocked-tech-docs-addons>
+        <mocked-report-issue />
+      </mocked-tech-docs-addons>
+    </mocked-entity-techdocs-content>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: helm] /kubernetes Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-kubernetes-content
+      refreshintervalms="30000"
+    />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: helm] /pull-requests Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-github-pull-requests-content />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: helm] /releases Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-helm-releases-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-kustomizations-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: helm] tabs Should render tabs when there is kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        CI/CD
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-3"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Dependencies
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-4"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-5"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Deployments
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-6"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Kubernetes
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: helm] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        CI/CD
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-3"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Dependencies
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-4"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] / Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-about-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-catalog-graph-card
+          height="400"
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4"
+      >
+        <mocked-entity-links-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8"
+      >
+        <mocked-entity-has-subcomponents-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] /api Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-provided-apis-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-consumed-apis-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] /ci-cd Should render correctly when azure pipelines are available: content 1`] = `
+[
+  [
+    <mocked-entity-azure-pipelines-content
+      defaultlimit="25"
+    />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] /ci-cd Should render correctly when cicd is not available: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root BackstageEmptyState-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-align-items-xs-flex-start MuiGrid-justify-content-xs-space-around"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-direction-xs-column"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <h5
+              class="MuiTypography-root MuiTypography-h5"
+            >
+              No CI/CD available for this entity
+            </h5>
+          </div>
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1"
+            >
+              You need to add an annotation to your component if you want to enable CI/CD for it. You can read more about annotations in Backstage by clicking the button below.
+            </p>
+          </div>
+          <div
+            class="MuiGrid-root BackstageEmptyState-action MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <a
+              aria-disabled="false"
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
+              href="https://backstage.io/docs/features/software-catalog/well-known-annotations"
+              tabindex="0"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Read more
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root BackstageEmptyState-imageContainer MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <img
+          alt="no Information"
+          class="BackstageEmptyStateImage-generalImg"
+          src="noInformation.svg"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] /ci-cd Should render correctly when github actions are available: content 1`] = `
+[
+  [
+    <mocked-entity-github-actions-content />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] /dependencies Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-depends-on-components-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-depends-on-resources-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] /docs Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-techdocs-content>
+      <mocked-tech-docs-addons>
+        <mocked-report-issue />
+      </mocked-tech-docs-addons>
+    </mocked-entity-techdocs-content>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] /grafana Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-grafana-dashboards-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-grafana-alerts-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] /kubernetes Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-kubernetes-content
+      refreshintervalms="30000"
+    />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] /pull-requests Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-github-pull-requests-content />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] /releases Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-helm-releases-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-kustomizations-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] tabs Should render tabs when there is kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        CI/CD
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-3"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Grafana
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-4"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        API
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-5"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Dependencies
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-6"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-7"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Deployments
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-8"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Kubernetes
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: service] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        CI/CD
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-3"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Grafana
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-4"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        API
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-5"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Dependencies
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-6"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: website] / Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-about-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-catalog-graph-card
+          height="400"
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4"
+      >
+        <mocked-entity-links-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8"
+      >
+        <mocked-entity-has-subcomponents-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: website] /ci-cd Should render correctly when azure pipelines are available: content 1`] = `
+[
+  [
+    <mocked-entity-azure-pipelines-content
+      defaultlimit="25"
+    />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: website] /ci-cd Should render correctly when cicd is not available: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root BackstageEmptyState-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-align-items-xs-flex-start MuiGrid-justify-content-xs-space-around"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-direction-xs-column"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <h5
+              class="MuiTypography-root MuiTypography-h5"
+            >
+              No CI/CD available for this entity
+            </h5>
+          </div>
+          <div
+            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1"
+            >
+              You need to add an annotation to your component if you want to enable CI/CD for it. You can read more about annotations in Backstage by clicking the button below.
+            </p>
+          </div>
+          <div
+            class="MuiGrid-root BackstageEmptyState-action MuiGrid-item MuiGrid-grid-xs-true"
+          >
+            <a
+              aria-disabled="false"
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
+              href="https://backstage.io/docs/features/software-catalog/well-known-annotations"
+              tabindex="0"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Read more
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root BackstageEmptyState-imageContainer MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <img
+          alt="no Information"
+          class="BackstageEmptyStateImage-generalImg"
+          src="noInformation.svg"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: website] /ci-cd Should render correctly when github actions are available: content 1`] = `
+[
+  [
+    <mocked-entity-github-actions-content />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: website] /dependencies Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-depends-on-components-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-depends-on-resources-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: website] /docs Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-techdocs-content>
+      <mocked-tech-docs-addons>
+        <mocked-report-issue />
+      </mocked-tech-docs-addons>
+    </mocked-entity-techdocs-content>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: website] /grafana Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-grafana-dashboards-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-grafana-alerts-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: website] /kubernetes Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-kubernetes-content
+      refreshintervalms="30000"
+    />,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: website] /pull-requests Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-github-pull-requests-content />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: website] /releases Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-helm-releases-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-kustomizations-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: website] tabs Should render tabs when there is kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        CI/CD
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-3"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Grafana
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-4"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Dependencies
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-5"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-6"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Deployments
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-7"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Kubernetes
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: website] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        CI/CD
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-3"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Grafana
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-4"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Dependencies
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-5"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: domain] / Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-about-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-catalog-graph-card
+          height="400"
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-has-systems-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: domain] tabs Should render tabs: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: group] / Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-group-profile-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-ownership-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-members-list-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-team-pull-requests-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: group] /kubernetes Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-kubernetes-content
+      refreshintervalms="30000"
+    />,
+  ],
+]
+`;
+
+exports[`[kind: group] /manage-members Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-page-manage-programme-admin-content />,
+  ],
+]
+`;
+
+exports[`[kind: group] /pull-requests Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-team-pull-requests-content />,
+  ],
+]
+`;
+
+exports[`[kind: group] /releases Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-helm-releases-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-helm-repositories-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-image-policies-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-kustomizations-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: group] tabs Should render tabs when is a delivery programme: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Manage Members
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: group] tabs Should render tabs when there is kubernetes: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Deployments
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-3"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Kubernetes
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: group] tabs Should render tabs: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: system] / Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-about-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-catalog-graph-card
+          height="400"
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4"
+      >
+        <mocked-entity-links-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-8"
+      >
+        <mocked-entity-has-components-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-has-apis-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-6"
+      >
+        <mocked-entity-has-resources-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: system] /diagram Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-catalog-graph-card
+      direction="TB"
+      height="700"
+      relations="partOf,hasPart,apiConsumedBy,apiProvidedBy,consumesApi,providesApi,dependencyOf,dependsOn"
+      title="System Diagram"
+      unidirectional="false"
+      variant="gridItem"
+    />,
+  ],
+]
+`;
+
+exports[`[kind: system] tabs Should render tabs: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Diagram
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: user] / Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-user-profile-card
+          variant="gridItem"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6"
+      >
+        <mocked-entity-ownership-card
+          variant="gridItem"
+        />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: user] tabs Should render tabs: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
