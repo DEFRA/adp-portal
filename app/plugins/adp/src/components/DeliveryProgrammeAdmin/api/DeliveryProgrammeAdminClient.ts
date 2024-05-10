@@ -6,7 +6,7 @@ import type {
 import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
 import type { DeliveryProgrammeAdminApi } from './DeliveryProgrammeAdminApi';
-import { ValidationError } from '../../../utils';
+import { ValidationError } from '../../../utils/ValidationError';
 
 export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
   private discoveryApi: DiscoveryApi;

@@ -20,7 +20,7 @@ function createDeliveryProgrammeAdmin(): DeliveryProgrammeAdmin {
   };
 }
 
-describe('DeliveryProgrammeAdminApiClient', () => {
+describe('DeliveryProgrammeAdminClient', () => {
   const discoveryApi = { getBaseUrl: jest.fn() };
   const fetchApi = { fetch: jest.fn() };
   const sut = new DeliveryProgrammeAdminClient(discoveryApi, fetchApi);
@@ -127,7 +127,7 @@ describe('DeliveryProgrammeAdminApiClient', () => {
       });
 
       await expect(sut.create(deliveryProgrammeId, userRef)).rejects.toThrow(
-        /^Request failed with 400/,
+        'Validation failed',
       );
     });
   });
