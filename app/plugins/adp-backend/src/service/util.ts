@@ -1,10 +1,8 @@
 import type { Response } from 'express';
 import type { ValidationErrorMapping } from '@internal/plugin-adp-common';
-import { InputError, NotFoundError } from '@backstage/errors';
+import { InputError } from '@backstage/errors';
 import type { z } from 'zod';
 import { type UUID } from 'node:crypto';
-import type { CatalogApi } from '@backstage/catalog-client';
-import type { UserEntityV1alpha1 } from '@backstage/catalog-model';
 
 export function respond<Request, Success, Error extends string>(
   request: Request,
