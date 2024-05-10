@@ -98,13 +98,13 @@ const records = [
     updated_by: 'ADP',
   },
   {
-    name: 'ffc',
+    name: 'fcp',
     title: 'Farming & Countryside Programme',
-    alias: 'FFC',
+    alias: 'FCP',
     description:
       'The Farming and Countryside Programme is responsible for designing and delivering the new farming schemes in England.',
     arms_length_body_id: 'rural-payments-agency',
-    delivery_programme_code: 'FFC',
+    delivery_programme_code: 'FCP',
     url: null,
     updated_by: 'ADP',
   },
