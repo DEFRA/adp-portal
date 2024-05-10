@@ -99,9 +99,7 @@ exports[`DeliveryProgrammeAdminFormFields should render default fields 1`] = `
           role="button"
           tabindex="0"
         >
-          <span>
-            ​
-          </span>
+          user-1234
         </div>
         <input
           aria-describedby="aadEntityRefId-helper-text"

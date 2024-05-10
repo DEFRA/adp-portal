@@ -14,12 +14,12 @@ describe('useEntityRoute', () => {
       },
     });
 
-  it('should return route with default namespace', () => {
+  it('should return route with default namespace', async () => {
     const name = 'entity-name';
     const kind = 'group';
     const expectedNamespace = 'default';
 
-    const { result } = renderHook(
+    const { result, waitForNextUpdate } = renderHook(
       () => {
         const entityRoute = useEntityRoute();
         return entityRoute(name, kind);
@@ -29,17 +29,19 @@ describe('useEntityRoute', () => {
       },
     );
 
+    await waitForNextUpdate();
+
     expect(result.current).toBe(
       `/catalog/${expectedNamespace}/${kind}/${name}`,
     );
   });
 
-  it('should return route with provided namespace', () => {
+  it('should return route with provided namespace', async () => {
     const name = 'entity-name';
     const kind = 'group';
     const namespace = 'custom-namespace';
 
-    const { result } = renderHook(
+    const { result, waitForNextUpdate } = renderHook(
       () => {
         const entityRoute = useEntityRoute();
         return entityRoute(name, kind, namespace);
@@ -48,6 +50,8 @@ describe('useEntityRoute', () => {
         wrapper: Wrapper,
       },
     );
+
+    await waitForNextUpdate();
 
     expect(result.current).toBe(`/catalog/${namespace}/${kind}/${name}`);
   });

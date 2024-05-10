@@ -75,7 +75,7 @@ describe('DeliveryProgrammeStore', () => {
     async databaseId => {
       const { programmeStore } = await createDatabase(databaseId);
       const getAllResult = await programmeStore.getAll();
-      expect(getAllResult).toHaveLength(7);
+      expect(getAllResult).toHaveLength(8);
     },
   );
 
