@@ -13,6 +13,7 @@ import type * as Components from './components';
 
 import {
   manageProgrammeAdminEntityContentRouteRef,
+  manageProjectUserEntityContentRouteRef,
   rootRouteRef,
 } from './routes';
 import {
@@ -31,6 +32,10 @@ import {
   DeliveryProgrammeAdminClient,
   deliveryProgrammeAdminApiRef,
 } from './components/DeliveryProgrammeAdmin/api';
+import {
+  DeliveryProjectUserClient,
+  deliveryProjectUserApiRef,
+} from './components/DeliveryProjectUser/api';
 
 export const adpPlugin = createPlugin({
   id: 'adp',
@@ -53,6 +58,11 @@ export const adpPlugin = createPlugin({
     createApiRegistration(
       deliveryProgrammeAdminApiRef,
       DeliveryProgrammeAdminClient,
+      [discoveryApiRef, fetchApiRef],
+    ),
+    createApiRegistration(
+      deliveryProjectUserApiRef,
+      DeliveryProjectUserClient,
       [discoveryApiRef, fetchApiRef],
     ),
   ],
@@ -95,6 +105,14 @@ export const EntityPageManageProgrammeAdminContent = adpPlugin.provide(
     name: 'EntityPageManageDeliveryProgrammeAdminContent',
     component: getComponent('DeliveryProgrammeAdminViewPage'),
     mountPoint: manageProgrammeAdminEntityContentRouteRef,
+  }),
+);
+
+export const EntityPageManageProjectUserContent = adpPlugin.provide(
+  createRoutableExtension({
+    name: 'EntityPageManageDeliveryProjectUserContent',
+    component: getComponent('DeliveryProjectUserViewPage'),
+    mountPoint: manageProjectUserEntityContentRouteRef,
   }),
 );
 

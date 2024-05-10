@@ -81,7 +81,10 @@ import {
   EntityFluxKustomizationsCard,
   EntityFluxImagePoliciesCard,
 } from '@weaveworksoss/backstage-plugin-flux';
-import { EntityPageManageProgrammeAdminContent } from '@internal/plugin-adp';
+import {
+  EntityPageManageProgrammeAdminContent,
+  EntityPageManageProjectUserContent,
+} from '@internal/plugin-adp';
 
 const entityWarnings = () => (
   <>
@@ -407,6 +410,14 @@ const groupPage = () => (
       if={isEntityWith({ kind: 'group', type: 'delivery-programme' })}
     >
       <EntityPageManageProgrammeAdminContent />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route
+      path="/manage-members"
+      title="Manage Members"
+      if={isEntityWith({ kind: 'group', type: 'delivery-project' })}
+    >
+      <EntityPageManageProjectUserContent />
     </EntityLayout.Route>
 
     <EntityLayout.Route

@@ -54,7 +54,7 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
   async create(
     deliveryProgrammeId: string,
     userCatalogName: string,
-  ): Promise<DeliveryProgrammeAdmin[]> {
+  ): Promise<DeliveryProgrammeAdmin> {
     const baseUrl = await this.getBaseUrl();
     const url = `${baseUrl}/deliveryProgrammeAdmin`;
 
@@ -78,10 +78,10 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
       throw await ResponseError.fromResponse(response);
     }
 
-    const deliveryProgrammeAdmins =
-      (await response.json()) as DeliveryProgrammeAdmin[];
+    const deliveryProgrammeAdmin =
+      (await response.json()) as DeliveryProgrammeAdmin;
 
-    return deliveryProgrammeAdmins;
+    return deliveryProgrammeAdmin;
   }
 
   async delete(aadEntityRefId: string, deliveryProgrammeId: string) {
