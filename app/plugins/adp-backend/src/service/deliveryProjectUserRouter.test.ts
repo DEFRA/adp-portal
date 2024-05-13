@@ -8,7 +8,10 @@ import { getVoidLogger } from '@backstage/backend-common';
 import { faker } from '@faker-js/faker';
 import { createDeliveryProjectUser } from '../testData/projectUserTestData';
 import { catalogTestData } from '../testData/catalogEntityTestData';
-import type { CreateDeliveryProjectUserRequest } from '@internal/plugin-adp-common';
+import type {
+  CreateDeliveryProjectUserRequest,
+  UpdateDeliveryProjectUserRequest,
+} from '@internal/plugin-adp-common';
 
 describe('createRouter', () => {
   let deliveryProjectUserApp: express.Express;
@@ -17,6 +20,8 @@ describe('createRouter', () => {
     add: jest.fn(),
     getAll: jest.fn(),
     getByDeliveryProject: jest.fn(),
+    get: jest.fn(),
+    update: jest.fn(),
   };
 
   const mockCatalogClient: jest.Mocked<CatalogApi> = {
@@ -179,6 +184,75 @@ describe('createRouter', () => {
           },
         ],
       });
+    });
+  });
+
+  describe('PATCH /deliveryProjectUser', () => {
+    it('returns ok', async () => {
+      const projectUser = createDeliveryProjectUser(faker.string.uuid());
+      mockDeliveryProjectUserStore.update.mockResolvedValue({
+        success: true,
+        value: projectUser,
+      });
+
+      const response = await request(deliveryProjectUserApp)
+        .patch('/deliveryProjectUser')
+        .send({ id: '123' } satisfies UpdateDeliveryProjectUserRequest);
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toMatchObject(
+        JSON.parse(JSON.stringify(projectUser)),
+      );
+    });
+
+    it('return 400 with errors', async () => {
+      mockDeliveryProjectUserStore.update.mockResolvedValue({
+        success: false,
+        errors: ['unknown', 'unknownDeliveryProject'],
+      });
+
+      const response = await request(deliveryProjectUserApp)
+        .patch('/deliveryProjectUser')
+        .send({
+          id: '123',
+          delivery_project_id: 'abc',
+        } satisfies UpdateDeliveryProjectUserRequest);
+
+      // assert
+      expect(response.status).toEqual(400);
+      expect(response.body).toMatchObject({
+        errors: [
+          {
+            path: 'root',
+            error: {
+              message: 'An unexpected error occurred.',
+            },
+          },
+          {
+            path: 'delivery_project_id',
+            error: {
+              message: 'The delivery project does not exist.',
+            },
+          },
+        ],
+      });
+    });
+
+    it('return 400 if if the request is bad', async () => {
+      const response = await request(deliveryProjectUserApp)
+        .patch('/deliveryProjectUser')
+        .send({ notAnId: 'abc' });
+      expect(response.status).toEqual(400);
+    });
+
+    it('returns internal server error', async () => {
+      mockDeliveryProjectUserStore.update.mockRejectedValueOnce(
+        new Error('error'),
+      );
+      const response = await request(deliveryProjectUserApp)
+        .patch('/deliveryProjectUser')
+        .send({ id: '123' } satisfies UpdateDeliveryProjectUserRequest);
+      expect(response.status).toEqual(500);
     });
   });
 });

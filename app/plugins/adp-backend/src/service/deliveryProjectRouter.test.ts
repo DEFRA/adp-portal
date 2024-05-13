@@ -77,6 +77,8 @@ describe('createRouter', () => {
     add: jest.fn(),
     getByDeliveryProject: jest.fn(),
     getAll: jest.fn(),
+    get: jest.fn(),
+    update: jest.fn(),
   };
 
   const mockOptions = {

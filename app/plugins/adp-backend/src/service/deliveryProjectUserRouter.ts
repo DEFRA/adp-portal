@@ -5,9 +5,10 @@ import express from 'express';
 import Router from 'express-promise-router';
 import { errorHandler } from '@backstage/backend-common';
 import { assertUUID, createParser, respond } from './util';
-import type {
-  CreateDeliveryProjectUserRequest,
-  ValidationErrorMapping,
+import type { UpdateDeliveryProjectUserRequest } from '@internal/plugin-adp-common';
+import {
+  type CreateDeliveryProjectUserRequest,
+  type ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
 import { z } from 'zod';
 import type { AddDeliveryProjectUser } from '../utils';
@@ -20,6 +21,17 @@ const parseCreateDeliveryProjectUserRequest =
       delivery_project_id: z.string(),
       is_admin: z.boolean(),
       is_technical: z.boolean(),
+      github_username: z.string().optional(),
+    }),
+  );
+
+const parseUpdateDeliveryProjectUserRequest =
+  createParser<UpdateDeliveryProjectUserRequest>(
+    z.object({
+      id: z.string(),
+      delivery_project_id: z.string().optional(),
+      is_technical: z.boolean().optional(),
+      is_admin: z.boolean().optional(),
       github_username: z.string().optional(),
     }),
   );
@@ -107,6 +119,12 @@ export function createDeliveryProjectUserRouter(
     }
 
     respond(body, res, catalogUser, errorMapping);
+  });
+
+  router.patch('/deliveryProjectUser', async (req, res) => {
+    const body = parseUpdateDeliveryProjectUserRequest(req.body);
+    const result = await deliveryProjectUserStore.update(body);
+    respond(body, res, result, errorMapping);
   });
 
   router.use(errorHandler());
