@@ -33,10 +33,7 @@ export function AddProjectUserButton({
     try {
       await client.create({
         delivery_project_id: deliveryProjectId,
-        is_admin: fields.is_admin,
-        is_technical: fields.is_technical,
-        user_catalog_name: fields.user_catalog_name,
-        github_username: fields.github_username,
+        ...fields,
       });
     } catch (e: any) {
       return readValidationError(e);
