@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import { Typography } from '@material-ui/core';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import type { TableColumn } from '@backstage/core-components';
 import {
@@ -9,6 +10,8 @@ import {
   Content,
   ContentHeader,
   SupportButton,
+  Link,
+  LinkButton,
 } from '@backstage/core-components';
 import { DefaultTable } from '../../utils';
 import { useApi } from '@backstage/core-plugin-api';
@@ -17,7 +20,11 @@ import { deliveryProjectDisplayName } from '@internal/plugin-adp-common';
 import { deliveryProjectApiRef } from './api/DeliveryProjectApi';
 import { CreateDeliveryProjectButton } from './CreateDeliveryProjectButton';
 import { EditDeliveryProjectButton } from './EditDeliveryProjectButton';
-import { useAsyncDataSource, useErrorCallback } from '../../hooks';
+import {
+  useAsyncDataSource,
+  useEntityRoute,
+  useErrorCallback,
+} from '../../hooks';
 
 type DeliveryProjectWithActions = DeliveryProject & {
   actions: ReactNode;
@@ -25,6 +32,7 @@ type DeliveryProjectWithActions = DeliveryProject & {
 
 export const DeliveryProjectViewPageComponent = () => {
   const client = useApi(deliveryProjectApiRef);
+  const entityRoute = useEntityRoute();
   const { data, refresh, loading } = useAsyncDataSource(
     useCallback(() => client.getDeliveryProjects(), [client]),
     useErrorCallback({
@@ -33,30 +41,43 @@ export const DeliveryProjectViewPageComponent = () => {
   );
   const tableData = useMemo(
     () =>
-      data?.map<DeliveryProjectWithActions>(d => ({
-        ...d,
-        title: deliveryProjectDisplayName(d),
-        actions: (
-          <EditDeliveryProjectButton
-            variant="contained"
-            color="default"
-            deliveryProject={d}
-            data-testid={`delivery-project-edit-button-${d.id}`}
-            onEdited={refresh}
-          >
-            Edit
-          </EditDeliveryProjectButton>
-        ),
-      })),
-    [data, refresh],
+      data?.map<DeliveryProjectWithActions>(d => {
+        const target = entityRoute(d.name, 'group', 'default');
+        return {
+          ...d,
+          titleLink: <Link to={target}>{deliveryProjectDisplayName(d)}</Link>,
+          actions: (
+            <>
+              <LinkButton
+                to={`${target}/manage-delivery-project-users`}
+                variant="outlined"
+                color="default"
+                title="View Delivery Project team members"
+              >
+                <AccountBoxIcon />
+              </LinkButton>
+              &nbsp;
+              <EditDeliveryProjectButton
+                variant="contained"
+                color="default"
+                deliveryProject={d}
+                data-testid={`delivery-project-edit-button-${d.id}`}
+                onEdited={refresh}
+              >
+                Edit
+              </EditDeliveryProjectButton>
+            </>
+          ),
+        };
+      }),
+    [data, refresh, entityRoute],
   );
 
   const columns: TableColumn<DeliveryProjectWithActions>[] = [
     {
       title: 'Title',
       highlight: true,
-      field: 'title',
-      type: 'string',
+      field: 'titleLink',
     },
     {
       title: 'Alias',
@@ -87,7 +108,6 @@ export const DeliveryProjectViewPageComponent = () => {
     },
 
     {
-      width: '',
       highlight: true,
       field: 'actions',
     },

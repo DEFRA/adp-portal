@@ -12,6 +12,7 @@ import type { DeliveryProject } from '@internal/plugin-adp-common';
 import type * as EditDeliveryProjectButtonModule from './EditDeliveryProjectButton';
 import type * as CreateDeliveryProjectButtonModule from './CreateDeliveryProjectButton';
 import { SnapshotFriendlyStylesProvider } from '../../utils';
+import { entityRouteRef } from '@backstage/plugin-catalog-react';
 
 const EditDeliveryProjectButton: jest.MockedFn<
   (typeof EditDeliveryProjectButtonModule)['EditDeliveryProjectButton']
@@ -69,6 +70,11 @@ describe('DeliveryProjectViewPageComponent', () => {
               <DeliveryProjectViewPageComponent />
             </SnapshotFriendlyStylesProvider>
           </TestApiProvider>,
+          {
+            mountedRoutes: {
+              '/catalog/:namespace/:kind/:name/*': entityRouteRef,
+            },
+          },
         );
 
         await waitFor(() => {
