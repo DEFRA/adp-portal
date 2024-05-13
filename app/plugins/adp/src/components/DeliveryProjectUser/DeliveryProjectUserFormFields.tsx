@@ -7,6 +7,7 @@ import {
   type DisabledFields,
 } from '../../utils';
 import { useCatalogUsersList } from '../../hooks';
+import { FormCheckboxField } from '../../utils/FormCheckboxField';
 
 export type DeliveryProjectUserFields = {
   user_catalog_name: string;
@@ -50,6 +51,26 @@ export function DeliveryProjectUserFormFields({
         rules={{
           ...formRules.required,
         }}
+      />
+
+      <FormCheckboxField
+        control={control}
+        errors={errors}
+        index={i++}
+        label="Admin user?"
+        helperText="Can this user administer this project?"
+        name="is_admin"
+        disabled={disabled}
+      />
+
+      <FormCheckboxField
+        control={control}
+        errors={errors}
+        index={i++}
+        label="Technical user?"
+        helperText="Is this user in a technical role?"
+        name="is_technical"
+        disabled={disabled}
       />
 
       <FormTextField
