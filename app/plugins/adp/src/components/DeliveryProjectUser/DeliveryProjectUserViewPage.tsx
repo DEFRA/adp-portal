@@ -13,6 +13,8 @@ import type { TableColumn } from '@backstage/core-components';
 import { Content, ContentHeader, Link, Page } from '@backstage/core-components';
 import { Button, Grid } from '@material-ui/core';
 import { DefaultTable, normalizeUsername } from '../../utils';
+import { AddProjectUserButton } from './AddProjectUserButton';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 type DeliveryProjectUserWithActions = DeliveryProjectUser & {
   actions: ReactNode;
@@ -30,7 +32,7 @@ export const DeliveryProjectUserViewPage = () => {
   const deliveryProjectId =
     entity.metadata.annotations?.['adp.defra.gov.uk/delivery-project-id'];
 
-  const { data, loading } = useAsyncDataSource({
+  const { data, refresh, loading } = useAsyncDataSource({
     load: useCallback(
       () =>
         !deliveryProjectId
@@ -124,7 +126,18 @@ export const DeliveryProjectUserViewPage = () => {
   return (
     <Page themeId="tool">
       <Content>
-        <ContentHeader title="Delivery Project Users" />
+        <ContentHeader title="Delivery Project Users">
+          <AddProjectUserButton
+            deliveryProjectId={deliveryProjectId!}
+            variant="contained"
+            size="large"
+            color="primary"
+            startIcon={<AddBoxIcon />}
+            onCreated={refresh}
+          >
+            Add Team Members
+          </AddProjectUserButton>
+        </ContentHeader>
         <Grid item>
           <div>
             <DefaultTable
