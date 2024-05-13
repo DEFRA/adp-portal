@@ -108,8 +108,12 @@ export class DeliveryProjectUserStore {
   #normalize(row: delivery_project_user): DeliveryProjectUser {
     return {
       ...row,
-      is_admin: row.is_admin === 1,
-      is_technical: row.is_technical === 1,
+      is_admin:
+        typeof row.is_admin === 'number' ? row.is_admin === 1 : row.is_admin,
+      is_technical:
+        typeof row.is_technical === 'number'
+          ? row.is_technical === 1
+          : row.is_technical,
       github_username: row.github_username ?? undefined,
     };
   }

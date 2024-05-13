@@ -12,3 +12,4 @@ export * from './SelectedChipsRenderer';
 export * from './ValidationError';
 export * from './readValidationError';
 export * from './SnapshotFriendlyStylesProvider';
+export * from './normalizeUsername';

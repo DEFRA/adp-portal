@@ -405,7 +405,7 @@ const groupPage = () => (
     </EntityLayout.Route>
 
     <EntityLayout.Route
-      path="/manage-members"
+      path="/manage-delivery-programme-admins"
       title="Manage Members"
       if={isEntityWith({ kind: 'group', type: 'delivery-programme' })}
     >
@@ -413,7 +413,7 @@ const groupPage = () => (
     </EntityLayout.Route>
 
     <EntityLayout.Route
-      path="/manage-members"
+      path="/manage-delivery-project-users"
       title="Manage Members"
       if={isEntityWith({ kind: 'group', type: 'delivery-project' })}
     >

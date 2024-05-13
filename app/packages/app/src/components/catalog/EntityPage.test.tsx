@@ -350,6 +350,16 @@ describe('[kind: group]', () => {
         type: 'delivery-programme',
       },
     },
+    deliveryProject: {
+      kind: 'group',
+      apiVersion: '1',
+      metadata: {
+        name: 'my-entity',
+      },
+      spec: {
+        type: 'delivery-project',
+      },
+    },
     kubernetes: {
       kind: 'group',
       apiVersion: '1',
@@ -367,6 +377,7 @@ describe('[kind: group]', () => {
       'when is a delivery programme',
       entities.deliveryProgramme,
     );
+    itShouldRenderTabs('when is a delivery project', entities.deliveryProject);
     itShouldRenderTabs('when there is kubernetes', entities.kubernetes);
   });
   describe('/', () => {
@@ -375,8 +386,11 @@ describe('[kind: group]', () => {
   describe('/pull-requests', () => {
     itShouldRenderEntityPage('Pull Requests', entities.base);
   });
-  describe('/manage-members', () => {
+  describe('/manage-delivery-programme-admins', () => {
     itShouldRenderEntityPage('Manage Members', entities.deliveryProgramme);
+  });
+  describe('/manage-delivery-project-users', () => {
+    itShouldRenderEntityPage('Manage Members', entities.deliveryProject);
   });
   describe('/releases', () => {
     itShouldRenderEntityPage('Deployments', entities.kubernetes);
@@ -721,6 +735,7 @@ jest.mock('@backstage/plugin-kubernetes', () =>
 
 const mockPluginAdp = {
   ...mockComponent('EntityPageManageProgrammeAdminContent'),
+  ...mockComponent('EntityPageManageProjectUserContent'),
 } satisfies Partial<jest.Mocked<typeof PluginAdp>>;
 jest.mock('@internal/plugin-adp', () =>
   proxyModule('@internal/plugin-adp', () => mockPluginAdp),

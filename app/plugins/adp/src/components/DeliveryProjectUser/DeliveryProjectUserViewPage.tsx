@@ -12,7 +12,7 @@ import { useApi } from '@backstage/core-plugin-api';
 import type { TableColumn } from '@backstage/core-components';
 import { Content, ContentHeader, Link, Page } from '@backstage/core-components';
 import { Button, Grid } from '@material-ui/core';
-import { DefaultTable } from '../../utils';
+import { DefaultTable, normalizeUsername } from '../../utils';
 
 type DeliveryProjectUserWithActions = DeliveryProjectUser & {
   actions: ReactNode;
@@ -48,12 +48,19 @@ export const DeliveryProjectUserViewPage = () => {
       data?.map<DeliveryProjectUserWithActions>(d => {
         const username = normalizeUsername(d.email);
         const target = entityRoute(username, 'user', 'default');
+        const githubTarget = d.github_username
+          ? `https://github.com/${d.github_username}`
+          : '';
+        const roles = [];
+        if (d.is_admin) roles.push('Admin');
+        if (d.is_technical) roles.push('Technical Team Member');
+        if (!d.is_admin && !d.is_technical) roles.push('Team Member');
         return {
           ...d,
           emailLink: <Link to={`mailto:${d.email}`}> {d.email}</Link>,
           nameLink: <Link to={target}>{d.name}</Link>,
-          role: 'Delivery Programme Admin',
-          githubHandle: <>{d.github_username}</>,
+          role: roles.join(', '),
+          githubHandle: <Link to={githubTarget}>{d.github_username}</Link>,
           actions: (
             <>
               <Button
@@ -117,18 +124,7 @@ export const DeliveryProjectUserViewPage = () => {
   return (
     <Page themeId="tool">
       <Content>
-        <ContentHeader title="Delivery Project Users">
-          {/* <AddProgrammeAdminButton
-            deliveryProgrammeId={deliveryProgrammeId!}
-            variant="contained"
-            size="large"
-            color="primary"
-            startIcon={<AddBoxIcon />}
-            onCreated={refresh}
-          >
-            Add Delivery Programme Admin
-          </AddProgrammeAdminButton> */}
-        </ContentHeader>
+        <ContentHeader title="Delivery Project Users" />
         <Grid item>
           <div>
             <DefaultTable
@@ -144,18 +140,3 @@ export const DeliveryProjectUserViewPage = () => {
     </Page>
   );
 };
-
-function normalizeUsername(name: string): string {
-  // Implementation based on Backstage's implementation - importing this
-  // causes startup errors as trying to pull a backend module in to a front end.
-  // https://github.com/backstage/backstage/blob/master/plugins/catalog-backend-module-msgraph/src/microsoftGraph/helper.ts
-  let cleaned = name
-    .trim()
-    .toLocaleLowerCase()
-    .replace(/[^a-zA-Z0-9_\-.]/g, '_');
-
-  cleaned = cleaned.replace(/(?<=^|[^_])_+$/g, '');
-  cleaned = cleaned.replaceAll(/__+/g, '_');
-
-  return cleaned;
-}
