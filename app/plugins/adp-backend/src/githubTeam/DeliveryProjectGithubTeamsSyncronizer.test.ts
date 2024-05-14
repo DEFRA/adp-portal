@@ -125,7 +125,13 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
         name: randomUUID(),
         slug: randomUUID(),
       };
-      const projectUsers = [createDeliveryProjectUser(randomUUID())];
+      const projectUsers = [
+        {
+          ...createDeliveryProjectUser(randomUUID()),
+          is_admin: true,
+          is_technical: true,
+        },
+      ];
 
       deliveryProjects.getByName.mockResolvedValueOnce(project);
       githubTeamsStore.get.mockResolvedValueOnce(storedTeams);
