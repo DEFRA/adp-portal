@@ -66,6 +66,7 @@ export default async function createPlugin({
       new GitHubTeamsApi(config),
       deliveryProjectStore,
       githubTeamStore,
+      deliveryProjectUserStore,
     ),
     deliveryProjectUserStore,
   });

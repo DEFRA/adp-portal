@@ -95,6 +95,7 @@ export async function startStandaloneServer(
       new GitHubTeamsApi(config),
       deliveryProjectStore,
       githubTeamStore,
+      deliveryProjectUserStore,
     ),
     deliveryProjectUserStore,
   });

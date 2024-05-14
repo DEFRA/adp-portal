@@ -7,6 +7,8 @@ import type { IGitHubTeamsApi } from './GithubTeamsApi';
 import type { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
 import { randomUUID } from 'node:crypto';
 import type { GithubTeamRef, IGithubTeamStore } from './GithubTeamStore';
+import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
+import { createDeliveryProjectUser } from '../testData/projectUserTestData';
 
 describe('DeliveryProjectGithubTeamsSyncronizer', () => {
   function setup() {
@@ -26,14 +28,28 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
       get: jest.fn(),
       set: jest.fn(),
     };
+    const deliveryProjectUserStore: jest.Mocked<IDeliveryProjectUserStore> = {
+      add: jest.fn(),
+      get: jest.fn(),
+      getAll: jest.fn(),
+      getByDeliveryProject: jest.fn(),
+      update: jest.fn(),
+    };
 
     const sut = new DeliveryProjectGithubTeamsSyncronizer(
       githubTeamsApi,
       deliveryProjects,
       githubTeamsStore,
+      deliveryProjectUserStore,
     );
 
-    return { sut, githubTeamsApi, deliveryProjects, githubTeamsStore };
+    return {
+      sut,
+      githubTeamsApi,
+      deliveryProjects,
+      githubTeamsStore,
+      deliveryProjectUserStore,
+    };
   }
 
   describe('#syncronize', () => {
@@ -58,8 +74,13 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
     });
     it('Should syncronize a valid project', async () => {
       // arrange
-      const { sut, deliveryProjects, githubTeamsStore, githubTeamsApi } =
-        setup();
+      const {
+        sut,
+        deliveryProjects,
+        githubTeamsStore,
+        githubTeamsApi,
+        deliveryProjectUserStore,
+      } = setup();
       const projectName = 'my-project';
       const description = randomUUID();
       const programmeId = randomUUID();
@@ -104,11 +125,15 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
         name: randomUUID(),
         slug: randomUUID(),
       };
+      const projectUsers = [createDeliveryProjectUser(randomUUID())];
 
       deliveryProjects.getByName.mockResolvedValueOnce(project);
       githubTeamsStore.get.mockResolvedValueOnce(storedTeams);
       githubTeamsApi.setTeam.mockResolvedValueOnce(admins);
       githubTeamsApi.createTeam.mockResolvedValueOnce(contributors);
+      deliveryProjectUserStore.getByDeliveryProject.mockResolvedValue(
+        projectUsers,
+      );
 
       // act
       const actual = await sut.syncronize(projectName);
