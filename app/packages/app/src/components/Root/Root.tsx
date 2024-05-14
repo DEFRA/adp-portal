@@ -15,7 +15,6 @@ import {
   Settings as SidebarSettings,
   UserSettingsSignInAvatar,
 } from '@backstage/plugin-user-settings';
-import { SidebarSearchModal } from '@backstage/plugin-search';
 import {
   Sidebar,
   sidebarConfig,
@@ -28,6 +27,7 @@ import {
   useSidebarOpenState,
   Link,
 } from '@backstage/core-components';
+import { CustomSearchModal } from '../search/CustomSearchModal';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
@@ -62,7 +62,7 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
     <Sidebar>
       <SidebarLogo />
       <SidebarGroup label="Search" icon={<SearchIcon />} to="/search">
-        <SidebarSearchModal />
+        <CustomSearchModal/>
       </SidebarGroup>
       <SidebarDivider />
       <SidebarGroup label="Menu" icon={<MenuIcon />}>
