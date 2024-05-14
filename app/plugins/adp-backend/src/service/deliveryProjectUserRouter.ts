@@ -13,6 +13,7 @@ import {
 import { z } from 'zod';
 import type { AddDeliveryProjectUser } from '../utils';
 import { getUserEntityFromCatalog } from './catalog';
+import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 
 const parseCreateDeliveryProjectUserRequest =
   createParser<CreateDeliveryProjectUserRequest>(
@@ -67,12 +68,13 @@ export interface DeliveryProjectUserRouterOptions {
   logger: Logger;
   deliveryProjectUserStore: IDeliveryProjectUserStore;
   catalog: CatalogApi;
+  teamSyncronizer: IDeliveryProjectGithubTeamsSyncronizer;
 }
 
 export function createDeliveryProjectUserRouter(
   options: DeliveryProjectUserRouterOptions,
 ): express.Router {
-  const { deliveryProjectUserStore, catalog } = options;
+  const { deliveryProjectUserStore, catalog, teamSyncronizer } = options;
 
   const router = Router();
   router.use(express.json());
@@ -115,6 +117,10 @@ export function createDeliveryProjectUserRouter(
       };
 
       const addedUser = await deliveryProjectUserStore.add(addUser);
+      if (addedUser.success && addedUser.value.delivery_project_name) {
+        teamSyncronizer.syncronize(addedUser.value.delivery_project_name);
+      }
+
       respond(body, res, addedUser, errorMapping, { ok: 201 });
     }
 
@@ -124,6 +130,9 @@ export function createDeliveryProjectUserRouter(
   router.patch('/deliveryProjectUser', async (req, res) => {
     const body = parseUpdateDeliveryProjectUserRequest(req.body);
     const result = await deliveryProjectUserStore.update(body);
+    if (result.success && result.value.delivery_project_name) {
+      teamSyncronizer.syncronize(result.value.delivery_project_name);
+    }
     respond(body, res, result, errorMapping);
   });
 

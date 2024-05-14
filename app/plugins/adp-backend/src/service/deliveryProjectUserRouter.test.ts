@@ -12,6 +12,7 @@ import type {
   CreateDeliveryProjectUserRequest,
   UpdateDeliveryProjectUserRequest,
 } from '@internal/plugin-adp-common';
+import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 
 describe('createRouter', () => {
   let deliveryProjectUserApp: express.Express;
@@ -41,10 +42,15 @@ describe('createRouter', () => {
     validateEntity: jest.fn(),
   };
 
+  const mockSyncronizer: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> = {
+    syncronize: jest.fn(),
+  };
+
   const mockOptions: DeliveryProjectUserRouterOptions = {
     catalog: mockCatalogClient,
     deliveryProjectUserStore: mockDeliveryProjectUserStore,
     logger: getVoidLogger(),
+    teamSyncronizer: mockSyncronizer,
   };
 
   beforeAll(async () => {

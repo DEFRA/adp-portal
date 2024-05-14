@@ -75,6 +75,12 @@ export default async function createPlugin({
     catalog,
     deliveryProjectUserStore,
     logger,
+    teamSyncronizer: new DeliveryProjectGithubTeamsSyncronizer(
+      new GitHubTeamsApi(config),
+      deliveryProjectStore,
+      githubTeamStore,
+      deliveryProjectUserStore,
+    ),
   });
 
   const deliveryProgrameAdminRouter = createDeliveryProgrammeAdminRouter({

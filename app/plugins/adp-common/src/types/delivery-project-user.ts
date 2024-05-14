@@ -1,6 +1,7 @@
 export type DeliveryProjectUser = {
   id: string;
   delivery_project_id: string;
+  delivery_project_name?: string;
   is_technical: boolean;
   is_admin: boolean;
   aad_entity_ref_id: string;

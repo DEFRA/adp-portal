@@ -120,9 +120,14 @@ export class DeliveryProjectUserStore {
       return { success: false, errors: ['unknown'] };
     }
 
+    const deliveryProjectName =
+      (await this.#getDeliveryProjectName(
+        insertResult[0].delivery_project_id,
+      )) ?? '';
+
     return {
       success: true,
-      value: this.#normalize({ ...insertResult[0] }),
+      value: this.#normalize({ ...insertResult[0], deliveryProjectName }),
     };
   }
 
@@ -170,15 +175,21 @@ export class DeliveryProjectUserStore {
 
     if (result.length < 1) return { success: false, errors: ['unknown'] };
 
+    const deliveryProjectName =
+      (await this.#getDeliveryProjectName(result[0].delivery_project_id)) ?? '';
+
     return {
       success: true,
       value: this.#normalize({
         ...result[0],
+        deliveryProjectName,
       }),
     };
   }
 
-  #normalize(row: delivery_project_user): DeliveryProjectUser {
+  #normalize(
+    row: delivery_project_user & { deliveryProjectName?: string },
+  ): DeliveryProjectUser {
     return {
       ...row,
       is_admin:
@@ -188,6 +199,7 @@ export class DeliveryProjectUserStore {
           ? row.is_technical === 1
           : row.is_technical,
       github_username: row.github_username ?? undefined,
+      delivery_project_name: row.deliveryProjectName ?? '',
     };
   }
 
@@ -217,6 +229,18 @@ export class DeliveryProjectUserStore {
       .limit(1)
       .count('*', { as: 'count' });
     return Number(count) > 0;
+  }
+
+  async #getDeliveryProjectName(deliveryProjectId: string) {
+    if (!isUUID(deliveryProjectId)) return null;
+    const result = await this.#client<{
+      id: string;
+      name: string;
+    }>('delivery_project')
+      .where('id', deliveryProjectId)
+      .select('name')
+      .first();
+    return result?.name ?? null;
   }
 }
 
