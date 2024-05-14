@@ -65,17 +65,7 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
       body: JSON.stringify(data),
     });
 
-    if (response.status === 400)
-      throw new ValidationError((await response.json()).errors);
-
-    if (!response.ok) {
-      throw await ResponseError.fromResponse(response);
-    }
-
-    const deliveryProgrammeUser =
-      (await response.json()) as DeliveryProjectUser;
-
-    return deliveryProgrammeUser;
+    return await this.#handleCreateUpdateResponse(response);
   }
 
   async update(
@@ -92,6 +82,16 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
       body: JSON.stringify(data),
     });
 
+    return await this.#handleCreateUpdateResponse(response);
+  }
+
+  async #getBaseUrl(): Promise<string> {
+    return `${await this.discoveryApi.getBaseUrl('adp')}`;
+  }
+
+  async #handleCreateUpdateResponse(
+    response: Response,
+  ): Promise<DeliveryProjectUser> {
     if (response.status === 400)
       throw new ValidationError((await response.json()).errors);
 
@@ -99,13 +99,6 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
       throw await ResponseError.fromResponse(response);
     }
 
-    const deliveryProgrammeUser =
-      (await response.json()) as DeliveryProjectUser;
-
-    return deliveryProgrammeUser;
-  }
-
-  async #getBaseUrl(): Promise<string> {
-    return `${await this.discoveryApi.getBaseUrl('adp')}`;
+    return await response.json();
   }
 }

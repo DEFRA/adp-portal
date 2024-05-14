@@ -160,7 +160,29 @@ describe('DeliveryProjectUserStore', () => {
   );
 
   it.each(databases.eachSupportedId())(
-    'should get update an existing Delivery Project User in the database',
+    'should throw NotFound if a Delivery Project User cannot be found in the database',
+    async databaseId => {
+      const { deliveryProjectUserStore } = await createDatabase(databaseId);
+
+      const getResult = deliveryProjectUserStore.get(faker.string.uuid());
+
+      await expect(getResult).rejects.toBeInstanceOf(NotFoundError);
+    },
+  );
+
+  it.each(databases.eachSupportedId())(
+    'should throw NotFound if the delivery project user ID is not a UUID',
+    async databaseId => {
+      const { deliveryProjectUserStore } = await createDatabase(databaseId);
+
+      const getResult = deliveryProjectUserStore.get('1234');
+
+      await expect(getResult).rejects.toBeInstanceOf(NotFoundError);
+    },
+  );
+
+  it.each(databases.eachSupportedId())(
+    'should update an existing Delivery Project User in the database',
     async databaseId => {
       const { knex, deliveryProjectUserStore } = await createDatabase(
         databaseId,
@@ -186,6 +208,33 @@ describe('DeliveryProjectUserStore', () => {
           is_admin: expectedUpdate.is_admin,
           is_technical: expectedUpdate.is_technical,
           github_username: expectedUpdate.github_username,
+        },
+      });
+    },
+  );
+
+  it.each(databases.eachSupportedId())(
+    'should return an unmodified Delivery Project User if no values have changed',
+    async databaseId => {
+      const { knex, deliveryProjectUserStore } = await createDatabase(
+        databaseId,
+      );
+      const projectUser = await seedProjectUser(knex);
+      const updateUser: UpdateDeliveryProjectUserRequest = {
+        ...projectUser,
+        is_admin: projectUser.is_admin as boolean,
+        is_technical: projectUser.is_technical as boolean,
+      };
+
+      const updateResult = await deliveryProjectUserStore.update(updateUser);
+
+      expect(updateResult).toBeDefined();
+      expect(updateResult).toMatchObject({
+        success: true,
+        value: {
+          is_admin: projectUser.is_admin,
+          is_technical: projectUser.is_technical,
+          github_username: projectUser.github_username,
         },
       });
     },

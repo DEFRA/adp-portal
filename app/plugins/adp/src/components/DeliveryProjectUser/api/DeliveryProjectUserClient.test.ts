@@ -194,20 +194,36 @@ describe('DeliveryProjectUserClient', () => {
       expect(result).toEqual(mockData);
     });
 
-    it('throws an error when the update fails', async () => {
-      const errorMessage = 'Failed to update';
+    it('catches and throws 400 error', async () => {
       fetchApi.fetch.mockResolvedValue({
         ok: false,
         status: 400,
-        statusText: 'Bad Request',
-        json: jest.fn().mockResolvedValue({ error: errorMessage }),
+        statusText: 'BadRequest',
+        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
       });
 
-      const updateData: UpdateDeliveryProjectUserRequest = {
-        is_admin: true,
-        id: faker.string.uuid(),
-      };
-      await expect(sut.update(updateData)).rejects.toThrow('Validation failed');
+      await expect(
+        sut.update({
+          is_admin: true,
+          id: faker.string.uuid(),
+        }),
+      ).rejects.toThrow('Validation failed');
+    });
+
+    it('catches and throws other uncaught errors', async () => {
+      fetchApi.fetch.mockResolvedValue({
+        ok: false,
+        status: 500,
+        statusText: 'ServerError',
+        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
+      });
+
+      await expect(
+        sut.update({
+          is_admin: true,
+          id: faker.string.uuid(),
+        }),
+      ).rejects.toThrow(/Request failed with 500/);
     });
   });
 });

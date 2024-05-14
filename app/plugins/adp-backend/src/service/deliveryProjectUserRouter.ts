@@ -5,10 +5,10 @@ import express from 'express';
 import Router from 'express-promise-router';
 import { errorHandler } from '@backstage/backend-common';
 import { assertUUID, createParser, respond } from './util';
-import type { UpdateDeliveryProjectUserRequest } from '@internal/plugin-adp-common';
 import {
   type CreateDeliveryProjectUserRequest,
   type ValidationErrorMapping,
+  type UpdateDeliveryProjectUserRequest,
 } from '@internal/plugin-adp-common';
 import { z } from 'zod';
 import type { AddDeliveryProjectUser } from '../utils';
