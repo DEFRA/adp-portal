@@ -15,6 +15,7 @@ import { Button, Grid } from '@material-ui/core';
 import { DefaultTable, normalizeUsername } from '../../utils';
 import { AddProjectUserButton } from './AddProjectUserButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import { EditDeliveryProjectUserButton } from './EditDeliveryProjectUserButton';
 
 type DeliveryProjectUserWithActions = DeliveryProjectUser & {
   actions: ReactNode;
@@ -73,18 +74,20 @@ export const DeliveryProjectUserViewPage = () => {
                 Remove
               </Button>
               &nbsp;
-              <Button
-                variant="outlined"
+              <EditDeliveryProjectUserButton
+                variant="contained"
                 color="default"
-                data-testid={`project-user-edit-button-${d.id}`}
+                deliveryProjectUser={d}
+                data-testid={`delivery-project-user-edit-button-${d.id}`}
+                onEdited={refresh}
               >
                 Edit
-              </Button>
+              </EditDeliveryProjectUserButton>
             </>
           ),
         };
       }),
-    [data, entityRoute],
+    [data, entityRoute, refresh],
   );
 
   const columns: TableColumn<DeliveryProjectUserWithActions>[] = [

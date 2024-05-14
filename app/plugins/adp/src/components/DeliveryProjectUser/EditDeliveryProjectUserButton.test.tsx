@@ -1,19 +1,21 @@
 import React from 'react';
-import { alertApiRef, type AlertApi } from '@backstage/core-plugin-api';
-import { deliveryProjectUserApiRef, type DeliveryProjectUserApi } from './api';
-import { act, render, waitFor } from '@testing-library/react';
-import type { AddProjectUserButtonProps } from './AddProjectUserButton';
-import { AddProjectUserButton } from './AddProjectUserButton';
-import { TestApiProvider } from '@backstage/test-utils';
+import type {
+  DeliveryProjectUser,
+  ValidationError as IValidationError,
+} from '@internal/plugin-adp-common';
 import {
   DeliveryProjectUserFormFields,
-  emptyForm,
   type DeliveryProjectUserFields,
 } from './DeliveryProjectUserFormFields';
 import type * as DialogFormModule from '../../utils/DialogForm';
+import { alertApiRef, type AlertApi } from '@backstage/core-plugin-api';
+import { deliveryProjectUserApiRef, type DeliveryProjectUserApi } from './api';
+import type { EditDeliveryProjectUserButtonProps } from './EditDeliveryProjectUserButton';
+import { EditDeliveryProjectUserButton } from './EditDeliveryProjectUserButton';
+import { act, render, waitFor } from '@testing-library/react';
+import { TestApiProvider } from '@backstage/test-utils';
 import userEvent from '@testing-library/user-event';
-import type { ValidationError as IValidationError } from '@internal/plugin-adp-common';
-import { ValidationError } from '../../utils';
+import { SnapshotFriendlyStylesProvider, ValidationError } from '../../utils';
 
 function setup() {
   const mockAlertApi: jest.Mocked<AlertApi> = {
@@ -30,7 +32,7 @@ function setup() {
   return {
     mockAlertApi,
     mockProjectUserApi,
-    async renderComponent(props: AddProjectUserButtonProps) {
+    async renderComponent(props: EditDeliveryProjectUserButtonProps) {
       const result = render(
         <TestApiProvider
           apis={[
@@ -38,7 +40,9 @@ function setup() {
             [deliveryProjectUserApiRef, mockProjectUserApi],
           ]}
         >
-          <AddProjectUserButton {...props} />
+          <SnapshotFriendlyStylesProvider>
+            <EditDeliveryProjectUserButton {...props} />
+          </SnapshotFriendlyStylesProvider>
         </TestApiProvider>,
       );
       await waitFor(() => expect(result.baseElement).not.toBeEmptyDOMElement());
@@ -47,11 +51,23 @@ function setup() {
   };
 }
 
+const deliveryProjectUser: DeliveryProjectUser = {
+  aad_entity_ref_id: 'cffdf0da-48b9-40d0-a519-d5d818b10a84',
+  delivery_project_id: 'da61ccb1-95f7-4cff-9b75-28e3aec63e4b',
+  email: 'test@test.com',
+  id: '896061ec-58dd-468f-bfbc-c35ccb177f36',
+  is_admin: true,
+  is_technical: false,
+  name: 'test user',
+  updated_at: new Date(),
+  github_username: 'test_user',
+};
+
 const fields: DeliveryProjectUserFields = {
-  user_catalog_name: 'user-1234',
-  github_username: 'user-1234',
+  github_username: 'test_user',
   is_admin: false,
   is_technical: true,
+  user_catalog_name: 'test@test.com',
 };
 
 const DialogForm: jest.MockedFn<typeof DialogFormModule.DialogForm> = jest.fn();
@@ -66,36 +82,22 @@ jest.mock(
     } satisfies typeof DialogFormModule),
 );
 
-describe('AddProjectUserButton', () => {
+describe('EditDeliveryProjectUserButton', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should only render a button initially', async () => {
-    const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
+  it('Should render the dialog when the button is clicked', async () => {
+    const { mockAlertApi, mockProjectUserApi, renderComponent } = setup();
+    DialogForm.mockReturnValue(<span>This is a dialog!</span>);
 
     const { result } = await renderComponent({
-      content: 'Test button',
-      deliveryProjectId: '123',
+      content: 'My button',
+      deliveryProjectUser,
     });
-
-    expect(result.baseElement).toMatchSnapshot();
-    expect(mockAlertApi.alert$).not.toHaveBeenCalled();
-    expect(mockAlertApi.post).not.toHaveBeenCalled();
-    expect(mockProjectUserApi.create).not.toHaveBeenCalled();
-    expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
-    expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
-  });
-
-  it('should render the dialog when the button is clicked', async () => {
-    const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
-    DialogForm.mockReturnValue(<span>Test dialog</span>);
-
-    const { result } = await renderComponent({
-      content: 'Test button',
-      deliveryProjectId: '123',
-    });
-    await userEvent.click(result.getByTestId('add-project-user-button'));
+    await userEvent.click(
+      result.getByTestId('edit-delivery-project-user-button'),
+    );
 
     expect(result.baseElement).toMatchSnapshot();
     expect(DialogForm.mock.calls).toHaveLength(1);
@@ -111,10 +113,16 @@ describe('AddProjectUserButton', () => {
     }).toMatchObject({
       open: undefined,
       renderFields: DeliveryProjectUserFormFields,
-      confirm: 'Add',
+      confirm: 'Update',
       cancel: undefined,
-      defaultValues: emptyForm,
-      disabled: undefined,
+      defaultValues: {
+        is_technical: deliveryProjectUser.is_technical,
+        is_admin: deliveryProjectUser.is_admin,
+        github_username: deliveryProjectUser.github_username,
+      },
+      disabled: {
+        user_catalog_name: true,
+      },
       validate: undefined,
     });
     expect(formProps.submit).toBeDefined();
@@ -124,99 +132,104 @@ describe('AddProjectUserButton', () => {
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.update).not.toHaveBeenCalled();
   });
 
-  it('should close the dialog when the form is cancelled', async () => {
-    const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
-    DialogForm.mockReturnValue(<span>Test dialog</span>);
+  it('Should close the form when the form is cancelled.', async () => {
+    const { mockAlertApi, mockProjectUserApi, renderComponent } = setup();
+    DialogForm.mockReturnValue(<span>This is a dialog!</span>);
 
     const { result } = await renderComponent({
-      content: 'Test button',
-      deliveryProjectId: '123',
+      content: 'My button',
+      deliveryProjectUser,
     });
-    await userEvent.click(result.getByTestId('add-project-user-button'));
+    await userEvent.click(
+      result.getByTestId('edit-delivery-project-user-button'),
+    );
 
     expect(result.baseElement).toMatchSnapshot('Before cancel');
     expect(DialogForm.mock.calls).toHaveLength(1);
     const formProps = DialogForm.mock.calls[0][0];
     act(() => formProps.completed(undefined));
-    await waitFor(() => expect(result.queryByText('Test dialog')).toBeNull());
+    await waitFor(() =>
+      expect(result.queryByText('This is a dialog!')).toBeNull(),
+    );
     expect(result.baseElement).toMatchSnapshot('After cancel');
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post).not.toHaveBeenCalled();
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.update).not.toHaveBeenCalled();
   });
 
-  it('should call onCreated when the form closes with a value', async () => {
-    const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
-    DialogForm.mockReturnValue(<span>Test dialog</span>);
-    const onCreated: jest.MockedFn<
-      Exclude<AddProjectUserButtonProps['onCreated'], undefined>
+  it('Should call onEdited when the form closes with a value.', async () => {
+    const { mockAlertApi, mockProjectUserApi, renderComponent } = setup();
+    DialogForm.mockReturnValue(<span>This is a dialog!</span>);
+    const onEdited: jest.MockedFn<
+      Exclude<EditDeliveryProjectUserButtonProps['onEdited'], undefined>
     > = jest.fn();
 
     const { result } = await renderComponent({
-      content: 'Test button',
-      deliveryProjectId: '123',
-      onCreated,
+      content: 'My button',
+      deliveryProjectUser,
+      onEdited,
     });
-    await userEvent.click(result.getByTestId('add-project-user-button'));
+    await userEvent.click(
+      result.getByTestId('edit-delivery-project-user-button'),
+    );
 
     expect(result.baseElement).toMatchSnapshot('Before complete');
     expect(DialogForm.mock.calls).toHaveLength(1);
-    expect(onCreated).not.toHaveBeenCalled();
+    expect(onEdited).not.toHaveBeenCalled();
     const formProps = DialogForm.mock.calls[0][0];
     act(() => formProps.completed(fields));
-    await waitFor(() => expect(result.queryByText('Test dialog')).toBeNull());
+    await waitFor(() =>
+      expect(result.queryByText('This is a dialog!')).toBeNull(),
+    );
     expect(result.baseElement).toMatchSnapshot('After complete');
-    expect(onCreated).toHaveBeenCalledTimes(1);
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post).not.toHaveBeenCalled();
+    expect(onEdited).toHaveBeenCalledTimes(1);
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.update).not.toHaveBeenCalled();
   });
 
-  it('should call the API when submitting', async () => {
-    const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
-    DialogForm.mockReturnValue(<span>Test dialog</span>);
+  it('Should call the api when submitting.', async () => {
+    const { mockAlertApi, mockProjectUserApi, renderComponent } = setup();
+    DialogForm.mockReturnValue(<span>This is a dialog!</span>);
 
     const { result } = await renderComponent({
-      content: 'Test button',
-      deliveryProjectId: 'project-1',
+      content: 'My button',
+      deliveryProjectUser,
     });
-    await userEvent.click(result.getByTestId('add-project-user-button'));
+    await userEvent.click(
+      result.getByTestId('edit-delivery-project-user-button'),
+    );
 
     expect(result.baseElement).toMatchSnapshot();
     expect(DialogForm.mock.calls).toHaveLength(1);
     const formProps = DialogForm.mock.calls[0][0];
-    expect(mockAlertApi.alert$).not.toHaveBeenCalled();
-    expect(mockAlertApi.post).not.toHaveBeenCalled();
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.update).not.toHaveBeenCalled();
+    expect(mockAlertApi.alert$).not.toHaveBeenCalled();
+    expect(mockAlertApi.post).not.toHaveBeenCalled();
 
     const submitResult = await formProps.submit(fields);
     expect(submitResult).toMatchObject({ type: 'success' });
-    expect(mockProjectUserApi.create.mock.calls).toMatchObject([
-      [
-        {
-          delivery_project_id: 'project-1',
-          github_username: 'user-1234',
-          is_admin: false,
-          is_technical: true,
-          user_catalog_name: 'user-1234',
-        },
-      ],
-    ]);
+    expect(mockProjectUserApi.update.mock.calls).toMatchObject([[fields]]);
+    expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post.mock.calls).toMatchObject([
       [
         {
-          message: 'Delivery Project User added successfully',
+          message: 'Delivery Project User updated successfully.',
           severity: 'success',
           display: 'transient',
         },
@@ -224,26 +237,28 @@ describe('AddProjectUserButton', () => {
     ]);
   });
 
-  it('should catch validation errors when submitting', async () => {
-    const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
-    DialogForm.mockReturnValue(<span>Test dialog</span>);
+  it('Should catch ValidationErrors when submitting.', async () => {
+    const { mockAlertApi, mockProjectUserApi, renderComponent } = setup();
+    DialogForm.mockReturnValue(<span>This is a dialog!</span>);
     const validationErrors: IValidationError[] = [
       {
         path: 'abc',
         error: {
-          message: 'Something broke',
+          message: '123',
         },
       },
     ];
-    mockProjectUserApi.create.mockRejectedValueOnce(
+    mockProjectUserApi.update.mockRejectedValueOnce(
       new ValidationError(validationErrors),
     );
 
     const { result } = await renderComponent({
-      content: 'Test button',
-      deliveryProjectId: 'project-2',
+      content: 'My button',
+      deliveryProjectUser,
     });
-    await userEvent.click(result.getByTestId('add-project-user-button'));
+    await userEvent.click(
+      result.getByTestId('edit-delivery-project-user-button'),
+    );
 
     expect(result.baseElement).toMatchSnapshot();
     expect(DialogForm.mock.calls).toHaveLength(1);
@@ -251,23 +266,15 @@ describe('AddProjectUserButton', () => {
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.update).not.toHaveBeenCalled();
 
     const submitResult = await formProps.submit(fields);
     expect(submitResult).toMatchObject({
       type: 'validationError',
       errors: validationErrors,
     });
-    expect(mockProjectUserApi.create.mock.calls).toMatchObject([
-      [
-        {
-          delivery_project_id: 'project-2',
-          github_username: 'user-1234',
-          is_admin: false,
-          is_technical: true,
-          user_catalog_name: 'user-1234',
-        },
-      ],
-    ]);
+    expect(mockProjectUserApi.update.mock.calls).toMatchObject([[fields]]);
+    expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();

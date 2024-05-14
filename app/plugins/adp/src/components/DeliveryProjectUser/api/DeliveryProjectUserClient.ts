@@ -1,6 +1,7 @@
 import type {
   DeliveryProjectUser,
   CreateDeliveryProjectUserRequest,
+  UpdateDeliveryProjectUserRequest,
 } from '@internal/plugin-adp-common';
 import type { DeliveryProjectUserApi } from './DeliveryProjectUserApi';
 import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
@@ -71,10 +72,37 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
       throw await ResponseError.fromResponse(response);
     }
 
-    const deliveryProgrammeAdmin =
+    const deliveryProgrammeUser =
       (await response.json()) as DeliveryProjectUser;
 
-    return deliveryProgrammeAdmin;
+    return deliveryProgrammeUser;
+  }
+
+  async update(
+    data: UpdateDeliveryProjectUserRequest,
+  ): Promise<DeliveryProjectUser> {
+    const baseUrl = await this.#getBaseUrl();
+    const url = `${baseUrl}/deliveryProjectUser`;
+
+    const response = await this.fetchApi.fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 400)
+      throw new ValidationError((await response.json()).errors);
+
+    if (!response.ok) {
+      throw await ResponseError.fromResponse(response);
+    }
+
+    const deliveryProgrammeUser =
+      (await response.json()) as DeliveryProjectUser;
+
+    return deliveryProgrammeUser;
   }
 
   async #getBaseUrl(): Promise<string> {

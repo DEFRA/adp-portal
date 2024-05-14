@@ -59,6 +59,7 @@ export function FormCheckboxField<
                 inputProps={{
                   ...rulesToHtmlProperties(rules),
                 }}
+                checked={field.value === true}
               />
             }
             label={label}

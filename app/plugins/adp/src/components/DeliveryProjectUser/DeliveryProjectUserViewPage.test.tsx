@@ -19,6 +19,7 @@ function setup() {
     getAll: jest.fn(),
     getByDeliveryProjectId: jest.fn(),
     create: jest.fn(),
+    update: jest.fn(),
   };
   const mockErrorApi = { post: jest.fn() };
 
