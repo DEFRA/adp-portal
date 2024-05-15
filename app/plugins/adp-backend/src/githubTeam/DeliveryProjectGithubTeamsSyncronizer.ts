@@ -48,10 +48,28 @@ export class DeliveryProjectGithubTeamsSyncronizer
     this.#deliveryProjectUsers = deliveryProjectUsersStore;
   }
 
-  async syncronize(
+  async syncronizeById(
+    projectId: string,
+  ): Promise<DeliveryProjectTeamsSyncResult> {
+    const deliveryProject = await this.#deliveryProjects.get(projectId);
+    const teamConfig = await this.#getDeliveryProjectTeamConfig(
+      deliveryProject,
+    );
+
+    const result = await this.#syncGithubTeams(teamConfig);
+
+    await this.#githubTeamsStore.set(teamConfig.deliveryProjectId, result);
+
+    return result;
+  }
+
+  async syncronizeByName(
     projectName: string,
   ): Promise<DeliveryProjectTeamsSyncResult> {
-    const teamConfig = await this.#getDeliveryProjectTeamConfig(projectName);
+    const deliveryProject = await this.#deliveryProjects.getByName(projectName);
+    const teamConfig = await this.#getDeliveryProjectTeamConfig(
+      deliveryProject,
+    );
 
     const result = await this.#syncGithubTeams(teamConfig);
 
@@ -61,9 +79,8 @@ export class DeliveryProjectGithubTeamsSyncronizer
   }
 
   async #getDeliveryProjectTeamConfig(
-    projectName: string,
+    deliveryProject: DeliveryProject,
   ): Promise<TeamConfigs> {
-    const deliveryProject = await this.#deliveryProjects.getByName(projectName);
     const deliveryProjectUsers =
       await this.#deliveryProjectUsers.getByDeliveryProject(deliveryProject.id);
     const teamDetails = createGithubTeamDetails(deliveryProject);

@@ -143,7 +143,7 @@ export function createProjectRouter(
     '/deliveryProject/:projectName/github/teams/sync',
     async (req, res) => {
       const { projectName } = req.params;
-      const result = await teamSyncronizer.syncronize(projectName);
+      const result = await teamSyncronizer.syncronizeByName(projectName);
       res.status(200).send(result);
     },
   );
@@ -155,7 +155,7 @@ export function createProjectRouter(
     if (result.success) {
       await Promise.allSettled([
         fluxConfigApi.createFluxConfig(result.value),
-        teamSyncronizer.syncronize(result.value.name),
+        teamSyncronizer.syncronizeByName(result.value.name),
       ]);
     }
     respond(body, res, result, errorMapping, { ok: 201 });
@@ -166,7 +166,9 @@ export function createProjectRouter(
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProjectStore.update(body, creator);
     if (result.success) {
-      await Promise.allSettled([teamSyncronizer.syncronize(result.value.name)]);
+      await Promise.allSettled([
+        teamSyncronizer.syncronizeByName(result.value.name),
+      ]);
     }
     respond(body, res, result, errorMapping);
   });

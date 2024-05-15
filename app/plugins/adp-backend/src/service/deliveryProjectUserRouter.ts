@@ -117,8 +117,8 @@ export function createDeliveryProjectUserRouter(
       };
 
       const addedUser = await deliveryProjectUserStore.add(addUser);
-      if (addedUser.success && addedUser.value.delivery_project_name) {
-        teamSyncronizer.syncronize(addedUser.value.delivery_project_name);
+      if (addedUser.success) {
+        teamSyncronizer.syncronizeById(addedUser.value.delivery_project_id);
       }
 
       respond(body, res, addedUser, errorMapping, { ok: 201 });
@@ -130,8 +130,8 @@ export function createDeliveryProjectUserRouter(
   router.patch('/deliveryProjectUser', async (req, res) => {
     const body = parseUpdateDeliveryProjectUserRequest(req.body);
     const result = await deliveryProjectUserStore.update(body);
-    if (result.success && result.value.delivery_project_name) {
-      teamSyncronizer.syncronize(result.value.delivery_project_name);
+    if (result.success) {
+      teamSyncronizer.syncronizeById(result.value.delivery_project_id);
     }
     respond(body, res, result, errorMapping);
   });

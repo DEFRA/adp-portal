@@ -55,7 +55,8 @@ describe('createRouter', () => {
   });
 
   const mockSyncronizer: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> = {
-    syncronize: jest.fn(),
+    syncronizeByName: jest.fn(),
+    syncronizeById: jest.fn(),
   };
 
   const mockDeliveryProjectStore: jest.Mocked<IDeliveryProjectStore> = {
@@ -395,7 +396,7 @@ describe('createRouter', () => {
 
       // assert
       expect(response.status).toBe(200);
-      expect(mockSyncronizer.syncronize.mock.calls).toMatchObject([
+      expect(mockSyncronizer.syncronizeByName.mock.calls).toMatchObject([
         [projectName],
       ]);
     });

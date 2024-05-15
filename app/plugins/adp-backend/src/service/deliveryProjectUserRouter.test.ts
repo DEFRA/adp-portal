@@ -43,7 +43,8 @@ describe('createRouter', () => {
   };
 
   const mockSyncronizer: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> = {
-    syncronize: jest.fn(),
+    syncronizeByName: jest.fn(),
+    syncronizeById: jest.fn(),
   };
 
   const mockOptions: DeliveryProjectUserRouterOptions = {

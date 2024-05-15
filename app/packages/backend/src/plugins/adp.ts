@@ -39,6 +39,12 @@ export default async function createPlugin({
     issuer: await discovery.getExternalBaseUrl('auth'),
   });
   const catalog = new CatalogClient({ discoveryApi: discovery });
+  const teamSyncronizer = new DeliveryProjectGithubTeamsSyncronizer(
+    new GitHubTeamsApi(config),
+    deliveryProjectStore,
+    githubTeamStore,
+    deliveryProjectUserStore,
+  );
 
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
@@ -62,12 +68,7 @@ export default async function createPlugin({
     config,
     deliveryProgrammeStore,
     deliveryProjectStore,
-    teamSyncronizer: new DeliveryProjectGithubTeamsSyncronizer(
-      new GitHubTeamsApi(config),
-      deliveryProjectStore,
-      githubTeamStore,
-      deliveryProjectUserStore,
-    ),
+    teamSyncronizer: teamSyncronizer,
     deliveryProjectUserStore,
   });
 
@@ -75,12 +76,7 @@ export default async function createPlugin({
     catalog,
     deliveryProjectUserStore,
     logger,
-    teamSyncronizer: new DeliveryProjectGithubTeamsSyncronizer(
-      new GitHubTeamsApi(config),
-      deliveryProjectStore,
-      githubTeamStore,
-      deliveryProjectUserStore,
-    ),
+    teamSyncronizer: teamSyncronizer,
   });
 
   const deliveryProgrameAdminRouter = createDeliveryProgrammeAdminRouter({

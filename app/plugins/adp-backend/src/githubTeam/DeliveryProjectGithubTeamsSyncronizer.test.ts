@@ -52,7 +52,7 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
     };
   }
 
-  describe('#syncronize', () => {
+  describe('#syncronizeByName', () => {
     it('Should fail to syncronize an unknown project', async () => {
       // arrange
       const { sut, deliveryProjects, githubTeamsStore, githubTeamsApi } =
@@ -62,7 +62,7 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
       deliveryProjects.getByName.mockRejectedValueOnce(new Error());
 
       // act
-      await expectException(() => sut.syncronize(projectName));
+      await expectException(() => sut.syncronizeByName(projectName));
 
       // assert
       expect(deliveryProjects.getByName.mock.calls).toMatchObject([
@@ -147,7 +147,7 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
       );
 
       // act
-      const actual = await sut.syncronize(projectName);
+      const actual = await sut.syncronizeByName(projectName);
 
       // assert
       expect(actual).toMatchObject({
@@ -157,6 +157,133 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
       expect(deliveryProjects.getByName.mock.calls).toMatchObject([
         [projectName],
       ]);
+      expect(githubTeamsStore.get.mock.calls).toMatchObject([[project.id]]);
+      expect(githubTeamsStore.set.mock.calls).toMatchObject([
+        [
+          project.id,
+          {
+            admins: {
+              id: 789,
+              name: admins.name,
+            },
+            contributors: {
+              id: 123,
+              name: contributors.name,
+            },
+          },
+        ],
+      ]);
+      expect(githubTeamsApi.setTeam.mock.calls).toMatchObject([
+        [456, { name: 'my-project-Admins', description, isPublic: false }],
+      ]);
+      expect(githubTeamsApi.createTeam.mock.calls).toMatchObject([
+        [{ name: 'my-project-Contributors', description, isPublic: false }],
+      ]);
+    });
+  });
+
+  describe('#syncronizeById', () => {
+    it('Should fail to syncronize an unknown project', async () => {
+      // arrange
+      const { sut, deliveryProjects, githubTeamsStore, githubTeamsApi } =
+        setup();
+      const projectid = randomUUID();
+
+      deliveryProjects.getByName.mockRejectedValueOnce(new Error());
+
+      // act
+      await expectException(() => sut.syncronizeById(projectid));
+
+      // assert
+      expect(deliveryProjects.get.mock.calls).toMatchObject([[projectid]]);
+      expect(githubTeamsApi.setTeam.mock.calls).toMatchObject([]);
+      expect(githubTeamsStore.get.mock.calls).toMatchObject([]);
+      expect(githubTeamsStore.set.mock.calls).toMatchObject([]);
+    });
+
+    it('Should syncronize a valid project', async () => {
+      // arrange
+      const {
+        sut,
+        deliveryProjects,
+        githubTeamsStore,
+        githubTeamsApi,
+        deliveryProjectUserStore,
+      } = setup();
+      const projectName = 'my-project';
+      const description = randomUUID();
+      const programmeId = randomUUID();
+      const project: DeliveryProject = {
+        ado_project: randomUUID(),
+        created_at: new Date(),
+        delivery_programme_id: programmeId,
+        id: randomUUID(),
+        name: projectName,
+        title: randomUUID(),
+        description,
+        team_type: randomUUID(),
+        service_owner: randomUUID(),
+        delivery_project_code: randomUUID(),
+        namespace: randomUUID(),
+        updated_at: new Date(),
+        github_team_visibility: 'private',
+        delivery_programme_code: 'ABC',
+        delivery_project_users: [],
+      };
+      const storedTeams: Record<string, GithubTeamRef> = {
+        admins: {
+          id: 456,
+          name: 'Admins',
+        },
+      };
+      const contributors: GithubTeamDetails = {
+        description: randomUUID(),
+        id: 123,
+        isPublic: true,
+        maintainers: [randomUUID()],
+        members: [randomUUID()],
+        name: randomUUID(),
+        slug: randomUUID(),
+      };
+      const admins: GithubTeamDetails = {
+        description: randomUUID(),
+        id: 789,
+        isPublic: true,
+        maintainers: [randomUUID()],
+        members: [randomUUID()],
+        name: randomUUID(),
+        slug: randomUUID(),
+      };
+      const projectUsers = [
+        {
+          ...createDeliveryProjectUser(project.id),
+          is_admin: true,
+          is_technical: true,
+        },
+        {
+          ...createDeliveryProjectUser(project.id),
+          is_admin: false,
+          is_technical: true,
+        },
+      ];
+
+      deliveryProjects.get.mockResolvedValueOnce(project);
+      githubTeamsStore.get.mockResolvedValueOnce(storedTeams);
+      githubTeamsApi.setTeam.mockResolvedValueOnce(admins);
+      githubTeamsApi.createTeam.mockResolvedValueOnce(contributors);
+      deliveryProjectUserStore.getByDeliveryProject.mockResolvedValue(
+        projectUsers,
+      );
+
+      // act
+      const actual = await sut.syncronizeById(project.id);
+
+      // assert
+      expect(actual).toMatchObject({
+        contributors,
+        admins,
+      });
+      expect(deliveryProjects.get.mock.calls).toMatchObject([[project.id]]);
       expect(githubTeamsStore.get.mock.calls).toMatchObject([[project.id]]);
       expect(githubTeamsStore.set.mock.calls).toMatchObject([
         [
