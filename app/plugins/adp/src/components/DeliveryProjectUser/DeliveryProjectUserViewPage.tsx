@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react';
 import React, { useCallback, useMemo } from 'react';
-import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
+import {
+  normalizeUsername,
+  type DeliveryProjectUser,
+} from '@internal/plugin-adp-common';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import {
   useAsyncDataSource,
@@ -12,7 +15,7 @@ import { useApi } from '@backstage/core-plugin-api';
 import type { TableColumn } from '@backstage/core-components';
 import { Content, ContentHeader, Link, Page } from '@backstage/core-components';
 import { Button, Grid } from '@material-ui/core';
-import { DefaultTable, normalizeUsername } from '../../utils';
+import { DefaultTable } from '../../utils';
 import { AddProjectUserButton } from './AddProjectUserButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { EditDeliveryProjectUserButton } from './EditDeliveryProjectUserButton';

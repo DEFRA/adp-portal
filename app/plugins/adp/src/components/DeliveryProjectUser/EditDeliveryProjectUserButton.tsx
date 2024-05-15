@@ -1,5 +1,8 @@
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
-import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
+import {
+  normalizeUsername,
+  type DeliveryProjectUser,
+} from '@internal/plugin-adp-common';
 import { Button } from '@material-ui/core';
 import React, { useState } from 'react';
 import { deliveryProjectUserApiRef } from './api';
@@ -9,12 +12,7 @@ import {
   emptyForm,
 } from './DeliveryProjectUserFormFields';
 import type { SubmitResult } from '../../utils';
-import {
-  DialogForm,
-  normalizeUsername,
-  populate,
-  readValidationError,
-} from '../../utils';
+import { DialogForm, populate, readValidationError } from '../../utils';
 
 export type EditDeliveryProjectUserButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
