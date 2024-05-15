@@ -127,8 +127,13 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
       };
       const projectUsers = [
         {
-          ...createDeliveryProjectUser(randomUUID()),
+          ...createDeliveryProjectUser(project.id),
           is_admin: true,
+          is_technical: true,
+        },
+        {
+          ...createDeliveryProjectUser(project.id),
+          is_admin: false,
           is_technical: true,
         },
       ];
