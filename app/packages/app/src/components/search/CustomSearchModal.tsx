@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   viewResultsLink: { verticalAlign: '0.5em' },
 }));
 
-const CustomSearchModalContent = () => {
+export const CustomSearchModalContent = () => {
   const { state, toggleModal } = useSearchModal();
   const classes = useStyles();
   const navigate = useNavigate();
@@ -99,6 +99,7 @@ const CustomSearchModalContent = () => {
                   className={classes.input}
                   inputProps={{ ref: searchBarRef }}
                   onSubmit={handleSearchBarSubmit}
+                  data-testid="adp-search-bar"
                 />
                 <IconButton aria-label="close" onClick={toggleModal}>
                   <CloseIcon />
@@ -113,15 +114,17 @@ const CustomSearchModalContent = () => {
                 alignItems="center"
               >
                 <Grid item>
-                <Button
-                  className={classes.button}
-                  color="primary"
-                  endIcon={<ArrowForwardIcon />}
-                  onClick={handleSearchBarSubmit}
-                  disableRipple
-                >
-                  View Full Results
-                </Button>
+                  <Button
+                    className={classes.button}
+                    color="primary"
+                    endIcon={<ArrowForwardIcon />}
+                    onClick={handleSearchBarSubmit}
+                    disableRipple
+                    data-testid="view-results-button"
+                    aria-labelledby="view full results"
+                  >
+                    View Full Results
+                  </Button>
                 </Grid>
               </Grid>
               <Divider />
