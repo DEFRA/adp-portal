@@ -38,9 +38,9 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     }
 
     const defaultSchedule = {
-      frequency: { minutes: 15 },
-      timeout: { minutes: 15 },
-      initialDelay: { seconds: 5 },
+      frequency: { minutes: 1 },
+      timeout: { minutes: 1 },
+      initialDelay: { seconds: 30 },
     };
 
     const taskRunner =
