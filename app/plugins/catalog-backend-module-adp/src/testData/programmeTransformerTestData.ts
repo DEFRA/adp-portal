@@ -3,6 +3,7 @@ import {
   ANNOTATION_ORIGIN_LOCATION,
 } from '@backstage/catalog-model';
 import { DELIVERY_PROGRAMME_ID_ANNOTATION } from '../transformers';
+import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 
 export const deliveryProgramme = {
   programme_managers: [],
@@ -19,6 +20,25 @@ export const deliveryProgramme = {
   updated_at: new Date(),
   children: ['test-alb-1'],
 };
+
+export const deliveryProgrammeAdmins: DeliveryProgrammeAdmin[] = [
+  {
+    aad_entity_ref_id: '1111',
+    delivery_programme_id: '1234',
+    email: 'test1@test.com',
+    id: '1234',
+    name: 'test 1',
+    updated_at: new Date(),
+  },
+  {
+    aad_entity_ref_id: '2222',
+    delivery_programme_id: '1234',
+    email: 'test2@test.com',
+    id: '1234',
+    name: 'test 2',
+    updated_at: new Date(),
+  },
+];
 
 export const expectedProgrammeEntity = {
   apiVersion: 'backstage.io/v1beta1',
@@ -38,6 +58,7 @@ export const expectedProgrammeEntity = {
   spec: {
     type: 'delivery-programme',
     children: ['test-alb-1'],
+    members: ['test1_test.com', 'test2_test.com'],
   },
 };
 
@@ -46,5 +67,6 @@ export const expectedProgrammeEntityNoChild = {
   spec: {
     type: 'delivery-programme',
     children: [],
+    members: ['test1_test.com', 'test2_test.com'],
   },
 };

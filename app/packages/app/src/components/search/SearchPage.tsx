@@ -1,14 +1,12 @@
 import React from 'react';
 import type { Theme } from '@material-ui/core';
 import { makeStyles, Grid, Paper } from '@material-ui/core';
-
 import { CatalogSearchResultListItem } from '@backstage/plugin-catalog';
 import {
   catalogApiRef,
   CATALOG_FILTER_EXISTS,
 } from '@backstage/plugin-catalog-react';
 import { TechDocsSearchResultListItem } from '@backstage/plugin-techdocs';
-
 import { SearchType } from '@backstage/plugin-search';
 import {
   SearchBar,
