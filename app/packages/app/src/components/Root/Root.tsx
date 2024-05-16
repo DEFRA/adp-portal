@@ -27,7 +27,7 @@ import {
   useSidebarOpenState,
   Link,
 } from '@backstage/core-components';
-import { CustomSearchModal } from '../search/CustomSearchModal';
+import { SidebarSearchModal } from '@backstage/plugin-search';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
@@ -62,7 +62,8 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
     <Sidebar>
       <SidebarLogo />
       <SidebarGroup label="Search" icon={<SearchIcon />} to="/search">
-        <CustomSearchModal/>
+        <span id="search-modal-title" style={{display: 'none'}}> ADP Search </span>
+        <SidebarSearchModal />
       </SidebarGroup>
       <SidebarDivider />
       <SidebarGroup label="Menu" icon={<MenuIcon />}>
