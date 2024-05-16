@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react';
 import React, { useCallback, useMemo } from 'react';
-import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
+import {
+  normalizeUsername,
+  type DeliveryProjectUser,
+} from '@internal/plugin-adp-common';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import {
   useAsyncDataSource,
@@ -12,7 +15,10 @@ import { useApi } from '@backstage/core-plugin-api';
 import type { TableColumn } from '@backstage/core-components';
 import { Content, ContentHeader, Link, Page } from '@backstage/core-components';
 import { Button, Grid } from '@material-ui/core';
-import { DefaultTable, normalizeUsername } from '../../utils';
+import { DefaultTable } from '../../utils';
+import { AddProjectUserButton } from './AddProjectUserButton';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import { EditDeliveryProjectUserButton } from './EditDeliveryProjectUserButton';
 
 type DeliveryProjectUserWithActions = DeliveryProjectUser & {
   actions: ReactNode;
@@ -30,7 +36,7 @@ export const DeliveryProjectUserViewPage = () => {
   const deliveryProjectId =
     entity.metadata.annotations?.['adp.defra.gov.uk/delivery-project-id'];
 
-  const { data, loading } = useAsyncDataSource({
+  const { data, refresh, loading } = useAsyncDataSource({
     load: useCallback(
       () =>
         !deliveryProjectId
@@ -71,18 +77,20 @@ export const DeliveryProjectUserViewPage = () => {
                 Remove
               </Button>
               &nbsp;
-              <Button
-                variant="outlined"
+              <EditDeliveryProjectUserButton
+                variant="contained"
                 color="default"
-                data-testid={`project-user-edit-button-${d.id}`}
+                deliveryProjectUser={d}
+                data-testid={`delivery-project-user-edit-button-${d.id}`}
+                onEdited={refresh}
               >
                 Edit
-              </Button>
+              </EditDeliveryProjectUserButton>
             </>
           ),
         };
       }),
-    [data, entityRoute],
+    [data, entityRoute, refresh],
   );
 
   const columns: TableColumn<DeliveryProjectUserWithActions>[] = [
@@ -124,7 +132,18 @@ export const DeliveryProjectUserViewPage = () => {
   return (
     <Page themeId="tool">
       <Content>
-        <ContentHeader title="Delivery Project Users" />
+        <ContentHeader title="Delivery Project Users">
+          <AddProjectUserButton
+            deliveryProjectId={deliveryProjectId!}
+            variant="contained"
+            size="large"
+            color="primary"
+            startIcon={<AddBoxIcon />}
+            onCreated={refresh}
+          >
+            Add Team Members
+          </AddProjectUserButton>
+        </ContentHeader>
         <Grid item>
           <div>
             <DefaultTable

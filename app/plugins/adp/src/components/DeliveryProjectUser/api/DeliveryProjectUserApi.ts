@@ -1,6 +1,7 @@
 import type {
   CreateDeliveryProjectUserRequest,
   DeliveryProjectUser,
+  UpdateDeliveryProjectUserRequest,
 } from '@internal/plugin-adp-common';
 import { createApiRef } from '@backstage/core-plugin-api';
 
@@ -14,4 +15,5 @@ export interface DeliveryProjectUserApi {
     deliveryProjectId: string,
   ): Promise<DeliveryProjectUser[]>;
   create(data: CreateDeliveryProjectUserRequest): Promise<DeliveryProjectUser>;
+  update(data: UpdateDeliveryProjectUserRequest): Promise<DeliveryProjectUser>;
 }

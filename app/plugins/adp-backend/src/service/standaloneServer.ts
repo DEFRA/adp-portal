@@ -24,6 +24,7 @@ import {
 } from '../githubTeam';
 import { ArmsLengthBodyStore } from '../armsLengthBody';
 import { DeliveryProjectUserStore } from '../deliveryProjectUser';
+import { createDeliveryProjectUserRouter } from './deliveryProjectUserRouter';
 
 export interface ServerOptions {
   port: number;
@@ -61,6 +62,12 @@ export async function startStandaloneServer(
   const deliveryProjectUserStore = new DeliveryProjectUserStore(dbClient);
   const githubTeamStore = new GithubTeamStore(dbClient);
   const catalog = new CatalogClient({ discoveryApi: discovery });
+  const teamSyncronizer = new DeliveryProjectGithubTeamsSyncronizer(
+    new GitHubTeamsApi(config),
+    deliveryProjectStore,
+    githubTeamStore,
+    deliveryProjectUserStore,
+  );
 
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
@@ -91,12 +98,15 @@ export async function startStandaloneServer(
     config,
     deliveryProgrammeStore,
     deliveryProjectStore,
-    teamSyncronizer: new DeliveryProjectGithubTeamsSyncronizer(
-      new GitHubTeamsApi(config),
-      deliveryProjectStore,
-      githubTeamStore,
-    ),
+    teamSyncronizer: teamSyncronizer,
     deliveryProjectUserStore,
+  });
+
+  const deliveryProjectUserRouter = createDeliveryProjectUserRouter({
+    catalog,
+    deliveryProjectUserStore,
+    logger,
+    teamSyncronizer: teamSyncronizer,
   });
 
   const router = Router();
@@ -104,6 +114,7 @@ export async function startStandaloneServer(
   router.use(deliveryProgrammeRouter);
   router.use(deliveryProjectRouter);
   router.use(deliveryProgrammeAdminRouter);
+  router.use(deliveryProjectUserRouter);
 
   let service = createServiceBuilder(module)
     .setPort(options.port)

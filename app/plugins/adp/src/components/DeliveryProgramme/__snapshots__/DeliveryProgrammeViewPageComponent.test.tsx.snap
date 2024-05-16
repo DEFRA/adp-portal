@@ -501,7 +501,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                             <a
                               aria-disabled="false"
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-outlined"
-                              href="/catalog/default/group/programme-0/manage-members"
+                              href="/catalog/default/group/programme-0/manage-delivery-programme-admins"
                               role="button"
                               tabindex="0"
                               title="View Delivery Programme Admins"
@@ -1963,7 +1963,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                             <a
                               aria-disabled="false"
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-outlined"
-                              href="/catalog/default/group/programme-0/manage-members"
+                              href="/catalog/default/group/programme-0/manage-delivery-programme-admins"
                               role="button"
                               tabindex="0"
                               title="View Delivery Programme Admins"
@@ -2063,7 +2063,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                             <a
                               aria-disabled="false"
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-outlined"
-                              href="/catalog/default/group/programme-1/manage-members"
+                              href="/catalog/default/group/programme-1/manage-delivery-programme-admins"
                               role="button"
                               tabindex="0"
                               title="View Delivery Programme Admins"
@@ -2844,7 +2844,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                             <a
                               aria-disabled="false"
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-outlined"
-                              href="/catalog/default/group/programme-0/manage-members"
+                              href="/catalog/default/group/programme-0/manage-delivery-programme-admins"
                               role="button"
                               tabindex="0"
                               title="View Delivery Programme Admins"
@@ -4306,7 +4306,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                             <a
                               aria-disabled="false"
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-outlined"
-                              href="/catalog/default/group/programme-0/manage-members"
+                              href="/catalog/default/group/programme-0/manage-delivery-programme-admins"
                               role="button"
                               tabindex="0"
                               title="View Delivery Programme Admins"
@@ -4406,7 +4406,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                             <a
                               aria-disabled="false"
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-outlined"
-                              href="/catalog/default/group/programme-1/manage-members"
+                              href="/catalog/default/group/programme-1/manage-delivery-programme-admins"
                               role="button"
                               tabindex="0"
                               title="View Delivery Programme Admins"
@@ -4506,7 +4506,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                             <a
                               aria-disabled="false"
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-outlined"
-                              href="/catalog/default/group/programme-2/manage-members"
+                              href="/catalog/default/group/programme-2/manage-delivery-programme-admins"
                               role="button"
                               tabindex="0"
                               title="View Delivery Programme Admins"
@@ -4606,7 +4606,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                             <a
                               aria-disabled="false"
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-outlined"
-                              href="/catalog/default/group/programme-3/manage-members"
+                              href="/catalog/default/group/programme-3/manage-delivery-programme-admins"
                               role="button"
                               tabindex="0"
                               title="View Delivery Programme Admins"
@@ -4706,7 +4706,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                             <a
                               aria-disabled="false"
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-outlined"
-                              href="/catalog/default/group/programme-4/manage-members"
+                              href="/catalog/default/group/programme-4/manage-delivery-programme-admins"
                               role="button"
                               tabindex="0"
                               title="View Delivery Programme Admins"

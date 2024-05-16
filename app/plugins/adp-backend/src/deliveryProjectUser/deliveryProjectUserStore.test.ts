@@ -20,6 +20,8 @@ import {
 } from '../testData/projectUserTestData';
 import { faker } from '@faker-js/faker';
 import { assertUUID } from '../service/util';
+import type { UpdateDeliveryProjectUserRequest } from '@internal/plugin-adp-common';
+import { NotFoundError } from '@backstage/errors';
 
 describe('DeliveryProjectUserStore', () => {
   const databases = TestDatabases.create();
@@ -55,13 +57,13 @@ describe('DeliveryProjectUserStore', () => {
     return deliveryProjectSeedData.id;
   }
 
-  async function seedProjectUser(knex: Knex) {
+  async function seedProjectUser(knex: Knex): Promise<delivery_project_user> {
     const projectId = await seedProject(knex);
     const projectUser = createDeliveryProjectUserEntity(projectId);
     await knex<delivery_project_user>(delivery_project_user_name).insert(
       projectUser,
     );
-    return projectUser.id;
+    return projectUser;
   }
 
   it.each(databases.eachSupportedId())(
@@ -132,6 +134,128 @@ describe('DeliveryProjectUserStore', () => {
         projectId,
       );
       expect(getAllResult).toHaveLength(4);
+    },
+  );
+
+  it.each(databases.eachSupportedId())(
+    'should get a Delivery Project User from the database',
+    async databaseId => {
+      const { knex, deliveryProjectUserStore } = await createDatabase(
+        databaseId,
+      );
+      const projectUser = await seedProjectUser(knex);
+
+      const getResult = await deliveryProjectUserStore.get(projectUser.id);
+      expect(getResult).toBeDefined();
+      expect(getResult.aad_entity_ref_id).toBe(projectUser.aad_entity_ref_id);
+      expect(getResult.delivery_project_id).toBe(
+        projectUser.delivery_project_id,
+      );
+      expect(getResult.email).toBe(projectUser.email);
+      expect(getResult.github_username).toBe(projectUser.github_username);
+      expect(getResult.is_admin).toBe(projectUser.is_admin);
+      expect(getResult.is_technical).toBe(projectUser.is_technical);
+      expect(getResult.name).toBe(projectUser.name);
+    },
+  );
+
+  it.each(databases.eachSupportedId())(
+    'should throw NotFound if a Delivery Project User cannot be found in the database',
+    async databaseId => {
+      const { deliveryProjectUserStore } = await createDatabase(databaseId);
+
+      const getResult = deliveryProjectUserStore.get(faker.string.uuid());
+
+      await expect(getResult).rejects.toBeInstanceOf(NotFoundError);
+    },
+  );
+
+  it.each(databases.eachSupportedId())(
+    'should throw NotFound if the delivery project user ID is not a UUID',
+    async databaseId => {
+      const { deliveryProjectUserStore } = await createDatabase(databaseId);
+
+      const getResult = deliveryProjectUserStore.get('1234');
+
+      await expect(getResult).rejects.toBeInstanceOf(NotFoundError);
+    },
+  );
+
+  it.each(databases.eachSupportedId())(
+    'should update an existing Delivery Project User in the database',
+    async databaseId => {
+      const { knex, deliveryProjectUserStore } = await createDatabase(
+        databaseId,
+      );
+      const projectUser = await seedProjectUser(knex);
+
+      const expectedUpdate: UpdateDeliveryProjectUserRequest = {
+        id: projectUser.id,
+        is_admin: true,
+        is_technical: true,
+        github_username: 'test github username',
+        delivery_project_id: projectUser.delivery_project_id,
+      };
+
+      const updateResult = await deliveryProjectUserStore.update(
+        expectedUpdate,
+      );
+
+      expect(updateResult).toBeDefined();
+      expect(updateResult).toMatchObject({
+        success: true,
+        value: {
+          is_admin: expectedUpdate.is_admin,
+          is_technical: expectedUpdate.is_technical,
+          github_username: expectedUpdate.github_username,
+        },
+      });
+    },
+  );
+
+  it.each(databases.eachSupportedId())(
+    'should return an unmodified Delivery Project User if no values have changed',
+    async databaseId => {
+      const { knex, deliveryProjectUserStore } = await createDatabase(
+        databaseId,
+      );
+      const projectUser = await seedProjectUser(knex);
+      const updateUser: UpdateDeliveryProjectUserRequest = {
+        ...projectUser,
+        is_admin: projectUser.is_admin as boolean,
+        is_technical: projectUser.is_technical as boolean,
+      };
+
+      const updateResult = await deliveryProjectUserStore.update(updateUser);
+
+      expect(updateResult).toBeDefined();
+      expect(updateResult).toMatchObject({
+        success: true,
+        value: {
+          is_admin: projectUser.is_admin,
+          is_technical: projectUser.is_technical,
+          github_username: projectUser.github_username,
+        },
+      });
+    },
+  );
+
+  it.each(databases.eachSupportedId())(
+    'should not update a non-existing Delivery Project User in the database',
+    async databaseId => {
+      const { knex, deliveryProjectUserStore } = await createDatabase(
+        databaseId,
+      );
+      await seedProjectUser(knex);
+
+      const expectedUpdate: UpdateDeliveryProjectUserRequest = {
+        id: '12345',
+        github_username: 'test github user',
+      };
+
+      await expect(
+        async () => await deliveryProjectUserStore.update(expectedUpdate),
+      ).rejects.toThrow(NotFoundError);
     },
   );
 });

@@ -1,5 +1,8 @@
 import { faker } from '@faker-js/faker';
-import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
+import type {
+  DeliveryProjectUser,
+  UpdateDeliveryProjectUserRequest,
+} from '@internal/plugin-adp-common';
 import { DeliveryProjectUserClient } from './DeliveryProjectUserClient';
 
 jest.mock('@backstage/core-plugin-api', () => ({
@@ -170,6 +173,55 @@ describe('DeliveryProjectUserClient', () => {
           is_admin: faker.datatype.boolean(),
           github_username: userRef,
           user_catalog_name: userRef,
+        }),
+      ).rejects.toThrow(/Request failed with 500/);
+    });
+  });
+
+  describe('update', () => {
+    it('updates a Delivery Project User successfully', async () => {
+      const mockData = [{ id: '1234', is_admin: true }];
+      fetchApi.fetch.mockResolvedValue({
+        ok: true,
+        json: jest.fn().mockResolvedValue(mockData),
+      });
+
+      const updateData: UpdateDeliveryProjectUserRequest = {
+        is_admin: true,
+        id: faker.string.uuid(),
+      };
+      const result = await sut.update(updateData);
+      expect(result).toEqual(mockData);
+    });
+
+    it('catches and throws 400 error', async () => {
+      fetchApi.fetch.mockResolvedValue({
+        ok: false,
+        status: 400,
+        statusText: 'BadRequest',
+        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
+      });
+
+      await expect(
+        sut.update({
+          is_admin: true,
+          id: faker.string.uuid(),
+        }),
+      ).rejects.toThrow('Validation failed');
+    });
+
+    it('catches and throws other uncaught errors', async () => {
+      fetchApi.fetch.mockResolvedValue({
+        ok: false,
+        status: 500,
+        statusText: 'ServerError',
+        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
+      });
+
+      await expect(
+        sut.update({
+          is_admin: true,
+          id: faker.string.uuid(),
         }),
       ).rejects.toThrow(/Request failed with 500/);
     });

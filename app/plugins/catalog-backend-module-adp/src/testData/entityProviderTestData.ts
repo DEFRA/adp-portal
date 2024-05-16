@@ -174,6 +174,7 @@ export const mockProgrammeTransformerData = [
     spec: {
       type: 'delivery-programme',
       children: ['test-project-1'],
+      members: ['test1_test.com', 'test2_test.com'],
     },
   },
   {
@@ -194,6 +195,7 @@ export const mockProgrammeTransformerData = [
     spec: {
       type: 'delivery-programme',
       children: ['test-project-2'],
+      members: [],
     },
   },
 ];
@@ -217,6 +219,7 @@ export const mockProjectTransformerData = [
     spec: {
       type: 'delivery-project',
       children: [],
+      members: ['test1_test.com', 'test2_test.com'],
     },
   },
   {
@@ -237,6 +240,7 @@ export const mockProjectTransformerData = [
     spec: {
       type: 'delivery-project',
       children: [],
+      members: [],
     },
   },
 ];

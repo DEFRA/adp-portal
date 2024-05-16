@@ -11,7 +11,9 @@ import fetch from 'node-fetch';
 import type {
   ArmsLengthBody,
   DeliveryProgramme,
+  DeliveryProgrammeAdmin,
   DeliveryProject,
+  DeliveryProjectUser,
 } from '@internal/plugin-adp-common';
 import {
   armsLengthBodyGroupTransformer,
@@ -38,9 +40,9 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     }
 
     const defaultSchedule = {
-      frequency: { minutes: 15 },
-      timeout: { minutes: 15 },
-      initialDelay: { seconds: 5 },
+      frequency: { minutes: 1 },
+      timeout: { minutes: 1 },
+      initialDelay: { seconds: 30 },
     };
 
     const taskRunner =
@@ -129,19 +131,10 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   private async readArmsLengthBodies(logger: Logger): Promise<GroupEntity[]> {
     logger.info('Discovering all Arms Length Bodies');
     const baseUrl = await this.discovery.getBaseUrl('adp');
-    const endpoint = `${baseUrl}/armslengthbody`;
-
-    const response = await fetch(endpoint, {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `Unexpected response from ADP plugin, GET /armslengthbody. Expected 200 but got ${response.status} - ${response.statusText}`,
-      );
-    }
-
-    const armsLengthBodies = (await response.json()) as ArmsLengthBody[];
+    const armsLengthBodies = await this.#getEntities<ArmsLengthBody>(
+      baseUrl,
+      'armslengthbody',
+    );
     const entities: GroupEntity[] = [];
 
     logger.info(`Discovered ${armsLengthBodies.length} Arms Length Bodies`);
@@ -159,25 +152,25 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   private async readDeliveryProgrammes(logger: Logger): Promise<GroupEntity[]> {
     logger.info('Discovering all Delivery Programmes');
     const baseUrl = await this.discovery.getBaseUrl('adp');
-    const endpoint = `${baseUrl}/deliveryProgramme`;
-
-    const response = await fetch(endpoint, {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `Unexpected response from ADP plugin, GET /deliveryProgramme. Expected 200 but got ${response.status} - ${response.statusText}`,
-      );
-    }
-
-    const deliveryProgrammes = (await response.json()) as DeliveryProgramme[];
+    const deliveryProgrammes = await this.#getEntities<DeliveryProgramme>(
+      baseUrl,
+      'deliveryProgramme',
+    );
     const entities: GroupEntity[] = [];
 
     logger.info(`Discovered ${deliveryProgrammes.length} Delivery Programmes`);
 
     for (const deliveryProgramme of deliveryProgrammes) {
-      const entity = await deliveryProgrammeGroupTransformer(deliveryProgramme);
+      const deliveryProgrammeAdmins =
+        (await this.#getEntities<DeliveryProgrammeAdmin>(
+          baseUrl,
+          `deliveryProgrammeAdmins/${deliveryProgramme.id}`,
+        )) ?? [];
+
+      const entity = await deliveryProgrammeGroupTransformer(
+        deliveryProgramme,
+        deliveryProgrammeAdmins,
+      );
       if (entity) {
         entities.push(entity);
       }
@@ -189,25 +182,25 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   private async readDeliveryProjects(logger: Logger): Promise<GroupEntity[]> {
     logger.info('Discovering all Delivery Projects');
     const baseUrl = await this.discovery.getBaseUrl('adp');
-    const endpoint = `${baseUrl}/deliveryProject`;
-
-    const response = await fetch(endpoint, {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `Unexpected response from ADP plugin, GET /deliveryProject. Expected 200 but got ${response.status} - ${response.statusText}`,
-      );
-    }
-
-    const deliveryProjects = (await response.json()) as DeliveryProject[];
+    const deliveryProjects = await this.#getEntities<DeliveryProject>(
+      baseUrl,
+      'deliveryProject',
+    );
     const entities: GroupEntity[] = [];
 
     logger.info(`Discovered ${deliveryProjects.length} Delivery Programmes`);
 
     for (const deliveryProject of deliveryProjects) {
-      const entity = await deliveryProjectGroupTransformer(deliveryProject);
+      const deliveryProjectUsers =
+        (await this.#getEntities<DeliveryProjectUser>(
+          baseUrl,
+          `deliveryProjectUsers/${deliveryProject.id}`,
+        )) ?? [];
+
+      const entity = await deliveryProjectGroupTransformer(
+        deliveryProject,
+        deliveryProjectUsers,
+      );
       if (entity) {
         entities.push(entity);
       }
@@ -240,5 +233,20 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     }
 
     return { markReadComplete };
+  }
+
+  async #getEntities<T>(baseUrl: string, path: string): Promise<T[]> {
+    const endpoint = `${baseUrl}/${path}`;
+    const response = await fetch(endpoint, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Unexpected response from ADP plugin, GET ${path}. Expected 200 but got ${response.status} - ${response.statusText}`,
+      );
+    }
+
+    return await response.json();
   }
 }

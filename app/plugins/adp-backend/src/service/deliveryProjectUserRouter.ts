@@ -5,13 +5,15 @@ import express from 'express';
 import Router from 'express-promise-router';
 import { errorHandler } from '@backstage/backend-common';
 import { assertUUID, createParser, respond } from './util';
-import type {
-  CreateDeliveryProjectUserRequest,
-  ValidationErrorMapping,
+import {
+  type CreateDeliveryProjectUserRequest,
+  type ValidationErrorMapping,
+  type UpdateDeliveryProjectUserRequest,
 } from '@internal/plugin-adp-common';
 import { z } from 'zod';
 import type { AddDeliveryProjectUser } from '../utils';
 import { getUserEntityFromCatalog } from './catalog';
+import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 
 const parseCreateDeliveryProjectUserRequest =
   createParser<CreateDeliveryProjectUserRequest>(
@@ -20,6 +22,17 @@ const parseCreateDeliveryProjectUserRequest =
       delivery_project_id: z.string(),
       is_admin: z.boolean(),
       is_technical: z.boolean(),
+      github_username: z.string().optional(),
+    }),
+  );
+
+const parseUpdateDeliveryProjectUserRequest =
+  createParser<UpdateDeliveryProjectUserRequest>(
+    z.object({
+      id: z.string(),
+      delivery_project_id: z.string().optional(),
+      is_technical: z.boolean().optional(),
+      is_admin: z.boolean().optional(),
       github_username: z.string().optional(),
     }),
   );
@@ -55,12 +68,13 @@ export interface DeliveryProjectUserRouterOptions {
   logger: Logger;
   deliveryProjectUserStore: IDeliveryProjectUserStore;
   catalog: CatalogApi;
+  teamSyncronizer: IDeliveryProjectGithubTeamsSyncronizer;
 }
 
 export function createDeliveryProjectUserRouter(
   options: DeliveryProjectUserRouterOptions,
 ): express.Router {
-  const { deliveryProjectUserStore, catalog } = options;
+  const { deliveryProjectUserStore, catalog, teamSyncronizer } = options;
 
   const router = Router();
   router.use(express.json());
@@ -103,10 +117,23 @@ export function createDeliveryProjectUserRouter(
       };
 
       const addedUser = await deliveryProjectUserStore.add(addUser);
+      if (addedUser.success) {
+        teamSyncronizer.syncronizeById(addedUser.value.delivery_project_id);
+      }
+
       respond(body, res, addedUser, errorMapping, { ok: 201 });
     }
 
     respond(body, res, catalogUser, errorMapping);
+  });
+
+  router.patch('/deliveryProjectUser', async (req, res) => {
+    const body = parseUpdateDeliveryProjectUserRequest(req.body);
+    const result = await deliveryProjectUserStore.update(body);
+    if (result.success) {
+      teamSyncronizer.syncronizeById(result.value.delivery_project_id);
+    }
+    respond(body, res, result, errorMapping);
   });
 
   router.use(errorHandler());

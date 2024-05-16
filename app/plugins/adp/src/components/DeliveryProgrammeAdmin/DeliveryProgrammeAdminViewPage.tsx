@@ -2,7 +2,10 @@ import type { ReactNode } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import type { TableColumn } from '@backstage/core-components';
 import { Content, ContentHeader, Link, Page } from '@backstage/core-components';
-import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import {
+  normalizeUsername,
+  type DeliveryProgrammeAdmin,
+} from '@internal/plugin-adp-common';
 import { Button, Grid } from '@material-ui/core';
 import { useApi } from '@backstage/core-plugin-api';
 import { deliveryProgrammeAdminApiRef } from './api';
@@ -12,7 +15,7 @@ import {
   useEntityRoute,
   useErrorCallback,
 } from '../../hooks';
-import { DefaultTable, normalizeUsername } from '../../utils';
+import { DefaultTable } from '../../utils';
 import { AddProgrammeAdminButton } from './AddProgrammeAdminButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
