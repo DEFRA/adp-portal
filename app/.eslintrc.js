@@ -6,6 +6,7 @@ module.exports = require('@backstage/cli/config/eslint-factory').createConfig(
     ignorePatterns: ['**/seedData/', '**/migrations/'],
     rules: {
       '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-floating-promises': 'error',
     },
   },
 );

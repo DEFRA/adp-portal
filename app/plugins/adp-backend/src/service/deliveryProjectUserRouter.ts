@@ -74,7 +74,8 @@ export interface DeliveryProjectUserRouterOptions {
 export function createDeliveryProjectUserRouter(
   options: DeliveryProjectUserRouterOptions,
 ): express.Router {
-  const { deliveryProjectUserStore, catalog, teamSyncronizer } = options;
+  const { deliveryProjectUserStore, catalog, teamSyncronizer, logger } =
+    options;
 
   const router = Router();
   router.use(express.json());
@@ -118,7 +119,13 @@ export function createDeliveryProjectUserRouter(
 
       const addedUser = await deliveryProjectUserStore.add(addUser);
       if (addedUser.success) {
-        teamSyncronizer.syncronizeById(addedUser.value.delivery_project_id);
+        await teamSyncronizer
+          .syncronizeById(addedUser.value.delivery_project_id)
+          .catch(reason =>
+            logger.warn(
+              `POST /deliveryProjectUser - could not syncronize GitHub team. ${reason}`,
+            ),
+          );
       }
 
       respond(body, res, addedUser, errorMapping, { ok: 201 });
@@ -131,7 +138,13 @@ export function createDeliveryProjectUserRouter(
     const body = parseUpdateDeliveryProjectUserRequest(req.body);
     const result = await deliveryProjectUserStore.update(body);
     if (result.success) {
-      teamSyncronizer.syncronizeById(result.value.delivery_project_id);
+      await teamSyncronizer
+        .syncronizeById(result.value.delivery_project_id)
+        .catch(reason =>
+          logger.warn(
+            `PATCH /deliveryProjectUser - could not syncronize GitHub team. ${reason}`,
+          ),
+        );
     }
     respond(body, res, result, errorMapping);
   });

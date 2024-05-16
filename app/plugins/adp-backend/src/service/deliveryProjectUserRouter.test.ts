@@ -116,6 +116,26 @@ describe('createRouter', () => {
         value: projectUser,
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+      mockSyncronizer.syncronizeById.mockResolvedValue({
+        admins: {
+          id: faker.number.int(),
+          description: faker.lorem.sentence(),
+          isPublic: faker.datatype.boolean(),
+          maintainers: [],
+          members: [],
+          name: faker.company.name(),
+          slug: faker.company.name(),
+        },
+        contributors: {
+          id: faker.number.int(),
+          description: faker.lorem.sentence(),
+          isPublic: faker.datatype.boolean(),
+          maintainers: [],
+          members: [],
+          name: faker.company.name(),
+          slug: faker.company.name(),
+        },
+      });
 
       const requestBody: CreateDeliveryProjectUserRequest = {
         delivery_project_id: projectUser.delivery_project_id,
@@ -200,6 +220,26 @@ describe('createRouter', () => {
       mockDeliveryProjectUserStore.update.mockResolvedValue({
         success: true,
         value: projectUser,
+      });
+      mockSyncronizer.syncronizeById.mockResolvedValue({
+        admins: {
+          id: faker.number.int(),
+          description: faker.lorem.sentence(),
+          isPublic: faker.datatype.boolean(),
+          maintainers: [],
+          members: [],
+          name: faker.company.name(),
+          slug: faker.company.name(),
+        },
+        contributors: {
+          id: faker.number.int(),
+          description: faker.lorem.sentence(),
+          isPublic: faker.datatype.boolean(),
+          maintainers: [],
+          members: [],
+          name: faker.company.name(),
+          slug: faker.company.name(),
+        },
       });
 
       const response = await request(deliveryProjectUserApp)
