@@ -3,17 +3,30 @@ import {
   ANNOTATION_LOCATION,
   ANNOTATION_ORIGIN_LOCATION,
 } from '@backstage/catalog-model';
-import type { DeliveryProject } from '@internal/plugin-adp-common';
-import { deliveryProjectDisplayName } from '@internal/plugin-adp-common';
+import type {
+  DeliveryProject,
+  DeliveryProjectUser,
+} from '@internal/plugin-adp-common';
+import {
+  deliveryProjectDisplayName,
+  normalizeUsername,
+} from '@internal/plugin-adp-common';
 import { createTransformerTitle } from './utils';
 import { DELIVERY_PROJECT_ID_ANNOTATION } from './constants';
 
 export type DeliveryProjectGroupTransformer = (
   deliveryProject: DeliveryProject,
+  deliveryProjectUsers: DeliveryProjectUser[],
 ) => Promise<GroupEntity | undefined>;
 
 export const deliveryProjectGroupTransformer: DeliveryProjectGroupTransformer =
-  async (deliveryProject): Promise<GroupEntity | undefined> => {
+  async (
+    deliveryProject,
+    deliveryProjectUsers,
+  ): Promise<GroupEntity | undefined> => {
+    const members = deliveryProjectUsers.map(user =>
+      normalizeUsername(user.email),
+    );
     const entity: GroupEntity = {
       apiVersion: 'backstage.io/v1beta1',
       kind: 'Group',
@@ -35,6 +48,7 @@ export const deliveryProjectGroupTransformer: DeliveryProjectGroupTransformer =
       spec: {
         type: 'delivery-project',
         children: [],
+        members: members ?? [],
       },
     };
 

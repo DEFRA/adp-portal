@@ -3,16 +3,27 @@ import {
   ANNOTATION_LOCATION,
   ANNOTATION_ORIGIN_LOCATION,
 } from '@backstage/catalog-model';
-import type { DeliveryProgramme } from '@internal/plugin-adp-common';
+import {
+  normalizeUsername,
+  type DeliveryProgramme,
+  type DeliveryProgrammeAdmin,
+} from '@internal/plugin-adp-common';
 import { createTransformerTitle } from './utils';
 import { DELIVERY_PROGRAMME_ID_ANNOTATION } from './constants';
 
 export type DeliveryProgrammeGroupTransformer = (
   deliveryProgramme: DeliveryProgramme,
+  deliveryProgrammeAdmins: DeliveryProgrammeAdmin[],
 ) => Promise<GroupEntity | undefined>;
 
 export const deliveryProgrammeGroupTransformer: DeliveryProgrammeGroupTransformer =
-  async (deliveryProgramme): Promise<GroupEntity | undefined> => {
+  async (
+    deliveryProgramme,
+    deliveryProgrammeAdmins,
+  ): Promise<GroupEntity | undefined> => {
+    const members = deliveryProgrammeAdmins.map(user =>
+      normalizeUsername(user.email),
+    );
     const entity: GroupEntity = {
       apiVersion: 'backstage.io/v1beta1',
       kind: 'Group',
@@ -34,6 +45,7 @@ export const deliveryProgrammeGroupTransformer: DeliveryProgrammeGroupTransforme
       spec: {
         type: 'delivery-programme',
         children: deliveryProgramme.children ?? [],
+        members: members ?? [],
       },
     };
 

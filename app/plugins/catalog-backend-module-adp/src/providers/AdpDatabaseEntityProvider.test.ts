@@ -17,6 +17,8 @@ import {
 } from '../testData/entityProviderTestData';
 import type { Response } from 'node-fetch';
 import fetch from 'node-fetch';
+import { deliveryProgrammeAdmins } from '../testData/programmeTransformerTestData';
+import { deliveryProjectUsers } from '../testData/projectTransformerTestData';
 
 class MockTaskRunner implements TaskRunner {
   private tasks: TaskInvocationDefinition[] = [];
@@ -166,7 +168,10 @@ describe('AdbDatabaseEntityProvider', () => {
 
   it('successfully runs readDeliveryProgrammes', async () => {
     mockedFetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(deliveryProgramme),
+      json: jest
+        .fn()
+        .mockResolvedValueOnce(deliveryProgramme)
+        .mockResolvedValueOnce(deliveryProgrammeAdmins),
       ok: jest.fn().mockImplementation(() => true),
     } as unknown as Response);
 
@@ -189,7 +194,10 @@ describe('AdbDatabaseEntityProvider', () => {
 
   it('successfully runs readDeliveryProjects', async () => {
     mockedFetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(deliveryProject),
+      json: jest
+        .fn()
+        .mockResolvedValueOnce(deliveryProject)
+        .mockResolvedValueOnce(deliveryProjectUsers),
       ok: jest.fn().mockImplementation(() => true),
     } as unknown as Response);
 
