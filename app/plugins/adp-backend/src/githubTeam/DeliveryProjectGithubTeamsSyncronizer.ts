@@ -86,7 +86,11 @@ export class DeliveryProjectGithubTeamsSyncronizer
 
     const adminUsernames = deliveryProjectUsers.reduce(
       (usernames: string[], user: DeliveryProjectUser) => {
-        if (user.github_username !== undefined && user.is_admin)
+        if (
+          user.github_username !== undefined &&
+          user.is_admin &&
+          user.is_technical
+        )
           usernames.push(user.github_username);
         return usernames;
       },
@@ -95,7 +99,11 @@ export class DeliveryProjectGithubTeamsSyncronizer
 
     const contributorUsernames = deliveryProjectUsers.reduce(
       (usernames: string[], user: DeliveryProjectUser) => {
-        if (user.github_username !== undefined && !user.is_admin)
+        if (
+          user.github_username !== undefined &&
+          !user.is_admin &&
+          user.is_technical
+        )
           usernames.push(user.github_username);
         return usernames;
       },
