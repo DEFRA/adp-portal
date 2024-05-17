@@ -29,10 +29,7 @@ import azureDevOps from './plugins/azure-devops';
 import kubernetes from './plugins/kubernetes';
 import {
   createCurrentRequestMiddleware,
-  createFetchApi,
-  createIdentityFetchMiddleware,
-  createFetchHeaderMiddleware,
-  createUrlFilter,
+  defaultFetchApi,
 } from '@internal/fetch-api-backend';
 
 function makeCreateEnv(
@@ -62,18 +59,13 @@ function makeCreateEnv(
     const database = databaseManager.forPlugin(plugin);
     const cache = cacheManager.forPlugin(plugin);
     const scheduler = taskScheduler.forPlugin(plugin);
-    const fetchApi = createFetchApi({
-      middleware: [
-        createFetchHeaderMiddleware('User-Agent', plugin),
-        createIdentityFetchMiddleware({
-          identity,
-          getCurrentRequest,
-          allowUrl: createUrlFilter({
-            config,
-            configKeys: ['backend.baseUrl', 'adp.apiBaseUrl'],
-          }),
-        }),
-      ],
+    const fetchApi = defaultFetchApi({
+      config,
+      additionalConfigKeys: ['adp.apiBaseUrl'],
+      getCurrentRequest,
+      headers: {
+        'User-Agent': plugin,
+      },
     });
     return {
       logger,

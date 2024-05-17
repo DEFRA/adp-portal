@@ -27,10 +27,7 @@ import { DeliveryProjectUserStore } from '../deliveryProjectUser';
 import { createDeliveryProjectUserRouter } from './deliveryProjectUserRouter';
 import {
   createCurrentRequestMiddleware,
-  createFetchApi,
-  createFetchHeaderMiddleware,
-  createIdentityFetchMiddleware,
-  createUrlFilter,
+  defaultFetchApi,
 } from '@internal/fetch-api-backend';
 
 export interface ServerOptions {
@@ -62,18 +59,13 @@ export async function startStandaloneServer(
     issuer: await discovery.getExternalBaseUrl('auth'),
   });
   const currentRequestMiddleware = createCurrentRequestMiddleware();
-  const fetchApi = createFetchApi({
-    middleware: [
-      createFetchHeaderMiddleware(['User-Agent', 'adp-backend-standalone']),
-      createIdentityFetchMiddleware({
-        identity,
-        allowUrl: createUrlFilter({
-          config,
-          configKeys: ['backend.baseUrl', 'adp.apiBaseUrl'],
-        }),
-        getCurrentRequest: currentRequestMiddleware.getCurrentRequest,
-      }),
-    ],
+  const fetchApi = defaultFetchApi({
+    config,
+    additionalConfigKeys: ['adp.apiBaseUrl'],
+    getCurrentRequest: currentRequestMiddleware.getCurrentRequest,
+    headers: {
+      'User-Agent': 'plugin-adp-backend',
+    },
   });
   const dbClient = await database.getClient();
   const armsLengthBodyStore = new ArmsLengthBodyStore(dbClient);

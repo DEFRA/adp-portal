@@ -1,4 +1,4 @@
-import { createFetchHeaderMiddleware } from './createFetchHeaderMiddleware';
+import { createHeaderFetchMiddleware } from './createHeaderFetchMiddleware';
 import { randomUUID } from 'node:crypto';
 
 describe('createFetchHeaderMiddleware', () => {
@@ -17,7 +17,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(apply)(fetch);
+      const actual = createHeaderFetchMiddleware(apply)(fetch);
       expect(apply).not.toHaveBeenCalled();
       const result = await actual(request, init);
 
@@ -40,7 +40,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(apply)(fetch);
+      const actual = createHeaderFetchMiddleware(apply)(fetch);
       expect(apply).not.toHaveBeenCalled();
       const result = await actual(url);
 
@@ -69,7 +69,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(apply)(fetch);
+      const actual = createHeaderFetchMiddleware(apply)(fetch);
       expect(apply).not.toHaveBeenCalled();
       const result = await actual('https://test.com', init);
 
@@ -101,7 +101,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(apply)(fetch);
+      const actual = createHeaderFetchMiddleware(apply)(fetch);
       expect(apply).not.toHaveBeenCalled();
       const result = await actual('https://test.com', init);
 
@@ -134,7 +134,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(key, value)(fetch);
+      const actual = createHeaderFetchMiddleware(key, value)(fetch);
       const result = await actual(request, init);
 
       // assert
@@ -154,7 +154,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(key, value)(fetch);
+      const actual = createHeaderFetchMiddleware(key, value)(fetch);
       const result = await actual('https://test.com');
 
       // assert
@@ -183,7 +183,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(key, value)(fetch);
+      const actual = createHeaderFetchMiddleware(key, value)(fetch);
       const result = await actual('https://test.com', init);
 
       // assert
@@ -213,7 +213,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(key, value)(fetch);
+      const actual = createHeaderFetchMiddleware(key, value)(fetch);
       const result = await actual('https://test.com', init);
 
       // assert
@@ -246,7 +246,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(key, value)(fetch);
+      const actual = createHeaderFetchMiddleware(key, value)(fetch);
       const result = await actual('https://test.com', init);
 
       // assert
@@ -255,6 +255,35 @@ describe('createFetchHeaderMiddleware', () => {
         new Headers([
           ['abc', 'def'],
           [key, 'something'],
+        ]),
+      );
+      expect(result).toBe(expected);
+      expect(fetch).toHaveBeenCalledTimes(1);
+      expect(fetch).toHaveBeenCalledWith('https://test.com', init);
+    });
+    it('Should use a header value factory', async () => {
+      // arrange
+      const key = randomUUID();
+      const value = randomUUID();
+      const fetch: jest.MockedFn<typeof global.fetch> = jest.fn();
+      const expected = new Response();
+      const headers = new Headers([['abc', 'def']]);
+      const init: RequestInit = {
+        headers,
+      };
+
+      fetch.mockResolvedValueOnce(expected);
+
+      // act
+      const actual = createHeaderFetchMiddleware(key, () => value)(fetch);
+      const result = await actual('https://test.com', init);
+
+      // assert
+      expect(init.headers).toBe(headers);
+      expect(init.headers).toMatchObject(
+        new Headers([
+          ['abc', 'def'],
+          [key, value],
         ]),
       );
       expect(result).toBe(expected);
@@ -279,7 +308,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(...kvps)(fetch);
+      const actual = createHeaderFetchMiddleware(...kvps)(fetch);
       const result = await actual(request, init);
 
       // assert
@@ -301,7 +330,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(...kvps)(fetch);
+      const actual = createHeaderFetchMiddleware(...kvps)(fetch);
       const result = await actual('https://test.com');
 
       // assert
@@ -330,7 +359,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(...kvps)(fetch);
+      const actual = createHeaderFetchMiddleware(...kvps)(fetch);
       const result = await actual('https://test.com', init);
 
       // assert
@@ -359,7 +388,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(...kvps)(fetch);
+      const actual = createHeaderFetchMiddleware(...kvps)(fetch);
       const result = await actual('https://test.com', init);
 
       // assert
@@ -391,7 +420,7 @@ describe('createFetchHeaderMiddleware', () => {
       fetch.mockResolvedValueOnce(expected);
 
       // act
-      const actual = createFetchHeaderMiddleware(...kvps)(fetch);
+      const actual = createHeaderFetchMiddleware(...kvps)(fetch);
       const result = await actual('https://test.com', init);
 
       // assert
@@ -407,5 +436,41 @@ describe('createFetchHeaderMiddleware', () => {
       expect(fetch).toHaveBeenCalledTimes(1);
       expect(fetch).toHaveBeenCalledWith('https://test.com', init);
     });
+
+    it('Should use a header value factory', async () => {
+      // arrange
+      const kvps = [
+        [randomUUID(), randomUUID()],
+        [randomUUID(), randomUUID()],
+      ] as [string, string][];
+      const fetch: jest.MockedFn<typeof global.fetch> = jest.fn();
+      const expected = new Response();
+      const headers = new Headers([
+        ['abc', 'def'],
+        [kvps[0][0], 'something'],
+      ]);
+      const init: RequestInit = {
+        headers,
+      };
+
+      fetch.mockResolvedValueOnce(expected);
+
+      // act
+      const actual = createHeaderFetchMiddleware(...kvps.map(toFactory))(fetch);
+      const result = await actual('https://test.com', init);
+
+      // assert
+      expect(init.headers).toBe(headers);
+      expect(init.headers).toMatchObject(
+        new Headers([['abc', 'def'], ...kvps]),
+      );
+      expect(result).toBe(expected);
+      expect(fetch).toHaveBeenCalledTimes(1);
+      expect(fetch).toHaveBeenCalledWith('https://test.com', init);
+    });
   });
 });
+
+function toFactory(kvp: [string, string]): [string, () => string] {
+  return [kvp[0], () => kvp[1]];
+}

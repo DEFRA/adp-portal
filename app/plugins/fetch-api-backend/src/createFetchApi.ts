@@ -1,6 +1,10 @@
 import type { FetchApi } from './FetchApi';
 
 export type FetchMiddleware = (next: typeof fetch) => typeof fetch;
+export type FetchMiddlewareCondition = (
+  ...args: Parameters<typeof fetch>
+) => boolean;
+
 export function createFetchApi(options: {
   baseImplementation?: typeof fetch;
   middleware?: FetchMiddleware | FetchMiddleware[];
