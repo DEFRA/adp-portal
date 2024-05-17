@@ -1,17 +1,9 @@
-/*
- * Hi!
- *
- * Note that this is an EXAMPLE Backstage backend. Please check the README.
- *
- * Happy hacking!
- */
-
+import type { Request } from 'express';
 import Router from 'express-promise-router';
 import {
   createServiceBuilder,
   loadBackendConfig,
   getRootLogger,
-  useHotMemoize,
   notFoundHandler,
   CacheManager,
   DatabaseManager,
@@ -35,8 +27,18 @@ import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 import azureDevOps from './plugins/azure-devops';
 import kubernetes from './plugins/kubernetes';
+import {
+  createCurrentRequestMiddleware,
+  createFetchApi,
+  createIdentityFetchMiddleware,
+  createFetchHeaderMiddleware,
+  createUrlFilter,
+} from '@internal/fetch-api-backend';
 
-function makeCreateEnv(config: Config) {
+function makeCreateEnv(
+  config: Config,
+  getCurrentRequest: () => Request | undefined,
+) {
   const root = getRootLogger();
   const reader = UrlReaders.default({ logger: root, config });
   const discovery = HostDiscovery.fromConfig(config);
@@ -60,6 +62,19 @@ function makeCreateEnv(config: Config) {
     const database = databaseManager.forPlugin(plugin);
     const cache = cacheManager.forPlugin(plugin);
     const scheduler = taskScheduler.forPlugin(plugin);
+    const fetchApi = createFetchApi({
+      middleware: [
+        createFetchHeaderMiddleware('User-Agent', plugin),
+        createIdentityFetchMiddleware({
+          identity,
+          getCurrentRequest,
+          allowUrl: createUrlFilter({
+            config,
+            configKeys: ['backend.baseUrl', 'adp.apiBaseUrl'],
+          }),
+        }),
+      ],
+    });
     return {
       logger,
       database,
@@ -71,6 +86,7 @@ function makeCreateEnv(config: Config) {
       scheduler,
       permissions,
       identity,
+      fetchApi,
     };
   };
 }
@@ -80,31 +96,24 @@ async function main() {
     argv: process.argv,
     logger: getRootLogger(),
   });
-  const createEnv = makeCreateEnv(config);
-
-  const catalogEnv = useHotMemoize(module, () => createEnv('catalog'));
-  const scaffolderEnv = useHotMemoize(module, () => createEnv('scaffolder'));
-  const authEnv = useHotMemoize(module, () => createEnv('auth'));
-  const proxyEnv = useHotMemoize(module, () => createEnv('proxy'));
-  const techdocsEnv = useHotMemoize(module, () => createEnv('techdocs'));
-  const searchEnv = useHotMemoize(module, () => createEnv('search'));
-  const appEnv = useHotMemoize(module, () => createEnv('app'));
-  const azureDevOpsEnv = useHotMemoize(module, () => createEnv('azure-devops'));
-  const kubernetesEnv = useHotMemoize(module, () => createEnv('kubernetes'));
-  const permissionEnv = useHotMemoize(module, () => createEnv('permission'));
-  const adpEnv = useHotMemoize(module, () => createEnv('adp'));
+  const currentRequestMiddleware = createCurrentRequestMiddleware();
+  const createEnv = makeCreateEnv(
+    config,
+    currentRequestMiddleware.getCurrentRequest,
+  );
 
   const apiRouter = Router();
-  apiRouter.use('/catalog', await catalog(catalogEnv));
-  apiRouter.use('/scaffolder', await scaffolder(scaffolderEnv));
-  apiRouter.use('/auth', await auth(authEnv));
-  apiRouter.use('/techdocs', await techdocs(techdocsEnv));
-  apiRouter.use('/proxy', await proxy(proxyEnv));
-  apiRouter.use('/search', await search(searchEnv));
-  apiRouter.use('/azure-devops', await azureDevOps(azureDevOpsEnv));
-  apiRouter.use('/kubernetes', await kubernetes(kubernetesEnv));
-  apiRouter.use('/permission', await permission(permissionEnv));
-  apiRouter.use('/adp', await adp(adpEnv));
+  apiRouter.use(currentRequestMiddleware);
+  apiRouter.use('/catalog', await catalog(createEnv('catalog')));
+  apiRouter.use('/scaffolder', await scaffolder(createEnv('scaffolder')));
+  apiRouter.use('/auth', await auth(createEnv('auth')));
+  apiRouter.use('/techdocs', await techdocs(createEnv('techdocs')));
+  apiRouter.use('/proxy', await proxy(createEnv('proxy')));
+  apiRouter.use('/search', await search(createEnv('search')));
+  apiRouter.use('/azure-devops', await azureDevOps(createEnv('azure-devops')));
+  apiRouter.use('/kubernetes', await kubernetes(createEnv('kubernetes')));
+  apiRouter.use('/permission', await permission(createEnv('permission')));
+  apiRouter.use('/adp', await adp(createEnv('adp')));
 
   // Add backends ABOVE this line; this 404 handler is the catch-all fallback
   apiRouter.use(notFoundHandler());
@@ -112,7 +121,7 @@ async function main() {
   const service = createServiceBuilder(module)
     .loadConfig(config)
     .addRouter('/api', apiRouter)
-    .addRouter('', await app(appEnv));
+    .addRouter('', await app(createEnv('app')));
 
   await service.start().catch(err => {
     console.log(err);

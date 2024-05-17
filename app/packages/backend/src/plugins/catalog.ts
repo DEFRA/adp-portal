@@ -33,6 +33,7 @@ export default async function createPlugin(
     AdpDatabaseEntityProvider.create(env.discovery, {
       logger: env.logger,
       scheduler: env.scheduler,
+      fetchApi: env.fetchApi,
     }),
   );
 
