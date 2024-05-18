@@ -8,37 +8,41 @@ import { createUrlFetchMiddlewareFilter } from './createUrlFetchMiddlewareFilter
 import type { Request } from 'express';
 import type { CreateUrlFilterOptions } from './createUrlFilter';
 
-export function defaultFetchApi(
-  options: Omit<CreateUrlFilterOptions, 'configKeys'> & {
+export function defaultFetchApi(options: {
+  authorize?: Omit<CreateUrlFilterOptions, 'configKeys'> & {
     config: Config;
     additionalConfigKeys?: string[];
     getCurrentRequest: () => Request | undefined;
-    headers?: Record<string, HeaderValue>;
-    middleware?: FetchMiddleware | FetchMiddleware[];
-  },
-) {
-  const {
-    getCurrentRequest,
-    headers = {},
-    middleware = [],
-    additionalConfigKeys = [],
-    ...filterOptions
-  } = options;
+  };
+  headers?: Record<string, HeaderValue>;
+  middleware?: FetchMiddleware | FetchMiddleware[];
+}) {
+  const { headers = {}, middleware = [], authorize } = options;
 
-  const urlFilter = createUrlFetchMiddlewareFilter({
-    ...filterOptions,
-    configKeys: ['backend.baseUrl', ...additionalConfigKeys],
-  });
+  const defaultMiddleware = [
+    createHeaderFetchMiddleware(...Object.entries(headers)),
+  ];
 
-  return createFetchApi({
-    middleware: [
-      createHeaderFetchMiddleware(...Object.entries(headers)),
+  if (authorize) {
+    const {
+      getCurrentRequest,
+      additionalConfigKeys = [],
+      ...filterOptions
+    } = authorize;
+    const urlFilter = createUrlFetchMiddlewareFilter({
+      ...filterOptions,
+      configKeys: ['backend.baseUrl', ...additionalConfigKeys],
+    });
+    defaultMiddleware.push(
       createHeaderFetchMiddleware('Authorization', (...args) =>
         urlFilter(...args)
           ? getCurrentRequest()?.header('authorization')
           : undefined,
       ),
-      middleware,
-    ].flat(),
+    );
+  }
+
+  return createFetchApi({
+    middleware: [defaultMiddleware, middleware].flat(),
   });
 }

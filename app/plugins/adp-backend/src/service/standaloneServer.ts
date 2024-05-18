@@ -60,9 +60,11 @@ export async function startStandaloneServer(
   });
   const currentRequestMiddleware = createCurrentRequestMiddleware();
   const fetchApi = defaultFetchApi({
-    config,
-    additionalConfigKeys: ['adp.apiBaseUrl'],
-    getCurrentRequest: currentRequestMiddleware.getCurrentRequest,
+    authorize: {
+      config,
+      additionalConfigKeys: ['adp.apiBaseUrl'],
+      getCurrentRequest: currentRequestMiddleware.getCurrentRequest,
+    },
     headers: {
       'User-Agent': 'plugin-adp-backend',
     },

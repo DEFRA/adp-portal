@@ -60,9 +60,11 @@ function makeCreateEnv(
     const cache = cacheManager.forPlugin(plugin);
     const scheduler = taskScheduler.forPlugin(plugin);
     const fetchApi = defaultFetchApi({
-      config,
-      additionalConfigKeys: ['adp.apiBaseUrl'],
-      getCurrentRequest,
+      authorize: {
+        config,
+        additionalConfigKeys: ['adp.apiBaseUrl'],
+        getCurrentRequest,
+      },
       headers: {
         'User-Agent': plugin,
       },
