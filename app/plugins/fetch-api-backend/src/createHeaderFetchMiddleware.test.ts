@@ -445,10 +445,7 @@ describe('createFetchHeaderMiddleware', () => {
       ] as [string, string][];
       const fetch: jest.MockedFn<typeof global.fetch> = jest.fn();
       const expected = new Response();
-      const headers = new Headers([
-        ['abc', 'def'],
-        [kvps[0][0], 'something'],
-      ]);
+      const headers = new Headers([['abc', 'def']]);
       const init: RequestInit = {
         headers,
       };
