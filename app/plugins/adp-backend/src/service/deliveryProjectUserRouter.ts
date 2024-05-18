@@ -105,33 +105,32 @@ export function createDeliveryProjectUserRouter(
       body.user_catalog_name,
       catalog,
     );
-    if (catalogUser.success) {
-      const addUser: AddDeliveryProjectUser = {
-        ...body,
-        name: catalogUser.value.spec.profile!.displayName!,
-        email: catalogUser.value.metadata.annotations!['microsoft.com/email'],
-        aad_entity_ref_id:
-          catalogUser.value.metadata.annotations![
-            'graph.microsoft.com/user-id'
-          ],
-        delivery_project_id: body.delivery_project_id,
-      };
-
-      const addedUser = await deliveryProjectUserStore.add(addUser);
-      if (addedUser.success) {
-        await teamSyncronizer
-          .syncronizeById(addedUser.value.delivery_project_id)
-          .catch(reason =>
-            logger.warn(
-              `POST /deliveryProjectUser - could not syncronize GitHub team. ${reason}`,
-            ),
-          );
-      }
-
-      respond(body, res, addedUser, errorMapping, { ok: 201 });
+    if (!catalogUser.success) {
+      respond(body, res, catalogUser, errorMapping);
+      return;
     }
 
-    respond(body, res, catalogUser, errorMapping);
+    const addUser: AddDeliveryProjectUser = {
+      ...body,
+      name: catalogUser.value.spec.profile!.displayName!,
+      email: catalogUser.value.metadata.annotations!['microsoft.com/email'],
+      aad_entity_ref_id:
+        catalogUser.value.metadata.annotations!['graph.microsoft.com/user-id'],
+      delivery_project_id: body.delivery_project_id,
+    };
+
+    const addedUser = await deliveryProjectUserStore.add(addUser);
+    if (addedUser.success) {
+      await teamSyncronizer
+        .syncronizeById(addedUser.value.delivery_project_id)
+        .catch(reason =>
+          logger.warn(
+            `POST /deliveryProjectUser - could not syncronize GitHub team. ${reason}`,
+          ),
+        );
+    }
+
+    respond(body, res, addedUser, errorMapping, { ok: 201 });
   });
 
   router.patch('/deliveryProjectUser', async (req, res) => {
