@@ -66,7 +66,7 @@ function makeCreateEnv(
         getCurrentRequest,
       },
       headers: {
-        'User-Agent': plugin,
+        'User-Agent': `adp-portal-plugin-${plugin}`,
       },
     });
     return {
