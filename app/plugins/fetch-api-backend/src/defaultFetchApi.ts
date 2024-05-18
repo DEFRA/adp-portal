@@ -1,5 +1,5 @@
 import type { Config } from '@backstage/config';
-import { type FetchMiddleware, createFetchApi } from './createFetchApi';
+import { createFetchApi, type CreateFetchApiOptions } from './createFetchApi';
 import {
   type HeaderValue,
   createHeaderFetchMiddleware,
@@ -8,16 +8,17 @@ import { createUrlFetchMiddlewareFilter } from './createUrlFetchMiddlewareFilter
 import type { Request } from 'express';
 import type { CreateUrlFilterOptions } from './createUrlFilter';
 
-export function defaultFetchApi(options: {
-  authorize?: Omit<CreateUrlFilterOptions, 'configKeys'> & {
-    config: Config;
-    additionalConfigKeys?: string[];
-    getCurrentRequest: () => Request | undefined;
-  };
-  headers?: Record<string, HeaderValue>;
-  middleware?: FetchMiddleware | FetchMiddleware[];
-}) {
-  const { headers = {}, middleware = [], authorize } = options;
+export function defaultFetchApi(
+  options: CreateFetchApiOptions & {
+    authorize?: Omit<CreateUrlFilterOptions, 'configKeys'> & {
+      config: Config;
+      additionalConfigKeys?: string[];
+      getCurrentRequest: () => Request | undefined;
+    };
+    headers?: Record<string, HeaderValue>;
+  },
+) {
+  const { headers = {}, middleware = [], authorize, ...fetchOptions } = options;
 
   const defaultMiddleware = [
     createHeaderFetchMiddleware(...Object.entries(headers)),
@@ -43,6 +44,7 @@ export function defaultFetchApi(options: {
   }
 
   return createFetchApi({
+    ...fetchOptions,
     middleware: [defaultMiddleware, middleware].flat(),
   });
 }

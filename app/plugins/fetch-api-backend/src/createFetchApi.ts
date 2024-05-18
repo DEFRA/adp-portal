@@ -5,10 +5,12 @@ export type FetchMiddlewareCondition = (
   ...args: Parameters<typeof fetch>
 ) => boolean;
 
-export function createFetchApi(options: {
+export type CreateFetchApiOptions = {
   baseImplementation?: typeof fetch;
   middleware?: FetchMiddleware | FetchMiddleware[];
-}): FetchApi {
+};
+
+export function createFetchApi(options: CreateFetchApiOptions): FetchApi {
   const middleware = [options.middleware ?? []].flat();
   return {
     fetch: middleware.reduceRight(
