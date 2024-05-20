@@ -54,7 +54,8 @@
   "files": [
     "dist",
     "migrations",
-    "seedData"
+    "seedData",
+    "config.d.ts"
   ],
   "configSchema": "config.d.ts"
 }
