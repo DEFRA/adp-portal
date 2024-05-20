@@ -157,6 +157,13 @@ const darkTheme = createUnifiedTheme({
   },
   fontFamily: "'GDS Transport',arial, sans-serif",
   components: {
+    BackstageHeader: {
+      styleOverrides: {
+        header: {
+          borderBottom: `4px solid ${styles.primaryColour}`,
+        },
+      },
+    },
     MuiTypography: {
       styleOverrides: {
         h2: {
