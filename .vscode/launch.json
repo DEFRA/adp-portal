@@ -2,14 +2,40 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Start Backend",
+      "name": "Backend",
       "type": "node",
       "request": "launch",
       "args": ["package", "start"],
       "cwd": "${workspaceFolder}/app/packages/backend",
       "program": "node_modules/.bin/backstage-cli",
       "skipFiles": ["<node_internals>/**"],
-      "console": "integratedTerminal"
+      "envFile": "${workspaceFolder}/.env",
+      "internalConsoleOptions": "openOnSessionStart",
+      "killBehavior": "polite",
+      "outputCapture": "std",
+      "presentation": {
+        "hidden": false,
+        "group": "application",
+        "order": 1
+      }
+    },
+    {
+      "name": "App",
+      "type": "node",
+      "request": "launch",
+      "args": ["package", "start"],
+      "cwd": "${workspaceFolder}/app/packages/app",
+      "program": "node_modules/.bin/backstage-cli",
+      "skipFiles": ["<node_internals>/**"],
+      "envFile": "${workspaceFolder}/.env",
+      "internalConsoleOptions": "openOnSessionStart",
+      "killBehavior": "polite",
+      "outputCapture": "std",
+      "presentation": {
+        "hidden": false,
+        "group": "application",
+        "order": 1
+      }
     },
     {
       "name": "Attach",
@@ -20,7 +46,7 @@
     },
     {
       "type": "node",
-      "name": "Debug Jest tests",
+      "name": "Jest",
       "request": "launch",
       "args": [
         "repo",
@@ -30,13 +56,17 @@
         "--testTimeout=999999999"
       ],
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
       "program": "node_modules/.bin/backstage-cli",
-      "cwd": "${workspaceFolder}/app"
+      "cwd": "${workspaceFolder}/app",
+      "presentation": {
+        "hidden": false,
+        "group": "testing",
+        "order": 1
+      }
     },
     {
       "type": "node",
-      "name": "Debug current jest file",
+      "name": "Jest: current file",
       "request": "launch",
       "args": [
         "repo",
@@ -46,30 +76,26 @@
         "--watchAll=false",
         "--testTimeout=99999999"
       ],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
       "program": "node_modules/.bin/backstage-cli",
-      "cwd": "${workspaceFolder}/app"
-    },
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/app",
+      "presentation": {
+        "hidden": false,
+        "group": "testing",
+        "order": 1
+      }
+    }
+  ],
+  "compounds": [
     {
-      "type": "node",
-      "name": "Debug Jest tests-adp",
-      "request": "launch",
-      "args": ["repo", "test", "--runInBand", "--watchAll=false"],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "program": "node_modules/.bin/backstage-cli",
-      "cwd": "${workspaceFolder}/app/plugins/adp"
-    },
-    {
-      "type": "node",
-      "name": "Debug Jest tests-adp-backend",
-      "request": "launch",
-      "args": ["repo", "test", "--runInBand", "--watchAll=false", "--coverage"],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "program": "node_modules/.bin/backstage-cli",
-      "cwd": "${workspaceFolder}/app/plugins/adp-backend"
+      "name": "App + Backend",
+      "configurations": ["App", "Backend"],
+      "stopAll": true,
+      "presentation": {
+        "hidden": false,
+        "group": "application",
+        "order": 0
+      }
     }
   ]
 }
