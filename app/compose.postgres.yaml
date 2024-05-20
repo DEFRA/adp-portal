@@ -1,14 +1,4 @@
-version: "3.5"
-
 services:
-  editor:
-    build: editor
-    init: true
-    env_file:
-      - ../.env
-    volumes:
-      - azurecli:/home/node/.azure
-
   postgres:
     image: postgres
     environment:
@@ -21,4 +11,3 @@ services:
 
 volumes:
   postgres:
-  azurecli:

@@ -43,9 +43,9 @@ import userEvent from '@testing-library/user-event';
 import type { RenderResult } from '@testing-library/react';
 import { randomUUID } from 'node:crypto';
 
-async function itShouldRenderTabs(when: string, entity: Entity): Promise<void>;
-async function itShouldRenderTabs(entity: Entity): Promise<void>;
-async function itShouldRenderTabs(...args: [string, Entity] | [Entity]) {
+function itShouldRenderTabs(when: string, entity: Entity): void;
+function itShouldRenderTabs(entity: Entity): void;
+function itShouldRenderTabs(...args: [string, Entity] | [Entity]) {
   const [when, entity] = args.length === 1 ? ['', ...args] : args;
   // eslint-disable-next-line jest/valid-title
   it(`Should render tabs ${when}`.trim(), async () => {
@@ -55,16 +55,13 @@ async function itShouldRenderTabs(...args: [string, Entity] | [Entity]) {
   });
 }
 
-async function itShouldRenderEntityHome(
+function itShouldRenderEntityHome(
   when: string,
   tabName: string,
   entity: Entity,
-): Promise<void>;
-async function itShouldRenderEntityHome(
-  tabName: string,
-  entity: Entity,
-): Promise<void>;
-async function itShouldRenderEntityHome(
+): void;
+function itShouldRenderEntityHome(tabName: string, entity: Entity): void;
+function itShouldRenderEntityHome(
   ...args: [string, string, Entity] | [string, Entity]
 ) {
   const [when, tabName, entity] = args.length === 2 ? ['', ...args] : args;
@@ -85,16 +82,13 @@ async function itShouldRenderEntityHome(
   });
 }
 
-async function itShouldRenderEntityPage(
+function itShouldRenderEntityPage(
   when: string,
   tabName: string,
   entity: Entity,
-): Promise<void>;
-async function itShouldRenderEntityPage(
-  tabName: string,
-  entity: Entity,
-): Promise<void>;
-async function itShouldRenderEntityPage(
+): void;
+function itShouldRenderEntityPage(tabName: string, entity: Entity): void;
+function itShouldRenderEntityPage(
   ...args: [string, string, Entity] | [string, Entity]
 ) {
   const [when, tabName, entity] = args.length === 2 ? ['', ...args] : args;

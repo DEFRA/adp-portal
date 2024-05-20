@@ -62,7 +62,9 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
     <Sidebar>
       <SidebarLogo />
       <SidebarGroup label="Search" icon={<SearchIcon />} to="/search">
-        <span id="search-modal-title" style={{display: 'none'}}> ADP Search </span>
+        <span id="search-modal-title" style={{ display: 'none' }}>
+          ADP Search
+        </span>
         <SidebarSearchModal />
       </SidebarGroup>
       <SidebarDivider />

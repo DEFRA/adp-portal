@@ -1,16 +1,23 @@
 const path = require('path');
+const tsExtensions = ['ts', 'tsx', 'cts', 'ctsx', 'mts', 'mtsx'];
+
 /** @type {import('eslint').Linter.Config} */
 module.exports = require('@backstage/cli/config/eslint-factory').createConfig(
   __dirname,
   {
-    parserOptions: {
-      project: path.resolve(__filename, '../tsconfig.json'),
-    },
     root: true,
-    ignorePatterns: ['**/seedData/', '**/migrations/', '**/*.d.ts'],
-    rules: {
-      '@typescript-eslint/consistent-type-imports': 'error',
-      '@typescript-eslint/no-floating-promises': 'error',
-    },
+    ignorePatterns: ['**/seedData/', '**/migrations/'],
+    overrides: [
+      {
+        files: tsExtensions.map(x => `*.${x}`),
+        parserOptions: {
+          project: path.resolve(__filename, '../tsconfig.json'),
+        },
+        rules: {
+          '@typescript-eslint/consistent-type-imports': 'error',
+          '@typescript-eslint/no-floating-promises': 'error',
+        },
+      },
+    ],
   },
 );

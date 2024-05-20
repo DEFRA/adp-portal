@@ -1,4 +1,4 @@
-import { JsonValue } from '@backstage/types';
+import type { JsonValue } from '@backstage/types';
 
 export function toDotnetProjectName(input: JsonValue): string | undefined {
   return input

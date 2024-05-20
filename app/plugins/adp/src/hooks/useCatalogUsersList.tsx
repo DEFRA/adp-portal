@@ -16,42 +16,38 @@ export const useCatalogUsersList = (): { label: string; value: string }[] => {
 
   useEffect(() => {
     (async () => {
-      try {
-        const userEntities = await catalog.getEntities({
-          filter: {
-            kind: 'User',
-          },
-          fields: [
-            'metadata.name',
-            'metadata.annotations.graph.microsoft.com/user-id',
-            'metadata.annotations.microsoft.com/email',
-            'spec.profile.displayName',
-          ],
-          order: {
-            field: 'metadata.annotations.microsoft.com/email',
-            order: 'asc',
-          },
-        });
+      const userEntities = await catalog.getEntities({
+        filter: {
+          kind: 'User',
+        },
+        fields: [
+          'metadata.name',
+          'metadata.annotations.graph.microsoft.com/user-id',
+          'metadata.annotations.microsoft.com/email',
+          'spec.profile.displayName',
+        ],
+        order: {
+          field: 'metadata.annotations.microsoft.com/email',
+          order: 'asc',
+        },
+      });
 
-        const users = userEntities.items
-          .map((entity: Entity) => {
-            const userEntity = entity as UserEntityV1alpha1;
-            const displayName =
-              userEntity.spec.profile!.displayName ?? userEntity.metadata.name;
-            return {
-              label: displayName,
-              value: userEntity.metadata.name,
-            };
-          })
-          .sort((a: { label: string }, b: { label: string }) =>
-            a.label.localeCompare(b.label),
-          );
+      const users = userEntities.items
+        .map((entity: Entity) => {
+          const userEntity = entity as UserEntityV1alpha1;
+          const displayName =
+            userEntity.spec.profile!.displayName ?? userEntity.metadata.name;
+          return {
+            label: displayName,
+            value: userEntity.metadata.name,
+          };
+        })
+        .sort((a: { label: string }, b: { label: string }) =>
+          a.label.localeCompare(b.label),
+        );
 
-        setOptions(users);
-      } catch (error: any) {
-        errorApi.post(error);
-      }
-    })();
+      setOptions(users);
+    })().catch(err => errorApi.post(err));
   }, [catalog, errorApi]);
 
   return options;
