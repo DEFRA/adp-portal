@@ -1,6 +1,6 @@
 import type { Config } from '@backstage/config';
+import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 import type { GithubTeamDetails } from '@internal/plugin-adp-common';
-import fetch from 'node-fetch';
 
 export type SetTeamRequest = {
   name?: string;
@@ -14,12 +14,12 @@ export type IGitHubTeamsApi = {
   [P in keyof GitHubTeamsApi]: GitHubTeamsApi[P];
 };
 export class GitHubTeamsApi {
-  readonly #fetch: typeof fetch;
+  readonly #fetchApi: FetchApi;
   readonly #config: Config;
 
-  constructor(config: Config, fetchApi = fetch) {
+  constructor(config: Config, fetchApi: FetchApi) {
     this.#config = config;
-    this.#fetch = fetchApi;
+    this.#fetchApi = fetchApi;
   }
 
   public async createTeam(request: SetTeamRequest): Promise<GithubTeamDetails> {
@@ -39,7 +39,7 @@ export class GitHubTeamsApi {
   ): Promise<GithubTeamDetails> {
     const baseUrl = this.#config.getString('adp.githubTeams.apiBaseUrl');
     const endpoint = teamId === null ? baseUrl : `${baseUrl}/${teamId}`;
-    const response = await this.#fetch(endpoint, {
+    const response = await this.#fetchApi.fetch(endpoint, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

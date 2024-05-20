@@ -1,7 +1,7 @@
 import type { Config } from '@backstage/config';
 import type { DeliveryProject } from '@internal/plugin-adp-common';
-import fetch from 'node-fetch';
 import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 
 export type FluxConfig = {
   key: string;
@@ -28,21 +28,28 @@ export type FluxTeamConfig = {
   configVariables: FluxConfig[];
 };
 
+export type IFluxConfigApi = { [P in keyof FluxConfigApi]: FluxConfigApi[P] };
 export class FluxConfigApi {
-  private readonly apiBaseUrl: string;
-  private readonly deliveryProgrammeStore: IDeliveryProgrammeStore;
-  private readonly config: Config;
+  readonly #apiBaseUrl: string;
+  readonly #deliveryProgrammeStore: IDeliveryProgrammeStore;
+  readonly #config: Config;
+  readonly #fetchApi: FetchApi;
 
-  constructor(config: Config, deliveryProgrammeStore: IDeliveryProgrammeStore) {
-    this.apiBaseUrl = config.getString('adp.fluxOnboarding.apiBaseUrl');
-    this.deliveryProgrammeStore = deliveryProgrammeStore;
-    this.config = config;
+  constructor(
+    config: Config,
+    deliveryProgrammeStore: IDeliveryProgrammeStore,
+    fetchApi: FetchApi,
+  ) {
+    this.#apiBaseUrl = config.getString('adp.fluxOnboarding.apiBaseUrl');
+    this.#deliveryProgrammeStore = deliveryProgrammeStore;
+    this.#config = config;
+    this.#fetchApi = fetchApi;
   }
 
   async createFluxConfig(deliveryProject: DeliveryProject) {
-    const endpoint = `${this.apiBaseUrl}/${deliveryProject.name}`;
+    const endpoint = `${this.#apiBaseUrl}/${deliveryProject.name}`;
 
-    const deliveryProgramme = await this.deliveryProgrammeStore.get(
+    const deliveryProgramme = await this.#deliveryProgrammeStore.get(
       deliveryProject.delivery_programme_id,
     );
 
@@ -64,7 +71,7 @@ export class FluxConfigApi {
       configVariables: configValues,
     };
 
-    const response = await fetch(endpoint, {
+    const response = await this.#fetchApi.fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -80,10 +87,10 @@ export class FluxConfigApi {
   }
 
   async getFluxConfig(teamName: string): Promise<FluxTeamConfig | null> {
-    const endpoint = `${this.apiBaseUrl}/${teamName}`;
+    const endpoint = `${this.#apiBaseUrl}/${teamName}`;
     const statusCodeNotFound = 404;
 
-    const response = await fetch(endpoint, {
+    const response = await this.#fetchApi.fetch(endpoint, {
       method: 'GET',
     });
 
@@ -104,8 +111,8 @@ export class FluxConfigApi {
   private parseConfigKeyValues(configKey: string) {
     const keyValueMap = new Map();
 
-    if (this.config.has(configKey)) {
-      this.config.getConfigArray(configKey).forEach(configVar => {
+    if (this.#config.has(configKey)) {
+      this.#config.getConfigArray(configKey).forEach(configVar => {
         keyValueMap.set(
           configVar.getString('key'),
           configVar.getString('value'),

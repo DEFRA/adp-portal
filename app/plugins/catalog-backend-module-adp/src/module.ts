@@ -22,6 +22,9 @@ export const catalogModuleAdpEntityProvider = createBackendModule({
           AdpDatabaseEntityProvider.create(discovery, {
             logger: loggerToWinstonLogger(logger),
             scheduler: scheduler,
+            fetchApi: {
+              fetch,
+            },
           }),
         );
       },

@@ -14,6 +14,7 @@ import {
   ArmsLengthBodyStore,
   DeliveryProjectUserStore,
   createDeliveryProjectUserRouter,
+  FluxConfigApi,
 } from '@internal/plugin-adp-backend';
 import { Router } from 'express';
 import type { PluginEnvironment } from '../types';
@@ -24,7 +25,8 @@ export default async function createPlugin({
   discovery,
   database,
   config,
-}: PluginEnvironment): Promise<Router> {
+  fetchApi,
+}: PluginEnvironment) {
   await initializeAdpDatabase(database);
 
   const dbClient = await database.getClient();
@@ -38,9 +40,14 @@ export default async function createPlugin({
     discovery,
     issuer: await discovery.getExternalBaseUrl('auth'),
   });
+  const fluxConfigApi = new FluxConfigApi(
+    config,
+    deliveryProgrammeStore,
+    fetchApi,
+  );
   const catalog = new CatalogClient({ discoveryApi: discovery });
   const teamSyncronizer = new DeliveryProjectGithubTeamsSyncronizer(
-    new GitHubTeamsApi(config),
+    new GitHubTeamsApi(config, fetchApi),
     deliveryProjectStore,
     githubTeamStore,
     deliveryProjectUserStore,
@@ -65,11 +72,10 @@ export default async function createPlugin({
   const deliveryProjectRouter = createProjectRouter({
     logger,
     identity,
-    config,
-    deliveryProgrammeStore,
     deliveryProjectStore,
     teamSyncronizer: teamSyncronizer,
     deliveryProjectUserStore,
+    fluxConfigApi,
   });
 
   const deliveryProjectUserRouter = createDeliveryProjectUserRouter({
