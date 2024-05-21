@@ -52,7 +52,8 @@ function testPlugin(
           http.use(router);
           router.get('/', (req, res) => {
             const context = requestContext.getContext();
-            res.status(200).end(assert(req, context));
+            const result = assert(req, context);
+            res.status(200).end(result);
           });
         },
       });
