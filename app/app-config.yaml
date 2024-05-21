@@ -196,3 +196,5 @@ adp:
         value: '20'
   githubTeams:
     apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/github/teams
+  entraIdGroups:
+    apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/AadGroup/

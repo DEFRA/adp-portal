@@ -13,6 +13,7 @@ import type {
   UpdateDeliveryProjectUserRequest,
 } from '@internal/plugin-adp-common';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
+import type { IDeliveryProjectEntraIdGroupsSyncronizer } from '../entraId';
 
 describe('createRouter', () => {
   let deliveryProjectUserApp: express.Express;
@@ -42,16 +43,23 @@ describe('createRouter', () => {
     validateEntity: jest.fn(),
   };
 
-  const mockSyncronizer: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> = {
-    syncronizeByName: jest.fn(),
-    syncronizeById: jest.fn(),
-  };
+  const mockGithubTeamSyncronizer: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> =
+    {
+      syncronizeByName: jest.fn(),
+      syncronizeById: jest.fn(),
+    };
+
+  const mockEntraIdGroupSyncronizer: jest.Mocked<IDeliveryProjectEntraIdGroupsSyncronizer> =
+    {
+      syncronizeById: jest.fn(),
+    };
 
   const mockOptions: DeliveryProjectUserRouterOptions = {
     catalog: mockCatalogClient,
     deliveryProjectUserStore: mockDeliveryProjectUserStore,
     logger: getVoidLogger(),
-    teamSyncronizer: mockSyncronizer,
+    teamSyncronizer: mockGithubTeamSyncronizer,
+    entraIdGroupSyncronizer: mockEntraIdGroupSyncronizer,
   };
 
   beforeAll(async () => {
@@ -116,7 +124,7 @@ describe('createRouter', () => {
         value: projectUser,
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      mockSyncronizer.syncronizeById.mockResolvedValue({
+      mockGithubTeamSyncronizer.syncronizeById.mockResolvedValue({
         admins: {
           id: faker.number.int(),
           description: faker.lorem.sentence(),
@@ -221,7 +229,7 @@ describe('createRouter', () => {
         success: true,
         value: projectUser,
       });
-      mockSyncronizer.syncronizeById.mockResolvedValue({
+      mockGithubTeamSyncronizer.syncronizeById.mockResolvedValue({
         admins: {
           id: faker.number.int(),
           description: faker.lorem.sentence(),

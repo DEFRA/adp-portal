@@ -14,6 +14,8 @@ import {
   ArmsLengthBodyStore,
   DeliveryProjectUserStore,
   createDeliveryProjectUserRouter,
+  EntraIdApi,
+  DeliveryProjectEntraIdGroupsSyncronizer,
 } from '@internal/plugin-adp-backend';
 import { Router } from 'express';
 import type { PluginEnvironment } from '../types';
@@ -43,6 +45,11 @@ export default async function createPlugin({
     new GitHubTeamsApi(config),
     deliveryProjectStore,
     githubTeamStore,
+    deliveryProjectUserStore,
+  );
+  const entraIdGroupSyncronizer = new DeliveryProjectEntraIdGroupsSyncronizer(
+    new EntraIdApi(config),
+    deliveryProjectStore,
     deliveryProjectUserStore,
   );
 
@@ -76,7 +83,8 @@ export default async function createPlugin({
     catalog,
     deliveryProjectUserStore,
     logger,
-    teamSyncronizer: teamSyncronizer,
+    teamSyncronizer,
+    entraIdGroupSyncronizer,
   });
 
   const deliveryProgrameAdminRouter = createDeliveryProgrammeAdminRouter({

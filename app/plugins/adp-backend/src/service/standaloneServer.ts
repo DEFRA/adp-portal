@@ -25,6 +25,10 @@ import {
 import { ArmsLengthBodyStore } from '../armsLengthBody';
 import { DeliveryProjectUserStore } from '../deliveryProjectUser';
 import { createDeliveryProjectUserRouter } from './deliveryProjectUserRouter';
+import {
+  DeliveryProjectEntraIdGroupsSyncronizer,
+  EntraIdApi,
+} from '../entraId';
 
 export interface ServerOptions {
   port: number;
@@ -68,6 +72,11 @@ export async function startStandaloneServer(
     githubTeamStore,
     deliveryProjectUserStore,
   );
+  const entraIdGroupSyncronizer = new DeliveryProjectEntraIdGroupsSyncronizer(
+    new EntraIdApi(config),
+    deliveryProjectStore,
+    deliveryProjectUserStore,
+  );
 
   const armsLengthBodyRouter = await createAlbRouter({
     logger,
@@ -98,7 +107,7 @@ export async function startStandaloneServer(
     config,
     deliveryProgrammeStore,
     deliveryProjectStore,
-    teamSyncronizer: teamSyncronizer,
+    teamSyncronizer,
     deliveryProjectUserStore,
   });
 
@@ -106,7 +115,8 @@ export async function startStandaloneServer(
     catalog,
     deliveryProjectUserStore,
     logger,
-    teamSyncronizer: teamSyncronizer,
+    teamSyncronizer,
+    entraIdGroupSyncronizer,
   });
 
   const router = Router();

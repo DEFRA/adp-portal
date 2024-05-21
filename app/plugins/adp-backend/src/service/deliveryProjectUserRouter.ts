@@ -14,6 +14,7 @@ import { z } from 'zod';
 import type { AddDeliveryProjectUser } from '../utils';
 import { getUserEntityFromCatalog } from './catalog';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
+import type { IDeliveryProjectEntraIdGroupsSyncronizer } from '../entraId';
 
 const parseCreateDeliveryProjectUserRequest =
   createParser<CreateDeliveryProjectUserRequest>(
@@ -69,13 +70,18 @@ export interface DeliveryProjectUserRouterOptions {
   deliveryProjectUserStore: IDeliveryProjectUserStore;
   catalog: CatalogApi;
   teamSyncronizer: IDeliveryProjectGithubTeamsSyncronizer;
+  entraIdGroupSyncronizer: IDeliveryProjectEntraIdGroupsSyncronizer;
 }
 
 export function createDeliveryProjectUserRouter(
   options: DeliveryProjectUserRouterOptions,
 ): express.Router {
-  const { deliveryProjectUserStore, catalog, teamSyncronizer, logger } =
-    options;
+  const {
+    deliveryProjectUserStore,
+    catalog,
+    teamSyncronizer,
+    entraIdGroupSyncronizer,
+  } = options;
 
   const router = Router();
   router.use(express.json());
@@ -119,13 +125,12 @@ export function createDeliveryProjectUserRouter(
 
       const addedUser = await deliveryProjectUserStore.add(addUser);
       if (addedUser.success) {
-        await teamSyncronizer
-          .syncronizeById(addedUser.value.delivery_project_id)
-          .catch(reason =>
-            logger.warn(
-              `POST /deliveryProjectUser - could not syncronize GitHub team. ${reason}`,
-            ),
-          );
+        await Promise.allSettled([
+          teamSyncronizer.syncronizeById(addedUser.value.delivery_project_id),
+          entraIdGroupSyncronizer.syncronizeById(
+            addedUser.value.delivery_project_id,
+          ),
+        ]);
       }
 
       respond(body, res, addedUser, errorMapping, { ok: 201 });
@@ -138,13 +143,12 @@ export function createDeliveryProjectUserRouter(
     const body = parseUpdateDeliveryProjectUserRequest(req.body);
     const result = await deliveryProjectUserStore.update(body);
     if (result.success) {
-      await teamSyncronizer
-        .syncronizeById(result.value.delivery_project_id)
-        .catch(reason =>
-          logger.warn(
-            `PATCH /deliveryProjectUser - could not syncronize GitHub team. ${reason}`,
-          ),
-        );
+      await Promise.allSettled([
+        teamSyncronizer.syncronizeById(result.value.delivery_project_id),
+        entraIdGroupSyncronizer.syncronizeById(
+          result.value.delivery_project_id,
+        ),
+      ]);
     }
     respond(body, res, result, errorMapping);
   });
