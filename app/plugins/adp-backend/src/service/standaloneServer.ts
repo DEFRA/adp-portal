@@ -26,9 +26,11 @@ import { ArmsLengthBodyStore } from '../armsLengthBody';
 import { DeliveryProjectUserStore } from '../deliveryProjectUser';
 import { createDeliveryProjectUserRouter } from './deliveryProjectUserRouter';
 import {
-  createCurrentRequestMiddleware,
-  defaultFetchApi,
+  FetchApi,
+  createFetchApiForwardAuthMiddleware,
+  createFetchApiHeadersMiddleware,
 } from '@internal/plugin-fetch-api-backend';
+import { RequestContextMiddleware } from '@internal/plugin-request-context-provider-backend';
 
 export interface ServerOptions {
   port: number;
@@ -58,16 +60,17 @@ export async function startStandaloneServer(
     discovery,
     issuer: await discovery.getExternalBaseUrl('auth'),
   });
-  const currentRequestMiddleware = createCurrentRequestMiddleware();
-  const fetchApi = defaultFetchApi({
-    authorize: {
-      config,
-      additionalConfigKeys: ['adp.apiBaseUrl'],
-      getCurrentRequest: currentRequestMiddleware.getCurrentRequest,
-    },
-    headers: {
-      'User-Agent': 'plugin-adp-backend',
-    },
+  const requestContext = new RequestContextMiddleware();
+  const fetchApi = new FetchApi({
+    middleware: [
+      createFetchApiForwardAuthMiddleware({
+        requestContext: requestContext.provider,
+        filter: config,
+      }),
+      createFetchApiHeadersMiddleware({
+        'User-Agent': `adp-portal-backend`,
+      }),
+    ],
   });
   const dbClient = await database.getClient();
   const armsLengthBodyStore = new ArmsLengthBodyStore(dbClient);
@@ -129,7 +132,7 @@ export async function startStandaloneServer(
   });
 
   const router = Router();
-  router.use(currentRequestMiddleware);
+  router.use(requestContext.handler);
   router.use(armsLengthBodyRouter);
   router.use(deliveryProgrammeRouter);
   router.use(deliveryProjectRouter);

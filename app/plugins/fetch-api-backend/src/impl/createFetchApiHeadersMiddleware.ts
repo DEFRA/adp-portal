@@ -1,5 +1,4 @@
-import type { Fetch } from './Fetch';
-import type { FetchApiMiddleware } from './FetchApiMiddleware';
+import type { Fetch, FetchApiMiddleware } from '../types';
 
 export type HeaderValue =
   | string
@@ -18,18 +17,16 @@ export function createFetchApiHeadersMiddleware(
     Symbol.iterator in headers ? [...headers] : Object.entries(headers);
   return fetch =>
     async function headersMiddleware(input, init) {
-      if (typeof input === 'string' || !('headers' in input)) {
-        const realInit = init ?? {};
-        realInit.headers ??= [];
-        await applyHeaders(
-          headersArr,
-          getAdapter(realInit.headers),
-          input,
-          realInit,
-        );
-      } else {
+      if (typeof input !== 'string' && 'headers' in input) {
         await applyHeaders(headersArr, input.headers, input, init);
+        return fetch(input, init);
       }
+
+      const realInit = init ?? {};
+      realInit.headers ??= [];
+      const adapter = getAdapter(realInit.headers);
+      if (await applyHeaders(headersArr, adapter, input, realInit))
+        return fetch(input, realInit);
       return fetch(input, init);
     };
 }
@@ -39,14 +36,19 @@ async function applyHeaders(
   headers: HeadersAdapter,
   ...[input, init]: Parameters<Fetch>
 ) {
+  let result = false;
   for (const [header, valueOrFactory] of options) {
     if (headers.has(header)) continue;
     const value =
       typeof valueOrFactory === 'function'
         ? await valueOrFactory(input, init)
         : valueOrFactory;
-    if (value) headers.append(header, value);
+    if (value) {
+      headers.append(header, value);
+      result = true;
+    }
   }
+  return result;
 }
 
 type HeadersAdapter = Pick<Headers, 'has' | 'append'>;
@@ -58,7 +60,7 @@ function getAdapter(headers: HeadersInit): HeadersAdapter {
   if (Array.isArray(headers)) {
     return {
       has(header) {
-        const lowerHeader = header;
+        const lowerHeader = header.toLowerCase();
         return headers.some(h => h[0].toLowerCase() === lowerHeader);
       },
       append(header, value) {
@@ -69,16 +71,11 @@ function getAdapter(headers: HeadersInit): HeadersAdapter {
   // Record<string, string>
   return {
     has(header) {
-      const lowerHeader = header;
+      const lowerHeader = header.toLowerCase();
       return Object.keys(headers).some(h => h.toLowerCase() === lowerHeader);
     },
     append(header, value) {
-      const lowerHeader = header;
-      const key =
-        Object.keys(headers).find(h => h.toLowerCase() === lowerHeader) ??
-        header;
-      const currentValue = headers[key];
-      headers[key] = currentValue ? `${currentValue} ${value}` : value;
+      headers[header] = value;
     },
   };
 }

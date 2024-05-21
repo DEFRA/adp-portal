@@ -26,8 +26,13 @@
     "@backstage/backend-plugin-api": "^0.6.8"
   },
   "devDependencies": {
+    "@backstage/backend-app-api": "^0.5.10",
+    "@backstage/backend-test-utils": "^0.2.10",
     "@backstage/cli": "^0.25.0",
-    "@types/express": "*"
+    "@types/express": "*",
+    "@types/supertest": "^2.0.8",
+    "express": "^4.17.1",
+    "supertest": "^6.2.4"
   },
   "files": [
     "dist"

@@ -1,0 +1,1211 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createFetchApiForwardAuthMiddleware Should work with Request input but url disallowed by config 1`] = `
+[
+  Request {
+    Symbol(realm): {
+      "settingsObject": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+    },
+    Symbol(dispatcher): undefined,
+    Symbol(state): {
+      "body": null,
+      "cache": "default",
+      "client": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+      "credentials": "same-origin",
+      "cryptoGraphicsNonceMetadata": "",
+      "destination": "",
+      "done": false,
+      "headersList": HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {},
+        Symbol(headers map sorted): null,
+      },
+      "historyNavigation": false,
+      "initiator": "",
+      "integrity": "",
+      "keepalive": false,
+      "localURLsOnly": false,
+      "method": "GET",
+      "mode": "cors",
+      "origin": "client",
+      "parserMetadata": "",
+      "policyContainer": "client",
+      "preventNoCacheCacheControlHeaderModification": false,
+      "priority": null,
+      "redirect": "follow",
+      "redirectCount": 0,
+      "referrer": "client",
+      "referrerPolicy": "",
+      "reloadNavigation": false,
+      "replacesClientId": "",
+      "reservedClient": null,
+      "responseTainting": "basic",
+      "serviceWorkers": "all",
+      "taintedOrigin": false,
+      "timingAllowFailed": false,
+      "unsafeRequest": false,
+      "url": "https://test.com/",
+      "urlList": [
+        "https://test.com/",
+      ],
+      "useCORSPreflightFlag": false,
+      "useCredentials": false,
+      "userActivation": false,
+      "window": "client",
+    },
+    Symbol(signal): AbortSignal {
+      Symbol(kEvents): Map {},
+      Symbol(events.maxEventTargetListeners): 10,
+      Symbol(events.maxEventTargetListenersWarned): false,
+      Symbol(kHandlers): Map {},
+      Symbol(kAborted): false,
+      Symbol(kReason): undefined,
+      Symbol(kComposite): false,
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+    Symbol(headers): Headers {
+      Symbol(headers list): HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {},
+        Symbol(headers map sorted): null,
+      },
+      Symbol(guard): "request",
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+  },
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with Request input but url disallowed by function 1`] = `
+[
+  Request {
+    Symbol(realm): {
+      "settingsObject": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+    },
+    Symbol(dispatcher): undefined,
+    Symbol(state): {
+      "body": null,
+      "cache": "default",
+      "client": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+      "credentials": "same-origin",
+      "cryptoGraphicsNonceMetadata": "",
+      "destination": "",
+      "done": false,
+      "headersList": HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {},
+        Symbol(headers map sorted): null,
+      },
+      "historyNavigation": false,
+      "initiator": "",
+      "integrity": "",
+      "keepalive": false,
+      "localURLsOnly": false,
+      "method": "GET",
+      "mode": "cors",
+      "origin": "client",
+      "parserMetadata": "",
+      "policyContainer": "client",
+      "preventNoCacheCacheControlHeaderModification": false,
+      "priority": null,
+      "redirect": "follow",
+      "redirectCount": 0,
+      "referrer": "client",
+      "referrerPolicy": "",
+      "reloadNavigation": false,
+      "replacesClientId": "",
+      "reservedClient": null,
+      "responseTainting": "basic",
+      "serviceWorkers": "all",
+      "taintedOrigin": false,
+      "timingAllowFailed": false,
+      "unsafeRequest": false,
+      "url": "https://test.com/",
+      "urlList": [
+        "https://test.com/",
+      ],
+      "useCORSPreflightFlag": false,
+      "useCredentials": false,
+      "userActivation": false,
+      "window": "client",
+    },
+    Symbol(signal): AbortSignal {
+      Symbol(kEvents): Map {},
+      Symbol(events.maxEventTargetListeners): 10,
+      Symbol(events.maxEventTargetListenersWarned): false,
+      Symbol(kHandlers): Map {},
+      Symbol(kAborted): false,
+      Symbol(kReason): undefined,
+      Symbol(kComposite): false,
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+    Symbol(headers): Headers {
+      Symbol(headers list): HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {},
+        Symbol(headers map sorted): null,
+      },
+      Symbol(guard): "request",
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+  },
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with Request input, but no auth header 1`] = `
+[
+  Request {
+    Symbol(realm): {
+      "settingsObject": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+    },
+    Symbol(dispatcher): undefined,
+    Symbol(state): {
+      "body": null,
+      "cache": "default",
+      "client": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+      "credentials": "same-origin",
+      "cryptoGraphicsNonceMetadata": "",
+      "destination": "",
+      "done": false,
+      "headersList": HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {},
+        Symbol(headers map sorted): null,
+      },
+      "historyNavigation": false,
+      "initiator": "",
+      "integrity": "",
+      "keepalive": false,
+      "localURLsOnly": false,
+      "method": "GET",
+      "mode": "cors",
+      "origin": "client",
+      "parserMetadata": "",
+      "policyContainer": "client",
+      "preventNoCacheCacheControlHeaderModification": false,
+      "priority": null,
+      "redirect": "follow",
+      "redirectCount": 0,
+      "referrer": "client",
+      "referrerPolicy": "",
+      "reloadNavigation": false,
+      "replacesClientId": "",
+      "reservedClient": null,
+      "responseTainting": "basic",
+      "serviceWorkers": "all",
+      "taintedOrigin": false,
+      "timingAllowFailed": false,
+      "unsafeRequest": false,
+      "url": "https://test.com/",
+      "urlList": [
+        "https://test.com/",
+      ],
+      "useCORSPreflightFlag": false,
+      "useCredentials": false,
+      "userActivation": false,
+      "window": "client",
+    },
+    Symbol(signal): AbortSignal {
+      Symbol(kEvents): Map {},
+      Symbol(events.maxEventTargetListeners): 10,
+      Symbol(events.maxEventTargetListenersWarned): false,
+      Symbol(kHandlers): Map {},
+      Symbol(kAborted): false,
+      Symbol(kReason): undefined,
+      Symbol(kComposite): false,
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+    Symbol(headers): Headers {
+      Symbol(headers list): HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {},
+        Symbol(headers map sorted): null,
+      },
+      Symbol(guard): "request",
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+  },
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url allowed by config allow list, but no request 1`] = `
+[
+  Request {
+    Symbol(realm): {
+      "settingsObject": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+    },
+    Symbol(dispatcher): undefined,
+    Symbol(state): {
+      "body": null,
+      "cache": "default",
+      "client": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+      "credentials": "same-origin",
+      "cryptoGraphicsNonceMetadata": "",
+      "destination": "",
+      "done": false,
+      "headersList": HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {},
+        Symbol(headers map sorted): null,
+      },
+      "historyNavigation": false,
+      "initiator": "",
+      "integrity": "",
+      "keepalive": false,
+      "localURLsOnly": false,
+      "method": "GET",
+      "mode": "cors",
+      "origin": "client",
+      "parserMetadata": "",
+      "policyContainer": "client",
+      "preventNoCacheCacheControlHeaderModification": false,
+      "priority": null,
+      "redirect": "follow",
+      "redirectCount": 0,
+      "referrer": "client",
+      "referrerPolicy": "",
+      "reloadNavigation": false,
+      "replacesClientId": "",
+      "reservedClient": null,
+      "responseTainting": "basic",
+      "serviceWorkers": "all",
+      "taintedOrigin": false,
+      "timingAllowFailed": false,
+      "unsafeRequest": false,
+      "url": "https://test.com/",
+      "urlList": [
+        "https://test.com/",
+      ],
+      "useCORSPreflightFlag": false,
+      "useCredentials": false,
+      "userActivation": false,
+      "window": "client",
+    },
+    Symbol(signal): AbortSignal {
+      Symbol(kEvents): Map {},
+      Symbol(events.maxEventTargetListeners): 10,
+      Symbol(events.maxEventTargetListenersWarned): false,
+      Symbol(kHandlers): Map {},
+      Symbol(kAborted): false,
+      Symbol(kReason): undefined,
+      Symbol(kComposite): false,
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+    Symbol(headers): Headers {
+      Symbol(headers list): HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {},
+        Symbol(headers map sorted): null,
+      },
+      Symbol(guard): "request",
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+  },
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url allowed by config baseUrl, but no request 1`] = `
+[
+  Request {
+    Symbol(realm): {
+      "settingsObject": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+    },
+    Symbol(dispatcher): undefined,
+    Symbol(state): {
+      "body": null,
+      "cache": "default",
+      "client": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+      "credentials": "same-origin",
+      "cryptoGraphicsNonceMetadata": "",
+      "destination": "",
+      "done": false,
+      "headersList": HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {},
+        Symbol(headers map sorted): null,
+      },
+      "historyNavigation": false,
+      "initiator": "",
+      "integrity": "",
+      "keepalive": false,
+      "localURLsOnly": false,
+      "method": "GET",
+      "mode": "cors",
+      "origin": "client",
+      "parserMetadata": "",
+      "policyContainer": "client",
+      "preventNoCacheCacheControlHeaderModification": false,
+      "priority": null,
+      "redirect": "follow",
+      "redirectCount": 0,
+      "referrer": "client",
+      "referrerPolicy": "",
+      "reloadNavigation": false,
+      "replacesClientId": "",
+      "reservedClient": null,
+      "responseTainting": "basic",
+      "serviceWorkers": "all",
+      "taintedOrigin": false,
+      "timingAllowFailed": false,
+      "unsafeRequest": false,
+      "url": "https://test.com/",
+      "urlList": [
+        "https://test.com/",
+      ],
+      "useCORSPreflightFlag": false,
+      "useCredentials": false,
+      "userActivation": false,
+      "window": "client",
+    },
+    Symbol(signal): AbortSignal {
+      Symbol(kEvents): Map {},
+      Symbol(events.maxEventTargetListeners): 10,
+      Symbol(events.maxEventTargetListenersWarned): false,
+      Symbol(kHandlers): Map {},
+      Symbol(kAborted): false,
+      Symbol(kReason): undefined,
+      Symbol(kComposite): false,
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+    Symbol(headers): Headers {
+      Symbol(headers list): HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {},
+        Symbol(headers map sorted): null,
+      },
+      Symbol(guard): "request",
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+  },
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url allowed by function, but no request 1`] = `
+[
+  Request {
+    Symbol(realm): {
+      "settingsObject": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+    },
+    Symbol(dispatcher): undefined,
+    Symbol(state): {
+      "body": null,
+      "cache": "default",
+      "client": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+      "credentials": "same-origin",
+      "cryptoGraphicsNonceMetadata": "",
+      "destination": "",
+      "done": false,
+      "headersList": HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {},
+        Symbol(headers map sorted): null,
+      },
+      "historyNavigation": false,
+      "initiator": "",
+      "integrity": "",
+      "keepalive": false,
+      "localURLsOnly": false,
+      "method": "GET",
+      "mode": "cors",
+      "origin": "client",
+      "parserMetadata": "",
+      "policyContainer": "client",
+      "preventNoCacheCacheControlHeaderModification": false,
+      "priority": null,
+      "redirect": "follow",
+      "redirectCount": 0,
+      "referrer": "client",
+      "referrerPolicy": "",
+      "reloadNavigation": false,
+      "replacesClientId": "",
+      "reservedClient": null,
+      "responseTainting": "basic",
+      "serviceWorkers": "all",
+      "taintedOrigin": false,
+      "timingAllowFailed": false,
+      "unsafeRequest": false,
+      "url": "https://test.com/",
+      "urlList": [
+        "https://test.com/",
+      ],
+      "useCORSPreflightFlag": false,
+      "useCredentials": false,
+      "userActivation": false,
+      "window": "client",
+    },
+    Symbol(signal): AbortSignal {
+      Symbol(kEvents): Map {},
+      Symbol(events.maxEventTargetListeners): 10,
+      Symbol(events.maxEventTargetListenersWarned): false,
+      Symbol(kHandlers): Map {},
+      Symbol(kAborted): false,
+      Symbol(kReason): undefined,
+      Symbol(kComposite): false,
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+    Symbol(headers): Headers {
+      Symbol(headers list): HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {},
+        Symbol(headers map sorted): null,
+      },
+      Symbol(guard): "request",
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+  },
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with Request input, with auth already set 1`] = `
+[
+  Request {
+    Symbol(realm): {
+      "settingsObject": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+    },
+    Symbol(dispatcher): undefined,
+    Symbol(state): {
+      "body": null,
+      "cache": "default",
+      "client": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+      "credentials": "same-origin",
+      "cryptoGraphicsNonceMetadata": "",
+      "destination": "",
+      "done": false,
+      "headersList": HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {
+          "authorization" => {
+            "name": "authorization",
+            "value": "abc",
+          },
+        },
+        Symbol(headers map sorted): null,
+      },
+      "historyNavigation": false,
+      "initiator": "",
+      "integrity": "",
+      "keepalive": false,
+      "localURLsOnly": false,
+      "method": "GET",
+      "mode": "cors",
+      "origin": "client",
+      "parserMetadata": "",
+      "policyContainer": "client",
+      "preventNoCacheCacheControlHeaderModification": false,
+      "priority": null,
+      "redirect": "follow",
+      "redirectCount": 0,
+      "referrer": "client",
+      "referrerPolicy": "",
+      "reloadNavigation": false,
+      "replacesClientId": "",
+      "reservedClient": null,
+      "responseTainting": "basic",
+      "serviceWorkers": "all",
+      "taintedOrigin": false,
+      "timingAllowFailed": false,
+      "unsafeRequest": false,
+      "url": "https://test.com/",
+      "urlList": [
+        "https://test.com/",
+      ],
+      "useCORSPreflightFlag": false,
+      "useCredentials": false,
+      "userActivation": false,
+      "window": "client",
+    },
+    Symbol(signal): AbortSignal {
+      Symbol(kEvents): Map {},
+      Symbol(events.maxEventTargetListeners): 10,
+      Symbol(events.maxEventTargetListenersWarned): false,
+      Symbol(kHandlers): Map {},
+      Symbol(kAborted): false,
+      Symbol(kReason): undefined,
+      Symbol(kComposite): false,
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+    Symbol(headers): Headers {
+      Symbol(headers list): HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {
+          "authorization" => {
+            "name": "authorization",
+            "value": "abc",
+          },
+        },
+        Symbol(headers map sorted): null,
+      },
+      Symbol(guard): "request",
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+  },
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with Request input, with auth header 1`] = `
+[
+  Request {
+    Symbol(realm): {
+      "settingsObject": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+    },
+    Symbol(dispatcher): undefined,
+    Symbol(state): {
+      "body": null,
+      "cache": "default",
+      "client": {
+        "baseUrl": undefined,
+        "origin": undefined,
+        "policyContainer": {
+          "referrerPolicy": "strict-origin-when-cross-origin",
+        },
+      },
+      "credentials": "same-origin",
+      "cryptoGraphicsNonceMetadata": "",
+      "destination": "",
+      "done": false,
+      "headersList": HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {
+          "header1" => {
+            "name": "Header1",
+            "value": "abc",
+          },
+          "authorization" => {
+            "name": "Authorization",
+            "value": "my auth token",
+          },
+        },
+        Symbol(headers map sorted): null,
+      },
+      "historyNavigation": false,
+      "initiator": "",
+      "integrity": "",
+      "keepalive": false,
+      "localURLsOnly": false,
+      "method": "GET",
+      "mode": "cors",
+      "origin": "client",
+      "parserMetadata": "",
+      "policyContainer": "client",
+      "preventNoCacheCacheControlHeaderModification": false,
+      "priority": null,
+      "redirect": "follow",
+      "redirectCount": 0,
+      "referrer": "client",
+      "referrerPolicy": "",
+      "reloadNavigation": false,
+      "replacesClientId": "",
+      "reservedClient": null,
+      "responseTainting": "basic",
+      "serviceWorkers": "all",
+      "taintedOrigin": false,
+      "timingAllowFailed": false,
+      "unsafeRequest": false,
+      "url": "https://test.com/",
+      "urlList": [
+        "https://test.com/",
+      ],
+      "useCORSPreflightFlag": false,
+      "useCredentials": false,
+      "userActivation": false,
+      "window": "client",
+    },
+    Symbol(signal): AbortSignal {
+      Symbol(kEvents): Map {},
+      Symbol(events.maxEventTargetListeners): 10,
+      Symbol(events.maxEventTargetListenersWarned): false,
+      Symbol(kHandlers): Map {},
+      Symbol(kAborted): false,
+      Symbol(kReason): undefined,
+      Symbol(kComposite): false,
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+    Symbol(headers): Headers {
+      Symbol(headers list): HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {
+          "header1" => {
+            "name": "Header1",
+            "value": "abc",
+          },
+          "authorization" => {
+            "name": "Authorization",
+            "value": "my auth token",
+          },
+        },
+        Symbol(headers map sorted): null,
+      },
+      Symbol(guard): "request",
+      Symbol(realm): {
+        "settingsObject": {
+          "baseUrl": undefined,
+          "origin": undefined,
+          "policyContainer": {
+            "referrerPolicy": "strict-origin-when-cross-origin",
+          },
+        },
+      },
+    },
+  },
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input but url disallowed by config 1`] = `
+[
+  "https://test.com/",
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input but url disallowed by function 1`] = `
+[
+  "https://test.com/",
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input, but no auth header 1`] = `
+[
+  "https://test.com/",
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input, empty init, with auth header 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": [
+      [
+        "Authorization",
+        "my auth token",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input, init with header array, with auth header 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": [
+      [
+        "Header1",
+        "abc",
+      ],
+      [
+        "Authorization",
+        "my auth token",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input, init with header array, with auth header already set 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": [
+      [
+        "authorization",
+        "abc",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input, init with header object, with auth header 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": {
+      "Authorization": "my auth token",
+      "Header1": "abc",
+    },
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input, init with header object, with auth header already set 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": {
+      "authorization": "abc",
+    },
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input, init with headers instance, with auth header 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": Headers {
+      Symbol(headers list): HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {
+          "header1" => {
+            "name": "Header1",
+            "value": "abc",
+          },
+          "authorization" => {
+            "name": "Authorization",
+            "value": "my auth token",
+          },
+        },
+        Symbol(headers map sorted): null,
+      },
+      Symbol(guard): "none",
+    },
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input, init with headers instance, with auth header already set 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": Headers {
+      Symbol(headers list): HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {
+          "authorization" => {
+            "name": "authorization",
+            "value": "abc",
+          },
+        },
+        Symbol(headers map sorted): null,
+      },
+      Symbol(guard): "none",
+    },
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input, no init, with auth header 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": [
+      [
+        "Authorization",
+        "my auth token",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input, url allowed by config allow list, but no request 1`] = `
+[
+  "https://test.com/",
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input, url allowed by config baseUrl, but no request 1`] = `
+[
+  "https://test.com/",
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with URL input, url allowed by function, but no request 1`] = `
+[
+  "https://test.com/",
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input but url disallowed by config 1`] = `
+[
+  "https://test.com",
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input but url disallowed by function 1`] = `
+[
+  "https://test.com",
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input, but no auth header 1`] = `
+[
+  "https://test.com",
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input, empty init, with auth header 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": [
+      [
+        "Authorization",
+        "my auth token",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input, init with header array, with auth header 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": [
+      [
+        "Header1",
+        "abc",
+      ],
+      [
+        "Authorization",
+        "my auth token",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input, init with header array, with auth header already set 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": [
+      [
+        "authorization",
+        "abc",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input, init with header object, with auth header 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": {
+      "Authorization": "my auth token",
+      "Header1": "abc",
+    },
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input, init with header object, with auth header already set 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": {
+      "authorization": "abc",
+    },
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input, init with headers instance, with auth header 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": Headers {
+      Symbol(headers list): HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {
+          "header1" => {
+            "name": "Header1",
+            "value": "abc",
+          },
+          "authorization" => {
+            "name": "Authorization",
+            "value": "my auth token",
+          },
+        },
+        Symbol(headers map sorted): null,
+      },
+      Symbol(guard): "none",
+    },
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input, init with headers instance, with auth header already set 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": Headers {
+      Symbol(headers list): HeadersList {
+        "cookies": null,
+        Symbol(headers map): Map {
+          "authorization" => {
+            "name": "authorization",
+            "value": "abc",
+          },
+        },
+        Symbol(headers map sorted): null,
+      },
+      Symbol(guard): "none",
+    },
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input, no init, with auth header 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": [
+      [
+        "Authorization",
+        "my auth token",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input, url allowed by config allow list, but no request 1`] = `
+[
+  "https://test.com",
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input, url allowed by config baseUrl, but no request 1`] = `
+[
+  "https://test.com",
+  undefined,
+]
+`;
+
+exports[`createFetchApiForwardAuthMiddleware Should work with string input, url allowed by function, but no request 1`] = `
+[
+  "https://test.com",
+  undefined,
+]
+`;

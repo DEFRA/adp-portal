@@ -1,5 +1,5 @@
 import { createServiceRef } from '@backstage/backend-plugin-api';
-import type { FetchApi } from './FetchApi';
+import type { FetchApi } from '../impl';
 
 export const fetchApiRef = createServiceRef<FetchApi>({
   id: 'fetch-api',

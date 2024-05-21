@@ -1,5 +1,4 @@
-import type { Fetch } from './Fetch';
-import type { FetchApiMiddleware } from './FetchApiMiddleware';
+import type { Fetch, FetchApiMiddleware } from '../types';
 
 export class FetchApi {
   readonly fetch: Fetch;

@@ -2330,7 +2330,7 @@
     winston "^3.2.1"
     zod "^3.22.4"
 
-"@backstage/backend-test-utils@^0.2.9":
+"@backstage/backend-test-utils@^0.2.10", "@backstage/backend-test-utils@^0.2.9":
   version "0.2.10"
   resolved "https://registry.yarnpkg.com/@backstage/backend-test-utils/-/backend-test-utils-0.2.10.tgz#d12fe7face42459840cf855921ee123ad6135fa8"
   integrity sha512-cOvAMXtw6bZwuTbeN7XNgWSj7MfwxfQE19iSANj4SoSpwCfUKj+CCBkZgWSffJOSnhepHA9+jA/hvioWlUPSyg==

@@ -1,8 +1,5 @@
+import { type HeadersOptions, createFetchApiHeadersMiddleware } from '../impl';
 import { createFetchApiMiddleware } from './createFetchApiMiddleware';
-import {
-  type HeadersOptions,
-  createFetchApiHeadersMiddleware,
-} from './createFetchApiHeadersMiddleware';
 
 export const fetchApiHeadersMiddleware = (options: {
   id: string;
