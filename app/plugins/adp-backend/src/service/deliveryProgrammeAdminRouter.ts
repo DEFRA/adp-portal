@@ -120,22 +120,20 @@ export function createDeliveryProgrammeAdminRouter(
       catalog,
     );
 
-    if (catalogUser.success) {
-      const addUser: AddDeliveryProgrammeAdmin = {
-        name: catalogUser.value.spec.profile!.displayName!,
-        email: catalogUser.value.metadata.annotations!['microsoft.com/email'],
-        aad_entity_ref_id:
-          catalogUser.value.metadata.annotations![
-            'graph.microsoft.com/user-id'
-          ],
-        delivery_programme_id: body.delivery_programme_id,
-      };
-
-      const addedUser = await deliveryProgrammeAdminStore.add(addUser);
-      respond(body, res, addedUser, errorMapping, { ok: 201 });
+    if (!catalogUser.success) {
+      respond(body, res, catalogUser, errorMapping);
+      return;
     }
+    const addUser: AddDeliveryProgrammeAdmin = {
+      name: catalogUser.value.spec.profile!.displayName!,
+      email: catalogUser.value.metadata.annotations!['microsoft.com/email'],
+      aad_entity_ref_id:
+        catalogUser.value.metadata.annotations!['graph.microsoft.com/user-id'],
+      delivery_programme_id: body.delivery_programme_id,
+    };
 
-    respond(body, res, catalogUser, errorMapping);
+    const addedUser = await deliveryProgrammeAdminStore.add(addUser);
+    respond(body, res, addedUser, errorMapping, { ok: 201 });
   });
 
   router.delete('/deliveryProgrammeAdmin', async (req, res) => {

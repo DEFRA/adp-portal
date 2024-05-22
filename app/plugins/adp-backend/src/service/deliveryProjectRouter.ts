@@ -11,9 +11,7 @@ import type {
   ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
 import { getCurrentUsername } from '../utils/index';
-import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
-import { FluxConfigApi } from '../deliveryProject';
-import type { Config } from '@backstage/config';
+import type { IFluxConfigApi } from '../deliveryProject';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import { createParser, respond } from './util';
 import { z } from 'zod';
@@ -22,11 +20,10 @@ import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 export interface ProjectRouterOptions {
   logger: Logger;
   identity: IdentityApi;
-  config: Config;
   teamSyncronizer: IDeliveryProjectGithubTeamsSyncronizer;
   deliveryProjectStore: IDeliveryProjectStore;
-  deliveryProgrammeStore: IDeliveryProgrammeStore;
   deliveryProjectUserStore: IDeliveryProjectUserStore;
+  fluxConfigApi: IFluxConfigApi;
 }
 
 const errorMapping = {
@@ -94,13 +91,11 @@ export function createProjectRouter(
   const {
     logger,
     identity,
-    config,
     teamSyncronizer,
-    deliveryProgrammeStore,
     deliveryProjectStore,
     deliveryProjectUserStore,
+    fluxConfigApi,
   } = options;
-  const fluxConfigApi = new FluxConfigApi(config, deliveryProgrammeStore);
 
   const router = Router();
   router.use(express.json());

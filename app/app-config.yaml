@@ -35,6 +35,9 @@ backend:
   auth:
     keys:
       - secret: ${BACKEND_PLUGINS_SECRET}
+  fetchApi:
+    forwardAuth:
+      - ${ADP_PORTAL_API_ENDPOINT}
 
 proxy:
   endpoints:
