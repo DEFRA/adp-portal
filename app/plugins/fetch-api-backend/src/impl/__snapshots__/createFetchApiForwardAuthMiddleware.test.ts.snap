@@ -3,101 +3,21 @@
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input but url disallowed by config 1`] = `
 [
   Request {
-    Symbol(realm): {
-      "settingsObject": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-    },
-    Symbol(state): {
-      "body": null,
-      "cache": "default",
-      "client": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-      "credentials": "same-origin",
-      "cryptoGraphicsNonceMetadata": "",
-      "destination": "",
-      "done": false,
-      "headersList": HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {},
-        Symbol(headers map sorted): null,
-      },
-      "historyNavigation": false,
-      "initiator": "",
-      "integrity": "",
-      "keepalive": false,
-      "localURLsOnly": false,
-      "method": "GET",
-      "mode": "cors",
-      "origin": "client",
-      "parserMetadata": "",
-      "policyContainer": "client",
-      "preventNoCacheCacheControlHeaderModification": false,
-      "priority": null,
-      "redirect": "follow",
-      "redirectCount": 0,
-      "referrer": "client",
-      "referrerPolicy": "",
-      "reloadNavigation": false,
-      "replacesClientId": "",
-      "reservedClient": null,
-      "responseTainting": "basic",
-      "serviceWorkers": "all",
-      "taintedOrigin": false,
-      "timingAllowFailed": false,
-      "unsafeRequest": false,
-      "url": "https://test.com/",
-      "urlList": [
-        "https://test.com/",
-      ],
-      "useCORSPreflightFlag": false,
-      "useCredentials": false,
-      "userActivation": false,
-      "window": "client",
-    },
-    Symbol(signal): AbortSignal {
-      Symbol(kEvents): Map {},
-      Symbol(events.maxEventTargetListeners): 10,
-      Symbol(events.maxEventTargetListenersWarned): false,
-      Symbol(kAborted): false,
-      Symbol(kReason): undefined,
-      Symbol(kComposite): false,
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
-    Symbol(headers): Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {},
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "request",
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
+    method: 'GET',
+    url: 'https://test.com/',
+    headers: Headers {},
+    destination: '',
+    referrer: 'about:client',
+    referrerPolicy: '',
+    mode: 'cors',
+    credentials: 'same-origin',
+    cache: 'default',
+    redirect: 'follow',
+    integrity: '',
+    keepalive: false,
+    isReloadNavigation: false,
+    isHistoryNavigation: false,
+    signal: AbortSignal { aborted: false }
   },
   undefined,
 ]
@@ -106,101 +26,21 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input but 
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input but url disallowed by function 1`] = `
 [
   Request {
-    Symbol(realm): {
-      "settingsObject": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-    },
-    Symbol(state): {
-      "body": null,
-      "cache": "default",
-      "client": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-      "credentials": "same-origin",
-      "cryptoGraphicsNonceMetadata": "",
-      "destination": "",
-      "done": false,
-      "headersList": HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {},
-        Symbol(headers map sorted): null,
-      },
-      "historyNavigation": false,
-      "initiator": "",
-      "integrity": "",
-      "keepalive": false,
-      "localURLsOnly": false,
-      "method": "GET",
-      "mode": "cors",
-      "origin": "client",
-      "parserMetadata": "",
-      "policyContainer": "client",
-      "preventNoCacheCacheControlHeaderModification": false,
-      "priority": null,
-      "redirect": "follow",
-      "redirectCount": 0,
-      "referrer": "client",
-      "referrerPolicy": "",
-      "reloadNavigation": false,
-      "replacesClientId": "",
-      "reservedClient": null,
-      "responseTainting": "basic",
-      "serviceWorkers": "all",
-      "taintedOrigin": false,
-      "timingAllowFailed": false,
-      "unsafeRequest": false,
-      "url": "https://test.com/",
-      "urlList": [
-        "https://test.com/",
-      ],
-      "useCORSPreflightFlag": false,
-      "useCredentials": false,
-      "userActivation": false,
-      "window": "client",
-    },
-    Symbol(signal): AbortSignal {
-      Symbol(kEvents): Map {},
-      Symbol(events.maxEventTargetListeners): 10,
-      Symbol(events.maxEventTargetListenersWarned): false,
-      Symbol(kAborted): false,
-      Symbol(kReason): undefined,
-      Symbol(kComposite): false,
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
-    Symbol(headers): Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {},
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "request",
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
+    method: 'GET',
+    url: 'https://test.com/',
+    headers: Headers {},
+    destination: '',
+    referrer: 'about:client',
+    referrerPolicy: '',
+    mode: 'cors',
+    credentials: 'same-origin',
+    cache: 'default',
+    redirect: 'follow',
+    integrity: '',
+    keepalive: false,
+    isReloadNavigation: false,
+    isHistoryNavigation: false,
+    signal: AbortSignal { aborted: false }
   },
   undefined,
 ]
@@ -209,101 +49,21 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input but 
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input, but no auth header 1`] = `
 [
   Request {
-    Symbol(realm): {
-      "settingsObject": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-    },
-    Symbol(state): {
-      "body": null,
-      "cache": "default",
-      "client": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-      "credentials": "same-origin",
-      "cryptoGraphicsNonceMetadata": "",
-      "destination": "",
-      "done": false,
-      "headersList": HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {},
-        Symbol(headers map sorted): null,
-      },
-      "historyNavigation": false,
-      "initiator": "",
-      "integrity": "",
-      "keepalive": false,
-      "localURLsOnly": false,
-      "method": "GET",
-      "mode": "cors",
-      "origin": "client",
-      "parserMetadata": "",
-      "policyContainer": "client",
-      "preventNoCacheCacheControlHeaderModification": false,
-      "priority": null,
-      "redirect": "follow",
-      "redirectCount": 0,
-      "referrer": "client",
-      "referrerPolicy": "",
-      "reloadNavigation": false,
-      "replacesClientId": "",
-      "reservedClient": null,
-      "responseTainting": "basic",
-      "serviceWorkers": "all",
-      "taintedOrigin": false,
-      "timingAllowFailed": false,
-      "unsafeRequest": false,
-      "url": "https://test.com/",
-      "urlList": [
-        "https://test.com/",
-      ],
-      "useCORSPreflightFlag": false,
-      "useCredentials": false,
-      "userActivation": false,
-      "window": "client",
-    },
-    Symbol(signal): AbortSignal {
-      Symbol(kEvents): Map {},
-      Symbol(events.maxEventTargetListeners): 10,
-      Symbol(events.maxEventTargetListenersWarned): false,
-      Symbol(kAborted): false,
-      Symbol(kReason): undefined,
-      Symbol(kComposite): false,
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
-    Symbol(headers): Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {},
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "request",
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
+    method: 'GET',
+    url: 'https://test.com/',
+    headers: Headers {},
+    destination: '',
+    referrer: 'about:client',
+    referrerPolicy: '',
+    mode: 'cors',
+    credentials: 'same-origin',
+    cache: 'default',
+    redirect: 'follow',
+    integrity: '',
+    keepalive: false,
+    isReloadNavigation: false,
+    isHistoryNavigation: false,
+    signal: AbortSignal { aborted: false }
   },
   undefined,
 ]
@@ -312,101 +72,21 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input, but
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url allowed by config allow list, but no request 1`] = `
 [
   Request {
-    Symbol(realm): {
-      "settingsObject": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-    },
-    Symbol(state): {
-      "body": null,
-      "cache": "default",
-      "client": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-      "credentials": "same-origin",
-      "cryptoGraphicsNonceMetadata": "",
-      "destination": "",
-      "done": false,
-      "headersList": HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {},
-        Symbol(headers map sorted): null,
-      },
-      "historyNavigation": false,
-      "initiator": "",
-      "integrity": "",
-      "keepalive": false,
-      "localURLsOnly": false,
-      "method": "GET",
-      "mode": "cors",
-      "origin": "client",
-      "parserMetadata": "",
-      "policyContainer": "client",
-      "preventNoCacheCacheControlHeaderModification": false,
-      "priority": null,
-      "redirect": "follow",
-      "redirectCount": 0,
-      "referrer": "client",
-      "referrerPolicy": "",
-      "reloadNavigation": false,
-      "replacesClientId": "",
-      "reservedClient": null,
-      "responseTainting": "basic",
-      "serviceWorkers": "all",
-      "taintedOrigin": false,
-      "timingAllowFailed": false,
-      "unsafeRequest": false,
-      "url": "https://test.com/",
-      "urlList": [
-        "https://test.com/",
-      ],
-      "useCORSPreflightFlag": false,
-      "useCredentials": false,
-      "userActivation": false,
-      "window": "client",
-    },
-    Symbol(signal): AbortSignal {
-      Symbol(kEvents): Map {},
-      Symbol(events.maxEventTargetListeners): 10,
-      Symbol(events.maxEventTargetListenersWarned): false,
-      Symbol(kAborted): false,
-      Symbol(kReason): undefined,
-      Symbol(kComposite): false,
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
-    Symbol(headers): Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {},
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "request",
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
+    method: 'GET',
+    url: 'https://test.com/',
+    headers: Headers {},
+    destination: '',
+    referrer: 'about:client',
+    referrerPolicy: '',
+    mode: 'cors',
+    credentials: 'same-origin',
+    cache: 'default',
+    redirect: 'follow',
+    integrity: '',
+    keepalive: false,
+    isReloadNavigation: false,
+    isHistoryNavigation: false,
+    signal: AbortSignal { aborted: false }
   },
   undefined,
 ]
@@ -415,101 +95,21 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url allowed by config baseUrl, but no request 1`] = `
 [
   Request {
-    Symbol(realm): {
-      "settingsObject": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-    },
-    Symbol(state): {
-      "body": null,
-      "cache": "default",
-      "client": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-      "credentials": "same-origin",
-      "cryptoGraphicsNonceMetadata": "",
-      "destination": "",
-      "done": false,
-      "headersList": HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {},
-        Symbol(headers map sorted): null,
-      },
-      "historyNavigation": false,
-      "initiator": "",
-      "integrity": "",
-      "keepalive": false,
-      "localURLsOnly": false,
-      "method": "GET",
-      "mode": "cors",
-      "origin": "client",
-      "parserMetadata": "",
-      "policyContainer": "client",
-      "preventNoCacheCacheControlHeaderModification": false,
-      "priority": null,
-      "redirect": "follow",
-      "redirectCount": 0,
-      "referrer": "client",
-      "referrerPolicy": "",
-      "reloadNavigation": false,
-      "replacesClientId": "",
-      "reservedClient": null,
-      "responseTainting": "basic",
-      "serviceWorkers": "all",
-      "taintedOrigin": false,
-      "timingAllowFailed": false,
-      "unsafeRequest": false,
-      "url": "https://test.com/",
-      "urlList": [
-        "https://test.com/",
-      ],
-      "useCORSPreflightFlag": false,
-      "useCredentials": false,
-      "userActivation": false,
-      "window": "client",
-    },
-    Symbol(signal): AbortSignal {
-      Symbol(kEvents): Map {},
-      Symbol(events.maxEventTargetListeners): 10,
-      Symbol(events.maxEventTargetListenersWarned): false,
-      Symbol(kAborted): false,
-      Symbol(kReason): undefined,
-      Symbol(kComposite): false,
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
-    Symbol(headers): Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {},
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "request",
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
+    method: 'GET',
+    url: 'https://test.com/',
+    headers: Headers {},
+    destination: '',
+    referrer: 'about:client',
+    referrerPolicy: '',
+    mode: 'cors',
+    credentials: 'same-origin',
+    cache: 'default',
+    redirect: 'follow',
+    integrity: '',
+    keepalive: false,
+    isReloadNavigation: false,
+    isHistoryNavigation: false,
+    signal: AbortSignal { aborted: false }
   },
   undefined,
 ]
@@ -518,101 +118,21 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url allowed by function, but no request 1`] = `
 [
   Request {
-    Symbol(realm): {
-      "settingsObject": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-    },
-    Symbol(state): {
-      "body": null,
-      "cache": "default",
-      "client": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-      "credentials": "same-origin",
-      "cryptoGraphicsNonceMetadata": "",
-      "destination": "",
-      "done": false,
-      "headersList": HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {},
-        Symbol(headers map sorted): null,
-      },
-      "historyNavigation": false,
-      "initiator": "",
-      "integrity": "",
-      "keepalive": false,
-      "localURLsOnly": false,
-      "method": "GET",
-      "mode": "cors",
-      "origin": "client",
-      "parserMetadata": "",
-      "policyContainer": "client",
-      "preventNoCacheCacheControlHeaderModification": false,
-      "priority": null,
-      "redirect": "follow",
-      "redirectCount": 0,
-      "referrer": "client",
-      "referrerPolicy": "",
-      "reloadNavigation": false,
-      "replacesClientId": "",
-      "reservedClient": null,
-      "responseTainting": "basic",
-      "serviceWorkers": "all",
-      "taintedOrigin": false,
-      "timingAllowFailed": false,
-      "unsafeRequest": false,
-      "url": "https://test.com/",
-      "urlList": [
-        "https://test.com/",
-      ],
-      "useCORSPreflightFlag": false,
-      "useCredentials": false,
-      "userActivation": false,
-      "window": "client",
-    },
-    Symbol(signal): AbortSignal {
-      Symbol(kEvents): Map {},
-      Symbol(events.maxEventTargetListeners): 10,
-      Symbol(events.maxEventTargetListenersWarned): false,
-      Symbol(kAborted): false,
-      Symbol(kReason): undefined,
-      Symbol(kComposite): false,
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
-    Symbol(headers): Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {},
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "request",
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
+    method: 'GET',
+    url: 'https://test.com/',
+    headers: Headers {},
+    destination: '',
+    referrer: 'about:client',
+    referrerPolicy: '',
+    mode: 'cors',
+    credentials: 'same-origin',
+    cache: 'default',
+    redirect: 'follow',
+    integrity: '',
+    keepalive: false,
+    isReloadNavigation: false,
+    isHistoryNavigation: false,
+    signal: AbortSignal { aborted: false }
   },
   undefined,
 ]
@@ -621,111 +141,21 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input, with auth already set 1`] = `
 [
   Request {
-    Symbol(realm): {
-      "settingsObject": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-    },
-    Symbol(state): {
-      "body": null,
-      "cache": "default",
-      "client": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-      "credentials": "same-origin",
-      "cryptoGraphicsNonceMetadata": "",
-      "destination": "",
-      "done": false,
-      "headersList": HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "authorization" => {
-            "name": "authorization",
-            "value": "abc",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      "historyNavigation": false,
-      "initiator": "",
-      "integrity": "",
-      "keepalive": false,
-      "localURLsOnly": false,
-      "method": "GET",
-      "mode": "cors",
-      "origin": "client",
-      "parserMetadata": "",
-      "policyContainer": "client",
-      "preventNoCacheCacheControlHeaderModification": false,
-      "priority": null,
-      "redirect": "follow",
-      "redirectCount": 0,
-      "referrer": "client",
-      "referrerPolicy": "",
-      "reloadNavigation": false,
-      "replacesClientId": "",
-      "reservedClient": null,
-      "responseTainting": "basic",
-      "serviceWorkers": "all",
-      "taintedOrigin": false,
-      "timingAllowFailed": false,
-      "unsafeRequest": false,
-      "url": "https://test.com/",
-      "urlList": [
-        "https://test.com/",
-      ],
-      "useCORSPreflightFlag": false,
-      "useCredentials": false,
-      "userActivation": false,
-      "window": "client",
-    },
-    Symbol(signal): AbortSignal {
-      Symbol(kEvents): Map {},
-      Symbol(events.maxEventTargetListeners): 10,
-      Symbol(events.maxEventTargetListenersWarned): false,
-      Symbol(kAborted): false,
-      Symbol(kReason): undefined,
-      Symbol(kComposite): false,
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
-    Symbol(headers): Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "authorization" => {
-            "name": "authorization",
-            "value": "abc",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "request",
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
+    method: 'GET',
+    url: 'https://test.com/',
+    headers: Headers { authorization: 'abc' },
+    destination: '',
+    referrer: 'about:client',
+    referrerPolicy: '',
+    mode: 'cors',
+    credentials: 'same-origin',
+    cache: 'default',
+    redirect: 'follow',
+    integrity: '',
+    keepalive: false,
+    isReloadNavigation: false,
+    isHistoryNavigation: false,
+    signal: AbortSignal { aborted: false }
   },
   undefined,
 ]
@@ -734,119 +164,21 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input, wit
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input, with auth header 1`] = `
 [
   Request {
-    Symbol(realm): {
-      "settingsObject": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-    },
-    Symbol(state): {
-      "body": null,
-      "cache": "default",
-      "client": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-      "credentials": "same-origin",
-      "cryptoGraphicsNonceMetadata": "",
-      "destination": "",
-      "done": false,
-      "headersList": HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "header1" => {
-            "name": "Header1",
-            "value": "abc",
-          },
-          "authorization" => {
-            "name": "Authorization",
-            "value": "my auth token",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      "historyNavigation": false,
-      "initiator": "",
-      "integrity": "",
-      "keepalive": false,
-      "localURLsOnly": false,
-      "method": "GET",
-      "mode": "cors",
-      "origin": "client",
-      "parserMetadata": "",
-      "policyContainer": "client",
-      "preventNoCacheCacheControlHeaderModification": false,
-      "priority": null,
-      "redirect": "follow",
-      "redirectCount": 0,
-      "referrer": "client",
-      "referrerPolicy": "",
-      "reloadNavigation": false,
-      "replacesClientId": "",
-      "reservedClient": null,
-      "responseTainting": "basic",
-      "serviceWorkers": "all",
-      "taintedOrigin": false,
-      "timingAllowFailed": false,
-      "unsafeRequest": false,
-      "url": "https://test.com/",
-      "urlList": [
-        "https://test.com/",
-      ],
-      "useCORSPreflightFlag": false,
-      "useCredentials": false,
-      "userActivation": false,
-      "window": "client",
-    },
-    Symbol(signal): AbortSignal {
-      Symbol(kEvents): Map {},
-      Symbol(events.maxEventTargetListeners): 10,
-      Symbol(events.maxEventTargetListenersWarned): false,
-      Symbol(kAborted): false,
-      Symbol(kReason): undefined,
-      Symbol(kComposite): false,
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
-    Symbol(headers): Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "header1" => {
-            "name": "Header1",
-            "value": "abc",
-          },
-          "authorization" => {
-            "name": "Authorization",
-            "value": "my auth token",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "request",
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
+    method: 'GET',
+    url: 'https://test.com/',
+    headers: Headers { Header1: 'abc', Authorization: 'my auth token' },
+    destination: '',
+    referrer: 'about:client',
+    referrerPolicy: '',
+    mode: 'cors',
+    credentials: 'same-origin',
+    cache: 'default',
+    redirect: 'follow',
+    integrity: '',
+    keepalive: false,
+    isReloadNavigation: false,
+    isHistoryNavigation: false,
+    signal: AbortSignal { aborted: false }
   },
   undefined,
 ]

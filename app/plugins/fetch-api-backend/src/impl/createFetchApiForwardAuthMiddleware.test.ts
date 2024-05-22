@@ -6,6 +6,24 @@ import {
 } from './createFetchApiForwardAuthMiddleware';
 import type { RequestContextProvider } from '@internal/plugin-request-context-provider-backend';
 import { ConfigReader } from '@backstage/config';
+import util from 'node:util';
+
+expect.addSnapshotSerializer({
+  serialize(val, _, indentation) {
+    if (!(val instanceof Request))
+      throw new Error('Expected value to be a request');
+
+    const indent = indentation;
+    return util
+      .inspect(val)
+      .split('\n')
+      .map((line, i) => (i > 0 ? indent + line : line))
+      .join('\n');
+  },
+  test(arg0) {
+    return arg0 instanceof Request;
+  },
+});
 
 describe('createFetchApiForwardAuthMiddleware', () => {
   it.each<TestCase>([
@@ -370,7 +388,7 @@ describe('createFetchApiForwardAuthMiddleware', () => {
       // assert
       expect(actual).toBe(response);
       expect(fetch).toHaveBeenCalledTimes(1);
-      expect(fetch.mock.calls[0]).toMatchSnapshot();
+      expect(fetch.mock.calls[0]).toMatchSnapshot({});
       expect(requestContext.getContext).toHaveBeenCalledTimes(
         getRequest ? 1 : 0,
       );
