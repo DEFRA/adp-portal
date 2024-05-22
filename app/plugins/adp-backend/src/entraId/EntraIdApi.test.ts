@@ -1,9 +1,8 @@
 import { ConfigReader } from '@backstage/config';
-import type fetch from 'node-fetch';
-import { Response } from 'node-fetch';
 import { EntraIdApi } from './EntraIdApi';
 import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
 import { faker } from '@faker-js/faker';
+import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 
 describe('EntraIdApi', () => {
   function setup() {
@@ -15,9 +14,9 @@ describe('EntraIdApi', () => {
       },
     });
 
-    const fetchApi: jest.MockedFn<typeof fetch> = Object.assign(jest.fn(), {
-      isRedirect: jest.fn(),
-    });
+    const fetchApi: jest.Mocked<FetchApi> = {
+      fetch: jest.fn(),
+    };
 
     const sut = new EntraIdApi(config, fetchApi);
 
@@ -33,13 +32,24 @@ describe('EntraIdApi', () => {
         {
           id: faker.string.uuid(),
           delivery_project_id: faker.string.uuid(),
-          email: 'adminUser@test.com',
+          email: 'adminTechUser@test.com',
           is_admin: true,
-          is_technical: false,
-          name: 'Admin User',
+          is_technical: true,
+          name: 'Admin Tech User',
           aad_entity_ref_id: faker.string.uuid(),
           updated_at: faker.date.recent(),
-          aad_user_principal_name: 'adminUser@test.com',
+          aad_user_principal_name: 'adminTechUser@test.com',
+        },
+        {
+          id: faker.string.uuid(),
+          delivery_project_id: faker.string.uuid(),
+          email: 'adminNonTechUser@test.com',
+          is_admin: true,
+          is_technical: false,
+          name: 'Admin Non Tech User',
+          aad_entity_ref_id: faker.string.uuid(),
+          updated_at: faker.date.recent(),
+          aad_user_principal_name: 'adminNonTechUser@test.com',
         },
         {
           id: faker.string.uuid(),
@@ -65,15 +75,15 @@ describe('EntraIdApi', () => {
         },
       ];
 
-      fetchApi.mockResolvedValue(
-        new Response(JSON.stringify(''), { status: 204 }),
+      fetchApi.fetch.mockResolvedValue(
+        new Response(undefined, { status: 204 }),
       );
 
       // Act
       await sut.createEntraIdGroupsForProject(expectedMembers, projectName);
 
       // Assert
-      expect(fetchApi.mock.calls).toMatchObject([
+      expect(fetchApi.fetch.mock.calls).toMatchObject([
         [
           `https://portal-api/aadGroups/${projectName}/groups-config`,
           {
@@ -81,7 +91,7 @@ describe('EntraIdApi', () => {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: '{"techUserMembers":["techUser@test.com"],"nonTechUserMembers":["nonTechUser@test.com"],"adminMembers":["adminUser@test.com"]}',
+            body: '{"techUserMembers":["adminTechUser@test.com","techUser@test.com"],"nonTechUserMembers":["adminNonTechUser@test.com","nonTechUser@test.com"],"adminMembers":["adminTechUser@test.com","adminNonTechUser@test.com"]}',
           },
         ],
       ]);
@@ -95,12 +105,24 @@ describe('EntraIdApi', () => {
         {
           id: faker.string.uuid(),
           delivery_project_id: faker.string.uuid(),
-          email: 'adminUser@test.com',
+          email: 'adminTechUser@test.com',
           is_admin: true,
-          is_technical: false,
-          name: 'Admin User',
+          is_technical: true,
+          name: 'Admin Tech User',
           aad_entity_ref_id: faker.string.uuid(),
           updated_at: faker.date.recent(),
+          aad_user_principal_name: 'adminTechUser@test.com',
+        },
+        {
+          id: faker.string.uuid(),
+          delivery_project_id: faker.string.uuid(),
+          email: 'adminNonTechUser@test.com',
+          is_admin: true,
+          is_technical: false,
+          name: 'Admin Non Tech User',
+          aad_entity_ref_id: faker.string.uuid(),
+          updated_at: faker.date.recent(),
+          aad_user_principal_name: 'adminNonTechUser@test.com',
         },
         {
           id: faker.string.uuid(),
@@ -124,7 +146,9 @@ describe('EntraIdApi', () => {
         },
       ];
 
-      fetchApi.mockResolvedValue(new Response(undefined, { status: 400 }));
+      fetchApi.fetch.mockResolvedValue(
+        new Response(undefined, { status: 400 }),
+      );
 
       // Act and assert
       await expect(
@@ -142,13 +166,24 @@ describe('EntraIdApi', () => {
         {
           id: faker.string.uuid(),
           delivery_project_id: faker.string.uuid(),
-          email: 'adminUser@test.com',
+          email: 'adminTechUser@test.com',
           is_admin: true,
-          is_technical: false,
-          name: 'Admin User',
+          is_technical: true,
+          name: 'Admin Tech User',
           aad_entity_ref_id: faker.string.uuid(),
           updated_at: faker.date.recent(),
-          aad_user_principal_name: 'adminUser@test.com',
+          aad_user_principal_name: 'adminTechUser@test.com',
+        },
+        {
+          id: faker.string.uuid(),
+          delivery_project_id: faker.string.uuid(),
+          email: 'adminNonTechUser@test.com',
+          is_admin: true,
+          is_technical: false,
+          name: 'Admin Non Tech User',
+          aad_entity_ref_id: faker.string.uuid(),
+          updated_at: faker.date.recent(),
+          aad_user_principal_name: 'adminNonTechUser@test.com',
         },
         {
           id: faker.string.uuid(),
@@ -174,15 +209,15 @@ describe('EntraIdApi', () => {
         },
       ];
 
-      fetchApi.mockResolvedValue(
-        new Response(JSON.stringify(''), { status: 204 }),
+      fetchApi.fetch.mockResolvedValue(
+        new Response(undefined, { status: 204 }),
       );
 
       // Act
       await sut.setProjectGroupMembers(expectedMembers, projectName);
 
       // Assert
-      expect(fetchApi.mock.calls).toMatchObject([
+      expect(fetchApi.fetch.mock.calls).toMatchObject([
         [
           `https://portal-api/aadGroups/${projectName}/members`,
           {
@@ -190,7 +225,7 @@ describe('EntraIdApi', () => {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: '{"techUserMembers":["techUser@test.com"],"nonTechUserMembers":["nonTechUser@test.com"],"adminMembers":["adminUser@test.com"]}',
+            body: '{"techUserMembers":["adminTechUser@test.com","techUser@test.com"],"nonTechUserMembers":["adminNonTechUser@test.com","nonTechUser@test.com"],"adminMembers":["adminTechUser@test.com","adminNonTechUser@test.com"]}',
           },
         ],
       ]);
@@ -204,12 +239,24 @@ describe('EntraIdApi', () => {
         {
           id: faker.string.uuid(),
           delivery_project_id: faker.string.uuid(),
-          email: 'adminUser@test.com',
+          email: 'adminTechUser@test.com',
           is_admin: true,
-          is_technical: false,
-          name: 'Admin User',
+          is_technical: true,
+          name: 'Admin Tech User',
           aad_entity_ref_id: faker.string.uuid(),
           updated_at: faker.date.recent(),
+          aad_user_principal_name: 'adminTechUser@test.com',
+        },
+        {
+          id: faker.string.uuid(),
+          delivery_project_id: faker.string.uuid(),
+          email: 'adminNonTechUser@test.com',
+          is_admin: true,
+          is_technical: false,
+          name: 'Admin Non Tech User',
+          aad_entity_ref_id: faker.string.uuid(),
+          updated_at: faker.date.recent(),
+          aad_user_principal_name: 'adminNonTechUser@test.com',
         },
         {
           id: faker.string.uuid(),
@@ -233,7 +280,9 @@ describe('EntraIdApi', () => {
         },
       ];
 
-      fetchApi.mockResolvedValue(new Response(undefined, { status: 400 }));
+      fetchApi.fetch.mockResolvedValue(
+        new Response(undefined, { status: 400 }),
+      );
 
       // Act and assert
       await expect(

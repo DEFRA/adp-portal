@@ -88,6 +88,7 @@ export class DeliveryProjectUserStore {
       is_technical,
       name,
       github_username,
+      aad_user_principal_name,
     } = projectUser;
 
     const valid = await checkMany({
@@ -113,6 +114,7 @@ export class DeliveryProjectUserStore {
         name,
         email,
         github_username,
+        aad_user_principal_name,
       },
       allColumns,
     );

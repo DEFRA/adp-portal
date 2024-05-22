@@ -96,7 +96,7 @@ export async function startStandaloneServer(
     deliveryProjectUserStore,
   );
   const entraIdGroupSyncronizer = new DeliveryProjectEntraIdGroupsSyncronizer(
-    new EntraIdApi(config),
+    new EntraIdApi(config, fetchApi),
     deliveryProjectStore,
     deliveryProjectUserStore,
   );

@@ -55,7 +55,7 @@ export default async function createPlugin({
     deliveryProjectUserStore,
   );
   const entraIdGroupSyncronizer = new DeliveryProjectEntraIdGroupsSyncronizer(
-    new EntraIdApi(config),
+    new EntraIdApi(config, fetchApi),
     deliveryProjectStore,
     deliveryProjectUserStore,
   );

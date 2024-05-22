@@ -1,6 +1,6 @@
 import type { Config } from '@backstage/config';
 import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
-import fetch from 'node-fetch';
+import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 
 export type IEntraIdApi = {
   [P in keyof EntraIdApi]: EntraIdApi[P];
@@ -13,12 +13,12 @@ type GroupMembersRequest = {
 };
 
 export class EntraIdApi {
-  readonly #fetch: typeof fetch;
+  readonly #fetchApi: FetchApi;
   readonly #apiBaseUrl: string;
 
-  constructor(config: Config, fetchApi = fetch) {
+  constructor(config: Config, fetchApi: FetchApi) {
     this.#apiBaseUrl = config.getString('adp.entraIdGroups.apiBaseUrl');
-    this.#fetch = fetchApi;
+    this.#fetchApi = fetchApi;
   }
 
   async createEntraIdGroupsForProject(
@@ -28,7 +28,7 @@ export class EntraIdApi {
     const endpoint = `${this.#apiBaseUrl}/${projectName}/groups-config`;
     const body = this.#mapProjectUsers(members);
 
-    const response = await this.#fetch(endpoint, {
+    const response = await this.#fetchApi.fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export class EntraIdApi {
     const endpoint = `${this.#apiBaseUrl}/${projectName}/members`;
     const body = this.#mapProjectUsers(members);
 
-    const response = await this.#fetch(endpoint, {
+    const response = await this.#fetchApi.fetch(endpoint, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export class EntraIdApi {
         if (!user.aad_user_principal_name) return result;
         if (user.is_admin)
           result.adminMembers.push(user.aad_user_principal_name);
-        else if (user.is_technical)
+        if (user.is_technical)
           result.techUserMembers.push(user.aad_user_principal_name);
         else result.nonTechUserMembers.push(user.aad_user_principal_name);
         return result;
