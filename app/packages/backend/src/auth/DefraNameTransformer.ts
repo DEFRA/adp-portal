@@ -6,7 +6,6 @@ import {
   MICROSOFT_EMAIL_ANNOTATION,
   MICROSOFT_GRAPH_USER_ID_ANNOTATION,
 } from '@backstage/plugin-catalog-backend-module-msgraph';
-// Can we write a test for theis function in tha file with the same name
 
 function hasEmailOrUserPrincipalName(user: MicrosoftGraph.User) {
   return user.mail || user.userPrincipalName;
@@ -25,6 +24,7 @@ function createEntityFromOriginalUser(
       annotations: {
         [MICROSOFT_GRAPH_USER_ID_ANNOTATION]: user.id!,
         [MICROSOFT_EMAIL_ANNOTATION]: email,
+        'graph.microsoft.com/user-principal-name': user.userPrincipalName!,
       },
     },
     spec: {

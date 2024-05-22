@@ -39,6 +39,7 @@ describe('EntraIdApi', () => {
           name: 'Admin User',
           aad_entity_ref_id: faker.string.uuid(),
           updated_at: faker.date.recent(),
+          aad_user_principal_name: 'adminUser@test.com',
         },
         {
           id: faker.string.uuid(),
@@ -49,6 +50,7 @@ describe('EntraIdApi', () => {
           name: 'Tech User',
           aad_entity_ref_id: faker.string.uuid(),
           updated_at: faker.date.recent(),
+          aad_user_principal_name: 'techUser@test.com',
         },
         {
           id: faker.string.uuid(),
@@ -59,6 +61,7 @@ describe('EntraIdApi', () => {
           name: 'Non Tech User',
           aad_entity_ref_id: faker.string.uuid(),
           updated_at: faker.date.recent(),
+          aad_user_principal_name: 'nonTechUser@test.com',
         },
       ];
 
@@ -145,6 +148,7 @@ describe('EntraIdApi', () => {
           name: 'Admin User',
           aad_entity_ref_id: faker.string.uuid(),
           updated_at: faker.date.recent(),
+          aad_user_principal_name: 'adminUser@test.com',
         },
         {
           id: faker.string.uuid(),
@@ -155,6 +159,7 @@ describe('EntraIdApi', () => {
           name: 'Tech User',
           aad_entity_ref_id: faker.string.uuid(),
           updated_at: faker.date.recent(),
+          aad_user_principal_name: 'techUser@test.com',
         },
         {
           id: faker.string.uuid(),
@@ -165,6 +170,7 @@ describe('EntraIdApi', () => {
           name: 'Non Tech User',
           aad_entity_ref_id: faker.string.uuid(),
           updated_at: faker.date.recent(),
+          aad_user_principal_name: 'nonTechUser@test.com',
         },
       ];
 

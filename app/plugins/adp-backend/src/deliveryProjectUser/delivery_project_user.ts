@@ -11,4 +11,5 @@ export type delivery_project_user = {
   email: string;
   github_username?: string;
   updated_at: Date;
+  aad_user_principal_name?: string;
 };

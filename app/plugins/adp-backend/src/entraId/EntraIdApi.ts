@@ -68,9 +68,12 @@ export class EntraIdApi {
   #mapProjectUsers(projectUsers: DeliveryProjectUser[]) {
     return projectUsers.reduce(
       (result: GroupMembersRequest, user: DeliveryProjectUser) => {
-        if (user.is_admin) result.adminMembers.push(user.email);
-        else if (user.is_technical) result.techUserMembers.push(user.email);
-        else result.nonTechUserMembers.push(user.email);
+        if (!user.aad_user_principal_name) return result;
+        if (user.is_admin)
+          result.adminMembers.push(user.aad_user_principal_name);
+        else if (user.is_technical)
+          result.techUserMembers.push(user.aad_user_principal_name);
+        else result.nonTechUserMembers.push(user.aad_user_principal_name);
         return result;
       },
       { techUserMembers: [], nonTechUserMembers: [], adminMembers: [] },

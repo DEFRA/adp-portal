@@ -31,10 +31,11 @@ const parseUpdateDeliveryProjectUserRequest =
   createParser<UpdateDeliveryProjectUserRequest>(
     z.object({
       id: z.string(),
-      delivery_project_id: z.string().optional(),
+      delivery_project_id: z.string(),
       is_technical: z.boolean().optional(),
       is_admin: z.boolean().optional(),
       github_username: z.string().optional(),
+      user_catalog_name: z.string(),
     }),
   );
 
@@ -120,6 +121,10 @@ export function createDeliveryProjectUserRouter(
           catalogUser.value.metadata.annotations![
             'graph.microsoft.com/user-id'
           ],
+        aad_user_principal_name:
+          catalogUser.value.metadata.annotations![
+            'graph.microsoft.com/user-principal-name'
+          ],
         delivery_project_id: body.delivery_project_id,
       };
 
@@ -141,7 +146,30 @@ export function createDeliveryProjectUserRouter(
 
   router.patch('/deliveryProjectUser', async (req, res) => {
     const body = parseUpdateDeliveryProjectUserRequest(req.body);
-    const result = await deliveryProjectUserStore.update(body);
+
+    const catalogUser = await getUserEntityFromCatalog(
+      body.user_catalog_name,
+      catalog,
+    );
+
+    if (!catalogUser.success) {
+      respond(body, res, catalogUser, errorMapping);
+      return;
+    }
+
+    const updateUser: UpdateDeliveryProjectUserRequest = {
+      ...body,
+      name: catalogUser.value.spec.profile!.displayName!,
+      email: catalogUser.value.metadata.annotations!['microsoft.com/email'],
+      aad_entity_ref_id:
+        catalogUser.value.metadata.annotations!['graph.microsoft.com/user-id'],
+      aad_user_principal_name:
+        catalogUser.value.metadata.annotations![
+          'graph.microsoft.com/user-principal-name'
+        ],
+    };
+
+    const result = await deliveryProjectUserStore.update(updateUser);
     if (result.success) {
       await Promise.allSettled([
         teamSyncronizer.syncronizeById(result.value.delivery_project_id),

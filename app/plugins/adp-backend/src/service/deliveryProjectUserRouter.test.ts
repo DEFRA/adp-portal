@@ -249,10 +249,15 @@ describe('createRouter', () => {
           slug: faker.company.name(),
         },
       });
+      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
 
       const response = await request(deliveryProjectUserApp)
         .patch('/deliveryProjectUser')
-        .send({ id: '123' } satisfies UpdateDeliveryProjectUserRequest);
+        .send({
+          id: '123',
+          delivery_project_id: '123',
+          user_catalog_name: 'user@test.com',
+        } satisfies UpdateDeliveryProjectUserRequest);
 
       expect(response.status).toEqual(200);
       expect(response.body).toMatchObject(
@@ -265,12 +270,14 @@ describe('createRouter', () => {
         success: false,
         errors: ['unknown', 'unknownDeliveryProject'],
       });
+      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
 
       const response = await request(deliveryProjectUserApp)
         .patch('/deliveryProjectUser')
         .send({
           id: '123',
           delivery_project_id: 'abc',
+          user_catalog_name: 'user@test.com',
         } satisfies UpdateDeliveryProjectUserRequest);
 
       // assert
@@ -293,6 +300,20 @@ describe('createRouter', () => {
       });
     });
 
+    it('returns a 400 response if catalog user cannot be found', async () => {
+      mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
+
+      const response = await request(deliveryProjectUserApp)
+        .patch('/deliveryProjectUser')
+        .send({
+          id: '123',
+          delivery_project_id: 'abc',
+          user_catalog_name: 'user@test.com',
+        } satisfies UpdateDeliveryProjectUserRequest);
+
+      expect(response.status).toEqual(400);
+    });
+
     it('return 400 if if the request is bad', async () => {
       const response = await request(deliveryProjectUserApp)
         .patch('/deliveryProjectUser')
@@ -306,7 +327,11 @@ describe('createRouter', () => {
       );
       const response = await request(deliveryProjectUserApp)
         .patch('/deliveryProjectUser')
-        .send({ id: '123' } satisfies UpdateDeliveryProjectUserRequest);
+        .send({
+          id: '123',
+          delivery_project_id: '123',
+          user_catalog_name: 'user@test.com',
+        } satisfies UpdateDeliveryProjectUserRequest);
       expect(response.status).toEqual(500);
     });
   });

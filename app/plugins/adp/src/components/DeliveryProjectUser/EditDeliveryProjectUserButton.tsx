@@ -40,6 +40,8 @@ export function EditDeliveryProjectUserButton({
       await client.update({
         ...deliveryProjectUser,
         ...fields,
+        aad_user_principal_name:
+          deliveryProjectUser.aad_user_principal_name ?? '',
       });
     } catch (e: any) {
       return readValidationError(e);

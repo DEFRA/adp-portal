@@ -195,6 +195,7 @@ describe('DeliveryProjectUserStore', () => {
         is_technical: true,
         github_username: 'test github username',
         delivery_project_id: projectUser.delivery_project_id,
+        user_catalog_name: 'user@test.com',
       };
 
       const updateResult = await deliveryProjectUserStore.update(
@@ -224,6 +225,7 @@ describe('DeliveryProjectUserStore', () => {
         ...projectUser,
         is_admin: projectUser.is_admin as boolean,
         is_technical: projectUser.is_technical as boolean,
+        user_catalog_name: 'user@test.com',
       };
 
       const updateResult = await deliveryProjectUserStore.update(updateUser);
@@ -251,6 +253,8 @@ describe('DeliveryProjectUserStore', () => {
       const expectedUpdate: UpdateDeliveryProjectUserRequest = {
         id: '12345',
         github_username: 'test github user',
+        delivery_project_id: '12345',
+        user_catalog_name: 'user@test.com',
       };
 
       await expect(
