@@ -3,21 +3,28 @@
 exports[`createFetchApiHeadersMiddleware Should work with a request input 1`] = `
 [
   Request {
-    method: 'GET',
-    url: 'https://test.com/',
-    headers: Headers { Header1: 'xyz', header2: 'def', header4: '123' },
-    destination: '',
-    referrer: 'about:client',
-    referrerPolicy: '',
-    mode: 'cors',
-    credentials: 'same-origin',
-    cache: 'default',
-    redirect: 'follow',
-    integrity: '',
-    keepalive: false,
-    isReloadNavigation: false,
-    isHistoryNavigation: false,
-    signal: AbortSignal { aborted: false }
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {
+      "header1": "xyz",
+      "header2": "def",
+      "header4": "123",
+    },
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
+    },
+    "url": "https://test.com/",
   },
   undefined,
 ]
@@ -26,21 +33,26 @@ exports[`createFetchApiHeadersMiddleware Should work with a request input 1`] = 
 exports[`createFetchApiHeadersMiddleware Should work with a request input without headers 1`] = `
 [
   Request {
-    method: 'GET',
-    url: 'https://test.com/',
-    headers: Headers { Header1: 'xyz' },
-    destination: '',
-    referrer: 'about:client',
-    referrerPolicy: '',
-    mode: 'cors',
-    credentials: 'same-origin',
-    cache: 'default',
-    redirect: 'follow',
-    integrity: '',
-    keepalive: false,
-    isReloadNavigation: false,
-    isHistoryNavigation: false,
-    signal: AbortSignal { aborted: false }
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {
+      "header1": "xyz",
+    },
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
+    },
+    "url": "https://test.com/",
   },
   undefined,
 ]
@@ -126,25 +138,9 @@ exports[`createFetchApiHeadersMiddleware Should work with a string input with an
   "https://test.com",
   {
     "headers": Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "header1" => {
-            "name": "Header1",
-            "value": "xyz",
-          },
-          "header2" => {
-            "name": "header2",
-            "value": "def",
-          },
-          "header4" => {
-            "name": "header4",
-            "value": "123",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "none",
+      "header1": "xyz",
+      "header2": "def",
+      "header4": "123",
     },
   },
 ]
@@ -248,25 +244,9 @@ exports[`createFetchApiHeadersMiddleware Should work with a url input with an in
   "https://test.com/",
   {
     "headers": Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "header1" => {
-            "name": "Header1",
-            "value": "xyz",
-          },
-          "header2" => {
-            "name": "header2",
-            "value": "def",
-          },
-          "header4" => {
-            "name": "header4",
-            "value": "123",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "none",
+      "header1": "xyz",
+      "header2": "def",
+      "header4": "123",
     },
   },
 ]

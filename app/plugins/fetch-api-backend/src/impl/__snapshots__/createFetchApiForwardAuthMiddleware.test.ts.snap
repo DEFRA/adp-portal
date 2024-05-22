@@ -3,21 +3,24 @@
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input but url disallowed by config 1`] = `
 [
   Request {
-    method: 'GET',
-    url: 'https://test.com/',
-    headers: Headers {},
-    destination: '',
-    referrer: 'about:client',
-    referrerPolicy: '',
-    mode: 'cors',
-    credentials: 'same-origin',
-    cache: 'default',
-    redirect: 'follow',
-    integrity: '',
-    keepalive: false,
-    isReloadNavigation: false,
-    isHistoryNavigation: false,
-    signal: AbortSignal { aborted: false }
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {},
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
+    },
+    "url": "https://test.com/",
   },
   undefined,
 ]
@@ -26,21 +29,24 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input but 
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input but url disallowed by function 1`] = `
 [
   Request {
-    method: 'GET',
-    url: 'https://test.com/',
-    headers: Headers {},
-    destination: '',
-    referrer: 'about:client',
-    referrerPolicy: '',
-    mode: 'cors',
-    credentials: 'same-origin',
-    cache: 'default',
-    redirect: 'follow',
-    integrity: '',
-    keepalive: false,
-    isReloadNavigation: false,
-    isHistoryNavigation: false,
-    signal: AbortSignal { aborted: false }
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {},
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
+    },
+    "url": "https://test.com/",
   },
   undefined,
 ]
@@ -49,21 +55,24 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input but 
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input, but no auth header 1`] = `
 [
   Request {
-    method: 'GET',
-    url: 'https://test.com/',
-    headers: Headers {},
-    destination: '',
-    referrer: 'about:client',
-    referrerPolicy: '',
-    mode: 'cors',
-    credentials: 'same-origin',
-    cache: 'default',
-    redirect: 'follow',
-    integrity: '',
-    keepalive: false,
-    isReloadNavigation: false,
-    isHistoryNavigation: false,
-    signal: AbortSignal { aborted: false }
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {},
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
+    },
+    "url": "https://test.com/",
   },
   undefined,
 ]
@@ -72,21 +81,24 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input, but
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url allowed by config allow list, but no request 1`] = `
 [
   Request {
-    method: 'GET',
-    url: 'https://test.com/',
-    headers: Headers {},
-    destination: '',
-    referrer: 'about:client',
-    referrerPolicy: '',
-    mode: 'cors',
-    credentials: 'same-origin',
-    cache: 'default',
-    redirect: 'follow',
-    integrity: '',
-    keepalive: false,
-    isReloadNavigation: false,
-    isHistoryNavigation: false,
-    signal: AbortSignal { aborted: false }
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {},
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
+    },
+    "url": "https://test.com/",
   },
   undefined,
 ]
@@ -95,21 +107,24 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url allowed by config baseUrl, but no request 1`] = `
 [
   Request {
-    method: 'GET',
-    url: 'https://test.com/',
-    headers: Headers {},
-    destination: '',
-    referrer: 'about:client',
-    referrerPolicy: '',
-    mode: 'cors',
-    credentials: 'same-origin',
-    cache: 'default',
-    redirect: 'follow',
-    integrity: '',
-    keepalive: false,
-    isReloadNavigation: false,
-    isHistoryNavigation: false,
-    signal: AbortSignal { aborted: false }
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {},
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
+    },
+    "url": "https://test.com/",
   },
   undefined,
 ]
@@ -118,21 +133,24 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url allowed by function, but no request 1`] = `
 [
   Request {
-    method: 'GET',
-    url: 'https://test.com/',
-    headers: Headers {},
-    destination: '',
-    referrer: 'about:client',
-    referrerPolicy: '',
-    mode: 'cors',
-    credentials: 'same-origin',
-    cache: 'default',
-    redirect: 'follow',
-    integrity: '',
-    keepalive: false,
-    isReloadNavigation: false,
-    isHistoryNavigation: false,
-    signal: AbortSignal { aborted: false }
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {},
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
+    },
+    "url": "https://test.com/",
   },
   undefined,
 ]
@@ -141,21 +159,26 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input, url
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input, with auth already set 1`] = `
 [
   Request {
-    method: 'GET',
-    url: 'https://test.com/',
-    headers: Headers { authorization: 'abc' },
-    destination: '',
-    referrer: 'about:client',
-    referrerPolicy: '',
-    mode: 'cors',
-    credentials: 'same-origin',
-    cache: 'default',
-    redirect: 'follow',
-    integrity: '',
-    keepalive: false,
-    isReloadNavigation: false,
-    isHistoryNavigation: false,
-    signal: AbortSignal { aborted: false }
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {
+      "authorization": "abc",
+    },
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
+    },
+    "url": "https://test.com/",
   },
   undefined,
 ]
@@ -164,21 +187,27 @@ exports[`createFetchApiForwardAuthMiddleware Should work with Request input, wit
 exports[`createFetchApiForwardAuthMiddleware Should work with Request input, with auth header 1`] = `
 [
   Request {
-    method: 'GET',
-    url: 'https://test.com/',
-    headers: Headers { Header1: 'abc', Authorization: 'my auth token' },
-    destination: '',
-    referrer: 'about:client',
-    referrerPolicy: '',
-    mode: 'cors',
-    credentials: 'same-origin',
-    cache: 'default',
-    redirect: 'follow',
-    integrity: '',
-    keepalive: false,
-    isReloadNavigation: false,
-    isHistoryNavigation: false,
-    signal: AbortSignal { aborted: false }
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {
+      "authorization": "my auth token",
+      "header1": "abc",
+    },
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
+    },
+    "url": "https://test.com/",
   },
   undefined,
 ]
@@ -279,21 +308,8 @@ exports[`createFetchApiForwardAuthMiddleware Should work with URL input, init wi
   "https://test.com/",
   {
     "headers": Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "header1" => {
-            "name": "Header1",
-            "value": "abc",
-          },
-          "authorization" => {
-            "name": "Authorization",
-            "value": "my auth token",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "none",
+      "authorization": "my auth token",
+      "header1": "abc",
     },
   },
 ]
@@ -304,17 +320,7 @@ exports[`createFetchApiForwardAuthMiddleware Should work with URL input, init wi
   "https://test.com/",
   {
     "headers": Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "authorization" => {
-            "name": "authorization",
-            "value": "abc",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "none",
+      "authorization": "abc",
     },
   },
 ]
@@ -450,21 +456,8 @@ exports[`createFetchApiForwardAuthMiddleware Should work with string input, init
   "https://test.com",
   {
     "headers": Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "header1" => {
-            "name": "Header1",
-            "value": "abc",
-          },
-          "authorization" => {
-            "name": "Authorization",
-            "value": "my auth token",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "none",
+      "authorization": "my auth token",
+      "header1": "abc",
     },
   },
 ]
@@ -475,17 +468,7 @@ exports[`createFetchApiForwardAuthMiddleware Should work with string input, init
   "https://test.com",
   {
     "headers": Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "authorization" => {
-            "name": "authorization",
-            "value": "abc",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "none",
+      "authorization": "abc",
     },
   },
 ]
