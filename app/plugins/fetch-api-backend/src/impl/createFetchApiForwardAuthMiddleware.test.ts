@@ -388,7 +388,7 @@ describe('createFetchApiForwardAuthMiddleware', () => {
       // assert
       expect(actual).toBe(response);
       expect(fetch).toHaveBeenCalledTimes(1);
-      expect(fetch.mock.calls[0]).toMatchSnapshot({});
+      expect(fetch.mock.calls[0]).toMatchSnapshot();
       expect(requestContext.getContext).toHaveBeenCalledTimes(
         getRequest ? 1 : 0,
       );
