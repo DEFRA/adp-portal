@@ -3,127 +3,28 @@
 exports[`createFetchApiHeadersMiddleware Should work with a request input 1`] = `
 [
   Request {
-    Symbol(realm): {
-      "settingsObject": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {
+      "header1": "xyz",
+      "header2": "def",
+      "header4": "123",
     },
-    Symbol(state): {
-      "body": null,
-      "cache": "default",
-      "client": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-      "credentials": "same-origin",
-      "cryptoGraphicsNonceMetadata": "",
-      "destination": "",
-      "done": false,
-      "headersList": HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "header1" => {
-            "name": "Header1",
-            "value": "xyz",
-          },
-          "header2" => {
-            "name": "header2",
-            "value": "def",
-          },
-          "header4" => {
-            "name": "header4",
-            "value": "123",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      "historyNavigation": false,
-      "initiator": "",
-      "integrity": "",
-      "keepalive": false,
-      "localURLsOnly": false,
-      "method": "GET",
-      "mode": "cors",
-      "origin": "client",
-      "parserMetadata": "",
-      "policyContainer": "client",
-      "preventNoCacheCacheControlHeaderModification": false,
-      "priority": null,
-      "redirect": "follow",
-      "redirectCount": 0,
-      "referrer": "client",
-      "referrerPolicy": "",
-      "reloadNavigation": false,
-      "replacesClientId": "",
-      "reservedClient": null,
-      "responseTainting": "basic",
-      "serviceWorkers": "all",
-      "taintedOrigin": false,
-      "timingAllowFailed": false,
-      "unsafeRequest": false,
-      "url": "https://test.com/",
-      "urlList": [
-        "https://test.com/",
-      ],
-      "useCORSPreflightFlag": false,
-      "useCredentials": false,
-      "userActivation": false,
-      "window": "client",
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
     },
-    Symbol(signal): AbortSignal {
-      Symbol(kEvents): Map {},
-      Symbol(events.maxEventTargetListeners): 10,
-      Symbol(events.maxEventTargetListenersWarned): false,
-      Symbol(kAborted): false,
-      Symbol(kReason): undefined,
-      Symbol(kComposite): false,
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
-    Symbol(headers): Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "header1" => {
-            "name": "Header1",
-            "value": "xyz",
-          },
-          "header2" => {
-            "name": "header2",
-            "value": "def",
-          },
-          "header4" => {
-            "name": "header4",
-            "value": "123",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "request",
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
+    "url": "https://test.com/",
   },
   undefined,
 ]
@@ -132,111 +33,26 @@ exports[`createFetchApiHeadersMiddleware Should work with a request input 1`] = 
 exports[`createFetchApiHeadersMiddleware Should work with a request input without headers 1`] = `
 [
   Request {
-    Symbol(realm): {
-      "settingsObject": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {
+      "header1": "xyz",
     },
-    Symbol(state): {
-      "body": null,
-      "cache": "default",
-      "client": {
-        "baseUrl": undefined,
-        "origin": undefined,
-        "policyContainer": {
-          "referrerPolicy": "strict-origin-when-cross-origin",
-        },
-      },
-      "credentials": "same-origin",
-      "cryptoGraphicsNonceMetadata": "",
-      "destination": "",
-      "done": false,
-      "headersList": HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "header1" => {
-            "name": "Header1",
-            "value": "xyz",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      "historyNavigation": false,
-      "initiator": "",
-      "integrity": "",
-      "keepalive": false,
-      "localURLsOnly": false,
-      "method": "GET",
-      "mode": "cors",
-      "origin": "client",
-      "parserMetadata": "",
-      "policyContainer": "client",
-      "preventNoCacheCacheControlHeaderModification": false,
-      "priority": null,
-      "redirect": "follow",
-      "redirectCount": 0,
-      "referrer": "client",
-      "referrerPolicy": "",
-      "reloadNavigation": false,
-      "replacesClientId": "",
-      "reservedClient": null,
-      "responseTainting": "basic",
-      "serviceWorkers": "all",
-      "taintedOrigin": false,
-      "timingAllowFailed": false,
-      "unsafeRequest": false,
-      "url": "https://test.com/",
-      "urlList": [
-        "https://test.com/",
-      ],
-      "useCORSPreflightFlag": false,
-      "useCredentials": false,
-      "userActivation": false,
-      "window": "client",
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
     },
-    Symbol(signal): AbortSignal {
-      Symbol(kEvents): Map {},
-      Symbol(events.maxEventTargetListeners): 10,
-      Symbol(events.maxEventTargetListenersWarned): false,
-      Symbol(kAborted): false,
-      Symbol(kReason): undefined,
-      Symbol(kComposite): false,
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
-    Symbol(headers): Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "header1" => {
-            "name": "Header1",
-            "value": "xyz",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "request",
-      Symbol(realm): {
-        "settingsObject": {
-          "baseUrl": undefined,
-          "origin": undefined,
-          "policyContainer": {
-            "referrerPolicy": "strict-origin-when-cross-origin",
-          },
-        },
-      },
-    },
+    "url": "https://test.com/",
   },
   undefined,
 ]
@@ -322,25 +138,9 @@ exports[`createFetchApiHeadersMiddleware Should work with a string input with an
   "https://test.com",
   {
     "headers": Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "header1" => {
-            "name": "Header1",
-            "value": "xyz",
-          },
-          "header2" => {
-            "name": "header2",
-            "value": "def",
-          },
-          "header4" => {
-            "name": "header4",
-            "value": "123",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "none",
+      "header1": "xyz",
+      "header2": "def",
+      "header4": "123",
     },
   },
 ]
@@ -444,25 +244,9 @@ exports[`createFetchApiHeadersMiddleware Should work with a url input with an in
   "https://test.com/",
   {
     "headers": Headers {
-      Symbol(headers list): HeadersList {
-        "cookies": null,
-        Symbol(headers map): Map {
-          "header1" => {
-            "name": "Header1",
-            "value": "xyz",
-          },
-          "header2" => {
-            "name": "header2",
-            "value": "def",
-          },
-          "header4" => {
-            "name": "header4",
-            "value": "123",
-          },
-        },
-        Symbol(headers map sorted): null,
-      },
-      Symbol(guard): "none",
+      "header1": "xyz",
+      "header2": "def",
+      "header4": "123",
     },
   },
 ]
