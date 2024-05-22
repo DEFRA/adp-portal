@@ -71,7 +71,9 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
     const result = await this.#createDeliveryProjectCore(data);
 
     const adGroupPayload = {
-      members: [],
+      techUserMembers: [],
+      nonTechUserMembers: [],
+      adminMembers: [],
     };
     await this.createEntraIdGroupsForProject(
       adGroupPayload,
