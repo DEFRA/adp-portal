@@ -271,7 +271,7 @@ properties:
             secretRef: cluster6-env
 
           - name: ADP_PORTAL_TEMPLATE_VERSION
-            value: '1.1.3'
+            value: '1.1.4'
 
         resources:
           cpu: 0.5
