@@ -31,7 +31,7 @@ export const requestContextProviderFactory = createServiceFactory({
  * @param handler The actual handler to run
  */
 function installAsMiddleware(router: RootHttpRouterService, handler: Handler) {
-  const id = `/phantom-middleware-path-${Math.floor(Math.random() * 10000000)}`;
+  const id = `/phantom-middleware-path-${Date.now()}`;
   router.use(
     Object.assign<Handler, Partial<InstanceType<typeof String>>>(
       (...args) => handler(...args),
