@@ -125,3 +125,5 @@ main().catch(error => {
   console.error('Backend failed to start up', error);
   process.exit(1);
 });
+
+require('./azuremonitor').setup()
