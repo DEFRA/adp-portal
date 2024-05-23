@@ -169,6 +169,7 @@ export class DeliveryProjectUserStore {
         aad_user_principal_name,
         email,
         name,
+        updated_at: new Date(),
       },
       allColumns,
     );

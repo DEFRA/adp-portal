@@ -192,6 +192,12 @@ exports[`AddProgrammeAdminButton should close the dialog when the form is cancel
 </body>
 `;
 
+exports[`AddProgrammeAdminButton should not render when the user is not allowed to create delivery programmes 1`] = `
+<body>
+  <div />
+</body>
+`;
+
 exports[`AddProgrammeAdminButton should only render a button initially 1`] = `
 <body>
   <div>
