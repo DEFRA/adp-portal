@@ -82,7 +82,7 @@ catalog:
         organization: "defra"
         catalogPath: "/catalog-info.yaml"
         filters:
-          repository: "^(ffc-.+|adp-.+|fcp-.+|mcu-.+|est-.+|rpa-.+|core.+|ncea-.+)"
+          repository: "^(ffc-.+|adp-.+|fcp-.+|mcu-.+|est-.+|rpa-.+|core.+|ncea-.+|ea-wq-.+)"
         schedule:
           frequency: { minutes: 60 }
           timeout: { minutes: 5 }
