@@ -1,19 +1,28 @@
 import { errorHandler } from '@backstage/backend-common';
-import type { IdentityApi } from '@backstage/plugin-auth-node';
+import {
+  getBearerTokenFromAuthorizationHeader,
+  type IdentityApi,
+} from '@backstage/plugin-auth-node';
 import type { Logger } from 'winston';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import express from 'express';
 import Router from 'express-promise-router';
-import { InputError } from '@backstage/errors';
+import { InputError, NotAllowedError } from '@backstage/errors';
 import type { CatalogApi } from '@backstage/catalog-client';
 import type { AddDeliveryProgrammeAdmin } from '../utils';
 import { assertUUID, createParser, respond } from './util';
 import { z } from 'zod';
-import type {
-  CreateDeliveryProgrammeAdminRequest,
-  DeleteDeliveryProgrammeAdminRequest,
+import {
+  deliveryProgrammeAdminCreatePermission,
+  type CreateDeliveryProgrammeAdminRequest,
+  type DeleteDeliveryProgrammeAdminRequest,
 } from '@internal/plugin-adp-common';
 import { getUserEntityFromCatalog } from './catalog';
+import {
+  AuthorizeResult,
+  type PermissionEvaluator,
+} from '@backstage/plugin-permission-common';
+import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 
 const parseCreateDeliveryProgrammeAdminRequest =
   createParser<CreateDeliveryProgrammeAdminRequest>(
@@ -63,12 +72,17 @@ export interface DeliveryProgrammeAdminRouterOptions {
   identity: IdentityApi;
   deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
   catalog: CatalogApi;
+  permissions: PermissionEvaluator;
 }
 
 export function createDeliveryProgrammeAdminRouter(
   options: DeliveryProgrammeAdminRouterOptions,
 ): express.Router {
-  const { logger, catalog, deliveryProgrammeAdminStore } = options;
+  const { logger, catalog, deliveryProgrammeAdminStore, permissions } = options;
+
+  const permissionIntegrationRouter = createPermissionIntegrationRouter({
+    permissions: [deliveryProgrammeAdminCreatePermission],
+  });
 
   const router = Router();
   router.use(express.json());
@@ -76,6 +90,8 @@ export function createDeliveryProgrammeAdminRouter(
   router.get('/deliveryProgrammeAdmins/health', (_, response) => {
     response.json({ status: 'ok' });
   });
+
+  router.use(permissionIntegrationRouter);
 
   router.get('/deliveryProgrammeAdmins', async (_req, res) => {
     try {
@@ -114,6 +130,20 @@ export function createDeliveryProgrammeAdminRouter(
   router.post('/deliveryProgrammeAdmin', async (req, res) => {
     const body = parseCreateDeliveryProgrammeAdminRequest(req.body);
     assertUUID(body.delivery_programme_id);
+
+    const token = getBearerTokenFromAuthorizationHeader(
+      req.header('authorization'),
+    );
+    const decision = (
+      await permissions.authorize(
+        [{ permission: deliveryProgrammeAdminCreatePermission }],
+        { token },
+      )
+    )[0];
+
+    if (decision.result === AuthorizeResult.DENY) {
+      throw new NotAllowedError('Unauthorized');
+    }
 
     const catalogUser = await getUserEntityFromCatalog(
       body.user_catalog_name,

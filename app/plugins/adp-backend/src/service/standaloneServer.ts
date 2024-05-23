@@ -1,6 +1,7 @@
 import {
   DatabaseManager,
   HostDiscovery,
+  ServerTokenManager,
   createServiceBuilder,
   loadBackendConfig,
 } from '@backstage/backend-common';
@@ -35,6 +36,7 @@ import {
   DeliveryProjectEntraIdGroupsSyncronizer,
   EntraIdApi,
 } from '../entraId';
+import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 
 export interface ServerOptions {
   port: number;
@@ -64,6 +66,15 @@ export async function startStandaloneServer(
     discovery,
     issuer: await discovery.getExternalBaseUrl('auth'),
   });
+
+  const tokenManager = ServerTokenManager.fromConfig(config, {
+    logger,
+  });
+  const permissions = ServerPermissionClient.fromConfig(config, {
+    discovery,
+    tokenManager,
+  });
+
   const requestContext = new RequestContextMiddleware();
   const fetchApi = new FetchApi({
     middleware: [
@@ -122,6 +133,7 @@ export async function startStandaloneServer(
     catalog,
     identity,
     logger,
+    permissions,
   });
 
   const deliveryProjectRouter = createProjectRouter({

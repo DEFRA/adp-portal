@@ -28,6 +28,7 @@ export default async function createPlugin({
   database,
   config,
   fetchApi,
+  permissions,
 }: PluginEnvironment) {
   await initializeAdpDatabase(database);
 
@@ -98,6 +99,7 @@ export default async function createPlugin({
     catalog,
     identity,
     logger,
+    permissions,
   });
 
   const combinedRouter = Router();
