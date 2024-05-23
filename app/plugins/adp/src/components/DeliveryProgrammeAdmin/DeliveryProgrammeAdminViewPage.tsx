@@ -115,6 +115,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
             color="primary"
             startIcon={<AddBoxIcon />}
             onCreated={refresh}
+            data-testid="delivery-programme-admin-add-button"
           >
             Add Delivery Programme Admin
           </AddProgrammeAdminButton>
