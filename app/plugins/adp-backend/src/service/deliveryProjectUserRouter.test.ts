@@ -8,7 +8,12 @@ import { getVoidLogger } from '@backstage/backend-common';
 import { faker } from '@faker-js/faker';
 import { createDeliveryProjectUser } from '../testData/projectUserTestData';
 import { catalogTestData } from '../testData/catalogEntityTestData';
-import type { CreateDeliveryProjectUserRequest } from '@internal/plugin-adp-common';
+import type {
+  CreateDeliveryProjectUserRequest,
+  UpdateDeliveryProjectUserRequest,
+} from '@internal/plugin-adp-common';
+import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
+import type { IDeliveryProjectEntraIdGroupsSyncronizer } from '../entraId';
 
 describe('createRouter', () => {
   let deliveryProjectUserApp: express.Express;
@@ -17,6 +22,8 @@ describe('createRouter', () => {
     add: jest.fn(),
     getAll: jest.fn(),
     getByDeliveryProject: jest.fn(),
+    get: jest.fn(),
+    update: jest.fn(),
   };
 
   const mockCatalogClient: jest.Mocked<CatalogApi> = {
@@ -36,10 +43,23 @@ describe('createRouter', () => {
     validateEntity: jest.fn(),
   };
 
+  const mockGithubTeamSyncronizer: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> =
+    {
+      syncronizeByName: jest.fn(),
+      syncronizeById: jest.fn(),
+    };
+
+  const mockEntraIdGroupSyncronizer: jest.Mocked<IDeliveryProjectEntraIdGroupsSyncronizer> =
+    {
+      syncronizeById: jest.fn(),
+    };
+
   const mockOptions: DeliveryProjectUserRouterOptions = {
     catalog: mockCatalogClient,
     deliveryProjectUserStore: mockDeliveryProjectUserStore,
     logger: getVoidLogger(),
+    teamSyncronizer: mockGithubTeamSyncronizer,
+    entraIdGroupSyncronizer: mockEntraIdGroupSyncronizer,
   };
 
   beforeAll(async () => {
@@ -104,6 +124,26 @@ describe('createRouter', () => {
         value: projectUser,
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+      mockGithubTeamSyncronizer.syncronizeById.mockResolvedValue({
+        admins: {
+          id: faker.number.int(),
+          description: faker.lorem.sentence(),
+          isPublic: faker.datatype.boolean(),
+          maintainers: [],
+          members: [],
+          name: faker.company.name(),
+          slug: faker.company.name(),
+        },
+        contributors: {
+          id: faker.number.int(),
+          description: faker.lorem.sentence(),
+          isPublic: faker.datatype.boolean(),
+          maintainers: [],
+          members: [],
+          name: faker.company.name(),
+          slug: faker.company.name(),
+        },
+      });
 
       const requestBody: CreateDeliveryProjectUserRequest = {
         delivery_project_id: projectUser.delivery_project_id,
@@ -179,6 +219,120 @@ describe('createRouter', () => {
           },
         ],
       });
+    });
+  });
+
+  describe('PATCH /deliveryProjectUser', () => {
+    it('returns ok', async () => {
+      const projectUser = createDeliveryProjectUser(faker.string.uuid());
+      mockDeliveryProjectUserStore.update.mockResolvedValue({
+        success: true,
+        value: projectUser,
+      });
+      mockGithubTeamSyncronizer.syncronizeById.mockResolvedValue({
+        admins: {
+          id: faker.number.int(),
+          description: faker.lorem.sentence(),
+          isPublic: faker.datatype.boolean(),
+          maintainers: [],
+          members: [],
+          name: faker.company.name(),
+          slug: faker.company.name(),
+        },
+        contributors: {
+          id: faker.number.int(),
+          description: faker.lorem.sentence(),
+          isPublic: faker.datatype.boolean(),
+          maintainers: [],
+          members: [],
+          name: faker.company.name(),
+          slug: faker.company.name(),
+        },
+      });
+      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+
+      const response = await request(deliveryProjectUserApp)
+        .patch('/deliveryProjectUser')
+        .send({
+          id: '123',
+          delivery_project_id: '123',
+          user_catalog_name: 'user@test.com',
+        } satisfies UpdateDeliveryProjectUserRequest);
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toMatchObject(
+        JSON.parse(JSON.stringify(projectUser)),
+      );
+    });
+
+    it('return 400 with errors', async () => {
+      mockDeliveryProjectUserStore.update.mockResolvedValue({
+        success: false,
+        errors: ['unknown', 'unknownDeliveryProject'],
+      });
+      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+
+      const response = await request(deliveryProjectUserApp)
+        .patch('/deliveryProjectUser')
+        .send({
+          id: '123',
+          delivery_project_id: 'abc',
+          user_catalog_name: 'user@test.com',
+        } satisfies UpdateDeliveryProjectUserRequest);
+
+      // assert
+      expect(response.status).toEqual(400);
+      expect(response.body).toMatchObject({
+        errors: [
+          {
+            path: 'root',
+            error: {
+              message: 'An unexpected error occurred.',
+            },
+          },
+          {
+            path: 'delivery_project_id',
+            error: {
+              message: 'The delivery project does not exist.',
+            },
+          },
+        ],
+      });
+    });
+
+    it('returns a 400 response if catalog user cannot be found', async () => {
+      mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
+
+      const response = await request(deliveryProjectUserApp)
+        .patch('/deliveryProjectUser')
+        .send({
+          id: '123',
+          delivery_project_id: 'abc',
+          user_catalog_name: 'user@test.com',
+        } satisfies UpdateDeliveryProjectUserRequest);
+
+      expect(response.status).toEqual(400);
+    });
+
+    it('return 400 if if the request is bad', async () => {
+      const response = await request(deliveryProjectUserApp)
+        .patch('/deliveryProjectUser')
+        .send({ notAnId: 'abc' });
+      expect(response.status).toEqual(400);
+    });
+
+    it('returns internal server error', async () => {
+      mockDeliveryProjectUserStore.update.mockRejectedValueOnce(
+        new Error('error'),
+      );
+      const response = await request(deliveryProjectUserApp)
+        .patch('/deliveryProjectUser')
+        .send({
+          id: '123',
+          delivery_project_id: '123',
+          user_catalog_name: 'user@test.com',
+        } satisfies UpdateDeliveryProjectUserRequest);
+      expect(response.status).toEqual(500);
     });
   });
 });

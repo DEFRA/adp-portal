@@ -277,13 +277,13 @@ properties:
             secretRef: cluster6-env
 
           - name: ADP_PORTAL_TEMPLATE_VERSION
-            value: '1.0.1'
+            value: '1.1.7'
           - name: APPINSIGHTS_CLOUDROLE
             value: 'defra-adp-portal'
           - name: SHARED_APPINSIGHT_CONNECTIONSTRING
             secretRef: app-insights-connectionstring
           - name: ADP_PORTAL_MI_CLIENT_ID
-            secretRef: adp-portal-mi-client-id           
+            secretRef: adp-portal-mi-client-id
 
         resources:
           cpu: 0.5

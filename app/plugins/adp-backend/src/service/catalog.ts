@@ -17,6 +17,7 @@ export async function getUserEntityFromCatalog(
       'metadata.name',
       'metadata.annotations.graph.microsoft.com/user-id',
       'metadata.annotations.microsoft.com/email',
+      'metadata.annotations.graph.microsoft.com/user-principal-name',
       'spec.profile.displayName',
     ],
   });

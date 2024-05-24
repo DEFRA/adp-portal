@@ -1,12 +1,21 @@
 import type { Knex } from 'knex';
-import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
+import type {
+  DeliveryProjectUser,
+  UpdateDeliveryProjectUserRequest,
+} from '@internal/plugin-adp-common';
 import type { delivery_project_user } from './delivery_project_user';
 import { delivery_project_user_name } from './delivery_project_user';
 import type { SafeResult } from '../service/util';
-import { assertUUID, checkMany, isUUID } from '../service/util';
+import {
+  assertUUID,
+  checkMany,
+  containsAnyValue,
+  isUUID,
+} from '../service/util';
 import type { AddDeliveryProjectUser } from '../utils';
 import type { delivery_project } from '../deliveryProject/delivery_project';
 import { delivery_project_name } from '../deliveryProject/delivery_project';
+import { NotFoundError } from '@backstage/errors';
 
 export type IDeliveryProjectUserStore = {
   [P in keyof DeliveryProjectUserStore]: DeliveryProjectUserStore[P];
@@ -18,6 +27,7 @@ const allColumns = [
   'is_technical',
   'is_admin',
   'aad_entity_ref_id',
+  'aad_user_principal_name',
   'name',
   'email',
   'github_username',
@@ -43,6 +53,18 @@ export class DeliveryProjectUserStore {
     return deliveryProjectUsers.map(row => this.#normalize(row));
   }
 
+  async get(id: string): Promise<DeliveryProjectUser> {
+    if (!isUUID(id)) throw notFound();
+    const result = await this.#table
+      .where('id', id)
+      .select(...allColumns)
+      .first();
+
+    if (result === undefined) throw notFound();
+
+    return this.#normalize(result);
+  }
+
   async getByDeliveryProject(
     deliveryProjectId: string,
   ): Promise<DeliveryProjectUser[]> {
@@ -66,6 +88,7 @@ export class DeliveryProjectUserStore {
       is_technical,
       name,
       github_username,
+      aad_user_principal_name,
     } = projectUser;
 
     const valid = await checkMany({
@@ -91,6 +114,7 @@ export class DeliveryProjectUserStore {
         name,
         email,
         github_username,
+        aad_user_principal_name,
       },
       allColumns,
     );
@@ -105,11 +129,69 @@ export class DeliveryProjectUserStore {
     };
   }
 
+  async update(
+    request: UpdateDeliveryProjectUserRequest,
+  ): Promise<SafeResult<DeliveryProjectUser, 'unknownDeliveryProject'>> {
+    const {
+      id,
+      is_admin,
+      is_technical,
+      github_username,
+      delivery_project_id,
+      aad_entity_ref_id,
+      aad_user_principal_name,
+      email,
+      name,
+    } = request;
+
+    if (!containsAnyValue(request))
+      return { success: true, value: await this.get(id) };
+
+    if (!isUUID(id)) throw notFound();
+
+    const valid = await checkMany({
+      unknownDeliveryProject:
+        delivery_project_id !== undefined &&
+        not(this.#deliveryProjectExists(delivery_project_id)),
+    });
+
+    if (!valid.success) return valid;
+
+    if (delivery_project_id !== undefined) assertUUID(delivery_project_id);
+
+    const result = await this.#table.where('id', id).update(
+      {
+        is_admin,
+        is_technical,
+        github_username,
+        delivery_project_id,
+        aad_entity_ref_id,
+        aad_user_principal_name,
+        email,
+        name,
+      },
+      allColumns,
+    );
+
+    if (result.length < 1) return { success: false, errors: ['unknown'] };
+
+    return {
+      success: true,
+      value: this.#normalize({
+        ...result[0],
+      }),
+    };
+  }
+
   #normalize(row: delivery_project_user): DeliveryProjectUser {
     return {
       ...row,
-      is_admin: row.is_admin === 1,
-      is_technical: row.is_technical === 1,
+      is_admin:
+        typeof row.is_admin === 'number' ? row.is_admin === 1 : row.is_admin,
+      is_technical:
+        typeof row.is_technical === 'number'
+          ? row.is_technical === 1
+          : row.is_technical,
       github_username: row.github_username ?? undefined,
     };
   }
@@ -141,6 +223,10 @@ export class DeliveryProjectUserStore {
       .count('*', { as: 'count' });
     return Number(count) > 0;
   }
+}
+
+function notFound() {
+  return new NotFoundError('Unknown Delivery Project User');
 }
 
 async function not(value: Promise<boolean>) {

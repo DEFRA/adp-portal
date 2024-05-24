@@ -6,9 +6,10 @@ import { createProjectRouter } from './deliveryProjectRouter';
 import { ConfigReader } from '@backstage/config';
 import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { InputError } from '@backstage/errors';
-import { expectedProgrammeDataWithName } from '../testData/programmeTestData';
-import type { IDeliveryProjectStore } from '../deliveryProject';
-import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import {
+  type IFluxConfigApi,
+  type IDeliveryProjectStore,
+} from '../deliveryProject';
 import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 import { randomUUID } from 'node:crypto';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
@@ -43,19 +44,9 @@ describe('createRouter', () => {
     }),
   };
 
-  const mockConfig = new ConfigReader({
-    rbac: {
-      programmeAdminGroup: 'test',
-    },
-    adp: {
-      fluxOnboarding: {
-        apiBaseUrl: 'https://portal-api/FluxOnboarding',
-      },
-    },
-  });
-
   const mockSyncronizer: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> = {
-    syncronize: jest.fn(),
+    syncronizeByName: jest.fn(),
+    syncronizeById: jest.fn(),
   };
 
   const mockDeliveryProjectStore: jest.Mocked<IDeliveryProjectStore> = {
@@ -66,28 +57,27 @@ describe('createRouter', () => {
     update: jest.fn(),
   };
 
-  const mockDeliveryProgrammeStore: jest.Mocked<IDeliveryProgrammeStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-  };
-
   const mockDeliveryProjectUserStore: jest.Mocked<IDeliveryProjectUserStore> = {
     add: jest.fn(),
     getByDeliveryProject: jest.fn(),
     getAll: jest.fn(),
+    get: jest.fn(),
+    update: jest.fn(),
+  };
+
+  const mockFluxConfigApi: jest.Mocked<IFluxConfigApi> = {
+    createFluxConfig: jest.fn(),
+    getFluxConfig: jest.fn(),
   };
 
   const mockOptions = {
     logger: getVoidLogger(),
     identity: mockIdentityApi,
     database: createTestDatabase(),
-    config: mockConfig,
     teamSyncronizer: mockSyncronizer,
     deliveryProjectStore: mockDeliveryProjectStore,
-    deliveryProgrammeStore: mockDeliveryProgrammeStore,
     deliveryProjectUserStore: mockDeliveryProjectUserStore,
+    fluxConfigApi: mockFluxConfigApi,
   };
 
   function createTestDatabase(): PluginDatabaseManager {
@@ -122,20 +112,6 @@ describe('createRouter', () => {
     mockDeliveryProjectStore.update.mockResolvedValue({
       success: true,
       value: expectedProjectDataWithName,
-    });
-    mockDeliveryProgrammeStore.add.mockResolvedValue({
-      success: true,
-      value: expectedProgrammeDataWithName,
-    });
-    mockDeliveryProgrammeStore.get.mockResolvedValue(
-      expectedProgrammeDataWithName,
-    );
-    mockDeliveryProgrammeStore.getAll.mockResolvedValue([
-      expectedProgrammeDataWithName,
-    ]);
-    mockDeliveryProgrammeStore.update.mockResolvedValue({
-      success: true,
-      value: expectedProgrammeDataWithName,
     });
   });
 
@@ -393,7 +369,7 @@ describe('createRouter', () => {
 
       // assert
       expect(response.status).toBe(200);
-      expect(mockSyncronizer.syncronize.mock.calls).toMatchObject([
+      expect(mockSyncronizer.syncronizeByName.mock.calls).toMatchObject([
         [projectName],
       ]);
     });

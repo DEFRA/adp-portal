@@ -1,8 +1,7 @@
 import type { Config } from '@backstage/config';
 import { GitHubTeamsApi } from './GithubTeamsApi';
-import type fetch from 'node-fetch';
-import { Response } from 'node-fetch';
 import type { GithubTeamDetails } from '@internal/plugin-adp-common';
+import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 
 describe('GitHubTeamsApi', () => {
   function setup() {
@@ -25,9 +24,9 @@ describe('GitHubTeamsApi', () => {
       keys: jest.fn(),
       subscribe: undefined,
     };
-    const fetchApi: jest.MockedFn<typeof fetch> = Object.assign(jest.fn(), {
-      isRedirect: jest.fn(),
-    });
+    const fetchApi: jest.Mocked<FetchApi> = {
+      fetch: jest.fn(),
+    };
     const sut = new GitHubTeamsApi(config, fetchApi);
 
     return { sut, fetchApi, config };
@@ -52,7 +51,7 @@ describe('GitHubTeamsApi', () => {
         expect(x).toBe('adp.githubTeams.apiBaseUrl');
         return 'https://localhost/api';
       });
-      fetchApi.mockResolvedValueOnce(response);
+      fetchApi.fetch.mockResolvedValueOnce(response);
 
       // act
       const actual = await sut.createTeam({
@@ -68,7 +67,7 @@ describe('GitHubTeamsApi', () => {
       expect(config.getString.mock.calls).toMatchObject([
         ['adp.githubTeams.apiBaseUrl'],
       ]);
-      expect(fetchApi.mock.calls).toMatchObject([
+      expect(fetchApi.fetch.mock.calls).toMatchObject([
         [
           `https://localhost/api`,
           {
@@ -90,7 +89,7 @@ describe('GitHubTeamsApi', () => {
         expect(x).toBe('adp.githubTeams.apiBaseUrl');
         return 'https://localhost/api';
       });
-      fetchApi.mockResolvedValueOnce(response);
+      fetchApi.fetch.mockResolvedValueOnce(response);
 
       // act
       await expectException(() =>
@@ -107,7 +106,7 @@ describe('GitHubTeamsApi', () => {
       expect(config.getString.mock.calls).toMatchObject([
         ['adp.githubTeams.apiBaseUrl'],
       ]);
-      expect(fetchApi.mock.calls).toMatchObject([
+      expect(fetchApi.fetch.mock.calls).toMatchObject([
         [
           `https://localhost/api`,
           {
@@ -141,7 +140,7 @@ describe('GitHubTeamsApi', () => {
         expect(x).toBe('adp.githubTeams.apiBaseUrl');
         return 'http://localhost/api';
       });
-      fetchApi.mockResolvedValueOnce(response);
+      fetchApi.fetch.mockResolvedValueOnce(response);
 
       // act
       const actual = await sut.setTeam(teamId, {
@@ -157,7 +156,7 @@ describe('GitHubTeamsApi', () => {
       expect(config.getString.mock.calls).toMatchObject([
         ['adp.githubTeams.apiBaseUrl'],
       ]);
-      expect(fetchApi.mock.calls).toMatchObject([
+      expect(fetchApi.fetch.mock.calls).toMatchObject([
         [
           `http://localhost/api/${teamId}`,
           {
@@ -180,7 +179,7 @@ describe('GitHubTeamsApi', () => {
         expect(x).toBe('adp.githubTeams.apiBaseUrl');
         return 'http://localhost/api';
       });
-      fetchApi.mockResolvedValueOnce(response);
+      fetchApi.fetch.mockResolvedValueOnce(response);
 
       // act
       await expectException(() =>
@@ -197,7 +196,7 @@ describe('GitHubTeamsApi', () => {
       expect(config.getString.mock.calls).toMatchObject([
         ['adp.githubTeams.apiBaseUrl'],
       ]);
-      expect(fetchApi.mock.calls).toMatchObject([
+      expect(fetchApi.fetch.mock.calls).toMatchObject([
         [
           `http://localhost/api/${teamId}`,
           {

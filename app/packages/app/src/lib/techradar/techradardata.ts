@@ -1,16 +1,19 @@
+import type { FetchApi } from '@backstage/core-plugin-api';
 import type { TechRadarApi } from './techradarapi';
 import type { Config } from '@backstage/config';
 
 export class AdpDataTechRadarApi implements TechRadarApi {
-  private configApi: Config;
+  readonly #configApi: Config;
+  readonly #fetchApi: FetchApi;
 
-  constructor(configApi: Config) {
-    this.configApi = configApi;
+  constructor(configApi: Config, fetchApi: FetchApi) {
+    this.#configApi = configApi;
+    this.#fetchApi = fetchApi;
   }
 
   async load() {
-    const rawData = this.configApi.getString('techRadar.data');
-    const data = await fetch(rawData).then(res => res.json());
+    const rawData = this.#configApi.getString('techRadar.data');
+    const data = await this.#fetchApi.fetch(rawData).then(res => res.json());
 
     return {
       ...data,

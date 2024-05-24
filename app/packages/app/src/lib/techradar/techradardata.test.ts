@@ -1,3 +1,4 @@
+import type { FetchApi } from '@backstage/core-plugin-api';
 import { AdpDataTechRadarApi } from './techradardata';
 import { ConfigReader } from '@backstage/config';
 
@@ -23,9 +24,16 @@ describe('AdpDataTechRadarApi', () => {
     ],
   };
 
-  beforeEach(() => {
-    const fetch = jest.spyOn(global, 'fetch');
-    fetch.mockImplementation(() => {
+  it('should fetch data successfully', async () => {
+    const config = new ConfigReader({
+      techRadar: {
+        data: 'value',
+      },
+    });
+    const mockFetchApi: jest.Mocked<FetchApi> = {
+      fetch: jest.fn(),
+    };
+    mockFetchApi.fetch.mockImplementation(() => {
       return Promise.resolve(
         new Response(JSON.stringify(mockData), {
           headers: {
@@ -34,23 +42,11 @@ describe('AdpDataTechRadarApi', () => {
         }),
       );
     });
-  });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it('should fetch data successfully', async () => {
-    const config = new ConfigReader({
-      techRadar: {
-        data: 'value',
-      },
-    });
-
-    const techradarapi = new AdpDataTechRadarApi(config);
+    const techradarapi = new AdpDataTechRadarApi(config, mockFetchApi);
     const data = await techradarapi.load();
 
-    expect(global.fetch).toHaveBeenCalledWith('value');
+    expect(mockFetchApi.fetch).toHaveBeenCalledWith('value');
     expect(data).toEqual(mockData);
   });
 });

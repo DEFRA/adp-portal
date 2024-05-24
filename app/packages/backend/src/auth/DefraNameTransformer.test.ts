@@ -40,10 +40,16 @@ describe('Test original Function', () => {
     expect(
       result?.metadata?.annotations?.[MICROSOFT_GRAPH_USER_ID_ANNOTATION],
     ).toBe('mockGraphUser');
+    expect(
+      result?.metadata?.annotations?.[
+        'graph.microsoft.com/user-principal-name'
+      ],
+    ).toBe(mockGraphUser.userPrincipalName);
     expect(result?.spec?.profile?.displayName).toBe('User');
     expect(result?.spec?.profile?.email).toBe('pZ6p6@example.com');
     expect(result?.spec?.profile?.picture).toBe('mockUserPhoto');
   });
+
   it('If missing email does not transform the at all', async () => {
     const mockGraphUser = {
       id: 'mockGraphUser',
@@ -72,6 +78,11 @@ describe('Defra ADO User Transformer', () => {
     expect(
       result?.metadata?.annotations?.[MICROSOFT_GRAPH_USER_ID_ANNOTATION],
     ).toBe('mockGraphUser');
+    expect(
+      result?.metadata?.annotations?.[
+        'graph.microsoft.com/user-principal-name'
+      ],
+    ).toBe(mockGraphUser.userPrincipalName);
     expect(result?.spec?.profile?.displayName).toBe('User');
     expect(result?.spec?.profile?.email).toBe('pZ6p6@example.com');
     expect(result?.spec?.profile?.picture).toBe('mockUserPhoto');
@@ -90,7 +101,13 @@ describe('Defra ADO User Transformer', () => {
     expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBe(
       'freds@example.com',
     );
+    expect(
+      result?.metadata?.annotations?.[
+        'graph.microsoft.com/user-principal-name'
+      ],
+    ).toBe(mockGraphUser.userPrincipalName);
   });
+
   it('Parses UPN correctly for email is undefined', async () => {
     const { mockGraphUser, mockUserPhoto } = createTestData(
       'freds@example.com',
@@ -104,6 +121,11 @@ describe('Defra ADO User Transformer', () => {
     expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBe(
       'freds@example.com',
     );
+    expect(
+      result?.metadata?.annotations?.[
+        'graph.microsoft.com/user-principal-name'
+      ],
+    ).toBe(mockGraphUser.userPrincipalName);
   });
 
   it('Parses UPN correctly for email is null', async () => {
@@ -118,6 +140,11 @@ describe('Defra ADO User Transformer', () => {
     expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBe(
       'freds@example.com',
     );
+    expect(
+      result?.metadata?.annotations?.[
+        'graph.microsoft.com/user-principal-name'
+      ],
+    ).toBe(mockGraphUser.userPrincipalName);
   });
 
   it('Check get undefined it principalUserName and email is blank', async () => {
@@ -132,6 +159,7 @@ describe('Defra ADO User Transformer', () => {
     const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
     expect(result).toBeUndefined();
   });
+
   it('Check get undefined if principalUserName and email is undefined', async () => {
     const mockGraphUser = {
       id: 'someone@there.com',

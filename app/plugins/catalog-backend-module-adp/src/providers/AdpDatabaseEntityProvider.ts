@@ -7,28 +7,32 @@ import type { Logger } from 'winston';
 import * as uuid from 'uuid';
 import type { DiscoveryService } from '@backstage/backend-plugin-api';
 import type { Entity, GroupEntity } from '@backstage/catalog-model';
-import fetch from 'node-fetch';
 import type {
   ArmsLengthBody,
   DeliveryProgramme,
+  DeliveryProgrammeAdmin,
   DeliveryProject,
+  DeliveryProjectUser,
 } from '@internal/plugin-adp-common';
 import {
   armsLengthBodyGroupTransformer,
   deliveryProgrammeGroupTransformer,
   deliveryProjectGroupTransformer,
 } from '../transformers';
+import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 
 export class AdpDatabaseEntityProvider implements EntityProvider {
-  private readonly logger: Logger;
-  private readonly discovery: DiscoveryService;
-  private readonly scheduleFn: () => Promise<void>;
-  private connection?: EntityProviderConnection;
+  readonly #logger: Logger;
+  readonly #discovery: DiscoveryService;
+  readonly #scheduleFn: () => Promise<void>;
+  readonly #fetchApi: FetchApi;
+  #connection?: EntityProviderConnection;
 
   static create(
     discovery: DiscoveryService,
     options: {
       logger: Logger;
+      fetchApi: FetchApi;
       schedule?: TaskRunner;
       scheduler: PluginTaskScheduler;
     },
@@ -38,29 +42,36 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     }
 
     const defaultSchedule = {
-      frequency: { minutes: 15 },
-      timeout: { minutes: 15 },
-      initialDelay: { seconds: 5 },
+      frequency: { minutes: 1 },
+      timeout: { minutes: 1 },
+      initialDelay: { seconds: 30 },
     };
 
     const taskRunner =
       options.schedule ??
       options.scheduler.createScheduledTaskRunner(defaultSchedule);
 
-    return new AdpDatabaseEntityProvider(options.logger, discovery, taskRunner);
+    return new AdpDatabaseEntityProvider(
+      options.logger,
+      discovery,
+      taskRunner,
+      options.fetchApi,
+    );
   }
 
   private constructor(
     logger: Logger,
     discovery: DiscoveryService,
     taskRunner: TaskRunner,
+    fetchApi: FetchApi,
   ) {
-    this.logger = logger.child({
+    this.#logger = logger.child({
       target: this.getProviderName(),
     });
 
-    this.discovery = discovery;
-    this.scheduleFn = this.createScheduleFn(taskRunner);
+    this.#discovery = discovery;
+    this.#fetchApi = fetchApi;
+    this.#scheduleFn = this.createScheduleFn(taskRunner);
   }
 
   getProviderName(): string {
@@ -68,8 +79,8 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   }
 
   async connect(connection: EntityProviderConnection): Promise<void> {
-    this.connection = connection;
-    await this.scheduleFn();
+    this.#connection = connection;
+    await this.#scheduleFn();
   }
 
   private createScheduleFn(taskRunner: TaskRunner): () => Promise<void> {
@@ -78,7 +89,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
       return taskRunner.run({
         id: taskId,
         fn: async () => {
-          const logger = this.logger.child({
+          const logger = this.#logger.child({
             class: AdpDatabaseEntityProvider.name,
             taskId,
             taskInstanceId: uuid.v4(),
@@ -98,7 +109,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   }
 
   private async refresh(logger: Logger): Promise<void> {
-    if (!this.connection) {
+    if (!this.#connection) {
       throw new Error(
         `ADP Onboarding Model discovery connection not initialized for ${this.getProviderName()}`,
       );
@@ -116,7 +127,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
 
     const { markCommitComplete } = markReadComplete(entities);
 
-    await this.connection.applyMutation({
+    await this.#connection.applyMutation({
       type: 'full',
       entities: entities.map(entity => ({
         locationKey: this.getProviderName(),
@@ -128,20 +139,11 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
 
   private async readArmsLengthBodies(logger: Logger): Promise<GroupEntity[]> {
     logger.info('Discovering all Arms Length Bodies');
-    const baseUrl = await this.discovery.getBaseUrl('adp');
-    const endpoint = `${baseUrl}/armslengthbody`;
-
-    const response = await fetch(endpoint, {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `Unexpected response from ADP plugin, GET /armslengthbody. Expected 200 but got ${response.status} - ${response.statusText}`,
-      );
-    }
-
-    const armsLengthBodies = (await response.json()) as ArmsLengthBody[];
+    const baseUrl = await this.#discovery.getBaseUrl('adp');
+    const armsLengthBodies = await this.#getEntities<ArmsLengthBody>(
+      baseUrl,
+      'armslengthbody',
+    );
     const entities: GroupEntity[] = [];
 
     logger.info(`Discovered ${armsLengthBodies.length} Arms Length Bodies`);
@@ -158,26 +160,26 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
 
   private async readDeliveryProgrammes(logger: Logger): Promise<GroupEntity[]> {
     logger.info('Discovering all Delivery Programmes');
-    const baseUrl = await this.discovery.getBaseUrl('adp');
-    const endpoint = `${baseUrl}/deliveryProgramme`;
-
-    const response = await fetch(endpoint, {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `Unexpected response from ADP plugin, GET /deliveryProgramme. Expected 200 but got ${response.status} - ${response.statusText}`,
-      );
-    }
-
-    const deliveryProgrammes = (await response.json()) as DeliveryProgramme[];
+    const baseUrl = await this.#discovery.getBaseUrl('adp');
+    const deliveryProgrammes = await this.#getEntities<DeliveryProgramme>(
+      baseUrl,
+      'deliveryProgramme',
+    );
     const entities: GroupEntity[] = [];
 
     logger.info(`Discovered ${deliveryProgrammes.length} Delivery Programmes`);
 
     for (const deliveryProgramme of deliveryProgrammes) {
-      const entity = await deliveryProgrammeGroupTransformer(deliveryProgramme);
+      const deliveryProgrammeAdmins =
+        (await this.#getEntities<DeliveryProgrammeAdmin>(
+          baseUrl,
+          `deliveryProgrammeAdmins/${deliveryProgramme.id}`,
+        )) ?? [];
+
+      const entity = await deliveryProgrammeGroupTransformer(
+        deliveryProgramme,
+        deliveryProgrammeAdmins,
+      );
       if (entity) {
         entities.push(entity);
       }
@@ -188,26 +190,26 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
 
   private async readDeliveryProjects(logger: Logger): Promise<GroupEntity[]> {
     logger.info('Discovering all Delivery Projects');
-    const baseUrl = await this.discovery.getBaseUrl('adp');
-    const endpoint = `${baseUrl}/deliveryProject`;
-
-    const response = await fetch(endpoint, {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `Unexpected response from ADP plugin, GET /deliveryProject. Expected 200 but got ${response.status} - ${response.statusText}`,
-      );
-    }
-
-    const deliveryProjects = (await response.json()) as DeliveryProject[];
+    const baseUrl = await this.#discovery.getBaseUrl('adp');
+    const deliveryProjects = await this.#getEntities<DeliveryProject>(
+      baseUrl,
+      'deliveryProject',
+    );
     const entities: GroupEntity[] = [];
 
     logger.info(`Discovered ${deliveryProjects.length} Delivery Programmes`);
 
     for (const deliveryProject of deliveryProjects) {
-      const entity = await deliveryProjectGroupTransformer(deliveryProject);
+      const deliveryProjectUsers =
+        (await this.#getEntities<DeliveryProjectUser>(
+          baseUrl,
+          `deliveryProjectUsers/${deliveryProject.id}`,
+        )) ?? [];
+
+      const entity = await deliveryProjectGroupTransformer(
+        deliveryProject,
+        deliveryProjectUsers,
+      );
       if (entity) {
         entities.push(entity);
       }
@@ -240,5 +242,20 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     }
 
     return { markReadComplete };
+  }
+
+  async #getEntities<T>(baseUrl: string, path: string): Promise<T[]> {
+    const endpoint = `${baseUrl}/${path}`;
+    const response = await this.#fetchApi.fetch(endpoint, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Unexpected response from ADP plugin, GET ${path}. Expected 200 but got ${response.status} - ${response.statusText}`,
+      );
+    }
+
+    return await response.json();
   }
 }

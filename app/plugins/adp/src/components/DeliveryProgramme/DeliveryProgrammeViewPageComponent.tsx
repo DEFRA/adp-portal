@@ -50,7 +50,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
           actions: (
             <>
               <LinkButton
-                to={`${target}/manage-members`}
+                to={`${target}/manage-delivery-programme-admins`}
                 variant="outlined"
                 color="default"
                 title="View Delivery Programme Admins"

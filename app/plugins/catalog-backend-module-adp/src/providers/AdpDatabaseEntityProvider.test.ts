@@ -15,8 +15,9 @@ import {
   mockProgrammeTransformerData,
   mockProjectTransformerData,
 } from '../testData/entityProviderTestData';
-import type { Response } from 'node-fetch';
-import fetch from 'node-fetch';
+import { deliveryProgrammeAdmins } from '../testData/programmeTransformerTestData';
+import { deliveryProjectUsers } from '../testData/projectTransformerTestData';
+import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 
 class MockTaskRunner implements TaskRunner {
   private tasks: TaskInvocationDefinition[] = [];
@@ -31,15 +32,14 @@ class MockTaskRunner implements TaskRunner {
   }
 }
 
-jest.mock('node-fetch', () => jest.fn());
-const mockedFetch: jest.MockedFunction<typeof fetch> =
-  fetch as jest.MockedFunction<typeof fetch>;
-
 const logger = getVoidLogger();
 
 describe('AdbDatabaseEntityProvider', () => {
   const mockScheduler = {} as PluginTaskScheduler;
   const mockSchedule = new MockTaskRunner();
+  const mockFetchApi: jest.Mocked<FetchApi> = {
+    fetch: jest.fn(),
+  };
   const mockDiscoveryService: DiscoveryService = {
     getBaseUrl: jest.fn().mockResolvedValue('http://localhost:123/api/adp'),
     getExternalBaseUrl: jest.fn(),
@@ -47,6 +47,7 @@ describe('AdbDatabaseEntityProvider', () => {
 
   const options = {
     logger: logger,
+    fetchApi: mockFetchApi,
     schedule: mockSchedule,
     scheduler: mockScheduler,
   };
@@ -68,6 +69,7 @@ describe('AdbDatabaseEntityProvider', () => {
   it('throws an error if a schedule is not provided', () => {
     const optionsWithoutSchedule = {
       logger: logger,
+      fetchApi: mockFetchApi,
       schedule: null!,
       scheduler: null!,
     };
@@ -142,10 +144,12 @@ describe('AdbDatabaseEntityProvider', () => {
   });
 
   it('successfully runs readArmsLengthBodies', async () => {
-    mockedFetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(armsLengthBody),
-      ok: jest.fn().mockImplementation(() => true),
-    } as unknown as Response);
+    mockFetchApi.fetch.mockResolvedValue(
+      mockResponse({
+        ok: true,
+        json: jest.fn().mockResolvedValue(armsLengthBody),
+      }),
+    );
 
     await entityProvider.connect(entityProviderConnection);
 
@@ -155,7 +159,7 @@ describe('AdbDatabaseEntityProvider', () => {
     expect(options.logger.info).toHaveBeenCalledWith(
       expect.stringContaining('Discovering all Arms Length Bodies'),
     );
-    expect(mockedFetch).toHaveBeenCalledWith(
+    expect(mockFetchApi.fetch).toHaveBeenCalledWith(
       expect.stringContaining('/armslengthbody'),
       expect.objectContaining({
         method: 'GET',
@@ -165,10 +169,15 @@ describe('AdbDatabaseEntityProvider', () => {
   });
 
   it('successfully runs readDeliveryProgrammes', async () => {
-    mockedFetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(deliveryProgramme),
-      ok: jest.fn().mockImplementation(() => true),
-    } as unknown as Response);
+    mockFetchApi.fetch.mockResolvedValue(
+      mockResponse({
+        json: jest
+          .fn()
+          .mockResolvedValueOnce(deliveryProgramme)
+          .mockResolvedValueOnce(deliveryProgrammeAdmins),
+        ok: true,
+      }),
+    );
 
     await entityProvider.connect(entityProviderConnection);
 
@@ -178,7 +187,7 @@ describe('AdbDatabaseEntityProvider', () => {
     expect(options.logger.info).toHaveBeenCalledWith(
       expect.stringContaining('Discovering all Delivery Programmes'),
     );
-    expect(mockedFetch).toHaveBeenCalledWith(
+    expect(mockFetchApi.fetch).toHaveBeenCalledWith(
       expect.stringContaining('/deliveryProgramme'),
       expect.objectContaining({
         method: 'GET',
@@ -188,10 +197,15 @@ describe('AdbDatabaseEntityProvider', () => {
   });
 
   it('successfully runs readDeliveryProjects', async () => {
-    mockedFetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(deliveryProject),
-      ok: jest.fn().mockImplementation(() => true),
-    } as unknown as Response);
+    mockFetchApi.fetch.mockResolvedValue(
+      mockResponse({
+        json: jest
+          .fn()
+          .mockResolvedValueOnce(deliveryProject)
+          .mockResolvedValueOnce(deliveryProjectUsers),
+        ok: true,
+      }),
+    );
 
     await entityProvider.connect(entityProviderConnection);
 
@@ -201,7 +215,7 @@ describe('AdbDatabaseEntityProvider', () => {
     expect(options.logger.info).toHaveBeenCalledWith(
       expect.stringContaining('Discovering all Delivery Projects'),
     );
-    expect(mockedFetch).toHaveBeenCalledWith(
+    expect(mockFetchApi.fetch).toHaveBeenCalledWith(
       expect.stringContaining('/deliveryProject'),
       expect.objectContaining({
         method: 'GET',
@@ -210,3 +224,7 @@ describe('AdbDatabaseEntityProvider', () => {
     expect(response).toEqual(mockProjectTransformerData);
   });
 });
+
+function mockResponse(properties: Partial<Response>): Response {
+  return properties as Response;
+}

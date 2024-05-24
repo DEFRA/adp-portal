@@ -43,9 +43,9 @@ import userEvent from '@testing-library/user-event';
 import type { RenderResult } from '@testing-library/react';
 import { randomUUID } from 'node:crypto';
 
-async function itShouldRenderTabs(when: string, entity: Entity): Promise<void>;
-async function itShouldRenderTabs(entity: Entity): Promise<void>;
-async function itShouldRenderTabs(...args: [string, Entity] | [Entity]) {
+function itShouldRenderTabs(when: string, entity: Entity): void;
+function itShouldRenderTabs(entity: Entity): void;
+function itShouldRenderTabs(...args: [string, Entity] | [Entity]) {
   const [when, entity] = args.length === 1 ? ['', ...args] : args;
   // eslint-disable-next-line jest/valid-title
   it(`Should render tabs ${when}`.trim(), async () => {
@@ -55,16 +55,13 @@ async function itShouldRenderTabs(...args: [string, Entity] | [Entity]) {
   });
 }
 
-async function itShouldRenderEntityHome(
+function itShouldRenderEntityHome(
   when: string,
   tabName: string,
   entity: Entity,
-): Promise<void>;
-async function itShouldRenderEntityHome(
-  tabName: string,
-  entity: Entity,
-): Promise<void>;
-async function itShouldRenderEntityHome(
+): void;
+function itShouldRenderEntityHome(tabName: string, entity: Entity): void;
+function itShouldRenderEntityHome(
   ...args: [string, string, Entity] | [string, Entity]
 ) {
   const [when, tabName, entity] = args.length === 2 ? ['', ...args] : args;
@@ -85,16 +82,13 @@ async function itShouldRenderEntityHome(
   });
 }
 
-async function itShouldRenderEntityPage(
+function itShouldRenderEntityPage(
   when: string,
   tabName: string,
   entity: Entity,
-): Promise<void>;
-async function itShouldRenderEntityPage(
-  tabName: string,
-  entity: Entity,
-): Promise<void>;
-async function itShouldRenderEntityPage(
+): void;
+function itShouldRenderEntityPage(tabName: string, entity: Entity): void;
+function itShouldRenderEntityPage(
   ...args: [string, string, Entity] | [string, Entity]
 ) {
   const [when, tabName, entity] = args.length === 2 ? ['', ...args] : args;
@@ -350,6 +344,16 @@ describe('[kind: group]', () => {
         type: 'delivery-programme',
       },
     },
+    deliveryProject: {
+      kind: 'group',
+      apiVersion: '1',
+      metadata: {
+        name: 'my-entity',
+      },
+      spec: {
+        type: 'delivery-project',
+      },
+    },
     kubernetes: {
       kind: 'group',
       apiVersion: '1',
@@ -367,6 +371,7 @@ describe('[kind: group]', () => {
       'when is a delivery programme',
       entities.deliveryProgramme,
     );
+    itShouldRenderTabs('when is a delivery project', entities.deliveryProject);
     itShouldRenderTabs('when there is kubernetes', entities.kubernetes);
   });
   describe('/', () => {
@@ -375,8 +380,11 @@ describe('[kind: group]', () => {
   describe('/pull-requests', () => {
     itShouldRenderEntityPage('Pull Requests', entities.base);
   });
-  describe('/manage-members', () => {
+  describe('/manage-delivery-programme-admins', () => {
     itShouldRenderEntityPage('Manage Members', entities.deliveryProgramme);
+  });
+  describe('/manage-delivery-project-users', () => {
+    itShouldRenderEntityPage('Manage Members', entities.deliveryProject);
   });
   describe('/releases', () => {
     itShouldRenderEntityPage('Deployments', entities.kubernetes);
@@ -721,6 +729,7 @@ jest.mock('@backstage/plugin-kubernetes', () =>
 
 const mockPluginAdp = {
   ...mockComponent('EntityPageManageProgrammeAdminContent'),
+  ...mockComponent('EntityPageManageProjectUserContent'),
 } satisfies Partial<jest.Mocked<typeof PluginAdp>>;
 jest.mock('@internal/plugin-adp', () =>
   proxyModule('@internal/plugin-adp', () => mockPluginAdp),

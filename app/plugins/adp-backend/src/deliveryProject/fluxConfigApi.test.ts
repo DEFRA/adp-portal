@@ -2,13 +2,8 @@ import { ConfigReader } from '@backstage/config';
 import { FluxConfigApi } from './fluxConfigApi';
 import { expectedProgrammeDataWithManager } from '../testData/programmeTestData';
 import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
-import type { Response } from 'node-fetch';
-import fetch from 'node-fetch';
 import type { DeliveryProject } from '@internal/plugin-adp-common';
-
-jest.mock('node-fetch', () => jest.fn());
-const mockedFetch: jest.MockedFunction<typeof fetch> =
-  fetch as jest.MockedFunction<typeof fetch>;
+import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 
 let mockProgrammeGetAll: jest.Mock;
 let mockProgrammeGet: jest.Mock;
@@ -54,18 +49,23 @@ describe('FluxConfigApi', () => {
     },
   });
 
+  const mockFetchApi: jest.Mocked<FetchApi> = {
+    fetch: jest.fn(),
+  };
+
   it('initializes correctly from required parameters', () => {
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
     const fluxConfigApi = new FluxConfigApi(
       mockConfig,
       mockDeliveryProgrammeStore,
+      mockFetchApi,
     );
 
     expect(fluxConfigApi).toBeDefined();
   });
 
   it('should get Flux team configuration', async () => {
-    mockedFetch.mockResolvedValue({
+    mockFetchApi.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue({
         serviceCode: 'test',
         programmeName: 'test',
@@ -115,6 +115,7 @@ describe('FluxConfigApi', () => {
     const fluxConfigApi = new FluxConfigApi(
       mockConfig,
       mockDeliveryProgrammeStore,
+      mockFetchApi,
     );
     const fluxTeamConfig = await fluxConfigApi.getFluxConfig('test-team');
 
@@ -123,7 +124,7 @@ describe('FluxConfigApi', () => {
   });
 
   it('should return null if Flux team configuration is not found', async () => {
-    mockedFetch.mockResolvedValue({
+    mockFetchApi.fetch.mockResolvedValue({
       ok: true,
       status: 404,
     } as unknown as Response);
@@ -132,6 +133,7 @@ describe('FluxConfigApi', () => {
     const fluxConfigApi = new FluxConfigApi(
       mockConfig,
       mockDeliveryProgrammeStore,
+      mockFetchApi,
     );
     const fluxTeamConfig = await fluxConfigApi.getFluxConfig('test-team');
 
@@ -139,7 +141,7 @@ describe('FluxConfigApi', () => {
   });
 
   it('should throw if a non-success response is received when getting team configuration', async () => {
-    mockedFetch.mockResolvedValue({
+    mockFetchApi.fetch.mockResolvedValue({
       ok: false,
       status: 500,
       statusText: 'Something went wrong',
@@ -149,6 +151,7 @@ describe('FluxConfigApi', () => {
     const fluxConfigApi = new FluxConfigApi(
       mockConfig,
       mockDeliveryProgrammeStore,
+      mockFetchApi,
     );
 
     await expect(fluxConfigApi.getFluxConfig('test-team')).rejects.toThrow(
@@ -157,7 +160,7 @@ describe('FluxConfigApi', () => {
   });
 
   it('should create Flux team configuration', async () => {
-    mockedFetch.mockResolvedValue({
+    mockFetchApi.fetch.mockResolvedValue({
       ok: true,
       status: 204,
     } as unknown as Response);
@@ -183,14 +186,15 @@ describe('FluxConfigApi', () => {
     const fluxConfigApi = new FluxConfigApi(
       mockConfig,
       mockDeliveryProgrammeStore,
+      mockFetchApi,
     );
     await fluxConfigApi.createFluxConfig(deliveryProject);
 
-    expect(fetch).toHaveBeenCalled();
+    expect(mockFetchApi.fetch).toHaveBeenCalled();
   });
 
   it('should create Flux team configuration with config variables', async () => {
-    mockedFetch.mockResolvedValue({
+    mockFetchApi.fetch.mockResolvedValue({
       ok: true,
       status: 204,
     } as unknown as Response);
@@ -228,14 +232,15 @@ describe('FluxConfigApi', () => {
         },
       }),
       mockDeliveryProgrammeStore,
+      mockFetchApi,
     );
     await fluxConfigApi.createFluxConfig(deliveryProject);
 
-    expect(fetch).toHaveBeenCalled();
+    expect(mockFetchApi.fetch).toHaveBeenCalled();
   });
 
   it('should throw if a non-success response is received when creating team configuration', async () => {
-    mockedFetch.mockResolvedValue({
+    mockFetchApi.fetch.mockResolvedValue({
       ok: false,
       status: 500,
       statusText: 'Something went wrong',
@@ -262,6 +267,7 @@ describe('FluxConfigApi', () => {
     const fluxConfigApi = new FluxConfigApi(
       mockConfig,
       mockDeliveryProgrammeStore,
+      mockFetchApi,
     );
 
     await expect(

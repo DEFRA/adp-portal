@@ -1,0 +1,275 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createFetchApiHeadersMiddleware Should work with a request input 1`] = `
+[
+  Request {
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {
+      "header1": "xyz",
+      "header2": "def",
+      "header4": "123",
+    },
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
+    },
+    "url": "https://test.com/",
+  },
+  undefined,
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a request input without headers 1`] = `
+[
+  Request {
+    "body": null,
+    "bodyUsed": false,
+    "cache": "default",
+    "credentials": "same-origin",
+    "destination": "",
+    "headers": Headers {
+      "header1": "xyz",
+    },
+    "integrity": "",
+    "keepalive": false,
+    "method": "GET",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "about:client",
+    "referrerPolicy": "",
+    "signal": AbortSignal {
+      "aborted": false,
+      "reason": undefined,
+    },
+    "url": "https://test.com/",
+  },
+  undefined,
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a string input with an empty init 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": [
+      [
+        "header1",
+        "abc",
+      ],
+      [
+        "header2",
+        "def",
+      ],
+      [
+        "header4",
+        "123",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a string input with an empty init, but no headers 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": [],
+  },
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a string input with an empty init, but no headers 2`] = `
+[
+  "https://test.com/",
+  {
+    "headers": [],
+  },
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a string input with an init with header array 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": [
+      [
+        "Header1",
+        "xyz",
+      ],
+      [
+        "header2",
+        "def",
+      ],
+      [
+        "header4",
+        "123",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a string input with an init with header object 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": {
+      "Header1": "xyz",
+      "header2": "def",
+      "header4": "123",
+    },
+  },
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a string input with an init with headers instance 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": Headers {
+      "header1": "xyz",
+      "header2": "def",
+      "header4": "123",
+    },
+  },
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a string input without init 1`] = `
+[
+  "https://test.com",
+  {
+    "headers": [
+      [
+        "header1",
+        "abc",
+      ],
+      [
+        "header2",
+        "def",
+      ],
+      [
+        "header4",
+        "123",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a string input without init, but no headers 1`] = `
+[
+  "https://test.com",
+  undefined,
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a string input without init, but no headers 2`] = `
+[
+  "https://test.com/",
+  undefined,
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a url input with an empty init 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": [
+      [
+        "header1",
+        "abc",
+      ],
+      [
+        "header2",
+        "def",
+      ],
+      [
+        "header4",
+        "123",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a url input with an init with header array 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": [
+      [
+        "Header1",
+        "xyz",
+      ],
+      [
+        "header2",
+        "def",
+      ],
+      [
+        "header4",
+        "123",
+      ],
+    ],
+  },
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a url input with an init with header object 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": {
+      "Header1": "xyz",
+      "header2": "def",
+      "header4": "123",
+    },
+  },
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a url input with an init with headers instance 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": Headers {
+      "header1": "xyz",
+      "header2": "def",
+      "header4": "123",
+    },
+  },
+]
+`;
+
+exports[`createFetchApiHeadersMiddleware Should work with a url input without init 1`] = `
+[
+  "https://test.com/",
+  {
+    "headers": [
+      [
+        "header1",
+        "abc",
+      ],
+      [
+        "header2",
+        "def",
+      ],
+      [
+        "header4",
+        "123",
+      ],
+    ],
+  },
+]
+`;

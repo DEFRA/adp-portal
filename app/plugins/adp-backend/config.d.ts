@@ -20,5 +20,15 @@ export interface Config {
         value: string;
       }>;
     };
+
+    /**
+     * Confguration relating to Entra ID groups
+     */
+    entraIdGroups: {
+      /**
+       * Base URL for the Entra ID Groups API
+       */
+      apiBaseUrl: string;
+    };
   };
 }

@@ -15,19 +15,13 @@ export const useArmsLengthBodyList = (): { label: string; value: string }[] => {
 
   useEffect(() => {
     (async () => {
-      try {
-        const bodies = await client.getArmsLengthBodyNames();
-        const formattedBodies = Object.entries(bodies).map(
-          ([value, label]) => ({
-            label,
-            value,
-          }),
-        );
-        setOptions(formattedBodies);
-      } catch (e: any) {
-        errorApi.post(e);
-      }
-    })();
+      const bodies = await client.getArmsLengthBodyNames();
+      const formattedBodies = Object.entries(bodies).map(([value, label]) => ({
+        label,
+        value,
+      }));
+      setOptions(formattedBodies);
+    })().catch(err => errorApi.post(err));
   }, [client, errorApi]);
 
   return options;

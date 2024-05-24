@@ -3366,10 +3366,18 @@ exports[`[kind: group] /kubernetes Should render correctly: content 1`] = `
 ]
 `;
 
-exports[`[kind: group] /manage-members Should render correctly: content 1`] = `
+exports[`[kind: group] /manage-delivery-programme-admins Should render correctly: content 1`] = `
 [
   [
     <mocked-entity-page-manage-programme-admin-content />,
+  ],
+]
+`;
+
+exports[`[kind: group] /manage-delivery-project-users Should render correctly: content 1`] = `
+[
+  [
+    <mocked-entity-page-manage-project-user-content />,
   ],
 ]
 `;
@@ -3414,6 +3422,64 @@ exports[`[kind: group] /releases Should render correctly: content 1`] = `
 `;
 
 exports[`[kind: group] tabs Should render tabs when is a delivery programme: tabs 1`] = `
+[
+  [
+    <button
+      aria-selected="true"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      data-testid="header-tab-0"
+      role="tab"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-1"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+    <button
+      aria-selected="false"
+      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      data-testid="header-tab-2"
+      role="tab"
+      tabindex="-1"
+      type="button"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Manage Members
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>,
+  ],
+]
+`;
+
+exports[`[kind: group] tabs Should render tabs when is a delivery project: tabs 1`] = `
 [
   [
     <button

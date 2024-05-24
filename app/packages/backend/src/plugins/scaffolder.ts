@@ -28,6 +28,7 @@ export default async function createPlugin(
   });
   const adpClient = new AdpClient({
     discoveryApi: env.discovery,
+    fetchApi: env.fetchApi,
   });
 
   const integrations = ScmIntegrations.fromConfig(env.config);
