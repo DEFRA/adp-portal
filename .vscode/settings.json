@@ -11,8 +11,5 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "jest.jestCommandLine": "yarn test",
-  "jest.rootPath": "app",
-  "[typescript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
-  }
+  "jest.rootPath": "app"
 }

@@ -160,7 +160,7 @@ properties:
       - name: app-insights-connectionstring
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SHARED-APPINSIGHTS-CONNECTIONSTRING
         identity: {{userAssignedIdentity}}        
-      - name: portal-mi-client-id
+      - name: adp-portal-mi-client-id
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-MI-CLIENT-ID
         identity: {{userAssignedIdentity}}        
   template:
@@ -282,8 +282,8 @@ properties:
             value: 'defra-adp-portal'
           - name: SHARED_APPINSIGHT_CONNECTIONSTRING
             secretRef: app-insights-connectionstring
-          - name: PORTAL_MI_CLIENT_ID
-            secretRef: portal-mi-client-id           
+          - name: ADP_PORTAL_MI_CLIENT_ID
+            secretRef: adp-portal-mi-client-id           
 
         resources:
           cpu: 0.5
