@@ -69,4 +69,4 @@ COPY --chown=node:node packages/backend/src/opentelemetry.js ./
 
 RUN tar xzf bundle.tar.gz && rm bundle.tar.gz
 
-CMD ["node", "--require", "./opentelemetry.js", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
+CMD ["node", "--require", "opentelemetry.js", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]

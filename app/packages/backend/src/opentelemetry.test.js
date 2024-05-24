@@ -6,8 +6,7 @@ jest.mock('@azure/monitor-opentelemetry', () => ({
 jest.mock('@opentelemetry/resources')
 jest.mock('@azure/identity')
 const { useAzureMonitor } = require('@azure/monitor-opentelemetry')
-const { Resource } = require('@opentelemetry/resources')
-const { ManagedIdentityCredential } = require('@azure/identity')
+
 describe('openTelemetry', () => {
   beforeEach(() => {
     process.env.APPINSIGHTS_CLOUDROLE = applicationName
