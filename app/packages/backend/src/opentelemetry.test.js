@@ -1,4 +1,3 @@
-
 const applicationName = 'test-app'
 
 jest.mock('@azure/monitor-opentelemetry', () => ({

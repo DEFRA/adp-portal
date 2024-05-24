@@ -17,7 +17,7 @@ export function setupOpenTelemetry() {
           process.env.SHARED_APPINSIGHT_CONNECTIONSTRING,
         credential: (process.env.NODE_ENV === 'production') ? new ManagedIdentityCredential(process.env.ADP_PORTAL_MI_CLIENT_ID) : undefined
       },
-      resource: resource
+      resource
     }
     useAzureMonitor(options)
     const instrumentations = [
@@ -26,12 +26,11 @@ export function setupOpenTelemetry() {
     registerInstrumentations({
       tracerProvider: trace.getTracerProvider(),
       meterProvider: metrics.getMeterProvider(),
-      instrumentations: instrumentations
+      instrumentations
     })
     console.log('App Insights Running')
   } else {
     console.log('App Insights Not Running!')
   }
-
 }
 setupOpenTelemetry()
