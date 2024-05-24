@@ -8,7 +8,7 @@
     "role": "backend"
   },
   "scripts": {
-    "start": "backstage-cli package start",
+    "start": "backstage-cli package start --require ./src/opentelemetry.js",
     "build": "backstage-cli package build",
     "lint": "backstage-cli package lint",
     "test": "backstage-cli package test",
@@ -16,6 +16,8 @@
     "build-image": "docker build ../.. -f Dockerfile --tag backstage"
   },
   "dependencies": {
+    "@azure/identity": "4.2.0",
+    "@azure/monitor-opentelemetry": "1.5.0",
     "@backstage/backend-common": "^0.20.0",
     "@backstage/backend-tasks": "^0.5.13",
     "@backstage/catalog-client": "^1.6.4",
@@ -48,13 +50,11 @@
     "@internal/plugin-adp-backend": "^0.1.0",
     "@internal/plugin-adp-common": "^0.1.0",
     "@internal/plugin-catalog-backend-module-adp": "^0.1.0",
-    "@azure/identity": "^4.2.0",
-    "@azure/monitor-opentelemetry": "^1.5.0",
-    "@opentelemetry/api": "^1.8.0",
-    "@opentelemetry/instrumentation": "^0.51.1",
-    "@opentelemetry/instrumentation-express": "^0.39.0",
-    "@opentelemetry/resources": "^1.24.1",
-    "@opentelemetry/semantic-conventions": "^1.24.1",
+    "@opentelemetry/api": "1.8.0",
+    "@opentelemetry/instrumentation": "0.51.1",
+    "@opentelemetry/instrumentation-express": "0.39.0",
+    "@opentelemetry/resources": "1.24.1",
+    "@opentelemetry/semantic-conventions": "1.24.1",
     "@roadiehq/scaffolder-backend-module-http-request": "^4.1.4",
     "app": "link:../app",
     "better-sqlite3": "^9.0.0",
@@ -66,7 +66,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "@backstage/cli": "^0.25.0",
+    "@backstage/cli": "^0.26.5",
     "@types/dockerode": "^3.3.0",
     "@types/express": "^4.17.6",
     "@types/express-serve-static-core": "^4.17.5",

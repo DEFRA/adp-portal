@@ -126,4 +126,3 @@ main().catch(error => {
   process.exit(1);
 });
 
-require('./azuremonitor').setup()

@@ -157,6 +157,12 @@ properties:
       - name: cluster6-env
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER6-ENV
         identity: {{userAssignedIdentity}}
+      - name: app-insights-connectionstring
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SHARED-APPINSIGHTS-CONNECTIONSTRING
+        identity: {{userAssignedIdentity}}        
+      - name: portal-mi-client-id
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/PORTAL-MI-CLIENT-ID
+        identity: {{userAssignedIdentity}}        
   template:
     containers:
       - image: {{acrName}}.azurecr.io/image/{{imageRepoName}}:{{appVersion}}
@@ -272,6 +278,12 @@ properties:
 
           - name: ADP_PORTAL_TEMPLATE_VERSION
             value: '1.0.1'
+          - name: APPINSIGHTS_CLOUDROLE
+            value: 'defra-adp-portal'
+          - name: SHARED_APPINSIGHT_CONNECTIONSTRING
+            secretRef: app-insights-connectionstring
+          - name: PORTAL_MI_CLIENT_ID
+            secretRef: portal-mi-client-id           
 
         resources:
           cpu: 0.5
