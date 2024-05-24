@@ -161,7 +161,7 @@ properties:
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SHARED-APPINSIGHTS-CONNECTIONSTRING
         identity: {{userAssignedIdentity}}        
       - name: portal-mi-client-id
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/PORTAL-MI-CLIENT-ID
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-MI-CLIENT-ID
         identity: {{userAssignedIdentity}}        
   template:
     containers:
