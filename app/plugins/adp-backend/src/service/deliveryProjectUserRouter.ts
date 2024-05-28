@@ -55,7 +55,7 @@ const errorMapping = {
   unknownCatalogUser: (req: { user_catalog_name?: string }) => ({
     path: 'user_catalog_name',
     error: {
-      message: `The user ${req.user_catalog_name} has could not be found in the Catalog`,
+      message: `The user ${req.user_catalog_name} could not be found in the Catalog`,
     },
   }),
   unknown: () => ({

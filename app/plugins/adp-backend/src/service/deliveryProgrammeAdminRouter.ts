@@ -29,6 +29,7 @@ const parseCreateDeliveryProgrammeAdminRequest =
     z.object({
       delivery_programme_id: z.string(),
       user_catalog_name: z.string(),
+      group_entity_ref: z.string(),
     }),
   );
 
@@ -56,7 +57,7 @@ const errorMapping = {
   unknownCatalogUser: (req: { user_catalog_name?: string }) => ({
     path: 'user_catalog_name',
     error: {
-      message: `The user ${req.user_catalog_name} has could not be found in the Catalog`,
+      message: `The user ${req.user_catalog_name} could not be found in the Catalog`,
     },
   }),
   unknown: () => ({
@@ -136,7 +137,12 @@ export function createDeliveryProgrammeAdminRouter(
     );
     const decision = (
       await permissions.authorize(
-        [{ permission: deliveryProgrammeAdminCreatePermission }],
+        [
+          {
+            permission: deliveryProgrammeAdminCreatePermission,
+            resourceRef: body.group_entity_ref,
+          },
+        ],
         { token },
       )
     )[0];

@@ -18,6 +18,7 @@ import {
 import { DefaultTable } from '../../utils';
 import { AddProgrammeAdminButton } from './AddProgrammeAdminButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import { stringifyEntityRef } from '@backstage/catalog-model';
 
 type DeliveryProgrammeAdminWithActions = DeliveryProgrammeAdmin & {
   actions: ReactNode;
@@ -116,6 +117,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
             startIcon={<AddBoxIcon />}
             onCreated={refresh}
             data-testid="delivery-programme-admin-add-button"
+            entityRef={stringifyEntityRef(entity)}
           >
             Add Delivery Programme Admin
           </AddProgrammeAdminButton>

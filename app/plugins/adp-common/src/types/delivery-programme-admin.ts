@@ -10,6 +10,7 @@ export type DeliveryProgrammeAdmin = {
 export type CreateDeliveryProgrammeAdminRequest = {
   delivery_programme_id: string;
   user_catalog_name: string;
+  group_entity_ref: string;
 };
 
 export type DeleteDeliveryProgrammeAdminRequest = {

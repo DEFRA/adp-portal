@@ -21,6 +21,7 @@ export const adpProgrammmeCreatePermission = createPermission({
 export const deliveryProgrammeAdminCreatePermission = createPermission({
   name: 'adp.deliveryprogrammeadmin.create',
   attributes: { action: 'create' },
+  resourceType: 'catalog-entity',
 });
 
 /**

@@ -16,12 +16,14 @@ export type AddProgrammeAdminButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
     onCreated?: () => void;
     deliveryProgrammeId: string;
+    entityRef: string;
   }
 >;
 
 export function AddProgrammeAdminButton({
   onCreated,
   deliveryProgrammeId,
+  entityRef,
   children,
   ...buttonProps
 }: AddProgrammeAdminButtonProps) {
@@ -30,6 +32,7 @@ export function AddProgrammeAdminButton({
   const client = useApi(deliveryProgrammeAdminApiRef);
   const { allowed: canCreateProgrammeAdmin } = usePermission({
     permission: deliveryProgrammeAdminCreatePermission,
+    resourceRef: entityRef,
   });
 
   if (!canCreateProgrammeAdmin) return null;
@@ -38,7 +41,11 @@ export function AddProgrammeAdminButton({
     fields: DeliveryProgrammeAdminFields,
   ): Promise<SubmitResult<DeliveryProgrammeAdminFields>> {
     try {
-      await client.create(deliveryProgrammeId, fields.user_catalog_name);
+      await client.create(
+        deliveryProgrammeId,
+        fields.user_catalog_name,
+        entityRef,
+      );
     } catch (e: any) {
       return readValidationError(e);
     }

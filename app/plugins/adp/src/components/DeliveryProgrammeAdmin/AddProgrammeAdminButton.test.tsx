@@ -103,6 +103,7 @@ describe('AddProgrammeAdminButton', () => {
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProgrammeId: '123',
+      entityRef: 'programme-group-123',
     });
 
     expect(result.baseElement).toMatchSnapshot();
@@ -123,6 +124,7 @@ describe('AddProgrammeAdminButton', () => {
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProgrammeId: '123',
+      entityRef: 'programme-group-123',
     });
 
     expect(result.baseElement).toMatchSnapshot();
@@ -144,6 +146,7 @@ describe('AddProgrammeAdminButton', () => {
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProgrammeId: '123',
+      entityRef: 'programme-group-123',
     });
     await userEvent.click(result.getByTestId('add-programme-admin-button'));
 
@@ -187,6 +190,7 @@ describe('AddProgrammeAdminButton', () => {
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProgrammeId: '123',
+      entityRef: 'programme-group-123',
     });
     await userEvent.click(result.getByTestId('add-programme-admin-button'));
 
@@ -217,6 +221,7 @@ describe('AddProgrammeAdminButton', () => {
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProgrammeId: '123',
+      entityRef: 'programme-group-123',
       onCreated,
     });
     await userEvent.click(result.getByTestId('add-programme-admin-button'));
@@ -247,6 +252,7 @@ describe('AddProgrammeAdminButton', () => {
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProgrammeId: 'programme-1',
+      entityRef: 'programme-group-123',
     });
     await userEvent.click(result.getByTestId('add-programme-admin-button'));
 
@@ -265,7 +271,7 @@ describe('AddProgrammeAdminButton', () => {
     const submitResult = await formProps.submit(fields);
     expect(submitResult).toMatchObject({ type: 'success' });
     expect(mockProgrammeAdminApi.create.mock.calls).toMatchObject([
-      ['programme-1', 'user-1234'],
+      ['programme-1', 'user-1234', 'programme-group-123'],
     ]);
     expect(mockProgrammeAdminApi.delete).not.toHaveBeenCalled();
     expect(mockProgrammeAdminApi.getAll).not.toHaveBeenCalled();
@@ -303,6 +309,7 @@ describe('AddProgrammeAdminButton', () => {
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProgrammeId: 'programme-2',
+      entityRef: 'programme-group-123',
     });
     await userEvent.click(result.getByTestId('add-programme-admin-button'));
 
@@ -322,7 +329,7 @@ describe('AddProgrammeAdminButton', () => {
       errors: validationErrors,
     });
     expect(mockProgrammeAdminApi.create.mock.calls).toMatchObject([
-      ['programme-2', 'user-1234'],
+      ['programme-2', 'user-1234', 'programme-group-123'],
     ]);
     expect(mockProgrammeAdminApi.delete).not.toHaveBeenCalled();
     expect(mockProgrammeAdminApi.getAll).not.toHaveBeenCalled();

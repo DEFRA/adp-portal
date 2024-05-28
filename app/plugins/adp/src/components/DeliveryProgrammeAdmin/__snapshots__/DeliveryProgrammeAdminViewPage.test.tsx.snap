@@ -29,6 +29,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
               deliveryprogrammeid="123"
+              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -668,6 +669,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
               deliveryprogrammeid="123"
+              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -1222,6 +1224,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page when Delivery Pro
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
               deliveryprogrammeid="123"
+              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -1776,6 +1779,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
               deliveryprogrammeid="123"
+              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -2703,6 +2707,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with no Delivery 
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
               deliveryprogrammeid="123"
+              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >

@@ -159,6 +159,7 @@ describe('createRouter', () => {
       const requestBody: CreateDeliveryProgrammeAdminRequest = {
         delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
         user_catalog_name: 'test@test.com',
+        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
@@ -175,6 +176,7 @@ describe('createRouter', () => {
       const requestBody: CreateDeliveryProgrammeAdminRequest = {
         delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
         user_catalog_name: 'test@test.com',
+        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
@@ -193,6 +195,7 @@ describe('createRouter', () => {
       const requestBody: CreateDeliveryProgrammeAdminRequest = {
         delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
         user_catalog_name: 'test@test.com',
+        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
@@ -215,6 +218,7 @@ describe('createRouter', () => {
       const requestBody: CreateDeliveryProgrammeAdminRequest = {
         delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
         user_catalog_name: 'test@test.com',
+        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
