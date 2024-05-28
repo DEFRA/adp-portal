@@ -20,9 +20,14 @@ import {
   templateParameterReadPermission,
   templateStepReadPermission,
 } from '@backstage/plugin-scaffolder-common/alpha';
-import { adpProgrammmeCreatePermission } from '@internal/plugin-adp-common';
+import {
+  adpProgrammmeCreatePermission,
+  deliveryProgrammeAdminCreatePermission,
+} from '@internal/plugin-adp-common';
 import type { RbacUtilities } from '../rbacUtilites';
 import type { Logger } from 'winston';
+import { createCatalogConditionalDecision } from '@backstage/plugin-catalog-backend/alpha';
+import { isGroupMember } from '../rules';
 
 export class AdpPortalPermissionPolicy implements PermissionPolicy {
   constructor(private rbacUtilites: RbacUtilities, private logger: Logger) {}
@@ -41,7 +46,20 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       return { result: AuthorizeResult.ALLOW };
     }
 
-    // gives permission to create for programme admin group
+    if (
+      user !== undefined &&
+      isPermission(request.permission, deliveryProgrammeAdminCreatePermission)
+    ) {
+      this.logger.debug(
+        `Role: Programme Admin. Permission: ${request.permission.name}`,
+      );
+
+      return createCatalogConditionalDecision(
+        request.permission,
+        isGroupMember({ userRef: user.identity.userEntityRef }),
+      );
+    }
+
     if (
       (isPermission(request.permission, catalogEntityCreatePermission) ||
         isPermission(request.permission, actionExecutePermission) ||
@@ -50,6 +68,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       user !== undefined &&
       this.rbacUtilites.isInProgrammeAdminGroup(user)
     ) {
+      // gives permission to create for programme admin group
       this.logger.debug(
         'This is a programme admin user with the ad group: permission catalogEntityCreatePermission',
       );

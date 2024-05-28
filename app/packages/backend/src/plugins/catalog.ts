@@ -6,11 +6,14 @@ import { MicrosoftGraphOrgEntityProvider } from '@backstage/plugin-catalog-backe
 import { GithubEntityProvider } from '@backstage/plugin-catalog-backend-module-github';
 import { defraADONameTransformer } from '../auth/DefraNameTransformer';
 import { AdpDatabaseEntityProvider } from '@internal/plugin-catalog-backend-module-adp';
+import { isGroupMemberRule } from '../permissions';
 
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
   const builder = CatalogBuilder.create(env);
+
+  builder.addPermissionRules([isGroupMemberRule]);
 
   builder.addEntityProvider(
     MicrosoftGraphOrgEntityProvider.fromConfig(env.config, {
