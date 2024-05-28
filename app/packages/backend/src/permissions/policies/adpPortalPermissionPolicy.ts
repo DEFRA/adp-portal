@@ -46,6 +46,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       return { result: AuthorizeResult.ALLOW };
     }
 
+    // Allow users to create Delivery Programme Admins if they are a member of the specified group.
     if (
       user !== undefined &&
       isPermission(request.permission, deliveryProgrammeAdminCreatePermission)
@@ -60,6 +61,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       );
     }
 
+    // Allow users to create components if they are programme admins.
     if (
       (isPermission(request.permission, catalogEntityCreatePermission) ||
         isPermission(request.permission, actionExecutePermission) ||
@@ -68,7 +70,6 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       user !== undefined &&
       this.rbacUtilites.isInProgrammeAdminGroup(user)
     ) {
-      // gives permission to create for programme admin group
       this.logger.debug(
         'This is a programme admin user with the ad group: permission catalogEntityCreatePermission',
       );
