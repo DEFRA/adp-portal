@@ -1,0 +1,37 @@
+{
+  "name": "waf-error",
+  "version": "0.0.0",
+  "private": true,
+  "bundled": true,
+  "backstage": {
+    "role": "frontend"
+  },
+  "scripts": {
+    "start": "backstage-cli package start",
+    "build": "backstage-cli package build",
+    "clean": "backstage-cli package clean",
+    "test": "backstage-cli package test",
+    "lint": "backstage-cli package lint"
+  },
+  "dependencies": {
+    "@backstage/cli": "^0.25.0",
+    "@backstage/core-app-api": "^1.11.2",
+    "@backstage/core-components": "^0.13.9",
+    "@backstage/core-plugin-api": "^1.8.1",
+    "@internal/plugin-adp-theme-react": "*",
+    "@material-ui/core": "^4.12.2",
+    "@material-ui/lab": "^4.0.0-alpha.61",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-use": "^17.2.4"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.10.1",
+    "@testing-library/react": "^12.1.3",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "*"
+  },
+  "files": [
+    "dist"
+  ]
+}

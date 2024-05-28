@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Should render correctly 1`] = `
+<body>
+  <div>
+    <main
+      class="BackstagePage-root"
+    >
+      <header
+        class="BackstageHeader-header"
+      >
+        <div
+          class="MuiBox-root MuiBox-root BackstageHeader-leftItemsBox"
+        >
+          <h1
+            class="MuiTypography-root BackstageHeader-title MuiTypography-h1"
+            tabindex="-1"
+          >
+            ADP Portal
+          </h1>
+        </div>
+        <div
+          class="MuiGrid-root BackstageHeader-rightItemsBox MuiGrid-container MuiGrid-spacing-xs-4"
+        />
+      </header>
+      <article
+        class="BackstageContent-root"
+      >
+        <div
+          class="MuiPaper-root MuiAlert-root MuiAlert-standardError MuiPaper-elevation0"
+          role="alert"
+        >
+          <div
+            class="MuiAlert-icon"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiAlert-message"
+          >
+            <div
+              class="MuiTypography-root MuiAlertTitle-root MuiTypography-body1 MuiTypography-gutterBottom"
+            >
+              Unfortunately, there is a problem with your request
+            </div>
+            <p>
+              <b>
+                Your request has been blocked.
+              </b>
+               Please contact the site administrator or the Defra helpdesk with the following information.
+            </p>
+            <p>
+              <b>
+                Tracking Request ID
+              </b>
+              : 
+              {{azure-ref}}
+            </p>
+          </div>
+        </div>
+      </article>
+    </main>
+  </div>
+</body>
+`;
