@@ -1034,6 +1034,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-0"
+                                  deliveryprojectuser="[object Object]"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -1138,6 +1139,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-1"
+                                  deliveryprojectuser="[object Object]"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -1242,6 +1244,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-2"
+                                  deliveryprojectuser="[object Object]"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -1346,6 +1349,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-3"
+                                  deliveryprojectuser="[object Object]"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -1450,6 +1454,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-4"
+                                  deliveryprojectuser="[object Object]"
                                   tabindex="0"
                                   type="button"
                                 >

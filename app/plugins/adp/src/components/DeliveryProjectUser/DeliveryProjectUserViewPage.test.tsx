@@ -12,11 +12,16 @@ import { DeliveryProjectUserViewPage } from './DeliveryProjectUserViewPage';
 import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
 import { waitFor } from '@testing-library/react';
 import type * as AddProjectUserButtonModule from './AddProjectUserButton';
+import type * as EditDeliveryProjectUserButtonModule from './EditDeliveryProjectUserButton';
 import { SnapshotFriendlyStylesProvider } from '../../utils';
 import { Button } from '@material-ui/core';
 
 const AddProjectUserButton: jest.MockedFn<
   (typeof AddProjectUserButtonModule)['AddProjectUserButton']
+> = jest.fn();
+
+const EditDeliveryProjectUserButton: jest.MockedFn<
+  (typeof EditDeliveryProjectUserButtonModule)['EditDeliveryProjectUserButton']
 > = jest.fn();
 
 jest.mock(
@@ -27,6 +32,16 @@ jest.mock(
         return AddProjectUserButton;
       },
     } satisfies typeof AddProjectUserButtonModule),
+);
+
+jest.mock(
+  './EditDeliveryProjectUserButton',
+  () =>
+    ({
+      get EditDeliveryProjectUserButton() {
+        return EditDeliveryProjectUserButton;
+      },
+    } satisfies typeof EditDeliveryProjectUserButtonModule),
 );
 
 function setup() {
@@ -102,6 +117,10 @@ describe('DeliveryProjectUserViewPage', () => {
     AddProjectUserButton.mockImplementation(({ onCreated, ...props }) => (
       <Button {...props} onClick={onCreated} />
     ));
+
+    EditDeliveryProjectUserButton.mockImplementation(
+      ({ onEdited, ...props }) => <Button {...props} onClick={onEdited} />,
+    );
   });
 
   afterEach(() => {

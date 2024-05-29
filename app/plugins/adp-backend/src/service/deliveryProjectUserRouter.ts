@@ -10,6 +10,7 @@ import {
   type ValidationErrorMapping,
   type UpdateDeliveryProjectUserRequest,
   deliveryProjectUserCreatePermission,
+  deliveryProjectUserUpdatePermission,
 } from '@internal/plugin-adp-common';
 import { z } from 'zod';
 import type { AddDeliveryProjectUser } from '../utils';
@@ -94,7 +95,10 @@ export function createDeliveryProjectUserRouter(
   } = options;
 
   const permissionIntegrationRouter = createPermissionIntegrationRouter({
-    permissions: [deliveryProjectUserCreatePermission],
+    permissions: [
+      deliveryProjectUserCreatePermission,
+      deliveryProjectUserUpdatePermission,
+    ],
   });
 
   const router = Router();
@@ -179,6 +183,25 @@ export function createDeliveryProjectUserRouter(
 
   router.patch('/deliveryProjectUser', async (req, res) => {
     const body = parseUpdateDeliveryProjectUserRequest(req.body);
+
+    const token = getBearerTokenFromAuthorizationHeader(
+      req.header('authorization'),
+    );
+    const decision = (
+      await permissions.authorize(
+        [
+          {
+            permission: deliveryProjectUserUpdatePermission,
+            resourceRef: body.id,
+          },
+        ],
+        { token },
+      )
+    )[0];
+
+    if (decision.result === AuthorizeResult.DENY) {
+      throw new NotAllowedError('Unauthorized');
+    }
 
     const catalogUser = await getUserEntityFromCatalog(
       body.user_catalog_name,

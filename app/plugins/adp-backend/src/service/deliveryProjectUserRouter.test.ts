@@ -295,6 +295,9 @@ describe('createRouter', () => {
         },
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const response = await request(deliveryProjectUserApp)
         .patch('/deliveryProjectUser')
@@ -316,6 +319,9 @@ describe('createRouter', () => {
         errors: ['unknown', 'unknownDeliveryProject'],
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const response = await request(deliveryProjectUserApp)
         .patch('/deliveryProjectUser')
@@ -347,6 +353,9 @@ describe('createRouter', () => {
 
     it('returns a 400 response if catalog user cannot be found', async () => {
       mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const response = await request(deliveryProjectUserApp)
         .patch('/deliveryProjectUser')

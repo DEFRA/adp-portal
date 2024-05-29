@@ -1,5 +1,6 @@
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import {
+  deliveryProjectUserUpdatePermission,
   normalizeUsername,
   type DeliveryProjectUser,
 } from '@internal/plugin-adp-common';
@@ -13,6 +14,7 @@ import {
 } from './DeliveryProjectUserFormFields';
 import type { SubmitResult } from '../../utils';
 import { DialogForm, populate, readValidationError } from '../../utils';
+import { usePermission } from '@backstage/plugin-permission-react';
 
 export type EditDeliveryProjectUserButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -30,6 +32,12 @@ export function EditDeliveryProjectUserButton({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
   const client = useApi(deliveryProjectUserApiRef);
+  const { allowed: canEditProjectUser } = usePermission({
+    permission: deliveryProjectUserUpdatePermission,
+    resourceRef: deliveryProjectUser.id,
+  });
+
+  if (!canEditProjectUser) return null;
 
   const userEntityRef = normalizeUsername(deliveryProjectUser.email);
 
