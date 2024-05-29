@@ -9,12 +9,18 @@ import {
   type CreateDeliveryProjectUserRequest,
   type ValidationErrorMapping,
   type UpdateDeliveryProjectUserRequest,
+  deliveryProjectUserCreatePermission,
 } from '@internal/plugin-adp-common';
 import { z } from 'zod';
 import type { AddDeliveryProjectUser } from '../utils';
 import { getUserEntityFromCatalog } from './catalog';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import type { IDeliveryProjectEntraIdGroupsSyncronizer } from '../entraId';
+import type { PermissionEvaluator } from '@backstage/plugin-permission-common';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
+import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
+import { getBearerTokenFromAuthorizationHeader } from '@backstage/plugin-auth-node';
+import { NotAllowedError } from '@backstage/errors';
 
 const parseCreateDeliveryProjectUserRequest =
   createParser<CreateDeliveryProjectUserRequest>(
@@ -24,6 +30,7 @@ const parseCreateDeliveryProjectUserRequest =
       is_admin: z.boolean(),
       is_technical: z.boolean(),
       github_username: z.string().optional(),
+      group_entity_ref: z.string(),
     }),
   );
 
@@ -72,6 +79,7 @@ export interface DeliveryProjectUserRouterOptions {
   catalog: CatalogApi;
   teamSyncronizer: IDeliveryProjectGithubTeamsSyncronizer;
   entraIdGroupSyncronizer: IDeliveryProjectEntraIdGroupsSyncronizer;
+  permissions: PermissionEvaluator;
 }
 
 export function createDeliveryProjectUserRouter(
@@ -82,7 +90,12 @@ export function createDeliveryProjectUserRouter(
     catalog,
     teamSyncronizer,
     entraIdGroupSyncronizer,
+    permissions,
   } = options;
+
+  const permissionIntegrationRouter = createPermissionIntegrationRouter({
+    permissions: [deliveryProjectUserCreatePermission],
+  });
 
   const router = Router();
   router.use(express.json());
@@ -90,6 +103,8 @@ export function createDeliveryProjectUserRouter(
   router.get('/deliveryProjectUsers/health', (_, response) => {
     response.json({ status: 'ok' });
   });
+
+  router.use(permissionIntegrationRouter);
 
   router.get('/deliveryProjectUsers', async (_req, res) => {
     const data = await deliveryProjectUserStore.getAll();
@@ -107,6 +122,25 @@ export function createDeliveryProjectUserRouter(
   router.post('/deliveryProjectUser', async (req, res) => {
     const body = parseCreateDeliveryProjectUserRequest(req.body);
     assertUUID(body.delivery_project_id);
+
+    const token = getBearerTokenFromAuthorizationHeader(
+      req.header('authorization'),
+    );
+    const decision = (
+      await permissions.authorize(
+        [
+          {
+            permission: deliveryProjectUserCreatePermission,
+            resourceRef: body.group_entity_ref,
+          },
+        ],
+        { token },
+      )
+    )[0];
+
+    if (decision.result === AuthorizeResult.DENY) {
+      throw new NotAllowedError('Unauthorized');
+    }
 
     const catalogUser = await getUserEntityFromCatalog(
       body.user_catalog_name,

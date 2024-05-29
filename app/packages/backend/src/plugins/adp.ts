@@ -92,6 +92,7 @@ export default async function createPlugin({
     logger,
     teamSyncronizer,
     entraIdGroupSyncronizer,
+    permissions,
   });
 
   const deliveryProgrameAdminRouter = createDeliveryProgrammeAdminRouter({

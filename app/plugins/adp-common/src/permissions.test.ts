@@ -1,9 +1,10 @@
 import {
   adpProgrammmeCreatePermission,
   adpProjectCreatePermission,
-  adpProjectUserCreatePermission,
+  deliveryProjectUserCreatePermission,
   adpPluginPermissions,
   deliveryProgrammeAdminCreatePermission,
+  deliveryProjectUserUpdatePermission,
 } from './permissions';
 
 describe('Permissions', () => {
@@ -38,6 +39,8 @@ describe('adpPluginPermissions', () => {
       adpProgrammmeCreatePermission,
       adpProjectCreatePermission,
       deliveryProgrammeAdminCreatePermission,
+      deliveryProjectUserCreatePermission,
+      deliveryProjectUserUpdatePermission,
     ];
     expect(adpPluginPermissions).toHaveLength(expectedPermissions.length);
     expectedPermissions.forEach(permission => {

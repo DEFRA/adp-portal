@@ -192,6 +192,12 @@ exports[`AddProjectUserButton should close the dialog when the form is cancelled
 </body>
 `;
 
+exports[`AddProjectUserButton should not render when the user is not allowed to create delivery projects 1`] = `
+<body>
+  <div />
+</body>
+`;
+
 exports[`AddProjectUserButton should only render a button initially 1`] = `
 <body>
   <div>

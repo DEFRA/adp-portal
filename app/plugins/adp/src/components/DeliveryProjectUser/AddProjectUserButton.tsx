@@ -9,23 +9,33 @@ import {
 } from './DeliveryProjectUserFormFields';
 import { DialogForm, readValidationError } from '../../utils';
 import type { SubmitResult } from '../../utils';
+import { usePermission } from '@backstage/plugin-permission-react';
+import { deliveryProjectUserCreatePermission } from '@internal/plugin-adp-common';
 
 export type AddProjectUserButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
     onCreated?: () => void;
     deliveryProjectId: string;
+    entityRef: string;
   }
 >;
 
 export function AddProjectUserButton({
   onCreated,
   deliveryProjectId,
+  entityRef,
   children,
   ...buttonProps
 }: AddProjectUserButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
   const client = useApi(deliveryProjectUserApiRef);
+  const { allowed: canCreateProjectUser } = usePermission({
+    permission: deliveryProjectUserCreatePermission,
+    resourceRef: entityRef,
+  });
+
+  if (!canCreateProjectUser) return null;
 
   async function handleSubmit(
     fields: DeliveryProjectUserFields,
@@ -34,6 +44,7 @@ export function AddProjectUserButton({
       await client.create({
         delivery_project_id: deliveryProjectId,
         ...fields,
+        group_entity_ref: entityRef,
       });
     } catch (e: any) {
       return readValidationError(e);
