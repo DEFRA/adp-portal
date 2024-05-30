@@ -3,6 +3,7 @@ import type { UseFormReturn } from 'react-hook-form';
 import type { DisabledFields } from '../../utils';
 import { FormSelectField, formRules } from '../../utils';
 import { useCatalogUsersList } from '../../hooks';
+import { FormAutoCompleteField } from '../../utils/FormAutoCompleteField';
 
 export type DeliveryProgrammeAdminFields = {
   user_catalog_name: string;
@@ -27,7 +28,7 @@ export function DeliveryProgrammeAdminFormFields({
 
   let i = 0;
   return (
-    <FormSelectField
+    <FormAutoCompleteField
       control={control}
       errors={errors}
       index={i++}
@@ -40,5 +41,18 @@ export function DeliveryProgrammeAdminFormFields({
         ...formRules.required,
       }}
     />
+    // <FormSelectField
+    //   control={control}
+    //   errors={errors}
+    //   index={i++}
+    //   label="Select User"
+    //   helperText="Select a user to assign Admin permissions for this delivery programme"
+    //   name="user_catalog_name"
+    //   options={catalogUserOptions}
+    //   disabled={disabled}
+    //   rules={{
+    //     ...formRules.required,
+    //   }}
+    // />
   );
 }
