@@ -5,12 +5,12 @@ import type { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
-import type { DeliveryProject } from '@internal/plugin-adp-common';
 import {
   DELIVERY_PROJECT_RESOURCE_TYPE,
   type CreateDeliveryProjectRequest,
   type UpdateDeliveryProjectRequest,
   type ValidationErrorMapping,
+  type DeliveryProject,
 } from '@internal/plugin-adp-common';
 import { getCurrentUsername } from '../utils/index';
 import type { IFluxConfigApi } from '../deliveryProject';
