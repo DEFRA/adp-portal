@@ -21,6 +21,7 @@ const allColumns = [
   'email',
   'name',
   'updated_at',
+  'user_entity_ref',
 ] as const satisfies ReadonlyArray<keyof delivery_programme_admin>;
 
 export class DeliveryProgrammeAdminStore {
@@ -97,8 +98,13 @@ export class DeliveryProgrammeAdminStore {
       'duplicateUser' | 'unknownDeliveryProgramme'
     >
   > {
-    const { aad_entity_ref_id, delivery_programme_id, email, name } =
-      deliveryProgrammeAdmin;
+    const {
+      aad_entity_ref_id,
+      delivery_programme_id,
+      email,
+      name,
+      user_entity_ref,
+    } = deliveryProgrammeAdmin;
 
     const valid = await checkMany({
       duplicateUser: this.#deliveryProgrammeAdminExists(
@@ -121,6 +127,7 @@ export class DeliveryProgrammeAdminStore {
         aad_entity_ref_id: aad_entity_ref_id,
         email: email,
         name: name,
+        user_entity_ref: user_entity_ref,
       },
       allColumns,
     );

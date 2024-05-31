@@ -1,5 +1,5 @@
 export {
-  createDeliveryProjectConditionalDecision as deliveryProjectConditionalDecision,
+  createDeliveryProjectConditionalDecision,
   deliveryProjectConditions,
 } from './conditionExports';
 export * from './rules';

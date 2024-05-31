@@ -5,6 +5,7 @@ import type { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
+import type { DeliveryProject } from '@internal/plugin-adp-common';
 import {
   DELIVERY_PROJECT_RESOURCE_TYPE,
   type CreateDeliveryProjectRequest,
@@ -103,6 +104,23 @@ export function createProjectRouter(
     fluxConfigApi,
   } = options;
 
+  const getDeliveryProject = async (
+    deliveryProjectId: string,
+  ): Promise<DeliveryProject> => {
+    const deliveryProject = await deliveryProjectStore.get(deliveryProjectId);
+    const deliveryProjectUsers =
+      await deliveryProjectUserStore.getByDeliveryProject(deliveryProjectId);
+    const deliveryProgrammeAdmins =
+      await deliveryProgrammeAdminStore.getByDeliveryProgramme(
+        deliveryProject.delivery_programme_id,
+      );
+
+    deliveryProject.delivery_project_users = deliveryProjectUsers;
+    deliveryProject.delivery_programme_admins = deliveryProgrammeAdmins;
+
+    return deliveryProject;
+  };
+
   const permissionIntegrationRouter = createPermissionIntegrationRouter({
     permissions: [],
     resourceType: DELIVERY_PROJECT_RESOURCE_TYPE,
@@ -110,18 +128,7 @@ export function createProjectRouter(
     getResources: async (resourceRefs: string[]) => {
       return await Promise.all(
         resourceRefs.map(async (ref: string) => {
-          const deliveryProject = await deliveryProjectStore.get(ref);
-          const deliveryProjectUsers =
-            await deliveryProjectUserStore.getByDeliveryProject(ref);
-          const deliveryProgrammeAdmins =
-            await deliveryProgrammeAdminStore.getByDeliveryProgramme(
-              deliveryProject.delivery_programme_id,
-            );
-
-          deliveryProject.delivery_project_users = deliveryProjectUsers;
-          deliveryProject.delivery_programme_admins = deliveryProgrammeAdmins;
-
-          return deliveryProject;
+          return await getDeliveryProject(ref);
         }),
       );
     },
@@ -145,16 +152,10 @@ export function createProjectRouter(
     }
   });
 
-  router.get('/deliveryProject/:id', async (_req, res) => {
+  router.get('/deliveryProject/:id', async (req, res) => {
     try {
-      const deliveryProject = await deliveryProjectStore.get(_req.params.id);
-      const projectUser = await deliveryProjectUserStore.getByDeliveryProject(
-        _req.params.id,
-      );
-      if (projectUser && deliveryProject !== null) {
-        deliveryProject.delivery_project_users = projectUser;
-        res.json(deliveryProject);
-      }
+      const deliveryProject = await getDeliveryProject(req.params.id);
+      res.json(deliveryProject);
     } catch (error) {
       const deliveryProjectError = error as Error;
       logger.error(

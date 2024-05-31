@@ -13,10 +13,8 @@ export const isDeliveryProgrammeAdminForProject =
       userId: z.string().describe('ID of the user to check'),
     }),
     apply(resource: DeliveryProject, { userId }) {
-      if (!resource.delivery_programme_admins) return false;
-      // TODO: Need to store Backstage user ref in Programme Admins table.
       const projectUser = resource.delivery_programme_admins.find(
-        user => user.email === userId,
+        user => user.user_entity_ref === userId,
       );
 
       return projectUser !== undefined;

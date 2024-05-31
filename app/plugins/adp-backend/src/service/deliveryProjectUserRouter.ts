@@ -22,6 +22,7 @@ import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import { getBearerTokenFromAuthorizationHeader } from '@backstage/plugin-auth-node';
 import { NotAllowedError } from '@backstage/errors';
+import { stringifyEntityRef } from '@backstage/catalog-model';
 
 const parseCreateDeliveryProjectUserRequest =
   createParser<CreateDeliveryProjectUserRequest>(
@@ -165,6 +166,11 @@ export function createDeliveryProjectUserRouter(
           'graph.microsoft.com/user-principal-name'
         ],
       delivery_project_id: body.delivery_project_id,
+      user_entity_ref: stringifyEntityRef({
+        kind: 'user',
+        namespace: 'default',
+        name: body.user_catalog_name,
+      }),
     };
 
     const addedUser = await deliveryProjectUserStore.add(addUser);
@@ -222,6 +228,11 @@ export function createDeliveryProjectUserRouter(
         catalogUser.value.metadata.annotations![
           'graph.microsoft.com/user-principal-name'
         ],
+      user_entity_ref: stringifyEntityRef({
+        kind: 'user',
+        namespace: 'default',
+        name: body.user_catalog_name,
+      }),
     };
 
     const result = await deliveryProjectUserStore.update(updateUser);

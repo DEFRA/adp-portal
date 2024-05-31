@@ -9,6 +9,7 @@ export type DeliveryProjectUser = {
   email: string;
   github_username?: string;
   updated_at: Date;
+  user_entity_ref?: string;
 };
 
 export type CreateDeliveryProjectUserRequest = {
@@ -30,4 +31,5 @@ export type UpdateDeliveryProjectUserRequest = {
   aad_user_principal_name?: string;
   name?: string;
   email?: string;
+  user_entity_ref?: string;
 };

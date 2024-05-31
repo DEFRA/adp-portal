@@ -23,6 +23,7 @@ import {
   type PermissionEvaluator,
 } from '@backstage/plugin-permission-common';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
+import { stringifyEntityRef } from '@backstage/catalog-model';
 
 const parseCreateDeliveryProgrammeAdminRequest =
   createParser<CreateDeliveryProgrammeAdminRequest>(
@@ -166,6 +167,11 @@ export function createDeliveryProgrammeAdminRouter(
       aad_entity_ref_id:
         catalogUser.value.metadata.annotations!['graph.microsoft.com/user-id'],
       delivery_programme_id: body.delivery_programme_id,
+      user_entity_ref: stringifyEntityRef({
+        kind: 'user',
+        namespace: 'default',
+        name: body.user_catalog_name,
+      }),
     };
 
     const addedUser = await deliveryProgrammeAdminStore.add(addUser);

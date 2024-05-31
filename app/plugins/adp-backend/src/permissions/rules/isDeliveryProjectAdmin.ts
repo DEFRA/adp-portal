@@ -11,13 +11,11 @@ export const isDeliveryProjectAdmin = createDeliveryProjectPermissionRule({
     userId: z.string().describe('ID of the user to check'),
   }),
   apply(resource: DeliveryProject, { userId }) {
-    if (!resource.delivery_project_users) return false;
-    // TODO: Need to store Backstage user ref in Project Users table.
     const projectUser = resource.delivery_project_users.find(
-      user => user.aad_user_principal_name === userId,
+      user => user.user_entity_ref === userId,
     );
 
-    return projectUser !== undefined && projectUser.is_admin;
+    return projectUser?.is_admin ?? false;
   },
   toQuery: () => ({}),
 });
