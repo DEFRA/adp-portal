@@ -33,7 +33,7 @@ import { isGroupMember } from '../rules';
 import {
   createDeliveryProjectConditionalDecision,
   deliveryProjectConditions,
-} from '@internal/plugin-adp-backend/src/permissions/conditionExports';
+} from '@internal/plugin-adp-backend';
 
 export class AdpPortalPermissionPolicy implements PermissionPolicy {
   constructor(private rbacUtilites: RbacUtilities, private logger: Logger) {}
