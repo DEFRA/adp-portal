@@ -105,6 +105,14 @@ describe('FluxConfigApi', () => {
             key: 'TEAM_PODS_QUOTA',
             value: '20',
           },
+          {
+            key: 'CONTAINER_MAX_CPU',
+            value: '500m',
+          },
+          {
+            key: 'CONTAINER_MAX_MEMORY',
+            value: '1000Mi',
+          }
         ],
       }),
       ok: true,

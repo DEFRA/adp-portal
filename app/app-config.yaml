@@ -197,6 +197,10 @@ adp:
         value: 3000Mi
       - key: TEAM_PODS_QUOTA
         value: "20"
+      - key: CONTAINER_MAX_CPU
+        value: "500m"
+      - key: CONTAINER_MAX_MEMORY
+        value: "1000Mi"    
   githubTeams:
     apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/github/teams
   entraIdGroups:
