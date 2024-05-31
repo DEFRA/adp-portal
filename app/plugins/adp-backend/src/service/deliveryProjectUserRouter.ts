@@ -31,7 +31,6 @@ const parseCreateDeliveryProjectUserRequest =
       is_admin: z.boolean(),
       is_technical: z.boolean(),
       github_username: z.string().optional(),
-      group_entity_ref: z.string(),
     }),
   );
 
