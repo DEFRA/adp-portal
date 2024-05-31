@@ -2938,6 +2938,15 @@
     yauzl "^3.0.0"
     yn "^4.0.0"
 
+"@backstage/backend-defaults@^0.2.18":
+  version "0.2.18"
+  resolved "https://registry.yarnpkg.com/@backstage/backend-defaults/-/backend-defaults-0.2.18.tgz#07055241c38ae19431247dcf453d6e572a482bfd"
+  integrity sha512-85qX2tvTMWGlrujBXy3OX0XipVEH9Zv19V/1NPPFkwEPqCfA+D2X7VBWQFFtuQ5jtoYvZgR2u9XdrUCsQ7e3ng==
+  dependencies:
+    "@backstage/backend-app-api" "^0.7.3"
+    "@backstage/backend-common" "^0.22.0"
+    "@backstage/plugin-events-node" "^0.3.4"
+
 "@backstage/backend-dev-utils@^0.1.2", "@backstage/backend-dev-utils@^0.1.3", "@backstage/backend-dev-utils@^0.1.4":
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/@backstage/backend-dev-utils/-/backend-dev-utils-0.1.4.tgz#65d204939c49b5df6a2148e8ad4dc718ccd1df07"
@@ -4117,6 +4126,15 @@
     "@backstage/plugin-permission-common" "^0.7.12"
     "@backstage/plugin-search-common" "^1.2.10"
 
+"@backstage/plugin-catalog-common@^1.0.23":
+  version "1.0.23"
+  resolved "https://registry.yarnpkg.com/@backstage/plugin-catalog-common/-/plugin-catalog-common-1.0.23.tgz#2ba1fe13450f6283e049acc83aa4fcebda6153e8"
+  integrity sha512-u04VUq/2wNjF9ikpGxdt1kXSQf5VlPDWTwzYyJYKD80qGa6l/klUXJ3IBs8P4XyQObkPNyS/Tho/H8XDFNeqEw==
+  dependencies:
+    "@backstage/catalog-model" "^1.5.0"
+    "@backstage/plugin-permission-common" "^0.7.13"
+    "@backstage/plugin-search-common" "^1.2.11"
+
 "@backstage/plugin-catalog-graph@^0.3.2":
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/@backstage/plugin-catalog-graph/-/plugin-catalog-graph-0.3.2.tgz#922d911b9beb68737b144f74dd099e2fc23031fb"
@@ -4167,6 +4185,20 @@
     react-hook-form "^7.12.2"
     react-use "^17.2.4"
     yaml "^2.0.0"
+
+"@backstage/plugin-catalog-node@^1.12.0":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@backstage/plugin-catalog-node/-/plugin-catalog-node-1.12.0.tgz#513bd374d48c605c664aa77c7350c8585eb9e56e"
+  integrity sha512-y+MsHc94Sepnqhg6pMTCMJBNEWhnCfoKhsl79/a+lsK3Hi+g6e+fNDfTJbg8shhMVnnvwwvfY/UWySZm1B02QQ==
+  dependencies:
+    "@backstage/backend-plugin-api" "^0.6.18"
+    "@backstage/catalog-client" "^1.6.5"
+    "@backstage/catalog-model" "^1.5.0"
+    "@backstage/errors" "^1.2.4"
+    "@backstage/plugin-catalog-common" "^1.0.23"
+    "@backstage/plugin-permission-common" "^0.7.13"
+    "@backstage/plugin-permission-node" "^0.7.29"
+    "@backstage/types" "^1.1.1"
 
 "@backstage/plugin-catalog-node@^1.6.0", "@backstage/plugin-catalog-node@^1.6.1", "@backstage/plugin-catalog-node@^1.7.0", "@backstage/plugin-catalog-node@^1.7.3":
   version "1.7.3"
@@ -4252,6 +4284,13 @@
   integrity sha512-KhXJFzq0Mb6wGUBj2/2pPJrmzKwYgiGfXgIl4doAwcClzUVngrxfhGXVja3CVUnBsiIPh3ASDua2jhv/bOcL2w==
   dependencies:
     "@backstage/backend-plugin-api" "^0.6.8"
+
+"@backstage/plugin-events-node@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@backstage/plugin-events-node/-/plugin-events-node-0.3.4.tgz#9d56b47edf9fc0d71f94b46ff91333fb10aad0f4"
+  integrity sha512-vALPBLIqlqAxGohbHat/z4qtvmUcC7+AyWUy+mn84O9OFB+L/v53m79qPjAJhUB9rzPZu8ClsVCfmhm/84j52Q==
+  dependencies:
+    "@backstage/backend-plugin-api" "^0.6.18"
 
 "@backstage/plugin-github-actions@^0.6.9":
   version "0.6.9"
@@ -4943,6 +4982,14 @@
   integrity sha512-yn18Beo+oXocDLfbOoCwFd8p8n7veGyDxKN/8rL6EZjMjNL13ZFvUIAOSrhg7wcx/avLKGwpYoFxMde2LxD/cA==
   dependencies:
     "@backstage/plugin-permission-common" "^0.7.12"
+    "@backstage/types" "^1.1.1"
+
+"@backstage/plugin-search-common@^1.2.11":
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/@backstage/plugin-search-common/-/plugin-search-common-1.2.11.tgz#5563f9b7b5ff915d1fe0e0e213c9536029dac91c"
+  integrity sha512-b2gmurxNdgY6LQ4E+BzITVUFF5jCewjlkI4/oppFTsk1IH+VfQyRDoGb8u2wuYKGCwvgVPgP3qUBEo25oGTZfg==
+  dependencies:
+    "@backstage/plugin-permission-common" "^0.7.13"
     "@backstage/types" "^1.1.1"
 
 "@backstage/plugin-search-react@^1.7.4":
@@ -11733,7 +11780,7 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.7.tgz#50ae4353eaaddc04044279812f52c8c65857dbcb"
   integrity sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==
 
-"@types/react-dom@*", "@types/react-dom@<18.0.0", "@types/react-dom@^17":
+"@types/react-dom@*", "@types/react-dom@<18.0.0":
   version "17.0.25"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-17.0.25.tgz#e0e5b3571e1069625b3a3da2b279379aa33a0cb5"
   integrity sha512-urx7A7UxkZQmThYA4So0NelOVjx3V4rNFVJwp0WZlbIK5eM4rNJDiN3R/E9ix0MBh6kAEojk/9YL+Te6D9zHNA==
@@ -15389,7 +15436,7 @@ delegates@^1.0.0:
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
   integrity sha512-bd2L678uiWATM6m5Z1VzNCErI3jiGzt6HGY8OVICs40JQq/HALfbyNJmp0UDakEY4pMMaN0Ly5om/B1VI/+xfQ==
 
-denque@^2.1.0:
+denque@^2.0.1, denque@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/denque/-/denque-2.1.0.tgz#e93e1a6569fb5e66f16a3c2a2964617d349d6ab1"
   integrity sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==
@@ -21866,10 +21913,24 @@ mute-stream@~1.0.0:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-1.0.0.tgz#e31bd9fe62f0aed23520aa4324ea6671531e013e"
   integrity sha512-avsJQhyd+680gKXyG/sQc0nXaC6rBkPOfyHYcFb9+hdkqQkR9bdnkJ0AMZhke0oesPqIO+mFFJ+IdBc7mst4IA==
 
-mysql2@^2.2.5, mysql2@^3.0.0, mysql2@^3.9.4:
-  version "3.9.7"
-  resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-3.9.7.tgz#843755daf65b5ef08afe545fe14b8fb62824741a"
-  integrity sha512-KnJT8vYRcNAZv73uf9zpXqNbvBG7DJrs+1nACsjZP1HMJ1TgXEy8wnNilXAn/5i57JizXKtrUtwDB7HxT9DDpw==
+mysql2@^2.2.5:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-2.3.3.tgz#944f3deca4b16629052ff8614fbf89d5552545a0"
+  integrity sha512-wxJUev6LgMSgACDkb/InIFxDprRa6T95+VEoR+xPvtngtccNH2dGjEB/fVZ8yg1gWv1510c9CvXuJHi5zUm0ZA==
+  dependencies:
+    denque "^2.0.1"
+    generate-function "^2.3.1"
+    iconv-lite "^0.6.3"
+    long "^4.0.0"
+    lru-cache "^6.0.0"
+    named-placeholders "^1.1.2"
+    seq-queue "^0.0.5"
+    sqlstring "^2.3.2"
+
+mysql2@^3.0.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-3.10.0.tgz#5109449fda3dc03fb7d6bdf2cf91f97477081987"
+  integrity sha512-qx0mfWYt1DpTPkw8mAcHW/OwqqyNqBLBHvY5IjN8+icIYTjt6znrgYJ+gxqNNRpVknb5Wc/gcCM4XjbCR0j5tw==
   dependencies:
     denque "^2.1.0"
     generate-function "^2.3.1"
@@ -21889,7 +21950,7 @@ mz@^2.7.0:
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
 
-named-placeholders@^1.1.3:
+named-placeholders@^1.1.2, named-placeholders@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/named-placeholders/-/named-placeholders-1.1.3.tgz#df595799a36654da55dda6152ba7a137ad1d9351"
   integrity sha512-eLoBxg6wE/rZkJPhU/xRX1WTpkFEwDJEN96oxFrTsqBdbT5ec295Q+CoHrL9IT0DipqKhmGcaZmwOt8OON5x1w==
