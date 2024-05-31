@@ -135,7 +135,7 @@ export function createDeliveryProjectUserRouter(
         [
           {
             permission: deliveryProjectUserCreatePermission,
-            resourceRef: body.group_entity_ref,
+            resourceRef: body.delivery_project_id,
           },
         ],
         { token },
@@ -192,7 +192,7 @@ export function createDeliveryProjectUserRouter(
         [
           {
             permission: deliveryProjectUserUpdatePermission,
-            resourceRef: body.id,
+            resourceRef: body.delivery_project_id,
           },
         ],
         { token },

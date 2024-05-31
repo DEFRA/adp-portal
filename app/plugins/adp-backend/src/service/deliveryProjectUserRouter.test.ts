@@ -166,7 +166,6 @@ describe('createRouter', () => {
         is_technical: projectUser.is_technical,
         user_catalog_name: 'test@test.com',
         github_username: projectUser.github_username,
-        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProjectUserApp)
@@ -186,7 +185,6 @@ describe('createRouter', () => {
         is_technical: faker.datatype.boolean(),
         user_catalog_name: faker.internet.userName(),
         github_username: faker.internet.userName(),
-        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProjectUserApp)
@@ -208,7 +206,6 @@ describe('createRouter', () => {
         is_technical: faker.datatype.boolean(),
         user_catalog_name: faker.internet.userName(),
         github_username: faker.internet.userName(),
-        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProjectUserApp)
@@ -234,7 +231,6 @@ describe('createRouter', () => {
         is_technical: faker.datatype.boolean(),
         user_catalog_name: faker.internet.userName(),
         github_username: faker.internet.userName(),
-        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProjectUserApp)
@@ -311,6 +307,22 @@ describe('createRouter', () => {
       expect(response.body).toMatchObject(
         JSON.parse(JSON.stringify(projectUser)),
       );
+    });
+
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const response = await request(deliveryProjectUserApp)
+        .patch('/deliveryProjectUser')
+        .send({
+          id: '123',
+          delivery_project_id: '123',
+          user_catalog_name: 'user@test.com',
+        } satisfies UpdateDeliveryProjectUserRequest);
+
+      expect(response.status).toEqual(403);
     });
 
     it('return 400 with errors', async () => {

@@ -100,6 +100,7 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
         github_team_visibility: 'private',
         delivery_programme_code: 'ABC',
         delivery_project_users: [],
+        delivery_programme_admins: [],
       };
       const storedTeams: Record<string, GithubTeamRef> = {
         admins: {
@@ -229,6 +230,7 @@ describe('DeliveryProjectGithubTeamsSyncronizer', () => {
         github_team_visibility: 'private',
         delivery_programme_code: 'ABC',
         delivery_project_users: [],
+        delivery_programme_admins: [],
       };
       const storedTeams: Record<string, GithubTeamRef> = {
         admins: {

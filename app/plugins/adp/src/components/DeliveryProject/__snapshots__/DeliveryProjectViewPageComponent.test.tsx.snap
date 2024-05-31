@@ -526,7 +526,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                             </a>
                              
                             <div>
-                              {"id":"0","name":"project-0","title":"Project 0","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[]}
+                              {"id":"0","name":"project-0","title":"Project 0","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[],"delivery_programme_admins":[]}
                               <button
                                 class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                 data-testid="delivery-project-edit-button-0"
@@ -1988,7 +1988,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                             </a>
                              
                             <div>
-                              {"id":"0","name":"project-0","title":"Project 0","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[]}
+                              {"id":"0","name":"project-0","title":"Project 0","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[],"delivery_programme_admins":[]}
                               <button
                                 class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                 data-testid="delivery-project-edit-button-0"
@@ -2088,7 +2088,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                             </a>
                              
                             <div>
-                              {"id":"1","name":"project-1","title":"Project 1","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[]}
+                              {"id":"1","name":"project-1","title":"Project 1","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[],"delivery_programme_admins":[]}
                               <button
                                 class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                 data-testid="delivery-project-edit-button-1"
@@ -2869,7 +2869,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                             </a>
                              
                             <div>
-                              {"id":"0","name":"project-0","title":"Project 0","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[]}
+                              {"id":"0","name":"project-0","title":"Project 0","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[],"delivery_programme_admins":[]}
                               <button
                                 class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                 data-testid="delivery-project-edit-button-0"
@@ -4331,7 +4331,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with many proje
                             </a>
                              
                             <div>
-                              {"id":"0","name":"project-0","title":"Project 0","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[]}
+                              {"id":"0","name":"project-0","title":"Project 0","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[],"delivery_programme_admins":[]}
                               <button
                                 class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                 data-testid="delivery-project-edit-button-0"
@@ -4431,7 +4431,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with many proje
                             </a>
                              
                             <div>
-                              {"id":"1","name":"project-1","title":"Project 1","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[]}
+                              {"id":"1","name":"project-1","title":"Project 1","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[],"delivery_programme_admins":[]}
                               <button
                                 class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                 data-testid="delivery-project-edit-button-1"
@@ -4531,7 +4531,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with many proje
                             </a>
                              
                             <div>
-                              {"id":"2","name":"project-2","title":"Project 2","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[]}
+                              {"id":"2","name":"project-2","title":"Project 2","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[],"delivery_programme_admins":[]}
                               <button
                                 class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                 data-testid="delivery-project-edit-button-2"
@@ -4631,7 +4631,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with many proje
                             </a>
                              
                             <div>
-                              {"id":"3","name":"project-3","title":"Project 3","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[]}
+                              {"id":"3","name":"project-3","title":"Project 3","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[],"delivery_programme_admins":[]}
                               <button
                                 class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                 data-testid="delivery-project-edit-button-3"
@@ -4731,7 +4731,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with many proje
                             </a>
                              
                             <div>
-                              {"id":"4","name":"project-4","title":"Project 4","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[]}
+                              {"id":"4","name":"project-4","title":"Project 4","ado_project":"My ado project","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","delivery_programme_id":"123","delivery_project_code":"DEF","description":"My project","namespace":"ABC-DEF","service_owner":"test@email.com","team_type":"delivery","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool project","finance_code":"Money number","github_team_visibility":"public","updated_by":"Me","delivery_project_users":[],"delivery_programme_admins":[]}
                               <button
                                 class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                 data-testid="delivery-project-edit-button-4"

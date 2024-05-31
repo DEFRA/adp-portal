@@ -83,6 +83,7 @@ export default async function createPlugin({
     deliveryProjectStore,
     teamSyncronizer: teamSyncronizer,
     deliveryProjectUserStore,
+    deliveryProgrammeAdminStore,
     fluxConfigApi,
   });
 

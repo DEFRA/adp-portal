@@ -43,6 +43,7 @@ const deliveryProject: DeliveryProject = {
   github_team_visibility: 'public',
   updated_by: 'Me',
   delivery_project_users: [],
+  delivery_programme_admins: [],
 };
 
 const fields: DeliveryProjectFields = {

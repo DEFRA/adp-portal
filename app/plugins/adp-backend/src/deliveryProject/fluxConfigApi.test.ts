@@ -180,6 +180,7 @@ describe('FluxConfigApi', () => {
       ado_project: 'TEST-ADO',
       delivery_programme_code: 'ABC',
       delivery_project_users: [],
+      delivery_programme_admins: [],
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
@@ -214,6 +215,7 @@ describe('FluxConfigApi', () => {
       ado_project: 'TEST-ADO',
       delivery_programme_code: 'ABC',
       delivery_project_users: [],
+      delivery_programme_admins: [],
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
@@ -261,6 +263,7 @@ describe('FluxConfigApi', () => {
       ado_project: 'TEST-ADO',
       delivery_programme_code: 'ABC',
       delivery_project_users: [],
+      delivery_programme_admins: [],
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);

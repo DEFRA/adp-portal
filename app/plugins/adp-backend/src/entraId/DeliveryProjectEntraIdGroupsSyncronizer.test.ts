@@ -61,6 +61,7 @@ describe('DeliveryProjectEntraIdGroupsSyncronizer', () => {
       delivery_programme_id: faker.string.uuid(),
       delivery_project_code: faker.string.uuid(),
       delivery_project_users: [],
+      delivery_programme_admins: [],
       description: faker.commerce.productDescription(),
       id: faker.string.uuid(),
       name: faker.commerce.productName(),

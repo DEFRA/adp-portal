@@ -128,7 +128,6 @@ describe('DeliveryProjectUserClient', () => {
         is_admin: faker.datatype.boolean(),
         github_username: userRef,
         user_catalog_name: userRef,
-        group_entity_ref: 'group-123',
       });
 
       expect(result).toEqual(expectedDeliveryProjectUser);
@@ -152,7 +151,6 @@ describe('DeliveryProjectUserClient', () => {
           is_admin: faker.datatype.boolean(),
           github_username: userRef,
           user_catalog_name: userRef,
-          group_entity_ref: 'group-123',
         }),
       ).rejects.toThrow('Validation failed');
     });
@@ -175,7 +173,6 @@ describe('DeliveryProjectUserClient', () => {
           is_admin: faker.datatype.boolean(),
           github_username: userRef,
           user_catalog_name: userRef,
-          group_entity_ref: 'group-123',
         }),
       ).rejects.toThrow(/Request failed with 500/);
     });

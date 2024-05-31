@@ -34,7 +34,7 @@ export function EditDeliveryProjectUserButton({
   const client = useApi(deliveryProjectUserApiRef);
   const { allowed: canEditProjectUser } = usePermission({
     permission: deliveryProjectUserUpdatePermission,
-    resourceRef: deliveryProjectUser.id,
+    resourceRef: deliveryProjectUser.delivery_project_id,
   });
 
   if (!canEditProjectUser) return null;

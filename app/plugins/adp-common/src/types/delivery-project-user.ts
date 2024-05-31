@@ -17,7 +17,6 @@ export type CreateDeliveryProjectUserRequest = {
   is_technical: boolean;
   is_admin: boolean;
   github_username?: string;
-  group_entity_ref: string;
 };
 
 export type UpdateDeliveryProjectUserRequest = {

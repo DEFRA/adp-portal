@@ -32,7 +32,7 @@ export function AddProjectUserButton({
   const client = useApi(deliveryProjectUserApiRef);
   const { allowed: canCreateProjectUser } = usePermission({
     permission: deliveryProjectUserCreatePermission,
-    resourceRef: entityRef,
+    resourceRef: deliveryProjectId,
   });
 
   if (!canCreateProjectUser) return null;
@@ -44,7 +44,6 @@ export function AddProjectUserButton({
       await client.create({
         delivery_project_id: deliveryProjectId,
         ...fields,
-        group_entity_ref: entityRef,
       });
     } catch (e: any) {
       return readValidationError(e);

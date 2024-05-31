@@ -142,6 +142,7 @@ export async function startStandaloneServer(
     deliveryProjectStore,
     teamSyncronizer,
     deliveryProjectUserStore,
+    deliveryProgrammeAdminStore,
     fluxConfigApi,
   });
 

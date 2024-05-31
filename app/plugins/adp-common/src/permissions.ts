@@ -1,6 +1,7 @@
 import { RESOURCE_TYPE_CATALOG_ENTITY } from '@backstage/plugin-catalog-common/alpha';
 import { createPermission } from '@backstage/plugin-permission-common';
 
+export const DELIVERY_PROJECT_RESOURCE_TYPE = 'delivery-project';
 export const DELIVERY_PROJECT_USER_RESOURCE_TYPE = 'delivery-project-user';
 
 /**
@@ -42,7 +43,7 @@ export const adpProjectCreatePermission = createPermission({
 export const deliveryProjectUserCreatePermission = createPermission({
   name: 'adp.deliveryprojectuser.create',
   attributes: { action: 'create' },
-  resourceType: RESOURCE_TYPE_CATALOG_ENTITY,
+  resourceType: DELIVERY_PROJECT_RESOURCE_TYPE,
 });
 
 /**
@@ -53,7 +54,7 @@ export const deliveryProjectUserCreatePermission = createPermission({
 export const deliveryProjectUserUpdatePermission = createPermission({
   name: 'adp.deliveryprojectuser.update',
   attributes: { action: 'update' },
-  resourceType: DELIVERY_PROJECT_USER_RESOURCE_TYPE,
+  resourceType: DELIVERY_PROJECT_RESOURCE_TYPE,
 });
 
 export const adpPluginPermissions = [

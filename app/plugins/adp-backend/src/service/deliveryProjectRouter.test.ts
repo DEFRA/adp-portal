@@ -18,6 +18,7 @@ import type {
   UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
 import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
+import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 
 let mockCreateFluxConfig: jest.Mock;
 let mockGetFluxConfig: jest.Mock;
@@ -70,6 +71,15 @@ describe('createRouter', () => {
     getFluxConfig: jest.fn(),
   };
 
+  const mockDeliveryProgrammeAdminStore: jest.Mocked<IDeliveryProgrammeAdminStore> =
+    {
+      add: jest.fn(),
+      getByAADEntityRef: jest.fn(),
+      getByDeliveryProgramme: jest.fn(),
+      getAll: jest.fn(),
+      delete: jest.fn(),
+    };
+
   const mockOptions = {
     logger: getVoidLogger(),
     identity: mockIdentityApi,
@@ -78,6 +88,7 @@ describe('createRouter', () => {
     deliveryProjectStore: mockDeliveryProjectStore,
     deliveryProjectUserStore: mockDeliveryProjectUserStore,
     fluxConfigApi: mockFluxConfigApi,
+    deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
   };
 
   function createTestDatabase(): PluginDatabaseManager {
