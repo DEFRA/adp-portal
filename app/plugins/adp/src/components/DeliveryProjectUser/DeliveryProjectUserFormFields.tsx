@@ -53,6 +53,8 @@ export function DeliveryProjectUserFormFields({
         }}
       />
 
+      <h3 style={{ marginBottom: 0 }}>Additional permissions</h3>
+
       <FormCheckboxField
         control={control}
         errors={errors}

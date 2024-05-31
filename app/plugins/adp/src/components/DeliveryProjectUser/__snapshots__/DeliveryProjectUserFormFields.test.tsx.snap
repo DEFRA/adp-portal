@@ -69,6 +69,11 @@ exports[`DeliveryProjectUserFormFields should render all fields correctly 1`] = 
         Select a user to add to this Delivery Project
       </p>
     </div>
+    <h3
+      style="margin-bottom: 0px;"
+    >
+      Additional permissions
+    </h3>
     <label
       class="MuiFormControlLabel-root"
     >
@@ -272,6 +277,11 @@ exports[`DeliveryProjectUserFormFields should render default fields 1`] = `
         Select a user to add to this Delivery Project
       </p>
     </div>
+    <h3
+      style="margin-bottom: 0px;"
+    >
+      Additional permissions
+    </h3>
     <label
       class="MuiFormControlLabel-root"
     >
@@ -478,6 +488,11 @@ exports[`DeliveryProjectUserFormFields should write values back to the form: Emp
         Select a user to add to this Delivery Project
       </p>
     </div>
+    <h3
+      style="margin-bottom: 0px;"
+    >
+      Additional permissions
+    </h3>
     <label
       class="MuiFormControlLabel-root"
     >
@@ -683,6 +698,11 @@ exports[`DeliveryProjectUserFormFields should write values back to the form: Git
         Select a user to add to this Delivery Project
       </p>
     </div>
+    <h3
+      style="margin-bottom: 0px;"
+    >
+      Additional permissions
+    </h3>
     <label
       class="MuiFormControlLabel-root"
     >
@@ -888,6 +908,11 @@ exports[`DeliveryProjectUserFormFields should write values back to the form: Use
         Select a user to add to this Delivery Project
       </p>
     </div>
+    <h3
+      style="margin-bottom: 0px;"
+    >
+      Additional permissions
+    </h3>
     <label
       class="MuiFormControlLabel-root"
     >
