@@ -57,7 +57,7 @@ export function DeliveryProjectUserFormFields({
         control={control}
         errors={errors}
         index={i++}
-        label="Admin user?"
+        label="Admin user"
         helperText="Can this user administer this project?"
         name="is_admin"
         disabled={disabled}
@@ -67,7 +67,7 @@ export function DeliveryProjectUserFormFields({
         control={control}
         errors={errors}
         index={i++}
-        label="Technical user?"
+        label="Technical user"
         helperText="Is this user in a technical role?"
         name="is_technical"
         disabled={disabled}
@@ -81,6 +81,12 @@ export function DeliveryProjectUserFormFields({
         helperText="Enter this user's Github username"
         name="github_username"
         disabled={disabled}
+        rules={{
+          validate: (value, values) =>
+            values.is_technical === false ||
+            (values.is_technical && value) ||
+            'A GitHub handle is required for technical users',
+        }}
       />
     </>
   );

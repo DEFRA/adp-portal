@@ -13,7 +13,12 @@ import {
   emptyForm,
 } from './DeliveryProjectUserFormFields';
 import type { SubmitResult } from '../../utils';
-import { DialogForm, populate, readValidationError } from '../../utils';
+import {
+  DialogForm,
+  TitleWithHelp,
+  populate,
+  readValidationError,
+} from '../../utils';
 import { usePermission } from '@backstage/plugin-permission-react';
 
 export type EditDeliveryProjectUserButtonProps = Readonly<
@@ -82,7 +87,11 @@ export function EditDeliveryProjectUserButton({
             setIsModalOpen(false);
             if (success) onEdited?.();
           }}
-          title={`Edit team member ${deliveryProjectUser.name}`}
+          title={
+            <TitleWithHelp href="https://defra.github.io/adp-documentation/Getting-Started/onboarding-a-user/">
+              {`Edit team member ${deliveryProjectUser.name}`}
+            </TitleWithHelp>
+          }
           confirm="Update"
           submit={handleSubmit}
           disabled={{
