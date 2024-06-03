@@ -7,6 +7,7 @@ import MapIcon from '@material-ui/icons/MyLocation';
 import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
 import BusinessIcon from '@material-ui/icons/Business';
+import ChatIcon from '@material-ui/icons/Chat';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import LogoFull from './LogoFull';
@@ -83,6 +84,11 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
             icon={BusinessIcon}
             to="onboarding"
             text="ADP Onboarding"
+          />
+          <SidebarItem
+            icon={ChatIcon}
+            to="chat"
+            text="ADP Chat"
           />
         </SidebarScrollWrapper>
       </SidebarGroup>

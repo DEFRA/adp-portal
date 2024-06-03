@@ -66,6 +66,7 @@ import {
   DeliveryProgrammeViewPageComponent,
   DeliveryProjectViewPageComponent,
 } from '@internal/plugin-adp';
+import { AdpAiChatbotPage } from '@internal/plugin-adp-ai-chatbot';
 
 const lightTheme = createUnifiedTheme({
   palette: {
@@ -294,6 +295,7 @@ const routes = (
     </Route>
     <Route path="/flux-runtime" element={<FluxRuntimePage />} />
     <Route path="/onboarding" element={<AdpPage />} />
+    <Route path="/chat" element={<AdpAiChatbotPage />} />
     <Route
       path="/onboarding/arms-length-bodies"
       element={<AlbViewPageComponent />}
