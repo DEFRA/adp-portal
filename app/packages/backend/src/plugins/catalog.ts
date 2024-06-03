@@ -13,7 +13,7 @@ export default async function createPlugin(
 ): Promise<Router> {
   const builder = CatalogBuilder.create(env);
 
-  // TODO: Migrate to new backend
+  // TODO: Migrate to new backend?
   builder.addPermissionRules([isGroupMemberRule]);
 
   builder.addEntityProvider(

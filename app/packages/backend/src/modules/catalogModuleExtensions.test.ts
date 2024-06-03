@@ -1,31 +1,37 @@
 import { mockServices, startTestBackend } from '@backstage/backend-test-utils';
-import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/dist/alpha';
+import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
 import { AdpDatabaseEntityProvider } from '@internal/plugin-catalog-backend-module-adp';
 import { addAdpDatabaseEntityProvider } from './catalogModuleExtensions';
+import fetchApiFactory from '@internal/plugin-fetch-api-backend';
 
 describe('catalogModuleExtensions', () => {
   describe('addAdpDatabaseEntityProvider', () => {
     it('should register the provider with the catalog extension point', async () => {
-      let addedProviders: AdpDatabaseEntityProvider[] | undefined;
+      let addedProvider: AdpDatabaseEntityProvider | undefined;
 
       const extensionPont = {
         addEntityProvider: (providers: any) => {
-          addedProviders = providers;
+          addedProvider = providers;
         },
       };
+
+      const discovery = mockServices.discovery.mock({
+        getBaseUrl: jest.fn().mockResolvedValue('http://test.local'),
+      });
 
       await startTestBackend({
         extensionPoints: [[catalogProcessingExtensionPoint, extensionPont]],
         features: [
           addAdpDatabaseEntityProvider(),
-          mockServices.discovery.factory(),
+          discovery.factory,
           mockServices.logger.factory(),
           mockServices.scheduler.factory(),
+          fetchApiFactory(),
         ],
       });
 
-      expect(addedProviders?.length).toEqual(1);
-      expect(addedProviders?.pop()?.getProviderName()).toEqual(
+      expect(addedProvider).toBeDefined();
+      expect(addedProvider?.getProviderName()).toEqual(
         'AdpDatabaseEntityProvider',
       );
     });
