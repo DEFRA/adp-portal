@@ -14,6 +14,7 @@ import type * as DialogFormModule from '../../utils/DialogForm';
 import userEvent from '@testing-library/user-event';
 import type { ValidationError as IValidationError } from '@internal/plugin-adp-common';
 import { ValidationError } from '../../utils';
+import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
 
 function setup() {
   const mockAlertApi: jest.Mocked<AlertApi> = {
@@ -54,7 +55,32 @@ const fields: DeliveryProjectUserFields = {
   is_technical: true,
 };
 
+const usePermission: jest.MockedFn<
+  typeof PluginPermissionReactModule.usePermission
+> = jest.fn();
 const DialogForm: jest.MockedFn<typeof DialogFormModule.DialogForm> = jest.fn();
+
+jest.mock(
+  '@backstage/plugin-permission-react',
+  () =>
+    ({
+      get usePermission() {
+        return usePermission;
+      },
+      get IdentityPermissionApi(): never {
+        throw new Error('Not mocked');
+      },
+      get PermissionedRoute(): never {
+        throw new Error('Not mocked');
+      },
+      get RequirePermission(): never {
+        throw new Error('Not mocked');
+      },
+      get permissionApiRef(): never {
+        throw new Error('Not mocked');
+      },
+    } satisfies typeof PluginPermissionReactModule),
+);
 
 jest.mock(
   '../../utils/DialogForm',
@@ -71,12 +97,32 @@ describe('AddProjectUserButton', () => {
     jest.clearAllMocks();
   });
 
-  it('should only render a button initially', async () => {
-    const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
+  it('should not render when the user is not allowed to create delivery projects', async () => {
+    const { mockAlertApi, mockProjectUserApi, renderComponent } = setup();
+    usePermission.mockReturnValue({ allowed: false, loading: false });
 
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProjectId: '123',
+      entityRef: 'programme-group-123',
+    });
+
+    expect(result.baseElement).toMatchSnapshot();
+    expect(mockAlertApi.alert$).not.toHaveBeenCalled();
+    expect(mockAlertApi.post).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.create).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+  });
+
+  it('should only render a button initially', async () => {
+    const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
+    usePermission.mockReturnValue({ allowed: true, loading: false });
+
+    const { result } = await renderComponent({
+      content: 'Test button',
+      deliveryProjectId: '123',
+      entityRef: 'project-123',
     });
 
     expect(result.baseElement).toMatchSnapshot();
@@ -94,6 +140,7 @@ describe('AddProjectUserButton', () => {
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProjectId: '123',
+      entityRef: 'project-123',
     });
     await userEvent.click(result.getByTestId('add-project-user-button'));
 
@@ -133,6 +180,7 @@ describe('AddProjectUserButton', () => {
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProjectId: '123',
+      entityRef: 'project-123',
     });
     await userEvent.click(result.getByTestId('add-project-user-button'));
 
@@ -159,6 +207,7 @@ describe('AddProjectUserButton', () => {
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProjectId: '123',
+      entityRef: 'project-123',
       onCreated,
     });
     await userEvent.click(result.getByTestId('add-project-user-button'));
@@ -185,6 +234,7 @@ describe('AddProjectUserButton', () => {
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProjectId: 'project-1',
+      entityRef: 'project-123',
     });
     await userEvent.click(result.getByTestId('add-project-user-button'));
 
@@ -242,6 +292,7 @@ describe('AddProjectUserButton', () => {
     const { result } = await renderComponent({
       content: 'Test button',
       deliveryProjectId: 'project-2',
+      entityRef: 'project-123',
     });
     await userEvent.click(result.getByTestId('add-project-user-button'));
 

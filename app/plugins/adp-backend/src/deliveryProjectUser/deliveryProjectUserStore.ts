@@ -32,6 +32,7 @@ const allColumns = [
   'email',
   'github_username',
   'updated_at',
+  'user_entity_ref',
 ] as const satisfies ReadonlyArray<keyof delivery_project_user>;
 
 export class DeliveryProjectUserStore {
@@ -89,6 +90,7 @@ export class DeliveryProjectUserStore {
       name,
       github_username,
       aad_user_principal_name,
+      user_entity_ref,
     } = projectUser;
 
     const valid = await checkMany({
@@ -115,6 +117,7 @@ export class DeliveryProjectUserStore {
         email,
         github_username,
         aad_user_principal_name,
+        user_entity_ref,
       },
       allColumns,
     );
@@ -142,6 +145,7 @@ export class DeliveryProjectUserStore {
       aad_user_principal_name,
       email,
       name,
+      user_entity_ref,
     } = request;
 
     if (!containsAnyValue(request))
@@ -170,6 +174,7 @@ export class DeliveryProjectUserStore {
         email,
         name,
         updated_at: new Date(),
+        user_entity_ref,
       },
       allColumns,
     );

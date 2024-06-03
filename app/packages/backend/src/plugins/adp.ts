@@ -83,6 +83,7 @@ export default async function createPlugin({
     deliveryProjectStore,
     teamSyncronizer: teamSyncronizer,
     deliveryProjectUserStore,
+    deliveryProgrammeAdminStore,
     fluxConfigApi,
   });
 
@@ -92,6 +93,7 @@ export default async function createPlugin({
     logger,
     teamSyncronizer,
     entraIdGroupSyncronizer,
+    permissions,
   });
 
   const deliveryProgrameAdminRouter = createDeliveryProgrammeAdminRouter({

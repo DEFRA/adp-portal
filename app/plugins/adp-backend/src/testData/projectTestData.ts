@@ -18,6 +18,7 @@ export const expectedProjectData = {
   updated_at: new Date(),
   delivery_programme_code: 'ABC',
   delivery_project_users: [],
+  delivery_programme_admins: [],
 } satisfies Omit<DeliveryProject, 'name'>;
 
 export const expectedProjectDataWithName = {
@@ -38,6 +39,7 @@ export const expectedProjectDataWithName = {
   updated_at: new Date(),
   delivery_programme_code: 'ABC',
   delivery_project_users: [],
+  delivery_programme_admins: [],
 } satisfies DeliveryProject;
 
 export const deliveryProjectSeedData: delivery_project = {

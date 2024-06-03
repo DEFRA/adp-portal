@@ -142,6 +142,7 @@ export async function startStandaloneServer(
     deliveryProjectStore,
     teamSyncronizer,
     deliveryProjectUserStore,
+    deliveryProgrammeAdminStore,
     fluxConfigApi,
   });
 
@@ -151,6 +152,7 @@ export async function startStandaloneServer(
     logger,
     teamSyncronizer,
     entraIdGroupSyncronizer,
+    permissions,
   });
 
   const router = Router();

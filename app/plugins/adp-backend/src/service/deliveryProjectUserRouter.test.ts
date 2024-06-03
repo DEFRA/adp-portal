@@ -14,6 +14,12 @@ import type {
 } from '@internal/plugin-adp-common';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import type { IDeliveryProjectEntraIdGroupsSyncronizer } from '../entraId';
+import type { PermissionEvaluator } from '@backstage/plugin-permission-common';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
+
+jest.mock('@backstage/plugin-auth-node', () => ({
+  getBearerTokenFromAuthorizationHeader: () => 'token',
+}));
 
 describe('createRouter', () => {
   let deliveryProjectUserApp: express.Express;
@@ -54,12 +60,18 @@ describe('createRouter', () => {
       syncronizeById: jest.fn(),
     };
 
+  const mockPermissionEvaluator: jest.Mocked<PermissionEvaluator> = {
+    authorize: jest.fn(),
+    authorizeConditional: jest.fn(),
+  };
+
   const mockOptions: DeliveryProjectUserRouterOptions = {
     catalog: mockCatalogClient,
     deliveryProjectUserStore: mockDeliveryProjectUserStore,
     logger: getVoidLogger(),
     teamSyncronizer: mockGithubTeamSyncronizer,
     entraIdGroupSyncronizer: mockEntraIdGroupSyncronizer,
+    permissions: mockPermissionEvaluator,
   };
 
   beforeAll(async () => {
@@ -144,6 +156,9 @@ describe('createRouter', () => {
           slug: faker.company.name(),
         },
       });
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const requestBody: CreateDeliveryProjectUserRequest = {
         delivery_project_id: projectUser.delivery_project_id,
@@ -159,8 +174,31 @@ describe('createRouter', () => {
       expect(response.status).toEqual(201);
     });
 
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const requestBody: CreateDeliveryProjectUserRequest = {
+        delivery_project_id: faker.string.uuid(),
+        is_admin: faker.datatype.boolean(),
+        is_technical: faker.datatype.boolean(),
+        user_catalog_name: faker.internet.userName(),
+        github_username: faker.internet.userName(),
+      };
+
+      const response = await request(deliveryProjectUserApp)
+        .post('/deliveryProjectUser')
+        .send(requestBody);
+
+      expect(response.status).toEqual(403);
+    });
+
     it('returns a 400 response if catalog user cannot be found', async () => {
       mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const requestBody: CreateDeliveryProjectUserRequest = {
         delivery_project_id: faker.string.uuid(),
@@ -183,6 +221,9 @@ describe('createRouter', () => {
         errors: ['duplicateUser', 'unknown', 'unknownDeliveryProject'],
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const requestBody: CreateDeliveryProjectUserRequest = {
         delivery_project_id: faker.string.uuid(),
@@ -250,6 +291,9 @@ describe('createRouter', () => {
         },
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const response = await request(deliveryProjectUserApp)
         .patch('/deliveryProjectUser')
@@ -265,12 +309,31 @@ describe('createRouter', () => {
       );
     });
 
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const response = await request(deliveryProjectUserApp)
+        .patch('/deliveryProjectUser')
+        .send({
+          id: '123',
+          delivery_project_id: '123',
+          user_catalog_name: 'user@test.com',
+        } satisfies UpdateDeliveryProjectUserRequest);
+
+      expect(response.status).toEqual(403);
+    });
+
     it('return 400 with errors', async () => {
       mockDeliveryProjectUserStore.update.mockResolvedValue({
         success: false,
         errors: ['unknown', 'unknownDeliveryProject'],
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const response = await request(deliveryProjectUserApp)
         .patch('/deliveryProjectUser')
@@ -302,6 +365,9 @@ describe('createRouter', () => {
 
     it('returns a 400 response if catalog user cannot be found', async () => {
       mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const response = await request(deliveryProjectUserApp)
         .patch('/deliveryProjectUser')

@@ -15,6 +15,8 @@ import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import {
   adpProgrammmeCreatePermission,
   deliveryProgrammeAdminCreatePermission,
+  deliveryProjectUserCreatePermission,
+  deliveryProjectUserUpdatePermission,
 } from '@internal/plugin-adp-common';
 import type { PolicyQuery } from '@backstage/plugin-permission-node';
 import type { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
@@ -74,6 +76,14 @@ describe('adpPortalPermissionPolicy', () => {
       },
       {
         permission: deliveryProgrammeAdminCreatePermission,
+        expected: AuthorizeResult.ALLOW,
+      },
+      {
+        permission: deliveryProjectUserCreatePermission,
+        expected: AuthorizeResult.ALLOW,
+      },
+      {
+        permission: deliveryProjectUserUpdatePermission,
         expected: AuthorizeResult.ALLOW,
       },
     ])(
@@ -147,6 +157,14 @@ describe('adpPortalPermissionPolicy', () => {
         permission: deliveryProgrammeAdminCreatePermission,
         expected: AuthorizeResult.CONDITIONAL,
       },
+      {
+        permission: deliveryProjectUserCreatePermission,
+        expected: AuthorizeResult.CONDITIONAL,
+      },
+      {
+        permission: deliveryProjectUserUpdatePermission,
+        expected: AuthorizeResult.CONDITIONAL,
+      },
     ])(
       'should allow access for permission $permission.name for the Programme Admin Role',
       async ({ permission, expected }) => {
@@ -216,6 +234,14 @@ describe('adpPortalPermissionPolicy', () => {
       },
       {
         permission: deliveryProgrammeAdminCreatePermission,
+        expected: AuthorizeResult.CONDITIONAL,
+      },
+      {
+        permission: deliveryProjectUserCreatePermission,
+        expected: AuthorizeResult.CONDITIONAL,
+      },
+      {
+        permission: deliveryProjectUserUpdatePermission,
         expected: AuthorizeResult.CONDITIONAL,
       },
     ])(

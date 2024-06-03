@@ -19,6 +19,7 @@ import { DefaultTable } from '../../utils';
 import { AddProjectUserButton } from './AddProjectUserButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { EditDeliveryProjectUserButton } from './EditDeliveryProjectUserButton';
+import { stringifyEntityRef } from '@backstage/catalog-model';
 
 type DeliveryProjectUserWithActions = DeliveryProjectUser & {
   actions: ReactNode;
@@ -135,6 +136,7 @@ export const DeliveryProjectUserViewPage = () => {
         <ContentHeader title="Delivery Project Users">
           <AddProjectUserButton
             deliveryProjectId={deliveryProjectId!}
+            entityRef={stringifyEntityRef(entity)}
             variant="contained"
             size="large"
             color="primary"

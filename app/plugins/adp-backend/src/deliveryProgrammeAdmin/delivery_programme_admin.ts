@@ -8,4 +8,5 @@ export type delivery_programme_admin = {
   email: string;
   name: string;
   updated_at: Date;
+  user_entity_ref?: string;
 };

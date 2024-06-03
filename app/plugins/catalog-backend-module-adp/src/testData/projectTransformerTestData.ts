@@ -25,6 +25,7 @@ export const deliveryProject: DeliveryProject = {
   updated_at: new Date(),
   delivery_programme_code: 'ABC',
   delivery_project_users: [],
+  delivery_programme_admins: [],
 };
 
 export const deliveryProjectUsers: DeliveryProjectUser[] = [

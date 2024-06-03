@@ -224,3 +224,9 @@ exports[`EditDeliveryProjectUserButton Should render the dialog when the button 
   </div>
 </body>
 `;
+
+exports[`EditDeliveryProjectUserButton should not render when the user is not allowed to edit delivery projects 1`] = `
+<body>
+  <div />
+</body>
+`;
