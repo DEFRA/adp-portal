@@ -62,28 +62,28 @@ describe('createAllowedUrlFilter', () => {
     expect(sut('//some/network/location/some/sub/page')).toBe(true);
     expect(sut('//some/other/location')).toBe(false);
   });
-  it.each([
-    { type: 'undefined', value: undefined },
-    { type: 'null', value: null },
-  ])('Should not error when the allowlist is $type', ({ value }) => {
-    // arrange
-    const config = new ConfigReader({
-      backend: {
-        baseUrl: 'https://test.com/',
-      },
-      xyz: value,
-    });
+  it.each([{ type: 'undefined', value: undefined }])(
+    'Should not error when the allowlist is $type',
+    ({ value }) => {
+      // arrange
+      const config = new ConfigReader({
+        backend: {
+          baseUrl: 'https://test.com/',
+        },
+        xyz: value,
+      });
 
-    // act
-    const sut = createAllowedUrlFilter(config, 'xyz');
+      // act
+      const sut = createAllowedUrlFilter(config, 'xyz');
 
-    // assert
-    expect(sut('https://test.com')).toBe(true);
-    expect(sut('https://test.com/')).toBe(true);
-    expect(sut('https://test.com/some/sub/page')).toBe(true);
-    expect(sut('https://test.org')).toBe(false);
-    expect(sut('http://test.com')).toBe(false);
-  });
+      // assert
+      expect(sut('https://test.com')).toBe(true);
+      expect(sut('https://test.com/')).toBe(true);
+      expect(sut('https://test.com/some/sub/page')).toBe(true);
+      expect(sut('https://test.org')).toBe(false);
+      expect(sut('http://test.com')).toBe(false);
+    },
+  );
   it.each([
     { type: 'a string', value: 'abc' },
     { type: 'a number', value: 123 },

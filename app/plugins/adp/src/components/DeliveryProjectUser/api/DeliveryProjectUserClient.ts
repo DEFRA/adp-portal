@@ -9,26 +9,28 @@ import { ResponseError } from '@backstage/errors';
 import { ValidationError } from '../../../utils/ValidationError';
 
 export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
-  private discoveryApi: DiscoveryApi;
-  private fetchApi: FetchApi;
+  readonly #discoveryApi: DiscoveryApi;
+  readonly #fetchApi: FetchApi;
 
   constructor(discoveryApi: DiscoveryApi, fetchApi: FetchApi) {
-    this.discoveryApi = discoveryApi;
-    this.fetchApi = fetchApi;
+    this.#discoveryApi = discoveryApi;
+    this.#fetchApi = fetchApi;
   }
 
   async getAll(): Promise<DeliveryProjectUser[]> {
     const baseUrl = await this.#getBaseUrl();
     const url = `${baseUrl}/deliveryProjectUsers/`;
 
-    const response = await this.fetchApi.fetch(url);
+    const response = await this.#fetchApi.fetch(url);
 
     if (!response.ok) {
       throw await ResponseError.fromResponse(response);
     }
 
-    const deliveryProjectUsers =
-      (await response.json()) as DeliveryProjectUser[];
+    const deliveryProjectUsers = asProjectUsers(await response.json());
+
+    for (const item of deliveryProjectUsers)
+      item.updated_at = new Date(item.updated_at);
 
     return deliveryProjectUsers;
   }
@@ -39,14 +41,13 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
     const baseUrl = await this.#getBaseUrl();
     const url = `${baseUrl}/deliveryProjectUsers/${deliveryProjectId}`;
 
-    const response = await this.fetchApi.fetch(url);
+    const response = await this.#fetchApi.fetch(url);
 
     if (!response.ok) {
       throw await ResponseError.fromResponse(response);
     }
 
-    const deliveryProgrammeAdmins =
-      (await response.json()) as DeliveryProjectUser[];
+    const deliveryProgrammeAdmins = asProjectUsers(await response.json());
 
     return deliveryProgrammeAdmins;
   }
@@ -57,7 +58,7 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
     const baseUrl = await this.#getBaseUrl();
     const url = `${baseUrl}/deliveryProjectUser`;
 
-    const response = await this.fetchApi.fetch(url, {
+    const response = await this.#fetchApi.fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -74,7 +75,7 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
     const baseUrl = await this.#getBaseUrl();
     const url = `${baseUrl}/deliveryProjectUser`;
 
-    const response = await this.fetchApi.fetch(url, {
+    const response = await this.#fetchApi.fetch(url, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -86,7 +87,7 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
   }
 
   async #getBaseUrl(): Promise<string> {
-    return `${await this.discoveryApi.getBaseUrl('adp')}`;
+    return `${await this.#discoveryApi.getBaseUrl('adp')}`;
   }
 
   async #handleCreateUpdateResponse(
@@ -99,6 +100,15 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
       throw await ResponseError.fromResponse(response);
     }
 
-    return await response.json();
+    return asProjectUser(await response.json());
   }
+}
+
+function asProjectUsers(result: DeliveryProjectUser[]) {
+  return result.map(asProjectUser);
+}
+
+function asProjectUser(result: DeliveryProjectUser) {
+  result.updated_at = new Date(result.updated_at);
+  return result;
 }

@@ -1,7 +1,6 @@
 import {
   adpProgrammmeCreatePermission,
   adpProjectCreatePermission,
-  adpProjectUserCreatePermission,
   adpPluginPermissions,
   deliveryProgrammeAdminCreatePermission,
 } from './permissions';

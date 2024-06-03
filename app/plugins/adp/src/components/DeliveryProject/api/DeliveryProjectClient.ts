@@ -10,41 +10,43 @@ import { ResponseError } from '@backstage/errors';
 import { ValidationError } from '../../../utils';
 
 export class DeliveryProjectClient implements DeliveryProjectApi {
-  private discoveryApi: DiscoveryApi;
-  private fetchApi: FetchApi;
+  readonly #discoveryApi: DiscoveryApi;
+  readonly #fetchApi: FetchApi;
 
   constructor(discoveryApi: DiscoveryApi, fetchApi: FetchApi) {
-    this.discoveryApi = discoveryApi;
-    this.fetchApi = fetchApi;
+    this.#discoveryApi = discoveryApi;
+    this.#fetchApi = fetchApi;
   }
 
   private async getApiUrl(): Promise<string> {
-    return `${await this.discoveryApi.getBaseUrl('adp')}/deliveryProject`;
+    return `${await this.#discoveryApi.getBaseUrl('adp')}/deliveryProject`;
   }
 
   private async getPortalApiBaseUrl(): Promise<string> {
-    return `${await this.discoveryApi.getBaseUrl('proxy')}/adp-portal-api`;
+    return `${await this.#discoveryApi.getBaseUrl('proxy')}/adp-portal-api`;
   }
 
   async getDeliveryProjects(): Promise<DeliveryProject[]> {
     try {
       const url = await this.getApiUrl();
-      const deliveryProgrammeUrl = `${await this.discoveryApi.getBaseUrl(
+      const deliveryProgrammeUrl = `${await this.#discoveryApi.getBaseUrl(
         'adp',
       )}/deliveryProgramme`;
 
       const [deliveryProjectsResponse, deliveryProgrammeResponse] =
         await Promise.all([
-          this.fetchApi.fetch(url),
-          this.fetchApi.fetch(deliveryProgrammeUrl),
+          this.#fetchApi.fetch(url),
+          this.#fetchApi.fetch(deliveryProgrammeUrl),
         ]);
       if (!deliveryProjectsResponse.ok || !deliveryProgrammeResponse.ok) {
         throw new Error('Failed to fetch data');
       }
-      const deliveryProjects: DeliveryProject[] =
-        await deliveryProjectsResponse.json();
-      const deliveryProgrammes: DeliveryProgramme[] =
-        await deliveryProgrammeResponse.json();
+      const deliveryProjects = asDeliveryProjects(
+        await deliveryProjectsResponse.json(),
+      );
+      const deliveryProgrammes = asDeliveryProgrammes(
+        await deliveryProgrammeResponse.json(),
+      );
 
       const deliveryProjectWithProgramme = deliveryProjects.map(proj => {
         return {
@@ -86,14 +88,14 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
     data: CreateDeliveryProjectRequest,
   ): Promise<DeliveryProject> {
     const url = await this.getApiUrl();
-    const response = await this.fetchApi.fetch(url, {
+    const response = await this.#fetchApi.fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
-    if (response.ok) return await response.json();
+    if (response.ok) return asDeliveryProject(await response.json());
 
     if (response.status === 400)
       throw new ValidationError((await response.json()).errors);
@@ -106,14 +108,14 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
   ): Promise<DeliveryProject> {
     const url = await this.getApiUrl();
 
-    const response = await this.fetchApi.fetch(url, {
+    const response = await this.#fetchApi.fetch(url, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
-    if (response.ok) return await response.json();
+    if (response.ok) return asDeliveryProject(await response.json());
 
     if (response.status === 400)
       throw new ValidationError((await response.json()).errors);
@@ -124,11 +126,11 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
   async getDeliveryProjectById(id: string): Promise<DeliveryProject> {
     try {
       const url = await this.getApiUrl();
-      const response = await this.fetchApi.fetch(`${url}/${id}`);
+      const response = await this.#fetchApi.fetch(`${url}/${id}`);
       if (!response.ok) {
         throw await ResponseError.fromResponse(response);
       }
-      return await response.json();
+      return asDeliveryProject(await response.json());
     } catch (error) {
       throw new Error(`Failed to fetch Delivery Project by ID`);
     }
@@ -141,7 +143,7 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
     try {
       const adpPortalApiBaseUrl = await this.getPortalApiBaseUrl();
       const createAdGroupUrl = `${adpPortalApiBaseUrl}/AadGroup/${projectName}/groups-config`;
-      const response = await this.fetchApi.fetch(createAdGroupUrl, {
+      const response = await this.#fetchApi.fetch(createAdGroupUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -161,7 +163,7 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
     try {
       const adpPortalApiBaseUrl = await this.getPortalApiBaseUrl();
       const getAdoProjectUrl = `${adpPortalApiBaseUrl}/AdoProject/${projectName}`;
-      const response = await this.fetchApi.fetch(getAdoProjectUrl);
+      const response = await this.#fetchApi.fetch(getAdoProjectUrl);
 
       if (!response.ok) {
         return Promise.resolve(false);
@@ -173,4 +175,22 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
   }
 }
 
+function asDeliveryProjects(result: DeliveryProject[]) {
+  return result.map(asDeliveryProject);
+}
+
+function asDeliveryProject(result: DeliveryProject) {
+  result.updated_at = new Date(result.updated_at);
+  result.created_at = new Date(result.created_at);
+  return result;
+}
+function asDeliveryProgrammes(result: DeliveryProgramme[]) {
+  return result.map(asDeliveryProgramme);
+}
+
+function asDeliveryProgramme(result: DeliveryProgramme) {
+  result.created_at = new Date(result.created_at);
+  result.updated_at = new Date(result.updated_at);
+  return result;
+}
 export type { DeliveryProjectApi };

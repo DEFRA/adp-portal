@@ -32,7 +32,7 @@ function tryParseRegex(template: string) {
   }
 }
 
-function toUrlMatcher(template: string): (url: string) => boolean {
+export function toUrlMatcher(template: string): (url: string) => boolean {
   const regex = tryParseRegex(template);
   if (regex) return regex.test.bind(regex);
   return urlPrefixMatcher(template);

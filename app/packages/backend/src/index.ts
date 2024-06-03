@@ -80,6 +80,7 @@ function makeCreateEnv(config: Config, requestContext: RequestContextProvider) {
       permissions,
       identity,
       fetchApi,
+      requestContext,
     };
   };
 }
