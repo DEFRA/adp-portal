@@ -3,11 +3,11 @@ import {
   coreServices,
   createBackendModule,
 } from '@backstage/backend-plugin-api';
-import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/dist/alpha';
+import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
 import { AdpDatabaseEntityProvider } from '@internal/plugin-catalog-backend-module-adp';
 import { fetchApiRef } from '@internal/plugin-fetch-api-backend';
 
-export default createBackendModule({
+export const addAdpDatabaseEntityProvider = createBackendModule({
   pluginId: 'catalog',
   moduleId: 'adp-extensions',
   register(env) {

@@ -8,8 +8,8 @@ import { coreServices } from '@backstage/backend-plugin-api';
 import fetchApiFactory, {
   fetchApiRef,
 } from '@internal/plugin-fetch-api-backend';
-import catalogModuleMicrosoftGraphExtensions from './modules/catalogModuleMicrosoftGraphExtensions';
-import catalogModuleExtensions from './modules/catalogModuleExtensions';
+import { addAdoNameTransformer } from './modules';
+import { addAdpDatabaseEntityProvider } from './modules';
 
 const legacyPlugin = makeLegacyPlugin(
   {
@@ -43,8 +43,8 @@ backend.add(
 );
 backend.add(import('@backstage/plugin-catalog-backend-module-github/alpha'));
 backend.add(import('@backstage/plugin-catalog-backend-module-msgraph/alpha'));
-backend.add(catalogModuleMicrosoftGraphExtensions);
-backend.add(catalogModuleExtensions);
+backend.add(addAdoNameTransformer);
+backend.add(addAdpDatabaseEntityProvider);
 
 // ADP
 backend.add(fetchApiFactory);

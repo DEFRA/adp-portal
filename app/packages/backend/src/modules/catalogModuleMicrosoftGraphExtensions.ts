@@ -1,8 +1,8 @@
 import { createBackendModule } from '@backstage/backend-plugin-api';
-import { microsoftGraphOrgEntityProviderTransformExtensionPoint } from '@backstage/plugin-catalog-backend-module-msgraph/dist/alpha';
+import { microsoftGraphOrgEntityProviderTransformExtensionPoint } from '@backstage/plugin-catalog-backend-module-msgraph/alpha';
 import { defraADONameTransformer } from '../auth';
 
-export default createBackendModule({
+export const addAdoNameTransformer = createBackendModule({
   pluginId: 'catalog',
   moduleId: 'microsoft-graph-extensions',
   register(env) {
