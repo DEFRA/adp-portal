@@ -76,7 +76,7 @@ export function DeliveryProjectUserFormFields({
         errors={errors}
         index={i++}
         label="Technical user"
-        helperText="Is this user in a technical role?"
+        helperText="Is this user in a technical role, i.e. developer?"
         name="is_technical"
         disabled={disabled}
       />
@@ -92,7 +92,7 @@ export function DeliveryProjectUserFormFields({
         rules={{
           validate: (value, values) =>
             values.is_technical === false ||
-            (values.is_technical && value) ||
+            (values.is_technical && value !== '') ||
             'A GitHub handle is required for technical users',
         }}
       />
