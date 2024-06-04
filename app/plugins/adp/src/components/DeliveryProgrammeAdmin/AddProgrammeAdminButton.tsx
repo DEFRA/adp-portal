@@ -43,7 +43,7 @@ export function AddProgrammeAdminButton({
     const userCatalogNameValue = fields.user_catalog_name.map(x => x.value);
     try {
       const promises = userCatalogNameValue.map(async value => {
-        await client.create(deliveryProgrammeId, value);
+        await client.create(deliveryProgrammeId, value, entityRef);
       });
       await Promise.all(promises);
     } catch (e: any) {
