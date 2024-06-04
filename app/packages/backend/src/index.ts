@@ -6,6 +6,9 @@ import {
 import { createBackend } from '@backstage/backend-defaults';
 import { coreServices } from '@backstage/backend-plugin-api';
 import fetchApiFactory, {
+  fetchApiForPluginMiddleware,
+  fetchApiForwardAuthMiddleware,
+  fetchApiHeadersMiddleware,
   fetchApiRef,
 } from '@internal/plugin-fetch-api-backend';
 import {
@@ -15,6 +18,7 @@ import {
   addScaffolderModuleAdpActions,
 } from './modules';
 import { addAdpDatabaseEntityProvider } from './modules';
+import { requestContextProviderRef } from '@internal/plugin-request-context-provider-backend';
 
 const legacyPlugin = makeLegacyPlugin(
   {
@@ -29,6 +33,7 @@ const legacyPlugin = makeLegacyPlugin(
     reader: coreServices.urlReader,
     identity: coreServices.identity,
     fetchApi: fetchApiRef,
+    requestContext: requestContextProviderRef,
   },
   {
     logger: log => loggerToWinstonLogger(log),
@@ -69,7 +74,24 @@ backend.add(import('@backstage/plugin-proxy-backend/alpha'));
 backend.add(import('@backstage/plugin-azure-devops-backend'));
 
 // ADP
-backend.add(fetchApiFactory);
+backend.add(import('@internal/plugin-request-context-provider-backend'));
+backend.add(
+  fetchApiFactory({
+    middleware: [
+      fetchApiForPluginMiddleware({
+        pluginId: 'adp',
+        middleware: fetchApiForwardAuthMiddleware,
+      }),
+      fetchApiForPluginMiddleware({
+        pluginId: 'adp',
+        middleware: fetchApiHeadersMiddleware({
+          id: 'adp',
+          headers: { 'User-Agent': 'adp-portal-adp' },
+        }),
+      }),
+    ],
+  }),
+);
 backend.add(legacyPlugin('adp', import('./plugins/adp')));
 
 backend.start();
