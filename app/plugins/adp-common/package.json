@@ -25,6 +25,7 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
+    "@backstage/plugin-catalog-common": "^1.0.19",
     "@backstage/plugin-permission-common": "^0.7.9",
     "@types/jest": "^29.5.12",
     "url-slug": "^4.0.1"

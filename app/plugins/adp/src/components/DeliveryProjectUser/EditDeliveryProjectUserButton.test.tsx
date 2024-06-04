@@ -16,6 +16,7 @@ import { act, render, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
 import userEvent from '@testing-library/user-event';
 import { SnapshotFriendlyStylesProvider, ValidationError } from '../../utils';
+import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
 
 function setup() {
   const mockAlertApi: jest.Mocked<AlertApi> = {
@@ -70,7 +71,32 @@ const fields: DeliveryProjectUserFields = {
   user_catalog_name: 'test@test.com',
 };
 
+const usePermission: jest.MockedFn<
+  typeof PluginPermissionReactModule.usePermission
+> = jest.fn();
 const DialogForm: jest.MockedFn<typeof DialogFormModule.DialogForm> = jest.fn();
+
+jest.mock(
+  '@backstage/plugin-permission-react',
+  () =>
+    ({
+      get usePermission() {
+        return usePermission;
+      },
+      get IdentityPermissionApi(): never {
+        throw new Error('Not mocked');
+      },
+      get PermissionedRoute(): never {
+        throw new Error('Not mocked');
+      },
+      get RequirePermission(): never {
+        throw new Error('Not mocked');
+      },
+      get permissionApiRef(): never {
+        throw new Error('Not mocked');
+      },
+    } satisfies typeof PluginPermissionReactModule),
+);
 
 jest.mock(
   '../../utils/DialogForm',
@@ -87,9 +113,27 @@ describe('EditDeliveryProjectUserButton', () => {
     jest.clearAllMocks();
   });
 
+  it('should not render when the user is not allowed to edit delivery projects', async () => {
+    const { mockAlertApi, mockProjectUserApi, renderComponent } = setup();
+    usePermission.mockReturnValue({ allowed: false, loading: false });
+
+    const { result } = await renderComponent({
+      content: 'My button',
+      deliveryProjectUser,
+    });
+
+    expect(result.baseElement).toMatchSnapshot();
+    expect(mockAlertApi.alert$).not.toHaveBeenCalled();
+    expect(mockAlertApi.post).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.create).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+  });
+
   it('Should render the dialog when the button is clicked', async () => {
     const { mockAlertApi, mockProjectUserApi, renderComponent } = setup();
     DialogForm.mockReturnValue(<span>This is a dialog!</span>);
+    usePermission.mockReturnValue({ allowed: true, loading: false });
 
     const { result } = await renderComponent({
       content: 'My button',
@@ -138,6 +182,7 @@ describe('EditDeliveryProjectUserButton', () => {
   it('Should close the form when the form is cancelled.', async () => {
     const { mockAlertApi, mockProjectUserApi, renderComponent } = setup();
     DialogForm.mockReturnValue(<span>This is a dialog!</span>);
+    usePermission.mockReturnValue({ allowed: true, loading: false });
 
     const { result } = await renderComponent({
       content: 'My button',
@@ -169,6 +214,7 @@ describe('EditDeliveryProjectUserButton', () => {
     const onEdited: jest.MockedFn<
       Exclude<EditDeliveryProjectUserButtonProps['onEdited'], undefined>
     > = jest.fn();
+    usePermission.mockReturnValue({ allowed: true, loading: false });
 
     const { result } = await renderComponent({
       content: 'My button',
@@ -200,6 +246,7 @@ describe('EditDeliveryProjectUserButton', () => {
   it('Should call the api when submitting.', async () => {
     const { mockAlertApi, mockProjectUserApi, renderComponent } = setup();
     DialogForm.mockReturnValue(<span>This is a dialog!</span>);
+    usePermission.mockReturnValue({ allowed: true, loading: false });
 
     const { result } = await renderComponent({
       content: 'My button',
@@ -240,6 +287,7 @@ describe('EditDeliveryProjectUserButton', () => {
   it('Should catch ValidationErrors when submitting.', async () => {
     const { mockAlertApi, mockProjectUserApi, renderComponent } = setup();
     DialogForm.mockReturnValue(<span>This is a dialog!</span>);
+    usePermission.mockReturnValue({ allowed: true, loading: false });
     const validationErrors: IValidationError[] = [
       {
         path: 'abc',

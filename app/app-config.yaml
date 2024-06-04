@@ -11,7 +11,7 @@ app:
             title: GitHub Issues
 
 organization:
-  name: "Azure Development Platform: "
+  name: 'Azure Development Platform: '
 
 permission:
   enabled: true
@@ -21,17 +21,17 @@ backend:
   listen:
     port: 7007
   csp:
-    connect-src: ["'self'", "http:", "https:"]
+    connect-src: ["'self'", 'http:', 'https:']
   cors:
     origin: http://localhost:3000
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
   reading:
     allow:
-      - host: "raw.githubusercontent.com"
+      - host: 'raw.githubusercontent.com'
   database:
     client: better-sqlite3
-    connection: ":memory:"
+    connection: ':memory:'
   auth:
     keys:
       - secret: ${BACKEND_PLUGINS_SECRET}
@@ -41,11 +41,11 @@ backend:
 
 proxy:
   endpoints:
-    "/grafana/api":
+    '/grafana/api':
       target: ${GRAFANA_ENDPOINT}
       headers:
         Authorization: Bearer ${GRAFANA_TOKEN}
-    "/adp-portal-api":
+    '/adp-portal-api':
       target: ${ADP_PORTAL_API_ENDPOINT}
       changeOrigin: true
       secure: false
@@ -56,23 +56,23 @@ grafana:
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 techdocs:
-  builder: "local"
+  builder: 'local'
   generator:
-    runIn: "local"
+    runIn: 'local'
     mkdocs:
       omitTechdocsCorePlugin: false
-      defaultPlugins: ["techdocs-core"]
+      defaultPlugins: ['techdocs-core']
   publisher:
-    type: "local"
+    type: 'local'
   cache:
     ttl: 3600000
     readTimeout: 500
 
 kubernetes:
   serviceLocatorMethod:
-    type: "multiTenant"
+    type: 'multiTenant'
   clusterLocatorMethods:
-    - type: "config"
+    - type: 'config'
       clusters:
         - name: ${SND1_CLUSTER_NAME}
           url: ${SND1_CLUSTER_API_SERVER_ADDRESS}
@@ -154,10 +154,10 @@ catalog:
   providers:
     github:
       defra:
-        organization: "defra-adp-sandpit"
-        catalogPath: "/catalog-info.yaml"
+        organization: 'defra-adp-sandpit'
+        catalogPath: '/catalog-info.yaml'
         filters:
-          repository: "^(adp-portal-.+|techdocs-.+)"
+          repository: '^(adp-portal-.+|techdocs-.+)'
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 5 }
@@ -168,7 +168,7 @@ catalog:
         queryMode: basic
         user:
           select:
-            ["id", "mail", "displayName", "description", "userPrincipalName"]
+            ['id', 'mail', 'displayName', 'description', 'userPrincipalName']
         userGroupMember:
           filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or startsWith(displayName, '${ADP_PORTAL_USERS_GROUP_PREFIX}')"
         group:
@@ -188,15 +188,20 @@ techRadar:
   data: https://raw.githubusercontent.com/defra/adp-software-templates/${ADP_PORTAL_TEMPLATE_VERSION}/tech-radars/development-tech-radar.json
 
 adp:
+  apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}
   fluxOnboarding:
     apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/FluxTeamConfig
     defaultConfigVariables:
       - key: TEAM_CPU_QUOTA
-        value: "2000"
+        value: '2000'
       - key: TEAM_MEMORY_QUOTA
         value: 3000Mi
       - key: TEAM_PODS_QUOTA
-        value: "20"
+        value: '20'
+      - key: CONTAINER_MAX_CPU
+        value: '500m'
+      - key: CONTAINER_MAX_MEMORY
+        value: '1000Mi'
   githubTeams:
     apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/github/teams
   entraIdGroups:

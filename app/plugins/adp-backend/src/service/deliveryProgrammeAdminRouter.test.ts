@@ -9,8 +9,16 @@ import { catalogTestData } from '../testData/catalogEntityTestData';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import type { CatalogApi } from '@backstage/catalog-client';
 import type { CreateDeliveryProgrammeAdminRequest } from '@internal/plugin-adp-common';
+import {
+  AuthorizeResult,
+  type PermissionEvaluator,
+} from '@backstage/plugin-permission-common';
 
 const programmeManagerByAADEntityRef = programmeManagerList[0];
+
+jest.mock('@backstage/plugin-auth-node', () => ({
+  getBearerTokenFromAuthorizationHeader: () => 'token',
+}));
 
 describe('createRouter', () => {
   let deliveryProgrammeAdminApp: express.Express;
@@ -46,11 +54,17 @@ describe('createRouter', () => {
     validateEntity: jest.fn(),
   };
 
+  const mockPermissionEvaluator: jest.Mocked<PermissionEvaluator> = {
+    authorize: jest.fn(),
+    authorizeConditional: jest.fn(),
+  };
+
   const mockOptions: DeliveryProgrammeAdminRouterOptions = {
     logger: getVoidLogger(),
     identity: mockIdentityApi,
     catalog: mockCatalogClient,
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
+    permissions: mockPermissionEvaluator,
   };
 
   beforeAll(async () => {
@@ -138,10 +152,14 @@ describe('createRouter', () => {
         success: true,
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const requestBody: CreateDeliveryProgrammeAdminRequest = {
         delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
         user_catalog_name: 'test@test.com',
+        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
@@ -150,12 +168,34 @@ describe('createRouter', () => {
       expect(response.status).toEqual(201);
     });
 
-    it('returns a 400 response if catalog user cannot be found', async () => {
-      mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
 
       const requestBody: CreateDeliveryProgrammeAdminRequest = {
         delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
         user_catalog_name: 'test@test.com',
+        group_entity_ref: 'group-123',
+      };
+
+      const response = await request(deliveryProgrammeAdminApp)
+        .post('/deliveryProgrammeAdmin')
+        .send(requestBody);
+
+      expect(response.status).toEqual(403);
+    });
+
+    it('returns a 400 response if catalog user cannot be found', async () => {
+      mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
+
+      const requestBody: CreateDeliveryProgrammeAdminRequest = {
+        delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
+        user_catalog_name: 'test@test.com',
+        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
@@ -171,10 +211,14 @@ describe('createRouter', () => {
         errors: ['duplicateUser', 'unknown', 'unknownDeliveryProgramme'],
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const requestBody: CreateDeliveryProgrammeAdminRequest = {
         delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
         user_catalog_name: 'test@test.com',
+        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProgrammeAdminApp)

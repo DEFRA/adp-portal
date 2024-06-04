@@ -9,23 +9,33 @@ import {
 } from './DeliveryProgrammeAdminFormFields';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import { deliveryProgrammeAdminApiRef } from './api';
+import { usePermission } from '@backstage/plugin-permission-react';
+import { deliveryProgrammeAdminCreatePermission } from '@internal/plugin-adp-common';
 
 export type AddProgrammeAdminButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
     onCreated?: () => void;
     deliveryProgrammeId: string;
+    entityRef: string;
   }
 >;
 
 export function AddProgrammeAdminButton({
   onCreated,
   deliveryProgrammeId,
+  entityRef,
   children,
   ...buttonProps
 }: AddProgrammeAdminButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
   const client = useApi(deliveryProgrammeAdminApiRef);
+  const { allowed: canCreateProgrammeAdmin } = usePermission({
+    permission: deliveryProgrammeAdminCreatePermission,
+    resourceRef: entityRef,
+  });
+
+  if (!canCreateProgrammeAdmin) return null;
 
   async function handleSubmit(
     fields: DeliveryProgrammeAdminFields,
@@ -56,6 +66,7 @@ export function AddProgrammeAdminButton({
       >
         {children}
       </Button>
+
       {isModalOpen && (
         <DialogForm
           defaultValues={emptyForm}

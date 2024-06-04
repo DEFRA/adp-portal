@@ -3,7 +3,6 @@ import type { Entity } from '@backstage/catalog-model';
 import type { DeliveryProjectUserApi } from './api';
 import { deliveryProjectUserApiRef } from './api';
 import { errorApiRef } from '@backstage/core-plugin-api';
-
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
 import {
   EntityProvider,
@@ -11,8 +10,39 @@ import {
 } from '@backstage/plugin-catalog-react';
 import { DeliveryProjectUserViewPage } from './DeliveryProjectUserViewPage';
 import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
-import { faker } from '@faker-js/faker';
 import { waitFor } from '@testing-library/react';
+import type * as AddProjectUserButtonModule from './AddProjectUserButton';
+import type * as EditDeliveryProjectUserButtonModule from './EditDeliveryProjectUserButton';
+import { SnapshotFriendlyStylesProvider } from '../../utils';
+import { Button } from '@material-ui/core';
+
+const AddProjectUserButton: jest.MockedFn<
+  (typeof AddProjectUserButtonModule)['AddProjectUserButton']
+> = jest.fn();
+
+const EditDeliveryProjectUserButton: jest.MockedFn<
+  (typeof EditDeliveryProjectUserButtonModule)['EditDeliveryProjectUserButton']
+> = jest.fn();
+
+jest.mock(
+  './AddProjectUserButton',
+  () =>
+    ({
+      get AddProjectUserButton() {
+        return AddProjectUserButton;
+      },
+    } satisfies typeof AddProjectUserButtonModule),
+);
+
+jest.mock(
+  './EditDeliveryProjectUserButton',
+  () =>
+    ({
+      get EditDeliveryProjectUserButton() {
+        return EditDeliveryProjectUserButton;
+      },
+    } satisfies typeof EditDeliveryProjectUserButtonModule),
+);
 
 function setup() {
   const mockDeliveryProjectUserApi: jest.Mocked<DeliveryProjectUserApi> = {
@@ -34,106 +64,123 @@ function setup() {
     },
   } as Entity;
 
-  const apis = [
-    [errorApiRef, mockErrorApi],
-    [deliveryProjectUserApiRef, mockDeliveryProjectUserApi],
-  ] as const;
-
-  const Provider = (
-    <TestApiProvider apis={apis}>
-      <EntityProvider entity={groupEntity}>
-        <DeliveryProjectUserViewPage />
-      </EntityProvider>
-    </TestApiProvider>
-  );
-
   return {
     mockDeliveryProjectUserApi,
     mockErrorApi,
-    Provider,
+    async renderComponent() {
+      const result = await renderInTestApp(
+        <TestApiProvider
+          apis={[
+            [errorApiRef, mockErrorApi],
+            [deliveryProjectUserApiRef, mockDeliveryProjectUserApi],
+          ]}
+        >
+          <SnapshotFriendlyStylesProvider>
+            <EntityProvider entity={groupEntity}>
+              <DeliveryProjectUserViewPage />
+            </EntityProvider>
+          </SnapshotFriendlyStylesProvider>
+        </TestApiProvider>,
+        {
+          mountedRoutes: {
+            '/catalog/:namespace/:kind/:name/*': entityRouteRef,
+          },
+        },
+      );
+
+      await waitFor(() => {
+        expect(result.getByText('Delivery Project Users')).toBeInTheDocument();
+      });
+
+      return result;
+    },
   };
 }
 
-function createDeliveryProjectUser(): DeliveryProjectUser {
-  const firstName = faker.person.firstName();
-  const lastName = faker.person.lastName();
-  return {
-    aad_entity_ref_id: faker.string.uuid(),
-    delivery_project_id: faker.string.uuid(),
-    email: faker.internet.email({ firstName, lastName }),
-    id: faker.string.uuid(),
-    is_admin: faker.datatype.boolean(),
-    is_technical: faker.datatype.boolean(),
-    name: faker.person.fullName({ firstName, lastName }),
-    updated_at: faker.date.past(),
-    github_username: faker.internet.userName({ firstName, lastName }),
-  };
+function createDeliveryProjectUsers(count: number) {
+  return [...new Array(count)].map<DeliveryProjectUser>((_, i) => ({
+    aad_entity_ref_id: '123',
+    delivery_project_id: '123',
+    email: `test-${i}@test.com`,
+    id: i.toString(),
+    name: `Delivery Project User ${i}`,
+    updated_at: new Date(0),
+    is_admin: false,
+    is_technical: true,
+  }));
 }
 
 describe('DeliveryProjectUserViewPage', () => {
+  beforeEach(() => {
+    jest.spyOn(global.Math, 'random').mockReturnValue(0);
+
+    AddProjectUserButton.mockImplementation(({ onCreated, ...props }) => (
+      <Button {...props} onClick={onCreated} />
+    ));
+
+    EditDeliveryProjectUserButton.mockImplementation(
+      ({ onEdited, ...props }) => <Button {...props} onClick={onEdited} />,
+    );
+  });
+
   afterEach(() => {
+    jest.spyOn(global.Math, 'random').mockRestore();
     jest.clearAllMocks();
   });
 
-  it('fetches and displays Delivery Project Users in the table upon loading', async () => {
-    const { mockDeliveryProjectUserApi, Provider } = setup();
-    const expectedDeliveryProjectUsers = faker.helpers.multiple(
-      createDeliveryProjectUser,
-      { count: 5 },
-    );
+  it('should render the page with Delivery Project Users correctly', async () => {
+    const { mockDeliveryProjectUserApi, renderComponent, mockErrorApi } =
+      setup();
+    const expectedDeliveryProjectUsers = createDeliveryProjectUsers(5);
     mockDeliveryProjectUserApi.getByDeliveryProjectId.mockResolvedValue(
       expectedDeliveryProjectUsers,
     );
 
-    const rendered = await renderInTestApp(Provider, {
-      mountedRoutes: {
-        '/catalog/:namespace/:kind/:name/*': entityRouteRef,
-      },
-    });
+    const rendered = await renderComponent();
 
-    await waitFor(() => {
-      for (const expectedDeliveryProjectUser of expectedDeliveryProjectUsers) {
-        expect(
-          rendered.getByText(expectedDeliveryProjectUser.name),
-        ).toBeInTheDocument();
-      }
-    });
+    expect(rendered.baseElement).toMatchSnapshot();
+    expect(
+      mockDeliveryProjectUserApi.getByDeliveryProjectId.mock.calls,
+    ).toMatchObject([['123']]);
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
   });
 
-  it('fetches and displays a message if no Delivery Project Users are returned', async () => {
-    const { mockDeliveryProjectUserApi, Provider } = setup();
+  it('should render the page with no Delivery Project Users correctly', async () => {
+    const { mockDeliveryProjectUserApi, renderComponent, mockErrorApi } =
+      setup();
     mockDeliveryProjectUserApi.getByDeliveryProjectId.mockResolvedValue([]);
 
-    const rendered = await renderInTestApp(Provider, {
-      mountedRoutes: {
-        '/catalog/:namespace/:kind/:name/*': entityRouteRef,
-      },
-    });
+    const rendered = await renderComponent();
 
-    await waitFor(() => {
-      expect(rendered.getByText('No records to display')).toBeInTheDocument();
-    });
+    expect(rendered.baseElement).toMatchSnapshot();
+    expect(
+      mockDeliveryProjectUserApi.getByDeliveryProjectId.mock.calls,
+    ).toMatchObject([['123']]);
+    expect(mockErrorApi.post.mock.calls).toMatchObject([]);
   });
 
-  it('returns an error message when the API returns an error', async () => {
-    const { mockDeliveryProjectUserApi, mockErrorApi, Provider } = setup();
-    const expectedError = 'Something broke';
-    mockDeliveryProjectUserApi.getByDeliveryProjectId.mockRejectedValue(
-      new Error(expectedError),
+  it('should render the page when Delivery Programme Admins fail to load correctly', async () => {
+    const { mockDeliveryProjectUserApi, renderComponent, mockErrorApi } =
+      setup();
+    const error = new Error('it broke');
+    mockDeliveryProjectUserApi.getByDeliveryProjectId.mockRejectedValueOnce(
+      error,
     );
 
-    await renderInTestApp(Provider, {
-      mountedRoutes: {
-        '/catalog/:namespace/:kind/:name/*': entityRouteRef,
-      },
-    });
+    const rendered = await renderComponent();
 
-    await waitFor(() => {
-      expect(mockErrorApi.post).toHaveBeenCalledWith({
-        message: `Error: ${expectedError}`,
-        name: 'Error while getting the list of Delivery Project Users.',
-        stack: undefined,
-      });
-    });
+    expect(rendered.baseElement).toMatchSnapshot();
+    expect(
+      mockDeliveryProjectUserApi.getByDeliveryProjectId.mock.calls,
+    ).toMatchObject([['123']]);
+    expect(mockErrorApi.post.mock.calls).toMatchObject([
+      [
+        {
+          message: 'Error: it broke',
+          name: 'Error while getting the list of Delivery Project Users.',
+          stack: undefined,
+        },
+      ],
+    ]);
   });
 });

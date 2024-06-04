@@ -1,3 +1,4 @@
+import type { DeliveryProgrammeAdmin } from './delivery-programme-admin';
 import type { DeliveryProjectUser } from './delivery-project-user';
 
 export type DeliveryProject = {
@@ -11,6 +12,7 @@ export type DeliveryProject = {
   finance_code?: string;
   delivery_programme_id: string;
   delivery_project_users: DeliveryProjectUser[];
+  delivery_programme_admins: DeliveryProgrammeAdmin[];
   delivery_programme_code: string;
   delivery_project_code: string;
   namespace: string;

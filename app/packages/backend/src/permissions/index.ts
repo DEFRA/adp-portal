@@ -1,4 +1,4 @@
-export { ReadOnlyPermissionPolicy } from './policies/readOnlyPermissionPolicy';
-export { AdpPortalPermissionPolicy } from './policies/adpPortalPermissionPolicy';
+export * from './policies';
+export * from './rules';
 export { RbacUtilities } from './rbacUtilites';
 export type { RbacGroups } from './types';

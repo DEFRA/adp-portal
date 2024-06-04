@@ -261,6 +261,7 @@ export class DeliveryProjectStore {
       created_at: new Date(row.created_at),
       updated_at: new Date(row.updated_at ? row.updated_at : row.created_at),
       delivery_project_users: [],
+      delivery_programme_admins: [],
     };
   }
 

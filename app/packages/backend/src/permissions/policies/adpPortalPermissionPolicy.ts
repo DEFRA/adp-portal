@@ -20,9 +20,20 @@ import {
   templateParameterReadPermission,
   templateStepReadPermission,
 } from '@backstage/plugin-scaffolder-common/alpha';
-import { adpProgrammmeCreatePermission } from '@internal/plugin-adp-common';
+import {
+  adpProgrammmeCreatePermission,
+  deliveryProgrammeAdminCreatePermission,
+  deliveryProjectUserCreatePermission,
+  deliveryProjectUserUpdatePermission,
+} from '@internal/plugin-adp-common';
 import type { RbacUtilities } from '../rbacUtilites';
 import type { Logger } from 'winston';
+import { createCatalogConditionalDecision } from '@backstage/plugin-catalog-backend/alpha';
+import { isGroupMember } from '../rules';
+import {
+  createDeliveryProjectConditionalDecision,
+  deliveryProjectConditions,
+} from '@internal/plugin-adp-backend';
 
 export class AdpPortalPermissionPolicy implements PermissionPolicy {
   constructor(private rbacUtilites: RbacUtilities, private logger: Logger) {}
@@ -41,7 +52,43 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       return { result: AuthorizeResult.ALLOW };
     }
 
-    // gives permission to create for programme admin group
+    // Allow users to create Delivery Programme Admins if they are a member of the specified group.
+    if (
+      user !== undefined &&
+      isPermission(request.permission, deliveryProgrammeAdminCreatePermission)
+    ) {
+      this.logger.debug(
+        `Role: Programme Admin. Permission: ${request.permission.name}`,
+      );
+
+      return createCatalogConditionalDecision(
+        request.permission,
+        isGroupMember({ userRef: user.identity.userEntityRef }),
+      );
+    }
+
+    // Allow users to create Delivery Project Users if they are a project user admin or programme admin for the specified project.
+    if (
+      user !== undefined &&
+      (isPermission(request.permission, deliveryProjectUserCreatePermission) ||
+        isPermission(request.permission, deliveryProjectUserUpdatePermission))
+    ) {
+      this.logger.debug(
+        `Role: Project Admin. Permission: ${request.permission.name}`,
+      );
+      return createDeliveryProjectConditionalDecision(request.permission, {
+        anyOf: [
+          deliveryProjectConditions.isDeliveryProjectAdmin({
+            userId: user.identity.userEntityRef,
+          }),
+          deliveryProjectConditions.isDeliveryProgrammeAdminForProject({
+            userId: user.identity.userEntityRef,
+          }),
+        ],
+      });
+    }
+
+    // Allow users to create components if they are programme admins.
     if (
       (isPermission(request.permission, catalogEntityCreatePermission) ||
         isPermission(request.permission, actionExecutePermission) ||

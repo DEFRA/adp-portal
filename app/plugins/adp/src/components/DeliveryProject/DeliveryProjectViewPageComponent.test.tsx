@@ -288,5 +288,6 @@ function createDeliveryProjects(count: number) {
     github_team_visibility: 'public',
     updated_by: 'Me',
     delivery_project_users: [],
+    delivery_programme_admins: [],
   }));
 }

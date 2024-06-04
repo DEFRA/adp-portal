@@ -105,6 +105,14 @@ describe('FluxConfigApi', () => {
             key: 'TEAM_PODS_QUOTA',
             value: '20',
           },
+          {
+            key: 'CONTAINER_MAX_CPU',
+            value: '500m',
+          },
+          {
+            key: 'CONTAINER_MAX_MEMORY',
+            value: '1000Mi',
+          }
         ],
       }),
       ok: true,
@@ -180,6 +188,7 @@ describe('FluxConfigApi', () => {
       ado_project: 'TEST-ADO',
       delivery_programme_code: 'ABC',
       delivery_project_users: [],
+      delivery_programme_admins: [],
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
@@ -214,6 +223,7 @@ describe('FluxConfigApi', () => {
       ado_project: 'TEST-ADO',
       delivery_programme_code: 'ABC',
       delivery_project_users: [],
+      delivery_programme_admins: [],
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
@@ -261,6 +271,7 @@ describe('FluxConfigApi', () => {
       ado_project: 'TEST-ADO',
       delivery_programme_code: 'ABC',
       delivery_project_users: [],
+      delivery_programme_admins: [],
     };
 
     const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);

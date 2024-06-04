@@ -54,6 +54,7 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
   async create(
     deliveryProgrammeId: string,
     userCatalogName: string,
+    groupEntityRef: string,
   ): Promise<DeliveryProgrammeAdmin> {
     const baseUrl = await this.getBaseUrl();
     const url = `${baseUrl}/deliveryProgrammeAdmin`;
@@ -61,6 +62,7 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
     const body: CreateDeliveryProgrammeAdminRequest = {
       user_catalog_name: userCatalogName,
       delivery_programme_id: deliveryProgrammeId,
+      group_entity_ref: groupEntityRef,
     };
 
     const response = await this.fetchApi.fetch(url, {

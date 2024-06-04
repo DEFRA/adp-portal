@@ -1,8 +1,10 @@
 import {
   adpProgrammmeCreatePermission,
   adpProjectCreatePermission,
-  adpProjectUserCreatePermission,
+  deliveryProjectUserCreatePermission,
   adpPluginPermissions,
+  deliveryProgrammeAdminCreatePermission,
+  deliveryProjectUserUpdatePermission,
 } from './permissions';
 
 describe('Permissions', () => {
@@ -22,9 +24,9 @@ describe('Permissions', () => {
     });
   });
 
-  describe('adpProjectUserCreatePermission', () => {
+  describe('deliveryProgrammeAdminCreatePermission', () => {
     it('should have the correct attributes', () => {
-      expect(adpProjectUserCreatePermission.attributes).toEqual({
+      expect(deliveryProgrammeAdminCreatePermission.attributes).toEqual({
         action: 'create',
       });
     });
@@ -36,7 +38,9 @@ describe('adpPluginPermissions', () => {
     const expectedPermissions = [
       adpProgrammmeCreatePermission,
       adpProjectCreatePermission,
-      adpProjectUserCreatePermission,
+      deliveryProgrammeAdminCreatePermission,
+      deliveryProjectUserCreatePermission,
+      deliveryProjectUserUpdatePermission,
     ];
     expect(adpPluginPermissions).toHaveLength(expectedPermissions.length);
     expectedPermissions.forEach(permission => {

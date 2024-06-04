@@ -47,10 +47,10 @@
     "@backstage/plugin-search-backend-node": "^1.2.12",
     "@backstage/plugin-techdocs-backend": "^1.9.1",
     "@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions": "^0.1.0",
-    "@internal/plugin-fetch-api-backend": "^0.1.0",
     "@internal/plugin-adp-backend": "^0.1.0",
     "@internal/plugin-adp-common": "^0.1.0",
     "@internal/plugin-catalog-backend-module-adp": "^0.1.0",
+    "@internal/plugin-fetch-api-backend": "^0.1.0",
     "@opentelemetry/api": "1.8.0",
     "@opentelemetry/instrumentation": "0.51.1",
     "@opentelemetry/instrumentation-express": "0.39.0",
@@ -65,7 +65,8 @@
     "express-promise-router": "^4.1.0",
     "node-gyp": "^9.0.0",
     "pg": "^8.11.3",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@backstage/cli": "^0.26.5",

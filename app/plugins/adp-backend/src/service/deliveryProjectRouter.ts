@@ -5,10 +5,12 @@ import type { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
-import type {
-  CreateDeliveryProjectRequest,
-  UpdateDeliveryProjectRequest,
-  ValidationErrorMapping,
+import {
+  DELIVERY_PROJECT_RESOURCE_TYPE,
+  type CreateDeliveryProjectRequest,
+  type UpdateDeliveryProjectRequest,
+  type ValidationErrorMapping,
+  type DeliveryProject,
 } from '@internal/plugin-adp-common';
 import { getCurrentUsername } from '../utils/index';
 import type { IFluxConfigApi } from '../deliveryProject';
@@ -16,6 +18,9 @@ import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import { createParser, respond } from './util';
 import { z } from 'zod';
 import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
+import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
+import { permissionRules } from '../permissions';
+import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 
 export interface ProjectRouterOptions {
   logger: Logger;
@@ -23,6 +28,7 @@ export interface ProjectRouterOptions {
   teamSyncronizer: IDeliveryProjectGithubTeamsSyncronizer;
   deliveryProjectStore: IDeliveryProjectStore;
   deliveryProjectUserStore: IDeliveryProjectUserStore;
+  deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
   fluxConfigApi: IFluxConfigApi;
 }
 
@@ -94,11 +100,43 @@ export function createProjectRouter(
     teamSyncronizer,
     deliveryProjectStore,
     deliveryProjectUserStore,
+    deliveryProgrammeAdminStore,
     fluxConfigApi,
   } = options;
 
+  const getDeliveryProject = async (
+    deliveryProjectId: string,
+  ): Promise<DeliveryProject> => {
+    const deliveryProject = await deliveryProjectStore.get(deliveryProjectId);
+    const deliveryProjectUsers =
+      await deliveryProjectUserStore.getByDeliveryProject(deliveryProjectId);
+    const deliveryProgrammeAdmins =
+      await deliveryProgrammeAdminStore.getByDeliveryProgramme(
+        deliveryProject.delivery_programme_id,
+      );
+
+    deliveryProject.delivery_project_users = deliveryProjectUsers;
+    deliveryProject.delivery_programme_admins = deliveryProgrammeAdmins;
+
+    return deliveryProject;
+  };
+
+  const permissionIntegrationRouter = createPermissionIntegrationRouter({
+    permissions: [],
+    resourceType: DELIVERY_PROJECT_RESOURCE_TYPE,
+    rules: Object.values(permissionRules),
+    getResources: async (resourceRefs: string[]) => {
+      return await Promise.all(
+        resourceRefs.map(async (ref: string) => {
+          return await getDeliveryProject(ref);
+        }),
+      );
+    },
+  });
+
   const router = Router();
   router.use(express.json());
+  router.use(permissionIntegrationRouter);
 
   router.get('/deliveryProject', async (_req, res) => {
     try {
@@ -114,16 +152,10 @@ export function createProjectRouter(
     }
   });
 
-  router.get('/deliveryProject/:id', async (_req, res) => {
+  router.get('/deliveryProject/:id', async (req, res) => {
     try {
-      const deliveryProject = await deliveryProjectStore.get(_req.params.id);
-      const projectUser = await deliveryProjectUserStore.getByDeliveryProject(
-        _req.params.id,
-      );
-      if (projectUser && deliveryProject !== null) {
-        deliveryProject.delivery_project_users = projectUser;
-        res.json(deliveryProject);
-      }
+      const deliveryProject = await getDeliveryProject(req.params.id);
+      res.json(deliveryProject);
     } catch (error) {
       const deliveryProjectError = error as Error;
       logger.error(

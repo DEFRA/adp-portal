@@ -4,6 +4,7 @@ import type {
   UpdateDeliveryProjectUserRequest,
 } from '@internal/plugin-adp-common';
 import { DeliveryProjectUserClient } from './DeliveryProjectUserClient';
+import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 
 jest.mock('@backstage/core-plugin-api', () => ({
   DiscoveryApi: jest.fn(),
@@ -30,12 +31,13 @@ function createDeliveryProjectUser(): DeliveryProjectUser {
 }
 
 describe('DeliveryProjectUserClient', () => {
-  const discoveryApi = { getBaseUrl: jest.fn() };
-  const fetchApi = { fetch: jest.fn() };
+  const discoveryApi: jest.Mocked<DiscoveryApi> = { getBaseUrl: jest.fn() };
+  const fetchApi: jest.Mocked<FetchApi> = { fetch: jest.fn() };
   const sut = new DeliveryProjectUserClient(discoveryApi, fetchApi);
 
   beforeEach(() => {
     jest.clearAllMocks();
+    discoveryApi.getBaseUrl.mockResolvedValue('http://localhost:123');
   });
 
   describe('getAll', () => {
@@ -45,10 +47,11 @@ describe('DeliveryProjectUserClient', () => {
         { count: 5 },
       );
 
-      fetchApi.fetch.mockResolvedValue({
-        ok: true,
-        json: jest.fn().mockResolvedValue(expectedDeliveryProjectUsers),
-      });
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify(expectedDeliveryProjectUsers), {
+          status: 200,
+        }),
+      );
 
       const result = await sut.getAll();
 
@@ -56,12 +59,9 @@ describe('DeliveryProjectUserClient', () => {
     });
 
     it('throws when Fetch fails', async () => {
-      fetchApi.fetch.mockResolvedValue({
-        ok: false,
-        status: 400,
-        statusText: 'BadRequest',
-        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
-      });
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ error: 'Not found' }), { status: 400 }),
+      );
 
       await expect(sut.getAll()).rejects.toThrow(/^Request failed with 400/);
     });
@@ -74,10 +74,11 @@ describe('DeliveryProjectUserClient', () => {
         { count: 2 },
       );
 
-      fetchApi.fetch.mockResolvedValue({
-        ok: true,
-        json: jest.fn().mockResolvedValue(expectedDeliveryProjectUsers),
-      });
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify(expectedDeliveryProjectUsers), {
+          status: 200,
+        }),
+      );
 
       const result = await sut.getByDeliveryProjectId(
         expectedDeliveryProjectUsers[0].delivery_project_id,
@@ -87,12 +88,9 @@ describe('DeliveryProjectUserClient', () => {
     });
 
     it('throws when Fetch fails', async () => {
-      fetchApi.fetch.mockResolvedValue({
-        ok: false,
-        status: 400,
-        statusText: 'BadRequest',
-        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
-      });
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ error: 'Not found' }), { status: 400 }),
+      );
 
       await expect(sut.getByDeliveryProjectId('1234')).rejects.toThrow(
         /^Request failed with 400/,
@@ -116,75 +114,102 @@ describe('DeliveryProjectUserClient', () => {
         is_admin: faker.datatype.boolean(),
         github_username: userRef,
       };
-
-      fetchApi.fetch.mockResolvedValue({
-        ok: true,
-        json: jest.fn().mockResolvedValue(expectedDeliveryProjectUser),
-      });
-
-      const result = await sut.create({
+      const data = {
         delivery_project_id: deliveryProjectId,
         is_technical: faker.datatype.boolean(),
         is_admin: faker.datatype.boolean(),
         github_username: userRef,
         user_catalog_name: userRef,
-      });
+      };
+
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify(expectedDeliveryProjectUser), {
+          status: 200,
+        }),
+      );
+
+      const result = await sut.create(data);
 
       expect(result).toEqual(expectedDeliveryProjectUser);
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost:123/deliveryProjectUser',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
     });
 
     it('catches and throws 400 error', async () => {
       const deliveryProjectId = faker.string.uuid();
       const userRef = faker.internet.userName();
+      const data = {
+        delivery_project_id: deliveryProjectId,
+        is_technical: faker.datatype.boolean(),
+        is_admin: faker.datatype.boolean(),
+        github_username: userRef,
+        user_catalog_name: userRef,
+      };
 
-      fetchApi.fetch.mockResolvedValue({
-        ok: false,
-        status: 400,
-        statusText: 'BadRequest',
-        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
-      });
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ error: 'Not found' }), { status: 400 }),
+      );
 
-      await expect(
-        sut.create({
-          delivery_project_id: deliveryProjectId,
-          is_technical: faker.datatype.boolean(),
-          is_admin: faker.datatype.boolean(),
-          github_username: userRef,
-          user_catalog_name: userRef,
-        }),
-      ).rejects.toThrow('Validation failed');
+      await expect(sut.create(data)).rejects.toThrow('Validation failed');
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost:123/deliveryProjectUser',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
     });
 
     it('catches and throws other uncaught errors', async () => {
       const deliveryProjectId = faker.string.uuid();
       const userRef = faker.internet.userName();
+      const data = {
+        delivery_project_id: deliveryProjectId,
+        is_technical: faker.datatype.boolean(),
+        is_admin: faker.datatype.boolean(),
+        github_username: userRef,
+        user_catalog_name: userRef,
+      };
 
-      fetchApi.fetch.mockResolvedValue({
-        ok: false,
-        status: 500,
-        statusText: 'ServerErrpr',
-        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
-      });
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ error: 'Not found' }), { status: 500 }),
+      );
 
-      await expect(
-        sut.create({
-          delivery_project_id: deliveryProjectId,
-          is_technical: faker.datatype.boolean(),
-          is_admin: faker.datatype.boolean(),
-          github_username: userRef,
-          user_catalog_name: userRef,
-        }),
-      ).rejects.toThrow(/Request failed with 500/);
+      await expect(sut.create(data)).rejects.toThrow(/Request failed with 500/);
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost:123/deliveryProjectUser',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
     });
   });
 
   describe('update', () => {
     it('updates a Delivery Project User successfully', async () => {
-      const mockData = [{ id: '1234', is_admin: true }];
-      fetchApi.fetch.mockResolvedValue({
-        ok: true,
-        json: jest.fn().mockResolvedValue(mockData),
-      });
+      const mockData = {
+        id: '1234',
+        is_admin: true,
+        updated_at: new Date(),
+      };
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify(mockData), { status: 200 }),
+      );
 
       const updateData: UpdateDeliveryProjectUserRequest = {
         is_admin: true,
@@ -194,42 +219,68 @@ describe('DeliveryProjectUserClient', () => {
       };
       const result = await sut.update(updateData);
       expect(result).toEqual(mockData);
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost:123/deliveryProjectUser',
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
     });
 
     it('catches and throws 400 error', async () => {
-      fetchApi.fetch.mockResolvedValue({
-        ok: false,
-        status: 400,
-        statusText: 'BadRequest',
-        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
-      });
+      const updateData = {
+        is_admin: true,
+        id: faker.string.uuid(),
+        delivery_project_id: faker.string.uuid(),
+        user_catalog_name: faker.internet.email(),
+      };
 
-      await expect(
-        sut.update({
-          is_admin: true,
-          id: faker.string.uuid(),
-          delivery_project_id: faker.string.uuid(),
-          user_catalog_name: faker.internet.email(),
-        }),
-      ).rejects.toThrow('Validation failed');
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ error: 'Not found' }), { status: 400 }),
+      );
+
+      await expect(sut.update(updateData)).rejects.toThrow('Validation failed');
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost:123/deliveryProjectUser',
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
     });
 
     it('catches and throws other uncaught errors', async () => {
-      fetchApi.fetch.mockResolvedValue({
-        ok: false,
-        status: 500,
-        statusText: 'ServerError',
-        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
-      });
+      const updateData = {
+        is_admin: true,
+        id: faker.string.uuid(),
+        delivery_project_id: faker.string.uuid(),
+        user_catalog_name: faker.internet.email(),
+      };
 
-      await expect(
-        sut.update({
-          is_admin: true,
-          id: faker.string.uuid(),
-          delivery_project_id: faker.string.uuid(),
-          user_catalog_name: faker.internet.email(),
-        }),
-      ).rejects.toThrow(/Request failed with 500/);
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ error: 'Not found' }), { status: 500 }),
+      );
+
+      await expect(sut.update(updateData)).rejects.toThrow(
+        /Request failed with 500/,
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost:123/deliveryProjectUser',
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
     });
   });
 });

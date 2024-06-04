@@ -28,6 +28,7 @@ export default async function createPlugin({
   database,
   config,
   fetchApi,
+  permissions,
 }: PluginEnvironment) {
   await initializeAdpDatabase(database);
 
@@ -82,6 +83,7 @@ export default async function createPlugin({
     deliveryProjectStore,
     teamSyncronizer: teamSyncronizer,
     deliveryProjectUserStore,
+    deliveryProgrammeAdminStore,
     fluxConfigApi,
   });
 
@@ -91,6 +93,7 @@ export default async function createPlugin({
     logger,
     teamSyncronizer,
     entraIdGroupSyncronizer,
+    permissions,
   });
 
   const deliveryProgrameAdminRouter = createDeliveryProgrammeAdminRouter({
@@ -98,6 +101,7 @@ export default async function createPlugin({
     catalog,
     identity,
     logger,
+    permissions,
   });
 
   const combinedRouter = Router();
