@@ -191,7 +191,7 @@ exports[`DeliveryProjectUserFormFields should render all fields correctly 1`] = 
     <p
       class="MuiFormHelperText-root"
     >
-      Optional - Is this user in a technical role?
+      Optional - Is this user in a technical role, i.e. developer?
     </p>
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
@@ -433,7 +433,7 @@ exports[`DeliveryProjectUserFormFields should render default fields 1`] = `
     <p
       class="MuiFormHelperText-root"
     >
-      Optional - Is this user in a technical role?
+      Optional - Is this user in a technical role, i.e. developer?
     </p>
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
@@ -674,7 +674,7 @@ exports[`DeliveryProjectUserFormFields should write values back to the form: Emp
     <p
       class="MuiFormHelperText-root"
     >
-      Optional - Is this user in a technical role?
+      Optional - Is this user in a technical role, i.e. developer?
     </p>
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
@@ -915,7 +915,7 @@ exports[`DeliveryProjectUserFormFields should write values back to the form: Git
     <p
       class="MuiFormHelperText-root"
     >
-      Optional - Is this user in a technical role?
+      Optional - Is this user in a technical role, i.e. developer?
     </p>
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
@@ -1156,7 +1156,7 @@ exports[`DeliveryProjectUserFormFields should write values back to the form: Use
     <p
       class="MuiFormHelperText-root"
     >
-      Optional - Is this user in a technical role?
+      Optional - Is this user in a technical role, i.e. developer?
     </p>
     <div
       class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
