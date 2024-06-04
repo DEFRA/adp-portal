@@ -3,9 +3,13 @@ import {
   coreServices,
   createBackendModule,
 } from '@backstage/backend-plugin-api';
-import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
+import {
+  catalogPermissionExtensionPoint,
+  catalogProcessingExtensionPoint,
+} from '@backstage/plugin-catalog-node/alpha';
 import { AdpDatabaseEntityProvider } from '@internal/plugin-catalog-backend-module-adp';
 import { fetchApiRef } from '@internal/plugin-fetch-api-backend';
+import { isGroupMemberRule } from '../permissions';
 
 export const addAdpDatabaseEntityProvider = createBackendModule({
   pluginId: 'catalog',
@@ -27,6 +31,21 @@ export const addAdpDatabaseEntityProvider = createBackendModule({
             fetchApi,
           }),
         );
+      },
+    });
+  },
+});
+
+export const addCatalogPermissionRules = createBackendModule({
+  pluginId: 'catalog',
+  moduleId: 'adp-permission-rules',
+  register(env) {
+    env.registerInit({
+      deps: {
+        catalog: catalogPermissionExtensionPoint,
+      },
+      async init({ catalog }) {
+        catalog.addPermissionRules([isGroupMemberRule]);
       },
     });
   },

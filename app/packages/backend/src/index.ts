@@ -11,6 +11,7 @@ import fetchApiFactory, {
 import {
   addAdoNameTransformer,
   addAdpPermissionsPolicy,
+  addCatalogPermissionRules,
   addScaffolderModuleAdpActions,
 } from './modules';
 import { addAdpDatabaseEntityProvider } from './modules';
@@ -42,6 +43,7 @@ backend.add(import('@backstage/plugin-auth-backend'));
 backend.add(import('@backstage/plugin-auth-backend-module-microsoft-provider'));
 backend.add(import('@backstage/plugin-permission-backend/alpha'));
 backend.add(addAdpPermissionsPolicy);
+backend.add(addCatalogPermissionRules);
 
 // Backstage
 backend.add(import('@backstage/plugin-app-backend/alpha'));
@@ -64,6 +66,7 @@ backend.add(import('@backstage/plugin-search-backend-module-techdocs/alpha'));
 backend.add(import('@backstage/plugin-techdocs-backend/alpha'));
 backend.add(import('@backstage/plugin-kubernetes-backend/alpha'));
 backend.add(import('@backstage/plugin-proxy-backend/alpha'));
+backend.add(import('@backstage/plugin-azure-devops-backend'));
 
 // ADP
 backend.add(fetchApiFactory);

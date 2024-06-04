@@ -1,8 +1,16 @@
 import { mockServices, startTestBackend } from '@backstage/backend-test-utils';
-import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
+import {
+  CatalogPermissionRuleInput,
+  catalogPermissionExtensionPoint,
+  catalogProcessingExtensionPoint,
+} from '@backstage/plugin-catalog-node/alpha';
 import { AdpDatabaseEntityProvider } from '@internal/plugin-catalog-backend-module-adp';
-import { addAdpDatabaseEntityProvider } from './catalogModuleExtensions';
+import {
+  addAdpDatabaseEntityProvider,
+  addCatalogPermissionRules,
+} from './catalogModuleExtensions';
 import fetchApiFactory from '@internal/plugin-fetch-api-backend';
+import { PermissionRuleParams } from '@backstage/plugin-permission-common';
 
 describe('catalogModuleExtensions', () => {
   describe('addAdpDatabaseEntityProvider', () => {
@@ -34,6 +42,28 @@ describe('catalogModuleExtensions', () => {
       expect(addedProvider?.getProviderName()).toEqual(
         'AdpDatabaseEntityProvider',
       );
+    });
+  });
+
+  describe('addCatalogPermissionRules', () => {
+    it('should register the permission rules with the catalog permission extension point', async () => {
+      let addedPermissionRules:
+        | CatalogPermissionRuleInput<PermissionRuleParams>[][]
+        | undefined;
+
+      const extensionPont = {
+        addPermissionRules: (...rules: any) => {
+          addedPermissionRules = rules;
+        },
+      };
+
+      await startTestBackend({
+        extensionPoints: [[catalogPermissionExtensionPoint, extensionPont]],
+        features: [addCatalogPermissionRules()],
+      });
+
+      expect(addedPermissionRules).toBeDefined();
+      expect(addedPermissionRules?.pop()?.pop()?.name).toBe('IS_GROUP_MEMBER');
     });
   });
 });
