@@ -7,6 +7,7 @@ import {
   Paper,
 } from '@mui/material';
 import {
+  CircularProgress,
   IconButton,
   InputAdornment,
   List,
@@ -24,6 +25,7 @@ const ChatUI = () => {
   const [userInput, setUserInput] = useState<string>('');
   const [response, setResponse] = useState<string>('');
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  const [responseFetched, setResponseFetched] = useState<boolean>(false)
 
   const handleSend = async () => {
     if (userInput.trim()) {
@@ -40,6 +42,7 @@ const ChatUI = () => {
       });
       const data = await response.json();
       setResponse(data.response);
+      setUserInput('');
       setChatHistory(prevHistory => [
         ...prevHistory,
         { sender: 'adpBot', text: data.response },
