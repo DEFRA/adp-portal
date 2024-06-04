@@ -10,6 +10,7 @@ import fetchApiFactory, {
 } from '@internal/plugin-fetch-api-backend';
 import {
   addAdoNameTransformer,
+  addAdpPermissionsPolicy,
   addScaffolderModuleAdpActions,
 } from './modules';
 import { addAdpDatabaseEntityProvider } from './modules';
@@ -40,6 +41,7 @@ const backend = createBackend();
 backend.add(import('@backstage/plugin-auth-backend'));
 backend.add(import('@backstage/plugin-auth-backend-module-microsoft-provider'));
 backend.add(import('@backstage/plugin-permission-backend/alpha'));
+backend.add(addAdpPermissionsPolicy);
 
 // Backstage
 backend.add(import('@backstage/plugin-app-backend/alpha'));
