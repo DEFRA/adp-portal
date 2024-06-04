@@ -70,9 +70,7 @@ export function AddProgrammeAdminButton({
       {isModalOpen && (
         <DialogForm
           defaultValues={emptyForm}
-          renderFields={formProps => (
-            <DeliveryProgrammeAdminFormFields {...formProps} />
-          )}
+          renderFields={DeliveryProgrammeAdminFormFields}
           completed={success => {
             setIsModalOpen(false);
             if (success) onCreated?.();
