@@ -1,23 +1,29 @@
 import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 import {
-  FormSelectField,
+  FormCheckboxField,
+  FormAutoCompleteField,
   FormTextField,
   formRules,
   type DisabledFields,
 } from '../../utils';
 import { useCatalogUsersList } from '../../hooks';
-import { FormCheckboxField } from '../../utils/FormCheckboxField';
 
 export type DeliveryProjectUserFields = {
-  user_catalog_name: string;
+  user_catalog_name: {
+    label: string;
+    value: string;
+  };
   is_admin: boolean;
   is_technical: boolean;
   github_username: string;
 };
 
 export const emptyForm = Object.freeze<DeliveryProjectUserFields>({
-  user_catalog_name: '',
+  user_catalog_name: {
+    label: '',
+    value: '',
+  },
   is_admin: false,
   is_technical: false,
   github_username: '',
@@ -39,7 +45,7 @@ export function DeliveryProjectUserFormFields({
   let i = 0;
   return (
     <>
-      <FormSelectField
+      <FormAutoCompleteField
         control={control}
         errors={errors}
         index={i++}

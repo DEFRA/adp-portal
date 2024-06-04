@@ -4,70 +4,101 @@ exports[`DeliveryProgrammeAdminFormFields should render all fields correctly 1`]
 <body>
   <div>
     <div
-      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
-      data-testid="user_catalog_name"
+      aria-expanded="false"
+      class="MuiAutocomplete-root MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon"
+      name="user_catalog_name"
+      role="combobox"
     >
-      <label
-        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
-        data-shrink="false"
-        for="user_catalog_name"
-        id="user_catalog_name-label"
-      >
-        Select User
-      </label>
       <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+        data-testid="user_catalog_name"
       >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+          data-shrink="false"
+          for="user_catalog_name"
+          id="user_catalog_name-label"
+        >
+          Select Users
+        </label>
         <div
-          aria-haspopup="listbox"
-          aria-labelledby="user_catalog_name-label user_catalog_name"
-          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
-          id="user_catalog_name"
-          role="button"
-          tabindex="0"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiAutocomplete-inputRoot MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-adornedEnd"
         >
-          <span>
-            ​
-          </span>
-        </div>
-        <input
-          aria-describedby="user_catalog_name-helper-text"
-          aria-hidden="true"
-          aria-required="true"
-          class="MuiSelect-nativeInput"
-          name="user_catalog_name"
-          tabindex="-1"
-          value=""
-        />
-        <svg
-          aria-hidden="true"
-          class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M7 10l5 5 5-5z"
+          <input
+            aria-autocomplete="list"
+            aria-describedby="user_catalog_name-helper-text"
+            aria-invalid="false"
+            aria-required="true"
+            autocapitalize="none"
+            autocomplete="off"
+            class="MuiInputBase-input MuiInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedEnd"
+            id="user_catalog_name"
+            spellcheck="false"
+            type="text"
+            value=""
           />
-        </svg>
-        <fieldset
-          aria-hidden="true"
-          class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"
-        >
-          <legend
-            class="PrivateNotchedOutline-legendLabelled-3"
+          <div
+            class="MuiAutocomplete-endAdornment"
           >
-            <span>
-              Select User
-            </span>
-          </legend>
-        </fieldset>
+            <button
+              aria-label="Clear"
+              class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-clearIndicator"
+              tabindex="-1"
+              title="Clear"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <button
+              aria-label="Open"
+              class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator"
+              tabindex="-1"
+              title="Open"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M7 10l5 5 5-5z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+          </div>
+        </div>
+        <p
+          class="MuiFormHelperText-root"
+          id="user_catalog_name-helper-text"
+        >
+          Select users to assign Admin permissions for this delivery programme
+        </p>
       </div>
-      <p
-        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
-        id="user_catalog_name-helper-text"
-      >
-        Select a user to assign Admin permissions for this delivery programme
-      </p>
     </div>
   </div>
 </body>
@@ -77,68 +108,123 @@ exports[`DeliveryProgrammeAdminFormFields should render default fields 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
-      data-testid="user_catalog_name"
+      aria-expanded="false"
+      class="MuiAutocomplete-root MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon"
+      name="user_catalog_name"
+      role="combobox"
     >
-      <label
-        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled"
-        data-shrink="true"
-        for="user_catalog_name"
-        id="user_catalog_name-label"
-      >
-        Select User
-      </label>
       <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+        data-testid="user_catalog_name"
       >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink"
+          data-shrink="true"
+          for="user_catalog_name"
+          id="user_catalog_name-label"
+        >
+          Select Users
+        </label>
         <div
-          aria-haspopup="listbox"
-          aria-labelledby="user_catalog_name-label user_catalog_name"
-          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
-          id="user_catalog_name"
-          role="button"
-          tabindex="0"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiAutocomplete-inputRoot MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-adornedStart MuiInputBase-adornedEnd"
         >
-          user-1234
-        </div>
-        <input
-          aria-describedby="user_catalog_name-helper-text"
-          aria-hidden="true"
-          aria-required="true"
-          class="MuiSelect-nativeInput"
-          name="user_catalog_name"
-          tabindex="-1"
-          value="user-1234"
-        />
-        <svg
-          aria-hidden="true"
-          class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M7 10l5 5 5-5z"
-          />
-        </svg>
-        <fieldset
-          aria-hidden="true"
-          class="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
-        >
-          <legend
-            class="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+          <div
+            class="MuiChip-root MuiAutocomplete-tag MuiChip-deletable"
+            data-tag-index="0"
+            role="button"
+            tabindex="-1"
           >
-            <span>
-              Select User
+            <span
+              class="MuiChip-label"
+            >
+              user-1234
             </span>
-          </legend>
-        </fieldset>
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiChip-deleteIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"
+              />
+            </svg>
+          </div>
+          <input
+            aria-autocomplete="list"
+            aria-describedby="user_catalog_name-helper-text"
+            aria-invalid="false"
+            aria-required="true"
+            autocapitalize="none"
+            autocomplete="off"
+            class="MuiInputBase-input MuiInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedStart MuiInputBase-inputAdornedEnd"
+            id="user_catalog_name"
+            spellcheck="false"
+            type="text"
+            value=""
+          />
+          <div
+            class="MuiAutocomplete-endAdornment"
+          >
+            <button
+              aria-label="Clear"
+              class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-clearIndicator MuiAutocomplete-clearIndicatorDirty"
+              tabindex="-1"
+              title="Clear"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <button
+              aria-label="Open"
+              class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator"
+              tabindex="-1"
+              title="Open"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M7 10l5 5 5-5z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+          </div>
+        </div>
+        <p
+          class="MuiFormHelperText-root"
+          id="user_catalog_name-helper-text"
+        >
+          Select users to assign Admin permissions for this delivery programme
+        </p>
       </div>
-      <p
-        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-marginDense"
-        id="user_catalog_name-helper-text"
-      >
-        Select a user to assign Admin permissions for this delivery programme
-      </p>
     </div>
   </div>
 </body>
@@ -148,143 +234,227 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
 <body>
   <div>
     <div
-      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
-      data-testid="user_catalog_name"
+      aria-expanded="false"
+      class="MuiAutocomplete-root MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon"
+      name="user_catalog_name"
+      role="combobox"
     >
-      <label
-        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
-        data-shrink="false"
-        for="user_catalog_name"
-        id="user_catalog_name-label"
-      >
-        Select User
-      </label>
       <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+        data-testid="user_catalog_name"
       >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+          data-shrink="false"
+          for="user_catalog_name"
+          id="user_catalog_name-label"
+        >
+          Select Users
+        </label>
         <div
-          aria-haspopup="listbox"
-          aria-labelledby="user_catalog_name-label user_catalog_name"
-          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
-          id="user_catalog_name"
-          role="button"
-          tabindex="0"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiAutocomplete-inputRoot MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-adornedEnd"
         >
-          <span>
-            ​
-          </span>
-        </div>
-        <input
-          aria-describedby="user_catalog_name-helper-text"
-          aria-hidden="true"
-          aria-required="true"
-          class="MuiSelect-nativeInput"
-          name="user_catalog_name"
-          tabindex="-1"
-          value=""
-        />
-        <svg
-          aria-hidden="true"
-          class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M7 10l5 5 5-5z"
+          <input
+            aria-autocomplete="list"
+            aria-describedby="user_catalog_name-helper-text"
+            aria-invalid="false"
+            aria-required="true"
+            autocapitalize="none"
+            autocomplete="off"
+            class="MuiInputBase-input MuiInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedEnd"
+            id="user_catalog_name"
+            spellcheck="false"
+            type="text"
+            value=""
           />
-        </svg>
-        <fieldset
-          aria-hidden="true"
-          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
-        >
-          <legend
-            class="PrivateNotchedOutline-legendLabelled-11"
+          <div
+            class="MuiAutocomplete-endAdornment"
           >
-            <span>
-              Select User
-            </span>
-          </legend>
-        </fieldset>
+            <button
+              aria-label="Clear"
+              class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-clearIndicator"
+              tabindex="-1"
+              title="Clear"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <button
+              aria-label="Open"
+              class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator"
+              tabindex="-1"
+              title="Open"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M7 10l5 5 5-5z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+          </div>
+        </div>
+        <p
+          class="MuiFormHelperText-root"
+          id="user_catalog_name-helper-text"
+        >
+          Select users to assign Admin permissions for this delivery programme
+        </p>
       </div>
-      <p
-        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-marginDense"
-        id="user_catalog_name-helper-text"
-      >
-        Select a user to assign Admin permissions for this delivery programme
-      </p>
     </div>
   </div>
 </body>
 `;
 
 exports[`DeliveryProgrammeAdminFormFields should write values back to the form: User selected 1`] = `
-<body
-  style=""
->
+<body>
   <div>
     <div
-      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
-      data-testid="user_catalog_name"
+      aria-expanded="false"
+      class="MuiAutocomplete-root Mui-focused MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon"
+      name="user_catalog_name"
+      role="combobox"
     >
-      <label
-        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled Mui-focused Mui-focused"
-        data-shrink="true"
-        for="user_catalog_name"
-        id="user_catalog_name-label"
-      >
-        Select User
-      </label>
       <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+        data-testid="user_catalog_name"
       >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink Mui-focused Mui-focused"
+          data-shrink="true"
+          for="user_catalog_name"
+          id="user_catalog_name-label"
+        >
+          Select Users
+        </label>
         <div
-          aria-haspopup="listbox"
-          aria-labelledby="user_catalog_name-label user_catalog_name"
-          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
-          id="user_catalog_name"
-          role="button"
-          tabindex="0"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiAutocomplete-inputRoot MuiInputBase-fullWidth MuiInput-fullWidth Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl MuiInputBase-adornedStart MuiInputBase-adornedEnd"
         >
-          Test User 1
-        </div>
-        <input
-          aria-describedby="user_catalog_name-helper-text"
-          aria-hidden="true"
-          aria-required="true"
-          class="MuiSelect-nativeInput"
-          name="user_catalog_name"
-          tabindex="-1"
-          value="test-user-1"
-        />
-        <svg
-          aria-hidden="true"
-          class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M7 10l5 5 5-5z"
-          />
-        </svg>
-        <fieldset
-          aria-hidden="true"
-          class="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
-        >
-          <legend
-            class="PrivateNotchedOutline-legendLabelled-11 PrivateNotchedOutline-legendNotched-12"
+          <div
+            class="MuiChip-root MuiAutocomplete-tag MuiChip-deletable"
+            data-tag-index="0"
+            role="button"
+            tabindex="-1"
           >
-            <span>
-              Select User
+            <span
+              class="MuiChip-label"
+            >
+              Test User 1
             </span>
-          </legend>
-        </fieldset>
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiChip-deleteIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"
+              />
+            </svg>
+          </div>
+          <input
+            aria-autocomplete="list"
+            aria-describedby="user_catalog_name-helper-text"
+            aria-invalid="false"
+            aria-required="true"
+            autocapitalize="none"
+            autocomplete="off"
+            class="MuiInputBase-input MuiInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedStart MuiInputBase-inputAdornedEnd"
+            id="user_catalog_name"
+            spellcheck="false"
+            type="text"
+            value=""
+          />
+          <div
+            class="MuiAutocomplete-endAdornment"
+          >
+            <button
+              aria-label="Clear"
+              class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-clearIndicator MuiAutocomplete-clearIndicatorDirty"
+              tabindex="-1"
+              title="Clear"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <button
+              aria-label="Open"
+              class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator"
+              tabindex="-1"
+              title="Open"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M7 10l5 5 5-5z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+          </div>
+        </div>
+        <p
+          class="MuiFormHelperText-root Mui-focused"
+          id="user_catalog_name-helper-text"
+        >
+          Select users to assign Admin permissions for this delivery programme
+        </p>
       </div>
-      <p
-        class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled Mui-focused MuiFormHelperText-marginDense"
-        id="user_catalog_name-helper-text"
-      >
-        Select a user to assign Admin permissions for this delivery programme
-      </p>
     </div>
   </div>
 </body>

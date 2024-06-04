@@ -12,3 +12,6 @@ export * from './SelectedChipsRenderer';
 export * from './ValidationError';
 export * from './readValidationError';
 export * from './SnapshotFriendlyStylesProvider';
+export * from './FormAutoCompleteField';
+export * from './FormMultiSelectAutoCompleteField';
+export * from './FormCheckboxField';

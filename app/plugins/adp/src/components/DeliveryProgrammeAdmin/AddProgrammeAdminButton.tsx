@@ -30,8 +30,12 @@ export function AddProgrammeAdminButton({
   async function handleSubmit(
     fields: DeliveryProgrammeAdminFields,
   ): Promise<SubmitResult<DeliveryProgrammeAdminFields>> {
+    const userCatalogNameValue = fields.user_catalog_name.map(x => x.value);
     try {
-      await client.create(deliveryProgrammeId, fields.user_catalog_name);
+      const promises = userCatalogNameValue.map(async value => {
+        await client.create(deliveryProgrammeId, value);
+      });
+      await Promise.all(promises);
     } catch (e: any) {
       return readValidationError(e);
     }
@@ -55,7 +59,9 @@ export function AddProgrammeAdminButton({
       {isModalOpen && (
         <DialogForm
           defaultValues={emptyForm}
-          renderFields={DeliveryProgrammeAdminFormFields}
+          renderFields={formProps => (
+            <DeliveryProgrammeAdminFormFields {...formProps} />
+          )}
           completed={success => {
             setIsModalOpen(false);
             if (success) onCreated?.();

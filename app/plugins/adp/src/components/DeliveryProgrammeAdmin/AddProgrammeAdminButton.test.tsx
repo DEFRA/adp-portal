@@ -11,10 +11,7 @@ import type { ValidationError as IValidationError } from '@internal/plugin-adp-c
 import { ValidationError } from '../../utils';
 import { TestApiProvider } from '@backstage/test-utils';
 import type { DeliveryProgrammeAdminFields } from './DeliveryProgrammeAdminFormFields';
-import {
-  DeliveryProgrammeAdminFormFields,
-  emptyForm,
-} from './DeliveryProgrammeAdminFormFields';
+import { emptyForm } from './DeliveryProgrammeAdminFormFields';
 import type * as DialogFormModule from '../../utils/DialogForm';
 
 function setup() {
@@ -50,7 +47,7 @@ function setup() {
 }
 
 const fields: DeliveryProgrammeAdminFields = {
-  user_catalog_name: 'user-1234',
+  user_catalog_name: [{ label: 'user-1234', value: 'user-1234' }],
 };
 
 const DialogForm: jest.MockedFn<typeof DialogFormModule.DialogForm> = jest.fn();
@@ -104,7 +101,6 @@ describe('AddProgrammeAdminButton', () => {
     const formProps = DialogForm.mock.calls[0][0];
     expect({
       open: formProps.open,
-      renderFields: formProps.renderFields,
       confirm: formProps.confirm,
       cancel: formProps.cancel,
       defaultValues: formProps.defaultValues,
@@ -112,13 +108,15 @@ describe('AddProgrammeAdminButton', () => {
       validate: formProps.validate,
     }).toMatchObject({
       open: undefined,
-      renderFields: DeliveryProgrammeAdminFormFields,
       confirm: 'Add',
       cancel: undefined,
       defaultValues: emptyForm,
       disabled: undefined,
       validate: undefined,
     });
+    expect(formProps.renderFields.toString()).toContain(
+      'DeliveryProgrammeAdminFormFields',
+    );
     expect(formProps.submit).toBeDefined();
     expect(formProps.completed).toBeDefined();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();

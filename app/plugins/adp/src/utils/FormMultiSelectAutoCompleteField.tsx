@@ -13,7 +13,7 @@ import { isFieldDisabled } from './isFieldDisabled';
 import { enrichHelperText } from './enrichHelperText';
 import { rulesToHtmlProperties } from './rulesToHtmlProperties';
 
-export type FormAutoCompleteFieldProps<
+export type FormMultiSelectAutoCompleteFieldProps<
   TFields extends FieldValues,
   TName extends FieldPath<TFields>,
 > = Readonly<{
@@ -31,7 +31,7 @@ export type FormAutoCompleteFieldProps<
   disabled?: boolean | Partial<Record<FieldPath<TFields>, boolean>>;
 }>;
 
-export function FormAutoCompleteField<
+export function FormMultiSelectAutoCompleteField<
   TFields extends FieldValues,
   TName extends FieldPath<TFields>,
 >({
@@ -44,7 +44,7 @@ export function FormAutoCompleteField<
   helperText,
   disabled,
   options,
-}: FormAutoCompleteFieldProps<TFields, TName>) {
+}: FormMultiSelectAutoCompleteFieldProps<TFields, TName>) {
   return (
     <Controller<TFields, TName>
       control={control}
@@ -61,6 +61,7 @@ export function FormAutoCompleteField<
           getOptionSelected={(option, selectedOption) => {
             return selectedOption.value === option.value;
           }}
+          multiple
           renderInput={params => (
             <TextField
               {...params}
