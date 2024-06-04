@@ -8,6 +8,7 @@ import { createAllowedUrlFilter } from './createAllowedUrlFilter';
 export type ForwardAuthHeaderMiddlewareOptions = {
   readonly requestContext: RequestContextProvider;
   readonly filter: ((url: string) => boolean) | Config;
+  readonly sourceHeader?: string;
 };
 
 export function createFetchApiForwardAuthMiddleware(
@@ -16,7 +17,7 @@ export function createFetchApiForwardAuthMiddleware(
   return createFetchApiHeadersMiddleware({
     Authorization: forwardHeader({
       requestContext: options.requestContext,
-      header: 'authorization',
+      header: options.sourceHeader ?? 'authorization',
       filter:
         typeof options.filter === 'function'
           ? options.filter
