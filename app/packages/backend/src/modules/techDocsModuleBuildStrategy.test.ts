@@ -1,6 +1,6 @@
 import { startTestBackend } from '@backstage/backend-test-utils';
 import { techdocsBuildsExtensionPoint } from '@backstage/plugin-techdocs-backend';
-import { DocsBuildStrategy } from '@backstage/plugin-techdocs-node';
+import type { DocsBuildStrategy } from '@backstage/plugin-techdocs-node';
 import { addTechDocsBuildStrategy } from './techDocsModuleBuildStrategy';
 
 describe('techDocsModuleBuildStrategy', () => {

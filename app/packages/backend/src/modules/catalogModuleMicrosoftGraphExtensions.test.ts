@@ -1,5 +1,5 @@
 import { startTestBackend } from '@backstage/backend-test-utils';
-import { UserTransformer } from '@backstage/plugin-catalog-backend-module-msgraph';
+import type { UserTransformer } from '@backstage/plugin-catalog-backend-module-msgraph';
 import { microsoftGraphOrgEntityProviderTransformExtensionPoint } from '@backstage/plugin-catalog-backend-module-msgraph/alpha';
 import { addAdoNameTransformer } from './catalogModuleMicrosoftGraphExtensions';
 

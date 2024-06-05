@@ -1,5 +1,5 @@
 import { mockServices, startTestBackend } from '@backstage/backend-test-utils';
-import { PermissionPolicy } from '@backstage/plugin-permission-node';
+import type { PermissionPolicy } from '@backstage/plugin-permission-node';
 import { policyExtensionPoint } from '@backstage/plugin-permission-node/alpha';
 import { addAdpPermissionsPolicy } from './permissionsModuleExtensions';
 

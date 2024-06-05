@@ -1,16 +1,17 @@
 import { mockServices, startTestBackend } from '@backstage/backend-test-utils';
+import type {
+  CatalogPermissionRuleInput} from '@backstage/plugin-catalog-node/alpha';
 import {
-  CatalogPermissionRuleInput,
   catalogPermissionExtensionPoint,
   catalogProcessingExtensionPoint,
 } from '@backstage/plugin-catalog-node/alpha';
-import { AdpDatabaseEntityProvider } from '@internal/plugin-catalog-backend-module-adp';
+import type { AdpDatabaseEntityProvider } from '@internal/plugin-catalog-backend-module-adp';
 import {
   addAdpDatabaseEntityProvider,
   addCatalogPermissionRules,
 } from './catalogModuleExtensions';
 import fetchApiFactory from '@internal/plugin-fetch-api-backend';
-import { PermissionRuleParams } from '@backstage/plugin-permission-common';
+import type { PermissionRuleParams } from '@backstage/plugin-permission-common';
 
 describe('catalogModuleExtensions', () => {
   describe('addAdpDatabaseEntityProvider', () => {

@@ -1,5 +1,5 @@
 import { mockServices, startTestBackend } from '@backstage/backend-test-utils';
-import {
+import type {
   TemplateAction,
   TemplateFilter,
 } from '@backstage/plugin-scaffolder-node';

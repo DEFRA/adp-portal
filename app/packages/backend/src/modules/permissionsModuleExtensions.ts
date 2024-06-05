@@ -3,11 +3,8 @@ import {
   createBackendModule,
 } from '@backstage/backend-plugin-api';
 import { policyExtensionPoint } from '@backstage/plugin-permission-node/alpha';
-import {
-  AdpPortalPermissionPolicy,
-  RbacGroups,
-  RbacUtilities,
-} from '../permissions';
+import type { RbacGroups } from '../permissions';
+import { AdpPortalPermissionPolicy, RbacUtilities } from '../permissions';
 import { loggerToWinstonLogger } from '@backstage/backend-common';
 
 export const addAdpPermissionsPolicy = createBackendModule({
