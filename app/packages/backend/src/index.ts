@@ -13,7 +13,6 @@ import fetchApiFactory, {
 } from '@internal/plugin-fetch-api-backend';
 import {
   addAdoNameTransformer,
-  addAdpPermissionsPolicy,
   addCatalogPermissionRules,
   addScaffolderModuleAdpActions,
 } from './modules';
@@ -64,7 +63,7 @@ backend.add(
 backend.add(import('@backstage/plugin-auth-backend'));
 backend.add(import('@backstage/plugin-auth-backend-module-microsoft-provider'));
 backend.add(import('@backstage/plugin-permission-backend/alpha'));
-backend.add(addAdpPermissionsPolicy);
+backend.add(import('@internal/plugin-permission-backend-module-adp'));
 backend.add(addCatalogPermissionRules);
 
 // Backstage

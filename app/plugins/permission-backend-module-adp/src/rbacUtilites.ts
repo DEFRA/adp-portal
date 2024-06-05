@@ -1,6 +1,6 @@
 import type { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
-import type { Logger } from 'winston';
 import type { RbacGroups } from './types';
+import type { LoggerService } from '@backstage/backend-plugin-api';
 
 /**
  * Utility function to determine if the user is in the ADP Platform Admin Group.
@@ -14,7 +14,7 @@ export class RbacUtilities {
 
   private readonly groupPrefix: string = 'group:default/';
 
-  constructor(private logger: Logger, rbacGroups: RbacGroups) {
+  constructor(private logger: LoggerService, rbacGroups: RbacGroups) {
     this.platformAdminsGroup = `${
       this.groupPrefix
     }${rbacGroups.platformAdminsGroup.toLowerCase()}`;
