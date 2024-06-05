@@ -1,5 +1,5 @@
 {
-  "name": "@internal/backstage-plugin-scaffolder-backend-module-adp",
+  "name": "@internal/plugin-scaffolder-backend-module-adp",
   "description": "Custom scaffolder actions for ADP",
   "version": "0.1.0",
   "main": "src/index.ts",
