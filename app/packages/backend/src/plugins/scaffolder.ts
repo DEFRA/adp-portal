@@ -16,7 +16,7 @@ import {
   filters,
   addDeliveryProjectToRepo,
   createGithubClient,
-} from '@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions';
+} from '@internal/backstage-plugin-scaffolder-backend-module-adp';
 import { createHttpBackstageAction } from '@roadiehq/scaffolder-backend-module-http-request';
 import { AdpClient } from '@internal/plugin-adp-backend';
 
