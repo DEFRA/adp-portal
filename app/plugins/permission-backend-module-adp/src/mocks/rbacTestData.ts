@@ -1,56 +1,44 @@
 import type { RbacGroups } from '../types';
 import type { BackstageIdentityResponse } from '@backstage/core-plugin-api';
 
-export class RbacTestData {
-  public static readonly mockLogger: any = {
-    child: jest.fn(),
-    info: jest.fn(),
-    error: jest.fn(),
-    debug: jest.fn(),
-  };
+export const mockRbacGroups: RbacGroups = {
+  platformAdminsGroup: 'Test-PlatformAdminsGroup',
+  programmeAdminGroup: 'Test-ProgrammeAdminGroup',
+  adpPortalUsersGroup: 'Test-AdpPortalUsersGroup',
+};
 
-  public static readonly mockRbacGroups: RbacGroups = {
-    platformAdminsGroup: 'Test-PlatformAdminsGroup',
-    programmeAdminGroup: 'Test-ProgrammeAdminGroup',
-    adpPortalUsersGroup: 'Test-AdpPortalUsersGroup',
-  };
+export const mockPlatformAdminUserResponse: BackstageIdentityResponse = {
+  token: 'dummy-token',
+  expiresAt: undefined,
+  identity: {
+    type: 'user',
+    userEntityRef: 'user:default/platformadminuser',
+    ownershipEntityRefs: [
+      `group:default/${mockRbacGroups.platformAdminsGroup.toLowerCase()}`,
+    ],
+  },
+};
 
-  public static readonly mockPlatformAdminUserResponse: BackstageIdentityResponse =
-    {
-      token: 'dummy-token',
-      expiresAt: undefined,
-      identity: {
-        type: 'user',
-        userEntityRef: 'user:default/platformadminuser',
-        ownershipEntityRefs: [
-          `group:default/${this.mockRbacGroups.platformAdminsGroup.toLowerCase()}`,
-        ],
-      },
-    };
+export const mockProgrammeAdminUserUserResponse: BackstageIdentityResponse = {
+  token: 'dummy-token',
+  expiresAt: undefined,
+  identity: {
+    type: 'user',
+    userEntityRef: 'user:default/programmeadminuser',
+    ownershipEntityRefs: [
+      `group:default/${mockRbacGroups.programmeAdminGroup.toLowerCase()}`,
+    ],
+  },
+};
 
-  public static readonly mockProgrammeAdminUserUserResponse: BackstageIdentityResponse =
-    {
-      token: 'dummy-token',
-      expiresAt: undefined,
-      identity: {
-        type: 'user',
-        userEntityRef: 'user:default/programmeadminuser',
-        ownershipEntityRefs: [
-          `group:default/${this.mockRbacGroups.programmeAdminGroup.toLowerCase()}`,
-        ],
-      },
-    };
-
-  public static readonly mockAdpPortalUserResponse: BackstageIdentityResponse =
-    {
-      token: 'dummy-token',
-      expiresAt: undefined,
-      identity: {
-        type: 'user',
-        userEntityRef: 'user:default/portaluser',
-        ownershipEntityRefs: [
-          `group:default/${this.mockRbacGroups.adpPortalUsersGroup.toLowerCase()}`,
-        ],
-      },
-    };
-}
+export const mockAdpPortalUserResponse: BackstageIdentityResponse = {
+  token: 'dummy-token',
+  expiresAt: undefined,
+  identity: {
+    type: 'user',
+    userEntityRef: 'user:default/portaluser',
+    ownershipEntityRefs: [
+      `group:default/${mockRbacGroups.adpPortalUsersGroup.toLowerCase()}`,
+    ],
+  },
+};

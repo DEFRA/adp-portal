@@ -50,10 +50,10 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
     );
 
     // exempting admins from permission checks as they're allowed to do everything
-    // if (user !== undefined && this.rbacUtilites.isInPlatformAdminGroup(user)) {
-    //   this.logger.debug(`This is a platform admin user with the ad group`);
-    //   return { result: AuthorizeResult.ALLOW };
-    // }
+    if (user !== undefined && this.rbacUtilites.isInPlatformAdminGroup(user)) {
+      this.logger.debug(`This is a platform admin user with the ad group`);
+      return { result: AuthorizeResult.ALLOW };
+    }
 
     // Allow users to create Delivery Programme Admins if they are a member of the specified group.
     if (
