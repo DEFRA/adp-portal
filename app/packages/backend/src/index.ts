@@ -89,6 +89,7 @@ backend.add(import('@backstage/plugin-azure-devops-backend'));
 // ADP
 backend.add(legacyPlugin('adp', import('./plugins/adp')));
 backend.add(import('@internal/plugin-scaffolder-backend-module-adp'));
+backend.add(import('@internal/plugin-techdocs-backend-module-adp'));
 
 // 3rd Party
 backend.add(
