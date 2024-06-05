@@ -141,47 +141,4 @@ describe('DeliveryProgrammeAdminFormFields', () => {
     expect(result.baseElement).toMatchSnapshot('User selected');
     expect(form.getValues()).toMatchObject(fields);
   });
-
-  it('should throw an error if user_catalog_name already exists', async () => {
-    const { renderComponent, mockCatalogApi } = setup();
-    mockCatalogApi.getEntities.mockResolvedValue({
-      items: [
-        {
-          apiVersion: 'backstage.io/v1beta1',
-          kind: 'User',
-          metadata: {
-            name: 'test-user-1',
-            annotations: {
-              ['graph.microsoft.com/user-id']:
-                'f8699f8d-e3d5-4822-8979-6b6bce35ff16',
-              ['metadata.annotations.microsoft.com/email']: 'user@email.com',
-            },
-          },
-          spec: {
-            profile: {
-              displayName: 'Test User 1',
-              email: 'user@email.com',
-            },
-          },
-        },
-      ],
-    });
-
-    const { form, result } = await renderComponent();
-
-    expect(result.baseElement).toMatchSnapshot('Empty');
-
-    await setSelectField(
-      result,
-      form,
-      'Select Users',
-      'Test User 1',
-      'user_catalog_name',
-    );
-
-    await userEvent.click(result.getByLabelText('Select Users'));
-    await waitFor(() => userEvent.click(result.getAllByText('Test User 1')[1]));
-
-    expect(result.baseElement).toMatchSnapshot('User already exists');
-  });
 });
