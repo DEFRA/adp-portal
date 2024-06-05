@@ -65,7 +65,7 @@ export class FluxConfigApi {
 
     const teamConfig = {
       programmeName: deliveryProgramme.name,
-      serviceCode: deliveryProject.name,
+      serviceCode: deliveryProject.delivery_project_code,
       teamName: deliveryProject.name,
       services: [],
       configVariables: configValues,

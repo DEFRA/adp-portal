@@ -55,6 +55,7 @@ export function EditDeliveryProjectUserButton({
         ...fields,
         aad_user_principal_name:
           deliveryProjectUser.aad_user_principal_name ?? '',
+        user_catalog_name: fields.user_catalog_name.value,
       });
     } catch (e: any) {
       return readValidationError(e);
@@ -80,7 +81,10 @@ export function EditDeliveryProjectUserButton({
         <DialogForm
           defaultValues={populate(emptyForm, {
             ...deliveryProjectUser,
-            user_catalog_name: userEntityRef,
+            user_catalog_name: {
+              label: deliveryProjectUser.email,
+              value: userEntityRef,
+            },
           })}
           renderFields={DeliveryProjectUserFormFields}
           completed={success => {

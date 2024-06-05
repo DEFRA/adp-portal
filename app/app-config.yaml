@@ -35,6 +35,8 @@ backend:
   auth:
     keys:
       - secret: ${BACKEND_PLUGINS_SECRET}
+    # Disable auth policy. This will need to be enabled in AB#382055
+    dangerouslyDisableDefaultAuthPolicy: true
   fetchApi:
     forwardAuth:
       - ${ADP_PORTAL_API_ENDPOINT}
@@ -122,6 +124,9 @@ auth:
         clientId: ${AUTH_MICROSOFT_CLIENT_ID}
         clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
         tenantId: ${AUTH_MICROSOFT_TENANT_ID}
+        signIn:
+          resolvers:
+            - resolver: emailMatchingUserEntityProfileEmail
 
     github:
       sandpit:

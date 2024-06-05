@@ -13,7 +13,7 @@ describe('openTelemetry', () => {
     jest.clearAllMocks();
   });
 
-  it('should call useAzureMonitor with the correct ', () => {
+  it('should call useAzureMonitor with the correct', () => {
     process.env.SHARED_APPINSIGHT_CONNECTIONSTRING = 'test-connection-string';
     process.env.NODE_ENV = 'production';
     process.env.ADP_PORTAL_MI_CLIENT_ID = 'test-client-id';
