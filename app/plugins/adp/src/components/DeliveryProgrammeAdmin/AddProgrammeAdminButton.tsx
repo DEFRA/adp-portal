@@ -40,12 +40,12 @@ export function AddProgrammeAdminButton({
   async function handleSubmit(
     fields: DeliveryProgrammeAdminFields,
   ): Promise<SubmitResult<DeliveryProgrammeAdminFields>> {
+    const userCatalogNameValue = fields.user_catalog_name.map(x => x.value);
     try {
-      await client.create(
-        deliveryProgrammeId,
-        fields.user_catalog_name,
-        entityRef,
-      );
+      const promises = userCatalogNameValue.map(async value => {
+        await client.create(deliveryProgrammeId, value, entityRef);
+      });
+      await Promise.all(promises);
     } catch (e: any) {
       return readValidationError(e);
     }

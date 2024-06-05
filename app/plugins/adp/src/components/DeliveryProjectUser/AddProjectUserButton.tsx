@@ -41,9 +41,11 @@ export function AddProjectUserButton({
     fields: DeliveryProjectUserFields,
   ): Promise<SubmitResult<DeliveryProjectUserFields>> {
     try {
+      const user = fields.user_catalog_name.value;
       await client.create({
         delivery_project_id: deliveryProjectId,
         ...fields,
+        user_catalog_name: user,
       });
     } catch (e: any) {
       return readValidationError(e);
