@@ -94,7 +94,9 @@ backend.add(import('@backstage/plugin-azure-devops-backend'));
 // ADP
 backend.add(legacyPlugin('adp', import('./plugins/adp')));
 
-backend.start();
+backend.start().catch(error => {
+  console.error('Uncaught error in backend startup', error);
+});
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);

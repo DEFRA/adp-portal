@@ -4,9 +4,9 @@ app:
 
 kubernetes:
   serviceLocatorMethod:
-    type: "multiTenant"
+    type: 'multiTenant'
   clusterLocatorMethods:
-    - type: "config"
+    - type: 'config'
       clusters:
         - $include: ./config/cluster.${CLUSTER1_ENV}.configuration.yaml
         - $include: ./config/cluster.${CLUSTER2_ENV}.configuration.yaml
@@ -42,7 +42,7 @@ backend:
   baseUrl: ${APP_BACKEND_BASE_URL}
   # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
   # all interfaces, the most permissive setting. The right value depends on your specific deployment.
-  listen: ":7007"
+  listen: ':7007'
 
   # config options: https://node-postgres.com/api/client
   database:
@@ -79,23 +79,23 @@ catalog:
 
     github:
       defra:
-        organization: "defra"
-        catalogPath: "/catalog-info.yaml"
+        organization: 'defra'
+        catalogPath: '/catalog-info.yaml'
         filters:
-          repository: "^(ffc-.+|adp-.+|fcp-.+|mcu-.+|est-.+|rpa-.+|core.+|ncea-.+|ea-wq-.+)"
+          repository: '^(ffc-.+|adp-.+|fcp-.+|mcu-.+|est-.+|rpa-.+|core.+|ncea-.+|ea-wq-.+)'
         schedule:
           frequency: { minutes: 60 }
           timeout: { minutes: 5 }
 
 proxy:
   endpoints:
-    "/grafana/api":
+    '/grafana/api':
       target: ${GRAFANA_ENDPOINT}
       headers:
         Authorization: Bearer ${GRAFANA_TOKEN}
 
-    "/adp-portal-api":
-      target: "${ADP_PORTAL_API_ENDPOINT}"
+    '/adp-portal-api':
+      target: '${ADP_PORTAL_API_ENDPOINT}'
       changeOrigin: true
       secure: true
 
@@ -103,16 +103,16 @@ grafana:
   domain: ${GRAFANA_ENDPOINT}
 
 techdocs:
-  builder: "external"
+  builder: 'external'
   generator:
-    runIn: "local"
+    runIn: 'local'
     mkdocs:
       omitTechdocsCorePlugin: false
-      defaultPlugins: ["techdocs-core"]
+      defaultPlugins: ['techdocs-core']
   publisher:
-    type: "azureBlobStorage"
+    type: 'azureBlobStorage'
     azureBlobStorage:
-      containerName: "adp-wiki-techdocs"
+      containerName: 'adp-wiki-techdocs'
       credentials:
         accountName: ${TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_NAME}
         accountKey: ${TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_KEY}

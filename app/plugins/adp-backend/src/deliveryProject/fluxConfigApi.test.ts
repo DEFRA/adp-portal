@@ -112,7 +112,7 @@ describe('FluxConfigApi', () => {
           {
             key: 'CONTAINER_MAX_MEMORY',
             value: '1000Mi',
-          }
+          },
         ],
       }),
       ok: true,
