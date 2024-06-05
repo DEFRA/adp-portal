@@ -78,6 +78,7 @@ backend.add(import('@backstage/plugin-catalog-backend-module-msgraph/alpha'));
 backend.add(addAdoNameTransformer);
 backend.add(addAdpDatabaseEntityProvider);
 backend.add(import('@backstage/plugin-scaffolder-backend/alpha'));
+backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(addScaffolderModuleAdpActions);
 backend.add(
   import('@roadiehq/scaffolder-backend-module-http-request/new-backend'),

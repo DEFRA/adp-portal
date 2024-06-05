@@ -1,6 +1,12 @@
 import { mockServices, startTestBackend } from '@backstage/backend-test-utils';
-import { TemplateAction } from '@backstage/plugin-scaffolder-node';
-import { scaffolderActionsExtensionPoint } from '@backstage/plugin-scaffolder-node/alpha';
+import {
+  TemplateAction,
+  TemplateFilter,
+} from '@backstage/plugin-scaffolder-node';
+import {
+  scaffolderActionsExtensionPoint,
+  scaffolderTemplatingExtensionPoint,
+} from '@backstage/plugin-scaffolder-node/alpha';
 import { addScaffolderModuleAdpActions } from './scaffolderModuleAdpActions';
 import fetchApiFactory from '@internal/plugin-fetch-api-backend';
 
@@ -8,10 +14,16 @@ describe('scaffolderModuleAdpActions', () => {
   describe('addScaffolderModuleAdpActions', () => {
     it('should register actions with the scaffolder extension point', async () => {
       let addedActions: TemplateAction<any, any>[] | undefined;
+      let addedFilters: Record<string, TemplateFilter> | undefined;
 
-      const extensionPoint = {
+      const actionsExtensionPoint = {
         addActions: (...actions: TemplateAction<any, any>[]) => {
           addedActions = actions;
+        },
+      };
+      const templatingExtensionPoint = {
+        addTemplateFilters: (filters: Record<string, TemplateFilter>) => {
+          addedFilters = filters;
         },
       };
 
@@ -22,7 +34,10 @@ describe('scaffolderModuleAdpActions', () => {
       };
 
       await startTestBackend({
-        extensionPoints: [[scaffolderActionsExtensionPoint, extensionPoint]],
+        extensionPoints: [
+          [scaffolderActionsExtensionPoint, actionsExtensionPoint],
+          [scaffolderTemplatingExtensionPoint, templatingExtensionPoint],
+        ],
         features: [
           addScaffolderModuleAdpActions(),
           mockServices.rootConfig.factory({ data: config }),
@@ -32,6 +47,8 @@ describe('scaffolderModuleAdpActions', () => {
       });
 
       expect(addedActions?.length).toEqual(7);
+      expect(addedFilters?.isOneOf).toBeDefined();
+      expect(addedFilters?.toDotnetProjectName).toBeDefined();
     });
   });
 });

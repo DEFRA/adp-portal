@@ -1,4 +1,7 @@
-import { scaffolderActionsExtensionPoint } from '@backstage/plugin-scaffolder-node/alpha';
+import {
+  scaffolderActionsExtensionPoint,
+  scaffolderTemplatingExtensionPoint,
+} from '@backstage/plugin-scaffolder-node/alpha';
 import {
   coreServices,
   createBackendModule,
@@ -10,6 +13,7 @@ import {
   createGithubClient,
   createGithubTeamAction,
   createPipelineAction,
+  filters,
   getServiceConnectionAction,
   permitPipelineAction,
   runPipelineAction,
@@ -23,19 +27,26 @@ export const addScaffolderModuleAdpActions = createBackendModule({
   register(env) {
     env.registerInit({
       deps: {
-        scaffolder: scaffolderActionsExtensionPoint,
+        scaffolderActions: scaffolderActionsExtensionPoint,
+        scaffolderTemplating: scaffolderTemplatingExtensionPoint,
         config: coreServices.rootConfig,
         discovery: coreServices.discovery,
         fetchApi: fetchApiRef,
       },
-      async init({ scaffolder, config, discovery, fetchApi }) {
+      async init({
+        scaffolderActions,
+        scaffolderTemplating,
+        config,
+        discovery,
+        fetchApi,
+      }) {
         const integrations = ScmIntegrations.fromConfig(config);
         const adpClient = new AdpClient({
           discoveryApi: discovery,
           fetchApi: fetchApi,
         });
 
-        scaffolder.addActions(
+        scaffolderActions.addActions(
           createPipelineAction({
             integrations: integrations,
             config: config,
@@ -67,6 +78,8 @@ export const addScaffolderModuleAdpActions = createBackendModule({
             adpClient,
           }),
         );
+
+        scaffolderTemplating.addTemplateFilters({ ...filters });
       },
     });
   },
