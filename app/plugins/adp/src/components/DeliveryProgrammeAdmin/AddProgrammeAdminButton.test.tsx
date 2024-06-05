@@ -51,7 +51,7 @@ function setup() {
 }
 
 const fields: DeliveryProgrammeAdminFields = {
-  user_catalog_name: 'user-1234',
+  user_catalog_name: [{ label: 'user-1234', value: 'user-1234' }],
 };
 
 const usePermission: jest.MockedFn<
@@ -170,6 +170,9 @@ describe('AddProgrammeAdminButton', () => {
       disabled: undefined,
       validate: undefined,
     });
+    expect(formProps.renderFields.toString()).toContain(
+      'DeliveryProgrammeAdminFormFields',
+    );
     expect(formProps.submit).toBeDefined();
     expect(formProps.completed).toBeDefined();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();

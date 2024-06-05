@@ -49,7 +49,7 @@ function setup() {
 }
 
 const fields: DeliveryProjectUserFields = {
-  user_catalog_name: 'user-1234',
+  user_catalog_name: { label: 'user-1234', value: 'user-1234' },
   github_username: 'user-1234',
   is_admin: false,
   is_technical: true,
