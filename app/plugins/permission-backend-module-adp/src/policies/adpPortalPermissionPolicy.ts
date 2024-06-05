@@ -28,12 +28,12 @@ import {
 } from '@internal/plugin-adp-common';
 import type { RbacUtilities } from '../rbacUtilites';
 import { createCatalogConditionalDecision } from '@backstage/plugin-catalog-backend/alpha';
-import { isGroupMember } from '../rules';
 import {
   createDeliveryProjectConditionalDecision,
   deliveryProjectConditions,
 } from '@internal/plugin-adp-backend';
 import type { LoggerService } from '@backstage/backend-plugin-api';
+import { isGroupMember } from '@internal/plugin-catalog-backend-module-adp';
 
 export class AdpPortalPermissionPolicy implements PermissionPolicy {
   constructor(
@@ -50,10 +50,10 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
     );
 
     // exempting admins from permission checks as they're allowed to do everything
-    if (user !== undefined && this.rbacUtilites.isInPlatformAdminGroup(user)) {
-      this.logger.debug(`This is a platform admin user with the ad group`);
-      return { result: AuthorizeResult.ALLOW };
-    }
+    // if (user !== undefined && this.rbacUtilites.isInPlatformAdminGroup(user)) {
+    //   this.logger.debug(`This is a platform admin user with the ad group`);
+    //   return { result: AuthorizeResult.ALLOW };
+    // }
 
     // Allow users to create Delivery Programme Admins if they are a member of the specified group.
     if (

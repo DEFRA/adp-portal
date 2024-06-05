@@ -33,7 +33,8 @@
     "@backstage/plugin-permission-node": "^0.7.29",
     "@backstage/plugin-scaffolder-common": "^1.5.2",
     "@internal/plugin-adp-backend": "^0.1.0",
-    "@internal/plugin-adp-common": "^0.1.0"
+    "@internal/plugin-adp-common": "^0.1.0",
+    "@internal/plugin-catalog-backend-module-adp": "^0.1.0"
   },
   "devDependencies": {
     "@backstage/backend-test-utils": "^0.3.8",

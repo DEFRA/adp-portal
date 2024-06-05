@@ -7,9 +7,11 @@ import {
   catalogPermissionExtensionPoint,
   catalogProcessingExtensionPoint,
 } from '@backstage/plugin-catalog-node/alpha';
-import { AdpDatabaseEntityProvider } from '@internal/plugin-catalog-backend-module-adp';
+import {
+  AdpDatabaseEntityProvider,
+  isGroupMemberRule,
+} from '@internal/plugin-catalog-backend-module-adp';
 import { fetchApiRef } from '@internal/plugin-fetch-api-backend';
-import { isGroupMemberRule } from '../permissions';
 
 export const addAdpDatabaseEntityProvider = createBackendModule({
   pluginId: 'catalog',

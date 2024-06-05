@@ -2,7 +2,7 @@ import {
   coreServices,
   createBackendModule,
 } from '@backstage/backend-plugin-api';
-import { policyExtensionPoint } from '@backstage/plugin-permission-node/dist/alpha';
+import { policyExtensionPoint } from '@backstage/plugin-permission-node/alpha';
 import type { RbacGroups } from './types';
 import { RbacUtilities } from './rbacUtilites';
 import { AdpPortalPermissionPolicy } from './policies';
