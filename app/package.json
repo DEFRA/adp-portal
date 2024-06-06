@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "private": true,
   "engines": {
     "node": "18 || 20"
@@ -29,10 +29,7 @@
     "new": "backstage-cli new --scope internal"
   },
   "workspaces": {
-    "packages": [
-      "packages/*",
-      "plugins/*"
-    ]
+    "packages": ["packages/*", "plugins/*"]
   },
   "devDependencies": {
     "@backstage/cli": "^0.26.5",
@@ -53,12 +50,7 @@
   },
   "prettier": "@spotify/prettier-config",
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,cjs}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md}": [
-      "prettier --write"
-    ]
+    "*.{js,jsx,ts,tsx,mjs,cjs}": ["eslint --fix", "prettier --write"],
+    "*.{json,md}": ["prettier --write"]
   }
 }
