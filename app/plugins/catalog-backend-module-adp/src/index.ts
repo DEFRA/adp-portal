@@ -5,7 +5,7 @@
  * @packageDocumentation
  */
 
-export { catalogModuleAdpEntityProvider as default } from './module';
+export { adpCatalogModule as default } from './module';
 export { AdpDatabaseEntityProvider } from './providers';
 export {
   ARMS_LENGTH_BODY_ID_ANNOTATION,

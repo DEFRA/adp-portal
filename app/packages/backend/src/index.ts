@@ -16,7 +16,6 @@ import {
   addAdpPermissionsPolicy,
   addCatalogPermissionRules,
 } from './modules';
-import { addAdpDatabaseEntityProvider } from './modules';
 import { requestContextProviderRef } from '@internal/plugin-request-context-provider-backend';
 
 const legacyPlugin = makeLegacyPlugin(
@@ -75,7 +74,6 @@ backend.add(
 backend.add(import('@backstage/plugin-catalog-backend-module-github/alpha'));
 backend.add(import('@backstage/plugin-catalog-backend-module-msgraph/alpha'));
 backend.add(addAdoNameTransformer);
-backend.add(addAdpDatabaseEntityProvider);
 backend.add(import('@backstage/plugin-scaffolder-backend/alpha'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(import('@backstage/plugin-search-backend/alpha'));
@@ -89,6 +87,7 @@ backend.add(import('@backstage/plugin-azure-devops-backend'));
 // ADP
 backend.add(legacyPlugin('adp', import('./plugins/adp')));
 backend.add(import('@internal/plugin-scaffolder-backend-module-adp'));
+backend.add(import('@internal/plugin-catalog-backend-module-adp'));
 
 // 3rd Party
 backend.add(

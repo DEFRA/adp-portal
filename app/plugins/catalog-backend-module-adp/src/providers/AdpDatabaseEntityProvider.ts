@@ -3,9 +3,11 @@ import type {
   EntityProvider,
   EntityProviderConnection,
 } from '@backstage/plugin-catalog-node';
-import type { Logger } from 'winston';
 import * as uuid from 'uuid';
-import type { DiscoveryService } from '@backstage/backend-plugin-api';
+import type {
+  DiscoveryService,
+  LoggerService,
+} from '@backstage/backend-plugin-api';
 import type { Entity, GroupEntity } from '@backstage/catalog-model';
 import type {
   ArmsLengthBody,
@@ -22,7 +24,7 @@ import {
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 
 export class AdpDatabaseEntityProvider implements EntityProvider {
-  readonly #logger: Logger;
+  readonly #logger: LoggerService;
   readonly #discovery: DiscoveryService;
   readonly #scheduleFn: () => Promise<void>;
   readonly #fetchApi: FetchApi;
@@ -31,7 +33,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   static create(
     discovery: DiscoveryService,
     options: {
-      logger: Logger;
+      logger: LoggerService;
       fetchApi: FetchApi;
       schedule?: TaskRunner;
       scheduler: PluginTaskScheduler;
@@ -60,7 +62,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   }
 
   private constructor(
-    logger: Logger,
+    logger: LoggerService,
     discovery: DiscoveryService,
     taskRunner: TaskRunner,
     fetchApi: FetchApi,
@@ -97,7 +99,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
 
           try {
             await this.refresh(logger);
-          } catch (error) {
+          } catch (error: any) {
             logger.error(
               `${this.getProviderName()} refresh failed, ${error}`,
               error,
@@ -108,7 +110,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     };
   }
 
-  private async refresh(logger: Logger): Promise<void> {
+  private async refresh(logger: LoggerService): Promise<void> {
     if (!this.#connection) {
       throw new Error(
         `ADP Onboarding Model discovery connection not initialized for ${this.getProviderName()}`,
@@ -137,7 +139,9 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     markCommitComplete(entities);
   }
 
-  private async readArmsLengthBodies(logger: Logger): Promise<GroupEntity[]> {
+  private async readArmsLengthBodies(
+    logger: LoggerService,
+  ): Promise<GroupEntity[]> {
     logger.info('Discovering all Arms Length Bodies');
     const baseUrl = await this.#discovery.getBaseUrl('adp');
     const armsLengthBodies = await this.#getEntities<ArmsLengthBody>(
@@ -158,7 +162,9 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     return entities;
   }
 
-  private async readDeliveryProgrammes(logger: Logger): Promise<GroupEntity[]> {
+  private async readDeliveryProgrammes(
+    logger: LoggerService,
+  ): Promise<GroupEntity[]> {
     logger.info('Discovering all Delivery Programmes');
     const baseUrl = await this.#discovery.getBaseUrl('adp');
     const deliveryProgrammes = await this.#getEntities<DeliveryProgramme>(
@@ -188,7 +194,9 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     return entities;
   }
 
-  private async readDeliveryProjects(logger: Logger): Promise<GroupEntity[]> {
+  private async readDeliveryProjects(
+    logger: LoggerService,
+  ): Promise<GroupEntity[]> {
     logger.info('Discovering all Delivery Projects');
     const baseUrl = await this.#discovery.getBaseUrl('adp');
     const deliveryProjects = await this.#getEntities<DeliveryProject>(
@@ -218,7 +226,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     return entities;
   }
 
-  private trackProgress(logger: Logger) {
+  private trackProgress(logger: LoggerService) {
     let timestamp = Date.now();
 
     function markReadComplete(entities: Entity[]) {
