@@ -19,7 +19,7 @@ import {
   permitPipelineAction,
   runPipelineAction,
 } from './actions';
-import { filters } from '.';
+import { isOneOf, toDotnetProjectName } from './filters';
 
 export const adpScaffolderModule = createBackendModule({
   pluginId: 'scaffolder',
@@ -61,7 +61,10 @@ export const adpScaffolderModule = createBackendModule({
           }),
         );
 
-        scaffolderTemplating.addTemplateFilters({ ...filters });
+        scaffolderTemplating.addTemplateFilters({
+          isOneOf,
+          toDotnetProjectName,
+        });
       },
     });
   },
