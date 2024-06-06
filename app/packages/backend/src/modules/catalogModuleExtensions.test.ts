@@ -1,6 +1,5 @@
 import { mockServices, startTestBackend } from '@backstage/backend-test-utils';
-import type {
-  CatalogPermissionRuleInput} from '@backstage/plugin-catalog-node/alpha';
+import type { CatalogPermissionRuleInput } from '@backstage/plugin-catalog-node/alpha';
 import {
   catalogPermissionExtensionPoint,
   catalogProcessingExtensionPoint,

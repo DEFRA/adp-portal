@@ -8,15 +8,8 @@ import {
 } from '@backstage/backend-plugin-api';
 import { ScmIntegrations } from '@backstage/integration';
 import {
-  addDeliveryProjectToRepo,
-  addGithubTeamToRepoAction,
-  createGithubClient,
-  createGithubTeamAction,
-  createPipelineAction,
   filters,
-  getServiceConnectionAction,
-  permitPipelineAction,
-  runPipelineAction,
+  actions,
 } from '@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions';
 import { AdpClient } from '@internal/plugin-adp-backend';
 import { fetchApiRef } from '@internal/plugin-fetch-api-backend';
@@ -47,36 +40,37 @@ export const addScaffolderModuleAdpActions = createBackendModule({
         });
 
         scaffolderActions.addActions(
-          createPipelineAction({
+          actions.createPipelineAction({
             integrations: integrations,
             config: config,
           }),
-          getServiceConnectionAction({
+          actions.getServiceConnectionAction({
             integrations: integrations,
             config: config,
           }),
-          permitPipelineAction({
+          actions.permitPipelineAction({
             integrations: integrations,
             config: config,
           }),
-          runPipelineAction({
+          actions.runPipelineAction({
             integrations: integrations,
             config: config,
           }),
-          createGithubTeamAction({
+          actions.createGithubTeamAction({
             integrations: integrations,
             config: config,
           }),
-          addGithubTeamToRepoAction({
+          actions.addGithubTeamToRepoAction({
             integrations: integrations,
             config: config,
           }),
-          addDeliveryProjectToRepo({
+          actions.addDeliveryProjectToRepo({
             config: config,
             getGithubClient: org =>
-              createGithubClient(integrations, config, org),
+              actions.createGithubClient(integrations, config, org),
             adpClient,
           }),
+          actions.publishZipAction,
         );
 
         scaffolderTemplating.addTemplateFilters({ ...filters });

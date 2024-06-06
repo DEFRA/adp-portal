@@ -5,5 +5,5 @@
  * @packageDocumentation
  */
 
-export * from './actions';
+export * as actions from './actions';
 export * as filters from './filters';

@@ -46,7 +46,7 @@ describe('scaffolderModuleAdpActions', () => {
         ],
       });
 
-      expect(addedActions?.length).toEqual(7);
+      expect(addedActions?.length).toEqual(8);
       expect(addedFilters?.isOneOf).toBeDefined();
       expect(addedFilters?.toDotnetProjectName).toBeDefined();
     });
