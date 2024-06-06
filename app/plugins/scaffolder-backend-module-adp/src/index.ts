@@ -7,3 +7,4 @@
 
 export * from './actions';
 export * as filters from './filters';
+export { adpScaffolderModule as default } from './module';

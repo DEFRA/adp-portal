@@ -1,5 +1,5 @@
 {
-  "name": "@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions",
+  "name": "@internal/plugin-scaffolder-backend-module-adp",
   "description": "Custom scaffolder actions for ADP",
   "version": "0.1.0",
   "main": "src/index.ts",
@@ -26,10 +26,14 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
+    "@backstage/backend-plugin-api": "^0.6.18",
+    "@backstage/backend-test-utils": "^0.3.8",
     "@backstage/config": "^1.1.1",
     "@backstage/errors": "^1.2.3",
     "@backstage/integration": "^1.8.0",
     "@backstage/plugin-scaffolder-node": "^0.3.0",
+    "@internal/plugin-adp-backend": "^0.1.0",
+    "@internal/plugin-fetch-api-backend": "^0.1.0",
     "azure-devops-node-api": "^12.1.0",
     "octokit": "^3.1.2",
     "typed-rest-client": "^1.8.11"

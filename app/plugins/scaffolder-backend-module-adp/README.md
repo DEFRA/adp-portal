@@ -1,4 +1,4 @@
-# @internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions
+# @internal/backstage-plugin-scaffolder-backend-module-adp
 
 Custom scaffolder actions for ADP.
 

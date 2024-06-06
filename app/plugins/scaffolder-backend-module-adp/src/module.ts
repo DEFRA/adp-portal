@@ -1,29 +1,29 @@
 import {
-  scaffolderActionsExtensionPoint,
-  scaffolderTemplatingExtensionPoint,
-} from '@backstage/plugin-scaffolder-node/alpha';
-import {
   coreServices,
   createBackendModule,
 } from '@backstage/backend-plugin-api';
 import { ScmIntegrations } from '@backstage/integration';
+import {
+  scaffolderActionsExtensionPoint,
+  scaffolderTemplatingExtensionPoint,
+} from '@backstage/plugin-scaffolder-node/alpha';
+import { fetchApiRef } from '@internal/plugin-fetch-api-backend';
+import { AdpClient } from '@internal/plugin-adp-backend';
 import {
   addDeliveryProjectToRepo,
   addGithubTeamToRepoAction,
   createGithubClient,
   createGithubTeamAction,
   createPipelineAction,
-  filters,
   getServiceConnectionAction,
   permitPipelineAction,
   runPipelineAction,
-} from '@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions';
-import { AdpClient } from '@internal/plugin-adp-backend';
-import { fetchApiRef } from '@internal/plugin-fetch-api-backend';
+} from './actions';
+import { filters } from '.';
 
-export const addScaffolderModuleAdpActions = createBackendModule({
+export const adpScaffolderModule = createBackendModule({
   pluginId: 'scaffolder',
-  moduleId: 'adp-actions',
+  moduleId: 'adp',
   register(env) {
     env.registerInit({
       deps: {
@@ -47,32 +47,14 @@ export const addScaffolderModuleAdpActions = createBackendModule({
         });
 
         scaffolderActions.addActions(
-          createPipelineAction({
-            integrations: integrations,
-            config: config,
-          }),
-          getServiceConnectionAction({
-            integrations: integrations,
-            config: config,
-          }),
-          permitPipelineAction({
-            integrations: integrations,
-            config: config,
-          }),
-          runPipelineAction({
-            integrations: integrations,
-            config: config,
-          }),
-          createGithubTeamAction({
-            integrations: integrations,
-            config: config,
-          }),
-          addGithubTeamToRepoAction({
-            integrations: integrations,
-            config: config,
-          }),
+          createPipelineAction({ integrations, config }),
+          getServiceConnectionAction({ integrations, config }),
+          permitPipelineAction({ integrations, config }),
+          runPipelineAction({ integrations, config }),
+          createGithubTeamAction({ integrations, config }),
+          addGithubTeamToRepoAction({ integrations, config }),
           addDeliveryProjectToRepo({
-            config: config,
+            config,
             getGithubClient: org =>
               createGithubClient(integrations, config, org),
             adpClient,
