@@ -15,7 +15,6 @@ import {
   addAdoNameTransformer,
   addAdpPermissionsPolicy,
   addCatalogPermissionRules,
-  addScaffolderModuleAdpActions,
 } from './modules';
 import { addAdpDatabaseEntityProvider } from './modules';
 import { requestContextProviderRef } from '@internal/plugin-request-context-provider-backend';
@@ -79,10 +78,6 @@ backend.add(addAdoNameTransformer);
 backend.add(addAdpDatabaseEntityProvider);
 backend.add(import('@backstage/plugin-scaffolder-backend/alpha'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
-backend.add(addScaffolderModuleAdpActions);
-backend.add(
-  import('@roadiehq/scaffolder-backend-module-http-request/new-backend'),
-);
 backend.add(import('@backstage/plugin-search-backend/alpha'));
 backend.add(import('@backstage/plugin-search-backend-module-catalog/alpha'));
 backend.add(import('@backstage/plugin-search-backend-module-techdocs/alpha'));
@@ -93,6 +88,12 @@ backend.add(import('@backstage/plugin-azure-devops-backend'));
 
 // ADP
 backend.add(legacyPlugin('adp', import('./plugins/adp')));
+backend.add(import('@internal/plugin-scaffolder-backend-module-adp'));
+
+// 3rd Party
+backend.add(
+  import('@roadiehq/scaffolder-backend-module-http-request/new-backend'),
+);
 
 backend.start().catch(error => {
   console.error('Uncaught error in backend startup', error);

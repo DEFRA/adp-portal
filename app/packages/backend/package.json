@@ -54,7 +54,7 @@
     "@backstage/plugin-search-backend-node": "^1.2.12",
     "@backstage/plugin-techdocs-backend": "^1.9.1",
     "@backstage/plugin-techdocs-node": "^1.12.4",
-    "@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions": "^0.1.0",
+    "@internal/plugin-scaffolder-backend-module-adp": "^0.1.0",
     "@internal/plugin-adp-backend": "^0.1.0",
     "@internal/plugin-adp-common": "^0.1.0",
     "@internal/plugin-catalog-backend-module-adp": "^0.1.0",
