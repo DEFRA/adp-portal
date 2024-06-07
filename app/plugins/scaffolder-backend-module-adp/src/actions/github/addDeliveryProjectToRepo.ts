@@ -3,6 +3,7 @@ import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import type { Octokit } from 'octokit';
 import type { Config } from '@backstage/config';
 import type { IAdpClient } from '@internal/plugin-adp-common';
+import type { BackstageCredentials } from '@backstage/backend-plugin-api';
 
 export type AddDeliveryProjectToRepoInput = {
   projectName: string;
@@ -14,7 +15,7 @@ export type AddDeliveryProjectToRepoInput = {
 export function addDeliveryProjectToRepo(options: {
   config: Config;
   getGithubClient: (organization: string) => Promise<Octokit>;
-  adpClient: IAdpClient;
+  adpClient: (credentials: BackstageCredentials) => IAdpClient;
 }) {
   const { config, getGithubClient, adpClient } = options;
   return createTemplateAction<AddDeliveryProjectToRepoInput>({
@@ -57,8 +58,9 @@ export function addDeliveryProjectToRepo(options: {
         owner,
       } = ctx.input;
 
+      const client = adpClient(await ctx.getInitiatorCredentials());
       const teams =
-        await adpClient.syncDeliveryProjectWithGithubTeams(projectName);
+        await client.syncDeliveryProjectWithGithubTeams(projectName);
 
       await addTeamsToRepository(ctx.logger, orgName, repoName, owner, {
         [teams.contributors.slug]: 'push',

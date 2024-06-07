@@ -15,7 +15,6 @@ import {
   addAdoNameTransformer,
   addAdpPermissionsPolicy,
   addCatalogPermissionRules,
-  addAdpDatabaseEntityProvider,
 } from './modules';
 import { requestContextProviderRef } from '@internal/plugin-request-context-provider-backend';
 
@@ -76,7 +75,7 @@ backend.add(
 backend.add(import('@backstage/plugin-catalog-backend-module-github/alpha'));
 backend.add(import('@backstage/plugin-catalog-backend-module-msgraph/alpha'));
 backend.add(addAdoNameTransformer);
-backend.add(addAdpDatabaseEntityProvider);
+backend.add(import('@internal/plugin-catalog-backend-module-adp'));
 backend.add(import('@backstage/plugin-scaffolder-backend/alpha'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(import('@backstage/plugin-search-backend/alpha'));

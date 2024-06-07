@@ -35,6 +35,7 @@
   "devDependencies": {
     "@backstage/backend-test-utils": "^0.3.8",
     "@backstage/cli": "^0.26.6",
+    "@internal/plugin-fetch-api-backend": "*",
     "@types/jest": "^29.0.0"
   },
   "files": [
