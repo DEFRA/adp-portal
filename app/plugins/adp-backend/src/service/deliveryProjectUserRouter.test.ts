@@ -75,9 +75,8 @@ describe('createRouter', () => {
   };
 
   beforeAll(async () => {
-    const deliveryProjectUserRouter = await createDeliveryProjectUserRouter(
-      mockOptions,
-    );
+    const deliveryProjectUserRouter =
+      await createDeliveryProjectUserRouter(mockOptions);
     deliveryProjectUserApp = express().use(deliveryProjectUserRouter);
   });
 

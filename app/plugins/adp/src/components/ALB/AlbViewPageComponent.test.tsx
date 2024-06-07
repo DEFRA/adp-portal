@@ -219,7 +219,7 @@ jest.mock(
       get EditAlbButton() {
         return EditAlbButton;
       },
-    } satisfies typeof EditAlbButtonModule),
+    }) satisfies typeof EditAlbButtonModule,
 );
 
 jest.mock(
@@ -229,7 +229,7 @@ jest.mock(
       get CreateAlbButton() {
         return CreateAlbButton;
       },
-    } satisfies typeof CreateAlbButtonModule),
+    }) satisfies typeof CreateAlbButtonModule,
 );
 
 function noTableData(value: unknown) {

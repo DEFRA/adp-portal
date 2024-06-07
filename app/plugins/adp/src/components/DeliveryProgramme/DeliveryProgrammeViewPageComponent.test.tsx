@@ -230,7 +230,7 @@ jest.mock(
       get EditDeliveryProgrammeButton() {
         return EditDeliveryProgrammeButton;
       },
-    } satisfies typeof EditDeliveryProgrammeButtonModule),
+    }) satisfies typeof EditDeliveryProgrammeButtonModule,
 );
 
 jest.mock(
@@ -240,7 +240,7 @@ jest.mock(
       get CreateDeliveryProgrammeButton() {
         return CreateDeliveryProgrammeButton;
       },
-    } satisfies typeof CreateDeliveryProgrammeButtonModule),
+    }) satisfies typeof CreateDeliveryProgrammeButtonModule,
 );
 
 function noTableData(value: unknown) {

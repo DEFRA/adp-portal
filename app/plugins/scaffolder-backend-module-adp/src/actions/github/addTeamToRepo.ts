@@ -6,18 +6,20 @@ import { Octokit } from 'octokit';
 import type { Config } from '@backstage/config';
 import { InputError } from '@backstage/errors';
 
+export type AddGithubTeamToRepoActionInput = {
+  teamNames: string;
+  repoName: string;
+  orgName?: string;
+  owner: string;
+  permission: 'pull' | 'triage' | 'push' | 'maintain' | 'admin';
+};
+
 export function addGithubTeamToRepoAction(options: {
   integrations: ScmIntegrationRegistry;
   config: Config;
 }) {
   const { integrations, config } = options;
-  return createTemplateAction<{
-    teamNames: string;
-    repoName: string;
-    orgName?: string;
-    owner: string;
-    permission: 'pull' | 'triage' | 'push' | 'maintain' | 'admin';
-  }>({
+  return createTemplateAction<AddGithubTeamToRepoActionInput>({
     id: 'adp:github:team:add',
     description: 'Adds a GitHub Team to the git repository as collaborator',
     schema: {

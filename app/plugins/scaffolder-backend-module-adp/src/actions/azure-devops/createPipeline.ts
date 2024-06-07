@@ -4,7 +4,7 @@ import type { ScmIntegrationRegistry } from '@backstage/integration';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
 
-type CreatePipelineOptions = {
+export type CreatePipelineActionInput = {
   pipelineApiVersion?: string;
   server?: string;
   organization?: string;
@@ -22,7 +22,7 @@ export function createPipelineAction(options: {
 }) {
   const { integrations, config } = options;
 
-  return createTemplateAction<CreatePipelineOptions>({
+  return createTemplateAction<CreatePipelineActionInput>({
     id: 'adp:azure:pipeline:create',
     description: 'Creates an Azure DevOps pipeline',
     schema: {

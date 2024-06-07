@@ -1,9 +1,11 @@
 import { ConfigReader } from '@backstage/config';
 import { ScmIntegrations } from '@backstage/integration';
-import { permitPipelineAction } from './permitPipeline';
-import { getVoidLogger } from '@backstage/backend-common';
-import { PassThrough } from 'stream';
+import {
+  type PermitPipelineActionInput,
+  permitPipelineAction,
+} from './permitPipeline';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
+import { createMockActionContext } from '@backstage/plugin-scaffolder-node-test-utils';
 
 describe('adp:azure:pipeline:permit', () => {
   beforeEach(() => {
@@ -32,40 +34,52 @@ describe('adp:azure:pipeline:permit', () => {
     config: config,
   });
 
-  const mockContext = {
-    input: {
-      project: 'test-project',
-      pipelineId: 1234,
-      resources: {
-        serviceConnectionIds: [
-          '7d1286fb-33e7-43ee-b5db-68edd53ac7e1',
-          '83e3836d-eb1e-4a9c-8bd2-b5a473581a2d',
-          'a24305f9-dbd5-4043-8953-1df24e369c62',
-        ],
-        variableGroupIds: [111, 222, 333],
-        environmentIds: [444, 555, 666],
-        agentQueueIds: [777, 888, 999],
-      },
-    },
-    workspacePath: 'test-workspace',
-    logger: getVoidLogger(),
-    logStream: new PassThrough(),
-    output: jest.fn(),
-    createTemporaryDirectory: jest.fn(),
-  };
-
   it('should throw if no response is returned from the API', async () => {
+    const context = createMockActionContext<PermitPipelineActionInput>({
+      input: {
+        project: 'test-project',
+        pipelineId: 1234,
+        resources: {
+          serviceConnectionIds: [
+            '7d1286fb-33e7-43ee-b5db-68edd53ac7e1',
+            '83e3836d-eb1e-4a9c-8bd2-b5a473581a2d',
+            'a24305f9-dbd5-4043-8953-1df24e369c62',
+          ],
+          variableGroupIds: [111, 222, 333],
+          environmentIds: [444, 555, 666],
+          agentQueueIds: [777, 888, 999],
+        },
+      },
+      workspacePath: 'test-workspace',
+    });
     const permitSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'permitPipeline')
       .mockResolvedValue(undefined!);
 
     expect(permitSpy).not.toHaveBeenCalled();
-    await expect(action.handler(mockContext)).rejects.toThrow(
+    await expect(action.handler(context)).rejects.toThrow(
       /Unable to permit pipeline resources/,
     );
   });
 
   it('should log an info message if the pipeline resources have been permitted', async () => {
+    const context = createMockActionContext<PermitPipelineActionInput>({
+      input: {
+        project: 'test-project',
+        pipelineId: 1234,
+        resources: {
+          serviceConnectionIds: [
+            '7d1286fb-33e7-43ee-b5db-68edd53ac7e1',
+            '83e3836d-eb1e-4a9c-8bd2-b5a473581a2d',
+            'a24305f9-dbd5-4043-8953-1df24e369c62',
+          ],
+          variableGroupIds: [111, 222, 333],
+          environmentIds: [444, 555, 666],
+          agentQueueIds: [777, 888, 999],
+        },
+      },
+      workspacePath: 'test-workspace',
+    });
     const permitSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'permitPipeline')
       .mockResolvedValue([
@@ -91,13 +105,13 @@ describe('adp:azure:pipeline:permit', () => {
         },
       ]);
 
-    const loggerSpy = jest.spyOn(mockContext.logger, 'info');
+    const loggerSpy = jest.spyOn(context.logger, 'info');
 
-    await action.handler(mockContext);
+    await action.handler(context);
 
     expect(permitSpy).toHaveBeenCalled();
     expect(loggerSpy).toHaveBeenCalled();
-    expect(mockContext.logger.info).toHaveBeenLastCalledWith(
+    expect(context.logger.info).toHaveBeenLastCalledWith(
       'Updated resource permissions in pipeline 1234',
     );
   });
@@ -136,6 +150,14 @@ describe('adp:azure:pipeline:permit', () => {
       environmentIds: [444, 555, 666],
     },
   ])('should handle missing resource types', async resources => {
+    const context = createMockActionContext<PermitPipelineActionInput>({
+      input: {
+        project: 'test-project',
+        pipelineId: 1234,
+        resources,
+      },
+      workspacePath: 'test-workspace',
+    });
     const permitSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'permitPipeline')
       .mockResolvedValue([
@@ -161,15 +183,7 @@ describe('adp:azure:pipeline:permit', () => {
         },
       ]);
 
-    const context = {
-      ...mockContext,
-      input: {
-        ...mockContext.input,
-        resources: resources,
-      },
-    };
-
-    const loggerSpy = jest.spyOn(mockContext.logger, 'info');
+    const loggerSpy = jest.spyOn(context.logger, 'info');
 
     await action.handler(context);
 

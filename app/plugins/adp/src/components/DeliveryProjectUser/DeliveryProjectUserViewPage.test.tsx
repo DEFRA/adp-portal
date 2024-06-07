@@ -31,7 +31,7 @@ jest.mock(
       get AddProjectUserButton() {
         return AddProjectUserButton;
       },
-    } satisfies typeof AddProjectUserButtonModule),
+    }) satisfies typeof AddProjectUserButtonModule,
 );
 
 jest.mock(
@@ -41,7 +41,7 @@ jest.mock(
       get EditDeliveryProjectUserButton() {
         return EditDeliveryProjectUserButton;
       },
-    } satisfies typeof EditDeliveryProjectUserButtonModule),
+    }) satisfies typeof EditDeliveryProjectUserButtonModule,
 );
 
 function setup() {

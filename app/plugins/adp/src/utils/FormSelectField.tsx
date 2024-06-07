@@ -10,8 +10,8 @@ import type {
 } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { isFieldDisabled } from './isFieldDisabled';
-import { enrichHelperText } from './enrichHelperText';
 import { rulesToHtmlProperties } from './rulesToHtmlProperties';
+import { getHelperText } from './getHelperText';
 
 export type FormSelectFieldProps<
   TFields extends FieldValues,
@@ -62,9 +62,7 @@ export function FormSelectField<
           select
           {...field}
           error={!!errors[name]}
-          helperText={
-            errors[name]?.message ?? enrichHelperText(helperText, rules) ?? ' '
-          }
+          helperText={getHelperText(errors, name, helperText, rules)}
           data-testid={name}
           disabled={isFieldDisabled(disabled, name)}
           inputProps={{

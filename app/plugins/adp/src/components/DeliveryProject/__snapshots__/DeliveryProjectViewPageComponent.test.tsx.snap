@@ -235,7 +235,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -270,7 +270,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -305,7 +305,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -340,7 +340,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -375,7 +375,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -410,7 +410,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -520,9 +520,6 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                                   />
                                 </svg>
                               </span>
-                              <span
-                                class="MuiTouchRipple-root"
-                              />
                             </a>
                              
                             <div>
@@ -538,9 +535,6 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                                 >
                                   Edit
                                 </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
                               </button>
                             </div>
                           </td>
@@ -1020,7 +1014,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1055,7 +1049,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1090,7 +1084,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1125,7 +1119,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1160,7 +1154,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1195,7 +1189,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is creat
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1697,7 +1691,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1732,7 +1726,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1767,7 +1761,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1802,7 +1796,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1837,7 +1831,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1872,7 +1866,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2082,9 +2076,6 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                                   />
                                 </svg>
                               </span>
-                              <span
-                                class="MuiTouchRipple-root"
-                              />
                             </a>
                              
                             <div>
@@ -2100,9 +2091,6 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                                 >
                                   Edit
                                 </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
                               </button>
                             </div>
                           </td>
@@ -2578,7 +2566,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2613,7 +2601,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2648,7 +2636,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2683,7 +2671,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2718,7 +2706,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2753,7 +2741,7 @@ exports[`DeliveryProjectViewPageComponent Should refresh when a project is edite
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3363,7 +3351,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page when the projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3398,7 +3386,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page when the projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3433,7 +3421,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page when the projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3468,7 +3456,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page when the projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3503,7 +3491,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page when the projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3538,7 +3526,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page when the projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4040,7 +4028,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with many proje
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4075,7 +4063,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with many proje
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4110,7 +4098,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with many proje
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4145,7 +4133,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with many proje
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4180,7 +4168,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with many proje
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4215,7 +4203,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with many proje
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5209,7 +5197,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with no project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5244,7 +5232,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with no project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5279,7 +5267,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with no project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5314,7 +5302,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with no project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5349,7 +5337,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with no project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5384,7 +5372,7 @@ exports[`DeliveryProjectViewPageComponent Should render the page with no project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"

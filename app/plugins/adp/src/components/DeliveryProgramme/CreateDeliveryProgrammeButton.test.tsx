@@ -13,7 +13,6 @@ import {
   DeliveryProgrammeFormFields,
   emptyForm,
 } from './DeliveryProgrammeFormFields';
-import { act } from 'react-dom/test-utils';
 import type { ValidationError as IValidationError } from '@internal/plugin-adp-common';
 import { SnapshotFriendlyStylesProvider, ValidationError } from '../../utils';
 import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
@@ -121,7 +120,7 @@ describe('CreateDeliveryProgrammeButton', () => {
     expect(result.baseElement).toMatchSnapshot('Before cancel');
     expect(DialogForm.mock.calls).toHaveLength(1);
     const formProps = DialogForm.mock.calls[0][0];
-    act(() => formProps.completed(undefined));
+    React.act(() => formProps.completed(undefined));
     await waitFor(() =>
       expect(result.queryByText('This is a dialog!')).toBeNull(),
     );
@@ -151,7 +150,7 @@ describe('CreateDeliveryProgrammeButton', () => {
     expect(DialogForm.mock.calls).toHaveLength(1);
     expect(onCreated).not.toHaveBeenCalled();
     const formProps = DialogForm.mock.calls[0][0];
-    act(() => formProps.completed(fields));
+    React.act(() => formProps.completed(fields));
     await waitFor(() =>
       expect(result.queryByText('This is a dialog!')).toBeNull(),
     );
@@ -307,7 +306,7 @@ jest.mock(
       get permissionApiRef(): never {
         throw new Error('Not mocked');
       },
-    } satisfies typeof PluginPermissionReactModule),
+    }) satisfies typeof PluginPermissionReactModule,
 );
 
 jest.mock(
@@ -317,5 +316,5 @@ jest.mock(
       get DialogForm() {
         return DialogForm as typeof DialogFormModule.DialogForm;
       },
-    } satisfies typeof DialogFormModule),
+    }) satisfies typeof DialogFormModule,
 );

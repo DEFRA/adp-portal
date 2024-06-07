@@ -26,7 +26,7 @@ jest.mock(
       get AddProgrammeAdminButton() {
         return AddProgrammeAdminButton;
       },
-    } satisfies typeof AddProgrammeAdminButtonModule),
+    }) satisfies typeof AddProgrammeAdminButtonModule,
 );
 
 function setup() {

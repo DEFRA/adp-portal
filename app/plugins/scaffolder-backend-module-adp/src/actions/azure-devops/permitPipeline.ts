@@ -5,7 +5,7 @@ import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import type { AuthorizedResources, ResourceOptions } from './types';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
 
-type PermitPipelineOptions = {
+export type PermitPipelineActionInput = {
   pipelineApiVersion?: string;
   server?: string;
   organization?: string;
@@ -20,7 +20,7 @@ export function permitPipelineAction(options: {
 }) {
   const { integrations, config } = options;
 
-  return createTemplateAction<PermitPipelineOptions>({
+  return createTemplateAction<PermitPipelineActionInput>({
     id: 'adp:azure:pipeline:permit',
     description: 'Authorizes access to resources for a pipeline',
     schema: {

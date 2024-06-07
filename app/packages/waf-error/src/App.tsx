@@ -17,7 +17,7 @@ const apis = new BasicApiRegistry([
   [appThemeApiRef, AppThemeSelector.createWithStorage(themes)],
 ]);
 
-const ThemeProvider: React.FC = ({ children }) => {
+const ThemeProvider = ({ children }: React.PropsWithChildren) => {
   const currentTheme = useAppTheme();
   return <currentTheme.Provider>{children}</currentTheme.Provider>;
 };

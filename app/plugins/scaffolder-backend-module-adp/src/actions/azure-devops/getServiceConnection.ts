@@ -4,7 +4,7 @@ import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { InputError } from '@backstage/errors';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
 
-type GetServiceConnectionOptions = {
+export type GetServiceConnectionActionInput = {
   serviceEndpointApiVersion?: string;
   server?: string;
   organization?: string;
@@ -18,7 +18,7 @@ export function getServiceConnectionAction(options: {
 }) {
   const { integrations, config } = options;
 
-  return createTemplateAction<GetServiceConnectionOptions>({
+  return createTemplateAction<GetServiceConnectionActionInput>({
     id: 'adp:azure:serviceconnection:get',
     description: 'Gets a service connection from an Azure DevOps project',
     schema: {

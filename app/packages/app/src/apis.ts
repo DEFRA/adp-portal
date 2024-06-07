@@ -10,7 +10,7 @@ import {
   fetchApiRef,
 } from '@backstage/core-plugin-api';
 import { AdpDataTechRadarApi } from './lib/techradar/techradardata';
-import { techRadarApiRef } from '@backstage/plugin-tech-radar';
+import { techRadarApiRef } from '@backstage-community/plugin-tech-radar';
 
 export const apis: AnyApiFactory[] = [
   createApiFactory({

@@ -36,7 +36,10 @@ import {
 } from '@internal/plugin-adp-backend';
 
 export class AdpPortalPermissionPolicy implements PermissionPolicy {
-  constructor(private rbacUtilites: RbacUtilities, private logger: Logger) {}
+  constructor(
+    private rbacUtilites: RbacUtilities,
+    private logger: Logger,
+  ) {}
 
   async handle(
     request: PolicyQuery,

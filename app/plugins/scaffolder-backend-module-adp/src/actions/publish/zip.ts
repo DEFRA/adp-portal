@@ -6,14 +6,16 @@ import archiver, { type Archiver } from 'archiver';
 import type { Readable } from 'node:stream';
 import type { Logger } from 'winston';
 
-/**
- * Creates a new action that initializes a git repository of the content in the workspace
- * and publishes it to Azure.
- * @public
- */
-export const publishZipAction = createTemplateAction<{
-  sourcePath?: string;
-}>({
+export type PublishZipActionInput = {
+  readonly sourcePath?: string;
+};
+export type PublishZipActionOutput = {
+  readonly dataUri: string;
+};
+export const publishZipAction = createTemplateAction<
+  PublishZipActionInput,
+  PublishZipActionOutput
+>({
   id: 'publish:zip',
   description:
     'Publishes the scaffolded repo to a zip file which can be downloaded.',
@@ -42,11 +44,15 @@ export const publishZipAction = createTemplateAction<{
   async handler(ctx) {
     const dir = getRepoSourceDirectory(ctx.workspacePath, ctx.input.sourcePath);
 
-    const data = await createArchive(opt => opt.directory(dir, false, {
-      date: new Date()
-    }), {
-      logger: ctx.logger,
-    });
+    const data = await createArchive(
+      opt =>
+        opt.directory(dir, false, {
+          date: new Date(),
+        }),
+      {
+        logger: ctx.logger,
+      },
+    );
     ctx.output(
       'dataUri',
       `data:application/zip;base64,${data.toString('base64')}`,
@@ -64,10 +70,10 @@ async function createArchive(
   options: CreateArchiveOptions = {},
 ) {
   const archive = archiver(options.format ?? 'zip', options);
-  using _onWarning = usingListener(archive, 'warning', err =>
+  using _onWarning = usingListener(archive, 'warning', (err: unknown) =>
     options.logger?.warn(err),
   );
-  using _onError = usingListener(archive, 'error', err =>
+  using _onError = usingListener(archive, 'error', (err: unknown) =>
     options.logger?.error(err),
   );
   const result = getData(archive);
@@ -101,9 +107,9 @@ function usingListener<TEvent, THandler>(
 }
 
 if (!Symbol.dispose) {
-  Object.defineProperty(Symbol, 'dispose', { 
-    value: Symbol('Symbol.dispose'), 
-    writable: false, 
-    configurable: false 
+  Object.defineProperty(Symbol, 'dispose', {
+    value: Symbol('Symbol.dispose'),
+    writable: false,
+    configurable: false,
   });
 }

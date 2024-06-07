@@ -56,5 +56,5 @@ jest.mock(
       get createFetchApiHeadersMiddleware() {
         return createFetchApiHeadersMiddleware;
       },
-    } satisfies typeof CreateFetchApiHeadersMiddleware),
+    }) satisfies typeof CreateFetchApiHeadersMiddleware,
 );

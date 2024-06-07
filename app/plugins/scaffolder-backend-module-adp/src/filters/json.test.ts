@@ -28,17 +28,12 @@ interface TestCase {
 
 describe('json', () => {
   it.each<TestCase>(
-    inputs.map(i => (
-      { input: i, inputJSON: JSON.stringify(i) }
-    )),
-  )(
-    'Should correctly handle $inputJSON',
-    ({ input }) => {
-      // act
-      const actual = json(input);
+    inputs.map(i => ({ input: i, inputJSON: JSON.stringify(i) })),
+  )('Should correctly handle $inputJSON', ({ input }) => {
+    // act
+    const actual = json(input);
 
-      // assert
-      expect(actual).toMatchSnapshot();
-    },
-  );
+    // assert
+    expect(actual).toMatchSnapshot();
+  });
 });

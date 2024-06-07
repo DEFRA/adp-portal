@@ -53,13 +53,14 @@ exports[`[kind: ???] /docs Should render correctly: content 1`] = `
 exports[`[kind: ???] tabs Should render tabs: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -69,14 +70,15 @@ exports[`[kind: ???] tabs Should render tabs: tabs 1`] = `
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -86,7 +88,7 @@ exports[`[kind: ???] tabs Should render tabs: tabs 1`] = `
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -181,7 +183,7 @@ exports[`[kind: api] / Should render correctly: content 1`] = `
                             <th
                               class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                               scope="col"
-                              style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                              style="color: rgb(0, 0, 0); box-sizing: border-box;"
                             >
                               <span
                                 aria-disabled="false"
@@ -205,7 +207,7 @@ exports[`[kind: api] / Should render correctly: content 1`] = `
                             <th
                               class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                               scope="col"
-                              style="text-transform: uppercase; box-sizing: border-box;"
+                              style="box-sizing: border-box;"
                             >
                               <span
                                 aria-disabled="false"
@@ -229,7 +231,7 @@ exports[`[kind: api] / Should render correctly: content 1`] = `
                             <th
                               class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                               scope="col"
-                              style="text-transform: uppercase; box-sizing: border-box;"
+                              style="box-sizing: border-box;"
                             >
                               <span
                                 aria-disabled="false"
@@ -253,7 +255,7 @@ exports[`[kind: api] / Should render correctly: content 1`] = `
                             <th
                               class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                               scope="col"
-                              style="text-transform: uppercase; box-sizing: border-box;"
+                              style="box-sizing: border-box;"
                             >
                               <span
                                 aria-disabled="false"
@@ -277,7 +279,7 @@ exports[`[kind: api] / Should render correctly: content 1`] = `
                             <th
                               class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                               scope="col"
-                              style="text-transform: uppercase; box-sizing: border-box;"
+                              style="box-sizing: border-box;"
                             >
                               <span
                                 aria-disabled="false"
@@ -301,7 +303,7 @@ exports[`[kind: api] / Should render correctly: content 1`] = `
                             <th
                               class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                               scope="col"
-                              style="text-transform: uppercase; box-sizing: border-box;"
+                              style="box-sizing: border-box;"
                             >
                               <span
                                 aria-disabled="false"
@@ -434,7 +436,7 @@ exports[`[kind: api] / Should render correctly: content 1`] = `
                             <th
                               class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                               scope="col"
-                              style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                              style="color: rgb(0, 0, 0); box-sizing: border-box;"
                             >
                               <span
                                 aria-disabled="false"
@@ -458,7 +460,7 @@ exports[`[kind: api] / Should render correctly: content 1`] = `
                             <th
                               class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                               scope="col"
-                              style="text-transform: uppercase; box-sizing: border-box;"
+                              style="box-sizing: border-box;"
                             >
                               <span
                                 aria-disabled="false"
@@ -482,7 +484,7 @@ exports[`[kind: api] / Should render correctly: content 1`] = `
                             <th
                               class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                               scope="col"
-                              style="text-transform: uppercase; box-sizing: border-box;"
+                              style="box-sizing: border-box;"
                             >
                               <span
                                 aria-disabled="false"
@@ -506,7 +508,7 @@ exports[`[kind: api] / Should render correctly: content 1`] = `
                             <th
                               class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                               scope="col"
-                              style="text-transform: uppercase; box-sizing: border-box;"
+                              style="box-sizing: border-box;"
                             >
                               <span
                                 aria-disabled="false"
@@ -530,7 +532,7 @@ exports[`[kind: api] / Should render correctly: content 1`] = `
                             <th
                               class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                               scope="col"
-                              style="text-transform: uppercase; box-sizing: border-box;"
+                              style="box-sizing: border-box;"
                             >
                               <span
                                 aria-disabled="false"
@@ -554,7 +556,7 @@ exports[`[kind: api] / Should render correctly: content 1`] = `
                             <th
                               class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                               scope="col"
-                              style="text-transform: uppercase; box-sizing: border-box;"
+                              style="box-sizing: border-box;"
                             >
                               <span
                                 aria-disabled="false"
@@ -649,13 +651,14 @@ exports[`[kind: api] /definition Should render correctly: content 1`] = `
 exports[`[kind: api] tabs Should render tabs: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -665,14 +668,15 @@ exports[`[kind: api] tabs Should render tabs: tabs 1`] = `
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/definition"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -682,7 +686,7 @@ exports[`[kind: api] tabs Should render tabs: tabs 1`] = `
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -740,13 +744,14 @@ exports[`[kind: component] [type: ???] /docs Should render correctly: content 1`
 exports[`[kind: component] [type: ???] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -756,14 +761,15 @@ exports[`[kind: component] [type: ???] tabs Should render tabs when there is kub
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -773,7 +779,7 @@ exports[`[kind: component] [type: ???] tabs Should render tabs when there is kub
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -781,13 +787,14 @@ exports[`[kind: component] [type: ???] tabs Should render tabs when there is kub
 exports[`[kind: component] [type: ???] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -797,14 +804,15 @@ exports[`[kind: component] [type: ???] tabs Should render tabs when there is no 
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -814,7 +822,7 @@ exports[`[kind: component] [type: ???] tabs Should render tabs when there is no 
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -1069,13 +1077,14 @@ exports[`[kind: component] [type: backend] /releases Should render correctly: co
 exports[`[kind: component] [type: backend] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1085,14 +1094,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/ci-cd"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1102,14 +1112,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1119,14 +1130,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-3"
+      href="/grafana"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1136,14 +1148,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-4"
+      href="/api"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1153,14 +1166,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-5"
+      href="/dependencies"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1170,14 +1184,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-6"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1187,14 +1202,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-7"
+      href="/releases"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1204,14 +1220,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-8"
+      href="/kubernetes"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1221,7 +1238,7 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -1229,13 +1246,14 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
 exports[`[kind: component] [type: backend] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1245,14 +1263,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/ci-cd"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1262,14 +1281,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1279,14 +1299,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-3"
+      href="/grafana"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1296,14 +1317,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-4"
+      href="/api"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1313,14 +1335,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-5"
+      href="/dependencies"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1330,14 +1353,15 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-6"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1347,7 +1371,7 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -1581,13 +1605,14 @@ exports[`[kind: component] [type: frontend] /releases Should render correctly: c
 exports[`[kind: component] [type: frontend] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1597,14 +1622,15 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/ci-cd"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1614,14 +1640,15 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1631,14 +1658,15 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-3"
+      href="/grafana"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1648,14 +1676,15 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-4"
+      href="/dependencies"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1665,14 +1694,15 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-5"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1682,14 +1712,15 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-6"
+      href="/releases"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1699,14 +1730,15 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-7"
+      href="/kubernetes"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1716,7 +1748,7 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -1724,13 +1756,14 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
 exports[`[kind: component] [type: frontend] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1740,14 +1773,15 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/ci-cd"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1757,14 +1791,15 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1774,14 +1809,15 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-3"
+      href="/grafana"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1791,14 +1827,15 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-4"
+      href="/dependencies"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1808,14 +1845,15 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-5"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -1825,7 +1863,7 @@ exports[`[kind: component] [type: frontend] tabs Should render tabs when there i
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -2038,13 +2076,14 @@ exports[`[kind: component] [type: helm] /releases Should render correctly: conte
 exports[`[kind: component] [type: helm] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2054,14 +2093,15 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is ku
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/ci-cd"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2071,14 +2111,15 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is ku
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2088,14 +2129,15 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is ku
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-3"
+      href="/dependencies"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2105,14 +2147,15 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is ku
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-4"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2122,14 +2165,15 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is ku
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-5"
+      href="/releases"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2139,14 +2183,15 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is ku
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-6"
+      href="/kubernetes"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2156,7 +2201,7 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is ku
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -2164,13 +2209,14 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is ku
 exports[`[kind: component] [type: helm] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2180,14 +2226,15 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is no
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/ci-cd"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2197,14 +2244,15 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is no
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2214,14 +2262,15 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is no
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-3"
+      href="/dependencies"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2231,14 +2280,15 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is no
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-4"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2248,7 +2298,7 @@ exports[`[kind: component] [type: helm] tabs Should render tabs when there is no
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -2503,13 +2553,14 @@ exports[`[kind: component] [type: service] /releases Should render correctly: co
 exports[`[kind: component] [type: service] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2519,14 +2570,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/ci-cd"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2536,14 +2588,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2553,14 +2606,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-3"
+      href="/grafana"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2570,14 +2624,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-4"
+      href="/api"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2587,14 +2642,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-5"
+      href="/dependencies"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2604,14 +2660,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-6"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2621,14 +2678,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-7"
+      href="/releases"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2638,14 +2696,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-8"
+      href="/kubernetes"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2655,7 +2714,7 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -2663,13 +2722,14 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
 exports[`[kind: component] [type: service] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2679,14 +2739,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/ci-cd"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2696,14 +2757,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2713,14 +2775,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-3"
+      href="/grafana"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2730,14 +2793,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-4"
+      href="/api"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2747,14 +2811,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-5"
+      href="/dependencies"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2764,14 +2829,15 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-6"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -2781,7 +2847,7 @@ exports[`[kind: component] [type: service] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -3015,13 +3081,14 @@ exports[`[kind: component] [type: website] /releases Should render correctly: co
 exports[`[kind: component] [type: website] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3031,14 +3098,15 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/ci-cd"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3048,14 +3116,15 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3065,14 +3134,15 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-3"
+      href="/grafana"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3082,14 +3152,15 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-4"
+      href="/dependencies"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3099,14 +3170,15 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-5"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3116,14 +3188,15 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-6"
+      href="/releases"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3133,14 +3206,15 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-7"
+      href="/kubernetes"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3150,7 +3224,7 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -3158,13 +3232,14 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
 exports[`[kind: component] [type: website] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3174,14 +3249,15 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/ci-cd"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3191,14 +3267,15 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3208,14 +3285,15 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-3"
+      href="/grafana"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3225,14 +3303,15 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-4"
+      href="/dependencies"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3242,14 +3321,15 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-5"
+      href="/docs"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3259,7 +3339,7 @@ exports[`[kind: component] [type: website] tabs Should render tabs when there is
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -3300,13 +3380,14 @@ exports[`[kind: domain] / Should render correctly: content 1`] = `
 exports[`[kind: domain] tabs Should render tabs: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3316,7 +3397,7 @@ exports[`[kind: domain] tabs Should render tabs: tabs 1`] = `
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -3424,13 +3505,14 @@ exports[`[kind: group] /releases Should render correctly: content 1`] = `
 exports[`[kind: group] tabs Should render tabs when is a delivery programme: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3440,14 +3522,15 @@ exports[`[kind: group] tabs Should render tabs when is a delivery programme: tab
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3457,14 +3540,15 @@ exports[`[kind: group] tabs Should render tabs when is a delivery programme: tab
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/manage-delivery-programme-admins"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3474,7 +3558,7 @@ exports[`[kind: group] tabs Should render tabs when is a delivery programme: tab
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -3482,13 +3566,14 @@ exports[`[kind: group] tabs Should render tabs when is a delivery programme: tab
 exports[`[kind: group] tabs Should render tabs when is a delivery project: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3498,14 +3583,15 @@ exports[`[kind: group] tabs Should render tabs when is a delivery project: tabs 
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3515,14 +3601,15 @@ exports[`[kind: group] tabs Should render tabs when is a delivery project: tabs 
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/manage-delivery-project-users"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3532,7 +3619,7 @@ exports[`[kind: group] tabs Should render tabs when is a delivery project: tabs 
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -3540,13 +3627,14 @@ exports[`[kind: group] tabs Should render tabs when is a delivery project: tabs 
 exports[`[kind: group] tabs Should render tabs when there is kubernetes: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3556,14 +3644,15 @@ exports[`[kind: group] tabs Should render tabs when there is kubernetes: tabs 1`
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3573,14 +3662,15 @@ exports[`[kind: group] tabs Should render tabs when there is kubernetes: tabs 1`
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-2"
+      href="/releases"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3590,14 +3680,15 @@ exports[`[kind: group] tabs Should render tabs when there is kubernetes: tabs 1`
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-3"
+      href="/kubernetes"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3607,7 +3698,7 @@ exports[`[kind: group] tabs Should render tabs when there is kubernetes: tabs 1`
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -3615,13 +3706,14 @@ exports[`[kind: group] tabs Should render tabs when there is kubernetes: tabs 1`
 exports[`[kind: group] tabs Should render tabs: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3631,14 +3723,15 @@ exports[`[kind: group] tabs Should render tabs: tabs 1`] = `
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/pull-requests"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3648,7 +3741,7 @@ exports[`[kind: group] tabs Should render tabs: tabs 1`] = `
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -3723,13 +3816,14 @@ exports[`[kind: system] /diagram Should render correctly: content 1`] = `
 exports[`[kind: system] tabs Should render tabs: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3739,14 +3833,15 @@ exports[`[kind: system] tabs Should render tabs: tabs 1`] = `
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
-    <button
+    </a>,
+    <a
+      aria-disabled="false"
       aria-selected="false"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
       data-testid="header-tab-1"
+      href="/diagram"
       role="tab"
       tabindex="-1"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3756,7 +3851,7 @@ exports[`[kind: system] tabs Should render tabs: tabs 1`] = `
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;
@@ -3789,13 +3884,14 @@ exports[`[kind: user] / Should render correctly: content 1`] = `
 exports[`[kind: user] tabs Should render tabs: tabs 1`] = `
 [
   [
-    <button
+    <a
+      aria-disabled="false"
       aria-selected="true"
-      class="MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
       data-testid="header-tab-0"
+      href="/"
       role="tab"
       tabindex="0"
-      type="button"
     >
       <span
         class="MuiTab-wrapper"
@@ -3805,7 +3901,7 @@ exports[`[kind: user] tabs Should render tabs: tabs 1`] = `
       <span
         class="MuiTouchRipple-root"
       />
-    </button>,
+    </a>,
   ],
 ]
 `;

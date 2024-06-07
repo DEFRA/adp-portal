@@ -115,5 +115,5 @@ jest.mock(
       get createFetchApiForPluginMiddleware() {
         return createFetchApiForPluginMiddleware;
       },
-    } satisfies typeof CreateFetchApiForPluginMiddleware),
+    }) satisfies typeof CreateFetchApiForPluginMiddleware,
 );
