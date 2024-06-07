@@ -9,6 +9,8 @@ import {
 import fetchApiFactory from '@internal/plugin-fetch-api-backend';
 import { adpScaffolderModule } from './module';
 import { mockServices, startTestBackend } from '@backstage/backend-test-utils';
+import * as customActions from './actions';
+import * as customFilters from './filters';
 
 describe('adpScaffolderModule', () => {
   it('should register actions with the scaffolder extension point', async () => {
@@ -45,8 +47,7 @@ describe('adpScaffolderModule', () => {
       ],
     });
 
-    expect(addedActions?.length).toEqual(7);
-    expect(addedFilters?.isOneOf).toBeDefined();
-    expect(addedFilters?.toDotnetProjectName).toBeDefined();
+    expect(addedActions?.length).toEqual(Object.keys(customActions).length);
+    expect(addedFilters).toMatchObject({ ...customFilters });
   });
 });
