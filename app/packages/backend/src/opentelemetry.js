@@ -39,8 +39,7 @@ function setupOpenTelemetry() {
     console.log('App Insights Not Running!');
   }
 }
-setupOpenTelemetry();
 
-module.exports = {
-  setupOpenTelemetry,
-};
+if (require.main === module) setupOpenTelemetry();
+
+module.exports = { setupOpenTelemetry };

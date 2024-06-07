@@ -28,8 +28,6 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
             <button
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
-              deliveryprogrammeid="123"
-              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -51,6 +49,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                   </svg>
                 </span>
                 Add Delivery Programme Admin
+                { deliveryProgrammeId: '123', entityRef: 'group:default/test-group' }
               </span>
               <span
                 class="MuiTouchRipple-root"
@@ -392,6 +391,9 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                                   >
                                     Remove
                                   </span>
+                                  <span
+                                    class="MuiTouchRipple-root"
+                                  />
                                 </button>
                               </td>
                             </tr>
@@ -665,8 +667,6 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
             <button
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
-              deliveryprogrammeid="123"
-              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -688,6 +688,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                   </svg>
                 </span>
                 Add Delivery Programme Admin
+                { deliveryProgrammeId: '123', entityRef: 'group:default/test-group' }
               </span>
               <span
                 class="MuiTouchRipple-root"
@@ -1220,8 +1221,6 @@ exports[`DeliveryProgrammeAdminViewPage should render the page when Delivery Pro
             <button
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
-              deliveryprogrammeid="123"
-              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -1243,6 +1242,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page when Delivery Pro
                   </svg>
                 </span>
                 Add Delivery Programme Admin
+                { deliveryProgrammeId: '123', entityRef: 'group:default/test-group' }
               </span>
               <span
                 class="MuiTouchRipple-root"
@@ -1775,8 +1775,6 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
             <button
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
-              deliveryprogrammeid="123"
-              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -1798,6 +1796,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                   </svg>
                 </span>
                 Add Delivery Programme Admin
+                { deliveryProgrammeId: '123', entityRef: 'group:default/test-group' }
               </span>
               <span
                 class="MuiTouchRipple-root"
@@ -2703,8 +2702,6 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with no Delivery 
             <button
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
-              deliveryprogrammeid="123"
-              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -2726,6 +2723,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with no Delivery 
                   </svg>
                 </span>
                 Add Delivery Programme Admin
+                { deliveryProgrammeId: '123', entityRef: 'group:default/test-group' }
               </span>
               <span
                 class="MuiTouchRipple-root"

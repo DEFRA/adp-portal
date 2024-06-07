@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import type { AddProgrammeAdminButtonProps } from './AddProgrammeAdminButton';
 import { AddProgrammeAdminButton } from './AddProgrammeAdminButton';
 import userEvent from '@testing-library/user-event';
@@ -200,7 +200,7 @@ describe('AddProgrammeAdminButton', () => {
     expect(result.baseElement).toMatchSnapshot('Before cancel');
     expect(DialogForm.mock.calls).toHaveLength(1);
     const formProps = DialogForm.mock.calls[0][0];
-    act(() => formProps.completed(undefined));
+    React.act(() => formProps.completed(undefined));
     await waitFor(() => expect(result.queryByText('Test dialog')).toBeNull());
     expect(result.baseElement).toMatchSnapshot('After cancel');
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
@@ -233,7 +233,7 @@ describe('AddProgrammeAdminButton', () => {
     expect(DialogForm.mock.calls).toHaveLength(1);
     expect(onCreated).not.toHaveBeenCalled();
     const formProps = DialogForm.mock.calls[0][0];
-    act(() => formProps.completed(fields));
+    React.act(() => formProps.completed(fields));
     await waitFor(() => expect(result.queryByText('Test dialog')).toBeNull());
     expect(result.baseElement).toMatchSnapshot('After complete');
     expect(onCreated).toHaveBeenCalledTimes(1);

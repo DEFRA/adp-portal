@@ -64,10 +64,14 @@ export const DeliveryProjectUserViewPage = () => {
         if (!d.is_admin && !d.is_technical) roles.push('Team Member');
         return {
           ...d,
-          emailLink: <Link to={`mailto:${d.email}`}> {d.email}</Link>,
+          emailLink: <Link to={`mailto:${d.email}`}>{d.email}</Link>,
           nameLink: <Link to={target}>{d.name}</Link>,
           role: roles.join(', '),
-          githubHandle: <Link to={githubTarget}>{d.github_username}</Link>,
+          githubHandle: d.github_username ? (
+            <Link to={githubTarget}>{d.github_username}</Link>
+          ) : (
+            <></>
+          ),
           actions: (
             <>
               <Button
