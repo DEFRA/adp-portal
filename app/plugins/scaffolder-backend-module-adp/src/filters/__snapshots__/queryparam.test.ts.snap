@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`queryparam Should add query parameter "abc"="123" to "https://test.com" 1`] = `"https://test.com/?abc=123"`;
+
+exports[`queryparam Should add query parameter "abc"="123" to "https://test.com?abc=xyz" 1`] = `"https://test.com/?abc=xyz&abc=123"`;
+
+exports[`queryparam Should add query parameter "abc"="123" to "https://test.com?xyz=123" 1`] = `"https://test.com/?xyz=123&abc=123"`;
+
+exports[`queryparam Should add query parameter "abc"=[1,2,3] to "https://test.com" 1`] = `"https://test.com/?abc=1&abc=2&abc=3"`;
+
+exports[`queryparam Should add query parameter "abc"={"prop1":{"nested":true}} to "https://test.com" 1`] = `"https://test.com/?abc.prop1.nested=true"`;
+
+exports[`queryparam Should add query parameter "abc"=123 to "https://test.com" 1`] = `"https://test.com/?abc=123"`;
+
+exports[`queryparam Should add query parameter "abc"=false to "https://test.com" 1`] = `"https://test.com/?abc=false"`;
+
+exports[`queryparam Should add query parameter "abc"=null to "https://test.com" 1`] = `"https://test.com/"`;
+
+exports[`queryparam Should add query parameter "abc"=true to "https://test.com" 1`] = `"https://test.com/?abc=true"`;

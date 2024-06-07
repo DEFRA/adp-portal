@@ -34,9 +34,11 @@
     "@backstage/plugin-scaffolder-node": "^0.3.0",
     "@internal/plugin-adp-backend": "^0.1.0",
     "@internal/plugin-fetch-api-backend": "^0.1.0",
+    "archiver": "^7.0.1",
     "azure-devops-node-api": "^12.1.0",
     "octokit": "^3.1.2",
-    "typed-rest-client": "^1.8.11"
+    "typed-rest-client": "^1.8.11",
+    "yaml": "^2.4.3"
   },
   "devDependencies": {
     "@backstage/backend-common": "^0.20.0",
