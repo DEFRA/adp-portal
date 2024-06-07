@@ -4959,16 +4959,6 @@
     "@backstage/plugin-permission-common" "^0.7.13"
     "@backstage/types" "^1.1.1"
 
-"@backstage/plugin-scaffolder-node-test-utils@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@backstage/plugin-scaffolder-node-test-utils/-/plugin-scaffolder-node-test-utils-0.1.4.tgz#2feab92b84cf0722c6ab52b142ede54e6ab42e7a"
-  integrity sha512-rWRUuRwvpmzPG3TEJ/oeR7+K+jwOr1tiB4E4oIeujnUr22vEAh6uqAR6rKfGaUF9XuECoFYkIkYaGIMTogcxOQ==
-  dependencies:
-    "@backstage/backend-common" "^0.22.0"
-    "@backstage/backend-test-utils" "^0.3.8"
-    "@backstage/plugin-scaffolder-node" "^0.4.4"
-    "@backstage/types" "^1.1.1"
-
 "@backstage/plugin-scaffolder-node@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@backstage/plugin-scaffolder-node/-/plugin-scaffolder-node-0.3.0.tgz#1d3b2a7595508f8fdddb2ed3512eace6c4091e11"

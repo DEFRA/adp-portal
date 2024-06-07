@@ -1,22 +1,21 @@
 import {
-  scaffolderActionsExtensionPoint,
-  scaffolderTemplatingExtensionPoint,
-} from '@backstage/plugin-scaffolder-node/alpha';
-import {
   coreServices,
   createBackendModule,
 } from '@backstage/backend-plugin-api';
 import { ScmIntegrations } from '@backstage/integration';
 import {
-  filters,
-  actions,
-} from '@internal/backstage-plugin-scaffolder-backend-module-adp-scaffolder-actions';
-import { AdpClient } from '@internal/plugin-adp-backend';
+  scaffolderActionsExtensionPoint,
+  scaffolderTemplatingExtensionPoint,
+} from '@backstage/plugin-scaffolder-node/alpha';
 import { fetchApiRef } from '@internal/plugin-fetch-api-backend';
+import { AdpClient } from '@internal/plugin-adp-backend';
+import * as actions from './actions';
+import * as filters from './filters';
+import { createGithubClient } from './util';
 
-export const addScaffolderModuleAdpActions = createBackendModule({
+export const adpScaffolderModule = createBackendModule({
   pluginId: 'scaffolder',
-  moduleId: 'adp-actions',
+  moduleId: 'adp',
   register(env) {
     env.registerInit({
       deps: {
@@ -67,7 +66,7 @@ export const addScaffolderModuleAdpActions = createBackendModule({
           actions.addDeliveryProjectToRepo({
             config: config,
             getGithubClient: org =>
-              actions.createGithubClient(integrations, config, org),
+              createGithubClient(integrations, config, org),
             adpClient,
           }),
           actions.publishZipAction,

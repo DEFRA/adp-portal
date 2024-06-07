@@ -1,4 +1,4 @@
-### Techdocs
+# backstage-plugin-techdocs-backend-module-adp
 
 A hybrid strategy is implemented for techdocs as detailed in the following guide.
 <https://backstage.io/docs/features/techdocs/how-to-guides/#how-to-implement-a-hybrid-build-strategy>
@@ -85,3 +85,7 @@ spec:
   lifecycle: experimental
   owner: FCP Grants
 ```
+
+The adp backend module for the techdocs plugin.
+
+_This plugin was created through the Backstage CLI_

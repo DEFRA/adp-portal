@@ -106,6 +106,12 @@ properties:
       - name: snd3-cluster-api-server-address
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SND3-CLUSTER-API-SERVER-ADDRESS
         identity: {{userAssignedIdentity}}
+      - name: snd4-cluster-name
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SND4-CLUSTER-NAME
+        identity: {{userAssignedIdentity}}
+      - name: snd4-cluster-api-server-address
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SND4-CLUSTER-API-SERVER-ADDRESS
+        identity: {{userAssignedIdentity}}        
       - name: dev1-cluster-name
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/DEV1-CLUSTER-NAME
         identity: {{userAssignedIdentity}}
