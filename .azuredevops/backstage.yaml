@@ -145,30 +145,15 @@ properties:
       - name: adp-portal-api-endpoint
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-API-ENDPOINT
         identity: {{userAssignedIdentity}}
-      - name: cluster1-env
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER1-ENV
-        identity: {{userAssignedIdentity}}
-      - name: cluster2-env
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER2-ENV
-        identity: {{userAssignedIdentity}}
-      - name: cluster3-env
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER3-ENV
-        identity: {{userAssignedIdentity}}
-      - name: cluster4-env
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER4-ENV
-        identity: {{userAssignedIdentity}}
-      - name: cluster5-env
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER5-ENV
-        identity: {{userAssignedIdentity}}
-      - name: cluster6-env
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER6-ENV
-        identity: {{userAssignedIdentity}}
       - name: app-insights-connectionstring
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SHARED-APPINSIGHTS-CONNECTIONSTRING
-        identity: {{userAssignedIdentity}}        
+        identity: {{userAssignedIdentity}}
       - name: adp-portal-mi-client-id
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-MI-CLIENT-ID
-        identity: {{userAssignedIdentity}}        
+        identity: {{userAssignedIdentity}}
+      - name: backstage-environment
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/BACKSTAGE-ENVIRONMENT
+        identity: {{userAssignedIdentity}}
   template:
     containers:
       - image: {{acrName}}.azurecr.io/image/{{imageRepoName}}:{{appVersion}}
@@ -269,19 +254,6 @@ properties:
             secretRef: prd1-cluster-name
           - name: PRD1_CLUSTER_API_SERVER_ADDRESS
             secretRef: prd1-cluster-api-server-address
-          - name: CLUSTER1_ENV
-            secretRef: cluster1-env
-          - name: CLUSTER2_ENV
-            secretRef: cluster2-env
-          - name: CLUSTER3_ENV
-            secretRef: cluster3-env
-          - name: CLUSTER4_ENV
-            secretRef: cluster4-env
-          - name: CLUSTER5_ENV
-            secretRef: cluster5-env
-          - name: CLUSTER6_ENV
-            secretRef: cluster6-env
-
           - name: ADP_PORTAL_TEMPLATE_VERSION
             value: '1.1.8'
           - name: APPINSIGHTS_CLOUDROLE
@@ -290,6 +262,8 @@ properties:
             secretRef: app-insights-connectionstring
           - name: ADP_PORTAL_MI_CLIENT_ID
             secretRef: adp-portal-mi-client-id
+          - name: BACKSTAGE_ENVIRONMENT
+            secretRef: backstage-environment
 
         resources:
           cpu: 0.5

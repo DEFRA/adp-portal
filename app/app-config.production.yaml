@@ -6,14 +6,7 @@ kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
   clusterLocatorMethods:
-    - type: 'config'
-      clusters:
-        - $include: ./config/cluster.${CLUSTER1_ENV}.configuration.yaml
-        - $include: ./config/cluster.${CLUSTER2_ENV}.configuration.yaml
-        - $include: ./config/cluster.${CLUSTER3_ENV}.configuration.yaml
-        - $include: ./config/cluster.${CLUSTER4_ENV}.configuration.yaml
-        - $include: ./config/cluster.${CLUSTER5_ENV}.configuration.yaml
-        - $include: ./config/cluster.${CLUSTER6_ENV}.configuration.yaml
+    - $include: ./config/clusterLocator.${BACKSTAGE_ENVIRONMENT}.configuration.yaml
 
 integrations:
   azure:
