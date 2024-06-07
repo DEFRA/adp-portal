@@ -8,7 +8,6 @@
     "plugins/*/migrations",
     "plugins/*/seedData",
     "plugins/*/config.d.ts",
-    "plugins/scaffolder-backend-module-adp-scaffolder-actions/src/filters/.ts"
   ],
   "exclude": [
     "node_modules"
