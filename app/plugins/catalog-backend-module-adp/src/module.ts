@@ -9,6 +9,8 @@ import {
 import { AdpDatabaseEntityProvider } from './providers';
 import { fetchApiRef } from '@internal/plugin-fetch-api-backend';
 import { isGroupMemberRule } from './permissions';
+import { microsoftGraphOrgEntityProviderTransformExtensionPoint } from '@backstage/plugin-catalog-backend-module-msgraph/alpha';
+import { defraUserNameTransformer } from './transformers/defraUserNameTransformer';
 
 export const adpCatalogModule = createBackendModule({
   pluginId: 'catalog',
@@ -21,6 +23,8 @@ export const adpCatalogModule = createBackendModule({
         scheduler: coreServices.scheduler,
         catalogProcessing: catalogProcessingExtensionPoint,
         catalogPermissions: catalogPermissionExtensionPoint,
+        microsoftGraphTransformers:
+          microsoftGraphOrgEntityProviderTransformExtensionPoint,
         auth: coreServices.auth,
         fetchApi: fetchApiRef,
       },
@@ -28,6 +32,7 @@ export const adpCatalogModule = createBackendModule({
         logger,
         catalogProcessing,
         catalogPermissions,
+        microsoftGraphTransformers,
         discovery,
         scheduler,
         auth,
@@ -44,6 +49,8 @@ export const adpCatalogModule = createBackendModule({
         );
 
         catalogPermissions.addPermissionRules([isGroupMemberRule]);
+
+        microsoftGraphTransformers.setUserTransformer(defraUserNameTransformer);
       },
     });
   },

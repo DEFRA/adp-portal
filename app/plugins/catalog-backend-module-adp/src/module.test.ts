@@ -8,6 +8,8 @@ import {
 } from '@backstage/plugin-catalog-node/alpha';
 import { adpCatalogModule } from './module';
 import type { PermissionRuleParams } from '@backstage/plugin-permission-common';
+import type { UserTransformer } from '@backstage/plugin-catalog-backend-module-msgraph';
+import { microsoftGraphOrgEntityProviderTransformExtensionPoint } from '@backstage/plugin-catalog-backend-module-msgraph/alpha';
 
 describe('catalogModuleAdpEntityProvider', () => {
   it('should register the provider with the catalog extension point', async () => {
@@ -15,6 +17,7 @@ describe('catalogModuleAdpEntityProvider', () => {
     let addedPermissionRules:
       | CatalogPermissionRuleInput<PermissionRuleParams>[][]
       | undefined;
+    let configuredTransformer: UserTransformer | undefined;
 
     const processingExtensionPont = {
       addEntityProvider: (providers: any) => {
@@ -26,6 +29,11 @@ describe('catalogModuleAdpEntityProvider', () => {
         addedPermissionRules = rules;
       },
     };
+    const msGraphExtensionPoint = {
+      setUserTransformer: (transformer: UserTransformer) => {
+        configuredTransformer = transformer;
+      },
+    };
 
     const discovery = mockServices.discovery.mock({
       getBaseUrl: jest.fn().mockResolvedValue('http://test.local'),
@@ -35,6 +43,10 @@ describe('catalogModuleAdpEntityProvider', () => {
       extensionPoints: [
         [catalogProcessingExtensionPoint, processingExtensionPont],
         [catalogPermissionExtensionPoint, permissionsExtensionPont],
+        [
+          microsoftGraphOrgEntityProviderTransformExtensionPoint,
+          msGraphExtensionPoint,
+        ],
       ],
       features: [
         adpCatalogModule(),
@@ -52,5 +64,7 @@ describe('catalogModuleAdpEntityProvider', () => {
 
     expect(addedPermissionRules).toBeDefined();
     expect(addedPermissionRules?.pop()?.pop()?.name).toBe('IS_GROUP_MEMBER');
+
+    expect(configuredTransformer).toBeDefined();
   });
 });

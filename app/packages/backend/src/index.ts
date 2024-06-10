@@ -11,7 +11,6 @@ import fetchApiFactory, {
   fetchApiHeadersMiddleware,
   fetchApiRef,
 } from '@internal/plugin-fetch-api-backend';
-import { addAdoNameTransformer } from './modules';
 import { requestContextProviderRef } from '@internal/plugin-request-context-provider-backend';
 
 const legacyPlugin = makeLegacyPlugin(
@@ -69,7 +68,6 @@ backend.add(
 );
 backend.add(import('@backstage/plugin-catalog-backend-module-github/alpha'));
 backend.add(import('@backstage/plugin-catalog-backend-module-msgraph/alpha'));
-backend.add(addAdoNameTransformer);
 backend.add(import('@backstage/plugin-scaffolder-backend/alpha'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(import('@backstage/plugin-search-backend/alpha'));

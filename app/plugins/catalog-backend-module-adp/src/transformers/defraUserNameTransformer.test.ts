@@ -1,4 +1,4 @@
-import { defraADONameTransformer } from './DefraNameTransformer'; // Import the function to be tested
+import { defraUserNameTransformer } from './defraUserNameTransformer';
 import { defaultUserTransformer } from '@backstage/plugin-catalog-backend-module-msgraph';
 import {
   MICROSOFT_EMAIL_ANNOTATION,
@@ -68,7 +68,7 @@ describe('Test original Function', () => {
 describe('Defra ADO User Transformer', () => {
   it('Same Default Behavior as defaultUserTransformer', async () => {
     const { mockGraphUser, mockUserPhoto } = defaultDataSetup();
-    const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
+    const result = await defraUserNameTransformer(mockGraphUser, mockUserPhoto);
     expect(result?.apiVersion).toBe('backstage.io/v1alpha1');
     expect(result?.kind).toBe('User');
     expect(result?.metadata?.name).toBe('pz6p6_example.com');
@@ -94,7 +94,7 @@ describe('Defra ADO User Transformer', () => {
       '',
     );
 
-    const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
+    const result = await defraUserNameTransformer(mockGraphUser, mockUserPhoto);
     expect(result?.metadata?.name).toBe('freds_example.com');
     // Assume if there was no email, the email was the UPN
     expect(result?.spec?.profile?.email).toBe('freds@example.com');
@@ -114,7 +114,7 @@ describe('Defra ADO User Transformer', () => {
       undefined,
     );
 
-    const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
+    const result = await defraUserNameTransformer(mockGraphUser, mockUserPhoto);
     expect(result?.metadata?.name).toBe('freds_example.com');
     // Assume if there was no email, the email was the UPN
     expect(result?.spec?.profile?.email).toBe('freds@example.com');
@@ -134,7 +134,7 @@ describe('Defra ADO User Transformer', () => {
       null,
     );
 
-    const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
+    const result = await defraUserNameTransformer(mockGraphUser, mockUserPhoto);
     expect(result?.metadata?.name).toBe('freds_example.com');
     expect(result?.spec?.profile?.email).toBe('freds@example.com');
     expect(result?.metadata?.annotations?.[MICROSOFT_EMAIL_ANNOTATION]).toBe(
@@ -156,7 +156,7 @@ describe('Defra ADO User Transformer', () => {
     };
     const mockUserPhoto = 'mockUserPhoto';
 
-    const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
+    const result = await defraUserNameTransformer(mockGraphUser, mockUserPhoto);
     expect(result).toBeUndefined();
   });
 
@@ -169,7 +169,7 @@ describe('Defra ADO User Transformer', () => {
     };
     const mockUserPhoto = 'mockUserPhoto';
 
-    const result = await defraADONameTransformer(mockGraphUser, mockUserPhoto);
+    const result = await defraUserNameTransformer(mockGraphUser, mockUserPhoto);
     expect(result).toBeUndefined();
   });
 });
