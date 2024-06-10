@@ -11,7 +11,6 @@ import type { DialogFormProps, SubmitResult } from './DialogForm';
 import { DialogForm } from './DialogForm';
 import type { FieldValues } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 import { SnapshotFriendlyStylesProvider } from './SnapshotFriendlyStylesProvider';
 
 describe('DialogForm', () => {
@@ -228,7 +227,7 @@ describe('DialogForm', () => {
     expect(alertApi.alert$).not.toHaveBeenCalled();
     expect(alertApi.post).not.toHaveBeenCalled();
 
-    await act(async () => {
+    await React.act(async () => {
       finishSubmit({ type: 'validationError', errors: [] });
       await new Promise(res => setTimeout(res, 1));
     });

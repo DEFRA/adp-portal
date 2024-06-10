@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`path Should join ["/my/path","./abc"] 1`] = `"/my/path/abc"`;
+
+exports[`path Should join ["/my/path","/abc"] 1`] = `"/my/path/abc"`;
+
+exports[`path Should join ["/my/path","abc"] 1`] = `"/my/path/abc"`;
+
+exports[`path Should join ["/my/path","abc/"] 1`] = `"/my/path/abc/"`;
+
+exports[`path Should join ["/my/path/","./abc"] 1`] = `"/my/path/abc"`;
+
+exports[`path Should join ["/my/path/","/abc"] 1`] = `"/my/path/abc"`;
+
+exports[`path Should join ["/my/path/","abc"] 1`] = `"/my/path/abc"`;
+
+exports[`path Should join ["C:/Users/Test","./abc"] 1`] = `"C:/Users/Test/abc"`;
+
+exports[`path Should join ["C:/Users/Test","/abc"] 1`] = `"C:/Users/Test/abc"`;
+
+exports[`path Should join ["C:/Users/Test","abc"] 1`] = `"C:/Users/Test/abc"`;
+
+exports[`path Should join ["C:/Users/Test","abc/"] 1`] = `"C:/Users/Test/abc/"`;
+
+exports[`path Should join ["C:/Users/Test/","./abc"] 1`] = `"C:/Users/Test/abc"`;
+
+exports[`path Should join ["C:/Users/Test/","/abc"] 1`] = `"C:/Users/Test/abc"`;
+
+exports[`path Should join ["C:/Users/Test/","abc"] 1`] = `"C:/Users/Test/abc"`;
+
+exports[`path Should join ["https://test.com","./abc"] 1`] = `"https://test.com/abc"`;
+
+exports[`path Should join ["https://test.com","/abc"] 1`] = `"https://test.com/abc"`;
+
+exports[`path Should join ["https://test.com","abc"] 1`] = `"https://test.com/abc"`;
+
+exports[`path Should join ["https://test.com","abc/"] 1`] = `"https://test.com/abc/"`;
+
+exports[`path Should join ["https://test.com/","./abc"] 1`] = `"https://test.com/abc"`;
+
+exports[`path Should join ["https://test.com/","/abc"] 1`] = `"https://test.com/abc"`;
+
+exports[`path Should join ["https://test.com/","abc"] 1`] = `"https://test.com/abc"`;

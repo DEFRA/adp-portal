@@ -3,9 +3,9 @@
 exports[`App should render sign in page 1`] = `
 <body>
   <div>
-    <mocked-sign-in-page>
-      {"auto":true,"provider":{"id":"aad-auth-provider","title":"Azure AD","message":"Sign in using Azure AD","apiRef":{"config":{"id":"core.auth.microsoft"}}}}
-    </mocked-sign-in-page>
+    <div
+      class="MuiBox-root MuiBox-root-1"
+    />
   </div>
 </body>
 `;

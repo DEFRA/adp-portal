@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`yaml Should correctly handle "|-\\n  This already looks like yaml but shouldnt be treated as yaml" 1`] = `
+"|-
+|-
+  This already looks like yaml but shouldnt be treated as yaml"
+`;
+
+exports[`yaml Should correctly handle "This input: contains special characters! \\"|'{}[],&*#?<>=%@/\\\\\\nAnd even a newline!" 1`] = `
+"|-
+This input: contains special characters! "|'{}[],&*#?<>=%@/\\
+And even a newline!"
+`;
+
+exports[`yaml Should correctly handle "This is some multiline text\\nand this is line 2!" 1`] = `
+"|-
+This is some multiline text
+and this is line 2!"
+`;
+
+exports[`yaml Should correctly handle "abc" 1`] = `"abc"`;
+
+exports[`yaml Should correctly handle {"some":{"object":{"with":["values"]}}} 1`] = `
+"some:
+  object:
+    with:
+      - values"
+`;
+
+exports[`yaml Should correctly handle 123 1`] = `"123"`;
+
+exports[`yaml Should correctly handle false 1`] = `"false"`;
+
+exports[`yaml Should correctly handle null 1`] = `"null"`;
+
+exports[`yaml Should correctly handle true 1`] = `"true"`;

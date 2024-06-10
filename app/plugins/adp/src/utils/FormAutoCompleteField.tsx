@@ -10,8 +10,8 @@ import type {
 } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { isFieldDisabled } from './isFieldDisabled';
-import { enrichHelperText } from './enrichHelperText';
 import { rulesToHtmlProperties } from './rulesToHtmlProperties';
+import { getHelperText } from './getHelperText';
 
 export type FormAutoCompleteFieldProps<
   TFields extends FieldValues,
@@ -68,11 +68,7 @@ export function FormAutoCompleteField<
               fullWidth
               label={label}
               error={!!errors[name]}
-              helperText={
-                errors[name]?.message ??
-                enrichHelperText(helperText, rules) ??
-                ' '
-              }
+              helperText={getHelperText(errors, name, helperText, rules)}
               disabled={isFieldDisabled(disabled, name)}
               data-testid={name}
               inputProps={{

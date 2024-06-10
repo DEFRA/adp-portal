@@ -16,12 +16,14 @@ export const adpCatalogModule = createBackendModule({
         discovery: coreServices.discovery,
         scheduler: coreServices.scheduler,
         catalog: catalogProcessingExtensionPoint,
+        auth: coreServices.auth,
         fetchApi: fetchApiRef,
       },
-      async init({ logger, catalog, discovery, scheduler, fetchApi }) {
+      async init({ logger, catalog, discovery, scheduler, auth, fetchApi }) {
         catalog.addEntityProvider(
-          AdpDatabaseEntityProvider.create(discovery, {
-            logger: logger,
+          AdpDatabaseEntityProvider.create({
+            discovery,
+            logger: loggerToWinstonLogger(logger),
             scheduler: scheduler,
             fetchApi,
           }),

@@ -24,7 +24,7 @@ it('fetches and formats data correctly', async () => {
     updateArmsLengthBody: jest.fn(),
   };
 
-  const wrapper: React.FC = ({ children }) => (
+  const wrapper = ({ children }: React.PropsWithChildren) => (
     <TestApiProvider
       apis={[
         [alertApiRef, mockAlertApi],

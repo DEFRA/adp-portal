@@ -23,13 +23,13 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
-    "@backstage/backend-plugin-api": "^0.6.8",
+    "@backstage/backend-plugin-api": "^0.6.18",
     "@internal/plugin-request-context-provider-backend": "*"
   },
   "devDependencies": {
-    "@backstage/backend-test-utils": "^0.2.10",
-    "@backstage/cli": "^0.26.5",
-    "@backstage/config": "^1.1.1",
+    "@backstage/backend-test-utils": "^0.3.8",
+    "@backstage/cli": "^0.26.6",
+    "@backstage/config": "^1.2.0",
     "@types/express": "*"
   },
   "files": [

@@ -1,14 +1,16 @@
 import type { Config } from '@backstage/config';
-import { addDeliveryProjectToRepo } from './addDeliveryProjectToRepo';
+import {
+  type AddDeliveryProjectToRepoInput,
+  addDeliveryProjectToRepo,
+} from './addDeliveryProjectToRepo';
 import type { Octokit } from 'octokit';
-import { PassThrough } from 'node:stream';
 import { randomUUID } from 'node:crypto';
 import { mockedOctokit } from './mockedOctokit';
-import { getVoidLogger } from '@backstage/backend-common';
 import type {
   DeliveryProjectTeamsSyncResult,
   IAdpClient,
 } from '@internal/plugin-adp-common';
+import { createMockActionContext } from '@backstage/plugin-scaffolder-node-test-utils';
 
 describe('addDeliveryProjectToRepo', () => {
   function setup() {
@@ -41,20 +43,28 @@ describe('addDeliveryProjectToRepo', () => {
     const sut = addDeliveryProjectToRepo({
       config,
       getGithubClient,
-      adpClient,
+      adpClient: () => adpClient,
     });
-    const logger = getVoidLogger();
-    return { sut, config, getGithubClient, adpClient, octokit, logger };
+    return { sut, config, getGithubClient, adpClient, octokit };
   }
 
   describe('#handler', () => {
     it('Should sync the team then assign the team', async () => {
       // arrange
-      const { sut, adpClient, config, octokit, logger } = setup();
+      const { sut, adpClient, config, octokit } = setup();
       const projectName = randomUUID();
       const repoName = randomUUID();
       const orgName = randomUUID();
       const owner = randomUUID();
+      const context = createMockActionContext<AddDeliveryProjectToRepoInput>({
+        input: {
+          projectName,
+          repoName,
+          orgName,
+          owner,
+        },
+        workspacePath: 'test-workspace',
+      });
 
       const teams: DeliveryProjectTeamsSyncResult = {
         admins: {
@@ -87,19 +97,7 @@ describe('addDeliveryProjectToRepo', () => {
       );
 
       // act
-      await sut.handler({
-        createTemporaryDirectory: jest.fn(),
-        input: {
-          projectName,
-          repoName,
-          orgName,
-          owner,
-        },
-        workspacePath: 'test-workspace',
-        logger,
-        logStream: new PassThrough(),
-        output: jest.fn(),
-      });
+      await sut.handler(context);
 
       // assert
       expect(
@@ -142,32 +140,27 @@ describe('addDeliveryProjectToRepo', () => {
     });
     it('Should error when a team fails to be syncronized', async () => {
       // arrange
-      const { sut, adpClient, config, octokit, logger } = setup();
+      const { sut, adpClient, config, octokit } = setup();
       const projectName = randomUUID();
       const repoName = randomUUID();
       const orgName = randomUUID();
       const owner = randomUUID();
+      const context = createMockActionContext<AddDeliveryProjectToRepoInput>({
+        input: {
+          projectName,
+          repoName,
+          orgName,
+          owner,
+        },
+        workspacePath: 'test-workspace',
+      });
 
       adpClient.syncDeliveryProjectWithGithubTeams.mockRejectedValueOnce(
         new Error('Failed successfully'),
       );
 
       // act
-      await expectException(() =>
-        sut.handler({
-          createTemporaryDirectory: jest.fn(),
-          input: {
-            projectName,
-            repoName,
-            orgName,
-            owner,
-          },
-          workspacePath: 'test-workspace',
-          logger,
-          logStream: new PassThrough(),
-          output: jest.fn(),
-        }),
-      );
+      await expectException(() => sut.handler(context));
 
       // assert
       expect(
@@ -180,11 +173,20 @@ describe('addDeliveryProjectToRepo', () => {
     });
     it('Should error when a team fails to be added', async () => {
       // arrange
-      const { sut, adpClient, config, octokit, logger } = setup();
+      const { sut, adpClient, config, octokit } = setup();
       const projectName = randomUUID();
       const repoName = randomUUID();
       const orgName = randomUUID();
       const owner = randomUUID();
+      const context = createMockActionContext<AddDeliveryProjectToRepoInput>({
+        input: {
+          projectName,
+          repoName,
+          orgName,
+          owner,
+        },
+        workspacePath: 'test-workspace',
+      });
 
       const teams: DeliveryProjectTeamsSyncResult = {
         admins: {
@@ -218,21 +220,7 @@ describe('addDeliveryProjectToRepo', () => {
         .mockRejectedValueOnce(new Error('Failed successfully'));
 
       // act
-      await expectException(() =>
-        sut.handler({
-          createTemporaryDirectory: jest.fn(),
-          input: {
-            projectName,
-            repoName,
-            orgName,
-            owner,
-          },
-          workspacePath: 'test-workspace',
-          logger,
-          logStream: new PassThrough(),
-          output: jest.fn(),
-        }),
-      );
+      await expectException(() => sut.handler(context));
 
       // assert
       expect(

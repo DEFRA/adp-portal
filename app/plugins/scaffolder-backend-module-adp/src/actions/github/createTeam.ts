@@ -6,18 +6,20 @@ import { Octokit } from 'octokit';
 import type { Config } from '@backstage/config';
 import { InputError } from '@backstage/errors';
 
+export type CreateGithubTeamActionInput = {
+  githubTeamName: string;
+  githubTeamDescription?: string;
+  orgName?: string;
+  users: string;
+  visibility: 'secret' | 'closed';
+};
+
 export function createGithubTeamAction(options: {
   integrations: ScmIntegrationRegistry;
   config: Config;
 }) {
   const { integrations, config } = options;
-  return createTemplateAction<{
-    githubTeamName: string;
-    githubTeamDescription?: string;
-    orgName?: string;
-    users: string;
-    visibility: 'secret' | 'closed';
-  }>({
+  return createTemplateAction<CreateGithubTeamActionInput>({
     id: 'adp:github:team:create',
     description:
       'Creates a GitHub Team in the organization to add as collaborator',

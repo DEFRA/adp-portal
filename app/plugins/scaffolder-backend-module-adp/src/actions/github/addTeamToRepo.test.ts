@@ -3,10 +3,12 @@ import {
   ScmIntegrations,
   DefaultGithubCredentialsProvider,
 } from '@backstage/integration';
-import { addGithubTeamToRepoAction } from './addTeamToRepo';
-import { getVoidLogger } from '@backstage/backend-common';
-import { PassThrough } from 'stream';
+import {
+  type AddGithubTeamToRepoActionInput,
+  addGithubTeamToRepoAction,
+} from './addTeamToRepo';
 import { Octokit } from 'octokit';
+import { createMockActionContext } from '@backstage/plugin-scaffolder-node-test-utils';
 
 jest.mock('octokit');
 const mockedOctokit = Octokit as unknown as jest.Mock;
@@ -32,13 +34,6 @@ jest.mock('@backstage/integration', () => ({
   ScmIntegrations: {
     fromConfig: jest.fn().mockReturnValue({}),
   },
-}));
-
-jest.mock('@backstage/backend-common', () => ({
-  getVoidLogger: jest.fn().mockReturnValue({
-    info: jest.fn(),
-    error: jest.fn(),
-  }),
 }));
 
 describe('adp:github:team:add', () => {
@@ -77,42 +72,39 @@ describe('adp:github:team:add', () => {
     config: config,
   });
 
-  const mockContext = {
-    input: {
-      teamNames: 'test-team,test-team1',
-      repoName: 'test-team',
-      orgName: 'defra-adp-sandpit',
-      owner: 'defra-adp-sandpit',
-      permission: 'push',
-    },
-    workspacePath: 'test-workspace',
-    logger: getVoidLogger(),
-    logStream: new PassThrough(),
-    output: jest.fn(),
-    createTemporaryDirectory: jest.fn(),
-  };
-
   it('should throw if there is no integration config provided', async () => {
+    const context = createMockActionContext<AddGithubTeamToRepoActionInput>({
+      input: {
+        teamNames: 'test-team,test-team1',
+        repoName: 'test-team',
+        orgName: 'defra-adp-sandpit',
+        owner: 'defra-adp-sandpit',
+        permission: 'push',
+      },
+      workspacePath: 'test-workspace',
+    });
     DefaultGithubCredentialsProvider.fromIntegrations = jest
       .fn()
       .mockReturnValue({
         getCredentials: jest.fn().mockResolvedValue(undefined),
       });
-    await expect(
-      action.handler({
-        ...mockContext,
-        input: {
-          teamNames: 'test-team,test-team1',
-          repoName: 'test-team',
-          orgName: 'defra-adp-sandpit',
-          owner: 'defra-adp-sandpit',
-          permission: 'push',
-        },
-      }),
-    ).rejects.toThrow(/No credentials provided/);
+    await expect(action.handler(context)).rejects.toThrow(
+      /No credentials provided/,
+    );
   });
 
   it('should log error if team doesnt exists in org', async () => {
+    const context = createMockActionContext<AddGithubTeamToRepoActionInput>({
+      input: {
+        teamNames: 'test-team,test-team1',
+        repoName: 'test-team',
+        orgName: 'defra-adp-sandpit',
+        owner: 'defra-adp-sandpit',
+        permission: 'push',
+      },
+      workspacePath: 'test-workspace',
+    });
+    context.logger.info = jest.fn();
     DefaultGithubCredentialsProvider.fromIntegrations = jest
       .fn()
       .mockReturnValue({
@@ -131,8 +123,15 @@ describe('adp:github:team:add', () => {
       },
     }));
 
-    await action.handler({
-      ...mockContext,
+    await action.handler(context);
+
+    expect(context.logger.info).toHaveBeenCalledWith(
+      "GitHub team test-team doesn't exist in the org",
+    );
+  });
+
+  it('should log error if unknown error in checkTeamExists', async () => {
+    const context = createMockActionContext<AddGithubTeamToRepoActionInput>({
       input: {
         teamNames: 'test-team,test-team1',
         repoName: 'test-team',
@@ -140,14 +139,9 @@ describe('adp:github:team:add', () => {
         owner: 'defra-adp-sandpit',
         permission: 'push',
       },
+      workspacePath: 'test-workspace',
     });
-
-    expect(mockContext.logger.info).toHaveBeenCalledWith(
-      "GitHub team test-team doesn't exist in the org",
-    );
-  });
-
-  it('should log error if unknown error in checkTeamExists', async () => {
+    context.logger.error = jest.fn();
     DefaultGithubCredentialsProvider.fromIntegrations = jest
       .fn()
       .mockReturnValue({
@@ -166,8 +160,15 @@ describe('adp:github:team:add', () => {
       },
     }));
 
-    await action.handler({
-      ...mockContext,
+    await action.handler(context);
+
+    expect(context.logger.error).toHaveBeenCalledWith(
+      'Error in getting GitHub team: [object Object]',
+    );
+  });
+
+  it('should throw if adding team to repo failed', async () => {
+    const context = createMockActionContext<AddGithubTeamToRepoActionInput>({
       input: {
         teamNames: 'test-team,test-team1',
         repoName: 'test-team',
@@ -175,14 +176,8 @@ describe('adp:github:team:add', () => {
         owner: 'defra-adp-sandpit',
         permission: 'push',
       },
+      workspacePath: 'test-workspace',
     });
-
-    expect(mockContext.logger.error).toHaveBeenCalledWith(
-      'Error in getting GitHub team: [object Object]',
-    );
-  });
-
-  it('should throw if adding team to repo failed', async () => {
     DefaultGithubCredentialsProvider.fromIntegrations = jest
       .fn()
       .mockReturnValue({
@@ -203,21 +198,23 @@ describe('adp:github:team:add', () => {
       },
     }));
 
-    await expect(
-      action.handler({
-        ...mockContext,
-        input: {
-          teamNames: 'test-team,test-team1',
-          repoName: 'test-team',
-          orgName: 'defra-adp-sandpit',
-          owner: 'defra-adp-sandpit',
-          permission: 'push',
-        },
-      }),
-    ).rejects.toThrow(/Adding team to the repo failed with error/);
+    await expect(action.handler(context)).rejects.toThrow(
+      /Adding team to the repo failed with error/,
+    );
   });
 
   it('should add team to repo on success', async () => {
+    const context = createMockActionContext<AddGithubTeamToRepoActionInput>({
+      input: {
+        teamNames: 'test-team,test-team1',
+        repoName: 'test-team',
+        orgName: 'defra-adp-sandpit',
+        owner: 'defra-adp-sandpit',
+        permission: 'push',
+      },
+      workspacePath: 'test-workspace',
+    });
+    context.logger.info = jest.fn();
     DefaultGithubCredentialsProvider.fromIntegrations = jest
       .fn()
       .mockReturnValue({
@@ -238,21 +235,12 @@ describe('adp:github:team:add', () => {
       },
     }));
 
-    await action.handler({
-      ...mockContext,
-      input: {
-        teamNames: 'test-team,test-team1',
-        repoName: 'test-team',
-        orgName: 'defra-adp-sandpit',
-        owner: 'defra-adp-sandpit',
-        permission: 'push',
-      },
-    });
+    await action.handler(context);
 
-    expect(mockContext.logger.info).toHaveBeenCalledWith(
+    expect(context.logger.info).toHaveBeenCalledWith(
       'Team test-team exists in github org defra-adp-sandpit',
     );
-    expect(mockContext.logger.info).toHaveBeenCalledWith(
+    expect(context.logger.info).toHaveBeenCalledWith(
       'Added team test-team to the repo test-team successfully',
     );
   });
