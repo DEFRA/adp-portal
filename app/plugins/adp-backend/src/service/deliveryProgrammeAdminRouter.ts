@@ -3,7 +3,6 @@ import {
   getBearerTokenFromAuthorizationHeader,
   type IdentityApi,
 } from '@backstage/plugin-auth-node';
-import type { Logger } from 'winston';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import express from 'express';
 import Router from 'express-promise-router';
@@ -18,12 +17,13 @@ import {
   type DeleteDeliveryProgrammeAdminRequest,
 } from '@internal/plugin-adp-common';
 import { getUserEntityFromCatalog } from './catalog';
-import {
-  AuthorizeResult,
-  type PermissionEvaluator,
-} from '@backstage/plugin-permission-common';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import { stringifyEntityRef } from '@backstage/catalog-model';
+import type {
+  LoggerService,
+  PermissionsService,
+} from '@backstage/backend-plugin-api';
 
 const parseCreateDeliveryProgrammeAdminRequest =
   createParser<CreateDeliveryProgrammeAdminRequest>(
@@ -70,11 +70,11 @@ const errorMapping = {
 };
 
 export interface DeliveryProgrammeAdminRouterOptions {
-  logger: Logger;
+  logger: LoggerService;
   identity: IdentityApi;
   deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
   catalog: CatalogApi;
-  permissions: PermissionEvaluator;
+  permissions: PermissionsService;
 }
 
 export function createDeliveryProgrammeAdminRouter(

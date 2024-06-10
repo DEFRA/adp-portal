@@ -1,7 +1,6 @@
 import express from 'express';
 import request from 'supertest';
 import { programmeManagerList } from '../testData/programmeTestData';
-import { getVoidLogger } from '@backstage/backend-common';
 import type { DeliveryProgrammeAdminRouterOptions } from './deliveryProgrammeAdminRouter';
 import { createDeliveryProgrammeAdminRouter } from './deliveryProgrammeAdminRouter';
 import { InputError } from '@backstage/errors';
@@ -9,10 +8,8 @@ import { catalogTestData } from '../testData/catalogEntityTestData';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import type { CatalogApi } from '@backstage/catalog-client';
 import type { CreateDeliveryProgrammeAdminRequest } from '@internal/plugin-adp-common';
-import {
-  AuthorizeResult,
-  type PermissionEvaluator,
-} from '@backstage/plugin-permission-common';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
+import { mockServices } from '@backstage/backend-test-utils';
 
 const programmeManagerByAADEntityRef = programmeManagerList[0];
 
@@ -54,17 +51,14 @@ describe('createRouter', () => {
     validateEntity: jest.fn(),
   };
 
-  const mockPermissionEvaluator: jest.Mocked<PermissionEvaluator> = {
-    authorize: jest.fn(),
-    authorizeConditional: jest.fn(),
-  };
+  const mockPermissionsService = mockServices.permissions.mock();
 
   const mockOptions: DeliveryProgrammeAdminRouterOptions = {
-    logger: getVoidLogger(),
+    logger: mockServices.logger.mock(),
     identity: mockIdentityApi,
     catalog: mockCatalogClient,
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
-    permissions: mockPermissionEvaluator,
+    permissions: mockPermissionsService,
   };
 
   beforeAll(async () => {
@@ -152,7 +146,7 @@ describe('createRouter', () => {
         success: true,
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+      mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
       ]);
 
@@ -169,7 +163,7 @@ describe('createRouter', () => {
     });
 
     it('returns a 403 response if the user is not authorized', async () => {
-      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+      mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.DENY },
       ]);
 
@@ -188,7 +182,7 @@ describe('createRouter', () => {
 
     it('returns a 400 response if catalog user cannot be found', async () => {
       mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
-      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+      mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
       ]);
 
@@ -211,7 +205,7 @@ describe('createRouter', () => {
         errors: ['duplicateUser', 'unknown', 'unknownDeliveryProgramme'],
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+      mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
       ]);
 

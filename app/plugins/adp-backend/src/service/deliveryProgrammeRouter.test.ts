@@ -1,4 +1,3 @@
-import { getVoidLogger } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
 import type { ProgrammeRouterOptions } from './deliveryProgrammeRouter';
@@ -17,6 +16,7 @@ import type {
   CreateDeliveryProgrammeRequest,
   UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
+import { mockServices } from '@backstage/backend-test-utils';
 
 const managerByProgrammeId = programmeManagerList.filter(
   managers => managers.delivery_programme_id === '123',
@@ -55,7 +55,7 @@ describe('createRouter', () => {
     };
 
   const mockOptions: ProgrammeRouterOptions = {
-    logger: getVoidLogger(),
+    logger: mockServices.logger.mock(),
     identity: mockIdentityApi,
     deliveryProjectStore: mockDeliveryProjectStore,
     deliveryProgrammeStore: mockDeliveryProgrammeStore,

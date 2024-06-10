@@ -1,15 +1,8 @@
-import {
-  cacheToPluginCacheManager,
-  loggerToWinstonLogger,
-  makeLegacyPlugin,
-} from '@backstage/backend-common';
 import { createBackend } from '@backstage/backend-defaults';
-import { coreServices } from '@backstage/backend-plugin-api';
 import fetchApiFactory, {
   fetchApiForPluginMiddleware,
   fetchApiForwardAuthMiddleware,
   fetchApiHeadersMiddleware,
-  fetchApiRef,
 } from '@internal/plugin-fetch-api-backend';
 import {
   addAdoNameTransformer,
@@ -17,28 +10,6 @@ import {
   addCatalogPermissionRules,
 } from './modules';
 import { addAdpDatabaseEntityProvider } from './modules';
-import { requestContextProviderRef } from '@internal/plugin-request-context-provider-backend';
-
-const legacyPlugin = makeLegacyPlugin(
-  {
-    cache: coreServices.cache,
-    config: coreServices.rootConfig,
-    database: coreServices.database,
-    discovery: coreServices.discovery,
-    logger: coreServices.logger,
-    permissions: coreServices.permissions,
-    scheduler: coreServices.scheduler,
-    tokenManager: coreServices.tokenManager,
-    reader: coreServices.urlReader,
-    identity: coreServices.identity,
-    fetchApi: fetchApiRef,
-    requestContext: requestContextProviderRef,
-  },
-  {
-    logger: log => loggerToWinstonLogger(log),
-    cache: cache => cacheToPluginCacheManager(cache),
-  },
-);
 
 const backend = createBackend();
 
@@ -87,7 +58,7 @@ backend.add(import('@backstage/plugin-proxy-backend/alpha'));
 backend.add(import('@backstage/plugin-azure-devops-backend'));
 
 // ADP
-backend.add(legacyPlugin('adp', import('./plugins/adp')));
+backend.add(import('@internal/plugin-adp-backend'));
 backend.add(import('@internal/plugin-scaffolder-backend-module-adp'));
 backend.add(import('@internal/plugin-techdocs-backend-module-adp'));
 

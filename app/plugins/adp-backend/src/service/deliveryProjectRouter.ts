@@ -1,7 +1,6 @@
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
-import type { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
@@ -21,9 +20,10 @@ import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import { permissionRules } from '../permissions';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import type { LoggerService } from '@backstage/backend-plugin-api';
 
 export interface ProjectRouterOptions {
-  logger: Logger;
+  logger: LoggerService;
   identity: IdentityApi;
   teamSyncronizer: IDeliveryProjectGithubTeamsSyncronizer;
   deliveryProjectStore: IDeliveryProjectStore;
@@ -137,6 +137,11 @@ export function createProjectRouter(
   const router = Router();
   router.use(express.json());
   router.use(permissionIntegrationRouter);
+
+  router.get('/deliveryProject/health', (_, response) => {
+    logger.info('PONG!');
+    response.json({ status: 'ok' });
+  });
 
   router.get('/deliveryProject', async (_req, res) => {
     try {

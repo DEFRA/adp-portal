@@ -1,7 +1,6 @@
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
-import type { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type { IArmsLengthBodyStore } from '../armsLengthBody';
@@ -15,9 +14,10 @@ import type {
   ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
 import { createParser, respond } from './util';
+import type { LoggerService } from '@backstage/backend-plugin-api';
 
 export interface AlbRouterOptions {
-  logger: Logger;
+  logger: LoggerService;
   identity: IdentityApi;
   armsLengthBodyStore: IArmsLengthBodyStore;
   deliveryProgrammeStore: IDeliveryProgrammeStore;

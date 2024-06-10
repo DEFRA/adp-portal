@@ -1,4 +1,3 @@
-import type { Logger } from 'winston';
 import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 import type { CatalogApi } from '@backstage/catalog-client';
 import express from 'express';
@@ -17,12 +16,15 @@ import type { AddDeliveryProjectUser } from '../utils';
 import { getUserEntityFromCatalog } from './catalog';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import type { IDeliveryProjectEntraIdGroupsSyncronizer } from '../entraId';
-import type { PermissionEvaluator } from '@backstage/plugin-permission-common';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import { getBearerTokenFromAuthorizationHeader } from '@backstage/plugin-auth-node';
 import { NotAllowedError } from '@backstage/errors';
 import { stringifyEntityRef } from '@backstage/catalog-model';
+import type {
+  LoggerService,
+  PermissionsService,
+} from '@backstage/backend-plugin-api';
 
 const parseCreateDeliveryProjectUserRequest =
   createParser<CreateDeliveryProjectUserRequest>(
@@ -75,12 +77,12 @@ const errorMapping = {
 } as const satisfies ValidationErrorMapping;
 
 export interface DeliveryProjectUserRouterOptions {
-  logger: Logger;
+  logger: LoggerService;
   deliveryProjectUserStore: IDeliveryProjectUserStore;
   catalog: CatalogApi;
   teamSyncronizer: IDeliveryProjectGithubTeamsSyncronizer;
   entraIdGroupSyncronizer: IDeliveryProjectEntraIdGroupsSyncronizer;
-  permissions: PermissionEvaluator;
+  permissions: PermissionsService;
 }
 
 export function createDeliveryProjectUserRouter(

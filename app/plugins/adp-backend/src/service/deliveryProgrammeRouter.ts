@@ -1,7 +1,6 @@
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
-import type { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
@@ -15,9 +14,10 @@ import type { IDeliveryProjectStore } from '../deliveryProject';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import { createParser, respond } from './util';
 import { z } from 'zod';
+import type { LoggerService } from '@backstage/backend-plugin-api';
 
 export interface ProgrammeRouterOptions {
-  logger: Logger;
+  logger: LoggerService;
   identity: IdentityApi;
   deliveryProgrammeStore: IDeliveryProgrammeStore;
   deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
