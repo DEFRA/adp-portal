@@ -59,6 +59,7 @@
     "@internal/plugin-adp-common": "*",
     "@internal/plugin-catalog-backend-module-adp": "*",
     "@internal/plugin-fetch-api-backend": "*",
+    "@internal/plugin-permission-backend-module-adp": "*",
     "@internal/plugin-request-context-provider-backend": "*",
     "@internal/plugin-scaffolder-backend-module-adp": "*",
     "@internal/plugin-techdocs-backend-module-adp": "*",
