@@ -30,6 +30,7 @@
     "@backstage/catalog-model": "^1.5.0",
     "@backstage/plugin-catalog-backend": "^1.22.0",
     "@backstage/plugin-catalog-node": "^1.12.0",
+    "@internal/plugin-fetch-api-backend": "*",
     "@backstage/plugin-permission-common": "^0.7.13",
     "@backstage/plugin-permission-node": "^0.7.29",
     "@internal/plugin-adp-common": "*",
@@ -39,7 +40,6 @@
   "devDependencies": {
     "@backstage/backend-test-utils": "^0.3.8",
     "@backstage/cli": "^0.26.6",
-    "@internal/plugin-fetch-api-backend": "*",
     "@types/jest": "^29.0.0"
   },
   "files": [

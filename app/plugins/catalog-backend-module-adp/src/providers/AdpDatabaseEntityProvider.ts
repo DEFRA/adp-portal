@@ -7,6 +7,7 @@ import * as uuid from 'uuid';
 import type {
   AuthService,
   DiscoveryService,
+  LoggerService,
 } from '@backstage/backend-plugin-api';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 import { AdpDatabaseEntityProviderConnection } from './AdpDatabaseEntityProviderConnection';
@@ -89,7 +90,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
             this.#auth,
             logger,
           ).refresh();
-        } catch (error) {
+        } catch (error: any) {
           logger.error(
             `${AdpDatabaseEntityProvider.name} refresh failed, ${error}`,
             error,

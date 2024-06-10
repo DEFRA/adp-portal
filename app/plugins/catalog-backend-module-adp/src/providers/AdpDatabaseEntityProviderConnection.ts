@@ -1,8 +1,8 @@
 import type { EntityProviderConnection } from '@backstage/plugin-catalog-node';
-import type { Logger } from 'winston';
 import type {
   AuthService,
   DiscoveryService,
+  LoggerService,
 } from '@backstage/backend-plugin-api';
 import type { Entity, GroupEntity } from '@backstage/catalog-model';
 import type {
@@ -24,7 +24,7 @@ export class AdpDatabaseEntityProviderConnection {
   readonly #fetchApi: FetchApi;
   readonly #auth: AuthService;
   readonly #connection: EntityProviderConnection;
-  readonly #logger: Logger;
+  readonly #logger: LoggerService;
   readonly #name: string;
 
   constructor(
@@ -33,7 +33,7 @@ export class AdpDatabaseEntityProviderConnection {
     discovery: DiscoveryService,
     fetchApi: FetchApi,
     auth: AuthService,
-    logger: Logger,
+    logger: LoggerService,
   ) {
     this.#name = name;
     this.#connection = connection;

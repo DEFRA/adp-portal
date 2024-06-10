@@ -1,8 +1,8 @@
 import { mockServices, startTestBackend } from '@backstage/backend-test-utils';
 import type { AdpDatabaseEntityProvider } from './providers';
-import { catalogModuleAdpEntityProvider } from './module';
 import fetchApiFactory from '@internal/plugin-fetch-api-backend';
 import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
+import { adpCatalogModule } from './module';
 
 describe('catalogModuleAdpEntityProvider', () => {
   it('should register the provider with the catalog extension point', async () => {
@@ -21,7 +21,7 @@ describe('catalogModuleAdpEntityProvider', () => {
     await startTestBackend({
       extensionPoints: [[catalogProcessingExtensionPoint, extensionPont]],
       features: [
-        catalogModuleAdpEntityProvider(),
+        adpCatalogModule(),
         discovery.factory,
         mockServices.logger.factory(),
         mockServices.scheduler.factory(),

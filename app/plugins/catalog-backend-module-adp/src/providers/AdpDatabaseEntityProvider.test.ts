@@ -8,6 +8,7 @@ import type {
 } from '@backstage/backend-plugin-api';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 import type * as AdpDatabaseEntityProviderConnection from './AdpDatabaseEntityProviderConnection';
+import { mockServices } from '@backstage/backend-test-utils';
 
 type AdpDatabaseEntityProviderConnectionClass =
   (typeof AdpDatabaseEntityProviderConnection)['AdpDatabaseEntityProviderConnection'];
@@ -30,9 +31,19 @@ jest.mock('./AdpDatabaseEntityProviderConnection', () => ({
   },
 }));
 
+function createLoggerMock() {
+  return {
+    child: jest.fn().mockImplementation(createLoggerMock),
+    debug: jest.fn(),
+    error: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+  };
+}
+
 describe('AdpDatabaseEntityProvider', () => {
   function setup() {
-    const logger = getVoidLogger();
+    const logger = mockServices.logger.mock(createLoggerMock());
     const fetchApi: jest.Mocked<FetchApi> = {
       fetch: jest.fn(),
     };
