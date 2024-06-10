@@ -11,7 +11,7 @@ import fetchApiFactory, {
   fetchApiHeadersMiddleware,
   fetchApiRef,
 } from '@internal/plugin-fetch-api-backend';
-import { addAdoNameTransformer, addCatalogPermissionRules } from './modules';
+import { addAdoNameTransformer } from './modules';
 import { requestContextProviderRef } from '@internal/plugin-request-context-provider-backend';
 
 const legacyPlugin = makeLegacyPlugin(
@@ -60,7 +60,6 @@ backend.add(import('@backstage/plugin-auth-backend-module-microsoft-provider'));
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 backend.add(import('@backstage/plugin-permission-backend/alpha'));
 backend.add(import('@internal/plugin-permission-backend-module-adp'));
-backend.add(addCatalogPermissionRules);
 
 // Backstage
 backend.add(import('@backstage/plugin-app-backend/alpha'));
