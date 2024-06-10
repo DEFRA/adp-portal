@@ -24,6 +24,7 @@ import {
   createProjectRouter,
 } from './service';
 import { Router } from 'express';
+import { initializeAdpDatabase } from './database';
 
 export const adpPlugin = createBackendPlugin({
   pluginId: 'adp',
@@ -47,6 +48,8 @@ export const adpPlugin = createBackendPlugin({
         fetchApi,
         httpRouter,
       }) {
+        await initializeAdpDatabase(database);
+
         const dbClient = await database.getClient();
         const armsLengthBodyStore = new ArmsLengthBodyStore(dbClient);
         const deliveryProjectStore = new DeliveryProjectStore(dbClient);
