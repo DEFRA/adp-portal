@@ -40,6 +40,8 @@ function setupOpenTelemetry() {
   }
 }
 
-if (require.main === module) setupOpenTelemetry();
+if ((require.main ?? module) === module) {
+  setupOpenTelemetry();
+}
 
 module.exports = { setupOpenTelemetry };
