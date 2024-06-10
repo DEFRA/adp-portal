@@ -15,6 +15,7 @@ import type * as AddProjectUserButtonModule from './AddProjectUserButton';
 import type * as EditDeliveryProjectUserButtonModule from './EditDeliveryProjectUserButton';
 import { SnapshotFriendlyStylesProvider } from '../../utils';
 import { Button } from '@material-ui/core';
+import { inspect } from 'node:util';
 
 const AddProjectUserButton: jest.MockedFn<
   (typeof AddProjectUserButtonModule)['AddProjectUserButton']
@@ -31,7 +32,7 @@ jest.mock(
       get AddProjectUserButton() {
         return AddProjectUserButton;
       },
-    } satisfies typeof AddProjectUserButtonModule),
+    }) satisfies typeof AddProjectUserButtonModule,
 );
 
 jest.mock(
@@ -41,7 +42,7 @@ jest.mock(
       get EditDeliveryProjectUserButton() {
         return EditDeliveryProjectUserButton;
       },
-    } satisfies typeof EditDeliveryProjectUserButtonModule),
+    }) satisfies typeof EditDeliveryProjectUserButtonModule,
 );
 
 function setup() {
@@ -107,6 +108,7 @@ function createDeliveryProjectUsers(count: number) {
     updated_at: new Date(0),
     is_admin: false,
     is_technical: true,
+    github_username: count % 2 === 0 ? `test-user-${count}` : undefined,
   }));
 }
 
@@ -114,12 +116,22 @@ describe('DeliveryProjectUserViewPage', () => {
   beforeEach(() => {
     jest.spyOn(global.Math, 'random').mockReturnValue(0);
 
-    AddProjectUserButton.mockImplementation(({ onCreated, ...props }) => (
-      <Button {...props} onClick={onCreated} />
-    ));
+    AddProjectUserButton.mockImplementation(
+      ({ onCreated, deliveryProjectId, entityRef, children, ...props }) => (
+        <Button {...props} onClick={onCreated}>
+          {children}
+          {inspect({ deliveryProjectId, entityRef })}
+        </Button>
+      ),
+    );
 
     EditDeliveryProjectUserButton.mockImplementation(
-      ({ onEdited, ...props }) => <Button {...props} onClick={onEdited} />,
+      ({ onEdited, deliveryProjectUser, children, ...props }) => (
+        <Button {...props} onClick={onEdited}>
+          {children}
+          {inspect({ deliveryProjectUser })}
+        </Button>
+      ),
     );
   });
 

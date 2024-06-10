@@ -114,9 +114,10 @@ export function createDeliveryProgrammeAdminRouter(
     async (req, res) => {
       try {
         const deliveryProgrammeId = req.params.deliveryProgrammeId;
-        const data = await deliveryProgrammeAdminStore.getByDeliveryProgramme(
-          deliveryProgrammeId,
-        );
+        const data =
+          await deliveryProgrammeAdminStore.getByDeliveryProgramme(
+            deliveryProgrammeId,
+          );
         res.json(data);
       } catch (error) {
         const typedError = error as Error;
@@ -155,6 +156,7 @@ export function createDeliveryProgrammeAdminRouter(
     const catalogUser = await getUserEntityFromCatalog(
       body.user_catalog_name,
       catalog,
+      token,
     );
 
     if (!catalogUser.success) {

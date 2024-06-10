@@ -1,5 +1,7 @@
 import '@testing-library/jest-dom';
+import { suppressKnownErrors } from '@internal/test-common';
 
+suppressKnownErrors();
 jest.mock('style.module.scss', () => {
   return {
     primaryColour: '#fff',

@@ -28,8 +28,6 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
             <button
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
-              deliveryprogrammeid="123"
-              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -51,6 +49,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                   </svg>
                 </span>
                 Add Delivery Programme Admin
+                { deliveryProgrammeId: '123', entityRef: 'group:default/test-group' }
               </span>
               <span
                 class="MuiTouchRipple-root"
@@ -180,7 +179,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -215,7 +214,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -250,7 +249,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-3-hidden-text-21"
@@ -268,7 +267,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -303,7 +302,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-3-hidden-text-21"
@@ -668,8 +667,6 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
             <button
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
-              deliveryprogrammeid="123"
-              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -691,6 +688,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                   </svg>
                 </span>
                 Add Delivery Programme Admin
+                { deliveryProgrammeId: '123', entityRef: 'group:default/test-group' }
               </span>
               <span
                 class="MuiTouchRipple-root"
@@ -820,7 +818,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -855,7 +853,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -890,7 +888,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-3-hidden-text-21"
@@ -908,7 +906,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -943,7 +941,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-3-hidden-text-21"
@@ -1223,8 +1221,6 @@ exports[`DeliveryProgrammeAdminViewPage should render the page when Delivery Pro
             <button
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
-              deliveryprogrammeid="123"
-              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -1246,6 +1242,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page when Delivery Pro
                   </svg>
                 </span>
                 Add Delivery Programme Admin
+                { deliveryProgrammeId: '123', entityRef: 'group:default/test-group' }
               </span>
               <span
                 class="MuiTouchRipple-root"
@@ -1375,7 +1372,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page when Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -1410,7 +1407,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page when Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -1445,7 +1442,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page when Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-2-hidden-text-14"
@@ -1463,7 +1460,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page when Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -1498,7 +1495,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page when Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-2-hidden-text-14"
@@ -1778,8 +1775,6 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
             <button
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
-              deliveryprogrammeid="123"
-              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -1801,6 +1796,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                   </svg>
                 </span>
                 Add Delivery Programme Admin
+                { deliveryProgrammeId: '123', entityRef: 'group:default/test-group' }
               </span>
               <span
                 class="MuiTouchRipple-root"
@@ -1930,7 +1926,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -1965,7 +1961,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -2000,7 +1996,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-0-hidden-text-0"
@@ -2018,7 +2014,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -2053,7 +2049,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-0-hidden-text-0"
@@ -2706,8 +2702,6 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with no Delivery 
             <button
               class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
               data-testid="delivery-programme-admin-add-button"
-              deliveryprogrammeid="123"
-              entityref="group:default/test-group"
               tabindex="0"
               type="button"
             >
@@ -2729,6 +2723,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with no Delivery 
                   </svg>
                 </span>
                 Add Delivery Programme Admin
+                { deliveryProgrammeId: '123', entityRef: 'group:default/test-group' }
               </span>
               <span
                 class="MuiTouchRipple-root"
@@ -2858,7 +2853,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with no Delivery 
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -2893,7 +2888,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with no Delivery 
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -2928,7 +2923,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with no Delivery 
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-1-hidden-text-7"
@@ -2946,7 +2941,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with no Delivery 
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; box-sizing: border-box;"
+                                style="box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -2981,7 +2976,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with no Delivery 
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-1-hidden-text-7"

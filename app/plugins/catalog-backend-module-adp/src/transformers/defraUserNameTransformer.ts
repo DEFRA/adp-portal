@@ -1,5 +1,4 @@
 import type * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
-
 import type { UserEntity } from '@backstage/catalog-model';
 import {
   normalizeEntityName,
@@ -56,7 +55,7 @@ function chooseUserPrincipalIfEmailIsBlank(user: MicrosoftGraph.User) {
   return mailIsBlank(user) ? user.userPrincipalName : user.mail;
 }
 
-export async function defraADONameTransformer(
+export async function defraUserNameTransformer(
   user: MicrosoftGraph.User,
   userPhoto?: string,
 ): Promise<UserEntity | undefined> {

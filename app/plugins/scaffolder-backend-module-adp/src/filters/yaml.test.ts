@@ -28,17 +28,12 @@ interface TestCase {
 
 describe('yaml', () => {
   it.each<TestCase>(
-    inputs.map(input => (
-      { input, inputJSON: JSON.stringify(input) }
-    )),
-  )(
-    'Should correctly handle $inputJSON',
-    ({ input }) => {
-      // act
-      const actual = yaml(input);
+    inputs.map(input => ({ input, inputJSON: JSON.stringify(input) })),
+  )('Should correctly handle $inputJSON', ({ input }) => {
+    // act
+    const actual = yaml(input);
 
-      // assert
-      expect(actual).toMatchSnapshot();
-    },
-  );
+    // assert
+    expect(actual).toMatchSnapshot();
+  });
 });

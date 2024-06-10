@@ -1,10 +1,9 @@
 import { ConfigReader } from '@backstage/config';
 import { ScmIntegrations } from '@backstage/integration';
-import { runPipelineAction } from './runPipeline';
-import { getVoidLogger } from '@backstage/backend-common';
-import { PassThrough } from 'stream';
+import { type RunPipelineActionInput, runPipelineAction } from './runPipeline';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
 import { BuildResult, BuildStatus } from './types';
+import { createMockActionContext } from '@backstage/plugin-scaffolder-node-test-utils';
 
 describe('adp:azure:pipeline:run', () => {
   beforeEach(() => {
@@ -33,30 +32,32 @@ describe('adp:azure:pipeline:run', () => {
     config: config,
   });
 
-  const mockContext = {
-    input: {
-      project: 'test-project',
-      pipelineId: 1234,
-    },
-    workspacePath: 'test-workspace',
-    logger: getVoidLogger(),
-    logStream: new PassThrough(),
-    output: jest.fn(),
-    createTemporaryDirectory: jest.fn(),
-  };
-
   it('should throw if no response is returned from the API', async () => {
+    const context = createMockActionContext<RunPipelineActionInput>({
+      input: {
+        project: 'test-project',
+        pipelineId: 1234,
+      },
+      workspacePath: 'test-workspace',
+    });
     const runSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'runPipeline')
       .mockResolvedValue(undefined!);
 
     expect(runSpy).not.toHaveBeenCalled();
-    await expect(action.handler(mockContext)).rejects.toThrow(
+    await expect(action.handler(context)).rejects.toThrow(
       /Unable to run pipeline/,
     );
   });
 
   it('should store the build ID in the action context output', async () => {
+    const context = createMockActionContext<RunPipelineActionInput>({
+      input: {
+        project: 'test-project',
+        pipelineId: 1234,
+      },
+      workspacePath: 'test-workspace',
+    });
     const runSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'runPipeline')
       .mockResolvedValue({
@@ -92,14 +93,21 @@ describe('adp:azure:pipeline:run', () => {
         result: BuildResult.None,
       });
 
-    await action.handler(mockContext);
+    await action.handler(context);
 
     expect(runSpy).toHaveBeenCalled();
     expect(getSpy).toHaveBeenCalled();
-    expect(mockContext.output).toHaveBeenCalledWith('buildId', 1234);
+    expect(context.output).toHaveBeenCalledWith('buildId', 1234);
   });
 
   it('should store the pipeline run URL in the action context output', async () => {
+    const context = createMockActionContext<RunPipelineActionInput>({
+      input: {
+        project: 'test-project',
+        pipelineId: 1234,
+      },
+      workspacePath: 'test-workspace',
+    });
     const runSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'runPipeline')
       .mockResolvedValue({
@@ -135,17 +143,24 @@ describe('adp:azure:pipeline:run', () => {
         result: BuildResult.None,
       });
 
-    await action.handler(mockContext);
+    await action.handler(context);
 
     expect(runSpy).toHaveBeenCalled();
     expect(getSpy).toHaveBeenCalled();
-    expect(mockContext.output).toHaveBeenCalledWith(
+    expect(context.output).toHaveBeenCalledWith(
       'pipelineRunUrl',
       'http://dev.azure.com/link/to/build',
     );
   });
 
   it('should log an info message if the build completes successfully', async () => {
+    const context = createMockActionContext<RunPipelineActionInput>({
+      input: {
+        project: 'test-project',
+        pipelineId: 1234,
+      },
+      workspacePath: 'test-workspace',
+    });
     const runSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'runPipeline')
       .mockResolvedValue({
@@ -181,19 +196,26 @@ describe('adp:azure:pipeline:run', () => {
         result: BuildResult.None,
       });
 
-    const loggerSpy = jest.spyOn(mockContext.logger, 'info');
+    const loggerSpy = jest.spyOn(context.logger, 'info');
 
-    await action.handler(mockContext);
+    await action.handler(context);
 
     expect(runSpy).toHaveBeenCalled();
     expect(getSpy).toHaveBeenCalled();
     expect(loggerSpy).toHaveBeenCalled();
-    expect(mockContext.logger.info).toHaveBeenLastCalledWith(
+    expect(context.logger.info).toHaveBeenLastCalledWith(
       'Pipeline run started',
     );
   });
 
   it('should log a warning message if there is an issue with the build', async () => {
+    const context = createMockActionContext<RunPipelineActionInput>({
+      input: {
+        project: 'test-project',
+        pipelineId: 1234,
+      },
+      workspacePath: 'test-workspace',
+    });
     const runSpy = jest
       .spyOn(AzureDevOpsApi.prototype, 'runPipeline')
       .mockResolvedValue({
@@ -229,14 +251,14 @@ describe('adp:azure:pipeline:run', () => {
         result: BuildResult.None,
       });
 
-    const loggerSpy = jest.spyOn(mockContext.logger, 'warn');
+    const loggerSpy = jest.spyOn(context.logger, 'warn');
 
-    await action.handler(mockContext);
+    await action.handler(context);
 
     expect(runSpy).toHaveBeenCalled();
     expect(getSpy).toHaveBeenCalled();
     expect(loggerSpy).toHaveBeenCalled();
-    expect(mockContext.logger.warn).toHaveBeenLastCalledWith(
+    expect(context.logger.warn).toHaveBeenLastCalledWith(
       expect.stringContaining('Pipeline run could not start'),
     );
   });

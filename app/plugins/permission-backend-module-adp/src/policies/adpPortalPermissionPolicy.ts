@@ -27,16 +27,19 @@ import {
   deliveryProjectUserUpdatePermission,
 } from '@internal/plugin-adp-common';
 import type { RbacUtilities } from '../rbacUtilites';
-import type { Logger } from 'winston';
 import { createCatalogConditionalDecision } from '@backstage/plugin-catalog-backend/alpha';
-import { isGroupMember } from '../rules';
 import {
   createDeliveryProjectConditionalDecision,
   deliveryProjectConditions,
 } from '@internal/plugin-adp-backend';
+import type { LoggerService } from '@backstage/backend-plugin-api';
+import { isGroupMember } from '@internal/plugin-catalog-backend-module-adp';
 
 export class AdpPortalPermissionPolicy implements PermissionPolicy {
-  constructor(private rbacUtilites: RbacUtilities, private logger: Logger) {}
+  constructor(
+    private rbacUtilites: RbacUtilities,
+    private logger: LoggerService,
+  ) {}
 
   async handle(
     request: PolicyQuery,

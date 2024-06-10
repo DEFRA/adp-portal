@@ -119,9 +119,8 @@ export function createDeliveryProjectUserRouter(
 
   router.get('/deliveryProjectUsers/:deliveryProjectId', async (req, res) => {
     const deliveryProjectId = req.params.deliveryProjectId;
-    const data = await deliveryProjectUserStore.getByDeliveryProject(
-      deliveryProjectId,
-    );
+    const data =
+      await deliveryProjectUserStore.getByDeliveryProject(deliveryProjectId);
     res.json(data);
   });
 
@@ -151,6 +150,7 @@ export function createDeliveryProjectUserRouter(
     const catalogUser = await getUserEntityFromCatalog(
       body.user_catalog_name,
       catalog,
+      token,
     );
     if (!catalogUser.success) {
       respond(body, res, catalogUser, errorMapping);
@@ -213,6 +213,7 @@ export function createDeliveryProjectUserRouter(
     const catalogUser = await getUserEntityFromCatalog(
       body.user_catalog_name,
       catalog,
+      token,
     );
 
     if (!catalogUser.success) {

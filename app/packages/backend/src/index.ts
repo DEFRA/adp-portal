@@ -4,12 +4,6 @@ import fetchApiFactory, {
   fetchApiForwardAuthMiddleware,
   fetchApiHeadersMiddleware,
 } from '@internal/plugin-fetch-api-backend';
-import {
-  addAdoNameTransformer,
-  addAdpPermissionsPolicy,
-  addCatalogPermissionRules,
-} from './modules';
-import { addAdpDatabaseEntityProvider } from './modules';
 
 const backend = createBackend();
 
@@ -33,9 +27,9 @@ backend.add(
 // AuthN and AuthZ
 backend.add(import('@backstage/plugin-auth-backend'));
 backend.add(import('@backstage/plugin-auth-backend-module-microsoft-provider'));
+backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 backend.add(import('@backstage/plugin-permission-backend/alpha'));
-backend.add(addAdpPermissionsPolicy);
-backend.add(addCatalogPermissionRules);
+backend.add(import('@internal/plugin-permission-backend-module-adp'));
 
 // Backstage
 backend.add(import('@backstage/plugin-app-backend/alpha'));
@@ -45,8 +39,6 @@ backend.add(
 );
 backend.add(import('@backstage/plugin-catalog-backend-module-github/alpha'));
 backend.add(import('@backstage/plugin-catalog-backend-module-msgraph/alpha'));
-backend.add(addAdoNameTransformer);
-backend.add(addAdpDatabaseEntityProvider);
 backend.add(import('@backstage/plugin-scaffolder-backend/alpha'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(import('@backstage/plugin-search-backend/alpha'));
@@ -55,12 +47,13 @@ backend.add(import('@backstage/plugin-search-backend-module-techdocs/alpha'));
 backend.add(import('@backstage/plugin-techdocs-backend/alpha'));
 backend.add(import('@backstage/plugin-kubernetes-backend/alpha'));
 backend.add(import('@backstage/plugin-proxy-backend/alpha'));
-backend.add(import('@backstage/plugin-azure-devops-backend'));
+backend.add(import('@backstage-community/plugin-azure-devops-backend'));
 
 // ADP
 backend.add(import('@internal/plugin-adp-backend'));
 backend.add(import('@internal/plugin-scaffolder-backend-module-adp'));
 backend.add(import('@internal/plugin-techdocs-backend-module-adp'));
+backend.add(import('@internal/plugin-catalog-backend-module-adp'));
 
 // 3rd Party
 backend.add(

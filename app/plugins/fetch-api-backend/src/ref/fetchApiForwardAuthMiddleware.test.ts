@@ -73,7 +73,7 @@ jest.mock(
       get createFetchApiForwardAuthMiddleware() {
         return createFetchApiForwardAuthMiddleware;
       },
-    } satisfies typeof CreateFetchApiForwardAuthMiddleware),
+    }) satisfies typeof CreateFetchApiForwardAuthMiddleware,
 );
 
 function createMockConfig(): jest.Mocked<Config> {

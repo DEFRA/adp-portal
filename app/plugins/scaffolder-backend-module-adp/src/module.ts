@@ -24,6 +24,7 @@ export const adpScaffolderModule = createBackendModule({
         config: coreServices.rootConfig,
         discovery: coreServices.discovery,
         fetchApi: fetchApiRef,
+        auth: coreServices.auth,
       },
       async init({
         scaffolderActions,
@@ -31,12 +32,9 @@ export const adpScaffolderModule = createBackendModule({
         config,
         discovery,
         fetchApi,
+        auth,
       }) {
         const integrations = ScmIntegrations.fromConfig(config);
-        const adpClient = new AdpClient({
-          discoveryApi: discovery,
-          fetchApi: fetchApi,
-        });
 
         scaffolderActions.addActions(
           actions.createPipelineAction({
@@ -67,7 +65,13 @@ export const adpScaffolderModule = createBackendModule({
             config: config,
             getGithubClient: org =>
               createGithubClient(integrations, config, org),
-            adpClient,
+            adpClient: credentials =>
+              new AdpClient({
+                discoveryApi: discovery,
+                fetchApi: fetchApi,
+                credentials,
+                auth,
+              }),
           }),
           actions.publishZipAction,
         );

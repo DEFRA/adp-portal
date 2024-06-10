@@ -3,19 +3,22 @@ import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import type { Octokit } from 'octokit';
 import type { Config } from '@backstage/config';
 import type { IAdpClient } from '@internal/plugin-adp-common';
+import type { BackstageCredentials } from '@backstage/backend-plugin-api';
+
+export type AddDeliveryProjectToRepoInput = {
+  projectName: string;
+  repoName: string;
+  orgName?: string;
+  owner: string;
+};
 
 export function addDeliveryProjectToRepo(options: {
   config: Config;
   getGithubClient: (organization: string) => Promise<Octokit>;
-  adpClient: IAdpClient;
+  adpClient: (credentials: BackstageCredentials) => IAdpClient;
 }) {
   const { config, getGithubClient, adpClient } = options;
-  return createTemplateAction<{
-    projectName: string;
-    repoName: string;
-    orgName?: string;
-    owner: string;
-  }>({
+  return createTemplateAction<AddDeliveryProjectToRepoInput>({
     id: 'adp:github:team:add:deliveryproject',
     description: 'Adds the teams of a delivery project to a github repository',
     schema: {
@@ -55,9 +58,9 @@ export function addDeliveryProjectToRepo(options: {
         owner,
       } = ctx.input;
 
-      const teams = await adpClient.syncDeliveryProjectWithGithubTeams(
-        projectName,
-      );
+      const client = adpClient(await ctx.getInitiatorCredentials());
+      const teams =
+        await client.syncDeliveryProjectWithGithubTeams(projectName);
 
       await addTeamsToRepository(ctx.logger, orgName, repoName, owner, {
         [teams.contributors.slug]: 'push',

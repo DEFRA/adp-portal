@@ -71,9 +71,8 @@ describe('createRouter', () => {
   };
 
   beforeAll(async () => {
-    const deliveryProjectUserRouter = await createDeliveryProjectUserRouter(
-      mockOptions,
-    );
+    const deliveryProjectUserRouter =
+      await createDeliveryProjectUserRouter(mockOptions);
     deliveryProjectUserApp = express().use(deliveryProjectUserRouter);
   });
 
@@ -168,6 +167,10 @@ describe('createRouter', () => {
         .post('/deliveryProjectUser')
         .send(requestBody);
       expect(response.status).toEqual(201);
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        { token: 'token' },
+      );
     });
 
     it('returns a 403 response if the user is not authorized', async () => {
@@ -209,6 +212,10 @@ describe('createRouter', () => {
         .send(requestBody);
 
       expect(response.status).toEqual(400);
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        { token: 'token' },
+      );
     });
 
     it('returns a 400 response with errors', async () => {
@@ -256,6 +263,10 @@ describe('createRouter', () => {
           },
         ],
       });
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        { token: 'token' },
+      );
     });
   });
 
@@ -302,6 +313,10 @@ describe('createRouter', () => {
       expect(response.status).toEqual(200);
       expect(response.body).toMatchObject(
         JSON.parse(JSON.stringify(projectUser)),
+      );
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        { token: 'token' },
       );
     });
 
@@ -357,6 +372,10 @@ describe('createRouter', () => {
           },
         ],
       });
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        { token: 'token' },
+      );
     });
 
     it('returns a 400 response if catalog user cannot be found', async () => {
@@ -374,6 +393,10 @@ describe('createRouter', () => {
         } satisfies UpdateDeliveryProjectUserRequest);
 
       expect(response.status).toEqual(400);
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        { token: 'token' },
+      );
     });
 
     it('return 400 if if the request is bad', async () => {

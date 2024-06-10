@@ -7,11 +7,12 @@ import { armsLengthBodyApiRef } from './api';
 import type { ErrorApi } from '@backstage/core-plugin-api';
 import { errorApiRef } from '@backstage/core-plugin-api';
 import { AlbViewPageComponent } from './AlbViewPageComponent';
-import { waitFor } from '@testing-library/react';
+import { type RenderResult, waitFor } from '@testing-library/react';
 import type { ArmsLengthBody } from '@internal/plugin-adp-common';
 import type * as EditAlbButtonModule from './EditAlbButton';
 import type * as CreateAlbButtonModule from './CreateAlbButton';
 import { SnapshotFriendlyStylesProvider } from '../../utils';
+import { inspect } from 'node:util';
 
 const EditAlbButton: jest.MockedFn<
   (typeof EditAlbButtonModule)['EditAlbButton']
@@ -26,12 +27,14 @@ beforeEach(() => {
   CreateAlbButton.mockImplementation(({ onCreated, ...props }) => (
     <Button {...props} onClick={onCreated} />
   ));
-  EditAlbButton.mockImplementation(({ armsLengthBody, onEdited, ...props }) => (
-    <div>
-      {JSON.stringify(noTableData(armsLengthBody))}
-      <Button {...props} onClick={onEdited} />
-    </div>
-  ));
+  EditAlbButton.mockImplementation(
+    ({ onEdited, armsLengthBody, children, ...props }) => (
+      <Button {...props} onClick={onEdited}>
+        {children}
+        {inspect({ armsLengthBody: noTableData(armsLengthBody) })}
+      </Button>
+    ),
+  );
 });
 
 afterEach(() => {
@@ -164,13 +167,14 @@ describe('ArmsLengthBodyViewPageComponent', () => {
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
     expect(EditAlbButton.mock.calls).toMatchObject([]);
 
-    rendered.getByTestId('alb-add-button').click();
+    React.act(() => rendered.getByTestId('alb-add-button').click());
 
     await waitFor(() =>
       expect(
         mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls,
       ).toMatchObject([[], []]),
     );
+    await notLoading(rendered);
 
     expect(rendered.baseElement).toMatchSnapshot('after create');
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
@@ -197,13 +201,14 @@ describe('ArmsLengthBodyViewPageComponent', () => {
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
     assertEditArmsLengthBodyButtonCalls(projects.slice(0, 1));
 
-    rendered.getByTestId('alb-edit-button-0').click();
+    React.act(() => rendered.getByTestId('alb-edit-button-0').click());
 
     await waitFor(() =>
       expect(
         mockArmsLengthBodyApi.getArmsLengthBodies.mock.calls,
       ).toMatchObject([[], []]),
     );
+    await notLoading(rendered);
 
     expect(rendered.baseElement).toMatchSnapshot('after edit');
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
@@ -219,7 +224,7 @@ jest.mock(
       get EditAlbButton() {
         return EditAlbButton;
       },
-    } satisfies typeof EditAlbButtonModule),
+    }) satisfies typeof EditAlbButtonModule,
 );
 
 jest.mock(
@@ -229,8 +234,16 @@ jest.mock(
       get CreateAlbButton() {
         return CreateAlbButton;
       },
-    } satisfies typeof CreateAlbButtonModule),
+    }) satisfies typeof CreateAlbButtonModule,
 );
+
+async function notLoading(rendered: RenderResult) {
+  await waitFor(async () =>
+    expect(
+      await rendered.findByTestId('loading-indicator'),
+    ).not.toBeInTheDocument(),
+  );
+}
 
 function noTableData(value: unknown) {
   if (typeof value !== 'object' || value === null) return value;

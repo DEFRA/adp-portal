@@ -6,7 +6,7 @@ import { BuildStatus } from './types';
 import type { Logger } from 'winston';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
 
-type RunPipelineOptions = {
+export type RunPipelineActionInput = {
   pipelineApiVersion?: string;
   buildApiVersion?: string;
   server?: string;
@@ -26,7 +26,7 @@ export function runPipelineAction(options: {
 }) {
   const { integrations, config } = options;
 
-  return createTemplateAction<RunPipelineOptions>({
+  return createTemplateAction<RunPipelineActionInput>({
     id: 'adp:azure:pipeline:run',
     description: 'Runs an Azure DevOps pipeline',
     schema: {

@@ -10,7 +10,7 @@ import { CatalogImportPage } from '@backstage/plugin-catalog-import';
 import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
 import { orgPlugin } from '@backstage/plugin-org';
 import { SearchPage } from '@backstage/plugin-search';
-import { TechRadarPage } from '@backstage/plugin-tech-radar';
+import { TechRadarPage } from '@backstage-community/plugin-tech-radar';
 import {
   DefaultTechDocsHome,
   TechDocsIndexPage,
@@ -39,7 +39,6 @@ import {
   catalogLocationCreatePermission,
 } from '@backstage/plugin-catalog-common/alpha';
 
-import type { IconComponent } from '@backstage/core-plugin-api';
 import { microsoftAuthApiRef } from '@backstage/core-plugin-api';
 
 import LinearScaleIcon from '@material-ui/icons/LinearScale';
@@ -57,6 +56,7 @@ import {
   DeliveryProgrammeViewPageComponent,
   DeliveryProjectViewPageComponent,
 } from '@internal/plugin-adp';
+import { grafanaPlugin } from '@k-phoen/backstage-plugin-grafana';
 
 const app = createApp({
   components: {
@@ -75,6 +75,7 @@ const app = createApp({
   },
   apis,
   themes,
+  plugins: [grafanaPlugin],
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
       createComponent: scaffolderPlugin.routes.root,
@@ -90,11 +91,11 @@ const app = createApp({
     });
   },
   icons: {
-    pipeline: LinearScaleIcon as IconComponent,
-    policy: PolicyIcon as IconComponent,
-    project: WebIcon as IconComponent,
-    check: CheckCircleOutlineIcon as IconComponent,
-    cloud: CloudIcon as IconComponent,
+    pipeline: LinearScaleIcon,
+    policy: PolicyIcon,
+    project: WebIcon,
+    check: CheckCircleOutlineIcon,
+    cloud: CloudIcon,
   },
 });
 

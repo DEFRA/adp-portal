@@ -9,7 +9,6 @@ import {
 } from '@testing-library/react';
 import type { UseFormReturn } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { act } from 'react-dom/test-utils';
 import { SnapshotFriendlyStylesProvider } from '../../utils';
 
 describe('AlbFormFields', () => {
@@ -33,7 +32,7 @@ describe('AlbFormFields', () => {
 
     const { form, result } = await render();
 
-    act(() => {
+    React.act(() => {
       for (const [key, value] of Object.entries(fields) as {
         [P in keyof AlbFields]-?: [P, AlbFields[P]];
       }[keyof AlbFields][]) {

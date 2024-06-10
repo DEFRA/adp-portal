@@ -4,7 +4,7 @@ import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
 import type { DeliveryProgrammeAdminApi } from './api';
 import { deliveryProgrammeAdminApiRef } from './api';
 import { DeliveryProgrammeAdminViewPage } from './DeliveryProgrammeAdminViewPage';
-import { waitFor } from '@testing-library/react';
+import { type RenderResult, waitFor } from '@testing-library/react';
 import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 import {
   EntityProvider,
@@ -14,6 +14,7 @@ import type { Entity } from '@backstage/catalog-model';
 import type * as AddProgrammeAdminButtonModule from './AddProgrammeAdminButton';
 import { Button } from '@material-ui/core';
 import { SnapshotFriendlyStylesProvider } from '../../utils';
+import { inspect } from 'node:util';
 
 const AddProgrammeAdminButton: jest.MockedFn<
   (typeof AddProgrammeAdminButtonModule)['AddProgrammeAdminButton']
@@ -26,7 +27,7 @@ jest.mock(
       get AddProgrammeAdminButton() {
         return AddProgrammeAdminButton;
       },
-    } satisfies typeof AddProgrammeAdminButtonModule),
+    }) satisfies typeof AddProgrammeAdminButtonModule,
 );
 
 function setup() {
@@ -99,9 +100,14 @@ describe('DeliveryProgrammeAdminViewPage', () => {
   beforeEach(() => {
     jest.spyOn(global.Math, 'random').mockReturnValue(0);
 
-    AddProgrammeAdminButton.mockImplementation(({ onCreated, ...props }) => (
-      <Button {...props} onClick={onCreated} />
-    ));
+    AddProgrammeAdminButton.mockImplementation(
+      ({ onCreated, deliveryProgrammeId, entityRef, children, ...props }) => (
+        <Button {...props} onClick={onCreated}>
+          {children}
+          {inspect({ deliveryProgrammeId, entityRef })}
+        </Button>
+      ),
+    );
   });
 
   afterEach(() => {
@@ -181,15 +187,26 @@ describe('DeliveryProgrammeAdminViewPage', () => {
     ).toMatchObject([['123']]);
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
 
-    rendered.getByTestId('delivery-programme-admin-add-button').click();
+    React.act(() =>
+      rendered.getByTestId('delivery-programme-admin-add-button').click(),
+    );
 
     await waitFor(() =>
       expect(
         mockDeliveryProgrameAdminApi.getByDeliveryProgrammeId.mock.calls,
       ).toMatchObject([['123'], ['123']]),
     );
+    await notLoading(rendered);
 
     expect(rendered.baseElement).toMatchSnapshot('after create');
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
   });
 });
+
+async function notLoading(rendered: RenderResult) {
+  await waitFor(async () =>
+    expect(
+      await rendered.findByTestId('loading-indicator'),
+    ).not.toBeInTheDocument(),
+  );
+}

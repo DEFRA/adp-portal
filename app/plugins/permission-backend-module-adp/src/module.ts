@@ -3,13 +3,13 @@ import {
   createBackendModule,
 } from '@backstage/backend-plugin-api';
 import { policyExtensionPoint } from '@backstage/plugin-permission-node/alpha';
-import type { RbacGroups } from '../permissions';
-import { AdpPortalPermissionPolicy, RbacUtilities } from '../permissions';
-import { loggerToWinstonLogger } from '@backstage/backend-common';
+import type { RbacGroups } from './types';
+import { RbacUtilities } from './rbacUtilites';
+import { AdpPortalPermissionPolicy } from './policies';
 
-export const addAdpPermissionsPolicy = createBackendModule({
+export const adpPermissionModule = createBackendModule({
   pluginId: 'permission',
-  moduleId: 'adp-permission-policy',
+  moduleId: 'adp',
   register(env) {
     env.registerInit({
       deps: {
@@ -18,17 +18,15 @@ export const addAdpPermissionsPolicy = createBackendModule({
         config: coreServices.rootConfig,
       },
       async init({ policy, logger, config }) {
-        const winstonLogger = loggerToWinstonLogger(logger);
         const rbacGroups: RbacGroups = {
           platformAdminsGroup: config.getString('rbac.platformAdminsGroup'),
           programmeAdminGroup: config.getString('rbac.programmeAdminGroup'),
           adpPortalUsersGroup: config.getString('rbac.adpPortalUsersGroup'),
         };
-        const rbacUtilities = new RbacUtilities(winstonLogger, rbacGroups);
 
-        policy.setPolicy(
-          new AdpPortalPermissionPolicy(rbacUtilities, winstonLogger),
-        );
+        const rbacUtilities = new RbacUtilities(logger, rbacGroups);
+
+        policy.setPolicy(new AdpPortalPermissionPolicy(rbacUtilities, logger));
       },
     });
   },

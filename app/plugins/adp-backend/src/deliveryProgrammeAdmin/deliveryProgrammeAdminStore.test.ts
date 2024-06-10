@@ -56,9 +56,8 @@ describe('DeliveryProgrammeAdminStore', () => {
   it.each(databases.eachSupportedId())(
     'should get all Delivery Programme Admins from the database',
     async databaseId => {
-      const { deliveryProgrammeAdminStore, knex } = await createDatabase(
-        databaseId,
-      );
+      const { deliveryProgrammeAdminStore, knex } =
+        await createDatabase(databaseId);
       await seedProgrammeAdmin(knex);
 
       const getAllResult = await deliveryProgrammeAdminStore.getAll();
@@ -69,9 +68,8 @@ describe('DeliveryProgrammeAdminStore', () => {
   it.each(databases.eachSupportedId())(
     'should get Delivery Programme Admins by Delivery Programme from the database',
     async databaseId => {
-      const { deliveryProgrammeAdminStore, knex } = await createDatabase(
-        databaseId,
-      );
+      const { deliveryProgrammeAdminStore, knex } =
+        await createDatabase(databaseId);
       const programmeId = await seedProgramme(knex);
       const programmeAdmins = faker.helpers.multiple(
         () => createDeliveryProgrammeAdminEntity(programmeId),
@@ -91,9 +89,8 @@ describe('DeliveryProgrammeAdminStore', () => {
   it.each(databases.eachSupportedId())(
     'should get a Delivery Programme Admin from the database',
     async databaseId => {
-      const { deliveryProgrammeAdminStore, knex } = await createDatabase(
-        databaseId,
-      );
+      const { deliveryProgrammeAdminStore, knex } =
+        await createDatabase(databaseId);
       const programmeId = await seedProgramme(knex);
       const programmeAdmin = createDeliveryProgrammeAdminEntity(programmeId);
       await knex<delivery_programme_admin>(
@@ -112,9 +109,8 @@ describe('DeliveryProgrammeAdminStore', () => {
   it.each(databases.eachSupportedId())(
     'should insert a single Delivery Programme Admin into the database',
     async databaseId => {
-      const { deliveryProgrammeAdminStore, knex } = await createDatabase(
-        databaseId,
-      );
+      const { deliveryProgrammeAdminStore, knex } =
+        await createDatabase(databaseId);
       const programmeId = await seedProgramme(knex);
       const expectedProgrammeAdmin = createDeliveryProgrammeAdmin(programmeId);
       assertUUID(expectedProgrammeAdmin.delivery_programme_id);
@@ -144,9 +140,8 @@ describe('DeliveryProgrammeAdminStore', () => {
   it.each(databases.eachSupportedId())(
     'should delete a Delivery Programme Admin from the database',
     async databaseId => {
-      const { deliveryProgrammeAdminStore, knex } = await createDatabase(
-        databaseId,
-      );
+      const { deliveryProgrammeAdminStore, knex } =
+        await createDatabase(databaseId);
       const programmeAdminId = await seedProgrammeAdmin(knex);
 
       assertUUID(programmeAdminId);
