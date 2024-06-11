@@ -41,9 +41,6 @@
     "express": "^4.17.1",
     "express-promise-router": "^4.1.0",
     "knex": "^3.1.0",
-    "npm": "^10.3.0",
-    "winston": "^3.2.1",
-    "yn": "^4.0.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -51,7 +48,6 @@
     "@backstage/cli": "^0.26.6",
     "@types/jest": "^29.5.12",
     "@types/supertest": "^2.0.8",
-    "msw": "^1.0.0",
     "supertest": "^6.2.4"
   },
   "files": [
