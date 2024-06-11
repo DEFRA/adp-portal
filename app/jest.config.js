@@ -7,10 +7,12 @@ module.exports = (async () => {
     testPathIgnorePatterns: [
       '/packages/backend/src/index.ts',
       '/packages/app/src/apis.ts',
+      '/plugins/**/dev/index.ts',
     ],
     coveragePathIgnorePatterns: [
       '/packages/backend/src/index.ts',
       '/packages/app/src/apis.ts',
+      '/plugins/**/dev/index.ts',
     ],
   };
 })();

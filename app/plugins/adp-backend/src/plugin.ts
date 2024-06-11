@@ -90,7 +90,7 @@ export const adpPlugin = createBackendPlugin({
           config,
         });
 
-        const deliveryProgrammeRouter = await createProgrammeRouter({
+        const deliveryProgrammeRouter = createProgrammeRouter({
           logger,
           identity,
           deliveryProgrammeStore,
@@ -98,7 +98,7 @@ export const adpPlugin = createBackendPlugin({
           deliveryProgrammeAdminStore,
         });
 
-        const deliveryProjectRouter = await createProjectRouter({
+        const deliveryProjectRouter = createProjectRouter({
           logger,
           identity,
           deliveryProjectStore,
@@ -108,25 +108,22 @@ export const adpPlugin = createBackendPlugin({
           fluxConfigApi,
         });
 
-        const deliveryProjectUserRouter = await createDeliveryProjectUserRouter(
-          {
-            catalog,
-            deliveryProjectUserStore,
-            logger,
-            teamSyncronizer,
-            entraIdGroupSyncronizer,
-            permissions,
-          },
-        );
+        const deliveryProjectUserRouter = createDeliveryProjectUserRouter({
+          catalog,
+          deliveryProjectUserStore,
+          logger,
+          teamSyncronizer,
+          entraIdGroupSyncronizer,
+          permissions,
+        });
 
-        const deliveryProgrameAdminRouter =
-          await createDeliveryProgrammeAdminRouter({
-            deliveryProgrammeAdminStore,
-            catalog,
-            identity,
-            logger,
-            permissions,
-          });
+        const deliveryProgrameAdminRouter = createDeliveryProgrammeAdminRouter({
+          deliveryProgrammeAdminStore,
+          catalog,
+          identity,
+          logger,
+          permissions,
+        });
 
         const combinedRouter = Router();
         combinedRouter.use(armsLengthBodyRouter);
