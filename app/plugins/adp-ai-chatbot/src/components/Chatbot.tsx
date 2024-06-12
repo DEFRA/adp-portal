@@ -11,7 +11,7 @@ import ChatUI from './ChatUI';
 
 export const Chatbot = () => {
 return (
-  
+
   <Page themeId="tool">
     <Header
       title="Azure Development Platform: Chat"
@@ -20,12 +20,12 @@ return (
     <Content>
       <ContentHeader title="ADP Chat">
         <SupportButton>
-          Get support through the ADP AI Chatbot.
+          Get support through the ADP AI Chatbot
         </SupportButton>
       </ContentHeader>
       <Typography paragraph>
-        Get support through the ADP AI Chatbot.
-      </Typography> 
+        Get support through the ADP AI Chatbot
+      </Typography>
       <ChatUI />
     </Content>
   </Page>
