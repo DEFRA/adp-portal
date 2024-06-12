@@ -151,6 +151,7 @@ catalog:
   rules:
     - allow:
         [Component, System, API, Resource, Location, Template, Domain, Group]
+  processingInterval: { minutes: 60 }
 
   # Providers configured to scan repos in the specified organizations for components to add to the catalog.
   # Assumes a catalog-info.yml file is present in the root of the repo.
