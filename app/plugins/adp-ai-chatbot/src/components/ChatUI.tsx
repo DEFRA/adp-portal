@@ -15,6 +15,7 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import SendIcon from '@mui/icons-material/Send';
+import DOMPurify from 'dompurify';
 
 interface ChatMessage {
   sender: 'user' | 'adpBot';
@@ -40,12 +41,13 @@ const ChatUI = () => {
         },
         body: JSON.stringify({ prompt: userInput }),
       });
-      const data = await response.json();
-      setResponse(data.response);
+      const data = await response.text();
+      const cleanHTML = DOMPurify.sanitize(data);
+      setResponse(cleanHTML);
       setUserInput('');
       setChatHistory(prevHistory => [
         ...prevHistory,
-        { sender: 'adpBot', text: data.response },
+        { sender: 'adpBot', text: cleanHTML },
       ]);
     }
   };
@@ -61,7 +63,13 @@ const ChatUI = () => {
             {chatHistory.map((message, index) => (
               <ListItem key={index} alignItems="flex-start">
                 <ListItemText
-                  primary={message.text}
+                  primary={
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: message.text,
+                      }}
+                    />
+                  }
                   secondary={message.sender === 'user' ? 'You' : 'ADP'}
                 />
               </ListItem>
