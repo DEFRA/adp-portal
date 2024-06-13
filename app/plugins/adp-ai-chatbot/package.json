@@ -32,6 +32,7 @@
     "@material-ui/lab": "^4.0.0-alpha.61",
     "@mui/icons-material": "^5.15.9",
     "@mui/material": "^5.0.0",
+    "dompurify": "^3.1.5",
     "react-use": "^17.2.4"
   },
   "peerDependencies": {

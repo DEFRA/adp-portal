@@ -13,6 +13,7 @@ import {
   Paper,
 } from '@mui/material/';
 import SendIcon from '@mui/icons-material/Send';
+import DOMPurify from 'dompurify';
 
 interface ChatMessage {
   sender: 'user' | 'adpBot';
@@ -41,10 +42,11 @@ const ChatUI = () => {
         },
         body: JSON.stringify({ prompt: userInput }),
       });
-      const data = await response.json();
+      const data = await response.text();
+      const cleanHTML = DOMPurify.sanitize(data)
       setChatHistory(prevHistory => [
         ...prevHistory,
-        { sender: 'adpBot', text: data.response,  timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })  },
+        { sender: 'adpBot', text: cleanHTML,  timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })  },
       ]);
       setResponseFetched(true);
     }
@@ -70,7 +72,11 @@ const ChatUI = () => {
               textAlign: message.sender === 'user' ? 'right' : 'left',
             }}>
               <ListItemText
-                primary={message.text}
+                primary={<span
+                  dangerouslySetInnerHTML={{
+                    __html: message.text,
+                  }}
+                />}
                 secondary={`${message.sender === 'user' ? 'You' : 'ADP'} at ${message.timestamp}`}
                 sx={{
                   maxWidth: '70%',
