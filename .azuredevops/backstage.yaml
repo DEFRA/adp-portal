@@ -50,7 +50,7 @@ properties:
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/POSTGRES-PASSWORD
         identity: {{userAssignedIdentity}}
       - name: github-organization
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB_ORGANIZATION
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-ORGANIZATION
         identity: {{userAssignedIdentity}}
       - name: github-private-key
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-PRIVATE-KEY
