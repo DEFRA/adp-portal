@@ -160,6 +160,7 @@ catalog:
       defra:
         organization: 'defra-adp-sandpit'
         catalogPath: '/catalog-info.yaml'
+        validateLocationsExist: true
         filters:
           repository: '^(adp-portal-.+|techdocs-.+)'
         schedule:
