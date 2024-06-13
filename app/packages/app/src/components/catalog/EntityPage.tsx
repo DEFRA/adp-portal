@@ -32,7 +32,7 @@ import {
 import {
   isGithubActionsAvailable,
   EntityGithubActionsContent,
-} from '@backstage/plugin-github-actions';
+} from '@backstage-community/plugin-github-actions';
 import {
   EntityUserProfileCard,
   EntityGroupProfileCard,
@@ -58,7 +58,7 @@ import {
 import {
   EntityAzurePipelinesContent,
   isAzurePipelinesAvailable,
-} from '@backstage/plugin-azure-devops';
+} from '@backstage-community/plugin-azure-devops';
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
 import {
@@ -70,7 +70,7 @@ import { EntityGithubPullRequestsContent } from '@roadiehq/backstage-plugin-gith
 import {
   EntityTeamPullRequestsCard,
   EntityTeamPullRequestsContent,
-} from '@backstage/plugin-github-pull-requests-board';
+} from '@backstage-community/plugin-github-pull-requests-board';
 import {
   EntityKubernetesContent,
   isKubernetesAvailable,
@@ -518,12 +518,14 @@ const domainPage = () => (
 
 export const entityPage = () => (
   <EntitySwitch>
-    <EntitySwitch.Case if={isKind('component')} children={componentPage()} />
-    <EntitySwitch.Case if={isKind('api')} children={apiPage()} />
-    <EntitySwitch.Case if={isKind('group')} children={groupPage()} />
-    <EntitySwitch.Case if={isKind('user')} children={userPage()} />
-    <EntitySwitch.Case if={isKind('system')} children={systemPage()} />
-    <EntitySwitch.Case if={isKind('domain')} children={domainPage()} />
+    <EntitySwitch.Case if={isKind('component')}>
+      {componentPage()}
+    </EntitySwitch.Case>
+    <EntitySwitch.Case if={isKind('api')}>{apiPage()}</EntitySwitch.Case>
+    <EntitySwitch.Case if={isKind('group')}>{groupPage()}</EntitySwitch.Case>
+    <EntitySwitch.Case if={isKind('user')}>{userPage()}</EntitySwitch.Case>
+    <EntitySwitch.Case if={isKind('system')}>{systemPage()}</EntitySwitch.Case>
+    <EntitySwitch.Case if={isKind('domain')}>{domainPage()}</EntitySwitch.Case>
 
     <EntitySwitch.Case>{defaultEntityPage()}</EntitySwitch.Case>
   </EntitySwitch>

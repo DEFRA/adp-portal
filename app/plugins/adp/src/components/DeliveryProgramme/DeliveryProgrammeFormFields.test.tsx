@@ -12,7 +12,6 @@ import {
 } from '@testing-library/react';
 import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { act } from 'react-dom/test-utils';
 import type { ArmsLengthBodyApi } from '../ALB/api';
 import { armsLengthBodyApiRef } from '../ALB/api';
 import { TestApiProvider } from '@backstage/test-utils';
@@ -54,7 +53,7 @@ describe('DeliveryProgrammeFormFields', () => {
 
     const { form, result } = await render();
 
-    act(() => {
+    React.act(() => {
       for (const [key, value] of Object.entries(fields) as {
         [P in keyof DeliveryProgrammeFields]-?: [P, DeliveryProgrammeFields[P]];
       }[keyof DeliveryProgrammeFields][]) {

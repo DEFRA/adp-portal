@@ -69,9 +69,8 @@ describe('DeliveryProjectUserStore', () => {
   it.each(databases.eachSupportedId())(
     'should get all Delivery Project Users from the database',
     async databaseId => {
-      const { knex, deliveryProjectUserStore } = await createDatabase(
-        databaseId,
-      );
+      const { knex, deliveryProjectUserStore } =
+        await createDatabase(databaseId);
       await seedProjectUser(knex);
 
       const getAllResult = await deliveryProjectUserStore.getAll();
@@ -82,9 +81,8 @@ describe('DeliveryProjectUserStore', () => {
   it.each(databases.eachSupportedId())(
     'should create a new Delivery Project User',
     async databaseId => {
-      const { knex, deliveryProjectUserStore } = await createDatabase(
-        databaseId,
-      );
+      const { knex, deliveryProjectUserStore } =
+        await createDatabase(databaseId);
       const projectId = await seedProject(knex);
       const expectedUser = createDeliveryProjectUser(projectId);
       assertUUID(expectedUser.delivery_project_id);
@@ -120,9 +118,8 @@ describe('DeliveryProjectUserStore', () => {
   it.each(databases.eachSupportedId())(
     'should get Delivery Project Users by Delivery Project ID',
     async databaseId => {
-      const { knex, deliveryProjectUserStore } = await createDatabase(
-        databaseId,
-      );
+      const { knex, deliveryProjectUserStore } =
+        await createDatabase(databaseId);
       const projectId = await seedProject(knex);
       const users = faker.helpers.multiple(
         () => createDeliveryProjectUserEntity(projectId),
@@ -130,9 +127,8 @@ describe('DeliveryProjectUserStore', () => {
       );
       await knex<delivery_project>(delivery_project_user_name).insert(users);
 
-      const getAllResult = await deliveryProjectUserStore.getByDeliveryProject(
-        projectId,
-      );
+      const getAllResult =
+        await deliveryProjectUserStore.getByDeliveryProject(projectId);
       expect(getAllResult).toHaveLength(4);
     },
   );
@@ -140,9 +136,8 @@ describe('DeliveryProjectUserStore', () => {
   it.each(databases.eachSupportedId())(
     'should get a Delivery Project User from the database',
     async databaseId => {
-      const { knex, deliveryProjectUserStore } = await createDatabase(
-        databaseId,
-      );
+      const { knex, deliveryProjectUserStore } =
+        await createDatabase(databaseId);
       const projectUser = await seedProjectUser(knex);
 
       const getResult = await deliveryProjectUserStore.get(projectUser.id);
@@ -184,9 +179,8 @@ describe('DeliveryProjectUserStore', () => {
   it.each(databases.eachSupportedId())(
     'should update an existing Delivery Project User in the database',
     async databaseId => {
-      const { knex, deliveryProjectUserStore } = await createDatabase(
-        databaseId,
-      );
+      const { knex, deliveryProjectUserStore } =
+        await createDatabase(databaseId);
       const projectUser = await seedProjectUser(knex);
 
       const expectedUpdate: UpdateDeliveryProjectUserRequest = {
@@ -198,9 +192,8 @@ describe('DeliveryProjectUserStore', () => {
         user_catalog_name: 'user@test.com',
       };
 
-      const updateResult = await deliveryProjectUserStore.update(
-        expectedUpdate,
-      );
+      const updateResult =
+        await deliveryProjectUserStore.update(expectedUpdate);
 
       expect(updateResult).toBeDefined();
       expect(updateResult).toMatchObject({
@@ -217,9 +210,8 @@ describe('DeliveryProjectUserStore', () => {
   it.each(databases.eachSupportedId())(
     'should return an unmodified Delivery Project User if no values have changed',
     async databaseId => {
-      const { knex, deliveryProjectUserStore } = await createDatabase(
-        databaseId,
-      );
+      const { knex, deliveryProjectUserStore } =
+        await createDatabase(databaseId);
       const projectUser = await seedProjectUser(knex);
       const updateUser: UpdateDeliveryProjectUserRequest = {
         ...projectUser,
@@ -245,9 +237,8 @@ describe('DeliveryProjectUserStore', () => {
   it.each(databases.eachSupportedId())(
     'should not update a non-existing Delivery Project User in the database',
     async databaseId => {
-      const { knex, deliveryProjectUserStore } = await createDatabase(
-        databaseId,
-      );
+      const { knex, deliveryProjectUserStore } =
+        await createDatabase(databaseId);
       await seedProjectUser(knex);
 
       const expectedUpdate: UpdateDeliveryProjectUserRequest = {

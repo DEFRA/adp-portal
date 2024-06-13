@@ -1,16 +1,13 @@
-import type { PluginDatabaseManager } from '@backstage/backend-common';
-import { DatabaseManager, getVoidLogger } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
+import type { ProjectRouterOptions } from './deliveryProjectRouter';
 import { createProjectRouter } from './deliveryProjectRouter';
-import { ConfigReader } from '@backstage/config';
 import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { InputError } from '@backstage/errors';
 import {
   type IFluxConfigApi,
   type IDeliveryProjectStore,
 } from '../deliveryProject';
-import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
 import { randomUUID } from 'node:crypto';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import type {
@@ -19,6 +16,7 @@ import type {
 } from '@internal/plugin-adp-common';
 import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import { mockServices } from '@backstage/backend-test-utils';
 
 let mockCreateFluxConfig: jest.Mock;
 let mockGetFluxConfig: jest.Mock;
@@ -80,10 +78,9 @@ describe('createRouter', () => {
       delete: jest.fn(),
     };
 
-  const mockOptions = {
-    logger: getVoidLogger(),
+  const mockOptions: ProjectRouterOptions = {
+    logger: mockServices.logger.mock(),
     identity: mockIdentityApi,
-    database: createTestDatabase(),
     teamSyncronizer: mockSyncronizer,
     deliveryProjectStore: mockDeliveryProjectStore,
     deliveryProjectUserStore: mockDeliveryProjectUserStore,
@@ -91,21 +88,7 @@ describe('createRouter', () => {
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
   };
 
-  function createTestDatabase(): PluginDatabaseManager {
-    return DatabaseManager.fromConfig(
-      new ConfigReader({
-        backend: {
-          database: {
-            client: 'better-sqlite3',
-            connection: ':memory:',
-          },
-        },
-      }),
-    ).forPlugin('adp');
-  }
-
   beforeAll(async () => {
-    await initializeAdpDatabase(mockOptions.database);
     const projectRouter = createProjectRouter(mockOptions);
     projectApp = express().use(projectRouter);
   });
@@ -123,6 +106,14 @@ describe('createRouter', () => {
     mockDeliveryProjectStore.update.mockResolvedValue({
       success: true,
       value: expectedProjectDataWithName,
+    });
+  });
+
+  describe('GET /deliveryProject/health', () => {
+    it('returns ok', async () => {
+      const response = await request(projectApp).get('/deliveryProject/health');
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual({ status: 'ok' });
     });
   });
 

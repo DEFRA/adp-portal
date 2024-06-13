@@ -9,3 +9,4 @@ export * from './database';
 export * from './deliveryProjectUser';
 export * from './entraId';
 export * from './permissions';
+export { adpPlugin as default } from './plugin';

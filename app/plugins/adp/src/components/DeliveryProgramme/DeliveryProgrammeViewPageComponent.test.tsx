@@ -7,12 +7,13 @@ import { deliveryProgrammeApiRef } from './api';
 import type { ErrorApi } from '@backstage/core-plugin-api';
 import { errorApiRef } from '@backstage/core-plugin-api';
 import { DeliveryProgrammeViewPageComponent } from './DeliveryProgrammeViewPageComponent';
-import { waitFor } from '@testing-library/react';
+import { type RenderResult, waitFor } from '@testing-library/react';
 import type { DeliveryProgramme } from '@internal/plugin-adp-common';
 import { entityRouteRef } from '@backstage/plugin-catalog-react';
 import type * as EditDeliveryProgrammeButtonModule from './EditDeliveryProgrammeButton';
 import type * as CreateDeliveryProgrammeButtonModule from './CreateDeliveryProgrammeButton';
 import { SnapshotFriendlyStylesProvider } from '../../utils';
+import { inspect } from 'node:util';
 
 const EditDeliveryProgrammeButton: jest.MockedFn<
   (typeof EditDeliveryProgrammeButtonModule)['EditDeliveryProgrammeButton']
@@ -28,11 +29,11 @@ beforeEach(() => {
     ({ onCreated, ...props }) => <Button {...props} onClick={onCreated} />,
   );
   EditDeliveryProgrammeButton.mockImplementation(
-    ({ deliveryProgramme, onEdited, ...props }) => (
-      <div>
-        {JSON.stringify(noTableData(deliveryProgramme))}
-        <Button {...props} onClick={onEdited} />
-      </div>
+    ({ onEdited, deliveryProgramme, children, ...props }) => (
+      <Button {...props} onClick={onEdited}>
+        {children}
+        {inspect({ deliveryProgramme: noTableData(deliveryProgramme) })}
+      </Button>
     ),
   );
 });
@@ -175,13 +176,16 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
     expect(EditDeliveryProgrammeButton.mock.calls).toMatchObject([]);
 
-    rendered.getByTestId('delivery-programme-add-button').click();
+    React.act(() =>
+      rendered.getByTestId('delivery-programme-add-button').click(),
+    );
 
     await waitFor(() =>
       expect(
         mockDeliveryProgrammeApi.getDeliveryProgrammes.mock.calls,
       ).toMatchObject([[], []]),
     );
+    await notLoading(rendered);
 
     expect(rendered.baseElement).toMatchSnapshot('after create');
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
@@ -208,13 +212,16 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
     assertEditDeliveryProgrammeButtonCalls(programmes.slice(0, 1));
 
-    rendered.getByTestId('delivery-programme-edit-button-0').click();
+    React.act(() =>
+      rendered.getByTestId('delivery-programme-edit-button-0').click(),
+    );
 
     await waitFor(() =>
       expect(
         mockDeliveryProgrammeApi.getDeliveryProgrammes.mock.calls,
       ).toMatchObject([[], []]),
     );
+    await notLoading(rendered);
 
     expect(rendered.baseElement).toMatchSnapshot('after edit');
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
@@ -230,7 +237,7 @@ jest.mock(
       get EditDeliveryProgrammeButton() {
         return EditDeliveryProgrammeButton;
       },
-    } satisfies typeof EditDeliveryProgrammeButtonModule),
+    }) satisfies typeof EditDeliveryProgrammeButtonModule,
 );
 
 jest.mock(
@@ -240,8 +247,16 @@ jest.mock(
       get CreateDeliveryProgrammeButton() {
         return CreateDeliveryProgrammeButton;
       },
-    } satisfies typeof CreateDeliveryProgrammeButtonModule),
+    }) satisfies typeof CreateDeliveryProgrammeButtonModule,
 );
+
+async function notLoading(rendered: RenderResult) {
+  await waitFor(async () =>
+    expect(
+      await rendered.findByTestId('loading-indicator'),
+    ).not.toBeInTheDocument(),
+  );
+}
 
 function noTableData(value: unknown) {
   if (typeof value !== 'object' || value === null) return value;

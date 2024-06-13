@@ -9,8 +9,8 @@ import type {
 } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { isFieldDisabled } from './isFieldDisabled';
-import { enrichHelperText } from './enrichHelperText';
 import { rulesToHtmlProperties } from './rulesToHtmlProperties';
+import { getHelperText } from './getHelperText';
 
 export type FormTextFieldProps<
   TFields extends FieldValues,
@@ -60,9 +60,7 @@ export function FormTextField<
           InputProps={InputProps}
           {...field}
           error={!!errors[name]}
-          helperText={
-            errors[name]?.message ?? enrichHelperText(helperText, rules) ?? ' '
-          }
+          helperText={getHelperText(errors, name, helperText, rules)}
           multiline={!!maxRows && maxRows > 1}
           maxRows={maxRows}
           data-testid={name}

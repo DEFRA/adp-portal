@@ -235,7 +235,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -270,7 +270,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -305,7 +305,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -340,7 +340,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -375,7 +375,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -410,7 +410,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -525,24 +525,38 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                               />
                             </a>
                              
-                            <div>
-                              {"arms_length_body_id":"123","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","description":"My description","id":"0","name":"programme-0","programme_managers":[],"title":"Programme 0","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool","children":[],"updated_by":"Someone else","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="delivery-programme-edit-button-0"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="delivery-programme-edit-button-0"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  deliveryProgramme: {
+    arms_length_body_id: '123',
+    created_at: 1970-01-01T00:00:00.000Z,
+    delivery_programme_code: 'ABC',
+    description: 'My description',
+    id: '0',
+    name: 'programme-0',
+    programme_managers: [],
+    title: 'Programme 0',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'Cool',
+    children: [],
+    updated_by: 'Someone else',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -1020,7 +1034,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1055,7 +1069,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1090,7 +1104,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1125,7 +1139,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1160,7 +1174,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1195,7 +1209,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is c
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1697,7 +1711,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1732,7 +1746,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1767,7 +1781,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1802,7 +1816,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1837,7 +1851,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1872,7 +1886,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1987,24 +2001,38 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                               />
                             </a>
                              
-                            <div>
-                              {"arms_length_body_id":"123","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","description":"My description","id":"0","name":"programme-0","programme_managers":[],"title":"Programme 0","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool","children":[],"updated_by":"Someone else","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="delivery-programme-edit-button-0"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="delivery-programme-edit-button-0"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  deliveryProgramme: {
+    arms_length_body_id: '123',
+    created_at: 1970-01-01T00:00:00.000Z,
+    delivery_programme_code: 'ABC',
+    description: 'My description',
+    id: '0',
+    name: 'programme-0',
+    programme_managers: [],
+    title: 'Programme 0',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'Cool',
+    children: [],
+    updated_by: 'Someone else',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -2087,24 +2115,38 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                               />
                             </a>
                              
-                            <div>
-                              {"arms_length_body_id":"123","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","description":"My description","id":"1","name":"programme-1","programme_managers":[],"title":"Programme 1","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool","children":[],"updated_by":"Someone else","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="delivery-programme-edit-button-1"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="delivery-programme-edit-button-1"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  deliveryProgramme: {
+    arms_length_body_id: '123',
+    created_at: 1970-01-01T00:00:00.000Z,
+    delivery_programme_code: 'ABC',
+    description: 'My description',
+    id: '1',
+    name: 'programme-1',
+    programme_managers: [],
+    title: 'Programme 1',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'Cool',
+    children: [],
+    updated_by: 'Someone else',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -2578,7 +2620,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2613,7 +2655,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2648,7 +2690,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2683,7 +2725,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2718,7 +2760,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2753,7 +2795,7 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2868,24 +2910,38 @@ exports[`DeliveryProgrammeViewPageComponent Should refresh when a programme is e
                               />
                             </a>
                              
-                            <div>
-                              {"arms_length_body_id":"123","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","description":"My description","id":"0","name":"programme-0","programme_managers":[],"title":"Programme 0","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool","children":[],"updated_by":"Someone else","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="delivery-programme-edit-button-0"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="delivery-programme-edit-button-0"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  deliveryProgramme: {
+    arms_length_body_id: '123',
+    created_at: 1970-01-01T00:00:00.000Z,
+    delivery_programme_code: 'ABC',
+    description: 'My description',
+    id: '0',
+    name: 'programme-0',
+    programme_managers: [],
+    title: 'Programme 0',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'Cool',
+    children: [],
+    updated_by: 'Someone else',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -3363,7 +3419,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page when the prog
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3398,7 +3454,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page when the prog
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3433,7 +3489,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page when the prog
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3468,7 +3524,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page when the prog
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3503,7 +3559,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page when the prog
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3538,7 +3594,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page when the prog
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4040,7 +4096,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4075,7 +4131,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4110,7 +4166,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4145,7 +4201,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4180,7 +4236,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4215,7 +4271,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4330,24 +4386,38 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                               />
                             </a>
                              
-                            <div>
-                              {"arms_length_body_id":"123","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","description":"My description","id":"0","name":"programme-0","programme_managers":[],"title":"Programme 0","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool","children":[],"updated_by":"Someone else","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="delivery-programme-edit-button-0"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="delivery-programme-edit-button-0"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  deliveryProgramme: {
+    arms_length_body_id: '123',
+    created_at: 1970-01-01T00:00:00.000Z,
+    delivery_programme_code: 'ABC',
+    description: 'My description',
+    id: '0',
+    name: 'programme-0',
+    programme_managers: [],
+    title: 'Programme 0',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'Cool',
+    children: [],
+    updated_by: 'Someone else',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -4430,24 +4500,38 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                               />
                             </a>
                              
-                            <div>
-                              {"arms_length_body_id":"123","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","description":"My description","id":"1","name":"programme-1","programme_managers":[],"title":"Programme 1","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool","children":[],"updated_by":"Someone else","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="delivery-programme-edit-button-1"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="delivery-programme-edit-button-1"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  deliveryProgramme: {
+    arms_length_body_id: '123',
+    created_at: 1970-01-01T00:00:00.000Z,
+    delivery_programme_code: 'ABC',
+    description: 'My description',
+    id: '1',
+    name: 'programme-1',
+    programme_managers: [],
+    title: 'Programme 1',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'Cool',
+    children: [],
+    updated_by: 'Someone else',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -4530,24 +4614,38 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                               />
                             </a>
                              
-                            <div>
-                              {"arms_length_body_id":"123","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","description":"My description","id":"2","name":"programme-2","programme_managers":[],"title":"Programme 2","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool","children":[],"updated_by":"Someone else","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="delivery-programme-edit-button-2"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="delivery-programme-edit-button-2"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  deliveryProgramme: {
+    arms_length_body_id: '123',
+    created_at: 1970-01-01T00:00:00.000Z,
+    delivery_programme_code: 'ABC',
+    description: 'My description',
+    id: '2',
+    name: 'programme-2',
+    programme_managers: [],
+    title: 'Programme 2',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'Cool',
+    children: [],
+    updated_by: 'Someone else',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -4630,24 +4728,38 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                               />
                             </a>
                              
-                            <div>
-                              {"arms_length_body_id":"123","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","description":"My description","id":"3","name":"programme-3","programme_managers":[],"title":"Programme 3","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool","children":[],"updated_by":"Someone else","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="delivery-programme-edit-button-3"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="delivery-programme-edit-button-3"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  deliveryProgramme: {
+    arms_length_body_id: '123',
+    created_at: 1970-01-01T00:00:00.000Z,
+    delivery_programme_code: 'ABC',
+    description: 'My description',
+    id: '3',
+    name: 'programme-3',
+    programme_managers: [],
+    title: 'Programme 3',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'Cool',
+    children: [],
+    updated_by: 'Someone else',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -4730,24 +4842,38 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with many pro
                               />
                             </a>
                              
-                            <div>
-                              {"arms_length_body_id":"123","created_at":"1970-01-01T00:00:00.000Z","delivery_programme_code":"ABC","description":"My description","id":"4","name":"programme-4","programme_managers":[],"title":"Programme 4","updated_at":"1970-01-01T00:00:00.000Z","alias":"Cool","children":[],"updated_by":"Someone else","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="delivery-programme-edit-button-4"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="delivery-programme-edit-button-4"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  deliveryProgramme: {
+    arms_length_body_id: '123',
+    created_at: 1970-01-01T00:00:00.000Z,
+    delivery_programme_code: 'ABC',
+    description: 'My description',
+    id: '4',
+    name: 'programme-4',
+    programme_managers: [],
+    title: 'Programme 4',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'Cool',
+    children: [],
+    updated_by: 'Someone else',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                       </tbody>
@@ -5209,7 +5335,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with no progr
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5244,7 +5370,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with no progr
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5279,7 +5405,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with no progr
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5314,7 +5440,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with no progr
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5349,7 +5475,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with no progr
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5384,7 +5510,7 @@ exports[`DeliveryProgrammeViewPageComponent Should render the page with no progr
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"

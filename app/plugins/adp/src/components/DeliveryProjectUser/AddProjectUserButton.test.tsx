@@ -1,7 +1,7 @@
 import React from 'react';
 import { alertApiRef, type AlertApi } from '@backstage/core-plugin-api';
 import { deliveryProjectUserApiRef, type DeliveryProjectUserApi } from './api';
-import { act, render, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import type { AddProjectUserButtonProps } from './AddProjectUserButton';
 import { AddProjectUserButton } from './AddProjectUserButton';
 import { TestApiProvider } from '@backstage/test-utils';
@@ -79,7 +79,7 @@ jest.mock(
       get permissionApiRef(): never {
         throw new Error('Not mocked');
       },
-    } satisfies typeof PluginPermissionReactModule),
+    }) satisfies typeof PluginPermissionReactModule,
 );
 
 jest.mock(
@@ -89,7 +89,7 @@ jest.mock(
       get DialogForm() {
         return DialogForm as typeof DialogFormModule.DialogForm;
       },
-    } satisfies typeof DialogFormModule),
+    }) satisfies typeof DialogFormModule,
 );
 
 describe('AddProjectUserButton', () => {
@@ -187,7 +187,7 @@ describe('AddProjectUserButton', () => {
     expect(result.baseElement).toMatchSnapshot('Before cancel');
     expect(DialogForm.mock.calls).toHaveLength(1);
     const formProps = DialogForm.mock.calls[0][0];
-    act(() => formProps.completed(undefined));
+    React.act(() => formProps.completed(undefined));
     await waitFor(() => expect(result.queryByText('Test dialog')).toBeNull());
     expect(result.baseElement).toMatchSnapshot('After cancel');
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
@@ -216,7 +216,7 @@ describe('AddProjectUserButton', () => {
     expect(DialogForm.mock.calls).toHaveLength(1);
     expect(onCreated).not.toHaveBeenCalled();
     const formProps = DialogForm.mock.calls[0][0];
-    act(() => formProps.completed(fields));
+    React.act(() => formProps.completed(fields));
     await waitFor(() => expect(result.queryByText('Test dialog')).toBeNull());
     expect(result.baseElement).toMatchSnapshot('After complete');
     expect(onCreated).toHaveBeenCalledTimes(1);

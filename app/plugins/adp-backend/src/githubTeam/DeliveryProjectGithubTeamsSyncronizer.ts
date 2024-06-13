@@ -65,9 +65,8 @@ export class DeliveryProjectGithubTeamsSyncronizer
   async #syncronize(
     deliveryProject: DeliveryProject,
   ): Promise<DeliveryProjectTeamsSyncResult> {
-    const teamConfig = await this.#getDeliveryProjectTeamConfig(
-      deliveryProject,
-    );
+    const teamConfig =
+      await this.#getDeliveryProjectTeamConfig(deliveryProject);
 
     const result = await this.#syncGithubTeams(teamConfig);
 

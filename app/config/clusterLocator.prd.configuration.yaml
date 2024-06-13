@@ -1,0 +1,7 @@
+type: 'config'
+clusters:
+  - $include: ./cluster.snd4.configuration.yaml
+  - $include: ./cluster.dev1.configuration.yaml
+  - $include: ./cluster.tst1.configuration.yaml
+  - $include: ./cluster.pre1.configuration.yaml
+  - $include: ./cluster.prd1.configuration.yaml

@@ -10,7 +10,7 @@ import type {
 import { Controller } from 'react-hook-form';
 import { isFieldDisabled } from './isFieldDisabled';
 import { rulesToHtmlProperties } from './rulesToHtmlProperties';
-import { enrichHelperText } from './enrichHelperText';
+import { getHelperText } from './getHelperText';
 
 export type FormCheckboxFieldProps<
   TFields extends FieldValues,
@@ -67,7 +67,7 @@ export function FormCheckboxField<
         )}
       />
       <FormHelperText>
-        {errors[name]?.message ?? enrichHelperText(helperText, rules) ?? ' '}
+        {getHelperText(errors, name, helperText, rules)}
       </FormHelperText>
     </>
   );

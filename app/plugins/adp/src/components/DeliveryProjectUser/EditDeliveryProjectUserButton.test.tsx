@@ -12,7 +12,7 @@ import { alertApiRef, type AlertApi } from '@backstage/core-plugin-api';
 import { deliveryProjectUserApiRef, type DeliveryProjectUserApi } from './api';
 import type { EditDeliveryProjectUserButtonProps } from './EditDeliveryProjectUserButton';
 import { EditDeliveryProjectUserButton } from './EditDeliveryProjectUserButton';
-import { act, render, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
 import userEvent from '@testing-library/user-event';
 import { SnapshotFriendlyStylesProvider, ValidationError } from '../../utils';
@@ -195,7 +195,7 @@ describe('EditDeliveryProjectUserButton', () => {
     expect(result.baseElement).toMatchSnapshot('Before cancel');
     expect(DialogForm.mock.calls).toHaveLength(1);
     const formProps = DialogForm.mock.calls[0][0];
-    act(() => formProps.completed(undefined));
+    React.act(() => formProps.completed(undefined));
     await waitFor(() =>
       expect(result.queryByText('This is a dialog!')).toBeNull(),
     );
@@ -229,7 +229,7 @@ describe('EditDeliveryProjectUserButton', () => {
     expect(DialogForm.mock.calls).toHaveLength(1);
     expect(onEdited).not.toHaveBeenCalled();
     const formProps = DialogForm.mock.calls[0][0];
-    act(() => formProps.completed(fields));
+    React.act(() => formProps.completed(fields));
     await waitFor(() =>
       expect(result.queryByText('This is a dialog!')).toBeNull(),
     );
@@ -269,14 +269,7 @@ describe('EditDeliveryProjectUserButton', () => {
     const submitResult = await formProps.submit(fields);
     expect(submitResult).toMatchObject({ type: 'success' });
     expect(mockProjectUserApi.update.mock.calls).toMatchObject([
-      [
-        {
-          github_username: 'test_user',
-          is_admin: false,
-          is_technical: true,
-          user_catalog_name: 'test@test.com',
-        },
-      ],
+      [{ ...fields, user_catalog_name: fields.user_catalog_name.value }],
     ]);
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
@@ -331,14 +324,7 @@ describe('EditDeliveryProjectUserButton', () => {
       errors: validationErrors,
     });
     expect(mockProjectUserApi.update.mock.calls).toMatchObject([
-      [
-        {
-          github_username: 'test_user',
-          is_admin: false,
-          is_technical: true,
-          user_catalog_name: 'test@test.com',
-        },
-      ],
+      [{ ...fields, user_catalog_name: fields.user_catalog_name.value }],
     ]);
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();

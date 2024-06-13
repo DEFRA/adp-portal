@@ -7,7 +7,8 @@ $govuk-assets-path-font-woff: '~govuk-frontend/govuk/assets/fonts/light-f591b13f
   font-family: 'GDS Transport';
   font-weight: normal;
   font-style: normal;
-  src: url('#{$govuk-assets-path-font-woff2}') format('woff2'),
+  src:
+    url('#{$govuk-assets-path-font-woff2}') format('woff2'),
     url('#{$govuk-assets-path-font-woff}') format('woff');
 }
 

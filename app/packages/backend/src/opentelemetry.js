@@ -8,6 +8,7 @@ const {
   SEMRESATTRS_SERVICE_NAME,
 } = require('@opentelemetry/semantic-conventions');
 const { Resource } = require('@opentelemetry/resources');
+
 const resource = new Resource({
   [SEMRESATTRS_SERVICE_NAME]:
     process.env.APPINSIGHTS_CLOUDROLE || 'defra-adp-portal',
@@ -38,8 +39,9 @@ function setupOpenTelemetry() {
     console.log('App Insights Not Running!');
   }
 }
-setupOpenTelemetry();
 
-module.exports = {
-  setupOpenTelemetry,
-};
+if ((require.main ?? module) === module) {
+  setupOpenTelemetry();
+}
+
+module.exports = { setupOpenTelemetry };

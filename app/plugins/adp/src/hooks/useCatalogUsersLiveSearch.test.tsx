@@ -18,7 +18,7 @@ function setup() {
     [catalogApiRef, mockCatalogApi],
   ] as const;
 
-  const wrapper: React.FC = ({ children }) => (
+  const wrapper = ({ children }: React.PropsWithChildren) => (
     <TestApiProvider apis={apis}>{children}</TestApiProvider>
   );
 

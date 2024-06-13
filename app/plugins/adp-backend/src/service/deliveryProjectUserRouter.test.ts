@@ -4,7 +4,6 @@ import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 import type { CatalogApi } from '@backstage/catalog-client';
 import type { DeliveryProjectUserRouterOptions } from './deliveryProjectUserRouter';
 import { createDeliveryProjectUserRouter } from './deliveryProjectUserRouter';
-import { getVoidLogger } from '@backstage/backend-common';
 import { faker } from '@faker-js/faker';
 import { createDeliveryProjectUser } from '../testData/projectUserTestData';
 import { catalogTestData } from '../testData/catalogEntityTestData';
@@ -14,8 +13,8 @@ import type {
 } from '@internal/plugin-adp-common';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import type { IDeliveryProjectEntraIdGroupsSyncronizer } from '../entraId';
-import type { PermissionEvaluator } from '@backstage/plugin-permission-common';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
+import { mockServices } from '@backstage/backend-test-utils';
 
 jest.mock('@backstage/plugin-auth-node', () => ({
   getBearerTokenFromAuthorizationHeader: () => 'token',
@@ -60,24 +59,20 @@ describe('createRouter', () => {
       syncronizeById: jest.fn(),
     };
 
-  const mockPermissionEvaluator: jest.Mocked<PermissionEvaluator> = {
-    authorize: jest.fn(),
-    authorizeConditional: jest.fn(),
-  };
+  const mockPermissionsService = mockServices.permissions.mock();
 
   const mockOptions: DeliveryProjectUserRouterOptions = {
     catalog: mockCatalogClient,
     deliveryProjectUserStore: mockDeliveryProjectUserStore,
-    logger: getVoidLogger(),
+    logger: mockServices.logger.mock(),
     teamSyncronizer: mockGithubTeamSyncronizer,
     entraIdGroupSyncronizer: mockEntraIdGroupSyncronizer,
-    permissions: mockPermissionEvaluator,
+    permissions: mockPermissionsService,
   };
 
   beforeAll(async () => {
-    const deliveryProjectUserRouter = await createDeliveryProjectUserRouter(
-      mockOptions,
-    );
+    const deliveryProjectUserRouter =
+      await createDeliveryProjectUserRouter(mockOptions);
     deliveryProjectUserApp = express().use(deliveryProjectUserRouter);
   });
 
@@ -156,7 +151,7 @@ describe('createRouter', () => {
           slug: faker.company.name(),
         },
       });
-      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+      mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
       ]);
 
@@ -172,10 +167,14 @@ describe('createRouter', () => {
         .post('/deliveryProjectUser')
         .send(requestBody);
       expect(response.status).toEqual(201);
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        { token: 'token' },
+      );
     });
 
     it('returns a 403 response if the user is not authorized', async () => {
-      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+      mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.DENY },
       ]);
 
@@ -196,7 +195,7 @@ describe('createRouter', () => {
 
     it('returns a 400 response if catalog user cannot be found', async () => {
       mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
-      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+      mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
       ]);
 
@@ -213,6 +212,10 @@ describe('createRouter', () => {
         .send(requestBody);
 
       expect(response.status).toEqual(400);
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        { token: 'token' },
+      );
     });
 
     it('returns a 400 response with errors', async () => {
@@ -221,7 +224,7 @@ describe('createRouter', () => {
         errors: ['duplicateUser', 'unknown', 'unknownDeliveryProject'],
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+      mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
       ]);
 
@@ -260,6 +263,10 @@ describe('createRouter', () => {
           },
         ],
       });
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        { token: 'token' },
+      );
     });
   });
 
@@ -291,7 +298,7 @@ describe('createRouter', () => {
         },
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+      mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
       ]);
 
@@ -307,10 +314,14 @@ describe('createRouter', () => {
       expect(response.body).toMatchObject(
         JSON.parse(JSON.stringify(projectUser)),
       );
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        { token: 'token' },
+      );
     });
 
     it('returns a 403 response if the user is not authorized', async () => {
-      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+      mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.DENY },
       ]);
 
@@ -331,7 +342,7 @@ describe('createRouter', () => {
         errors: ['unknown', 'unknownDeliveryProject'],
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+      mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
       ]);
 
@@ -361,11 +372,15 @@ describe('createRouter', () => {
           },
         ],
       });
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        { token: 'token' },
+      );
     });
 
     it('returns a 400 response if catalog user cannot be found', async () => {
       mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
-      mockPermissionEvaluator.authorize.mockResolvedValueOnce([
+      mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
       ]);
 
@@ -378,6 +393,10 @@ describe('createRouter', () => {
         } satisfies UpdateDeliveryProjectUserRequest);
 
       expect(response.status).toEqual(400);
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        { token: 'token' },
+      );
     });
 
     it('return 400 if if the request is bad', async () => {
