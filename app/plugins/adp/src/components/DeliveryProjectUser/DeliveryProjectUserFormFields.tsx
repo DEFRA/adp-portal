@@ -7,7 +7,7 @@ import {
   formRules,
   type DisabledFields,
 } from '../../utils';
-import { useCatalogUsersList } from '../../hooks';
+import { useCatalogUsersLiveSearch } from '../../hooks';
 
 export type DeliveryProjectUserFields = {
   user_catalog_name: {
@@ -40,7 +40,7 @@ export function DeliveryProjectUserFormFields({
   formState: { errors },
   disabled,
 }: DeliveryProjectUserFormFieldsProps) {
-  const catalogUserOptions = useCatalogUsersList();
+  const getOptions = useCatalogUsersLiveSearch();
 
   let i = 0;
   return (
@@ -52,7 +52,7 @@ export function DeliveryProjectUserFormFields({
         label="Select User"
         helperText="Select a user to add to this Delivery Project"
         name="user_catalog_name"
-        options={catalogUserOptions}
+        getOptions={getOptions}
         disabled={disabled}
         rules={{
           ...formRules.required,

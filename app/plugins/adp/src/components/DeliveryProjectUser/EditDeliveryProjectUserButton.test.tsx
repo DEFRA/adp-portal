@@ -68,7 +68,7 @@ const fields: DeliveryProjectUserFields = {
   github_username: 'test_user',
   is_admin: false,
   is_technical: true,
-  user_catalog_name: 'test@test.com',
+  user_catalog_name: { label: 'test@test.com', value: 'test@test.com' },
 };
 
 const usePermission: jest.MockedFn<
@@ -268,7 +268,16 @@ describe('EditDeliveryProjectUserButton', () => {
 
     const submitResult = await formProps.submit(fields);
     expect(submitResult).toMatchObject({ type: 'success' });
-    expect(mockProjectUserApi.update.mock.calls).toMatchObject([[fields]]);
+    expect(mockProjectUserApi.update.mock.calls).toMatchObject([
+      [
+        {
+          github_username: 'test_user',
+          is_admin: false,
+          is_technical: true,
+          user_catalog_name: 'test@test.com',
+        },
+      ],
+    ]);
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
@@ -321,7 +330,16 @@ describe('EditDeliveryProjectUserButton', () => {
       type: 'validationError',
       errors: validationErrors,
     });
-    expect(mockProjectUserApi.update.mock.calls).toMatchObject([[fields]]);
+    expect(mockProjectUserApi.update.mock.calls).toMatchObject([
+      [
+        {
+          github_username: 'test_user',
+          is_admin: false,
+          is_technical: true,
+          user_catalog_name: 'test@test.com',
+        },
+      ],
+    ]);
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
