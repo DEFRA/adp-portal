@@ -72,7 +72,7 @@ catalog:
 
     github:
       defra:
-        organization: 'defra'
+        organization: ${GITHUB_ORGANIZATION}
         catalogPath: '/catalog-info.yaml'
         filters:
           repository: '^(ffc-.+|adp-.+|fcp-.+|mcu-.+|est-.+|rpa-.+|core.+|ncea-.+|ea-wq-.+)'
