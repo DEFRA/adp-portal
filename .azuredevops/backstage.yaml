@@ -49,6 +49,9 @@ properties:
       - name: postgres-password
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/POSTGRES-PASSWORD
         identity: {{userAssignedIdentity}}
+      - name: github-organization
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-ORGANIZATION
+        identity: {{userAssignedIdentity}}
       - name: github-private-key
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-PRIVATE-KEY
         identity: {{userAssignedIdentity}}
@@ -213,6 +216,8 @@ properties:
             secretRef: postgres-password
           - name: GITHUB_PRIVATE_KEY
             secretRef: github-private-key
+          - name: GITHUB_ORGANIZATION
+            secretRef: github-organization
           - name: ADO_PAT
             secretRef: ado-pat
           - name: ADO_ORGANIZATION
