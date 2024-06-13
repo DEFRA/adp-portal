@@ -26,6 +26,15 @@ export const deliveryProgrammeAdminCreatePermission = createPermission({
 });
 
 /**
+ * Authorizes actions that involve deleting Delivery Programme Admins
+ */
+export const deliveryProgrammeAdminDeletePermission = createPermission({
+  name: 'adp.deliveryprogrammeadmin.delete',
+  attributes: { action: 'delete' },
+  resourceType: RESOURCE_TYPE_CATALOG_ENTITY,
+});
+
+/**
  * List of all Project permissions.
  *
  * @public
@@ -63,4 +72,5 @@ export const adpPluginPermissions = [
   deliveryProgrammeAdminCreatePermission,
   deliveryProjectUserCreatePermission,
   deliveryProjectUserUpdatePermission,
+  deliveryProgrammeAdminDeletePermission,
 ];

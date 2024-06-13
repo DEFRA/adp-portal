@@ -7,11 +7,13 @@ import { InputError } from '@backstage/errors';
 import { catalogTestData } from '../testData/catalogEntityTestData';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import type { CatalogApi } from '@backstage/catalog-client';
-import type { CreateDeliveryProgrammeAdminRequest } from '@internal/plugin-adp-common';
+import type {
+  CreateDeliveryProgrammeAdminRequest,
+  DeleteDeliveryProgrammeAdminRequest,
+} from '@internal/plugin-adp-common';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { mockServices } from '@backstage/backend-test-utils';
-
-const programmeManagerByAADEntityRef = programmeManagerList[0];
+import { faker } from '@faker-js/faker';
 
 jest.mock('@backstage/plugin-auth-node', () => ({
   getBearerTokenFromAuthorizationHeader: () => 'token',
@@ -259,57 +261,52 @@ describe('createRouter', () => {
 
   describe('DELETE /deliveryProgrammeAdmin/', () => {
     it('returns a 204 response when a delivery programme admin is deleted', async () => {
-      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(
-        programmeManagerByAADEntityRef,
-      );
-
-      const deliveryProgrammeAdmin = programmeManagerByAADEntityRef;
-      const requestBody = {
-        aadEntityRefId: deliveryProgrammeAdmin.aad_entity_ref_id,
-        deliveryProgrammeId: deliveryProgrammeAdmin.delivery_programme_id,
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
+      const body: DeleteDeliveryProgrammeAdminRequest = {
+        delivery_programme_admin_id: faker.string.uuid(),
+        group_entity_ref: 'test-group',
       };
-
       const response = await request(deliveryProgrammeAdminApp)
         .del('/deliveryProgrammeAdmin')
-        .send(requestBody);
+        .send(body);
       expect(response.status).toEqual(204);
     });
 
     it('returns a 400 bad request response if an error occurs', async () => {
-      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(
-        programmeManagerByAADEntityRef,
-      );
       mockDeliveryProgrammeAdminStore.delete.mockRejectedValueOnce(
         new InputError('error'),
       );
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
-      const deliveryProgrammeAdmin = programmeManagerByAADEntityRef;
-      const requestBody = {
-        aadEntityRefId: deliveryProgrammeAdmin.aad_entity_ref_id,
-        deliveryProgrammeId: deliveryProgrammeAdmin.delivery_programme_id,
+      const body: DeleteDeliveryProgrammeAdminRequest = {
+        delivery_programme_admin_id: faker.string.uuid(),
+        group_entity_ref: 'test-group',
       };
-
       const response = await request(deliveryProgrammeAdminApp)
         .del(`/deliveryProgrammeAdmin`)
-        .send(requestBody);
+        .send(body);
       expect(response.status).toEqual(400);
     });
 
-    it('returns 404 not found if the delivery programme admin cannot be found', async () => {
-      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(
-        undefined,
-      );
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
 
-      const deliveryProgrammeAdmin = programmeManagerByAADEntityRef;
-      const requestBody = {
-        aadEntityRefId: deliveryProgrammeAdmin.aad_entity_ref_id,
-        deliveryProgrammeId: deliveryProgrammeAdmin.delivery_programme_id,
+      const body: DeleteDeliveryProgrammeAdminRequest = {
+        delivery_programme_admin_id: faker.string.uuid(),
+        group_entity_ref: 'test-group',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
-        .del(`/deliveryProgrammeAdmin`)
-        .send(requestBody);
-      expect(response.status).toEqual(404);
+        .del('/deliveryProgrammeAdmin')
+        .send(body);
+
+      expect(response.status).toEqual(403);
     });
   });
 });

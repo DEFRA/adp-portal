@@ -13,6 +13,7 @@ import { assertUUID, createParser, respond } from './util';
 import { z } from 'zod';
 import {
   deliveryProgrammeAdminCreatePermission,
+  deliveryProgrammeAdminDeletePermission,
   type CreateDeliveryProgrammeAdminRequest,
   type DeleteDeliveryProgrammeAdminRequest,
 } from '@internal/plugin-adp-common';
@@ -37,8 +38,8 @@ const parseCreateDeliveryProgrammeAdminRequest =
 const parseDeleteDeliveryProgrammeAdminRequest =
   createParser<DeleteDeliveryProgrammeAdminRequest>(
     z.object({
-      aadEntityRefId: z.string(),
-      deliveryProgrammeId: z.string(),
+      delivery_programme_admin_id: z.string(),
+      group_entity_ref: z.string(),
     }),
   );
 
@@ -83,7 +84,10 @@ export function createDeliveryProgrammeAdminRouter(
   const { logger, catalog, deliveryProgrammeAdminStore, permissions } = options;
 
   const permissionIntegrationRouter = createPermissionIntegrationRouter({
-    permissions: [deliveryProgrammeAdminCreatePermission],
+    permissions: [
+      deliveryProgrammeAdminCreatePermission,
+      deliveryProgrammeAdminDeletePermission,
+    ],
   });
 
   const router = Router();
@@ -181,37 +185,34 @@ export function createDeliveryProgrammeAdminRouter(
   });
 
   router.delete('/deliveryProgrammeAdmin', async (req, res) => {
-    try {
-      const body = parseDeleteDeliveryProgrammeAdminRequest(req.body);
+    const body = parseDeleteDeliveryProgrammeAdminRequest(req.body);
 
-      const deliveryProgrammeAdmin =
-        await deliveryProgrammeAdminStore.getByAADEntityRef(
-          body.aadEntityRefId,
-          body.deliveryProgrammeId,
-        );
+    const token = getBearerTokenFromAuthorizationHeader(
+      req.header('authorization'),
+    );
+    const decision = (
+      await permissions.authorize(
+        [
+          {
+            permission: deliveryProgrammeAdminDeletePermission,
+            resourceRef: body.group_entity_ref,
+          },
+        ],
+        { token },
+      )
+    )[0];
 
-      if (deliveryProgrammeAdmin !== undefined) {
-        await deliveryProgrammeAdminStore.delete(deliveryProgrammeAdmin.id);
-
-        logger.info(
-          `DELETE /deliveryProgrammeAdmin: Deleted Delivery Programme Admin with aadEntityRefId ${body.aadEntityRefId} and deliveryProgrammeId ${body.deliveryProgrammeId}`,
-        );
-
-        res.status(204).end();
-      } else {
-        logger.warn(
-          `DELETE /deliveryProgrammeAdmin: Could not find Delivery Programme Admin with aadEntityRefId ${body.aadEntityRefId} and deliveryProgrammeId ${body.deliveryProgrammeId}`,
-        );
-        res.status(404).end();
-      }
-    } catch (error) {
-      const typedError = error as Error;
-      logger.error(
-        `DELETE /deliveryProgrammeAdmin. Could not delete delivery programme admin: ${typedError.message}`,
-        typedError,
-      );
-      throw new InputError(typedError.message);
+    if (decision.result === AuthorizeResult.DENY) {
+      throw new NotAllowedError('Unauthorized');
     }
+
+    await deliveryProgrammeAdminStore.delete(body.delivery_programme_admin_id);
+
+    logger.info(
+      `DELETE /deliveryProgrammeAdmin: Deleted Delivery Programme Admin with ID ${body.delivery_programme_admin_id}`,
+    );
+
+    res.status(204).end();
   });
 
   router.use(errorHandler());

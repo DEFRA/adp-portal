@@ -15,6 +15,6 @@ export type CreateDeliveryProgrammeAdminRequest = {
 };
 
 export type DeleteDeliveryProgrammeAdminRequest = {
-  aadEntityRefId: string;
-  deliveryProgrammeId: string;
+  delivery_programme_admin_id: string;
+  group_entity_ref: string;
 };

@@ -5,6 +5,7 @@ import {
   adpPluginPermissions,
   deliveryProgrammeAdminCreatePermission,
   deliveryProjectUserUpdatePermission,
+  deliveryProgrammeAdminDeletePermission,
 } from './permissions';
 
 describe('Permissions', () => {
@@ -31,6 +32,14 @@ describe('Permissions', () => {
       });
     });
   });
+
+  describe('deliveryProgrammeAdminDeletePermission', () => {
+    it('should have the correct attributes', () => {
+      expect(deliveryProgrammeAdminDeletePermission.attributes).toEqual({
+        action: 'delete',
+      });
+    });
+  });
 });
 
 describe('adpPluginPermissions', () => {
@@ -39,6 +48,7 @@ describe('adpPluginPermissions', () => {
       adpProgrammmeCreatePermission,
       adpProjectCreatePermission,
       deliveryProgrammeAdminCreatePermission,
+      deliveryProgrammeAdminDeletePermission,
       deliveryProjectUserCreatePermission,
       deliveryProjectUserUpdatePermission,
     ];
