@@ -34,6 +34,7 @@
     "@backstage/plugin-scaffolder-node": "^0.4.4",
     "@internal/plugin-adp-backend": "^0.1.0",
     "@internal/plugin-fetch-api-backend": "^0.1.0",
+    "@internal/plugin-request-context-provider-backend": "*",
     "archiver": "^7.0.1",
     "azure-devops-node-api": "^12.1.0",
     "octokit": "^3.1.2",
@@ -47,6 +48,9 @@
     "@backstage/types": "^1.1.1",
     "@octokit/types": "^12.4.0",
     "@types/archiver": "^6.0.2"
+  },
+  "peerDependencies": {
+    "express": "*"
   },
   "files": [
     "dist"

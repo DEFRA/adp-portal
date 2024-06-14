@@ -43,7 +43,7 @@ describe('addDeliveryProjectToRepo', () => {
     const sut = addDeliveryProjectToRepo({
       config,
       getGithubClient,
-      adpClient: () => adpClient,
+      adpClient,
     });
     return { sut, config, getGithubClient, adpClient, octokit };
   }

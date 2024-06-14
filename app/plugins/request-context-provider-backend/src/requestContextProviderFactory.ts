@@ -4,17 +4,17 @@ import {
   createServiceFactory,
 } from '@backstage/backend-plugin-api';
 import { requestContextProviderRef } from './requestContextProviderRef';
-import { RequestContextMiddleware } from './RequestContextMiddleware';
 import type { Handler } from 'express';
+import { requestContextMiddlewareRef } from './requestContextMiddlewareRef';
 
 export const requestContextProviderFactory = createServiceFactory({
   service: requestContextProviderRef,
   deps: {
     router: coreServices.rootHttpRouter,
+    middleware: requestContextMiddlewareRef,
   },
-  factory({ router }) {
-    const middleware = new RequestContextMiddleware();
-    installAsMiddleware(router, middleware.handler);
+  factory({ router, middleware }) {
+    installAsMiddleware(router, (req, _, next) => middleware.run(req, next));
     return middleware.provider;
   },
 });

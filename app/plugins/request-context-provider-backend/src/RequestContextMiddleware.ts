@@ -1,5 +1,4 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
-import type { Handler } from 'express';
 import type { RequestContextProvider } from './RequestContextProvider';
 import type { RequestContext } from './RequestContext';
 
@@ -9,6 +8,7 @@ export class RequestContextMiddleware {
     getContext: () => this.#context.getStore(),
   };
 
-  public handler: Handler = (request, _, next) =>
-    this.#context.run(Object.freeze({ request }), next);
+  public run<T>(request: RequestContext['request'], next: () => T) {
+    return this.#context.run(Object.freeze({ request }), next);
+  }
 }
