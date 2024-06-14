@@ -86,7 +86,10 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
     return deliveryProgrammeAdmin;
   }
 
-  async delete(deliveryProgrammeAdminId: string, groupEntityRef: string) {
+  async delete(
+    deliveryProgrammeAdminId: string,
+    groupEntityRef: string,
+  ): Promise<void> {
     const baseUrl = await this.getBaseUrl();
     const url = `${baseUrl}/deliveryProgrammeAdmin`;
 

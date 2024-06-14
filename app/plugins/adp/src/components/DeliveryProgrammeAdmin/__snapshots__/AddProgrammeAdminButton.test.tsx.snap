@@ -251,3 +251,36 @@ exports[`AddProgrammeAdminButton should render the dialog when the button is cli
   </div>
 </body>
 `;
+
+exports[`AddProgrammeAdminButton should render the dialog when the button is clicked 2`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="Test button"
+      data-testid="add-programme-admin-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      />
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+    <span>
+      Test dialog
+    </span>
+  </div>
+</body>
+`;

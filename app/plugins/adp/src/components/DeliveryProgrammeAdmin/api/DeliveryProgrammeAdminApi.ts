@@ -16,5 +16,8 @@ export interface DeliveryProgrammeAdminApi {
     userCatalogName: string,
     groupEntityRef: string,
   ): Promise<DeliveryProgrammeAdmin>;
-  delete(deliveryProgrammeAdminId: string, groupEntityRef: string): void;
+  delete(
+    deliveryProgrammeAdminId: string,
+    groupEntityRef: string,
+  ): Promise<void>;
 }
