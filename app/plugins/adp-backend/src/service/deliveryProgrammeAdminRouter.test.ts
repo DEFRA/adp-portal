@@ -61,6 +61,8 @@ describe('createRouter', () => {
     catalog: mockCatalogClient,
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
     permissions: mockPermissionsService,
+    httpAuth: mockServices.httpAuth(),
+    auth: mockServices.auth(),
   };
 
   beforeAll(async () => {
@@ -164,7 +166,7 @@ describe('createRouter', () => {
       expect(response.status).toEqual(201);
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
         expect.any(Object),
-        { token: 'token' },
+        expect.any(Object),
       );
     });
 
@@ -205,7 +207,7 @@ describe('createRouter', () => {
       expect(response.status).toEqual(400);
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
         expect.any(Object),
-        { token: 'token' },
+        expect.any(Object),
       );
     });
 
@@ -254,7 +256,7 @@ describe('createRouter', () => {
       });
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
         expect.any(Object),
-        { token: 'token' },
+        expect.any(Object),
       );
     });
   });

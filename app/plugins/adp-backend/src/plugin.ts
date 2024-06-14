@@ -38,6 +38,8 @@ export const adpPlugin = createBackendPlugin({
         permissions: coreServices.permissions,
         fetchApi: fetchApiRef,
         httpRouter: coreServices.httpRouter,
+        auth: coreServices.auth,
+        httpAuth: coreServices.httpAuth,
       },
       async init({
         logger,
@@ -47,6 +49,8 @@ export const adpPlugin = createBackendPlugin({
         permissions,
         fetchApi,
         httpRouter,
+        auth,
+        httpAuth,
       }) {
         await initializeAdpDatabase(database);
 
@@ -123,6 +127,8 @@ export const adpPlugin = createBackendPlugin({
           identity,
           logger,
           permissions,
+          auth,
+          httpAuth,
         });
 
         const combinedRouter = Router();

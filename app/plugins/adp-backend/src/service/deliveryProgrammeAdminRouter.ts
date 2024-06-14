@@ -1,8 +1,5 @@
 import { errorHandler } from '@backstage/backend-common';
-import {
-  getBearerTokenFromAuthorizationHeader,
-  type IdentityApi,
-} from '@backstage/plugin-auth-node';
+import { type IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import express from 'express';
 import Router from 'express-promise-router';
@@ -18,10 +15,14 @@ import {
   type DeleteDeliveryProgrammeAdminRequest,
 } from '@internal/plugin-adp-common';
 import { getUserEntityFromCatalog } from './catalog';
+import type { AuthorizePermissionRequest } from '@backstage/plugin-permission-common';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import { stringifyEntityRef } from '@backstage/catalog-model';
 import type {
+  AuthService,
+  BackstageCredentials,
+  HttpAuthService,
   LoggerService,
   PermissionsService,
 } from '@backstage/backend-plugin-api';
@@ -76,12 +77,21 @@ export interface DeliveryProgrammeAdminRouterOptions {
   deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
   catalog: CatalogApi;
   permissions: PermissionsService;
+  httpAuth: HttpAuthService;
+  auth: AuthService;
 }
 
 export function createDeliveryProgrammeAdminRouter(
   options: DeliveryProgrammeAdminRouterOptions,
 ): express.Router {
-  const { logger, catalog, deliveryProgrammeAdminStore, permissions } = options;
+  const {
+    logger,
+    catalog,
+    deliveryProgrammeAdminStore,
+    permissions,
+    httpAuth,
+    auth,
+  } = options;
 
   const permissionIntegrationRouter = createPermissionIntegrationRouter({
     permissions: [
@@ -138,24 +148,21 @@ export function createDeliveryProgrammeAdminRouter(
     const body = parseCreateDeliveryProgrammeAdminRequest(req.body);
     assertUUID(body.delivery_programme_id);
 
-    const token = getBearerTokenFromAuthorizationHeader(
-      req.header('authorization'),
+    const credentials = await httpAuth.credentials(req);
+    const { token } = await auth.getPluginRequestToken({
+      onBehalfOf: credentials,
+      targetPluginId: 'catalog',
+    });
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProgrammeAdminCreatePermission,
+          resourceRef: body.group_entity_ref,
+        },
+      ],
+      permissions,
     );
-    const decision = (
-      await permissions.authorize(
-        [
-          {
-            permission: deliveryProgrammeAdminCreatePermission,
-            resourceRef: body.group_entity_ref,
-          },
-        ],
-        { token },
-      )
-    )[0];
-
-    if (decision.result === AuthorizeResult.DENY) {
-      throw new NotAllowedError('Unauthorized');
-    }
 
     const catalogUser = await getUserEntityFromCatalog(
       body.user_catalog_name,
@@ -187,24 +194,17 @@ export function createDeliveryProgrammeAdminRouter(
   router.delete('/deliveryProgrammeAdmin', async (req, res) => {
     const body = parseDeleteDeliveryProgrammeAdminRequest(req.body);
 
-    const token = getBearerTokenFromAuthorizationHeader(
-      req.header('authorization'),
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProgrammeAdminDeletePermission,
+          resourceRef: body.group_entity_ref,
+        },
+      ],
+      permissions,
     );
-    const decision = (
-      await permissions.authorize(
-        [
-          {
-            permission: deliveryProgrammeAdminDeletePermission,
-            resourceRef: body.group_entity_ref,
-          },
-        ],
-        { token },
-      )
-    )[0];
-
-    if (decision.result === AuthorizeResult.DENY) {
-      throw new NotAllowedError('Unauthorized');
-    }
 
     await deliveryProgrammeAdminStore.delete(body.delivery_programme_admin_id);
 
@@ -217,4 +217,20 @@ export function createDeliveryProgrammeAdminRouter(
 
   router.use(errorHandler());
   return router;
+}
+
+async function checkPermissions(
+  credentials: BackstageCredentials,
+  permissions: AuthorizePermissionRequest[],
+  permissionsService: PermissionsService,
+) {
+  const decisions = await permissionsService.authorize(permissions, {
+    credentials: credentials,
+  });
+
+  for (const decision of decisions) {
+    if (decision.result === AuthorizeResult.DENY) {
+      throw new NotAllowedError('Unauthorized');
+    }
+  }
 }

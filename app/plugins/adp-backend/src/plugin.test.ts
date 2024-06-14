@@ -35,6 +35,8 @@ describe('adpPlugin', () => {
         mockServices.permissions.factory(),
         mockServices.httpRouter.factory(),
         fetchApiFactory(),
+        mockServices.auth.factory(),
+        mockServices.httpAuth.factory(),
       ],
     });
 
