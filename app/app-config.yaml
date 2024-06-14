@@ -161,8 +161,6 @@ catalog:
         organization: 'defra-adp-sandpit'
         catalogPath: '/catalog-info.yaml'
         validateLocationsExist: true
-        filters:
-          repository: '^(adp-portal-.+|techdocs-.+)'
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 5 }
