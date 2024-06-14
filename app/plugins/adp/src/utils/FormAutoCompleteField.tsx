@@ -1,5 +1,5 @@
-import React from 'react';
-import { TextField } from '@material-ui/core';
+import React, { useCallback, useEffect, useState } from 'react';
+import { CircularProgress, TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import type {
   Control,
@@ -24,10 +24,12 @@ export type FormAutoCompleteFieldProps<
   rules?: UseControllerProps<TFields, TName>['rules'];
   label: string;
   helperText?: string;
-  options: Array<{
-    label: string;
-    value: string;
-  }>;
+  getOptions: (input: string) => Promise<
+    Array<{
+      label: string;
+      value: string;
+    }>
+  >;
   disabled?: boolean | Partial<Record<FieldPath<TFields>, boolean>>;
 }>;
 
@@ -43,8 +45,43 @@ export function FormAutoCompleteField<
   label,
   helperText,
   disabled,
-  options,
+  getOptions,
 }: FormAutoCompleteFieldProps<TFields, TName>) {
+  const [options, setOptions] = useState(
+    [] as Array<{
+      label: string;
+      value: string;
+    }>,
+  );
+  const [loading, setLoading] = useState(false);
+  const [filterText, setFilterText] = useState('');
+
+  const optionsCallback = useCallback(
+    (
+      values: Array<{
+        label: string;
+        value: string;
+      }>,
+    ) => {
+      setOptions(values);
+      setLoading(false);
+    },
+    [setOptions, setLoading],
+  );
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      setLoading(true);
+      getOptions(filterText)
+        .then(optionsCallback)
+        .catch(() => {});
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [filterText, getOptions, optionsCallback]);
+
   return (
     <Controller<TFields, TName>
       control={control}
@@ -57,10 +94,13 @@ export function FormAutoCompleteField<
           id={name}
           key={`${name}-${index}`}
           options={options}
-          getOptionLabel={option => option.label || ''}
+          getOptionLabel={option => {
+            return option.label || '';
+          }}
           getOptionSelected={(option, selectedOption) => {
             return selectedOption.value === option.value;
           }}
+          disabled={isFieldDisabled(disabled, name)}
           renderInput={params => (
             <TextField
               {...params}
@@ -71,6 +111,17 @@ export function FormAutoCompleteField<
               helperText={getHelperText(errors, name, helperText, rules)}
               disabled={isFieldDisabled(disabled, name)}
               data-testid={name}
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <React.Fragment>
+                    {loading ? (
+                      <CircularProgress color="inherit" size={20} />
+                    ) : null}
+                    {params.InputProps.endAdornment}
+                  </React.Fragment>
+                ),
+              }}
               inputProps={{
                 ...params.inputProps,
                 ...rulesToHtmlProperties(rules),
@@ -81,6 +132,9 @@ export function FormAutoCompleteField<
             return selectedOption !== null
               ? field.onChange(selectedOption)
               : '';
+          }}
+          onInputChange={(_, value) => {
+            setFilterText(value);
           }}
         />
       )}

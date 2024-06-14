@@ -2,7 +2,7 @@ import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 import type { DisabledFields } from '../../utils';
 import { formRules, FormMultiSelectAutoCompleteField } from '../../utils';
-import { useCatalogUsersList } from '../../hooks';
+import { useCatalogUsersLiveSearch } from '../../hooks';
 
 export type DeliveryProgrammeAdminFields = {
   user_catalog_name: Array<{
@@ -26,7 +26,7 @@ export function DeliveryProgrammeAdminFormFields({
   formState: { errors },
   disabled,
 }: DeliveryProgrammeAdminFormFieldsProps) {
-  const catalogUserOptions = useCatalogUsersList();
+  const getOptions = useCatalogUsersLiveSearch();
   let i = 0;
   return (
     <FormMultiSelectAutoCompleteField
@@ -34,13 +34,13 @@ export function DeliveryProgrammeAdminFormFields({
       errors={errors}
       index={i++}
       label="Select Users"
-      helperText="Select users to assign Admin permissions for this delivery programme"
+      helperText="Select users to assign Admin permissions for this delivery programme (Type to search for users)"
       name="user_catalog_name"
-      options={catalogUserOptions}
       disabled={disabled}
       rules={{
         ...formRules.required,
       }}
+      getOptions={getOptions}
     />
   );
 }

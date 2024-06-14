@@ -82,7 +82,7 @@ export function EditDeliveryProjectUserButton({
           defaultValues={populate(emptyForm, {
             ...deliveryProjectUser,
             user_catalog_name: {
-              label: deliveryProjectUser.email,
+              label: deliveryProjectUser.name,
               value: userEntityRef,
             },
           })}

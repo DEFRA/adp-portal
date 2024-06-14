@@ -5,7 +5,7 @@ import { errorApiRef } from '@backstage/core-plugin-api';
 import { catalogApiRef } from '@backstage/plugin-catalog-react';
 import type { UserEntityV1alpha1 } from '@backstage/catalog-model';
 import { faker } from '@faker-js/faker';
-import { transformedData, useCatalogUsersList } from './useCatalogUsersList';
+import { useCatalogUsersLiveSearch } from './useCatalogUsersLiveSearch';
 
 function setup() {
   const mockErrorApi = { post: jest.fn() };
@@ -54,7 +54,7 @@ describe('useCatalogUsersList', () => {
     jest.clearAllMocks();
   });
 
-  it('fetches and returns catalog user data correctly', async () => {
+  it('fetches and returns callback that returns catalog user data correctly', async () => {
     const { wrapper, mockCatalogApi, mockErrorApi } = setup();
     const catalogEntities = faker.helpers.multiple(createUserEntity, {
       count: 5,
@@ -63,29 +63,16 @@ describe('useCatalogUsersList', () => {
     mockCatalogApi.getEntities.mockResolvedValue({ items: catalogEntities });
 
     const { result, waitForNextUpdate } = renderHook(
-      () => useCatalogUsersList(),
+      () => useCatalogUsersLiveSearch(),
       { wrapper },
     );
 
     await waitForNextUpdate();
 
     expect(mockErrorApi.post).not.toHaveBeenCalled();
-    expect(result.current).toHaveLength(catalogEntities.length);
-  });
-});
-
-describe('transformedData', () => {
-  it('should transform Programme.managers into an array of objects with id properties', async () => {
-    const mockProgramme = {
-      programme_managers: ['123', '456'],
-    };
-
-    const result = await transformedData(mockProgramme);
-
-    expect(result).toHaveProperty('programme_managers');
-    expect(result.programme_managers).toEqual([
-      { aad_entity_ref_id: '123' },
-      { aad_entity_ref_id: '456' },
-    ]);
+    expect(result.current).toBeInstanceOf(Function);
+    await expect(result.current('')).resolves.toHaveLength(
+      catalogEntities.length,
+    );
   });
 });

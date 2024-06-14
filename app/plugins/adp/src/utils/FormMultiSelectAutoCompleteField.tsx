@@ -1,5 +1,5 @@
-import React from 'react';
-import { TextField } from '@material-ui/core';
+import React, { useCallback, useEffect } from 'react';
+import { CircularProgress, TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import type {
   Control,
@@ -24,10 +24,12 @@ export type FormMultiSelectAutoCompleteFieldProps<
   rules?: UseControllerProps<TFields, TName>['rules'];
   label: string;
   helperText?: string;
-  options: Array<{
-    label: string;
-    value: string;
-  }>;
+  getOptions: (input: string) => Promise<
+    Array<{
+      label: string;
+      value: string;
+    }>
+  >;
   disabled?: boolean | Partial<Record<FieldPath<TFields>, boolean>>;
 }>;
 
@@ -43,8 +45,43 @@ export function FormMultiSelectAutoCompleteField<
   label,
   helperText,
   disabled,
-  options,
+  getOptions,
 }: FormMultiSelectAutoCompleteFieldProps<TFields, TName>) {
+  const [options, setOptions] = React.useState(
+    [] as Array<{
+      label: string;
+      value: string;
+    }>,
+  );
+  const [loading, setLoading] = React.useState(false);
+  const [filterText, setFilterText] = React.useState('');
+
+  const optionsCallback = useCallback(
+    (
+      values: Array<{
+        label: string;
+        value: string;
+      }>,
+    ) => {
+      setOptions(values);
+      setLoading(false);
+    },
+    [setOptions, setLoading],
+  );
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      setLoading(true);
+      getOptions(filterText)
+        .then(optionsCallback)
+        .catch(() => {});
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [filterText, getOptions, optionsCallback]);
+
   return (
     <Controller<TFields, TName>
       control={control}
@@ -62,6 +99,7 @@ export function FormMultiSelectAutoCompleteField<
             return selectedOption.value === option.value;
           }}
           multiple
+          disabled={isFieldDisabled(disabled, name)}
           renderInput={params => (
             <TextField
               {...params}
@@ -72,6 +110,17 @@ export function FormMultiSelectAutoCompleteField<
               helperText={getHelperText(errors, name, helperText, rules)}
               disabled={isFieldDisabled(disabled, name)}
               data-testid={name}
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <React.Fragment>
+                    {loading ? (
+                      <CircularProgress color="inherit" size={20} />
+                    ) : null}
+                    {params.InputProps.endAdornment}
+                  </React.Fragment>
+                ),
+              }}
               inputProps={{
                 ...params.inputProps,
                 ...rulesToHtmlProperties(rules),
@@ -82,6 +131,9 @@ export function FormMultiSelectAutoCompleteField<
             return selectedOption !== null
               ? field.onChange(selectedOption)
               : '';
+          }}
+          onInputChange={(_, value) => {
+            setFilterText(value);
           }}
         />
       )}

@@ -95,7 +95,7 @@ jest.mock(
       get permissionApiRef(): never {
         throw new Error('Not mocked');
       },
-    }) satisfies typeof PluginPermissionReactModule,
+    } satisfies typeof PluginPermissionReactModule),
 );
 
 jest.mock(
@@ -105,7 +105,7 @@ jest.mock(
       get DialogForm() {
         return DialogForm as typeof DialogFormModule.DialogForm;
       },
-    }) satisfies typeof DialogFormModule,
+    } satisfies typeof DialogFormModule),
 );
 
 describe('EditDeliveryProjectUserButton', () => {

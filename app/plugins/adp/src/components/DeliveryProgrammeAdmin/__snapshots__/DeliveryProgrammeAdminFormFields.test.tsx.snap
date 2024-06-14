@@ -96,7 +96,7 @@ exports[`DeliveryProgrammeAdminFormFields should render all fields correctly 1`]
           class="MuiFormHelperText-root"
           id="user_catalog_name-helper-text"
         >
-          Select users to assign Admin permissions for this delivery programme
+          Select users to assign Admin permissions for this delivery programme (Type to search for users)
         </p>
       </div>
     </div>
@@ -222,7 +222,7 @@ exports[`DeliveryProgrammeAdminFormFields should render default fields 1`] = `
           class="MuiFormHelperText-root"
           id="user_catalog_name-helper-text"
         >
-          Select users to assign Admin permissions for this delivery programme
+          Select users to assign Admin permissions for this delivery programme (Type to search for users)
         </p>
       </div>
     </div>
@@ -267,6 +267,25 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
             type="text"
             value=""
           />
+          <div
+            class="MuiCircularProgress-root MuiCircularProgress-indeterminate"
+            role="progressbar"
+            style="width: 20px; height: 20px;"
+          >
+            <svg
+              class="MuiCircularProgress-svg"
+              viewBox="22 22 44 44"
+            >
+              <circle
+                class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+                cx="44"
+                cy="44"
+                fill="none"
+                r="20.2"
+                stroke-width="3.6"
+              />
+            </svg>
+          </div>
           <div
             class="MuiAutocomplete-endAdornment"
           >
@@ -326,7 +345,7 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
           class="MuiFormHelperText-root"
           id="user_catalog_name-helper-text"
         >
-          Select users to assign Admin permissions for this delivery programme
+          Select users to assign Admin permissions for this delivery programme (Type to search for users)
         </p>
       </div>
     </div>
@@ -452,7 +471,7 @@ exports[`DeliveryProgrammeAdminFormFields should write values back to the form: 
           class="MuiFormHelperText-root Mui-focused"
           id="user_catalog_name-helper-text"
         >
-          Select users to assign Admin permissions for this delivery programme
+          Select users to assign Admin permissions for this delivery programme (Type to search for users)
         </p>
       </div>
     </div>
