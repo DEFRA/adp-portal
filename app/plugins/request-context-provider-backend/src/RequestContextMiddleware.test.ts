@@ -1,5 +1,5 @@
 import { RequestContextMiddleware } from './RequestContextMiddleware';
-import type { Request, Response } from 'express';
+import type { Request } from 'express';
 
 describe('RequestContextMiddleware', () => {
   it('Should not have a context outside of a request', () => {
@@ -17,10 +17,9 @@ describe('RequestContextMiddleware', () => {
     const sut = new RequestContextMiddleware();
     const actual = defer<Request | undefined>(1000);
     const request: Request = {} as any;
-    const response: Response = {} as any;
 
     // act
-    sut.handler(request, response, async () => {
+    await sut.run(request, async () => {
       await Promise.resolve();
       actual.resolve(sut.provider.getContext()?.request);
     });
@@ -33,10 +32,9 @@ describe('RequestContextMiddleware', () => {
     const sut = new RequestContextMiddleware();
     const actual = defer<Request | undefined>(1000);
     const request: Request = {} as any;
-    const response: Response = {} as any;
 
     // act
-    sut.handler(request, response, () => {
+    sut.run(request, () => {
       setTimeout(() => actual.resolve(sut.provider.getContext()?.request), 10);
     });
 
@@ -52,18 +50,18 @@ describe('RequestContextMiddleware', () => {
     const request2: Request = {} as any;
     const actual3 = defer<Request | undefined>(1000);
     const request3: Request = {} as any;
-    const response: Response = {} as any;
 
     // act
-    sut.handler(request1, response, async () => {
+    sut.run(request1, () => {
       setTimeout(() => actual1.resolve(sut.provider.getContext()?.request), 10);
     });
-    sut.handler(request2, response, () => {
+    sut.run(request2, () => {
       actual2.resolve(sut.provider.getContext()?.request);
     });
-    sut.handler(request3, response, async () => {
-      await Promise.resolve();
-      actual3.resolve(sut.provider.getContext()?.request);
+    sut.run(request3, () => {
+      void Promise.resolve().then(() =>
+        actual3.resolve(sut.provider.getContext()?.request),
+      );
     });
 
     // assert

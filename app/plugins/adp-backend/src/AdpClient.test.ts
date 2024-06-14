@@ -1,8 +1,4 @@
-import type {
-  AuthService,
-  BackstageCredentials,
-  DiscoveryService,
-} from '@backstage/backend-plugin-api';
+import type { DiscoveryService } from '@backstage/backend-plugin-api';
 import { AdpClient } from './AdpClient';
 import { randomUUID } from 'node:crypto';
 import type { DeliveryProjectTeamsSyncResult } from '@internal/plugin-adp-common';
@@ -17,30 +13,13 @@ describe('AdpClient', () => {
     const fetchApi: jest.Mocked<FetchApi> = {
       fetch: jest.fn(),
     };
-    const authService: jest.Mocked<AuthService> = {
-      authenticate: jest.fn(),
-      getLimitedUserToken: jest.fn(),
-      getNoneCredentials: jest.fn(),
-      getOwnServiceCredentials: jest.fn(),
-      getPluginRequestToken: jest.fn(),
-      isPrincipal: jest.fn() as any,
-      listPublicServiceKeys: jest.fn(),
-    };
-    const credentials: BackstageCredentials = {
-      $$type: '@backstage/BackstageCredentials',
-      principal: randomUUID(),
-    };
     return {
       discoveryApi,
       fetchApi,
-      authService,
-      credentials,
       get sut() {
         return new AdpClient({
           discoveryApi,
           fetchApi,
-          auth: authService,
-          credentials,
         });
       },
     };
@@ -49,8 +28,7 @@ describe('AdpClient', () => {
   describe('#syncDeliveryProjectWithGithubTeams', () => {
     it('Should return the team when the API call is successful', async () => {
       // arrange
-      const { sut, discoveryApi, fetchApi, authService } = setup();
-      const token = randomUUID();
+      const { sut, discoveryApi, fetchApi } = setup();
       const teamName = randomUUID();
       const expected: DeliveryProjectTeamsSyncResult = {
         admins: {
@@ -76,7 +54,6 @@ describe('AdpClient', () => {
         status: 200,
       });
 
-      authService.getPluginRequestToken.mockResolvedValueOnce({ token });
       discoveryApi.getBaseUrl.mockResolvedValueOnce('http://localhost/adp');
       fetchApi.fetch.mockResolvedValueOnce(response);
 
@@ -91,23 +68,18 @@ describe('AdpClient', () => {
           `http://localhost/adp/deliveryProject/${teamName}/github/teams/sync`,
           {
             method: 'PUT',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
           },
         ],
       ]);
     });
     it('Should throw when the API call fails', async () => {
       // arrange
-      const { sut, discoveryApi, fetchApi, authService } = setup();
-      const token = randomUUID();
+      const { sut, discoveryApi, fetchApi } = setup();
       const teamName = randomUUID();
       const response = new Response(undefined, {
         status: 400,
       });
 
-      authService.getPluginRequestToken.mockResolvedValueOnce({ token });
       discoveryApi.getBaseUrl.mockResolvedValueOnce('http://localhost/adp');
       fetchApi.fetch.mockResolvedValueOnce(response);
 
@@ -123,9 +95,6 @@ describe('AdpClient', () => {
           `http://localhost/adp/deliveryProject/${teamName}/github/teams/sync`,
           {
             method: 'PUT',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
           },
         ],
       ]);
