@@ -106,14 +106,26 @@ function withMiddleware(options: {
   );
 }
 
-function useRequestContextMiddleware(middleware: RequestContextMiddleware) {
+function createHandlerMiddleware(
+  middleware: (
+    handler: TemplateAction<any, any>['handler'],
+    templateAction: TemplateAction<any, any>,
+  ) => typeof handler,
+) {
   return (templateAction: TemplateAction<any, any>) => {
     // We want to replace the handler method without modifying the original action,
     // so we create a new object with the current action as its prototype. That way
     // we can modify the new object without affecting the original, while still
     // inheriting all its properties.
     const result: typeof templateAction = Object.create(templateAction);
-    result.handler = async ctx => {
+    result.handler = middleware(result.handler.bind(result), result);
+    return result;
+  };
+}
+
+function useRequestContextMiddleware(middleware: RequestContextMiddleware) {
+  return createHandlerMiddleware((handler, { id }) => {
+    return async ctx => {
       const socket = new Socket();
       try {
         // Create a dummy express request object to use as the context.
@@ -122,16 +134,15 @@ function useRequestContextMiddleware(middleware: RequestContextMiddleware) {
           express.request,
         );
         request.method = 'POST';
-        request.url = `/scaffolder/actions/${templateAction.id}`;
+        request.url = `/scaffolder/actions/${id}`;
         request.body = ctx.input;
         const credentials = await ctx.getInitiatorCredentials();
         if ('token' in credentials && typeof credentials.token)
           request.headers.authorization = `Bearer ${credentials.token}`;
-        return await middleware.run(request, () => templateAction.handler(ctx));
+        return await middleware.run(request, () => handler(ctx));
       } finally {
         socket.destroy();
       }
     };
-    return result;
-  };
+  });
 }
