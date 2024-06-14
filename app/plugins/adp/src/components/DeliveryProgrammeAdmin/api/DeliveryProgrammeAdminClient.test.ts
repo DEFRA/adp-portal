@@ -140,20 +140,20 @@ describe('DeliveryProgrammeAdminClient', () => {
 
   describe('delete', () => {
     it('should delete a delivery programme admin', async () => {
-      const deliveryProgrammeId = faker.string.uuid();
+      const groupEntityRef = 'test-group';
       const deliveryProgrammeAdminId = faker.string.uuid();
 
       fetchApi.fetch.mockResolvedValue({
         ok: true,
       });
 
-      await sut.delete(deliveryProgrammeAdminId, deliveryProgrammeId);
+      await sut.delete(deliveryProgrammeAdminId, groupEntityRef);
 
       expect(fetchApi.fetch).toHaveBeenCalled();
     });
 
     it('throws when Fetch fails', async () => {
-      const deliveryProgrammeId = faker.string.uuid();
+      const groupEntityRef = 'test-group';
       const deliveryProgrammeAdminId = faker.string.uuid();
 
       fetchApi.fetch.mockResolvedValue({
@@ -164,7 +164,7 @@ describe('DeliveryProgrammeAdminClient', () => {
       });
 
       await expect(
-        sut.delete(deliveryProgrammeAdminId, deliveryProgrammeId),
+        sut.delete(deliveryProgrammeAdminId, groupEntityRef),
       ).rejects.toThrow(/^Request failed with 400/);
     });
   });

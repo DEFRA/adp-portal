@@ -15,9 +15,14 @@ import type * as AddProgrammeAdminButtonModule from './AddProgrammeAdminButton';
 import { Button } from '@material-ui/core';
 import { SnapshotFriendlyStylesProvider } from '../../utils';
 import { inspect } from 'node:util';
+import type * as RemoveDeliveryProgrammeAdminButtonModule from './RemoveDeliveryProgrammeAdminButton';
 
 const AddProgrammeAdminButton: jest.MockedFn<
   (typeof AddProgrammeAdminButtonModule)['AddProgrammeAdminButton']
+> = jest.fn();
+
+const RemoveDeliveryProgrammeAdminButton: jest.MockedFn<
+  (typeof RemoveDeliveryProgrammeAdminButtonModule)['RemoveDeliveryProgrammeAdminButton']
 > = jest.fn();
 
 jest.mock(
@@ -28,6 +33,16 @@ jest.mock(
         return AddProgrammeAdminButton;
       },
     }) satisfies typeof AddProgrammeAdminButtonModule,
+);
+
+jest.mock(
+  './RemoveDeliveryProgrammeAdminButton',
+  () =>
+    ({
+      get RemoveDeliveryProgrammeAdminButton() {
+        return RemoveDeliveryProgrammeAdminButton;
+      },
+    }) satisfies typeof RemoveDeliveryProgrammeAdminButtonModule,
 );
 
 function setup() {
@@ -105,6 +120,21 @@ describe('DeliveryProgrammeAdminViewPage', () => {
         <Button {...props} onClick={onCreated}>
           {children}
           {inspect({ deliveryProgrammeId, entityRef })}
+        </Button>
+      ),
+    );
+
+    RemoveDeliveryProgrammeAdminButton.mockImplementation(
+      ({
+        onRemoved,
+        deliveryProgrammeAdmin,
+        entityRef,
+        children,
+        ...props
+      }) => (
+        <Button {...props} onClick={onRemoved}>
+          {children}
+          {inspect({ deliveryProgrammeAdmin, entityRef })}
         </Button>
       ),
     );

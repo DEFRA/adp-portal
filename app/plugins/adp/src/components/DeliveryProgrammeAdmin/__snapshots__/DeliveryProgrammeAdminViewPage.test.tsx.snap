@@ -382,7 +382,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
-                                  data-testid="programme-admin-edit-button-0"
+                                  data-testid="delivery-programme-admin-remove-button-0"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -390,6 +390,17 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                                     class="MuiButton-label"
                                   >
                                     Remove
+                                    {
+  deliveryProgrammeAdmin: {
+    aad_entity_ref_id: '123',
+    delivery_programme_id: '123',
+    email: 'test-0@test.com',
+    id: '0',
+    name: 'Delivery Programme Admin 0',
+    updated_at: 1970-01-01T00:00:00.000Z
+  },
+  entityRef: 'group:default/test-group'
+}
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root"
@@ -2129,7 +2140,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
-                                  data-testid="programme-admin-edit-button-0"
+                                  data-testid="delivery-programme-admin-remove-button-0"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -2137,6 +2148,17 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                     class="MuiButton-label"
                                   >
                                     Remove
+                                    {
+  deliveryProgrammeAdmin: {
+    aad_entity_ref_id: '123',
+    delivery_programme_id: '123',
+    email: 'test-0@test.com',
+    id: '0',
+    name: 'Delivery Programme Admin 0',
+    updated_at: 1970-01-01T00:00:00.000Z
+  },
+  entityRef: 'group:default/test-group'
+}
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root"
@@ -2206,7 +2228,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
-                                  data-testid="programme-admin-edit-button-1"
+                                  data-testid="delivery-programme-admin-remove-button-1"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -2214,6 +2236,17 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                     class="MuiButton-label"
                                   >
                                     Remove
+                                    {
+  deliveryProgrammeAdmin: {
+    aad_entity_ref_id: '123',
+    delivery_programme_id: '123',
+    email: 'test-1@test.com',
+    id: '1',
+    name: 'Delivery Programme Admin 1',
+    updated_at: 1970-01-01T00:00:00.000Z
+  },
+  entityRef: 'group:default/test-group'
+}
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root"
@@ -2283,7 +2316,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
-                                  data-testid="programme-admin-edit-button-2"
+                                  data-testid="delivery-programme-admin-remove-button-2"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -2291,6 +2324,17 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                     class="MuiButton-label"
                                   >
                                     Remove
+                                    {
+  deliveryProgrammeAdmin: {
+    aad_entity_ref_id: '123',
+    delivery_programme_id: '123',
+    email: 'test-2@test.com',
+    id: '2',
+    name: 'Delivery Programme Admin 2',
+    updated_at: 1970-01-01T00:00:00.000Z
+  },
+  entityRef: 'group:default/test-group'
+}
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root"
@@ -2360,7 +2404,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
-                                  data-testid="programme-admin-edit-button-3"
+                                  data-testid="delivery-programme-admin-remove-button-3"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -2368,6 +2412,17 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                     class="MuiButton-label"
                                   >
                                     Remove
+                                    {
+  deliveryProgrammeAdmin: {
+    aad_entity_ref_id: '123',
+    delivery_programme_id: '123',
+    email: 'test-3@test.com',
+    id: '3',
+    name: 'Delivery Programme Admin 3',
+    updated_at: 1970-01-01T00:00:00.000Z
+  },
+  entityRef: 'group:default/test-group'
+}
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root"
@@ -2437,7 +2492,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
-                                  data-testid="programme-admin-edit-button-4"
+                                  data-testid="delivery-programme-admin-remove-button-4"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -2445,6 +2500,17 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                     class="MuiButton-label"
                                   >
                                     Remove
+                                    {
+  deliveryProgrammeAdmin: {
+    aad_entity_ref_id: '123',
+    delivery_programme_id: '123',
+    email: 'test-4@test.com',
+    id: '4',
+    name: 'Delivery Programme Admin 4',
+    updated_at: 1970-01-01T00:00:00.000Z
+  },
+  entityRef: 'group:default/test-group'
+}
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root"

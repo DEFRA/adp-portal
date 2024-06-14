@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RemoveDeliveryProgrammeAdminButton should not render when the user is not allowed to remove delivery programme admins 1`] = `
+<body>
+  <div />
+</body>
+`;
+
+exports[`RemoveDeliveryProgrammeAdminButton should only render a button initially 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="Test button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        Remove
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+  </div>
+</body>
+`;
