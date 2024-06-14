@@ -239,9 +239,13 @@ properties:
           - name: SND2_CLUSTER_API_SERVER_ADDRESS
             secretRef: snd2-cluster-api-server-address
           - name: SND3_CLUSTER_NAME
-            secretRef: snd3-cluster-name
+            secretRef: snd3-cluster-name        
           - name: SND3_CLUSTER_API_SERVER_ADDRESS
             secretRef: snd3-cluster-api-server-address
+          - name: SND4_CLUSTER_NAME
+            secretRef: snd4-cluster-name
+          - name: SND4_CLUSTER_API_SERVER_ADDRESS
+            secretRef: snd4-cluster-api-server-address            
           - name: DEV1_CLUSTER_NAME
             secretRef: dev1-cluster-name
           - name: DEV1_CLUSTER_API_SERVER_ADDRESS
