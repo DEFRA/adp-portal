@@ -9,12 +9,14 @@ import { createDeliveryProjectUser } from '../testData/projectUserTestData';
 import { catalogTestData } from '../testData/catalogEntityTestData';
 import type {
   CreateDeliveryProjectUserRequest,
+  DeleteDeliveryProjectUserRequest,
   UpdateDeliveryProjectUserRequest,
 } from '@internal/plugin-adp-common';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import type { IDeliveryProjectEntraIdGroupsSyncronizer } from '../entraId';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { mockServices } from '@backstage/backend-test-utils';
+import { InputError } from '@backstage/errors';
 
 jest.mock('@backstage/plugin-auth-node', () => ({
   getBearerTokenFromAuthorizationHeader: () => 'token',
@@ -29,6 +31,7 @@ describe('createRouter', () => {
     getByDeliveryProject: jest.fn(),
     get: jest.fn(),
     update: jest.fn(),
+    delete: jest.fn(),
   };
 
   const mockCatalogClient: jest.Mocked<CatalogApi> = {
@@ -68,6 +71,8 @@ describe('createRouter', () => {
     teamSyncronizer: mockGithubTeamSyncronizer,
     entraIdGroupSyncronizer: mockEntraIdGroupSyncronizer,
     permissions: mockPermissionsService,
+    httpAuth: mockServices.httpAuth(),
+    auth: mockServices.auth(),
   };
 
   beforeAll(async () => {
@@ -169,7 +174,10 @@ describe('createRouter', () => {
       expect(response.status).toEqual(201);
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
         expect.any(Object),
-        { token: 'token' },
+        {
+          token:
+            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+        },
       );
     });
 
@@ -214,7 +222,10 @@ describe('createRouter', () => {
       expect(response.status).toEqual(400);
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
         expect.any(Object),
-        { token: 'token' },
+        {
+          token:
+            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+        },
       );
     });
 
@@ -265,7 +276,10 @@ describe('createRouter', () => {
       });
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
         expect.any(Object),
-        { token: 'token' },
+        {
+          token:
+            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+        },
       );
     });
   });
@@ -316,7 +330,10 @@ describe('createRouter', () => {
       );
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
         expect.any(Object),
-        { token: 'token' },
+        {
+          token:
+            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+        },
       );
     });
 
@@ -374,7 +391,10 @@ describe('createRouter', () => {
       });
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
         expect.any(Object),
-        { token: 'token' },
+        {
+          token:
+            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+        },
       );
     });
 
@@ -395,7 +415,10 @@ describe('createRouter', () => {
       expect(response.status).toEqual(400);
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
         expect.any(Object),
-        { token: 'token' },
+        {
+          token:
+            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+        },
       );
     });
 
@@ -418,6 +441,56 @@ describe('createRouter', () => {
           user_catalog_name: 'user@test.com',
         } satisfies UpdateDeliveryProjectUserRequest);
       expect(response.status).toEqual(500);
+    });
+  });
+
+  describe('DELETE /deliveryProjectUser/', () => {
+    it('returns a 204 response when a delivery project user is deleted', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
+      const body: DeleteDeliveryProjectUserRequest = {
+        delivery_project_id: faker.string.uuid(),
+        delivery_project_user_id: faker.string.uuid(),
+      };
+      const response = await request(deliveryProjectUserApp)
+        .del('/deliveryProjectUser')
+        .send(body);
+      expect(response.status).toEqual(204);
+    });
+
+    it('returns a 400 bad request response if an error occurs', async () => {
+      mockDeliveryProjectUserStore.delete.mockRejectedValueOnce(
+        new InputError('error'),
+      );
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
+
+      const body: DeleteDeliveryProjectUserRequest = {
+        delivery_project_id: faker.string.uuid(),
+        delivery_project_user_id: faker.string.uuid(),
+      };
+      const response = await request(deliveryProjectUserApp)
+        .del('/deliveryProjectUser')
+        .send(body);
+      expect(response.status).toEqual(400);
+    });
+
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const body: DeleteDeliveryProjectUserRequest = {
+        delivery_project_id: faker.string.uuid(),
+        delivery_project_user_id: faker.string.uuid(),
+      };
+      const response = await request(deliveryProjectUserApp)
+        .del('/deliveryProjectUser')
+        .send(body);
+
+      expect(response.status).toEqual(403);
     });
   });
 });

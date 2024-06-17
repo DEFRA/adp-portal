@@ -253,4 +253,38 @@ describe('DeliveryProjectUserStore', () => {
       ).rejects.toThrow(NotFoundError);
     },
   );
+
+  it.each(databases.eachSupportedId())(
+    'should delete a Delivery Programme Admin from the database',
+    async databaseId => {
+      const { deliveryProjectUserStore, knex } =
+        await createDatabase(databaseId);
+      const projectUser = await seedProjectUser(knex);
+
+      assertUUID(projectUser.id);
+
+      // Act - delete the record
+      await deliveryProjectUserStore.delete(projectUser.id);
+
+      const expectedEntities = await knex
+        .where('id', projectUser.id)
+        .from<delivery_project_user>(delivery_project_user_name);
+
+      // Assert
+      expect(expectedEntities).toHaveLength(0);
+    },
+  );
+
+  it.each(databases.eachSupportedId())(
+    'should throw NotFound when deleting if a project user cannot be found',
+    async databaseId => {
+      const { deliveryProjectUserStore } = await createDatabase(databaseId);
+      const projectUserId = faker.string.uuid();
+
+      // Act - delete the record
+      await expect(
+        deliveryProjectUserStore.delete(projectUserId),
+      ).rejects.toThrow(NotFoundError);
+    },
+  );
 });

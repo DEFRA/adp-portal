@@ -16,6 +16,7 @@ import type { AddDeliveryProjectUser } from '../utils';
 import type { delivery_project } from '../deliveryProject/delivery_project';
 import { delivery_project_name } from '../deliveryProject/delivery_project';
 import { NotFoundError } from '@backstage/errors';
+import { type UUID } from 'node:crypto';
 
 export type IDeliveryProjectUserStore = {
   [P in keyof DeliveryProjectUserStore]: DeliveryProjectUserStore[P];
@@ -189,6 +190,14 @@ export class DeliveryProjectUserStore {
     };
   }
 
+  async delete(id: string): Promise<number> {
+    if (!isUUID(id) || !(await this.#exists(id))) throw notFound();
+
+    const deleteResult = await this.#table.where('id', id).del();
+
+    return deleteResult;
+  }
+
   #normalize(row: delivery_project_user): DeliveryProjectUser {
     return {
       ...row,
@@ -207,6 +216,14 @@ export class DeliveryProjectUserStore {
     const [{ count }] = await this.#client<delivery_project>(
       delivery_project_name,
     )
+      .where('id', id)
+      .limit(1)
+      .count('*', { as: 'count' });
+    return Number(count) > 0;
+  }
+
+  async #exists(id: UUID) {
+    const [{ count }] = await this.#table
       .where('id', id)
       .limit(1)
       .count('*', { as: 'count' });

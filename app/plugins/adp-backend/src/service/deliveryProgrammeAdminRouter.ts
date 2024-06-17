@@ -3,10 +3,10 @@ import { type IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import express from 'express';
 import Router from 'express-promise-router';
-import { InputError, NotAllowedError } from '@backstage/errors';
+import { InputError } from '@backstage/errors';
 import type { CatalogApi } from '@backstage/catalog-client';
 import type { AddDeliveryProgrammeAdmin } from '../utils';
-import { assertUUID, createParser, respond } from './util';
+import { assertUUID, checkPermissions, createParser, respond } from './util';
 import { z } from 'zod';
 import {
   deliveryProgrammeAdminCreatePermission,
@@ -15,13 +15,10 @@ import {
   type DeleteDeliveryProgrammeAdminRequest,
 } from '@internal/plugin-adp-common';
 import { getUserEntityFromCatalog } from './catalog';
-import type { AuthorizePermissionRequest } from '@backstage/plugin-permission-common';
-import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import { stringifyEntityRef } from '@backstage/catalog-model';
 import type {
   AuthService,
-  BackstageCredentials,
   HttpAuthService,
   LoggerService,
   PermissionsService,
@@ -217,20 +214,4 @@ export function createDeliveryProgrammeAdminRouter(
 
   router.use(errorHandler());
   return router;
-}
-
-async function checkPermissions(
-  credentials: BackstageCredentials,
-  permissions: AuthorizePermissionRequest[],
-  permissionsService: PermissionsService,
-) {
-  const decisions = await permissionsService.authorize(permissions, {
-    credentials: credentials,
-  });
-
-  for (const decision of decisions) {
-    if (decision.result === AuthorizeResult.DENY) {
-      throw new NotAllowedError('Unauthorized');
-    }
-  }
 }

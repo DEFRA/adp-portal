@@ -66,6 +66,12 @@ export const deliveryProjectUserUpdatePermission = createPermission({
   resourceType: DELIVERY_PROJECT_RESOURCE_TYPE,
 });
 
+export const deliveryProjectUserDeletePermission = createPermission({
+  name: 'adp.deliveryprojectuser.delete',
+  attributes: { action: 'delete' },
+  resourceType: DELIVERY_PROJECT_RESOURCE_TYPE,
+});
+
 export const adpPluginPermissions = [
   adpProgrammmeCreatePermission,
   adpProjectCreatePermission,
@@ -73,4 +79,5 @@ export const adpPluginPermissions = [
   deliveryProjectUserCreatePermission,
   deliveryProjectUserUpdatePermission,
   deliveryProgrammeAdminDeletePermission,
+  deliveryProjectUserDeletePermission,
 ];
