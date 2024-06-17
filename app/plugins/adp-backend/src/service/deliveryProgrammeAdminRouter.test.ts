@@ -207,7 +207,10 @@ describe('createRouter', () => {
       expect(response.status).toEqual(400);
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
         expect.any(Object),
-        expect.any(Object),
+        {
+          token:
+            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+        },
       );
     });
 
@@ -256,7 +259,10 @@ describe('createRouter', () => {
       });
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
         expect.any(Object),
-        expect.any(Object),
+        {
+          token:
+            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+        },
       );
     });
   });
