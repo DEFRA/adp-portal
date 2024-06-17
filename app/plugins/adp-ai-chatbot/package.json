@@ -33,7 +33,9 @@
     "@mui/icons-material": "^5.15.9",
     "@mui/material": "^5.0.0",
     "dompurify": "^3.1.5",
-    "react-use": "^17.2.4"
+    "react-markdown": "^9.0.1",
+    "react-use": "^17.2.4",
+    "remark-gfm": "^4.0.0"
   },
   "peerDependencies": {
     "react": "^16.13.1 || ^17.0.0"

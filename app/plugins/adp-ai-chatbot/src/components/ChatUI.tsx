@@ -13,7 +13,8 @@ import {
   Paper,
 } from '@mui/material/';
 import SendIcon from '@mui/icons-material/Send';
-import DOMPurify from 'dompurify';
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface ChatMessage {
   sender: 'user' | 'adpBot';
@@ -28,7 +29,10 @@ const ChatUI = () => {
 
   const handleSend = async () => {
     if (userInput.trim()) {
-      const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const currentTime = new Date().toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
       setChatHistory(prevHistory => [
         ...prevHistory,
         { sender: 'user', text: userInput, timestamp: currentTime },
@@ -42,11 +46,17 @@ const ChatUI = () => {
         },
         body: JSON.stringify({ prompt: userInput }),
       });
-      const data = await response.text();
-      const cleanHTML = DOMPurify.sanitize(data)
+      const data = await response.json();
       setChatHistory(prevHistory => [
         ...prevHistory,
-        { sender: 'adpBot', text: cleanHTML,  timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })  },
+        {
+          sender: 'adpBot',
+          text: data.response,
+          timestamp: new Date().toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+        },
       ]);
       setResponseFetched(true);
     }
@@ -64,27 +74,36 @@ const ChatUI = () => {
       <Typography variant="h4" component="h1" gutterBottom>
         ADP Chatbot
       </Typography>
-      <Paper sx={{ p: 2, height: '75vh', overflow: 'auto', bgcolor: 'background.paper' }}>
+      <Paper
+        sx={{
+          p: 2,
+          height: '75vh',
+          overflow: 'auto',
+          bgcolor: 'background.paper',
+        }}
+      >
         <List sx={{ width: '100%' }}>
           {chatHistory.map((message, index) => (
-            <ListItem key={index} alignItems="flex-start" sx={{
-              justifyContent: message.sender === 'user' ? 'flex-end' : 'flex-start',
-              textAlign: message.sender === 'user' ? 'right' : 'left',
-            }}>
+            <ListItem
+              key={index}
+              alignItems="flex-start"
+              sx={{
+                justifyContent:
+                  message.sender === 'user' ? 'flex-end' : 'flex-start',
+                textAlign: message.sender === 'user' ? 'right' : 'left',
+              }}
+            >
               <ListItemText
-                primary={<span
-                  dangerouslySetInnerHTML={{
-                    __html: message.text,
-                  }}
-                />}
-                secondary={`${message.sender === 'user' ? 'You' : 'ADP'} at ${message.timestamp}`}
+                primary={<ReactMarkdown remarkPlugins={[remarkGfm]}>{message.text}</ReactMarkdown >}
+                secondary={`${message.sender === 'user' ? 'You' : 'ADP'} at ${
+                  message.timestamp
+                }`}
                 sx={{
                   maxWidth: '70%',
                   '& .MuiListItemText-primary': {
-                    bgcolor: message.sender === 'user' ? '#e0f7fa' : '#cefad0',
-                    borderRadius: '10px',
+                    bgcolor: message.sender === 'user' ? '#5694ca' : '#f3f2f1',
                     p: 1,
-                  }
+                  },
                 }}
               />
             </ListItem>
@@ -103,10 +122,7 @@ const ChatUI = () => {
             endAdornment: (
               <InputAdornment position="end">
                 {responseFetched ? (
-                  <IconButton
-                    aria-label="send"
-                    onClick={handleSend}
-                  >
+                  <IconButton aria-label="send" onClick={handleSend}>
                     <SendIcon />
                   </IconButton>
                 ) : (
