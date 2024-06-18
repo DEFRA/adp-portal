@@ -62,6 +62,7 @@ describe('createRouter', () => {
     getAll: jest.fn(),
     get: jest.fn(),
     update: jest.fn(),
+    delete: jest.fn(),
   };
 
   const mockFluxConfigApi: jest.Mocked<IFluxConfigApi> = {

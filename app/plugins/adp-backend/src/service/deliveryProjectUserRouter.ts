@@ -275,6 +275,11 @@ export function createDeliveryProjectUserRouter(
 
     await deliveryProjectUserStore.delete(body.delivery_project_user_id);
 
+    await Promise.allSettled([
+      teamSyncronizer.syncronizeById(body.delivery_project_id),
+      entraIdGroupSyncronizer.syncronizeById(body.delivery_project_id),
+    ]);
+
     res.status(204).end();
   });
 

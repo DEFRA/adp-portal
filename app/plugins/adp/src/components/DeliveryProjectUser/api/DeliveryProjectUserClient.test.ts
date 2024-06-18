@@ -283,4 +283,37 @@ describe('DeliveryProjectUserClient', () => {
       );
     });
   });
+
+  describe('delete', () => {
+    it('should delete a delivery project user', async () => {
+      const deliveryProjectUserId = faker.string.uuid();
+      const deliveryProjectId = faker.string.uuid();
+
+      fetchApi.fetch.mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            ok: true,
+          }),
+          { status: 204 },
+        ),
+      );
+
+      await sut.delete(deliveryProjectUserId, deliveryProjectId);
+
+      expect(fetchApi.fetch).toHaveBeenCalled();
+    });
+
+    it('throws when Fetch fails', async () => {
+      const deliveryProjectUserId = faker.string.uuid();
+      const deliveryProjectId = faker.string.uuid();
+
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ error: 'Bad request' }), { status: 400 }),
+      );
+
+      await expect(
+        sut.delete(deliveryProjectUserId, deliveryProjectId),
+      ).rejects.toThrow(/^Request failed with 400/);
+    });
+  });
 });

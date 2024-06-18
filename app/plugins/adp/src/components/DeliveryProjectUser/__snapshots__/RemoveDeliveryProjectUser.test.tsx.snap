@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RemoveDeliveryProjectUserButton should call onRemoved when the dialog is closed via the Remove action: After complete 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="Test button"
+      data-testid="remove-delivery-project-user-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        Remove
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+  </div>
+</body>
+`;
+
+exports[`RemoveDeliveryProjectUserButton should call onRemoved when the dialog is closed via the Remove action: Before complete 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="Test button"
+      data-testid="remove-delivery-project-user-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        Remove
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+    <span>
+      Test dialog
+    </span>
+  </div>
+</body>
+`;
+
+exports[`RemoveDeliveryProjectUserButton should call the API when submitting 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="Test button"
+      data-testid="remove-delivery-project-user-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        Remove
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+    <span>
+      Test dialog
+    </span>
+  </div>
+</body>
+`;
+
+exports[`RemoveDeliveryProjectUserButton should close the dialog via the Cancel action: After cancel 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="Test button"
+      data-testid="remove-delivery-project-user-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        Remove
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+  </div>
+</body>
+`;
+
+exports[`RemoveDeliveryProjectUserButton should close the dialog via the Cancel action: Before cancel 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="Test button"
+      data-testid="remove-delivery-project-user-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        Remove
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+    <span>
+      Test dialog
+    </span>
+  </div>
+</body>
+`;
+
+exports[`RemoveDeliveryProjectUserButton should not render when the user is not allowed to remove delivery project users 1`] = `
+<body>
+  <div />
+</body>
+`;
+
+exports[`RemoveDeliveryProjectUserButton should only render a button initially 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="Test button"
+      data-testid="remove-delivery-project-user-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        Remove
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+  </div>
+</body>
+`;
+
+exports[`RemoveDeliveryProjectUserButton should render the dialog when the button is clicked 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="Test button"
+      data-testid="remove-delivery-project-user-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        Remove
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+    <span>
+      Test dialog
+    </span>
+  </div>
+</body>
+`;

@@ -16,4 +16,8 @@ export interface DeliveryProjectUserApi {
   ): Promise<DeliveryProjectUser[]>;
   create(data: CreateDeliveryProjectUserRequest): Promise<DeliveryProjectUser>;
   update(data: UpdateDeliveryProjectUserRequest): Promise<DeliveryProjectUser>;
+  delete(
+    deliveryProjectUserId: string,
+    deliveryProjectId: string,
+  ): Promise<void>;
 }

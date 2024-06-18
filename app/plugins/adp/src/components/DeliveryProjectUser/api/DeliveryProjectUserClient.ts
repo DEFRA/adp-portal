@@ -2,6 +2,7 @@ import type {
   DeliveryProjectUser,
   CreateDeliveryProjectUserRequest,
   UpdateDeliveryProjectUserRequest,
+  DeleteDeliveryProjectUserRequest,
 } from '@internal/plugin-adp-common';
 import type { DeliveryProjectUserApi } from './DeliveryProjectUserApi';
 import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
@@ -101,6 +102,31 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
     }
 
     return asProjectUser(await response.json());
+  }
+
+  async delete(
+    deliveryProjectUserId: string,
+    deliveryProjectId: string,
+  ): Promise<void> {
+    const baseUrl = await this.#getBaseUrl();
+    const url = `${baseUrl}/deliveryProjectUser`;
+
+    const body: DeleteDeliveryProjectUserRequest = {
+      delivery_project_user_id: deliveryProjectUserId,
+      delivery_project_id: deliveryProjectId,
+    };
+
+    const response = await this.#fetchApi.fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw await ResponseError.fromResponse(response);
+    }
   }
 }
 
