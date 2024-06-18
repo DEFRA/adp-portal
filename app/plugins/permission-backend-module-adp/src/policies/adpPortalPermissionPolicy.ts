@@ -23,7 +23,9 @@ import {
 import {
   adpProgrammmeCreatePermission,
   deliveryProgrammeAdminCreatePermission,
+  deliveryProgrammeAdminDeletePermission,
   deliveryProjectUserCreatePermission,
+  deliveryProjectUserDeletePermission,
   deliveryProjectUserUpdatePermission,
 } from '@internal/plugin-adp-common';
 import type { RbacUtilities } from '../rbacUtilites';
@@ -58,7 +60,14 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
     // Allow users to create Delivery Programme Admins if they are a member of the specified group.
     if (
       user !== undefined &&
-      isPermission(request.permission, deliveryProgrammeAdminCreatePermission)
+      (isPermission(
+        request.permission,
+        deliveryProgrammeAdminCreatePermission,
+      ) ||
+        isPermission(
+          request.permission,
+          deliveryProgrammeAdminDeletePermission,
+        ))
     ) {
       this.logger.debug(
         `Role: Programme Admin. Permission: ${request.permission.name}`,
@@ -74,7 +83,8 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
     if (
       user !== undefined &&
       (isPermission(request.permission, deliveryProjectUserCreatePermission) ||
-        isPermission(request.permission, deliveryProjectUserUpdatePermission))
+        isPermission(request.permission, deliveryProjectUserUpdatePermission) ||
+        isPermission(request.permission, deliveryProjectUserDeletePermission))
     ) {
       this.logger.debug(
         `Role: Project Admin. Permission: ${request.permission.name}`,
