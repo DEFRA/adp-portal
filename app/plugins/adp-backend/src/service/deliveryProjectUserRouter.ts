@@ -4,11 +4,11 @@ import express from 'express';
 import Router from 'express-promise-router';
 import { errorHandler } from '@backstage/backend-common';
 import { assertUUID, checkPermissions, createParser, respond } from './util';
-import type { DeleteDeliveryProjectUserRequest } from '@internal/plugin-adp-common';
 import {
   type CreateDeliveryProjectUserRequest,
   type ValidationErrorMapping,
   type UpdateDeliveryProjectUserRequest,
+  type DeleteDeliveryProjectUserRequest,
   deliveryProjectUserCreatePermission,
   deliveryProjectUserUpdatePermission,
   deliveryProjectUserDeletePermission,
