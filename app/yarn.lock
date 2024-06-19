@@ -2678,7 +2678,7 @@
     "@material-ui/core" "^4.12.2"
     "@material-ui/icons" "^4.9.1"
 
-"@backstage/backend-app-api@^0.7.0", "@backstage/backend-app-api@^0.7.3", "@backstage/backend-app-api@^0.7.5", "@backstage/backend-app-api@^0.7.6":
+"@backstage/backend-app-api@^0.7.0", "@backstage/backend-app-api@^0.7.3", "@backstage/backend-app-api@^0.7.5":
   version "0.7.6"
   resolved "https://registry.yarnpkg.com/@backstage/backend-app-api/-/backend-app-api-0.7.6.tgz#403869fadafeef24d991a74b4af33ec729e38beb"
   integrity sha512-FUCurhGDXYbSj3aqCCEiv/1jxPQZDMIRTKzHlnuqj2HG6iqmdpRt8exOfrwlCZEbXzVuc0UijMDNf8kTZ61ZBw==
@@ -2918,80 +2918,6 @@
     "@backstage/backend-app-api" "^0.7.3"
     "@backstage/backend-common" "^0.22.0"
     "@backstage/plugin-events-node" "^0.3.4"
-
-"@backstage/backend-defaults@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@backstage/backend-defaults/-/backend-defaults-0.3.0.tgz#0d091b01eeb8fafe9500c3bf6ff70fd903030611"
-  integrity sha512-twu+5vyCtrOEYz2BG76ARhDtp7ysLfhoW7+laAYg/BgAJx3xjZg+N57+loYLy1SbkvPAvrX0CKTp7OKitd/XCQ==
-  dependencies:
-    "@aws-sdk/abort-controller" "^3.347.0"
-    "@aws-sdk/client-codecommit" "^3.350.0"
-    "@aws-sdk/client-s3" "^3.350.0"
-    "@aws-sdk/credential-providers" "^3.350.0"
-    "@aws-sdk/types" "^3.347.0"
-    "@backstage/backend-app-api" "^0.7.6"
-    "@backstage/backend-common" "^0.23.0"
-    "@backstage/backend-dev-utils" "^0.1.4"
-    "@backstage/backend-plugin-api" "^0.6.19"
-    "@backstage/cli-common" "^0.1.14"
-    "@backstage/config" "^1.2.0"
-    "@backstage/config-loader" "^1.8.1"
-    "@backstage/errors" "^1.2.4"
-    "@backstage/integration" "^1.12.0"
-    "@backstage/integration-aws-node" "^0.1.12"
-    "@backstage/plugin-auth-node" "^0.4.14"
-    "@backstage/plugin-events-node" "^0.3.5"
-    "@backstage/plugin-permission-node" "^0.7.30"
-    "@backstage/types" "^1.1.1"
-    "@google-cloud/storage" "^7.0.0"
-    "@keyv/memcache" "^1.3.5"
-    "@keyv/redis" "^2.5.3"
-    "@manypkg/get-packages" "^1.1.3"
-    "@octokit/rest" "^19.0.3"
-    "@opentelemetry/api" "^1.3.0"
-    "@types/cors" "^2.8.6"
-    "@types/express" "^4.17.6"
-    archiver "^6.0.0"
-    base64-stream "^1.0.0"
-    better-sqlite3 "^9.0.0"
-    compression "^1.7.4"
-    concat-stream "^2.0.0"
-    cookie "^0.6.0"
-    cors "^2.8.5"
-    cron "^3.0.0"
-    express "^4.17.1"
-    express-promise-router "^4.1.0"
-    fs-extra "^11.2.0"
-    git-url-parse "^14.0.0"
-    helmet "^6.0.0"
-    isomorphic-git "^1.23.0"
-    jose "^5.0.0"
-    keyv "^4.5.2"
-    knex "^3.0.0"
-    lodash "^4.17.21"
-    logform "^2.3.2"
-    luxon "^3.0.0"
-    minimatch "^9.0.0"
-    minimist "^1.2.5"
-    morgan "^1.10.0"
-    mysql2 "^3.0.0"
-    node-fetch "^2.6.7"
-    node-forge "^1.3.1"
-    p-limit "^3.1.0"
-    path-to-regexp "^6.2.1"
-    pg "^8.11.3"
-    pg-connection-string "^2.3.0"
-    raw-body "^2.4.1"
-    selfsigned "^2.0.0"
-    stoppable "^1.1.0"
-    tar "^6.1.12"
-    triple-beam "^1.4.1"
-    uuid "^9.0.0"
-    winston "^3.2.1"
-    winston-transport "^4.5.0"
-    yauzl "^3.0.0"
-    yn "^4.0.0"
-    zod "^3.22.4"
 
 "@backstage/backend-dev-utils@^0.1.4":
   version "0.1.4"
@@ -4087,7 +4013,7 @@
     react-use "^17.2.4"
     zen-observable "^0.10.0"
 
-"@backstage/plugin-events-node@^0.3.4", "@backstage/plugin-events-node@^0.3.5":
+"@backstage/plugin-events-node@^0.3.4":
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/@backstage/plugin-events-node/-/plugin-events-node-0.3.5.tgz#2681a30bc0b4309658bc32f1a9490faab3c89499"
   integrity sha512-ym1XNee5xyREVAYhTteFq238/KWoPVCSPz0SI6VDHsqZK4cYa1reKthMCQ1gkyhSg0FuKlKGTxOZSO2Z7Jr/DQ==
@@ -22202,7 +22128,7 @@ pg-connection-string@2.6.2:
   resolved "https://registry.yarnpkg.com/pg-connection-string/-/pg-connection-string-2.6.2.tgz#713d82053de4e2bd166fab70cd4f26ad36aab475"
   integrity sha512-ch6OwaeaPYcova4kKZ15sbJ2hKb/VP48ZD2gE7i1J+L4MspCtBMAx8nMgz7bksc7IojCIIWuEhHibSMFH8m8oA==
 
-pg-connection-string@^2.3.0, pg-connection-string@^2.6.4:
+pg-connection-string@^2.6.4:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/pg-connection-string/-/pg-connection-string-2.6.4.tgz#f543862adfa49fa4e14bc8a8892d2a84d754246d"
   integrity sha512-v+Z7W/0EO707aNMaAEfiGnGL9sxxumwLl2fJvCQtMn9Fxsg+lPpPkdcyBSv/KFgpGdYkMfn+EI1Or2EHjpgLCA==
