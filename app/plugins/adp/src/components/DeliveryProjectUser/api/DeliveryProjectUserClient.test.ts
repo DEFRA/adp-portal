@@ -132,7 +132,7 @@ describe('DeliveryProjectUserClient', () => {
 
       expect(result).toEqual(expectedDeliveryProjectUser);
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost:123/deliveryProjectUser',
+        'http://localhost:123/deliveryProjectUsers',
         {
           method: 'POST',
           headers: {
@@ -160,7 +160,7 @@ describe('DeliveryProjectUserClient', () => {
 
       await expect(sut.create(data)).rejects.toThrow('Validation failed');
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost:123/deliveryProjectUser',
+        'http://localhost:123/deliveryProjectUsers',
         {
           method: 'POST',
           headers: {
@@ -188,7 +188,7 @@ describe('DeliveryProjectUserClient', () => {
 
       await expect(sut.create(data)).rejects.toThrow(/Request failed with 500/);
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost:123/deliveryProjectUser',
+        'http://localhost:123/deliveryProjectUsers',
         {
           method: 'POST',
           headers: {
@@ -220,7 +220,7 @@ describe('DeliveryProjectUserClient', () => {
       const result = await sut.update(updateData);
       expect(result).toEqual(mockData);
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost:123/deliveryProjectUser',
+        'http://localhost:123/deliveryProjectUsers',
         {
           method: 'PATCH',
           headers: {
@@ -245,7 +245,7 @@ describe('DeliveryProjectUserClient', () => {
 
       await expect(sut.update(updateData)).rejects.toThrow('Validation failed');
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost:123/deliveryProjectUser',
+        'http://localhost:123/deliveryProjectUsers',
         {
           method: 'PATCH',
           headers: {
@@ -272,7 +272,7 @@ describe('DeliveryProjectUserClient', () => {
         /Request failed with 500/,
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost:123/deliveryProjectUser',
+        'http://localhost:123/deliveryProjectUsers',
         {
           method: 'PATCH',
           headers: {

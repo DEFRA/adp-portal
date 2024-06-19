@@ -1,1 +1,2 @@
 export const DROPDOWN_OPTIONS_BATCH_SIZE = 20;
+export const DROPDOWN_THROTTLE_TIME_MS = 200;

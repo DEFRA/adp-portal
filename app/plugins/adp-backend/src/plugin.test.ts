@@ -41,7 +41,7 @@ describe('adpPlugin', () => {
     });
 
     const armsLengthBodyResponse = await request(server).get(
-      '/api/adp/armsLengthBody/health',
+      '/api/adp/armsLengthBodies/health',
     );
     expect(armsLengthBodyResponse.status).toEqual(200);
 
@@ -51,12 +51,12 @@ describe('adpPlugin', () => {
     expect(deliveryProgrammeAdminResponse.status).toEqual(200);
 
     const deliveryProgrammeResponse = await request(server).get(
-      '/api/adp/deliveryProgramme/health',
+      '/api/adp/deliveryProgrammes/health',
     );
     expect(deliveryProgrammeResponse.status).toEqual(200);
 
     const deliveryProjectResponse = await request(server).get(
-      '/api/adp/deliveryProject/health',
+      '/api/adp/deliveryProjects/health',
     );
     expect(deliveryProjectResponse.status).toEqual(200);
 

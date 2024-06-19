@@ -24,7 +24,7 @@ export function RemoveDeliveryProjectUserButton({
   const client = useApi(deliveryProjectUserApiRef);
   const { allowed: canRemoveProjectUser } = usePermission({
     permission: deliveryProjectUserDeletePermission,
-    resourceRef: deliveryProjectUser.id,
+    resourceRef: deliveryProjectUser.delivery_project_id,
   });
 
   if (!canRemoveProjectUser) return null;

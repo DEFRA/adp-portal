@@ -2,8 +2,12 @@ import { useCallback } from 'react';
 import { useApi, errorApiRef } from '@backstage/core-plugin-api';
 import { catalogApiRef } from '@backstage/plugin-catalog-react';
 import type { Entity, UserEntityV1alpha1 } from '@backstage/catalog-model';
-import { DROPDOWN_OPTIONS_BATCH_SIZE } from '../utils';
+import {
+  DROPDOWN_OPTIONS_BATCH_SIZE,
+  DROPDOWN_THROTTLE_TIME_MS,
+} from '../utils';
 import { useAsyncDataSource } from './useAsyncDataSource';
+import { throttle } from 'lodash';
 
 export type CatalogUsersListOptions = {
   label: string;
@@ -39,8 +43,7 @@ export const useCatalogUsersLiveSearch = (
       }),
     (error: any) => errorApi.post(error),
   );
-
-  return useCallback(
+  const callbackFn = useCallback(
     async (input: string) => {
       const allUserEntities =
         allUsers.data?.items
@@ -56,6 +59,7 @@ export const useCatalogUsersLiveSearch = (
           .sort((a: { label: string }, b: { label: string }) =>
             a.label.localeCompare(b.label),
           ) ?? [];
+
       return input === ''
         ? allUserEntities.slice(0, pageSize)
         : allUserEntities
@@ -64,4 +68,5 @@ export const useCatalogUsersLiveSearch = (
     },
     [allUsers.data?.items, pageSize],
   );
+  return throttle(callbackFn, DROPDOWN_THROTTLE_TIME_MS);
 };

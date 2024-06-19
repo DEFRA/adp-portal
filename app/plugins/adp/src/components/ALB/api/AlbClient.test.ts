@@ -31,7 +31,7 @@ describe('armsLengthBodyClient', () => {
       expect(result).toEqual(mockData);
       expect(discoveryApi.getBaseUrl).toHaveBeenCalledWith('adp');
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/armsLengthBody',
+        'http://localhost/armsLengthBodies',
       );
     });
 
@@ -139,7 +139,7 @@ describe('armsLengthBodyClient', () => {
       expect(namesMapping).toEqual(mockNamesMapping);
       expect(discoveryApi.getBaseUrl).toHaveBeenCalledWith('adp');
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/armslengthbodynames',
+        'http://localhost/armslengthbodies/names',
       );
     });
 

@@ -19,8 +19,7 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
   }
 
   async getAll(): Promise<DeliveryProjectUser[]> {
-    const baseUrl = await this.#getBaseUrl();
-    const url = `${baseUrl}/deliveryProjectUsers/`;
+    const url = await this.#getBaseUrl();
 
     const response = await this.#fetchApi.fetch(url);
 
@@ -40,8 +39,7 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
     deliveryProjectId: string,
   ): Promise<DeliveryProjectUser[]> {
     const baseUrl = await this.#getBaseUrl();
-    const url = `${baseUrl}/deliveryProjectUsers/${deliveryProjectId}`;
-
+    const url = `${baseUrl}/${deliveryProjectId}`;
     const response = await this.#fetchApi.fetch(url);
 
     if (!response.ok) {
@@ -56,8 +54,7 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
   async create(
     data: CreateDeliveryProjectUserRequest,
   ): Promise<DeliveryProjectUser> {
-    const baseUrl = await this.#getBaseUrl();
-    const url = `${baseUrl}/deliveryProjectUser`;
+    const url = await this.#getBaseUrl();
 
     const response = await this.#fetchApi.fetch(url, {
       method: 'POST',
@@ -73,8 +70,7 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
   async update(
     data: UpdateDeliveryProjectUserRequest,
   ): Promise<DeliveryProjectUser> {
-    const baseUrl = await this.#getBaseUrl();
-    const url = `${baseUrl}/deliveryProjectUser`;
+    const url = await this.#getBaseUrl();
 
     const response = await this.#fetchApi.fetch(url, {
       method: 'PATCH',
@@ -88,7 +84,7 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
   }
 
   async #getBaseUrl(): Promise<string> {
-    return `${await this.#discoveryApi.getBaseUrl('adp')}`;
+    return `${await this.#discoveryApi.getBaseUrl('adp')}/deliveryProjectUsers`;
   }
 
   async #handleCreateUpdateResponse(
@@ -108,8 +104,7 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
     deliveryProjectUserId: string,
     deliveryProjectId: string,
   ): Promise<void> {
-    const baseUrl = await this.#getBaseUrl();
-    const url = `${baseUrl}/deliveryProjectUser`;
+    const url = await this.#getBaseUrl();
 
     const body: DeleteDeliveryProjectUserRequest = {
       delivery_project_user_id: deliveryProjectUserId,

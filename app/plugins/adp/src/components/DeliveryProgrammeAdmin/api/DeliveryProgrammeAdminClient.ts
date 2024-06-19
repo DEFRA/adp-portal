@@ -21,7 +21,7 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
     deliveryProgrammeId: string,
   ): Promise<DeliveryProgrammeAdmin[]> {
     const baseUrl = await this.getBaseUrl();
-    const url = `${baseUrl}/deliveryProgrammeAdmins/${deliveryProgrammeId}`;
+    const url = `${baseUrl}/${deliveryProgrammeId}`;
 
     const response = await this.fetchApi.fetch(url);
 
@@ -36,8 +36,7 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
   }
 
   async getAll(): Promise<DeliveryProgrammeAdmin[]> {
-    const baseUrl = await this.getBaseUrl();
-    const url = `${baseUrl}/deliveryProgrammeAdmins/`;
+    const url = await this.getBaseUrl();
 
     const response = await this.fetchApi.fetch(url);
 
@@ -56,8 +55,7 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
     userCatalogName: string,
     groupEntityRef: string,
   ): Promise<DeliveryProgrammeAdmin> {
-    const baseUrl = await this.getBaseUrl();
-    const url = `${baseUrl}/deliveryProgrammeAdmin`;
+    const url = await this.getBaseUrl();
 
     const body: CreateDeliveryProgrammeAdminRequest = {
       user_catalog_name: userCatalogName,
@@ -90,8 +88,7 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
     deliveryProgrammeAdminId: string,
     groupEntityRef: string,
   ): Promise<void> {
-    const baseUrl = await this.getBaseUrl();
-    const url = `${baseUrl}/deliveryProgrammeAdmin`;
+    const url = await this.getBaseUrl();
 
     const body: DeleteDeliveryProgrammeAdminRequest = {
       delivery_programme_admin_id: deliveryProgrammeAdminId,
@@ -112,6 +109,6 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
   }
 
   private async getBaseUrl(): Promise<string> {
-    return `${await this.discoveryApi.getBaseUrl('adp')}`;
+    return `${await this.discoveryApi.getBaseUrl('adp')}/deliveryProgrammeAdmins`;
   }
 }

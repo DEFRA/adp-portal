@@ -75,9 +75,9 @@ describe('createRouter', () => {
     auth: mockServices.auth(),
   };
 
-  beforeAll(async () => {
+  beforeAll(() => {
     const deliveryProjectUserRouter =
-      await createDeliveryProjectUserRouter(mockOptions);
+      createDeliveryProjectUserRouter(mockOptions);
     deliveryProjectUserApp = express().use(deliveryProjectUserRouter);
   });
 
@@ -85,17 +85,15 @@ describe('createRouter', () => {
     mockCatalogClient.getEntities.mockClear();
   });
 
-  describe('GET /deliveryProjectUsers/health', () => {
+  describe('GET /health', () => {
     it('returns ok', async () => {
-      const response = await request(deliveryProjectUserApp).get(
-        '/deliveryProjectUsers/health',
-      );
+      const response = await request(deliveryProjectUserApp).get('/health');
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({ status: 'ok' });
     });
   });
 
-  describe('GET /deliveryProjectUsers', () => {
+  describe('GET /', () => {
     it('returns ok', async () => {
       const projectUsers = faker.helpers.multiple(
         () => createDeliveryProjectUser(faker.string.uuid()),
@@ -103,14 +101,12 @@ describe('createRouter', () => {
       );
       mockDeliveryProjectUserStore.getAll.mockResolvedValueOnce(projectUsers);
 
-      const response = await request(deliveryProjectUserApp).get(
-        '/deliveryProjectUsers',
-      );
+      const response = await request(deliveryProjectUserApp).get('/');
       expect(response.status).toEqual(200);
     });
   });
 
-  describe('GET /deliveryProjectUsers/:deliveryProjectId', () => {
+  describe('GET /:deliveryProjectId', () => {
     it('returns ok', async () => {
       const projectId = faker.string.uuid();
       const projectUsers = faker.helpers.multiple(
@@ -122,13 +118,13 @@ describe('createRouter', () => {
       );
 
       const response = await request(deliveryProjectUserApp).get(
-        `/deliveryProjectUsers/${projectId}`,
+        `/${projectId}`,
       );
       expect(response.status).toEqual(200);
     });
   });
 
-  describe('POST /deliveryProjectUser', () => {
+  describe('POST /', () => {
     it('returns a 201 response when project users are created', async () => {
       const projectUser = createDeliveryProjectUser(faker.string.uuid());
       mockDeliveryProjectUserStore.add.mockResolvedValueOnce({
@@ -169,7 +165,7 @@ describe('createRouter', () => {
       };
 
       const response = await request(deliveryProjectUserApp)
-        .post('/deliveryProjectUser')
+        .post('/')
         .send(requestBody);
       expect(response.status).toEqual(201);
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
@@ -195,7 +191,7 @@ describe('createRouter', () => {
       };
 
       const response = await request(deliveryProjectUserApp)
-        .post('/deliveryProjectUser')
+        .post('/')
         .send(requestBody);
 
       expect(response.status).toEqual(403);
@@ -216,7 +212,7 @@ describe('createRouter', () => {
       };
 
       const response = await request(deliveryProjectUserApp)
-        .post('/deliveryProjectUser')
+        .post('/')
         .send(requestBody);
 
       expect(response.status).toEqual(400);
@@ -248,7 +244,7 @@ describe('createRouter', () => {
       };
 
       const response = await request(deliveryProjectUserApp)
-        .post('/deliveryProjectUser')
+        .post('/')
         .send(requestBody);
 
       expect(response.status).toEqual(400);
@@ -284,7 +280,7 @@ describe('createRouter', () => {
     });
   });
 
-  describe('PATCH /deliveryProjectUser', () => {
+  describe('PATCH /', () => {
     it('returns ok', async () => {
       const projectUser = createDeliveryProjectUser(faker.string.uuid());
       mockDeliveryProjectUserStore.update.mockResolvedValue({
@@ -317,7 +313,7 @@ describe('createRouter', () => {
       ]);
 
       const response = await request(deliveryProjectUserApp)
-        .patch('/deliveryProjectUser')
+        .patch('/')
         .send({
           id: '123',
           delivery_project_id: '123',
@@ -343,7 +339,7 @@ describe('createRouter', () => {
       ]);
 
       const response = await request(deliveryProjectUserApp)
-        .patch('/deliveryProjectUser')
+        .patch('/')
         .send({
           id: '123',
           delivery_project_id: '123',
@@ -364,7 +360,7 @@ describe('createRouter', () => {
       ]);
 
       const response = await request(deliveryProjectUserApp)
-        .patch('/deliveryProjectUser')
+        .patch('/')
         .send({
           id: '123',
           delivery_project_id: 'abc',
@@ -405,7 +401,7 @@ describe('createRouter', () => {
       ]);
 
       const response = await request(deliveryProjectUserApp)
-        .patch('/deliveryProjectUser')
+        .patch('/')
         .send({
           id: '123',
           delivery_project_id: 'abc',
@@ -424,7 +420,7 @@ describe('createRouter', () => {
 
     it('return 400 if if the request is bad', async () => {
       const response = await request(deliveryProjectUserApp)
-        .patch('/deliveryProjectUser')
+        .patch('/')
         .send({ notAnId: 'abc' });
       expect(response.status).toEqual(400);
     });
@@ -434,7 +430,7 @@ describe('createRouter', () => {
         new Error('error'),
       );
       const response = await request(deliveryProjectUserApp)
-        .patch('/deliveryProjectUser')
+        .patch('/')
         .send({
           id: '123',
           delivery_project_id: '123',
@@ -444,7 +440,7 @@ describe('createRouter', () => {
     });
   });
 
-  describe('DELETE /deliveryProjectUser/', () => {
+  describe('DELETE /', () => {
     it('returns a 204 response when a delivery project user is deleted', async () => {
       mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
@@ -454,7 +450,7 @@ describe('createRouter', () => {
         delivery_project_user_id: faker.string.uuid(),
       };
       const response = await request(deliveryProjectUserApp)
-        .del('/deliveryProjectUser')
+        .del('/')
         .send(body);
       expect(response.status).toEqual(204);
     });
@@ -472,7 +468,7 @@ describe('createRouter', () => {
         delivery_project_user_id: faker.string.uuid(),
       };
       const response = await request(deliveryProjectUserApp)
-        .del('/deliveryProjectUser')
+        .del('/')
         .send(body);
       expect(response.status).toEqual(400);
     });
@@ -487,7 +483,7 @@ describe('createRouter', () => {
         delivery_project_user_id: faker.string.uuid(),
       };
       const response = await request(deliveryProjectUserApp)
-        .del('/deliveryProjectUser')
+        .del('/')
         .send(body);
 
       expect(response.status).toEqual(403);

@@ -106,12 +106,12 @@ export function createProgrammeRouter(
   const router = Router();
   router.use(express.json());
 
-  router.get('/deliveryProgramme/health', (_, response) => {
+  router.get('/health', (_, response) => {
     logger.info('PONG!');
     response.json({ status: 'ok' });
   });
 
-  router.get('/deliveryProgramme', async (_req, res) => {
+  router.get('/', async (_req, res) => {
     try {
       const programmeData = await deliveryProgrammeStore.getAll();
       const projectData = await deliveryProjectStore.getAll();
@@ -135,7 +135,7 @@ export function createProgrammeRouter(
     }
   });
 
-  router.get('/deliveryProgramme/:id', async (_req, res) => {
+  router.get('/:id', async (_req, res) => {
     try {
       const deliveryProgramme = await deliveryProgrammeStore.get(
         _req.params.id,
@@ -158,7 +158,7 @@ export function createProgrammeRouter(
     }
   });
 
-  router.post('/deliveryProgramme', async (req, res) => {
+  router.post('/', async (req, res) => {
     const body = parseCreateDeliveryProgrammeRequest(req.body);
     const credentials = await httpAuth.credentials(req);
     await checkPermissions(
@@ -175,7 +175,7 @@ export function createProgrammeRouter(
     respond(body, res, result, errorMapping, { ok: 201 });
   });
 
-  router.patch('/deliveryProgramme', async (req, res) => {
+  router.patch('/', async (req, res) => {
     const body = parseUpdateDeliveryProgrammeRequest(req.body);
     const credentials = await httpAuth.credentials(req);
     await checkPermissions(

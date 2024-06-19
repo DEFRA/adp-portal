@@ -63,36 +63,36 @@ describe('createRouter', () => {
     jest.resetAllMocks();
   });
 
-  describe('GET /armsLengthBody/health', () => {
+  describe('GET /health', () => {
     it('returns ok', async () => {
-      const response = await request(app).get('/armsLengthBody/health');
+      const response = await request(app).get('/health');
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({ status: 'ok' });
     });
   });
 
-  describe('GET /armsLengthBody', () => {
+  describe('GET /', () => {
     it('returns ok', async () => {
       mockArmsLengthBodyStore.getAll.mockResolvedValueOnce([
         expectedAlbWithName,
       ]);
       mockDeliveryProgrammeStore.getAll.mockResolvedValueOnce([]);
-      const response = await request(app).get('/armsLengthBody');
+      const response = await request(app).get('/');
       expect(response.status).toEqual(200);
     });
     it('returns bad request', async () => {
       mockArmsLengthBodyStore.getAll.mockRejectedValueOnce(
         new InputError('error'),
       );
-      const response = await request(app).get('/armsLengthBody');
+      const response = await request(app).get('/');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('GET /armsLengthBody/:id', () => {
+  describe('GET /:id', () => {
     it('returns ok', async () => {
       mockArmsLengthBodyStore.get.mockResolvedValueOnce(expectedAlbWithName);
-      const response = await request(app).get('/armsLengthBody/1234');
+      const response = await request(app).get('/1234');
       expect(response.status).toEqual(200);
     });
 
@@ -100,29 +100,29 @@ describe('createRouter', () => {
       mockArmsLengthBodyStore.get.mockRejectedValueOnce(
         new InputError('error'),
       );
-      const response = await request(app).get('/armsLengthBody/4321');
+      const response = await request(app).get('/4321');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('GET /armsLengthBodyNames', () => {
+  describe('GET /names', () => {
     it('returns ok', async () => {
       mockArmsLengthBodyStore.getAll.mockResolvedValueOnce([
         expectedAlbWithName,
       ]);
-      const response = await request(app).get('/armsLengthBodyNames');
+      const response = await request(app).get('/names');
       expect(response.status).toEqual(200);
     });
     it('returns bad request when internal error', async () => {
       mockArmsLengthBodyStore.getAll.mockRejectedValueOnce([
         expectedAlbWithName,
       ]);
-      const response = await request(app).get('/armsLengthBodyNames');
+      const response = await request(app).get('/names');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('POST /armsLengthBody', () => {
+  describe('POST /', () => {
     it('returns created', async () => {
       // arrange
       mockArmsLengthBodyStore.add.mockResolvedValue({
@@ -135,7 +135,7 @@ describe('createRouter', () => {
 
       // act
       const response = await request(app)
-        .post('/armsLengthBody')
+        .post('/')
         .send({
           title: 'def',
           description: 'My description',
@@ -175,7 +175,7 @@ describe('createRouter', () => {
 
       // act
       const response = await request(app)
-        .post('/armsLengthBody')
+        .post('/')
         .send({
           title: 'def',
           description: 'My description',
@@ -210,16 +210,14 @@ describe('createRouter', () => {
     });
 
     it('return 400 if if the request is bad', async () => {
-      const response = await request(app)
-        .post('/armsLengthBody')
-        .send({ notATitle: 'abc' });
+      const response = await request(app).post('/').send({ notATitle: 'abc' });
       expect(response.status).toEqual(400);
     });
 
     it('returns internal server error', async () => {
       mockArmsLengthBodyStore.add.mockRejectedValueOnce(new Error('error'));
       const response = await request(app)
-        .post('/armsLengthBody')
+        .post('/')
         .send({
           title: 'def',
           description: 'My description',
@@ -228,7 +226,7 @@ describe('createRouter', () => {
     });
   });
 
-  describe('PATCH /armsLengthBody', () => {
+  describe('PATCH /', () => {
     it('returns ok', async () => {
       // arrange
       mockArmsLengthBodyStore.update.mockResolvedValue({
@@ -241,7 +239,7 @@ describe('createRouter', () => {
 
       // act
       const response = await request(app)
-        .patch('/armsLengthBody')
+        .patch('/')
         .send({ id: '123' } satisfies UpdateArmsLengthBodyRequest);
 
       // assert
@@ -275,7 +273,7 @@ describe('createRouter', () => {
 
       // act
       const response = await request(app)
-        .patch('/armsLengthBody')
+        .patch('/')
         .send({
           id: '123',
           title: 'def',
@@ -303,16 +301,14 @@ describe('createRouter', () => {
     });
 
     it('return 400 if if the request is bad', async () => {
-      const response = await request(app)
-        .patch('/armsLengthBody')
-        .send({ notAnId: 'abc' });
+      const response = await request(app).patch('/').send({ notAnId: 'abc' });
       expect(response.status).toEqual(400);
     });
 
     it('returns internal server error', async () => {
       mockArmsLengthBodyStore.update.mockRejectedValueOnce(new Error('error'));
       const response = await request(app)
-        .patch('/armsLengthBody')
+        .patch('/')
         .send({ id: '123' } satisfies UpdateArmsLengthBodyRequest);
       expect(response.status).toEqual(500);
     });
