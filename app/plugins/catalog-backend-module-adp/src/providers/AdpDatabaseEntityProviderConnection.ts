@@ -69,7 +69,7 @@ export class AdpDatabaseEntityProviderConnection {
   async #readArmsLengthBodies(): Promise<GroupEntity[]> {
     this.#logger.info('Discovering all Arms Length Bodies');
     const armsLengthBodies =
-      await this.#getEntities<ArmsLengthBody>('armslengthbody');
+      await this.#getEntities<ArmsLengthBody>('armslengthbodies');
     const entities: GroupEntity[] = [];
 
     this.#logger.info(
@@ -89,7 +89,7 @@ export class AdpDatabaseEntityProviderConnection {
   async #readDeliveryProgrammes(): Promise<GroupEntity[]> {
     this.#logger.info('Discovering all Delivery Programmes');
     const deliveryProgrammes =
-      await this.#getEntities<DeliveryProgramme>('deliveryProgramme');
+      await this.#getEntities<DeliveryProgramme>('deliveryProgrammes');
     const entities: GroupEntity[] = [];
 
     this.#logger.info(
@@ -117,7 +117,7 @@ export class AdpDatabaseEntityProviderConnection {
   async #readDeliveryProjects(): Promise<GroupEntity[]> {
     this.#logger.info('Discovering all Delivery Projects');
     const deliveryProjects =
-      await this.#getEntities<DeliveryProject>('deliveryProject');
+      await this.#getEntities<DeliveryProject>('deliveryProjects');
     const entities: GroupEntity[] = [];
 
     this.#logger.info(

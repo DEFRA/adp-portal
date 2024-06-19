@@ -11,7 +11,6 @@ import type { PluginTaskScheduler } from '@backstage/backend-tasks';
 import type { PermissionEvaluator } from '@backstage/plugin-permission-common';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
-import type { RequestContextProvider } from '@internal/plugin-request-context-provider-backend';
 
 export type PluginEnvironment = {
   logger: Logger;
@@ -25,5 +24,4 @@ export type PluginEnvironment = {
   permissions: PermissionEvaluator;
   identity: IdentityApi;
   fetchApi: FetchApi;
-  requestContext: RequestContextProvider;
 };

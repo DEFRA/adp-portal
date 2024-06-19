@@ -7,19 +7,15 @@ import {
   scaffolderActionsExtensionPoint,
   scaffolderTemplatingExtensionPoint,
 } from '@backstage/plugin-scaffolder-node/alpha';
-import { fetchApiRef } from '@internal/plugin-fetch-api-backend';
-import { AdpClient } from '@internal/plugin-adp-backend';
+import { adpClientRef } from '@internal/plugin-adp-backend';
 import * as actions from './actions';
 import * as filters from './filters';
 import { createGithubClient } from './util';
-import {
-  type RequestContextMiddleware,
-  requestContextMiddlewareRef,
-} from '@internal/plugin-request-context-provider-backend';
 import { type TemplateAction } from '@backstage/plugin-scaffolder-node';
-import express, { type Request as ExpressRequest } from 'express';
-import { IncomingMessage } from 'node:http';
-import { Socket } from 'node:net';
+import {
+  credentialsContextServiceRef,
+  type ICredentialsContextService,
+} from '@internal/plugin-credentials-context-backend';
 
 export const adpScaffolderModule = createBackendModule({
   pluginId: 'scaffolder',
@@ -30,23 +26,21 @@ export const adpScaffolderModule = createBackendModule({
         scaffolderActions: scaffolderActionsExtensionPoint,
         scaffolderTemplating: scaffolderTemplatingExtensionPoint,
         config: coreServices.rootConfig,
-        discovery: coreServices.discovery,
-        fetchApi: fetchApiRef,
-        requestContextMiddleware: requestContextMiddlewareRef,
+        credentialsContext: credentialsContextServiceRef,
+        adpClient: adpClientRef,
       },
       async init({
         scaffolderActions,
         scaffolderTemplating,
         config,
-        discovery,
-        fetchApi,
-        requestContextMiddleware,
+        credentialsContext,
+        adpClient,
       }) {
         const integrations = ScmIntegrations.fromConfig(config);
 
         scaffolderActions.addActions(
           ...withMiddleware({
-            middleware: [useRequestContextMiddleware(requestContextMiddleware)],
+            middleware: [useCredentialsContextMiddleware(credentialsContext)],
             templateActions: [
               actions.createPipelineAction({
                 integrations: integrations,
@@ -76,10 +70,7 @@ export const adpScaffolderModule = createBackendModule({
                 config: config,
                 getGithubClient: org =>
                   createGithubClient(integrations, config, org),
-                adpClient: new AdpClient({
-                  discoveryApi: discovery,
-                  fetchApi: fetchApi,
-                }),
+                adpClient,
               }),
               actions.publishZipAction,
             ],
@@ -107,10 +98,7 @@ function withMiddleware(options: {
 }
 
 function createHandlerMiddleware(
-  middleware: (
-    handler: TemplateAction<any, any>['handler'],
-    templateAction: TemplateAction<any, any>,
-  ) => typeof handler,
+  middleware: (handler: TemplateAction<any, any>['handler']) => typeof handler,
 ) {
   return (templateAction: TemplateAction<any, any>) => {
     // We want to replace the handler method without modifying the original action,
@@ -118,31 +106,18 @@ function createHandlerMiddleware(
     // we can modify the new object without affecting the original, while still
     // inheriting all its properties.
     const result: typeof templateAction = Object.create(templateAction);
-    result.handler = middleware(result.handler.bind(result), result);
+    result.handler = middleware(result.handler.bind(result));
     return result;
   };
 }
 
-function useRequestContextMiddleware(middleware: RequestContextMiddleware) {
-  return createHandlerMiddleware((handler, { id }) => {
+function useCredentialsContextMiddleware(
+  middleware: ICredentialsContextService,
+) {
+  return createHandlerMiddleware(handler => {
     return async ctx => {
-      const socket = new Socket();
-      try {
-        // Create a dummy express request object to use as the context.
-        const request: ExpressRequest = Object.setPrototypeOf(
-          new IncomingMessage(socket),
-          express.request,
-        );
-        request.method = 'POST';
-        request.url = `/scaffolder/actions/${id}`;
-        request.body = ctx.input;
-        const credentials = await ctx.getInitiatorCredentials();
-        if ('token' in credentials && typeof credentials.token)
-          request.headers.authorization = `Bearer ${credentials.token}`;
-        return await middleware.run(request, () => handler(ctx));
-      } finally {
-        socket.destroy();
-      }
+      const credentials = await ctx.getInitiatorCredentials();
+      return await middleware.run(credentials, () => handler(ctx));
     };
   });
 }

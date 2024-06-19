@@ -138,12 +138,12 @@ export function createProjectRouter(
   router.use(express.json());
   router.use(permissionIntegrationRouter);
 
-  router.get('/deliveryProject/health', (_, response) => {
+  router.get('/health', (_, response) => {
     logger.info('PONG!');
     response.json({ status: 'ok' });
   });
 
-  router.get('/deliveryProject', async (_req, res) => {
+  router.get('/', async (_req, res) => {
     try {
       const data = await deliveryProjectStore.getAll();
       res.json(data);
@@ -157,7 +157,7 @@ export function createProjectRouter(
     }
   });
 
-  router.get('/deliveryProject/:id', async (req, res) => {
+  router.get('/:id', async (req, res) => {
     try {
       const deliveryProject = await getDeliveryProject(req.params.id);
       res.json(deliveryProject);
@@ -171,16 +171,13 @@ export function createProjectRouter(
     }
   });
 
-  router.put(
-    '/deliveryProject/:projectName/github/teams/sync',
-    async (req, res) => {
-      const { projectName } = req.params;
-      const result = await teamSyncronizer.syncronizeByName(projectName);
-      res.status(200).send(result);
-    },
-  );
+  router.put('/:projectName/github/teams/sync', async (req, res) => {
+    const { projectName } = req.params;
+    const result = await teamSyncronizer.syncronizeByName(projectName);
+    res.status(200).send(result);
+  });
 
-  router.post('/deliveryProject', async (req, res) => {
+  router.post('/', async (req, res) => {
     const body = parseCreateDeliveryProjectRequest(req.body);
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProjectStore.add(body, creator);
@@ -193,7 +190,7 @@ export function createProjectRouter(
     respond(body, res, result, errorMapping, { ok: 201 });
   });
 
-  router.patch('/deliveryProject', async (req, res) => {
+  router.patch('/', async (req, res) => {
     const body = parseUpdateDeliveryProjectRequest(req.body);
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProjectStore.update(body, creator);

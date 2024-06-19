@@ -65,9 +65,9 @@ describe('createRouter', () => {
     auth: mockServices.auth(),
   };
 
-  beforeAll(async () => {
+  beforeAll(() => {
     const deliveryProgrammeAdminRouter =
-      await createDeliveryProgrammeAdminRouter(mockOptions);
+      createDeliveryProgrammeAdminRouter(mockOptions);
     deliveryProgrammeAdminApp = express().use(deliveryProgrammeAdminRouter);
   });
 
@@ -80,24 +80,20 @@ describe('createRouter', () => {
     mockCatalogClient.getEntities.mockClear();
   });
 
-  describe('GET /deliveryProgrammeAdmins/health', () => {
+  describe('GET /health', () => {
     it('returns ok', async () => {
-      const response = await request(deliveryProgrammeAdminApp).get(
-        '/deliveryProgrammeAdmins/health',
-      );
+      const response = await request(deliveryProgrammeAdminApp).get('/health');
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({ status: 'ok' });
     });
   });
 
-  describe('GET /deliveryProgrammeAdmins', () => {
+  describe('GET /', () => {
     it('returns ok', async () => {
       mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
         programmeManagerList,
       );
-      const response = await request(deliveryProgrammeAdminApp).get(
-        '/deliveryProgrammeAdmins',
-      );
+      const response = await request(deliveryProgrammeAdminApp).get('/');
       expect(response.status).toEqual(200);
     });
 
@@ -106,21 +102,17 @@ describe('createRouter', () => {
         new InputError('error'),
       );
 
-      const response = await request(deliveryProgrammeAdminApp).get(
-        '/deliveryProgrammeAdmins',
-      );
+      const response = await request(deliveryProgrammeAdminApp).get('/');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('GET /deliveryProgrammeAdmins/:deliveryProgrammeId', () => {
+  describe('GET /:deliveryProgrammeId', () => {
     it('returns ok', async () => {
       mockDeliveryProgrammeAdminStore.getByDeliveryProgramme.mockResolvedValueOnce(
         programmeManagerList,
       );
-      const response = await request(deliveryProgrammeAdminApp).get(
-        '/deliveryProgrammeAdmins/123',
-      );
+      const response = await request(deliveryProgrammeAdminApp).get('/123');
       expect(response.status).toEqual(200);
     });
 
@@ -129,14 +121,12 @@ describe('createRouter', () => {
         new InputError('error'),
       );
 
-      const response = await request(deliveryProgrammeAdminApp).get(
-        '/deliveryProgrammeAdmins/123q',
-      );
+      const response = await request(deliveryProgrammeAdminApp).get('/123q');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('POST /deliveryProgrammeAdmin/', () => {
+  describe('POST /', () => {
     it('returns a 201 response when programme managers are created', async () => {
       mockDeliveryProgrammeAdminStore.add.mockResolvedValueOnce({
         value: {
@@ -161,7 +151,7 @@ describe('createRouter', () => {
       };
 
       const response = await request(deliveryProgrammeAdminApp)
-        .post('/deliveryProgrammeAdmin')
+        .post('/')
         .send(requestBody);
       expect(response.status).toEqual(201);
       expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
@@ -185,7 +175,7 @@ describe('createRouter', () => {
       };
 
       const response = await request(deliveryProgrammeAdminApp)
-        .post('/deliveryProgrammeAdmin')
+        .post('/')
         .send(requestBody);
 
       expect(response.status).toEqual(403);
@@ -204,7 +194,7 @@ describe('createRouter', () => {
       };
 
       const response = await request(deliveryProgrammeAdminApp)
-        .post('/deliveryProgrammeAdmin')
+        .post('/')
         .send(requestBody);
 
       expect(response.status).toEqual(400);
@@ -234,7 +224,7 @@ describe('createRouter', () => {
       };
 
       const response = await request(deliveryProgrammeAdminApp)
-        .post('/deliveryProgrammeAdmin')
+        .post('/')
         .send(requestBody);
 
       expect(response.status).toEqual(400);
@@ -270,7 +260,7 @@ describe('createRouter', () => {
     });
   });
 
-  describe('DELETE /deliveryProgrammeAdmin/', () => {
+  describe('DELETE /', () => {
     it('returns a 204 response when a delivery programme admin is deleted', async () => {
       mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
@@ -280,7 +270,7 @@ describe('createRouter', () => {
         group_entity_ref: 'test-group',
       };
       const response = await request(deliveryProgrammeAdminApp)
-        .del('/deliveryProgrammeAdmin')
+        .del('/')
         .send(body);
       expect(response.status).toEqual(204);
     });
@@ -298,7 +288,7 @@ describe('createRouter', () => {
         group_entity_ref: 'test-group',
       };
       const response = await request(deliveryProgrammeAdminApp)
-        .del(`/deliveryProgrammeAdmin`)
+        .del(`/`)
         .send(body);
       expect(response.status).toEqual(400);
     });
@@ -314,7 +304,7 @@ describe('createRouter', () => {
       };
 
       const response = await request(deliveryProgrammeAdminApp)
-        .del('/deliveryProgrammeAdmin')
+        .del('/')
         .send(body);
 
       expect(response.status).toEqual(403);

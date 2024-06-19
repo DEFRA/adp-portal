@@ -120,25 +120,25 @@ export function createDeliveryProjectUserRouter(
   const router = Router();
   router.use(express.json());
 
-  router.get('/deliveryProjectUsers/health', (_, response) => {
+  router.get('/health', (_, response) => {
     response.json({ status: 'ok' });
   });
 
   router.use(permissionIntegrationRouter);
 
-  router.get('/deliveryProjectUsers', async (_req, res) => {
+  router.get('/', async (_req, res) => {
     const data = await deliveryProjectUserStore.getAll();
     res.json(data);
   });
 
-  router.get('/deliveryProjectUsers/:deliveryProjectId', async (req, res) => {
+  router.get('/:deliveryProjectId', async (req, res) => {
     const deliveryProjectId = req.params.deliveryProjectId;
     const data =
       await deliveryProjectUserStore.getByDeliveryProject(deliveryProjectId);
     res.json(data);
   });
 
-  router.post('/deliveryProjectUser', async (req, res) => {
+  router.post('/', async (req, res) => {
     const body = parseCreateDeliveryProjectUserRequest(req.body);
     assertUUID(body.delivery_project_id);
 
@@ -199,7 +199,7 @@ export function createDeliveryProjectUserRouter(
     respond(body, res, addedUser, errorMapping, { ok: 201 });
   });
 
-  router.patch('/deliveryProjectUser', async (req, res) => {
+  router.patch('/', async (req, res) => {
     const body = parseUpdateDeliveryProjectUserRequest(req.body);
 
     const credentials = await httpAuth.credentials(req);
@@ -258,7 +258,7 @@ export function createDeliveryProjectUserRouter(
     respond(body, res, result, errorMapping);
   });
 
-  router.delete('/deliveryProjectUser', async (req, res) => {
+  router.delete('/', async (req, res) => {
     const body = parseDeleteDeliveryProjectUserRequest(req.body);
 
     const credentials = await httpAuth.credentials(req);

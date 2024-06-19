@@ -74,7 +74,7 @@ describe('deliveryProjectClient', () => {
       expect(discoveryApi.getBaseUrl).toHaveBeenCalledWith('adp');
       expect(fetchApi.fetch).toHaveBeenNthCalledWith(
         1,
-        'http://localhost/deliveryProject',
+        'http://localhost/deliveryProjects',
       );
     });
 
@@ -107,7 +107,7 @@ describe('deliveryProjectClient', () => {
       const result = await client.updateDeliveryProject(updateData);
       expect(result).toEqual(mockData);
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/deliveryProject',
+        'http://localhost/deliveryProjects',
         {
           method: 'PATCH',
           headers: {
@@ -132,7 +132,7 @@ describe('deliveryProjectClient', () => {
         'Validation failed',
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/deliveryProject',
+        'http://localhost/deliveryProjects',
         {
           method: 'PATCH',
           headers: {
@@ -179,7 +179,7 @@ describe('deliveryProjectClient', () => {
         'http://localhost/adp-portal-api/AdoProject/ADO Project',
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/deliveryProject',
+        'http://localhost/deliveryProjects',
         {
           method: 'POST',
           headers: {
@@ -277,7 +277,7 @@ describe('deliveryProjectClient', () => {
         'http://localhost/adp-portal-api/AdoProject/ADO Project',
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/deliveryProject',
+        'http://localhost/deliveryProjects',
         {
           method: 'POST',
           headers: {
@@ -336,7 +336,7 @@ describe('deliveryProjectClient', () => {
       expect(discoveryApi.getBaseUrl).toHaveBeenCalledWith('adp');
 
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/deliveryProject/1',
+        'http://localhost/deliveryProjects/1',
       );
     });
 

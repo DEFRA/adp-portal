@@ -1,18 +1,15 @@
 import { createBackend } from '@backstage/backend-defaults';
 import fetchApiFactory, {
   fetchApiForPluginMiddleware,
-  fetchApiForwardAuthMiddleware,
   fetchApiHeadersMiddleware,
 } from '@internal/plugin-fetch-api-backend';
 
 const backend = createBackend();
 
 // Request middleware
-backend.add(import('@internal/plugin-request-context-provider-backend'));
 backend.add(
   fetchApiFactory({
     middleware: [
-      fetchApiForwardAuthMiddleware,
       fetchApiForPluginMiddleware({
         pluginId: 'adp',
         middleware: fetchApiHeadersMiddleware({
