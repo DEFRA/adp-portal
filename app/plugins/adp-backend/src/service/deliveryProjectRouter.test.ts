@@ -210,7 +210,7 @@ describe('createRouter', () => {
       ]);
 
       const response = await request(projectApp)
-        .post('/deliveryProject')
+        .post('/')
         .send({
           delivery_project_code: 'abc',
           title: 'def',
@@ -342,7 +342,7 @@ describe('createRouter', () => {
       ]);
 
       const response = await request(projectApp)
-        .patch('/deliveryProject')
+        .patch('/')
         .send({ id: '123' } satisfies UpdateDeliveryProjectRequest);
 
       expect(response.status).toEqual(403);

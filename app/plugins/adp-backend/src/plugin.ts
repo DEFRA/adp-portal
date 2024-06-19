@@ -101,6 +101,8 @@ export const adpPlugin = createBackendPlugin({
             deliveryProgrammeStore,
             armsLengthBodyStore,
             config,
+            httpAuth,
+            permissions,
           }),
         );
         combinedRouter.use(
@@ -111,6 +113,8 @@ export const adpPlugin = createBackendPlugin({
             deliveryProgrammeStore,
             deliveryProjectStore,
             deliveryProgrammeAdminStore,
+            httpAuth,
+            permissions,
           }),
         );
         combinedRouter.use(
@@ -123,6 +127,8 @@ export const adpPlugin = createBackendPlugin({
             deliveryProjectUserStore,
             deliveryProgrammeAdminStore,
             fluxConfigApi,
+            httpAuth,
+            permissions,
           }),
         );
         combinedRouter.use(

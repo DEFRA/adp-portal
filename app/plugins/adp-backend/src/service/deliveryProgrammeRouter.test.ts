@@ -184,7 +184,7 @@ describe('createRouter', () => {
       ]);
 
       const response = await request(programmeApp)
-        .post('/deliveryProgramme')
+        .post('/')
         .send({
           title: 'def',
           arms_length_body_id: '123',
@@ -312,7 +312,7 @@ describe('createRouter', () => {
       ]);
 
       const response = await request(programmeApp)
-        .patch('/deliveryProgramme')
+        .patch('/')
         .send({ id: '123' } satisfies UpdateDeliveryProgrammeRequest);
 
       expect(response.status).toEqual(403);

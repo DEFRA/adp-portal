@@ -154,7 +154,7 @@ describe('createRouter', () => {
       ]);
 
       const response = await request(app)
-        .post('/armsLengthBody')
+        .post('/')
         .send({
           title: 'def',
           description: 'My description',
@@ -255,7 +255,7 @@ describe('createRouter', () => {
       ]);
 
       const response = await request(app)
-        .patch('/armsLengthBody')
+        .patch('/')
         .send({ id: '123' } satisfies UpdateArmsLengthBodyRequest);
 
       expect(response.status).toEqual(403);

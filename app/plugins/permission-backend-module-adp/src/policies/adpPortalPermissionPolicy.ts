@@ -24,6 +24,7 @@ import {
   deliveryProgrammeAdminCreatePermission,
   deliveryProgrammeAdminDeletePermission,
   deliveryProgrammeCreatePermission,
+  deliveryProgrammeUpdatePermission,
   deliveryProjectUserCreatePermission,
   deliveryProjectUserDeletePermission,
   deliveryProjectUserUpdatePermission,
@@ -118,7 +119,8 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
 
     // gives permission to create for ADP Programmes if in Admin Group
     if (
-      isPermission(request.permission, deliveryProgrammeCreatePermission) &&
+      (isPermission(request.permission, deliveryProgrammeCreatePermission) ||
+        isPermission(request.permission, deliveryProgrammeUpdatePermission)) &&
       user !== undefined &&
       this.rbacUtilites.isInProgrammeAdminGroup(user)
     ) {
