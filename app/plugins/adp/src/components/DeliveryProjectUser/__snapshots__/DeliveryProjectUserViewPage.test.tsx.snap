@@ -1009,7 +1009,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
-                                  data-testid="project-user-remove-button-0"
+                                  data-testid="delivery-project-user-remove-button-0"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -1017,6 +1017,19 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                     class="MuiButton-label"
                                   >
                                     Remove
+                                    {
+  deliveryProjectUser: {
+    aad_entity_ref_id: '123',
+    delivery_project_id: '123',
+    email: 'test-0@test.com',
+    id: '0',
+    name: 'Delivery Project User 0',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    is_admin: false,
+    is_technical: true,
+    github_username: undefined
+  }
+}
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root"
@@ -1120,7 +1133,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
-                                  data-testid="project-user-remove-button-1"
+                                  data-testid="delivery-project-user-remove-button-1"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -1128,6 +1141,19 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                     class="MuiButton-label"
                                   >
                                     Remove
+                                    {
+  deliveryProjectUser: {
+    aad_entity_ref_id: '123',
+    delivery_project_id: '123',
+    email: 'test-1@test.com',
+    id: '1',
+    name: 'Delivery Project User 1',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    is_admin: false,
+    is_technical: true,
+    github_username: undefined
+  }
+}
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root"
@@ -1231,7 +1257,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
-                                  data-testid="project-user-remove-button-2"
+                                  data-testid="delivery-project-user-remove-button-2"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -1239,6 +1265,19 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                     class="MuiButton-label"
                                   >
                                     Remove
+                                    {
+  deliveryProjectUser: {
+    aad_entity_ref_id: '123',
+    delivery_project_id: '123',
+    email: 'test-2@test.com',
+    id: '2',
+    name: 'Delivery Project User 2',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    is_admin: false,
+    is_technical: true,
+    github_username: undefined
+  }
+}
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root"
@@ -1342,7 +1381,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
-                                  data-testid="project-user-remove-button-3"
+                                  data-testid="delivery-project-user-remove-button-3"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -1350,6 +1389,19 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                     class="MuiButton-label"
                                   >
                                     Remove
+                                    {
+  deliveryProjectUser: {
+    aad_entity_ref_id: '123',
+    delivery_project_id: '123',
+    email: 'test-3@test.com',
+    id: '3',
+    name: 'Delivery Project User 3',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    is_admin: false,
+    is_technical: true,
+    github_username: undefined
+  }
+}
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root"
@@ -1453,7 +1505,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
-                                  data-testid="project-user-remove-button-4"
+                                  data-testid="delivery-project-user-remove-button-4"
                                   tabindex="0"
                                   type="button"
                                 >
@@ -1461,6 +1513,19 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                     class="MuiButton-label"
                                   >
                                     Remove
+                                    {
+  deliveryProjectUser: {
+    aad_entity_ref_id: '123',
+    delivery_project_id: '123',
+    email: 'test-4@test.com',
+    id: '4',
+    name: 'Delivery Project User 4',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    is_admin: false,
+    is_technical: true,
+    github_username: undefined
+  }
+}
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root"

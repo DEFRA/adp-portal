@@ -25,6 +25,7 @@ describe('DeliveryProjectEntraIdGroupsSyncronizer', () => {
       getAll: jest.fn(),
       getByDeliveryProject: jest.fn(),
       update: jest.fn(),
+      delete: jest.fn(),
     };
 
     const sut = new DeliveryProjectEntraIdGroupsSyncronizer(

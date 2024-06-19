@@ -1,8 +1,14 @@
 import type { Response } from 'express';
 import type { ValidationErrorMapping } from '@internal/plugin-adp-common';
-import { InputError } from '@backstage/errors';
+import { InputError, NotAllowedError } from '@backstage/errors';
 import type { z } from 'zod';
 import { type UUID } from 'node:crypto';
+import type {
+  BackstageCredentials,
+  PermissionsService,
+} from '@backstage/backend-plugin-api';
+import type { AuthorizePermissionRequest } from '@backstage/plugin-permission-common';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
 
 export function respond<Request, Success, Error extends string>(
   request: Request,
@@ -63,4 +69,20 @@ export async function checkMany<
 
 export function containsAnyValue(obj: object) {
   return Object.entries(obj).some(e => e[1] !== undefined);
+}
+
+export async function checkPermissions(
+  credentials: BackstageCredentials,
+  permissions: AuthorizePermissionRequest[],
+  permissionsService: PermissionsService,
+) {
+  const decisions = await permissionsService.authorize(permissions, {
+    credentials: credentials,
+  });
+
+  for (const decision of decisions) {
+    if (decision.result === AuthorizeResult.DENY) {
+      throw new NotAllowedError('Unauthorized');
+    }
+  }
 }

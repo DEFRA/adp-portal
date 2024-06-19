@@ -33,3 +33,8 @@ export type UpdateDeliveryProjectUserRequest = {
   email?: string;
   user_entity_ref?: string;
 };
+
+export type DeleteDeliveryProjectUserRequest = {
+  delivery_project_user_id: string;
+  delivery_project_id: string;
+};

@@ -16,6 +16,7 @@ import type * as EditDeliveryProjectUserButtonModule from './EditDeliveryProject
 import { SnapshotFriendlyStylesProvider } from '../../utils';
 import { Button } from '@material-ui/core';
 import { inspect } from 'node:util';
+import type * as RemoveDeliveryProjectUserButtonModule from './RemoveDeliveryProjectUserButton';
 
 const AddProjectUserButton: jest.MockedFn<
   (typeof AddProjectUserButtonModule)['AddProjectUserButton']
@@ -23,6 +24,10 @@ const AddProjectUserButton: jest.MockedFn<
 
 const EditDeliveryProjectUserButton: jest.MockedFn<
   (typeof EditDeliveryProjectUserButtonModule)['EditDeliveryProjectUserButton']
+> = jest.fn();
+
+const RemoveDeliveryProjectUserButton: jest.MockedFn<
+  (typeof RemoveDeliveryProjectUserButtonModule)['RemoveDeliveryProjectUserButton']
 > = jest.fn();
 
 jest.mock(
@@ -45,12 +50,23 @@ jest.mock(
     }) satisfies typeof EditDeliveryProjectUserButtonModule,
 );
 
+jest.mock(
+  './RemoveDeliveryProjectUserButton',
+  () =>
+    ({
+      get RemoveDeliveryProjectUserButton() {
+        return RemoveDeliveryProjectUserButton;
+      },
+    }) satisfies typeof RemoveDeliveryProjectUserButtonModule,
+);
+
 function setup() {
   const mockDeliveryProjectUserApi: jest.Mocked<DeliveryProjectUserApi> = {
     getAll: jest.fn(),
     getByDeliveryProjectId: jest.fn(),
     create: jest.fn(),
     update: jest.fn(),
+    delete: jest.fn(),
   };
   const mockErrorApi = { post: jest.fn() };
 
@@ -128,6 +144,15 @@ describe('DeliveryProjectUserViewPage', () => {
     EditDeliveryProjectUserButton.mockImplementation(
       ({ onEdited, deliveryProjectUser, children, ...props }) => (
         <Button {...props} onClick={onEdited}>
+          {children}
+          {inspect({ deliveryProjectUser })}
+        </Button>
+      ),
+    );
+
+    RemoveDeliveryProjectUserButton.mockImplementation(
+      ({ onRemoved, deliveryProjectUser, children, ...props }) => (
+        <Button {...props} onClick={onRemoved}>
           {children}
           {inspect({ deliveryProjectUser })}
         </Button>

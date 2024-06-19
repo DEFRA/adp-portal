@@ -14,12 +14,13 @@ import { deliveryProjectUserApiRef } from './api';
 import { useApi } from '@backstage/core-plugin-api';
 import type { TableColumn } from '@backstage/core-components';
 import { Content, ContentHeader, Link, Page } from '@backstage/core-components';
-import { Button, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { DefaultTable } from '../../utils';
 import { AddProjectUserButton } from './AddProjectUserButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { EditDeliveryProjectUserButton } from './EditDeliveryProjectUserButton';
 import { stringifyEntityRef } from '@backstage/catalog-model';
+import { RemoveDeliveryProjectUserButton } from './RemoveDeliveryProjectUserButton';
 
 type DeliveryProjectUserWithActions = DeliveryProjectUser & {
   actions: ReactNode;
@@ -74,13 +75,15 @@ export const DeliveryProjectUserViewPage = () => {
           ),
           actions: (
             <>
-              <Button
+              <RemoveDeliveryProjectUserButton
                 variant="contained"
                 color="secondary"
-                data-testid={`project-user-remove-button-${d.id}`}
+                data-testid={`delivery-project-user-remove-button-${d.id}`}
+                deliveryProjectUser={d}
+                onRemoved={refresh}
               >
                 Remove
-              </Button>
+              </RemoveDeliveryProjectUserButton>
               &nbsp;
               <EditDeliveryProjectUserButton
                 variant="contained"

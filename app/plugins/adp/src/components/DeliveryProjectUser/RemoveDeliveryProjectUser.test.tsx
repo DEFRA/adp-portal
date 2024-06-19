@@ -1,20 +1,17 @@
+import type { AlertApi } from '@backstage/core-plugin-api';
+import { alertApiRef } from '@backstage/core-plugin-api';
 import React from 'react';
-import { alertApiRef, type AlertApi } from '@backstage/core-plugin-api';
-import { deliveryProjectUserApiRef, type DeliveryProjectUserApi } from './api';
+import type { DeliveryProjectUserApi } from './api';
+import { deliveryProjectUserApiRef } from './api';
+import type { RemoveDeliveryProjectUserButtonProps } from './RemoveDeliveryProjectUserButton';
+import { RemoveDeliveryProjectUserButton } from './RemoveDeliveryProjectUserButton';
 import { render, waitFor } from '@testing-library/react';
-import type { AddProjectUserButtonProps } from './AddProjectUserButton';
-import { AddProjectUserButton } from './AddProjectUserButton';
 import { TestApiProvider } from '@backstage/test-utils';
-import {
-  DeliveryProjectUserFormFields,
-  emptyForm,
-  type DeliveryProjectUserFields,
-} from './DeliveryProjectUserFormFields';
-import type * as DialogFormModule from '../../utils/DialogForm';
-import userEvent from '@testing-library/user-event';
-import type { ValidationError as IValidationError } from '@internal/plugin-adp-common';
-import { ValidationError } from '../../utils';
+import { SnapshotFriendlyStylesProvider } from '../../utils';
+import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
 import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
+import type * as ConfirmationDialogModule from '../../utils/ConfirmationDialog';
+import userEvent from '@testing-library/user-event';
 
 function setup() {
   const mockAlertApi: jest.Mocked<AlertApi> = {
@@ -23,16 +20,16 @@ function setup() {
   };
   const mockProjectUserApi: jest.Mocked<DeliveryProjectUserApi> = {
     create: jest.fn(),
+    delete: jest.fn(),
     getAll: jest.fn(),
     getByDeliveryProjectId: jest.fn(),
     update: jest.fn(),
-    delete: jest.fn(),
   };
 
   return {
     mockAlertApi,
     mockProjectUserApi,
-    async renderComponent(props: AddProjectUserButtonProps) {
+    async renderComponent(props: RemoveDeliveryProjectUserButtonProps) {
       const result = render(
         <TestApiProvider
           apis={[
@@ -40,7 +37,9 @@ function setup() {
             [deliveryProjectUserApiRef, mockProjectUserApi],
           ]}
         >
-          <AddProjectUserButton {...props} />
+          <SnapshotFriendlyStylesProvider>
+            <RemoveDeliveryProjectUserButton {...props} />
+          </SnapshotFriendlyStylesProvider>
         </TestApiProvider>,
       );
       await waitFor(() => expect(result.baseElement).not.toBeEmptyDOMElement());
@@ -49,17 +48,24 @@ function setup() {
   };
 }
 
-const fields: DeliveryProjectUserFields = {
-  user_catalog_name: { label: 'user-1234', value: 'user-1234' },
-  github_username: 'user-1234',
-  is_admin: false,
-  is_technical: true,
+const deliveryProjectUser: DeliveryProjectUser = {
+  aad_entity_ref_id: 'cffdf0da-48b9-40d0-a519-d5d818b10a84',
+  delivery_project_id: 'da61ccb1-95f7-4cff-9b75-28e3aec63e4b',
+  email: 'test@test.com',
+  id: '896061ec-58dd-468f-bfbc-c35ccb177f36',
+  is_admin: true,
+  is_technical: false,
+  name: 'test user',
+  updated_at: new Date(),
+  github_username: 'test_user',
 };
 
 const usePermission: jest.MockedFn<
   typeof PluginPermissionReactModule.usePermission
 > = jest.fn();
-const DialogForm: jest.MockedFn<typeof DialogFormModule.DialogForm> = jest.fn();
+const ConfirmationDialog: jest.MockedFn<
+  typeof ConfirmationDialogModule.ConfirmationDialog
+> = jest.fn();
 
 jest.mock(
   '@backstage/plugin-permission-react',
@@ -84,36 +90,37 @@ jest.mock(
 );
 
 jest.mock(
-  '../../utils/DialogForm',
+  '../../utils/ConfirmationDialog',
   () =>
     ({
-      get DialogForm() {
-        return DialogForm as typeof DialogFormModule.DialogForm;
+      get ConfirmationDialog() {
+        return ConfirmationDialog as typeof ConfirmationDialogModule.ConfirmationDialog;
       },
-    }) satisfies typeof DialogFormModule,
+    }) satisfies typeof ConfirmationDialogModule,
 );
 
-describe('AddProjectUserButton', () => {
+describe('RemoveDeliveryProjectUserButton', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should not render when the user is not allowed to create delivery projects', async () => {
+  it('should not render when the user is not allowed to remove delivery project users', async () => {
     const { mockAlertApi, mockProjectUserApi, renderComponent } = setup();
     usePermission.mockReturnValue({ allowed: false, loading: false });
 
     const { result } = await renderComponent({
       content: 'Test button',
-      deliveryProjectId: '123',
-      entityRef: 'programme-group-123',
+      deliveryProjectUser: deliveryProjectUser,
     });
 
     expect(result.baseElement).toMatchSnapshot();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post).not.toHaveBeenCalled();
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.delete).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.update).not.toHaveBeenCalled();
   });
 
   it('should only render a button initially', async () => {
@@ -122,207 +129,163 @@ describe('AddProjectUserButton', () => {
 
     const { result } = await renderComponent({
       content: 'Test button',
-      deliveryProjectId: '123',
-      entityRef: 'project-123',
+      deliveryProjectUser: deliveryProjectUser,
     });
 
     expect(result.baseElement).toMatchSnapshot();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post).not.toHaveBeenCalled();
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.delete).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.update).not.toHaveBeenCalled();
   });
 
   it('should render the dialog when the button is clicked', async () => {
     const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
-    DialogForm.mockReturnValue(<span>Test dialog</span>);
+    ConfirmationDialog.mockReturnValue(<span>Test dialog</span>);
+    usePermission.mockReturnValue({ allowed: true, loading: false });
 
     const { result } = await renderComponent({
       content: 'Test button',
-      deliveryProjectId: '123',
-      entityRef: 'project-123',
+      deliveryProjectUser: deliveryProjectUser,
     });
-    await userEvent.click(result.getByTestId('add-project-user-button'));
+    await userEvent.click(
+      result.getByTestId('remove-delivery-project-user-button'),
+    );
 
     expect(result.baseElement).toMatchSnapshot();
-    expect(DialogForm.mock.calls).toHaveLength(1);
-    const formProps = DialogForm.mock.calls[0][0];
+    expect(ConfirmationDialog.mock.calls).toHaveLength(1);
+    const formProps = ConfirmationDialog.mock.calls[0][0];
     expect({
       open: formProps.open,
-      renderFields: formProps.renderFields,
+      title: formProps.title,
+      content: formProps.content,
       confirm: formProps.confirm,
       cancel: formProps.cancel,
-      defaultValues: formProps.defaultValues,
-      disabled: formProps.disabled,
-      validate: formProps.validate,
     }).toMatchObject({
       open: undefined,
-      renderFields: DeliveryProjectUserFormFields,
-      confirm: 'Add',
+      title: `Remove ${deliveryProjectUser.name}?`,
+      content:
+        'Are you sure you want to remove this user? The user will no longer be able to perform certain actions on the ADP portal. You can re-add the user after removing them.',
+      confirm: 'Remove',
       cancel: undefined,
-      defaultValues: emptyForm,
-      disabled: undefined,
-      validate: undefined,
     });
     expect(formProps.submit).toBeDefined();
     expect(formProps.completed).toBeDefined();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post).not.toHaveBeenCalled();
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.delete).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.update).not.toHaveBeenCalled();
   });
 
-  it('should close the dialog when the form is cancelled', async () => {
+  it('should close the dialog via the Cancel action', async () => {
     const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
-    DialogForm.mockReturnValue(<span>Test dialog</span>);
+    ConfirmationDialog.mockReturnValue(<span>Test dialog</span>);
+    usePermission.mockReturnValue({ allowed: true, loading: false });
 
     const { result } = await renderComponent({
       content: 'Test button',
-      deliveryProjectId: '123',
-      entityRef: 'project-123',
+      deliveryProjectUser: deliveryProjectUser,
     });
-    await userEvent.click(result.getByTestId('add-project-user-button'));
+    await userEvent.click(
+      result.getByTestId('remove-delivery-project-user-button'),
+    );
 
     expect(result.baseElement).toMatchSnapshot('Before cancel');
-    expect(DialogForm.mock.calls).toHaveLength(1);
-    const formProps = DialogForm.mock.calls[0][0];
+    expect(ConfirmationDialog.mock.calls).toHaveLength(1);
+    const formProps = ConfirmationDialog.mock.calls[0][0];
     React.act(() => formProps.completed(undefined));
     await waitFor(() => expect(result.queryByText('Test dialog')).toBeNull());
     expect(result.baseElement).toMatchSnapshot('After cancel');
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post).not.toHaveBeenCalled();
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.delete).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.update).not.toHaveBeenCalled();
   });
 
-  it('should call onCreated when the form closes with a value', async () => {
+  it('should call onRemoved when the dialog is closed via the Remove action', async () => {
     const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
-    DialogForm.mockReturnValue(<span>Test dialog</span>);
-    const onCreated: jest.MockedFn<
-      Exclude<AddProjectUserButtonProps['onCreated'], undefined>
+    ConfirmationDialog.mockReturnValue(<span>Test dialog</span>);
+    usePermission.mockReturnValue({ allowed: true, loading: false });
+    const onRemoved: jest.MockedFn<
+      Exclude<RemoveDeliveryProjectUserButtonProps['onRemoved'], undefined>
     > = jest.fn();
 
     const { result } = await renderComponent({
       content: 'Test button',
-      deliveryProjectId: '123',
-      entityRef: 'project-123',
-      onCreated,
+      deliveryProjectUser: deliveryProjectUser,
+      onRemoved,
     });
-    await userEvent.click(result.getByTestId('add-project-user-button'));
+    await userEvent.click(
+      result.getByTestId('remove-delivery-project-user-button'),
+    );
 
     expect(result.baseElement).toMatchSnapshot('Before complete');
-    expect(DialogForm.mock.calls).toHaveLength(1);
-    expect(onCreated).not.toHaveBeenCalled();
-    const formProps = DialogForm.mock.calls[0][0];
-    React.act(() => formProps.completed(fields));
+    expect(ConfirmationDialog.mock.calls).toHaveLength(1);
+    expect(onRemoved).not.toHaveBeenCalled();
+    const formProps = ConfirmationDialog.mock.calls[0][0];
+    React.act(() => formProps.completed(true));
     await waitFor(() => expect(result.queryByText('Test dialog')).toBeNull());
     expect(result.baseElement).toMatchSnapshot('After complete');
-    expect(onCreated).toHaveBeenCalledTimes(1);
+    expect(onRemoved).toHaveBeenCalledTimes(1);
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post).not.toHaveBeenCalled();
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.delete).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.update).not.toHaveBeenCalled();
   });
 
   it('should call the API when submitting', async () => {
     const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
-    DialogForm.mockReturnValue(<span>Test dialog</span>);
+    ConfirmationDialog.mockReturnValue(<span>Test dialog</span>);
+    usePermission.mockReturnValue({ allowed: true, loading: false });
 
     const { result } = await renderComponent({
       content: 'Test button',
-      deliveryProjectId: 'project-1',
-      entityRef: 'project-123',
+      deliveryProjectUser: deliveryProjectUser,
     });
-    await userEvent.click(result.getByTestId('add-project-user-button'));
+    await userEvent.click(
+      result.getByTestId('remove-delivery-project-user-button'),
+    );
 
     expect(result.baseElement).toMatchSnapshot();
-    expect(DialogForm.mock.calls).toHaveLength(1);
-    const formProps = DialogForm.mock.calls[0][0];
+    expect(ConfirmationDialog.mock.calls).toHaveLength(1);
+    const formProps = ConfirmationDialog.mock.calls[0][0];
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post).not.toHaveBeenCalled();
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.delete).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.update).not.toHaveBeenCalled();
 
-    const submitResult = await formProps.submit(fields);
-    expect(submitResult).toMatchObject({ type: 'success' });
-    expect(mockProjectUserApi.create.mock.calls).toMatchObject([
-      [
-        {
-          delivery_project_id: 'project-1',
-          github_username: 'user-1234',
-          is_admin: false,
-          is_technical: true,
-          user_catalog_name: 'user-1234',
-        },
-      ],
+    await formProps.submit();
+    expect(mockProjectUserApi.create).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.delete.mock.calls).toMatchObject([
+      [deliveryProjectUser.id, deliveryProjectUser.delivery_project_id],
     ]);
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
+    expect(mockProjectUserApi.update).not.toHaveBeenCalled();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post.mock.calls).toMatchObject([
       [
         {
-          message: 'Delivery Project User added successfully',
+          message: `Removed ${deliveryProjectUser.name} from this delivery project`,
           severity: 'success',
           display: 'transient',
         },
       ],
     ]);
-  });
-
-  it('should catch validation errors when submitting', async () => {
-    const { renderComponent, mockAlertApi, mockProjectUserApi } = setup();
-    DialogForm.mockReturnValue(<span>Test dialog</span>);
-    const validationErrors: IValidationError[] = [
-      {
-        path: 'abc',
-        error: {
-          message: 'Something broke',
-        },
-      },
-    ];
-    mockProjectUserApi.create.mockRejectedValueOnce(
-      new ValidationError(validationErrors),
-    );
-
-    const { result } = await renderComponent({
-      content: 'Test button',
-      deliveryProjectId: 'project-2',
-      entityRef: 'project-123',
-    });
-    await userEvent.click(result.getByTestId('add-project-user-button'));
-
-    expect(result.baseElement).toMatchSnapshot();
-    expect(DialogForm.mock.calls).toHaveLength(1);
-    const formProps = DialogForm.mock.calls[0][0];
-    expect(mockProjectUserApi.create).not.toHaveBeenCalled();
-    expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
-    expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
-
-    const submitResult = await formProps.submit(fields);
-    expect(submitResult).toMatchObject({
-      type: 'validationError',
-      errors: validationErrors,
-    });
-    expect(mockProjectUserApi.create.mock.calls).toMatchObject([
-      [
-        {
-          delivery_project_id: 'project-2',
-          github_username: 'user-1234',
-          is_admin: false,
-          is_technical: true,
-          user_catalog_name: 'user-1234',
-        },
-      ],
-    ]);
-    expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
-    expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
-    expect(mockAlertApi.alert$).not.toHaveBeenCalled();
-    expect(mockAlertApi.post).not.toHaveBeenCalled();
   });
 });

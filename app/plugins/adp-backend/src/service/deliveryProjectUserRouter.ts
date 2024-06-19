@@ -3,25 +3,26 @@ import type { CatalogApi } from '@backstage/catalog-client';
 import express from 'express';
 import Router from 'express-promise-router';
 import { errorHandler } from '@backstage/backend-common';
-import { assertUUID, createParser, respond } from './util';
+import { assertUUID, checkPermissions, createParser, respond } from './util';
 import {
   type CreateDeliveryProjectUserRequest,
   type ValidationErrorMapping,
   type UpdateDeliveryProjectUserRequest,
+  type DeleteDeliveryProjectUserRequest,
   deliveryProjectUserCreatePermission,
   deliveryProjectUserUpdatePermission,
+  deliveryProjectUserDeletePermission,
 } from '@internal/plugin-adp-common';
 import { z } from 'zod';
 import type { AddDeliveryProjectUser } from '../utils';
 import { getUserEntityFromCatalog } from './catalog';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import type { IDeliveryProjectEntraIdGroupsSyncronizer } from '../entraId';
-import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
-import { getBearerTokenFromAuthorizationHeader } from '@backstage/plugin-auth-node';
-import { NotAllowedError } from '@backstage/errors';
 import { stringifyEntityRef } from '@backstage/catalog-model';
 import type {
+  AuthService,
+  HttpAuthService,
   LoggerService,
   PermissionsService,
 } from '@backstage/backend-plugin-api';
@@ -46,6 +47,14 @@ const parseUpdateDeliveryProjectUserRequest =
       is_admin: z.boolean().optional(),
       github_username: z.string().optional(),
       user_catalog_name: z.string(),
+    }),
+  );
+
+const parseDeleteDeliveryProjectUserRequest =
+  createParser<DeleteDeliveryProjectUserRequest>(
+    z.object({
+      delivery_project_user_id: z.string(),
+      delivery_project_id: z.string(),
     }),
   );
 
@@ -83,6 +92,8 @@ export interface DeliveryProjectUserRouterOptions {
   teamSyncronizer: IDeliveryProjectGithubTeamsSyncronizer;
   entraIdGroupSyncronizer: IDeliveryProjectEntraIdGroupsSyncronizer;
   permissions: PermissionsService;
+  httpAuth: HttpAuthService;
+  auth: AuthService;
 }
 
 export function createDeliveryProjectUserRouter(
@@ -94,12 +105,15 @@ export function createDeliveryProjectUserRouter(
     teamSyncronizer,
     entraIdGroupSyncronizer,
     permissions,
+    httpAuth,
+    auth,
   } = options;
 
   const permissionIntegrationRouter = createPermissionIntegrationRouter({
     permissions: [
       deliveryProjectUserCreatePermission,
       deliveryProjectUserUpdatePermission,
+      deliveryProjectUserDeletePermission,
     ],
   });
 
@@ -128,24 +142,21 @@ export function createDeliveryProjectUserRouter(
     const body = parseCreateDeliveryProjectUserRequest(req.body);
     assertUUID(body.delivery_project_id);
 
-    const token = getBearerTokenFromAuthorizationHeader(
-      req.header('authorization'),
+    const credentials = await httpAuth.credentials(req);
+    const { token } = await auth.getPluginRequestToken({
+      onBehalfOf: credentials,
+      targetPluginId: 'catalog',
+    });
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProjectUserCreatePermission,
+          resourceRef: body.delivery_project_id,
+        },
+      ],
+      permissions,
     );
-    const decision = (
-      await permissions.authorize(
-        [
-          {
-            permission: deliveryProjectUserCreatePermission,
-            resourceRef: body.delivery_project_id,
-          },
-        ],
-        { token },
-      )
-    )[0];
-
-    if (decision.result === AuthorizeResult.DENY) {
-      throw new NotAllowedError('Unauthorized');
-    }
 
     const catalogUser = await getUserEntityFromCatalog(
       body.user_catalog_name,
@@ -191,24 +202,21 @@ export function createDeliveryProjectUserRouter(
   router.patch('/deliveryProjectUser', async (req, res) => {
     const body = parseUpdateDeliveryProjectUserRequest(req.body);
 
-    const token = getBearerTokenFromAuthorizationHeader(
-      req.header('authorization'),
+    const credentials = await httpAuth.credentials(req);
+    const { token } = await auth.getPluginRequestToken({
+      onBehalfOf: credentials,
+      targetPluginId: 'catalog',
+    });
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProjectUserUpdatePermission,
+          resourceRef: body.delivery_project_id,
+        },
+      ],
+      permissions,
     );
-    const decision = (
-      await permissions.authorize(
-        [
-          {
-            permission: deliveryProjectUserUpdatePermission,
-            resourceRef: body.delivery_project_id,
-          },
-        ],
-        { token },
-      )
-    )[0];
-
-    if (decision.result === AuthorizeResult.DENY) {
-      throw new NotAllowedError('Unauthorized');
-    }
 
     const catalogUser = await getUserEntityFromCatalog(
       body.user_catalog_name,
@@ -248,6 +256,31 @@ export function createDeliveryProjectUserRouter(
       ]);
     }
     respond(body, res, result, errorMapping);
+  });
+
+  router.delete('/deliveryProjectUser', async (req, res) => {
+    const body = parseDeleteDeliveryProjectUserRequest(req.body);
+
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProjectUserDeletePermission,
+          resourceRef: body.delivery_project_id,
+        },
+      ],
+      permissions,
+    );
+
+    await deliveryProjectUserStore.delete(body.delivery_project_user_id);
+
+    await Promise.allSettled([
+      teamSyncronizer.syncronizeById(body.delivery_project_id),
+      entraIdGroupSyncronizer.syncronizeById(body.delivery_project_id),
+    ]);
+
+    res.status(204).end();
   });
 
   router.use(errorHandler());
