@@ -2,6 +2,7 @@ import type { Config } from '@backstage/config';
 import { GitHubTeamsApi } from './GithubTeamsApi';
 import type { GithubTeamDetails } from '@internal/plugin-adp-common';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
+import { mockCredentials, mockServices } from '@backstage/backend-test-utils';
 
 describe('GitHubTeamsApi', () => {
   function setup() {
@@ -27,7 +28,12 @@ describe('GitHubTeamsApi', () => {
     const fetchApi: jest.Mocked<FetchApi> = {
       fetch: jest.fn(),
     };
-    const sut = new GitHubTeamsApi(config, fetchApi);
+    const sut = new GitHubTeamsApi({
+      config,
+      fetchApi,
+      auth: mockServices.auth(),
+      credentials: { current: mockCredentials.user() },
+    });
 
     return { sut, fetchApi, config };
   }
