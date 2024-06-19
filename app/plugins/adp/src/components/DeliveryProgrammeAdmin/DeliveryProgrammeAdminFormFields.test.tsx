@@ -128,6 +128,9 @@ describe('DeliveryProgrammeAdminFormFields', () => {
     };
 
     const { form, result } = await renderComponent();
+    await waitFor(() =>
+      expect(result.queryByRole('progressbar')).not.toBeInTheDocument(),
+    );
 
     expect(result.baseElement).toMatchSnapshot('Empty');
 

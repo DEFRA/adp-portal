@@ -24,13 +24,14 @@
   },
   "dependencies": {
     "@backstage/backend-plugin-api": "^0.6.18",
-    "@internal/plugin-credentials-context-backend": "*"
+    "@internal/plugin-credentials-context-backend": "workspace:^"
   },
   "devDependencies": {
     "@backstage/backend-test-utils": "^0.3.8",
     "@backstage/cli": "^0.26.6",
     "@backstage/config": "^1.2.0",
-    "@types/express": "*"
+    "@types/express": "*",
+    "@types/jest": "^29.5.12"
   },
   "files": [
     "dist"

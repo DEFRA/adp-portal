@@ -9,56 +9,61 @@
 #
 # Once the commands have been run, you can build the image using `yarn build-image`
 
-FROM node:18-bookworm-slim
+FROM node:18-bookworm-slim AS base
 
-# Install isolate-vm dependencies, these are needed by the @backstage/plugin-scaffolder-backend.
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
+    # Install isolate-vm dependencies, these are needed by the @backstage/plugin-scaffolder-backend.
     apt-get install -y --no-install-recommends python3 g++ build-essential && \
-    yarn config set python /usr/bin/python3  &&\
-    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
-
-# Install python  - Clean out apt caches
-
-RUN apt-get update && \
+    # Install python
     apt-get install -y python3 python3-pip python3-venv && \
+    # Clean out apt caches
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-
+ENV PYTHON /usr/bin/python3
 ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv "$VIRTUAL_ENV"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
-RUN pip3 install mkdocs-techdocs-core
-
-# From here on we use the least-privileged `node` user to run the backend.
-USER node
-
-# This should create the app dir as `node`.
-# If it is instead created as `root` then the `tar` command below will fail: `can't create directory 'packages/': Permission denied`.
-# If this occurs, then ensure BuildKit is enabled (`DOCKER_BUILDKIT=1`) so the app dir is correctly created as `node`.
-WORKDIR /app
-
 # This switches many Node.js dependencies to production mode.
 ENV NODE_ENV production
 
-# Copy repo skeleton first, to avoid unnecessary docker cache invalidation.
-# The skeleton contains the package.json of each package in the monorepo,
-# and along with yarn.lock and the root package.json, that's enough to run yarn install.
-COPY --chown=node:node yarn.lock package.json packages/backend/dist/skeleton.tar.gz ./
+RUN pip3 install mkdocs-techdocs-core
+
+USER node
+WORKDIR /app
+
+# ================================================================================= #
+
+FROM base AS skeleton
+# Contains the application skeleton which is enough to run yarn install and nothing else.
+
+COPY --chown=node:node yarn.lock .yarnrc.yml package.json packages/backend/dist/skeleton.tar.gz ./
+COPY --chown=node:node .yarn ./.yarn
 RUN tar xzf skeleton.tar.gz && rm skeleton.tar.gz
 
-RUN yarn config set "strict-ssl" false
+# Yarn should exclusively be looking in the checked in cache directory
+ENV YARN_ENABLE_OFFLINE_MODE=1
+RUN yarn workspaces focus --all --production && \
+    # Yarn isnt needed to run the application, so all its files can be deleted
+    rm -rf .yarn yarn.lock .yarnrc.yml
 
-RUN --mount=type=cache,target=/home/node/.cache/yarn,sharing=locked,uid=1000,gid=1000 \
-    yarn install --frozen-lockfile --production --network-timeout 300000
+# ================================================================================= #
 
-# Then copy the rest of the backend bundle, along with any other files we might want.
+FROM base AS bundle
+# Contains the application bundle and any other files needed at runtime.
+
 COPY --chown=node:node packages/backend/dist/bundle.tar.gz app-config*.yaml *configuration.yaml ./
 COPY --chown=node:node config/*.yaml ./config/
 COPY --chown=node:node --chmod=0755 packages/backend/src/opentelemetry.js ./
-
 RUN tar xzf bundle.tar.gz && rm bundle.tar.gz
+
+# ================================================================================= #
+
+FROM base AS application
+# Contains the actual application, consisting of the skeleton and bundle merged together
+
+COPY --from=skeleton --chown=node:node /app ./
+COPY --from=bundle --chown=node:node /app ./
 
 CMD ["node", "--require", "./opentelemetry.js", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
