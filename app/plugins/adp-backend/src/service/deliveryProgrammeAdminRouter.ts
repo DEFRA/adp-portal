@@ -3,7 +3,7 @@ import { type IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import express from 'express';
 import Router from 'express-promise-router';
-import { InputError, NotAllowedError } from '@backstage/errors';
+import { InputError } from '@backstage/errors';
 import type { CatalogApi } from '@backstage/catalog-client';
 import type { AddDeliveryProgrammeAdmin } from '../utils';
 import { assertUUID, checkPermissions, createParser, respond } from './util';

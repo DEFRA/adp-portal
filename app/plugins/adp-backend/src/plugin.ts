@@ -146,6 +146,8 @@ export const adpPlugin = createBackendPlugin({
             teamSyncronizer,
             entraIdGroupSyncronizer,
             permissions,
+            auth,
+            httpAuth,
           }),
         );
 
