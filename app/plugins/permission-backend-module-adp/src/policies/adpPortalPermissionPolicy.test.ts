@@ -13,8 +13,8 @@ import {
 } from '@backstage/plugin-catalog-common/alpha';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import {
-  adpProgrammmeCreatePermission,
   deliveryProgrammeAdminCreatePermission,
+  deliveryProgrammeCreatePermission,
   deliveryProjectUserCreatePermission,
   deliveryProjectUserUpdatePermission,
 } from '@internal/plugin-adp-common';
@@ -141,7 +141,7 @@ describe('adpPortalPermissionPolicy', () => {
         expected: AuthorizeResult.DENY,
       },
       {
-        permission: adpProgrammmeCreatePermission,
+        permission: deliveryProgrammeCreatePermission,
         expected: AuthorizeResult.ALLOW,
       },
       { permission: actionExecutePermission, expected: AuthorizeResult.ALLOW },
@@ -220,7 +220,7 @@ describe('adpPortalPermissionPolicy', () => {
         expected: AuthorizeResult.DENY,
       },
       {
-        permission: adpProgrammmeCreatePermission,
+        permission: deliveryProgrammeCreatePermission,
         expected: AuthorizeResult.DENY,
       },
       { permission: actionExecutePermission, expected: AuthorizeResult.DENY },

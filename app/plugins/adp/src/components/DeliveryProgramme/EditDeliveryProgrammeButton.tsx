@@ -8,7 +8,7 @@ import {
 } from './DeliveryProgrammeFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
 import type { DeliveryProgramme } from '@internal/plugin-adp-common';
-import { adpProgrammmeCreatePermission } from '@internal/plugin-adp-common';
+import { deliveryProgrammeUpdatePermission } from '@internal/plugin-adp-common';
 import type { SubmitResult } from '../../utils';
 import {
   DialogForm,
@@ -36,7 +36,8 @@ export function EditDeliveryProgrammeButton({
   const client = useApi(deliveryProgrammeApiRef);
 
   const { allowed: allowedToEditDeliveryProgramme } = usePermission({
-    permission: adpProgrammmeCreatePermission,
+    permission: deliveryProgrammeUpdatePermission,
+    resourceRef: deliveryProgramme.id,
   });
   if (!allowedToEditDeliveryProgramme) return null;
 

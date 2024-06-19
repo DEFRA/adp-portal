@@ -21,8 +21,8 @@ import {
   templateStepReadPermission,
 } from '@backstage/plugin-scaffolder-common/alpha';
 import {
-  adpProgrammmeCreatePermission,
   deliveryProgrammeAdminCreatePermission,
+  deliveryProgrammeCreatePermission,
   deliveryProjectUserCreatePermission,
   deliveryProjectUserUpdatePermission,
 } from '@internal/plugin-adp-common';
@@ -108,7 +108,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
 
     // gives permission to create for ADP Programmes if in Admin Group
     if (
-      isPermission(request.permission, adpProgrammmeCreatePermission) &&
+      isPermission(request.permission, deliveryProgrammeCreatePermission) &&
       user !== undefined &&
       this.rbacUtilites.isInProgrammeAdminGroup(user)
     ) {
