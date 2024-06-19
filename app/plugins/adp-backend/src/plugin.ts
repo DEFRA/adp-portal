@@ -10,8 +10,8 @@ import { DeliveryProgrammeAdminStore } from './deliveryProgrammeAdmin';
 import { DeliveryProjectUserStore } from './deliveryProjectUser';
 import {
   DeliveryProjectGithubTeamsSyncronizer,
-  GitHubTeamsApi,
   GithubTeamStore,
+  githubTeamsApiRef,
 } from './githubTeam';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 import { CatalogClient } from '@backstage/catalog-client';
@@ -25,6 +25,7 @@ import {
 } from './service';
 import { Router } from 'express';
 import { initializeAdpDatabase } from './database';
+import { credentialsContextMiddlewareRef } from '@internal/plugin-credentials-context-backend';
 
 export const adpPlugin = createBackendPlugin({
   pluginId: 'adp',
@@ -40,6 +41,8 @@ export const adpPlugin = createBackendPlugin({
         httpRouter: coreServices.httpRouter,
         auth: coreServices.auth,
         httpAuth: coreServices.httpAuth,
+        credentialsContext: credentialsContextMiddlewareRef,
+        githubTeamsApi: githubTeamsApiRef,
       },
       async init({
         logger,
@@ -51,6 +54,8 @@ export const adpPlugin = createBackendPlugin({
         httpRouter,
         auth,
         httpAuth,
+        credentialsContext,
+        githubTeamsApi,
       }) {
         await initializeAdpDatabase(database);
 
@@ -74,7 +79,7 @@ export const adpPlugin = createBackendPlugin({
         );
         const catalog = new CatalogClient({ discoveryApi: discovery });
         const teamSyncronizer = new DeliveryProjectGithubTeamsSyncronizer(
-          new GitHubTeamsApi(config, fetchApi),
+          githubTeamsApi,
           deliveryProjectStore,
           githubTeamStore,
           deliveryProjectUserStore,
@@ -86,59 +91,65 @@ export const adpPlugin = createBackendPlugin({
             deliveryProjectUserStore,
           );
 
-        const armsLengthBodyRouter = await createAlbRouter({
-          logger,
-          identity,
-          deliveryProgrammeStore,
-          armsLengthBodyStore,
-          config,
-        });
-
-        const deliveryProgrammeRouter = createProgrammeRouter({
-          logger,
-          identity,
-          deliveryProgrammeStore,
-          deliveryProjectStore,
-          deliveryProgrammeAdminStore,
-        });
-
-        const deliveryProjectRouter = createProjectRouter({
-          logger,
-          identity,
-          deliveryProjectStore,
-          teamSyncronizer: teamSyncronizer,
-          deliveryProjectUserStore,
-          deliveryProgrammeAdminStore,
-          fluxConfigApi,
-        });
-
-        const deliveryProjectUserRouter = createDeliveryProjectUserRouter({
-          catalog,
-          deliveryProjectUserStore,
-          logger,
-          teamSyncronizer,
-          entraIdGroupSyncronizer,
-          permissions,
-          auth,
-          httpAuth,
-        });
-
-        const deliveryProgrameAdminRouter = createDeliveryProgrammeAdminRouter({
-          deliveryProgrammeAdminStore,
-          catalog,
-          identity,
-          logger,
-          permissions,
-          auth,
-          httpAuth,
-        });
-
         const combinedRouter = Router();
-        combinedRouter.use(armsLengthBodyRouter);
-        combinedRouter.use(deliveryProgrammeRouter);
-        combinedRouter.use(deliveryProjectRouter);
-        combinedRouter.use(deliveryProgrameAdminRouter);
-        combinedRouter.use(deliveryProjectUserRouter);
+        combinedRouter.use(credentialsContext);
+        combinedRouter.use(
+          '/armsLengthBodies',
+          createAlbRouter({
+            logger,
+            identity,
+            deliveryProgrammeStore,
+            armsLengthBodyStore,
+            config,
+          }),
+        );
+        combinedRouter.use(
+          '/deliveryProgrammes',
+          createProgrammeRouter({
+            logger,
+            identity,
+            deliveryProgrammeStore,
+            deliveryProjectStore,
+            deliveryProgrammeAdminStore,
+          }),
+        );
+        combinedRouter.use(
+          '/deliveryProjects',
+          createProjectRouter({
+            logger,
+            identity,
+            deliveryProjectStore,
+            teamSyncronizer: teamSyncronizer,
+            deliveryProjectUserStore,
+            deliveryProgrammeAdminStore,
+            fluxConfigApi,
+          }),
+        );
+        combinedRouter.use(
+          '/deliveryProgrammeAdmins',
+          createDeliveryProgrammeAdminRouter({
+            deliveryProgrammeAdminStore,
+            catalog,
+            identity,
+            logger,
+            permissions,
+            httpAuth,
+            auth,
+          }),
+        );
+        combinedRouter.use(
+          '/deliveryProjectUsers',
+          createDeliveryProjectUserRouter({
+            catalog,
+            deliveryProjectUserStore,
+            logger,
+            teamSyncronizer,
+            entraIdGroupSyncronizer,
+            permissions,
+            auth,
+            httpAuth,
+          }),
+        );
 
         httpRouter.use(combinedRouter);
       },

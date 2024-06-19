@@ -19,7 +19,7 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
   }
 
   private async getApiUrl(): Promise<string> {
-    return `${await this.#discoveryApi.getBaseUrl('adp')}/deliveryProject`;
+    return `${await this.#discoveryApi.getBaseUrl('adp')}/deliveryProjects`;
   }
 
   private async getPortalApiBaseUrl(): Promise<string> {
@@ -31,7 +31,7 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
       const url = await this.getApiUrl();
       const deliveryProgrammeUrl = `${await this.#discoveryApi.getBaseUrl(
         'adp',
-      )}/deliveryProgramme`;
+      )}/deliveryProgrammes`;
 
       const [deliveryProjectsResponse, deliveryProgrammeResponse] =
         await Promise.all([

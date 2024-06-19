@@ -57,11 +57,11 @@ describe('deliveryProgrammeClient', () => {
       expect(discoveryApi.getBaseUrl).toHaveBeenCalledWith('adp');
       expect(fetchApi.fetch).toHaveBeenNthCalledWith(
         1,
-        'http://localhost/deliveryProgramme',
+        'http://localhost/deliveryProgrammes',
       );
       expect(fetchApi.fetch).toHaveBeenNthCalledWith(
         2,
-        'http://localhost/armslengthbodynames',
+        'http://localhost/armslengthbodies/names',
       );
     });
 
@@ -175,7 +175,7 @@ describe('deliveryProgrammeClient', () => {
       expect(discoveryApi.getBaseUrl).toHaveBeenCalledWith('adp');
 
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/deliveryProgramme/1',
+        'http://localhost/deliveryProgrammes/1',
       );
     });
 

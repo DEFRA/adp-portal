@@ -100,48 +100,45 @@ export function createDeliveryProgrammeAdminRouter(
   const router = Router();
   router.use(express.json());
 
-  router.get('/deliveryProgrammeAdmins/health', (_, response) => {
+  router.get('/health', (_, response) => {
     response.json({ status: 'ok' });
   });
 
   router.use(permissionIntegrationRouter);
 
-  router.get('/deliveryProgrammeAdmins', async (_req, res) => {
+  router.get('/', async (_req, res) => {
     try {
       const data = await deliveryProgrammeAdminStore.getAll();
       res.json(data);
     } catch (error) {
       const typedError = error as Error;
       logger.error(
-        `GET /deliveryProgrammeAdmins. Could not get all delivery programme admins: ${typedError.message}`,
+        `GET /. Could not get all delivery programme admins: ${typedError.message}`,
         typedError,
       );
       throw new InputError(typedError.message);
     }
   });
 
-  router.get(
-    '/deliveryProgrammeAdmins/:deliveryProgrammeId',
-    async (req, res) => {
-      try {
-        const deliveryProgrammeId = req.params.deliveryProgrammeId;
-        const data =
-          await deliveryProgrammeAdminStore.getByDeliveryProgramme(
-            deliveryProgrammeId,
-          );
-        res.json(data);
-      } catch (error) {
-        const typedError = error as Error;
-        logger.error(
-          `GET /deliveryProgrammeAdmins/:deliveryProgrammeId. Could not get delivery programme admins for delivery programme: ${typedError.message}`,
-          typedError,
+  router.get('/:deliveryProgrammeId', async (req, res) => {
+    try {
+      const deliveryProgrammeId = req.params.deliveryProgrammeId;
+      const data =
+        await deliveryProgrammeAdminStore.getByDeliveryProgramme(
+          deliveryProgrammeId,
         );
-        throw new InputError(typedError.message);
-      }
-    },
-  );
+      res.json(data);
+    } catch (error) {
+      const typedError = error as Error;
+      logger.error(
+        `GET /:deliveryProgrammeId. Could not get delivery programme admins for delivery programme: ${typedError.message}`,
+        typedError,
+      );
+      throw new InputError(typedError.message);
+    }
+  });
 
-  router.post('/deliveryProgrammeAdmin', async (req, res) => {
+  router.post('/', async (req, res) => {
     const body = parseCreateDeliveryProgrammeAdminRequest(req.body);
     assertUUID(body.delivery_programme_id);
 
@@ -188,7 +185,7 @@ export function createDeliveryProgrammeAdminRouter(
     respond(body, res, addedUser, errorMapping, { ok: 201 });
   });
 
-  router.delete('/deliveryProgrammeAdmin', async (req, res) => {
+  router.delete('/', async (req, res) => {
     const body = parseDeleteDeliveryProgrammeAdminRequest(req.body);
 
     const credentials = await httpAuth.credentials(req);
@@ -206,7 +203,7 @@ export function createDeliveryProgrammeAdminRouter(
     await deliveryProgrammeAdminStore.delete(body.delivery_programme_admin_id);
 
     logger.info(
-      `DELETE /deliveryProgrammeAdmin: Deleted Delivery Programme Admin with ID ${body.delivery_programme_admin_id}`,
+      `DELETE /: Deleted Delivery Programme Admin with ID ${body.delivery_programme_admin_id}`,
     );
 
     res.status(204).end();

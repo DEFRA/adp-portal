@@ -66,9 +66,7 @@ const parseUpdateArmsLengthBodyRequest =
     }),
   );
 
-export async function createAlbRouter(
-  options: AlbRouterOptions,
-): Promise<express.Router> {
+export function createAlbRouter(options: AlbRouterOptions): express.Router {
   const { logger, identity, armsLengthBodyStore, deliveryProgrammeStore } =
     options;
 
@@ -77,12 +75,12 @@ export async function createAlbRouter(
   const router = Router();
   router.use(express.json());
 
-  router.get('/armsLengthBody/health', (_, response) => {
+  router.get('/health', (_, response) => {
     logger.info('PONG!');
     response.json({ status: 'ok' });
   });
 
-  router.get('/armsLengthBody', async (_req, res) => {
+  router.get('/', async (_req, res) => {
     try {
       const albData = await armsLengthBodyStore.getAll();
       const programmeData = await deliveryProgrammeStore.getAll();
@@ -105,18 +103,7 @@ export async function createAlbRouter(
     }
   });
 
-  router.get('/armsLengthBody/:id', async (_req, res) => {
-    try {
-      const data = await armsLengthBodyStore.get(_req.params.id);
-      res.json(data);
-    } catch (error) {
-      const albError = error as Error;
-      logger.error('Error in retrieving arms length body: ', albError);
-      throw new InputError(albError.message);
-    }
-  });
-
-  router.get('/armsLengthBodyNames', async (_req, res) => {
+  router.get('/names', async (_req, res) => {
     try {
       const armsLengthBodies = await armsLengthBodyStore.getAll();
       const armsLengthBodiesNames = Object.fromEntries(
@@ -130,14 +117,25 @@ export async function createAlbRouter(
     }
   });
 
-  router.post('/armsLengthBody', async (req, res) => {
+  router.get('/:id', async (_req, res) => {
+    try {
+      const data = await armsLengthBodyStore.get(_req.params.id);
+      res.json(data);
+    } catch (error) {
+      const albError = error as Error;
+      logger.error('Error in retrieving arms length body: ', albError);
+      throw new InputError(albError.message);
+    }
+  });
+
+  router.post('/', async (req, res) => {
     const body = parseCreateArmsLengthBodyRequest(req.body);
     const creator = await getCurrentUsername(identity, req);
     const result = await armsLengthBodyStore.add(body, creator, owner);
     respond(body, res, result, errorMapping, { ok: 201 });
   });
 
-  router.patch('/armsLengthBody', async (req, res) => {
+  router.patch('/', async (req, res) => {
     const body = parseUpdateArmsLengthBodyRequest(req.body);
     const creator = await getCurrentUsername(identity, req);
     const result = await armsLengthBodyStore.update(body, creator);
