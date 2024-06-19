@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@backstage/backend-plugin-api": "^0.6.18",
-    "@internal/plugin-request-context-provider-backend": "*"
+    "@internal/plugin-credentials-context-backend": "*"
   },
   "devDependencies": {
     "@backstage/backend-test-utils": "^0.3.8",

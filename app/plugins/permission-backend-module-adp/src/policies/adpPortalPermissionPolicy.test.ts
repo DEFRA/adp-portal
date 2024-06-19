@@ -15,7 +15,9 @@ import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import {
   adpProgrammmeCreatePermission,
   deliveryProgrammeAdminCreatePermission,
+  deliveryProgrammeAdminDeletePermission,
   deliveryProjectUserCreatePermission,
+  deliveryProjectUserDeletePermission,
   deliveryProjectUserUpdatePermission,
 } from '@internal/plugin-adp-common';
 import type { PolicyQuery } from '@backstage/plugin-permission-node';
@@ -84,6 +86,14 @@ describe('adpPortalPermissionPolicy', () => {
       },
       {
         permission: deliveryProjectUserUpdatePermission,
+        expected: AuthorizeResult.ALLOW,
+      },
+      {
+        permission: deliveryProgrammeAdminDeletePermission,
+        expected: AuthorizeResult.ALLOW,
+      },
+      {
+        permission: deliveryProjectUserDeletePermission,
         expected: AuthorizeResult.ALLOW,
       },
     ])(
@@ -165,6 +175,14 @@ describe('adpPortalPermissionPolicy', () => {
         permission: deliveryProjectUserUpdatePermission,
         expected: AuthorizeResult.CONDITIONAL,
       },
+      {
+        permission: deliveryProgrammeAdminDeletePermission,
+        expected: AuthorizeResult.CONDITIONAL,
+      },
+      {
+        permission: deliveryProjectUserDeletePermission,
+        expected: AuthorizeResult.CONDITIONAL,
+      },
     ])(
       'should allow access for permission $permission.name for the Programme Admin Role',
       async ({ permission, expected }) => {
@@ -242,6 +260,14 @@ describe('adpPortalPermissionPolicy', () => {
       },
       {
         permission: deliveryProjectUserUpdatePermission,
+        expected: AuthorizeResult.CONDITIONAL,
+      },
+      {
+        permission: deliveryProgrammeAdminDeletePermission,
+        expected: AuthorizeResult.CONDITIONAL,
+      },
+      {
+        permission: deliveryProjectUserDeletePermission,
         expected: AuthorizeResult.CONDITIONAL,
       },
     ])(

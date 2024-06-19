@@ -89,7 +89,7 @@ describe('createRouter', () => {
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
   };
 
-  beforeAll(async () => {
+  beforeAll(() => {
     const projectRouter = createProjectRouter(mockOptions);
     projectApp = express().use(projectRouter);
   });
@@ -110,20 +110,20 @@ describe('createRouter', () => {
     });
   });
 
-  describe('GET /deliveryProject/health', () => {
+  describe('GET /health', () => {
     it('returns ok', async () => {
-      const response = await request(projectApp).get('/deliveryProject/health');
+      const response = await request(projectApp).get('/health');
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({ status: 'ok' });
     });
   });
 
-  describe('GET /deliveryProject', () => {
+  describe('GET /', () => {
     it('returns ok', async () => {
       mockDeliveryProjectStore.getAll.mockResolvedValueOnce([
         expectedProjectDataWithName,
       ]);
-      const response = await request(projectApp).get('/deliveryProject');
+      const response = await request(projectApp).get('/');
       expect(response.status).toEqual(200);
     });
 
@@ -131,12 +131,12 @@ describe('createRouter', () => {
       mockDeliveryProjectStore.getAll.mockRejectedValueOnce(
         new InputError('error'),
       );
-      const response = await request(projectApp).get('/deliveryProject');
+      const response = await request(projectApp).get('/');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('GET /deliveryProject/:id', () => {
+  describe('GET /:id', () => {
     it('returns ok', async () => {
       mockDeliveryProjectStore.get.mockResolvedValueOnce(
         expectedProjectDataWithName,
@@ -154,7 +154,7 @@ describe('createRouter', () => {
           updated_at: new Date(),
         },
       ]);
-      const response = await request(projectApp).get('/deliveryProject/1234');
+      const response = await request(projectApp).get('/1234');
       expect(response.status).toEqual(200);
     });
 
@@ -162,12 +162,12 @@ describe('createRouter', () => {
       mockDeliveryProjectStore.get.mockRejectedValueOnce(
         new InputError('error'),
       );
-      const response = await request(projectApp).get('/deliveryProject/4321');
+      const response = await request(projectApp).get('/4321');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('POST /deliveryProject', () => {
+  describe('POST /', () => {
     it('returns created', async () => {
       // arrange
       mockDeliveryProjectStore.add.mockResolvedValue({
@@ -177,7 +177,7 @@ describe('createRouter', () => {
 
       // act
       const response = await request(projectApp)
-        .post('/deliveryProject')
+        .post('/')
         .send({
           delivery_project_code: 'abc',
           title: 'def',
@@ -210,7 +210,7 @@ describe('createRouter', () => {
 
       // act
       const response = await request(projectApp)
-        .post('/deliveryProject')
+        .post('/')
         .send({
           delivery_project_code: 'abc',
           title: 'def',
@@ -258,7 +258,7 @@ describe('createRouter', () => {
 
     it('return 400 if if the request is bad', async () => {
       const response = await request(projectApp)
-        .post('/deliveryProject')
+        .post('/')
         .send({ notATitle: 'abc' });
       expect(response.status).toEqual(400);
     });
@@ -266,7 +266,7 @@ describe('createRouter', () => {
     it('returns internal server error', async () => {
       mockDeliveryProjectStore.add.mockRejectedValueOnce(new Error('error'));
       const response = await request(projectApp)
-        .post('/deliveryProject')
+        .post('/')
         .send({
           delivery_project_code: 'abc',
           title: 'def',
@@ -281,7 +281,7 @@ describe('createRouter', () => {
     });
   });
 
-  describe('PATCH /deliveryProject', () => {
+  describe('PATCH /', () => {
     it('returns ok', async () => {
       // arrange
       mockDeliveryProjectStore.update.mockResolvedValue({
@@ -291,7 +291,7 @@ describe('createRouter', () => {
 
       // act
       const response = await request(projectApp)
-        .patch('/deliveryProject')
+        .patch('/')
         .send({ id: '123' } satisfies UpdateDeliveryProjectRequest);
 
       // assert
@@ -310,7 +310,7 @@ describe('createRouter', () => {
 
       // act
       const response = await request(projectApp)
-        .patch('/deliveryProject')
+        .patch('/')
         .send({
           id: '123',
           delivery_project_code: 'abc',
@@ -346,7 +346,7 @@ describe('createRouter', () => {
 
     it('return 400 if if the request is bad', async () => {
       const response = await request(projectApp)
-        .patch('/deliveryProject')
+        .patch('/')
         .send({ notAnId: 'abc' });
       expect(response.status).toEqual(400);
     });
@@ -354,20 +354,20 @@ describe('createRouter', () => {
     it('returns internal server error', async () => {
       mockDeliveryProjectStore.update.mockRejectedValueOnce(new Error('error'));
       const response = await request(projectApp)
-        .patch('/deliveryProject')
+        .patch('/')
         .send({ id: '123' } satisfies UpdateDeliveryProjectRequest);
       expect(response.status).toEqual(500);
     });
   });
 
-  describe('PUT /deliveryProject/:projectName/github/teams/sync', () => {
+  describe('PUT /:projectName/github/teams/sync', () => {
     it('Should call the syncronizer', async () => {
       // arrange
       const projectName = randomUUID();
 
       // act
       const response = await request(projectApp).put(
-        `/deliveryProject/${projectName}/github/teams/sync`,
+        `/${projectName}/github/teams/sync`,
       );
 
       // assert

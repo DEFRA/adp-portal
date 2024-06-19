@@ -46,7 +46,7 @@
     "@internal/plugin-catalog-backend-module-adp": "*",
     "@internal/plugin-fetch-api-backend": "*",
     "@internal/plugin-permission-backend-module-adp": "*",
-    "@internal/plugin-request-context-provider-backend": "*",
+    "@internal/plugin-credentials-context-backend": "*",
     "@internal/plugin-scaffolder-backend-module-adp": "*",
     "@internal/plugin-techdocs-backend-module-adp": "*",
     "@opentelemetry/api": "1.8.0",
