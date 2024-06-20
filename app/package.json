@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "private": true,
   "packageManager": "yarn@4.3.0",
   "engines": {
@@ -21,7 +21,7 @@
     "test": "backstage-cli repo test --config jest.config.js",
     "test:all": "backstage-cli repo test --coverage --config jest.config.js",
     "test:e2e": "playwright test",
-    "test:cobertura": "backstage-cli repo test --coverage --coverageReporters=cobertura --config jest.config.js",
+    "test:cobertura": "backstage-cli repo test --coverage --coverageReporters=lcov --coverageReporters=cobertura --config jest.config.js",
     "fix": "backstage-cli repo fix",
     "lint": "backstage-cli repo lint --since origin/main",
     "lint:all": "backstage-cli repo lint",
