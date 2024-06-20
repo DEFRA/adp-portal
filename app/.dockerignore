@@ -1,6 +1,12 @@
 .git
-.yarn/cache
-.yarn/install-state.gz
+app/.pnp.*
+app/.yarn/*
+!app/.yarn/patches
+!app/.yarn/plugins
+!app/.yarn/releases
+!app/.yarn/sdks
+!app/.yarn/versions
+!app/.yarn/cache
 node_modules
 packages/*/src
 packages/*/node_modules

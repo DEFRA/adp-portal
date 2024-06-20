@@ -18,18 +18,19 @@
     "@backstage/core-app-api": "^1.12.5",
     "@backstage/core-components": "^0.14.7",
     "@backstage/core-plugin-api": "^1.9.2",
-    "@internal/plugin-adp-theme-react": "*",
+    "@internal/plugin-adp-theme-react": "workspace:^",
     "@material-ui/core": "^4.12.2",
     "@material-ui/lab": "^4.0.0-alpha.61",
-    "react": "^18.0.2",
-    "react-dom": "^18.0.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.3.0",
     "react-use": "^17.5.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.0.0",
-    "@testing-library/react": "^14.0.0",
-    "@types/react": "*",
-    "@types/react-dom": "*"
+    "@testing-library/react": "^15.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0"
   },
   "files": [
     "dist"

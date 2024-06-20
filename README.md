@@ -44,42 +44,42 @@ To sign commits using GPG from within the devcontainer, please follow [the steps
 
 ### Environment Variables
 
-The application requires the following environment variables to be set. We recommend creating an _env.sh_ file in the root of your repo (this is ignored by Git) and pasting the variables in to this file. Before running the application, run `. ./env.sh` from the root of your repo.
+The application requires the following environment variables to be set. We recommend creating a `.env` file in the root of your repo (this is ignored by Git) and pasting the variables in to this file. This file will be used whenever you run a script through `yarn` such as `yarn dev`.
 
 ```sh
-export GITHUB_APP_ID=""
-export GITHUB_CLIENT_ID=""
-export GITHUB_CLIENT_SECRET=""
-export GITHUB_PRIVATE_KEY=""
+GITHUB_APP_ID=""
+GITHUB_CLIENT_ID=""
+GITHUB_CLIENT_SECRET=""
+GITHUB_PRIVATE_KEY=""
 
-export AUTH_MICROSOFT_CLIENT_ID=""
-export AUTH_MICROSOFT_CLIENT_SECRET=""
-export AUTH_MICROSOFT_TENANT_ID=""
+AUTH_MICROSOFT_CLIENT_ID=""
+AUTH_MICROSOFT_CLIENT_SECRET=""
+AUTH_MICROSOFT_TENANT_ID=""
 
-export BACKSTAGE_BACKEND_SECRET=""
+BACKSTAGE_BACKEND_SECRET=""
 
-export ADO_PAT=""
-export ADO_ORGANIZATION=""
+ADO_PAT=""
+ADO_ORGANIZATION=""
 
-export GRAFANA_TOKEN=""
-export GRAFANA_ENDPOINT=""
+GRAFANA_TOKEN=""
+GRAFANA_ENDPOINT=""
 
-export TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_NAME=""
-export TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_KEY=""
+TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_NAME=""
+TECHDOCS_AZURE_BLOB_STORAGE_ACCOUNT_KEY=""
 
-export ADP_PORTAL_PLATFORM_ADMINS_GROUP=""
-export ADP_PORTAL_PROGRAMME_ADMINS_GROUP=""
-export ADP_PORTAL_USERS_GROUP=""
-export ADP_PORTAL_USERS_GROUP_PREFIX=""
+ADP_PORTAL_PLATFORM_ADMINS_GROUP=""
+ADP_PORTAL_PROGRAMME_ADMINS_GROUP=""
+ADP_PORTAL_USERS_GROUP=""
+ADP_PORTAL_USERS_GROUP_PREFIX=""
 
-export SND1_CLUSTER_NAME=""
-export SND1_CLUSTER_API_SERVER_ADDRESS=""
-export SND2_CLUSTER_NAME=""
-export SND2_CLUSTER_API_SERVER_ADDRESS=""
-export SND3_CLUSTER_NAME=""
-export SND3_CLUSTER_API_SERVER_ADDRESS=""
+SND1_CLUSTER_NAME=""
+SND1_CLUSTER_API_SERVER_ADDRESS=""
+SND2_CLUSTER_NAME=""
+SND2_CLUSTER_API_SERVER_ADDRESS=""
+SND3_CLUSTER_NAME=""
+SND3_CLUSTER_API_SERVER_ADDRESS=""
 
-export TZ=utc
+TZ=utc
 ```
 
 To convert a GitHub private key into a format that can be used in the `GITHUB_PRIVATE_KEY` environment variable use one of the following scripts:

@@ -19,6 +19,11 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   readonly #fetchApi: FetchApi;
   readonly #auth: AuthService;
 
+  static get name() {
+    // needed as the name gets mangled by webpack
+    return 'AdpDatabaseEntityProvider';
+  }
+
   static create(options: {
     discovery: DiscoveryService;
     logger: LoggerService;
@@ -67,7 +72,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   }
 
   getProviderName(): string {
-    return AdpDatabaseEntityProvider.name;
+    return 'AdpDatabaseEntityProvider';
   }
 
   async connect(connection: EntityProviderConnection): Promise<void> {

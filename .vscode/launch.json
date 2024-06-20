@@ -10,7 +10,7 @@
         "start"
       ],
       "cwd": "${workspaceFolder}/app/packages/backend",
-      "program": "node_modules/.bin/backstage-cli",
+      "program": "${workspaceFolder}/app/node_modules/.bin/backstage-cli",
       "skipFiles": [
         "<node_internals>/**"
       ],
@@ -33,7 +33,7 @@
         "start"
       ],
       "cwd": "${workspaceFolder}/app/packages/app",
-      "program": "node_modules/.bin/backstage-cli",
+      "program": "${workspaceFolder}/app/node_modules/.bin/backstage-cli",
       "skipFiles": [
         "<node_internals>/**"
       ],
@@ -68,7 +68,7 @@
         "--testTimeout=999999999"
       ],
       "console": "integratedTerminal",
-      "program": "node_modules/.bin/backstage-cli",
+      "program": "${workspaceFolder}/app/node_modules/.bin/backstage-cli",
       "cwd": "${workspaceFolder}/app",
       "skipFiles": [
         "<node_internals>/**"
@@ -91,7 +91,7 @@
         "--watchAll=false",
         "--testTimeout=99999999"
       ],
-      "program": "node_modules/.bin/backstage-cli",
+      "program": "${workspaceFolder}/app/node_modules/.bin/backstage-cli",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/app",
       "skipFiles": [
