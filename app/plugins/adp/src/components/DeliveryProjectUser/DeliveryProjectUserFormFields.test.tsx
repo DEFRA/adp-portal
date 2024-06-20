@@ -94,6 +94,7 @@ describe('DeliveryProjectUserFormFields', () => {
   it('should render all fields correctly', async () => {
     const { renderComponent } = setup();
     const { result } = await renderComponent();
+    await waitForLoadingDone(result);
     expect(result.baseElement).toMatchSnapshot();
   });
 
@@ -108,6 +109,7 @@ describe('DeliveryProjectUserFormFields', () => {
     };
 
     const { result } = await renderComponent(fields);
+    await waitForLoadingDone(result);
 
     expect(result.baseElement).toMatchSnapshot();
   });
@@ -145,6 +147,7 @@ describe('DeliveryProjectUserFormFields', () => {
     };
 
     const { form, result } = await renderComponent();
+    await waitForLoadingDone(result);
 
     expect(result.baseElement).toMatchSnapshot('Empty');
 
@@ -163,3 +166,9 @@ describe('DeliveryProjectUserFormFields', () => {
     expect(form.getValues()).toMatchObject(fields);
   });
 });
+
+async function waitForLoadingDone(result: RenderResult) {
+  await waitFor(() =>
+    expect(result.queryByRole('progressbar')).not.toBeInTheDocument(),
+  );
+}

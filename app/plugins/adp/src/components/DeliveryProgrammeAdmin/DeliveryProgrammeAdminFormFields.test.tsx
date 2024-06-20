@@ -82,6 +82,7 @@ describe('DeliveryProgrammeAdminFormFields', () => {
     const { renderComponent } = setup();
 
     const { result } = await renderComponent();
+    await waitForLoadingDone(result);
 
     expect(result.baseElement).toMatchSnapshot();
   });
@@ -94,6 +95,7 @@ describe('DeliveryProgrammeAdminFormFields', () => {
     };
 
     const { result } = await renderComponent(fields);
+    await waitForLoadingDone(result);
 
     expect(result.baseElement).toMatchSnapshot();
   });
@@ -128,9 +130,7 @@ describe('DeliveryProgrammeAdminFormFields', () => {
     };
 
     const { form, result } = await renderComponent();
-    await waitFor(() =>
-      expect(result.queryByRole('progressbar')).not.toBeInTheDocument(),
-    );
+    await waitForLoadingDone(result);
 
     expect(result.baseElement).toMatchSnapshot('Empty');
 
@@ -145,3 +145,9 @@ describe('DeliveryProgrammeAdminFormFields', () => {
     expect(form.getValues()).toMatchObject(fields);
   });
 });
+
+async function waitForLoadingDone(result: RenderResult) {
+  await waitFor(() =>
+    expect(result.queryByRole('progressbar')).not.toBeInTheDocument(),
+  );
+}
