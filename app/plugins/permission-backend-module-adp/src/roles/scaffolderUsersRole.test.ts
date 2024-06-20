@@ -1,6 +1,5 @@
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import type { PortalUserIdentity } from '../types';
-import { deliveryProgrammeAdminRole } from './deliveryProgrammeAdminRole';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import {
   actionExecutePermission,
