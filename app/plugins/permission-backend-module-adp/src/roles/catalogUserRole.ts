@@ -16,7 +16,7 @@ import {
  * @param permission the permission being evaluated.
  * @returns a policy decision which determines if the user can access the requested resource.
  */
-export const catalogReaderRole = (permission: Permission): PolicyDecision => {
+export const catalogUserRole = (permission: Permission): PolicyDecision => {
   if (
     isPermission(permission, catalogEntityReadPermission) ||
     isPermission(permission, catalogLocationReadPermission) ||

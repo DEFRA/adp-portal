@@ -8,7 +8,7 @@ import type {
 import type { RbacUtilities } from '../rbacUtilites';
 import type { LoggerService } from '@backstage/backend-plugin-api';
 import {
-  catalogReaderRole,
+  catalogUserRole,
   deliveryProgrammeAdminManagerRole,
   deliveryProgrammeAdminRole,
   deliveryProjectUserManagerRole,
@@ -59,7 +59,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       deliveryProjectUserManagerRole(request.permission, portalUserIdentity),
       scaffolderUserRole(request.permission, portalUserIdentity),
       deliveryProgrammeAdminRole(request.permission, portalUserIdentity),
-      catalogReaderRole(request.permission),
+      catalogUserRole(request.permission),
     ];
 
     for (const role of roles) {

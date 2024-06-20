@@ -1,4 +1,4 @@
-export * from './catalogReaderRole';
+export * from './catalogUserRole';
 export * from './deliveryProgrammeAdminMangerRole';
 export * from './deliveryProgrammeAdminRole';
 export * from './deliveryProjectUserManagerRole';
