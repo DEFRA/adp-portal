@@ -22,7 +22,7 @@ import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-
 import { permissionRules } from '../permissions';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import type { LoggerService } from '@backstage/backend-plugin-api';
-import { IEntraIdApi } from '../entraId';
+import type { IEntraIdApi } from '../entraId';
 
 export interface ProjectRouterOptions {
   logger: LoggerService;
@@ -214,7 +214,7 @@ export function createProjectRouter(
         req.body,
         req.params.projectName,
       );
-      res.status(204);
+      res.status(204).send();
     } catch (error) {
       const entraIdError = error as Error;
       logger.error('Error in creating EntraId groups: ', entraIdError);
