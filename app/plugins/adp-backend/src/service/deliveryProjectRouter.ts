@@ -10,9 +10,10 @@ import {
   type UpdateDeliveryProjectRequest,
   type ValidationErrorMapping,
   type DeliveryProject,
+  type CheckAdoProjectExistsResponse,
 } from '@internal/plugin-adp-common';
 import { getCurrentUsername } from '../utils/index';
-import type { IFluxConfigApi } from '../deliveryProject';
+import type { IFluxConfigApi, IAdoProjectApi } from '../deliveryProject';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import { createParser, respond } from './util';
 import { z } from 'zod';
@@ -21,6 +22,7 @@ import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-
 import { permissionRules } from '../permissions';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import type { LoggerService } from '@backstage/backend-plugin-api';
+import { IEntraIdApi } from '../entraId';
 
 export interface ProjectRouterOptions {
   logger: LoggerService;
@@ -30,6 +32,8 @@ export interface ProjectRouterOptions {
   deliveryProjectUserStore: IDeliveryProjectUserStore;
   deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
   fluxConfigApi: IFluxConfigApi;
+  entraIdApi: IEntraIdApi;
+  adoProjectApi: IAdoProjectApi;
 }
 
 const errorMapping = {
@@ -102,6 +106,8 @@ export function createProjectRouter(
     deliveryProjectUserStore,
     deliveryProgrammeAdminStore,
     fluxConfigApi,
+    entraIdApi,
+    adoProjectApi,
   } = options;
 
   const getDeliveryProject = async (
@@ -200,6 +206,36 @@ export function createProjectRouter(
       ]);
     }
     respond(body, res, result, errorMapping);
+  });
+
+  router.post('/:projectName/createEntraIdGroups', async (req, res) => {
+    try {
+      await entraIdApi.createEntraIdGroupsForProject(
+        req.body,
+        req.params.projectName,
+      );
+      res.status(204);
+    } catch (error) {
+      const entraIdError = error as Error;
+      logger.error('Error in creating EntraId groups: ', entraIdError);
+      throw new InputError(entraIdError.message);
+    }
+  });
+
+  router.get('/adoProject/:projectName', async (req, res) => {
+    try {
+      const response = await adoProjectApi.checkIfAdoProjectExists(
+        req.params.projectName,
+      );
+      const checkAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: response,
+      };
+      res.status(200).send(checkAdoProjectExistsResponse);
+    } catch (error) {
+      const adoError = error as Error;
+      logger.error('Error in fetching ADO Project: ', adoError);
+      throw new InputError(adoError.message);
+    }
   });
 
   router.use(errorHandler());
