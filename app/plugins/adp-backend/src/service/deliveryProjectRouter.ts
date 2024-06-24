@@ -5,7 +5,6 @@ import { InputError } from '@backstage/errors';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
 import {
-  DELIVERY_PROJECT_RESOURCE_TYPE,
   type CreateDeliveryProjectRequest,
   type UpdateDeliveryProjectRequest,
   type ValidationErrorMapping,
@@ -20,8 +19,6 @@ import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import { checkPermissions, createParser, respond } from './util';
 import { z } from 'zod';
 import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
-import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
-import { deliveryProjectRules } from '../permissions';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import type { IEntraIdApi } from '../entraId';
 import type {
@@ -140,27 +137,8 @@ export function createProjectRouter(
     permissions,
   } = options;
 
-  const permissionIntegrationRouter = createPermissionIntegrationRouter({
-    permissions: [],
-    resourceType: DELIVERY_PROJECT_RESOURCE_TYPE,
-    rules: Object.values(deliveryProjectRules),
-    getResources: async (resourceRefs: string[]) => {
-      return await Promise.all(
-        resourceRefs.map(async (ref: string) => {
-          return await getDeliveryProject(
-            deliveryProjectStore,
-            deliveryProjectUserStore,
-            deliveryProgrammeAdminStore,
-            ref,
-          );
-        }),
-      );
-    },
-  });
-
   const router = Router();
   router.use(express.json());
-  router.use(permissionIntegrationRouter);
 
   router.get('/health', (_, response) => {
     logger.info('PONG!');
