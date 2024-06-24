@@ -18,7 +18,6 @@ import type { AddDeliveryProjectUser } from '../utils';
 import { getUserEntityFromCatalog } from './catalog';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import type { IDeliveryProjectEntraIdGroupsSyncronizer } from '../entraId';
-import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import { stringifyEntityRef } from '@backstage/catalog-model';
 import type {
   AuthService,
@@ -109,22 +108,12 @@ export function createDeliveryProjectUserRouter(
     auth,
   } = options;
 
-  const permissionIntegrationRouter = createPermissionIntegrationRouter({
-    permissions: [
-      deliveryProjectUserCreatePermission,
-      deliveryProjectUserUpdatePermission,
-      deliveryProjectUserDeletePermission,
-    ],
-  });
-
   const router = Router();
   router.use(express.json());
 
   router.get('/health', (_, response) => {
     response.json({ status: 'ok' });
   });
-
-  router.use(permissionIntegrationRouter);
 
   router.get('/', async (_req, res) => {
     const data = await deliveryProjectUserStore.getAll();

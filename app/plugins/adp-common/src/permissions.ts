@@ -69,16 +69,36 @@ export const deliveryProjectUserDeletePermission = createPermission({
   resourceType: DELIVERY_PROJECT_RESOURCE_TYPE,
 });
 
-export const adpPluginPermissions = [
+export const armsLengthBodyPermissions = [
   armsLengthBodyCreatePermission,
   armsLengthBodyUpdatePermission,
+];
+
+export const deliveryProgrammePermissions = [
   deliveryProgrammeCreatePermission,
   deliveryProgrammeUpdatePermission,
+];
+
+export const deliveryProjectPermissions = [
   deliveryProjectCreatePermission,
   deliveryProjectUpdatePermission,
+];
+
+export const deliveryProgrammeAdminPermissions = [
   deliveryProgrammeAdminCreatePermission,
   deliveryProgrammeAdminDeletePermission,
+];
+
+export const deliveryProjectUserPermissions = [
   deliveryProjectUserCreatePermission,
   deliveryProjectUserUpdatePermission,
   deliveryProjectUserDeletePermission,
+];
+
+export const adpPluginPermissions = [
+  ...armsLengthBodyPermissions,
+  ...deliveryProgrammePermissions,
+  ...deliveryProjectPermissions,
+  ...deliveryProgrammeAdminPermissions,
+  ...deliveryProjectUserPermissions,
 ];

@@ -30,6 +30,14 @@ import {
 import { Router } from 'express';
 import { initializeAdpDatabase } from './database';
 import { credentialsContextMiddlewareRef } from '@internal/plugin-credentials-context-backend';
+import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
+import {
+  DELIVERY_PROJECT_RESOURCE_TYPE,
+  deliveryProgrammeAdminPermissions,
+  deliveryProjectUserPermissions,
+} from '@internal/plugin-adp-common';
+import { getDeliveryProject } from './service/deliveryProjectRouter';
+import { deliveryProjectRules } from './permissions';
 
 export const adpPlugin = createBackendPlugin({
   pluginId: 'adp',
@@ -97,7 +105,36 @@ export const adpPlugin = createBackendPlugin({
             deliveryProjectUserStore,
           );
 
+        const deliveryProjectPermissionRules =
+          Object.values(deliveryProjectRules);
+
         const combinedRouter = Router();
+        const permissionIntegrationRouter = createPermissionIntegrationRouter({
+          permissions: [
+            ...deliveryProgrammeAdminPermissions,
+            ...deliveryProjectUserPermissions,
+          ],
+          resources: [
+            {
+              resourceType: DELIVERY_PROJECT_RESOURCE_TYPE,
+              rules: deliveryProjectPermissionRules,
+              getResources: async (resourceRefs: string[]) => {
+                return await Promise.all(
+                  resourceRefs.map(async (ref: string) => {
+                    return await getDeliveryProject(
+                      deliveryProjectStore,
+                      deliveryProjectUserStore,
+                      deliveryProgrammeAdminStore,
+                      ref,
+                    );
+                  }),
+                );
+              },
+            },
+          ],
+        });
+
+        combinedRouter.use(permissionIntegrationRouter);
         combinedRouter.use(credentialsContext);
         combinedRouter.use(
           '/armsLengthBodies',

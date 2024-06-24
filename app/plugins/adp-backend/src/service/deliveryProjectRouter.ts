@@ -21,7 +21,7 @@ import { checkPermissions, createParser, respond } from './util';
 import { z } from 'zod';
 import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
-import { permissionRules } from '../permissions';
+import { deliveryProjectRules } from '../permissions';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import type { IEntraIdApi } from '../entraId';
 import type {
@@ -103,6 +103,26 @@ const parseUpdateDeliveryProjectRequest =
     }),
   );
 
+export const getDeliveryProject = async (
+  deliveryProjectStore: IDeliveryProjectStore,
+  deliveryProjectUserStore: IDeliveryProjectUserStore,
+  deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore,
+  deliveryProjectId: string,
+): Promise<DeliveryProject> => {
+  const deliveryProject = await deliveryProjectStore.get(deliveryProjectId);
+  const deliveryProjectUsers =
+    await deliveryProjectUserStore.getByDeliveryProject(deliveryProjectId);
+  const deliveryProgrammeAdmins =
+    await deliveryProgrammeAdminStore.getByDeliveryProgramme(
+      deliveryProject.delivery_programme_id,
+    );
+
+  deliveryProject.delivery_project_users = deliveryProjectUsers;
+  deliveryProject.delivery_programme_admins = deliveryProgrammeAdmins;
+
+  return deliveryProject;
+};
+
 export function createProjectRouter(
   options: ProjectRouterOptions,
 ): express.Router {
@@ -120,31 +140,19 @@ export function createProjectRouter(
     permissions,
   } = options;
 
-  const getDeliveryProject = async (
-    deliveryProjectId: string,
-  ): Promise<DeliveryProject> => {
-    const deliveryProject = await deliveryProjectStore.get(deliveryProjectId);
-    const deliveryProjectUsers =
-      await deliveryProjectUserStore.getByDeliveryProject(deliveryProjectId);
-    const deliveryProgrammeAdmins =
-      await deliveryProgrammeAdminStore.getByDeliveryProgramme(
-        deliveryProject.delivery_programme_id,
-      );
-
-    deliveryProject.delivery_project_users = deliveryProjectUsers;
-    deliveryProject.delivery_programme_admins = deliveryProgrammeAdmins;
-
-    return deliveryProject;
-  };
-
   const permissionIntegrationRouter = createPermissionIntegrationRouter({
     permissions: [],
     resourceType: DELIVERY_PROJECT_RESOURCE_TYPE,
-    rules: Object.values(permissionRules),
+    rules: Object.values(deliveryProjectRules),
     getResources: async (resourceRefs: string[]) => {
       return await Promise.all(
         resourceRefs.map(async (ref: string) => {
-          return await getDeliveryProject(ref);
+          return await getDeliveryProject(
+            deliveryProjectStore,
+            deliveryProjectUserStore,
+            deliveryProgrammeAdminStore,
+            ref,
+          );
         }),
       );
     },
@@ -175,7 +183,12 @@ export function createProjectRouter(
 
   router.get('/:id', async (req, res) => {
     try {
-      const deliveryProject = await getDeliveryProject(req.params.id);
+      const deliveryProject = await getDeliveryProject(
+        deliveryProjectStore,
+        deliveryProjectUserStore,
+        deliveryProgrammeAdminStore,
+        req.params.id,
+      );
       res.json(deliveryProject);
     } catch (error) {
       const deliveryProjectError = error as Error;

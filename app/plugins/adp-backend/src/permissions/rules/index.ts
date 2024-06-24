@@ -1,7 +1,7 @@
 import { isDeliveryProgrammeAdminForProject } from './isDeliveryProgrammeAdminForProject';
 import { isDeliveryProjectAdmin } from './isDeliveryProjectAdmin';
 
-export const permissionRules = {
+export const deliveryProjectRules = {
   isDeliveryProjectAdmin,
   isDeliveryProgrammeAdminForProject,
 };
