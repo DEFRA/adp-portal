@@ -62,17 +62,26 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
   async createDeliveryProject(
     data: CreateDeliveryProjectRequest,
   ): Promise<DeliveryProject> {
-    if (!(await this.#checkIfAdoProjectExists(data.ado_project))) {
+    try {
+      await this.#checkIfAdoProjectExists(data.ado_project);
+    } catch (error) {
       throw new Error(
         'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
       );
     }
     const result = await this.#createDeliveryProjectCore(data);
 
-    await this.#createEntraIdGroupsForProject(
-      [],
-      result.namespace.toUpperCase(),
-    );
+    try {
+      await this.#createEntraIdGroupsForProject(
+        [],
+        result.namespace.toUpperCase(),
+      );
+    } catch (error) {
+      const err = error as Error;
+      throw new Error(
+        `Failed to create Entra ID groups for project ${result.namespace.toUpperCase()} - ${err.message}`,
+      );
+    }
 
     return result;
   }

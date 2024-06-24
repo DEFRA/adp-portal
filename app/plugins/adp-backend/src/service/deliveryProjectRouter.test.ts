@@ -7,7 +7,9 @@ import { InputError } from '@backstage/errors';
 import {
   type IFluxConfigApi,
   type IDeliveryProjectStore,
+  type IAdoProjectApi,
 } from '../deliveryProject';
+import { type IEntraIdApi } from '../entraId';
 import { randomUUID } from 'node:crypto';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import type {
@@ -20,6 +22,9 @@ import { mockServices } from '@backstage/backend-test-utils';
 
 let mockCreateFluxConfig: jest.Mock;
 let mockGetFluxConfig: jest.Mock;
+let mockCheckIfAdoProjectExists: jest.Mock;
+let mockCreateEntraIdGroupsForProject: jest.Mock;
+let mockSetProjectGroupMembers: jest.Mock;
 
 jest.mock('../deliveryProject/fluxConfigApi', () => {
   return {
@@ -30,6 +35,25 @@ jest.mock('../deliveryProject/fluxConfigApi', () => {
       return {
         createFluxConfig: mockCreateFluxConfig,
         getFluxConfig: mockGetFluxConfig,
+      };
+    }),
+    AdoProjectApi: jest.fn().mockImplementation(() => {
+      mockCheckIfAdoProjectExists = jest.fn().mockResolvedValue(true);
+      return {
+        checkAdoProjectExists: mockCheckIfAdoProjectExists,
+      };
+    }),
+  };
+});
+
+jest.mock('../entraId', () => {
+  return {
+    EntraIdApi: jest.fn().mockImplementation(() => {
+      mockCreateEntraIdGroupsForProject = jest.fn();
+      mockSetProjectGroupMembers = jest.fn();
+      return {
+        createEntraIdGroupsForProject: mockCreateEntraIdGroupsForProject,
+        setProjectGroupMembers: mockSetProjectGroupMembers,
       };
     }),
   };
@@ -70,6 +94,15 @@ describe('createRouter', () => {
     getFluxConfig: jest.fn(),
   };
 
+  const mockAdoProjectApi: jest.Mocked<IAdoProjectApi> = {
+    checkIfAdoProjectExists: jest.fn(),
+  };
+
+  const mockEntraIdApi: jest.Mocked<IEntraIdApi> = {
+    createEntraIdGroupsForProject: jest.fn(),
+    setProjectGroupMembers: jest.fn(),
+  };
+
   const mockDeliveryProgrammeAdminStore: jest.Mocked<IDeliveryProgrammeAdminStore> =
     {
       add: jest.fn(),
@@ -87,6 +120,8 @@ describe('createRouter', () => {
     deliveryProjectUserStore: mockDeliveryProjectUserStore,
     fluxConfigApi: mockFluxConfigApi,
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
+    entraIdApi: mockEntraIdApi,
+    adoProjectApi: mockAdoProjectApi,
   };
 
   beforeAll(() => {
@@ -375,6 +410,68 @@ describe('createRouter', () => {
       expect(mockSyncronizer.syncronizeByName.mock.calls).toMatchObject([
         [projectName],
       ]);
+    });
+  });
+
+  describe('POST /:projectName/createEntraIdGroups', () => {
+    it('Should call the entraIdApi', async () => {
+      // arrange
+      const projectName = 'ADP-DMO';
+      const body: Array<any> = [];
+
+      // act
+      const response = await request(projectApp)
+        .post(`/${projectName}/createEntraIdGroups`)
+        .send(body);
+
+      // assert
+      expect(response.status).toBe(204);
+    });
+
+    it('Should throw error when entraIdApi throws error', async () => {
+      // arrange
+      const projectName = 'ADP-DMO';
+      const body: Array<any> = [];
+      mockEntraIdApi.createEntraIdGroupsForProject.mockRejectedValueOnce(
+        'error',
+      );
+
+      // act
+      const response = await request(projectApp)
+        .post(`/${projectName}/createEntraIdGroups`)
+        .send(body);
+
+      // assert
+      expect(response.status).toBe(400);
+    });
+  });
+
+  describe('GET /adoProject/:projectName', () => {
+    it('Should call the adoProjectApi', async () => {
+      // arrange
+      const projectName = 'ADP-DMO';
+
+      // act
+      const response = await request(projectApp).get(
+        `/adoProject/${projectName}`,
+      );
+
+      // assert
+      expect(response.status).toBe(200);
+    });
+
+    it('Should throw error when adoProjectApi throws error', async () => {
+      // arrange
+      const projectName = 'ADP-DMO';
+      mockAdoProjectApi.checkIfAdoProjectExists.mockRejectedValueOnce('error');
+
+      // act
+      const response = await request(projectApp).get(
+        `/adoProject/${projectName}`,
+      );
+
+      // assert
+      expect(response.status).toBe(400);
     });
   });
 });
