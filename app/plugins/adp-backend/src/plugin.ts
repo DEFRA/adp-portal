@@ -30,7 +30,6 @@ import {
 import { Router } from 'express';
 import { initializeAdpDatabase } from './database';
 import { credentialsContextMiddlewareRef } from '@internal/plugin-credentials-context-backend';
-import { en } from '@faker-js/faker';
 
 export const adpPlugin = createBackendPlugin({
   pluginId: 'adp',

@@ -23,7 +23,6 @@ import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import { permissionRules } from '../permissions';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
-import type { LoggerService } from '@backstage/backend-plugin-api';
 import type { IEntraIdApi } from '../entraId';
 import type {
   HttpAuthService,
