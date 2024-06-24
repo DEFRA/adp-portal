@@ -4,17 +4,23 @@ import Router from 'express-promise-router';
 import { InputError } from '@backstage/errors';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
-import type {
-  CreateDeliveryProgrammeRequest,
-  UpdateDeliveryProgrammeRequest,
-  ValidationErrorMapping,
+import {
+  deliveryProgrammeCreatePermission,
+  deliveryProgrammeUpdatePermission,
+  type CreateDeliveryProgrammeRequest,
+  type UpdateDeliveryProgrammeRequest,
+  type ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
 import { getCurrentUsername } from '../utils/index';
 import type { IDeliveryProjectStore } from '../deliveryProject';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
-import { createParser, respond } from './util';
+import { checkPermissions, createParser, respond } from './util';
 import { z } from 'zod';
-import type { LoggerService } from '@backstage/backend-plugin-api';
+import type {
+  HttpAuthService,
+  LoggerService,
+  PermissionsService,
+} from '@backstage/backend-plugin-api';
 
 export interface ProgrammeRouterOptions {
   logger: LoggerService;
@@ -22,6 +28,8 @@ export interface ProgrammeRouterOptions {
   deliveryProgrammeStore: IDeliveryProgrammeStore;
   deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
   deliveryProjectStore: IDeliveryProjectStore;
+  permissions: PermissionsService;
+  httpAuth: HttpAuthService;
 }
 
 const errorMapping = {
@@ -91,6 +99,8 @@ export function createProgrammeRouter(
     deliveryProgrammeStore,
     deliveryProjectStore,
     deliveryProgrammeAdminStore,
+    httpAuth,
+    permissions,
   } = options;
 
   const router = Router();
@@ -150,6 +160,16 @@ export function createProgrammeRouter(
 
   router.post('/', async (req, res) => {
     const body = parseCreateDeliveryProgrammeRequest(req.body);
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProgrammeCreatePermission,
+        },
+      ],
+      permissions,
+    );
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProgrammeStore.add(body, creator);
     respond(body, res, result, errorMapping, { ok: 201 });
@@ -157,6 +177,17 @@ export function createProgrammeRouter(
 
   router.patch('/', async (req, res) => {
     const body = parseUpdateDeliveryProgrammeRequest(req.body);
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProgrammeUpdatePermission,
+          resourceRef: body.id,
+        },
+      ],
+      permissions,
+    );
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProgrammeStore.update(body, creator);
     respond(body, res, result, errorMapping);

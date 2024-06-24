@@ -5,7 +5,7 @@ import type { AlbFields } from './AlbFormFields';
 import { AlbFormFields, emptyForm } from './AlbFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
 import type { ArmsLengthBody } from '@internal/plugin-adp-common';
-import { adpProgrammmeCreatePermission } from '@internal/plugin-adp-common';
+import { armsLengthBodyUpdatePermission } from '@internal/plugin-adp-common';
 import type { SubmitResult } from '../../utils';
 import { DialogForm, populate, readValidationError } from '../../utils';
 import { armsLengthBodyApiRef } from './api';
@@ -27,10 +27,11 @@ export function EditAlbButton({
   const alertApi = useApi(alertApiRef);
   const client = useApi(armsLengthBodyApiRef);
 
-  const { allowed: allowedToCreateAlb } = usePermission({
-    permission: adpProgrammmeCreatePermission,
+  const { allowed: canEditArmsLengthBody } = usePermission({
+    permission: armsLengthBodyUpdatePermission,
+    resourceRef: armsLengthBody.id,
   });
-  if (!allowedToCreateAlb) return null;
+  if (!canEditArmsLengthBody) return null;
 
   async function handleSubmit(
     fields: AlbFields,

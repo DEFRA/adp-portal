@@ -1,27 +1,63 @@
 import {
-  adpProgrammmeCreatePermission,
-  adpProjectCreatePermission,
+  deliveryProgrammeCreatePermission,
+  deliveryProjectCreatePermission,
   deliveryProjectUserCreatePermission,
   adpPluginPermissions,
   deliveryProgrammeAdminCreatePermission,
   deliveryProjectUserUpdatePermission,
   deliveryProgrammeAdminDeletePermission,
   deliveryProjectUserDeletePermission,
+  armsLengthBodyCreatePermission,
+  armsLengthBodyUpdatePermission,
+  deliveryProgrammeUpdatePermission,
+  deliveryProjectUpdatePermission,
 } from './permissions';
 
 describe('Permissions', () => {
-  describe('adpProgrammmeCreatePermission', () => {
+  describe('armsLengthBodyCreatePermission', () => {
     it('should have the correct attributes', () => {
-      expect(adpProgrammmeCreatePermission.attributes).toEqual({
+      expect(armsLengthBodyCreatePermission.attributes).toEqual({
         action: 'create',
+      });
+    });
+  });
+
+  describe('armsLengthBodyUpdatePermission', () => {
+    it('should have the correct attributes', () => {
+      expect(armsLengthBodyUpdatePermission.attributes).toEqual({
+        action: 'update',
+      });
+    });
+  });
+
+  describe('deliveryProgrammeCreatePermission', () => {
+    it('should have the correct attributes', () => {
+      expect(deliveryProgrammeCreatePermission.attributes).toEqual({
+        action: 'create',
+      });
+    });
+  });
+
+  describe('deliveryProgrammeUpdatePermission', () => {
+    it('should have the correct attributes', () => {
+      expect(deliveryProgrammeUpdatePermission.attributes).toEqual({
+        action: 'update',
       });
     });
   });
 
   describe('adpProjectCreatePermission', () => {
     it('should have the correct attributes', () => {
-      expect(adpProjectCreatePermission.attributes).toEqual({
+      expect(deliveryProjectCreatePermission.attributes).toEqual({
         action: 'create',
+      });
+    });
+  });
+
+  describe('adpProjectUpdatePermission', () => {
+    it('should have the correct attributes', () => {
+      expect(deliveryProjectUpdatePermission.attributes).toEqual({
+        action: 'update',
       });
     });
   });
@@ -42,6 +78,22 @@ describe('Permissions', () => {
     });
   });
 
+  describe('deliveryProjectUserCreatePermission', () => {
+    it('should have the correct attributes', () => {
+      expect(deliveryProjectUserCreatePermission.attributes).toEqual({
+        action: 'create',
+      });
+    });
+  });
+
+  describe('deliveryProjectUserEditPermission', () => {
+    it('should have the correct attributes', () => {
+      expect(deliveryProjectUserUpdatePermission.attributes).toEqual({
+        action: 'update',
+      });
+    });
+  });
+
   describe('deliveryProjectUserDeletePermission', () => {
     it('should have the correct attributes', () => {
       expect(deliveryProjectUserDeletePermission.attributes).toEqual({
@@ -54,8 +106,12 @@ describe('Permissions', () => {
 describe('adpPluginPermissions', () => {
   it('should contain the correct permissions', () => {
     const expectedPermissions = [
-      adpProgrammmeCreatePermission,
-      adpProjectCreatePermission,
+      armsLengthBodyCreatePermission,
+      armsLengthBodyUpdatePermission,
+      deliveryProgrammeCreatePermission,
+      deliveryProgrammeUpdatePermission,
+      deliveryProjectCreatePermission,
+      deliveryProjectUpdatePermission,
       deliveryProgrammeAdminCreatePermission,
       deliveryProgrammeAdminDeletePermission,
       deliveryProjectUserCreatePermission,

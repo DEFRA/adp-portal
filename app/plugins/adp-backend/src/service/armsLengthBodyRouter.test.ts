@@ -12,6 +12,7 @@ import type {
   UpdateArmsLengthBodyRequest,
 } from '@internal/plugin-adp-common';
 import { mockServices } from '@backstage/backend-test-utils';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
 
 describe('createRouter', () => {
   let app: express.Express;
@@ -41,12 +42,16 @@ describe('createRouter', () => {
     update: jest.fn(),
   };
 
+  const mockPermissionsService = mockServices.permissions.mock();
+
   const mockOptions: AlbRouterOptions = {
     logger: mockServices.logger.mock(),
     identity: mockIdentityApi,
     config: mockConfig,
     armsLengthBodyStore: mockArmsLengthBodyStore,
     deliveryProgrammeStore: mockDeliveryProgrammeStore,
+    httpAuth: mockServices.httpAuth(),
+    permissions: mockPermissionsService,
   };
 
   beforeAll(async () => {
@@ -124,6 +129,9 @@ describe('createRouter', () => {
         success: true,
         value: expectedAlbWithName,
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(app)
@@ -140,12 +148,30 @@ describe('createRouter', () => {
       );
     });
 
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const response = await request(app)
+        .post('/')
+        .send({
+          title: 'def',
+          description: 'My description',
+        } satisfies CreateArmsLengthBodyRequest);
+
+      expect(response.status).toEqual(403);
+    });
+
     it('return 400 with errors', async () => {
       // arrange
       mockArmsLengthBodyStore.add.mockResolvedValue({
         success: false,
         errors: ['duplicateName', 'duplicateTitle', 'unknown'],
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(app)
@@ -207,6 +233,9 @@ describe('createRouter', () => {
         success: true,
         value: expectedAlbWithName,
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(app)
@@ -220,12 +249,27 @@ describe('createRouter', () => {
       );
     });
 
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const response = await request(app)
+        .patch('/')
+        .send({ id: '123' } satisfies UpdateArmsLengthBodyRequest);
+
+      expect(response.status).toEqual(403);
+    });
+
     it('return 400 with errors', async () => {
       // arrange
       mockArmsLengthBodyStore.update.mockResolvedValue({
         success: false,
         errors: ['duplicateTitle', 'unknown'],
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(app)

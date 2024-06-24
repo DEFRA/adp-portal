@@ -8,13 +8,19 @@ import type { Config } from '@backstage/config';
 import { getCurrentUsername, getOwner } from '../utils/index';
 import type { IDeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
 import z from 'zod';
-import type {
-  CreateArmsLengthBodyRequest,
-  UpdateArmsLengthBodyRequest,
-  ValidationErrorMapping,
+import {
+  armsLengthBodyCreatePermission,
+  armsLengthBodyUpdatePermission,
+  type CreateArmsLengthBodyRequest,
+  type UpdateArmsLengthBodyRequest,
+  type ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
-import { createParser, respond } from './util';
-import type { LoggerService } from '@backstage/backend-plugin-api';
+import { checkPermissions, createParser, respond } from './util';
+import type {
+  HttpAuthService,
+  LoggerService,
+  PermissionsService,
+} from '@backstage/backend-plugin-api';
 
 export interface AlbRouterOptions {
   logger: LoggerService;
@@ -22,6 +28,8 @@ export interface AlbRouterOptions {
   armsLengthBodyStore: IArmsLengthBodyStore;
   deliveryProgrammeStore: IDeliveryProgrammeStore;
   config: Config;
+  permissions: PermissionsService;
+  httpAuth: HttpAuthService;
 }
 
 const errorMapping = {
@@ -67,8 +75,14 @@ const parseUpdateArmsLengthBodyRequest =
   );
 
 export function createAlbRouter(options: AlbRouterOptions): express.Router {
-  const { logger, identity, armsLengthBodyStore, deliveryProgrammeStore } =
-    options;
+  const {
+    logger,
+    identity,
+    armsLengthBodyStore,
+    deliveryProgrammeStore,
+    permissions,
+    httpAuth,
+  } = options;
 
   const owner = getOwner(options);
 
@@ -130,6 +144,16 @@ export function createAlbRouter(options: AlbRouterOptions): express.Router {
 
   router.post('/', async (req, res) => {
     const body = parseCreateArmsLengthBodyRequest(req.body);
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: armsLengthBodyCreatePermission,
+        },
+      ],
+      permissions,
+    );
     const creator = await getCurrentUsername(identity, req);
     const result = await armsLengthBodyStore.add(body, creator, owner);
     respond(body, res, result, errorMapping, { ok: 201 });
@@ -137,6 +161,17 @@ export function createAlbRouter(options: AlbRouterOptions): express.Router {
 
   router.patch('/', async (req, res) => {
     const body = parseUpdateArmsLengthBodyRequest(req.body);
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: armsLengthBodyUpdatePermission,
+          resourceRef: body.id,
+        },
+      ],
+      permissions,
+    );
     const creator = await getCurrentUsername(identity, req);
     const result = await armsLengthBodyStore.update(body, creator);
     respond(body, res, result, errorMapping);

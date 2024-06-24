@@ -4,7 +4,7 @@ import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import type { AlbFields } from './AlbFormFields';
 import { AlbFormFields, emptyForm } from './AlbFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
-import { adpProgrammmeCreatePermission } from '@internal/plugin-adp-common';
+import { armsLengthBodyCreatePermission } from '@internal/plugin-adp-common';
 import type { SubmitResult } from '../../utils';
 import { DialogForm, readValidationError } from '../../utils';
 import { armsLengthBodyApiRef } from './api';
@@ -25,7 +25,7 @@ export function CreateAlbButton({
   const client = useApi(armsLengthBodyApiRef);
 
   const { allowed: allowedToCreateAlb } = usePermission({
-    permission: adpProgrammmeCreatePermission,
+    permission: armsLengthBodyCreatePermission,
   });
   if (!allowedToCreateAlb) return null;
 

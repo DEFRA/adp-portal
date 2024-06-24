@@ -11,11 +11,13 @@ import {
   type ValidationErrorMapping,
   type DeliveryProject,
   type CheckAdoProjectExistsResponse,
+  deliveryProjectCreatePermission,
+  deliveryProjectUpdatePermission,
 } from '@internal/plugin-adp-common';
 import { getCurrentUsername } from '../utils/index';
 import type { IFluxConfigApi, IAdoProjectApi } from '../deliveryProject';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
-import { createParser, respond } from './util';
+import { checkPermissions, createParser, respond } from './util';
 import { z } from 'zod';
 import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
@@ -23,6 +25,11 @@ import { permissionRules } from '../permissions';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import type { LoggerService } from '@backstage/backend-plugin-api';
 import type { IEntraIdApi } from '../entraId';
+import type {
+  HttpAuthService,
+  LoggerService,
+  PermissionsService,
+} from '@backstage/backend-plugin-api';
 
 export interface ProjectRouterOptions {
   logger: LoggerService;
@@ -34,6 +41,8 @@ export interface ProjectRouterOptions {
   fluxConfigApi: IFluxConfigApi;
   entraIdApi: IEntraIdApi;
   adoProjectApi: IAdoProjectApi;
+  permissions: PermissionsService;
+  httpAuth: HttpAuthService;
 }
 
 const errorMapping = {
@@ -108,6 +117,8 @@ export function createProjectRouter(
     fluxConfigApi,
     entraIdApi,
     adoProjectApi,
+    httpAuth,
+    permissions,
   } = options;
 
   const getDeliveryProject = async (
@@ -185,6 +196,16 @@ export function createProjectRouter(
 
   router.post('/', async (req, res) => {
     const body = parseCreateDeliveryProjectRequest(req.body);
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProjectCreatePermission,
+        },
+      ],
+      permissions,
+    );
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProjectStore.add(body, creator);
     if (result.success) {
@@ -198,6 +219,17 @@ export function createProjectRouter(
 
   router.patch('/', async (req, res) => {
     const body = parseUpdateDeliveryProjectRequest(req.body);
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProjectUpdatePermission,
+          resourceRef: body.id,
+        },
+      ],
+      permissions,
+    );
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProjectStore.update(body, creator);
     if (result.success) {

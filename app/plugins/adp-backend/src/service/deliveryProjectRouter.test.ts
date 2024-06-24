@@ -19,6 +19,7 @@ import type {
 import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import { mockServices } from '@backstage/backend-test-utils';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
 
 let mockCreateFluxConfig: jest.Mock;
 let mockGetFluxConfig: jest.Mock;
@@ -112,6 +113,8 @@ describe('createRouter', () => {
       delete: jest.fn(),
     };
 
+  const mockPermissionsService = mockServices.permissions.mock();
+
   const mockOptions: ProjectRouterOptions = {
     logger: mockServices.logger.mock(),
     identity: mockIdentityApi,
@@ -122,6 +125,8 @@ describe('createRouter', () => {
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
     entraIdApi: mockEntraIdApi,
     adoProjectApi: mockAdoProjectApi,
+    httpAuth: mockServices.httpAuth(),
+    permissions: mockPermissionsService,
   };
 
   beforeAll(() => {
@@ -209,6 +214,9 @@ describe('createRouter', () => {
         success: true,
         value: expectedProjectDataWithName,
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(projectApp)
@@ -231,6 +239,27 @@ describe('createRouter', () => {
       );
     });
 
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const response = await request(projectApp)
+        .post('/')
+        .send({
+          delivery_project_code: 'abc',
+          title: 'def',
+          ado_project: 'my project',
+          delivery_programme_id: '123',
+          description: 'My description',
+          github_team_visibility: 'public',
+          service_owner: 'test@email.com',
+          team_type: 'delivery',
+        } satisfies CreateDeliveryProjectRequest);
+
+      expect(response.status).toEqual(403);
+    });
+
     it('return 400 with errors', async () => {
       // arrange
       mockDeliveryProjectStore.add.mockResolvedValue({
@@ -242,6 +271,9 @@ describe('createRouter', () => {
           'unknownDeliveryProgramme',
         ],
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(projectApp)
@@ -323,6 +355,9 @@ describe('createRouter', () => {
         success: true,
         value: expectedProjectDataWithName,
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(projectApp)
@@ -336,12 +371,27 @@ describe('createRouter', () => {
       );
     });
 
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const response = await request(projectApp)
+        .patch('/')
+        .send({ id: '123' } satisfies UpdateDeliveryProjectRequest);
+
+      expect(response.status).toEqual(403);
+    });
+
     it('return 400 with errors', async () => {
       // arrange
       mockDeliveryProjectStore.update.mockResolvedValue({
         success: false,
         errors: ['duplicateTitle', 'unknown', 'unknownDeliveryProgramme'],
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(projectApp)
