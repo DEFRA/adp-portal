@@ -60,7 +60,7 @@ it('fetches and formats data correctly', async () => {
       delivery_programme_code: '',
       description: '',
       name: '',
-      programme_managers: [],
+      delivery_programme_admins: [],
       updated_at: new Date(0),
     },
   ]);
