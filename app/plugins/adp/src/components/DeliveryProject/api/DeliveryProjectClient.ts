@@ -124,6 +124,15 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
   async updateDeliveryProject(
     data: UpdateDeliveryProjectRequest,
   ): Promise<DeliveryProject> {
+    try {
+      if (data.ado_project) {
+        await this.#checkIfAdoProjectExists(data.ado_project);
+      }
+    } catch (error) {
+      throw new Error(
+        'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
+      );
+    }
     const url = await this.getApiUrl();
     const response = await this.#sendJson('PATCH', url, data);
     return await this.#readResponse(response, asDeliveryProject);
@@ -153,17 +162,12 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
   }
 
   async #checkIfAdoProjectExists(adoProjectName: string): Promise<boolean> {
-    try {
-      const url = await this.getApiUrl();
-      const response = await this.#fetchApi.fetch(
-        `${url}/adoProject/${adoProjectName}`,
-      );
-      return (
-        await this.#readResponse(response, asCheckAdoProjectExistsResponse)
-      ).exists;
-    } catch (error) {
-      throw new Error(`Failed to fetch ADO Project details`);
-    }
+    const url = await this.getApiUrl();
+    const response = await this.#fetchApi.fetch(
+      `${url}/adoProject/${adoProjectName}`,
+    );
+    return (await this.#readResponse(response, asCheckAdoProjectExistsResponse))
+      .exists;
   }
 }
 
