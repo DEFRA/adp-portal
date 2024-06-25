@@ -11,6 +11,7 @@ import {
   catalogUserRole,
   deliveryProgrammeAdminManagerRole,
   deliveryProgrammeAdminRole,
+  deliveryProjectEditorRole,
   deliveryProjectUserManagerRole,
   platformAdminRole,
   scaffolderUserRole,
@@ -59,6 +60,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       deliveryProjectUserManagerRole(request.permission, portalUserIdentity),
       scaffolderUserRole(request.permission, portalUserIdentity),
       deliveryProgrammeAdminRole(request.permission, portalUserIdentity),
+      deliveryProjectEditorRole(request.permission, portalUserIdentity),
       catalogUserRole(request.permission),
     ];
 

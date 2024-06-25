@@ -16,6 +16,8 @@ import {
   deliveryProgrammeAdminCreatePermission,
   deliveryProgrammeAdminDeletePermission,
   deliveryProgrammeCreatePermission,
+  deliveryProjectCreatePermission,
+  deliveryProjectUpdatePermission,
   deliveryProjectUserCreatePermission,
   deliveryProjectUserDeletePermission,
   deliveryProjectUserUpdatePermission,
@@ -94,6 +96,14 @@ describe('adpPortalPermissionPolicy', () => {
       },
       {
         permission: deliveryProjectUserDeletePermission,
+        expected: AuthorizeResult.ALLOW,
+      },
+      {
+        permission: deliveryProjectCreatePermission,
+        expected: AuthorizeResult.ALLOW,
+      },
+      {
+        permission: deliveryProjectUpdatePermission,
         expected: AuthorizeResult.ALLOW,
       },
     ])(
@@ -183,6 +193,14 @@ describe('adpPortalPermissionPolicy', () => {
         permission: deliveryProjectUserDeletePermission,
         expected: AuthorizeResult.CONDITIONAL,
       },
+      {
+        permission: deliveryProjectCreatePermission,
+        expected: AuthorizeResult.ALLOW,
+      },
+      {
+        permission: deliveryProjectUpdatePermission,
+        expected: AuthorizeResult.CONDITIONAL,
+      },
     ])(
       'should allow access for permission $permission.name for the Programme Admin Role',
       async ({ permission, expected }) => {
@@ -268,6 +286,14 @@ describe('adpPortalPermissionPolicy', () => {
       },
       {
         permission: deliveryProjectUserDeletePermission,
+        expected: AuthorizeResult.CONDITIONAL,
+      },
+      {
+        permission: deliveryProjectCreatePermission,
+        expected: AuthorizeResult.DENY,
+      },
+      {
+        permission: deliveryProjectUpdatePermission,
         expected: AuthorizeResult.CONDITIONAL,
       },
     ])(
