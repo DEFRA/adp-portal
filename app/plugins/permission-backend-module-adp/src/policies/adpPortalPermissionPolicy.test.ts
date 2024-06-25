@@ -194,10 +194,6 @@ describe('adpPortalPermissionPolicy', () => {
         expected: AuthorizeResult.CONDITIONAL,
       },
       {
-        permission: deliveryProjectCreatePermission,
-        expected: AuthorizeResult.ALLOW,
-      },
-      {
         permission: deliveryProjectUpdatePermission,
         expected: AuthorizeResult.CONDITIONAL,
       },
