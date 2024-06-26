@@ -188,7 +188,7 @@ export class DeliveryProgrammeStore {
       alias: row.alias ?? undefined,
       url: row.url ?? undefined,
       updated_by: row.updated_by ?? undefined,
-      programme_managers: programmeManagers,
+      delivery_programme_admins: programmeManagers,
       created_at: new Date(row.created_at),
       updated_at: new Date(row.updated_at ? row.updated_at : row.created_at),
     };

@@ -10,7 +10,8 @@ import type { LoggerService } from '@backstage/backend-plugin-api';
 import {
   catalogUserRole,
   deliveryProgrammeAdminManagerRole,
-  deliveryProgrammeAdminRole,
+  deliveryProgrammeCreatorRole,
+  deliveryProgrammeEditorRole,
   deliveryProjectEditorRole,
   deliveryProjectUserManagerRole,
   platformAdminRole,
@@ -59,7 +60,8 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       deliveryProgrammeAdminManagerRole(request.permission, portalUserIdentity),
       deliveryProjectUserManagerRole(request.permission, portalUserIdentity),
       scaffolderUserRole(request.permission, portalUserIdentity),
-      deliveryProgrammeAdminRole(request.permission, portalUserIdentity),
+      deliveryProgrammeCreatorRole(request.permission, portalUserIdentity),
+      deliveryProgrammeEditorRole(request.permission, portalUserIdentity),
       deliveryProjectEditorRole(request.permission, portalUserIdentity),
       catalogUserRole(request.permission),
     ];

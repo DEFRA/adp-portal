@@ -5,7 +5,7 @@ import type {
 import type { delivery_programme } from '../deliveryProgramme/delivery_programme';
 
 export const expectedProgrammeData = {
-  programme_managers: [],
+  delivery_programme_admins: [],
   title: 'Test title expectedProgrammeData',
   alias: 'Test Alias',
   description: 'Test description',
@@ -19,7 +19,7 @@ export const expectedProgrammeData = {
 } satisfies DeliveryProgramme;
 
 export const expectedProgrammeDataWithManager = {
-  programme_managers: [
+  delivery_programme_admins: [
     {
       aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
       delivery_programme_id: '',
@@ -65,7 +65,7 @@ export const expectedProgrammeDataWithName = {
   url: 'Test url',
   name: 'test-title-expectedprogrammedatawithname',
   id: '',
-  programme_managers: [],
+  delivery_programme_admins: [],
   arms_length_body_id: '',
   created_at: new Date(),
   updated_at: new Date(),
@@ -83,7 +83,7 @@ export const expectedProgrammeDataWithoutManager = {
   arms_length_body_id: '',
   created_at: new Date(),
   updated_at: new Date(),
-} satisfies Omit<DeliveryProgramme, 'programme_managers'>;
+} satisfies Omit<DeliveryProgramme, 'delivery_programme_admins'>;
 
 export const programmeManagerList = [
   {
