@@ -96,27 +96,6 @@ exports[`CreateDeliveryProgrammeButton Should call the api when submitting. 1`] 
 </body>
 `;
 
-exports[`CreateDeliveryProgrammeButton Should call the api when submitting.: Before complete 1`] = `
-<body>
-  <div>
-    <button
-      class="MuiButtonBase-root MuiButton-root MuiButton-text"
-      content="My button"
-      data-testid="create-delivery-programme-button"
-      tabindex="0"
-      type="button"
-    >
-      <span
-        class="MuiButton-label"
-      />
-      <span
-        class="MuiTouchRipple-root"
-      />
-    </button>
-  </div>
-</body>
-`;
-
 exports[`CreateDeliveryProgrammeButton Should catch ValidationErrors when submitting. 1`] = `
 <body>
   <div>

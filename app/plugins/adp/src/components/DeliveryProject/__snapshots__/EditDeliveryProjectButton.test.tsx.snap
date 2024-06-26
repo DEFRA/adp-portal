@@ -96,47 +96,6 @@ exports[`EditDeliveryProjectButton Should call the api when submitting. 1`] = `
 </body>
 `;
 
-exports[`EditDeliveryProjectButton Should call the api when submitting.: Before complete 1`] = `
-<body>
-  <div>
-    <button
-      class="MuiButtonBase-root MuiButton-root MuiButton-text"
-      content="My button"
-      data-testid="edit-delivery-project-button"
-      tabindex="0"
-      type="button"
-    >
-      <span
-        class="MuiButton-label"
-      />
-      <span
-        class="MuiTouchRipple-root"
-      >
-        <span
-          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
-          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
-        >
-          <span
-            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
-          />
-        </span>
-        <span
-          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
-          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
-        >
-          <span
-            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
-          />
-        </span>
-      </span>
-    </button>
-    <span>
-      This is a dialog!
-    </span>
-  </div>
-</body>
-`;
-
 exports[`EditDeliveryProjectButton Should catch ValidationErrors when submitting. 1`] = `
 <body>
   <div>
@@ -166,27 +125,6 @@ exports[`EditDeliveryProjectButton Should catch ValidationErrors when submitting
     <span>
       This is a dialog!
     </span>
-  </div>
-</body>
-`;
-
-exports[`EditDeliveryProjectButton Should catch ValidationErrors when submitting.: After complete 1`] = `
-<body>
-  <div>
-    <button
-      class="MuiButtonBase-root MuiButton-root MuiButton-text"
-      content="My button"
-      data-testid="edit-delivery-project-button"
-      tabindex="0"
-      type="button"
-    >
-      <span
-        class="MuiButton-label"
-      />
-      <span
-        class="MuiTouchRipple-root"
-      />
-    </button>
   </div>
 </body>
 `;
