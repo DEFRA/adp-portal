@@ -111,6 +111,9 @@ export const adpPlugin = createBackendPlugin({
             deliveryProgrammeStore,
             deliveryProjectStore,
             deliveryProgrammeAdminStore,
+            httpAuth,
+            auth,
+            catalog,
           }),
         );
         combinedRouter.use(

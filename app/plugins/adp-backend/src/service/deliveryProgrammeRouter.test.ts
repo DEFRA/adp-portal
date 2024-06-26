@@ -17,6 +17,7 @@ import type {
   UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
 import { mockServices } from '@backstage/backend-test-utils';
+import type { CatalogApi } from '@backstage/catalog-client';
 
 const managerByProgrammeId = programmeManagerList.filter(
   managers => managers.delivery_programme_id === '123',
@@ -54,12 +55,32 @@ describe('createRouter', () => {
       delete: jest.fn(),
     };
 
+  const mockCatalogClient: jest.Mocked<CatalogApi> = {
+    addLocation: jest.fn(),
+    getEntities: jest.fn(),
+    getEntitiesByRefs: jest.fn(),
+    getEntityAncestors: jest.fn(),
+    getEntityByRef: jest.fn(),
+    getEntityFacets: jest.fn(),
+    getLocationByEntity: jest.fn(),
+    getLocationById: jest.fn(),
+    getLocationByRef: jest.fn(),
+    queryEntities: jest.fn(),
+    refreshEntity: jest.fn(),
+    removeEntityByUid: jest.fn(),
+    removeLocationById: jest.fn(),
+    validateEntity: jest.fn(),
+  };
+
   const mockOptions: ProgrammeRouterOptions = {
     logger: mockServices.logger.mock(),
     identity: mockIdentityApi,
     deliveryProjectStore: mockDeliveryProjectStore,
     deliveryProgrammeStore: mockDeliveryProgrammeStore,
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
+    httpAuth: mockServices.httpAuth(),
+    auth: mockServices.auth(),
+    catalog: mockCatalogClient,
   };
 
   beforeAll(async () => {

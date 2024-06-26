@@ -9,19 +9,32 @@ import type {
   UpdateDeliveryProgrammeRequest,
   ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
-import { getCurrentUsername } from '../utils/index';
+import type { CatalogApi } from '@backstage/catalog-client';
+import {
+  type AddDeliveryProgrammeAdmin,
+  getCurrentUsername,
+} from '../utils/index';
 import type { IDeliveryProjectStore } from '../deliveryProject';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
-import { createParser, respond } from './util';
+import { assertUUID, createParser, respond } from './util';
 import { z } from 'zod';
-import type { LoggerService } from '@backstage/backend-plugin-api';
+import type {
+  LoggerService,
+  AuthService,
+  HttpAuthService,
+} from '@backstage/backend-plugin-api';
+import { getUserEntityFromCatalog } from './catalog';
+import { stringifyEntityRef } from '@backstage/catalog-model';
 
 export interface ProgrammeRouterOptions {
   logger: LoggerService;
   identity: IdentityApi;
+  catalog: CatalogApi;
   deliveryProgrammeStore: IDeliveryProgrammeStore;
   deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
   deliveryProjectStore: IDeliveryProjectStore;
+  httpAuth: HttpAuthService;
+  auth: AuthService;
 }
 
 const errorMapping = {
@@ -47,6 +60,18 @@ const errorMapping = {
     path: 'arms_length_body_id',
     error: {
       message: `The arms length body does not exist.`,
+    },
+  }),
+  unknownDeliveryProgramme: () => ({
+    path: 'delivery_programme_id',
+    error: {
+      message: `The delivery programme does not exist.`,
+    },
+  }),
+  unknownCatalogUser: (req: { user_catalog_name?: string }) => ({
+    path: 'user_catalog_name',
+    error: {
+      message: `The user ${req.user_catalog_name} could not be found in the Catalog`,
     },
   }),
   unknown: () => ({
@@ -88,9 +113,12 @@ export function createProgrammeRouter(
   const {
     logger,
     identity,
+    catalog,
     deliveryProgrammeStore,
     deliveryProjectStore,
     deliveryProgrammeAdminStore,
+    httpAuth,
+    auth,
   } = options;
 
   const router = Router();
@@ -153,6 +181,40 @@ export function createProgrammeRouter(
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProgrammeStore.add(body, creator);
     respond(body, res, result, errorMapping, { ok: 201 });
+    console.log('result', result);
+
+    const credentials = await httpAuth.credentials(req);
+    const { token } = await auth.getPluginRequestToken({
+      onBehalfOf: credentials,
+      targetPluginId: 'catalog',
+    });
+    const creatorName = creator.replace(/user:default\//g, '');
+
+    const catalogUser = await getUserEntityFromCatalog(
+      creatorName,
+      catalog,
+      token,
+    );
+
+    if (result.success && catalogUser.success) {
+      console.log(result.value);
+      const addUser: AddDeliveryProgrammeAdmin = {
+        name: catalogUser.value.spec.profile!.displayName!,
+        email: catalogUser.value.metadata.annotations!['microsoft.com/email'],
+        aad_entity_ref_id:
+          catalogUser.value.metadata.annotations![
+            'graph.microsoft.com/user-id'
+          ],
+        delivery_programme_id: result.value
+          .id as `${string}-${string}-${string}-${string}-${string}`,
+        user_entity_ref: stringifyEntityRef({
+          kind: 'user',
+          namespace: 'default',
+          name: creator,
+        }),
+      };
+      await deliveryProgrammeAdminStore.add(addUser);
+    }
   });
 
   router.patch('/', async (req, res) => {
