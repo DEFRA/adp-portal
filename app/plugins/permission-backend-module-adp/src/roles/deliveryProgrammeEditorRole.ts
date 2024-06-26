@@ -1,36 +1,35 @@
-import {
-  AuthorizeResult,
-  isPermission,
-  type Permission,
-  type PolicyDecision,
+import type {
+  Permission,
+  PolicyDecision,
 } from '@backstage/plugin-permission-common';
-import type { PortalUserIdentity } from '../types';
-import { deliveryProjectUpdatePermission } from '@internal/plugin-adp-common';
 import {
-  createDeliveryProjectConditionalDecision,
-  deliveryProjectConditions,
+  isPermission,
+  AuthorizeResult,
+} from '@backstage/plugin-permission-common';
+import { deliveryProgrammeUpdatePermission } from '@internal/plugin-adp-common';
+import type { PortalUserIdentity } from '../types';
+import {
+  createDeliveryProgrammeConditionalDecision,
+  deliveryProgrammeConditions,
 } from '@internal/plugin-adp-backend';
 
 /**
- * Role for users who can edit existing delivery projects.
+ * Role for users who can edit existing Delivery Programmes.
  * @param permission the permission being evaluated.
  * @param user the portal user's identity.
  * @returns a policy decision which determines if the user can access the requested resource.
  */
-export const deliveryProjectEditorRole = (
+export const deliveryProgrammeEditorRole = (
   permission: Permission,
   user: PortalUserIdentity,
 ): PolicyDecision => {
   if (
     user.userIdentity !== undefined &&
-    isPermission(permission, deliveryProjectUpdatePermission)
+    isPermission(permission, deliveryProgrammeUpdatePermission)
   ) {
-    return createDeliveryProjectConditionalDecision(permission, {
+    return createDeliveryProgrammeConditionalDecision(permission, {
       anyOf: [
-        deliveryProjectConditions.isDeliveryProjectAdmin({
-          userId: user.userIdentity.userEntityRef,
-        }),
-        deliveryProjectConditions.isDeliveryProgrammeAdminForProject({
+        deliveryProgrammeConditions.isDeliveryProgrammeAdmin({
           userId: user.userIdentity.userEntityRef,
         }),
       ],
