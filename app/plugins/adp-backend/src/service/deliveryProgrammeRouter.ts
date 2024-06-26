@@ -4,10 +4,12 @@ import Router from 'express-promise-router';
 import { InputError } from '@backstage/errors';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
-import type {
-  CreateDeliveryProgrammeRequest,
-  UpdateDeliveryProgrammeRequest,
-  ValidationErrorMapping,
+import {
+  deliveryProgrammeCreatePermission,
+  deliveryProgrammeUpdatePermission,
+  type CreateDeliveryProgrammeRequest,
+  type UpdateDeliveryProgrammeRequest,
+  type ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
 import type { CatalogApi } from '@backstage/catalog-client';
 import {
@@ -16,15 +18,16 @@ import {
 } from '../utils/index';
 import type { IDeliveryProjectStore } from '../deliveryProject';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
-import { assertUUID, createParser, respond } from './util';
-import { z } from 'zod';
 import type {
   LoggerService,
   AuthService,
   HttpAuthService,
+  PermissionsService
 } from '@backstage/backend-plugin-api';
 import { getUserEntityFromCatalog } from './catalog';
 import { stringifyEntityRef } from '@backstage/catalog-model';
+import { checkPermissions, createParser, respond } from './util';
+import { z } from 'zod';
 
 export interface ProgrammeRouterOptions {
   logger: LoggerService;
@@ -35,6 +38,7 @@ export interface ProgrammeRouterOptions {
   deliveryProjectStore: IDeliveryProjectStore;
   httpAuth: HttpAuthService;
   auth: AuthService;
+  permissions: PermissionsService;
 }
 
 const errorMapping = {
@@ -119,6 +123,7 @@ export function createProgrammeRouter(
     deliveryProgrammeAdminStore,
     httpAuth,
     auth,
+    permissions,
   } = options;
 
   const router = Router();
@@ -178,12 +183,20 @@ export function createProgrammeRouter(
 
   router.post('/', async (req, res) => {
     const body = parseCreateDeliveryProgrammeRequest(req.body);
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProgrammeCreatePermission,
+        },
+      ],
+      permissions,
+    );
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProgrammeStore.add(body, creator);
     respond(body, res, result, errorMapping, { ok: 201 });
-    console.log('result', result);
 
-    const credentials = await httpAuth.credentials(req);
     const { token } = await auth.getPluginRequestToken({
       onBehalfOf: credentials,
       targetPluginId: 'catalog',
@@ -219,6 +232,17 @@ export function createProgrammeRouter(
 
   router.patch('/', async (req, res) => {
     const body = parseUpdateDeliveryProgrammeRequest(req.body);
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProgrammeUpdatePermission,
+          resourceRef: body.id,
+        },
+      ],
+      permissions,
+    );
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProgrammeStore.update(body, creator);
     respond(body, res, result, errorMapping);

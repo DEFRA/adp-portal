@@ -13,9 +13,11 @@ import {
 } from '@backstage/plugin-catalog-common/alpha';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import {
-  adpProgrammmeCreatePermission,
   deliveryProgrammeAdminCreatePermission,
   deliveryProgrammeAdminDeletePermission,
+  deliveryProgrammeCreatePermission,
+  deliveryProjectCreatePermission,
+  deliveryProjectUpdatePermission,
   deliveryProjectUserCreatePermission,
   deliveryProjectUserDeletePermission,
   deliveryProjectUserUpdatePermission,
@@ -96,6 +98,14 @@ describe('adpPortalPermissionPolicy', () => {
         permission: deliveryProjectUserDeletePermission,
         expected: AuthorizeResult.ALLOW,
       },
+      {
+        permission: deliveryProjectCreatePermission,
+        expected: AuthorizeResult.ALLOW,
+      },
+      {
+        permission: deliveryProjectUpdatePermission,
+        expected: AuthorizeResult.ALLOW,
+      },
     ])(
       'should allow access for permission $permission.name for the ADP Platform Admin Role',
       async ({ permission, expected }) => {
@@ -151,7 +161,7 @@ describe('adpPortalPermissionPolicy', () => {
         expected: AuthorizeResult.DENY,
       },
       {
-        permission: adpProgrammmeCreatePermission,
+        permission: deliveryProgrammeCreatePermission,
         expected: AuthorizeResult.ALLOW,
       },
       { permission: actionExecutePermission, expected: AuthorizeResult.ALLOW },
@@ -181,6 +191,10 @@ describe('adpPortalPermissionPolicy', () => {
       },
       {
         permission: deliveryProjectUserDeletePermission,
+        expected: AuthorizeResult.CONDITIONAL,
+      },
+      {
+        permission: deliveryProjectUpdatePermission,
         expected: AuthorizeResult.CONDITIONAL,
       },
     ])(
@@ -238,7 +252,7 @@ describe('adpPortalPermissionPolicy', () => {
         expected: AuthorizeResult.DENY,
       },
       {
-        permission: adpProgrammmeCreatePermission,
+        permission: deliveryProgrammeCreatePermission,
         expected: AuthorizeResult.DENY,
       },
       { permission: actionExecutePermission, expected: AuthorizeResult.DENY },
@@ -268,6 +282,14 @@ describe('adpPortalPermissionPolicy', () => {
       },
       {
         permission: deliveryProjectUserDeletePermission,
+        expected: AuthorizeResult.CONDITIONAL,
+      },
+      {
+        permission: deliveryProjectCreatePermission,
+        expected: AuthorizeResult.DENY,
+      },
+      {
+        permission: deliveryProjectUpdatePermission,
         expected: AuthorizeResult.CONDITIONAL,
       },
     ])(

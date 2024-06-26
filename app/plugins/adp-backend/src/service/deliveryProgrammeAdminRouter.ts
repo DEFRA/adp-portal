@@ -15,7 +15,6 @@ import {
   type DeleteDeliveryProgrammeAdminRequest,
 } from '@internal/plugin-adp-common';
 import { getUserEntityFromCatalog } from './catalog';
-import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import { stringifyEntityRef } from '@backstage/catalog-model';
 import type {
   AuthService,
@@ -90,21 +89,12 @@ export function createDeliveryProgrammeAdminRouter(
     auth,
   } = options;
 
-  const permissionIntegrationRouter = createPermissionIntegrationRouter({
-    permissions: [
-      deliveryProgrammeAdminCreatePermission,
-      deliveryProgrammeAdminDeletePermission,
-    ],
-  });
-
   const router = Router();
   router.use(express.json());
 
   router.get('/health', (_, response) => {
     response.json({ status: 'ok' });
   });
-
-  router.use(permissionIntegrationRouter);
 
   router.get('/', async (_req, res) => {
     try {

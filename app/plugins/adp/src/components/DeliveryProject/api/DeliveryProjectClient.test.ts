@@ -1,4 +1,5 @@
 import type {
+  CheckAdoProjectExistsResponse,
   CreateDeliveryProjectRequest,
   UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
@@ -96,7 +97,8 @@ describe('deliveryProjectClient', () => {
         created_at: new Date(),
         updated_at: new Date(),
       };
-      fetchApi.fetch.mockResolvedValue(
+
+      fetchApi.fetch.mockResolvedValueOnce(
         new Response(JSON.stringify(mockData), { status: 200 }),
       );
 
@@ -142,6 +144,72 @@ describe('deliveryProjectClient', () => {
         },
       );
     });
+
+    it('updates a delivery project successfully if ado project is updated', async () => {
+      const mockData = {
+        name: 'Updated Body',
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: true,
+      };
+
+      fetchApi.fetch
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockData), { status: 200 }),
+        );
+
+      const updateData: UpdateDeliveryProjectRequest = {
+        title: 'New Name',
+        ado_project: 'new ADO Project',
+        id: randomUUID(),
+      };
+      const result = await client.updateDeliveryProject(updateData);
+      expect(result).toEqual(mockData);
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects',
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
+    });
+
+    it('throws an error when new ADO project not exists on update', async () => {
+      const mockData = {
+        name: 'Updated Body',
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+
+      fetchApi.fetch
+        .mockRejectedValueOnce('Project not found')
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockData), { status: 200 }),
+        );
+
+      const updateData: UpdateDeliveryProjectRequest = {
+        title: 'New Name',
+        ado_project: 'new ADO Project',
+        id: randomUUID(),
+      };
+
+      await expect(client.updateDeliveryProject(updateData)).rejects.toThrow(
+        'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/adoProject/new ADO Project',
+      );
+    });
   });
 
   describe('create delivery project', () => {
@@ -163,9 +231,16 @@ describe('deliveryProjectClient', () => {
         created_at: new Date(),
         updated_at: new Date(),
       };
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: true,
+      };
 
       fetchApi.fetch
-        .mockResolvedValueOnce(new Response(undefined, { status: 200 }))
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+            status: 200,
+          }),
+        )
         .mockResolvedValueOnce(
           new Response(JSON.stringify(mockCreateProjectResponse), {
             status: 200,
@@ -176,7 +251,7 @@ describe('deliveryProjectClient', () => {
       const result = await client.createDeliveryProject(newData);
       expect(result).toEqual(mockCreateProjectResponse);
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/adp-portal-api/AdoProject/ADO Project',
+        'http://localhost/deliveryProjects/adoProject/ADO Project',
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
         'http://localhost/deliveryProjects',
@@ -189,13 +264,13 @@ describe('deliveryProjectClient', () => {
         },
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/adp-portal-api/AadGroup/ADP-DMO/groups-config',
+        'http://localhost/deliveryProjects/ADP-DMO/createEntraIdGroups',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: '{"techUserMembers":[],"nonTechUserMembers":[],"adminMembers":[]}',
+          body: '[]',
         },
       );
     });
@@ -211,14 +286,19 @@ describe('deliveryProjectClient', () => {
         service_owner: 'test@email.com',
         team_type: 'delivery',
       };
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: false,
+      };
       fetchApi.fetch.mockResolvedValueOnce(
-        new Response(undefined, { status: 404 }),
+        new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+          status: 404,
+        }),
       );
       await expect(client.createDeliveryProject(newData)).rejects.toThrow(
         'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/adp-portal-api/AdoProject/ADO Project',
+        'http://localhost/deliveryProjects/adoProject/ADO Project',
       );
     });
 
@@ -233,13 +313,14 @@ describe('deliveryProjectClient', () => {
         service_owner: 'test@email.com',
         team_type: 'delivery',
       };
-      const errorMessage = 'Failed to fetch ADO Project details';
+      const errorMessage =
+        'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name';
       fetchApi.fetch.mockRejectedValue('Unknown error');
       await expect(client.createDeliveryProject(newData)).rejects.toThrow(
         errorMessage,
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/adp-portal-api/AdoProject/ADO Project',
+        'http://localhost/deliveryProjects/adoProject/ADO Project',
       );
     });
 
@@ -261,20 +342,30 @@ describe('deliveryProjectClient', () => {
         namespace: 'adp-dmo',
       };
 
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: true,
+      };
+
       fetchApi.fetch
-        .mockResolvedValueOnce(new Response(undefined, { status: 200 }))
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+            status: 200,
+          }),
+        )
         .mockResolvedValueOnce(
           new Response(JSON.stringify(mockCreateProjectResponse), {
             status: 200,
           }),
         )
-        .mockResolvedValueOnce(new Response(undefined, { status: 400 }));
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify({ error: 'Error' }), { status: 404 }),
+        );
 
       await expect(client.createDeliveryProject(newData)).rejects.toThrow(
-        'Failed to create Entra ID Groups for Project',
+        /Failed to create Entra ID groups for project/,
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/adp-portal-api/AdoProject/ADO Project',
+        'http://localhost/deliveryProjects/adoProject/ADO Project',
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
         'http://localhost/deliveryProjects',
@@ -287,13 +378,13 @@ describe('deliveryProjectClient', () => {
         },
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/adp-portal-api/AadGroup/ADP-DMO/groups-config',
+        'http://localhost/deliveryProjects/ADP-DMO/createEntraIdGroups',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: '{"techUserMembers":[],"nonTechUserMembers":[],"adminMembers":[]}',
+          body: '[]',
         },
       );
     });
@@ -309,16 +400,44 @@ describe('deliveryProjectClient', () => {
         service_owner: 'test@email.com',
         team_type: 'delivery',
       };
-      const errorMessage = 'Failed to fetch ADO Project details';
+      const mockCreateProjectResponse = {
+        id: 1,
+        name: 'New Body',
+        namespace: 'adp-dmo',
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: true,
+      };
+
+      fetchApi.fetch
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCreateProjectResponse), {
+            status: 200,
+          }),
+        )
+        .mockRejectedValueOnce('Unknown error');
       fetchApi.fetch.mockRejectedValue('Unknown error');
       await expect(client.createDeliveryProject(newData)).rejects.toThrow(
-        errorMessage,
+        /Failed to create Entra ID groups for project/,
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/adp-portal-api/AdoProject/ADO Project',
+        'http://localhost/deliveryProjects/ADP-DMO/createEntraIdGroups',
+        {
+          body: '[]',
+          headers: { 'Content-Type': 'application/json' },
+          method: 'POST',
+        },
       );
     });
   });
+
   describe('getDeliveryProjectById', () => {
     it('fetches a delivery project by ID successfully', async () => {
       const mockProject = {

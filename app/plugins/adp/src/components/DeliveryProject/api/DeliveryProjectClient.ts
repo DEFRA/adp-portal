@@ -1,5 +1,6 @@
 import type { DeliveryProjectApi } from './DeliveryProjectApi';
 import type {
+  CheckAdoProjectExistsResponse,
   CreateDeliveryProjectRequest,
   DeliveryProgramme,
   DeliveryProject,
@@ -20,10 +21,6 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
 
   private async getApiUrl(): Promise<string> {
     return `${await this.#discoveryApi.getBaseUrl('adp')}/deliveryProjects`;
-  }
-
-  private async getPortalApiBaseUrl(): Promise<string> {
-    return `${await this.#discoveryApi.getBaseUrl('proxy')}/adp-portal-api`;
   }
 
   async getDeliveryProjects(): Promise<DeliveryProject[]> {
@@ -65,22 +62,27 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
   async createDeliveryProject(
     data: CreateDeliveryProjectRequest,
   ): Promise<DeliveryProject> {
-    if (!(await this.checkIfAdoProjectExists(data.ado_project))) {
+    try {
+      await this.#checkIfAdoProjectExists(data.ado_project);
+    } catch (error) {
       throw new Error(
         'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
       );
     }
     const result = await this.#createDeliveryProjectCore(data);
 
-    const adGroupPayload = {
-      techUserMembers: [],
-      nonTechUserMembers: [],
-      adminMembers: [],
-    };
-    await this.createEntraIdGroupsForProject(
-      adGroupPayload,
-      result.namespace.toUpperCase(),
-    );
+    try {
+      await this.#createEntraIdGroupsForProject(
+        [],
+        result.namespace.toUpperCase(),
+      );
+    } catch (error) {
+      const err = error as Error;
+      throw new Error(
+        `Failed to create Entra ID groups for project ${result.namespace.toUpperCase()} - ${err.message}`,
+      );
+    }
+
     return result;
   }
 
@@ -122,6 +124,15 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
   async updateDeliveryProject(
     data: UpdateDeliveryProjectRequest,
   ): Promise<DeliveryProject> {
+    try {
+      if (data.ado_project) {
+        await this.#checkIfAdoProjectExists(data.ado_project);
+      }
+    } catch (error) {
+      throw new Error(
+        'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
+      );
+    }
     const url = await this.getApiUrl();
     const response = await this.#sendJson('PATCH', url, data);
     return await this.#readResponse(response, asDeliveryProject);
@@ -137,29 +148,26 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
     }
   }
 
-  private async createEntraIdGroupsForProject(
+  async #createEntraIdGroupsForProject(
     data: any,
     projectName: string,
   ): Promise<void> {
-    try {
-      const adpPortalApiBaseUrl = await this.getPortalApiBaseUrl();
-      const createAdGroupUrl = `${adpPortalApiBaseUrl}/AadGroup/${projectName}/groups-config`;
-      const response = await this.#sendJson('POST', createAdGroupUrl, data);
-      await this.#readResponse(response);
-    } catch (error) {
-      throw new Error(`Failed to create Entra ID Groups for Project`);
-    }
+    const url = await this.getApiUrl();
+    const response = await this.#sendJson(
+      'POST',
+      `${url}/${projectName}/createEntraIdGroups`,
+      data,
+    );
+    await this.#readResponse(response);
   }
 
-  private async checkIfAdoProjectExists(projectName: string): Promise<boolean> {
-    try {
-      const adpPortalApiBaseUrl = await this.getPortalApiBaseUrl();
-      const getAdoProjectUrl = `${adpPortalApiBaseUrl}/AdoProject/${projectName}`;
-      const response = await this.#fetchApi.fetch(getAdoProjectUrl);
-      return response.ok;
-    } catch (error) {
-      throw new Error(`Failed to fetch ADO Project details`);
-    }
+  async #checkIfAdoProjectExists(adoProjectName: string): Promise<boolean> {
+    const url = await this.getApiUrl();
+    const response = await this.#fetchApi.fetch(
+      `${url}/adoProject/${adoProjectName}`,
+    );
+    return (await this.#readResponse(response, asCheckAdoProjectExistsResponse))
+      .exists;
   }
 }
 
@@ -185,4 +193,9 @@ function asDeliveryProgramme(value: unknown) {
   result.updated_at = new Date(result.updated_at);
   return result;
 }
+
+function asCheckAdoProjectExistsResponse(value: unknown) {
+  return value as CheckAdoProjectExistsResponse;
+}
+
 export type { DeliveryProjectApi };

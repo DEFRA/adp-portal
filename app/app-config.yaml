@@ -209,3 +209,5 @@ adp:
     apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/github/teams
   entraIdGroups:
     apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/AadGroup
+  adoProject:
+    apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/AdoProject

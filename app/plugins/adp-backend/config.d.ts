@@ -30,5 +30,15 @@ export interface Config {
        */
       apiBaseUrl: string;
     };
+
+    /**
+     * Confguration relating to ADO Project
+     */
+    adoProject: {
+      /**
+       * Base URL for the ADO Project API
+       */
+      apiBaseUrl: string;
+    };
   };
 }

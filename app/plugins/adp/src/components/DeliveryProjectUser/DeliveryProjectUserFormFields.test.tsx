@@ -15,6 +15,13 @@ import { catalogApiRef } from '@backstage/plugin-catalog-react';
 import userEvent from '@testing-library/user-event';
 import { SnapshotFriendlyStylesProvider } from '../../utils';
 
+jest.mock('@material-ui/core', () => ({
+  ...jest.requireActual('@material-ui/core'),
+  CircularProgress() {
+    return <></>;
+  },
+}));
+
 type Context = {
   form?: UseFormReturn<DeliveryProjectUserFields>;
 };

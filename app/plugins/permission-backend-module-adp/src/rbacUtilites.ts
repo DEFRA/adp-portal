@@ -8,9 +8,9 @@ import type { LoggerService } from '@backstage/backend-plugin-api';
  */
 
 export class RbacUtilities {
-  private platformAdminsGroup: string;
-  private programmeAdminGroup: string;
-  private adpPortalUsersGroup: string;
+  readonly #platformAdminsGroup: string;
+  readonly #programmeAdminGroup: string;
+  readonly #adpPortalUsersGroup: string;
 
   private readonly groupPrefix: string = 'group:default/';
 
@@ -18,35 +18,35 @@ export class RbacUtilities {
     private logger: LoggerService,
     rbacGroups: RbacGroups,
   ) {
-    this.platformAdminsGroup = `${
+    this.#platformAdminsGroup = `${
       this.groupPrefix
     }${rbacGroups.platformAdminsGroup.toLowerCase()}`;
-    this.programmeAdminGroup = `${
+    this.#programmeAdminGroup = `${
       this.groupPrefix
     }${rbacGroups.programmeAdminGroup.toLowerCase()}`;
-    this.adpPortalUsersGroup = `${
+    this.#adpPortalUsersGroup = `${
       this.groupPrefix
     }${rbacGroups.adpPortalUsersGroup.toLowerCase()}`;
 
     this.logger.debug(
-      `platformAdminsGroup=${this.platformAdminsGroup} | programmeAdminGroup=${this.programmeAdminGroup} | adpPortalUsersGroup= ${this.adpPortalUsersGroup}`,
+      `platformAdminsGroup=${this.#platformAdminsGroup} | programmeAdminGroup=${this.#programmeAdminGroup} | adpPortalUsersGroup= ${this.#adpPortalUsersGroup}`,
     );
   }
 
   public isInPlatformAdminGroup(user: BackstageIdentityResponse): boolean {
-    return [this.platformAdminsGroup].some(group =>
+    return [this.#platformAdminsGroup].some(group =>
       user?.identity.ownershipEntityRefs.includes(group),
     );
   }
 
   public isInProgrammeAdminGroup(user: BackstageIdentityResponse): boolean {
-    return [this.programmeAdminGroup].some(group =>
+    return [this.#programmeAdminGroup].some(group =>
       user?.identity.ownershipEntityRefs.includes(group),
     );
   }
 
   public isInAdpUserGroup(user: BackstageIdentityResponse): boolean {
-    return [this.adpPortalUsersGroup].some(group =>
+    return [this.#adpPortalUsersGroup].some(group =>
       user?.identity.ownershipEntityRefs.includes(group),
     );
   }

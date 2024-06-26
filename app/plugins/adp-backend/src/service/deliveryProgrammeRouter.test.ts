@@ -17,7 +17,7 @@ import type {
   UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
 import { mockServices } from '@backstage/backend-test-utils';
-import type { CatalogApi } from '@backstage/catalog-client';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
 
 const managerByProgrammeId = programmeManagerList.filter(
   managers => managers.delivery_programme_id === '123',
@@ -55,22 +55,7 @@ describe('createRouter', () => {
       delete: jest.fn(),
     };
 
-  const mockCatalogClient: jest.Mocked<CatalogApi> = {
-    addLocation: jest.fn(),
-    getEntities: jest.fn(),
-    getEntitiesByRefs: jest.fn(),
-    getEntityAncestors: jest.fn(),
-    getEntityByRef: jest.fn(),
-    getEntityFacets: jest.fn(),
-    getLocationByEntity: jest.fn(),
-    getLocationById: jest.fn(),
-    getLocationByRef: jest.fn(),
-    queryEntities: jest.fn(),
-    refreshEntity: jest.fn(),
-    removeEntityByUid: jest.fn(),
-    removeLocationById: jest.fn(),
-    validateEntity: jest.fn(),
-  };
+  const mockPermissionsService = mockServices.permissions.mock();
 
   const mockOptions: ProgrammeRouterOptions = {
     logger: mockServices.logger.mock(),
@@ -78,9 +63,8 @@ describe('createRouter', () => {
     deliveryProjectStore: mockDeliveryProjectStore,
     deliveryProgrammeStore: mockDeliveryProgrammeStore,
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
+    permissions: mockPermissionsService,
     httpAuth: mockServices.httpAuth(),
-    auth: mockServices.auth(),
-    catalog: mockCatalogClient,
   };
 
   beforeAll(async () => {
@@ -173,6 +157,9 @@ describe('createRouter', () => {
         success: true,
         value: expectedProgrammeDataWithName,
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(programmeApp)
@@ -191,6 +178,23 @@ describe('createRouter', () => {
       );
     });
 
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const response = await request(programmeApp)
+        .post('/')
+        .send({
+          title: 'def',
+          arms_length_body_id: '123',
+          description: 'My description',
+          delivery_programme_code: 'abc',
+        } satisfies CreateDeliveryProgrammeRequest);
+
+      expect(response.status).toEqual(403);
+    });
+
     it('return 400 with errors', async () => {
       // arrange
       mockDeliveryProgrammeStore.add.mockResolvedValue({
@@ -203,6 +207,9 @@ describe('createRouter', () => {
           'unknownArmsLengthBody',
         ],
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(programmeApp)
@@ -283,6 +290,9 @@ describe('createRouter', () => {
         success: true,
         value: expectedProgrammeDataWithName,
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(programmeApp)
@@ -296,6 +306,18 @@ describe('createRouter', () => {
       );
     });
 
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const response = await request(programmeApp)
+        .patch('/')
+        .send({ id: '123' } satisfies UpdateDeliveryProgrammeRequest);
+
+      expect(response.status).toEqual(403);
+    });
+
     it('return 400 with errors', async () => {
       // arrange
       mockDeliveryProgrammeStore.update.mockResolvedValue({
@@ -307,6 +329,9 @@ describe('createRouter', () => {
           'unknownArmsLengthBody',
         ],
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(programmeApp)

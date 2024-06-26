@@ -14,6 +14,13 @@ import { catalogApiRef } from '@backstage/plugin-catalog-react';
 import { TestApiProvider } from '@backstage/test-utils';
 import userEvent from '@testing-library/user-event';
 
+jest.mock('@material-ui/core', () => ({
+  ...jest.requireActual('@material-ui/core'),
+  CircularProgress() {
+    return <></>;
+  },
+}));
+
 type Context = {
   form?: UseFormReturn<DeliveryProgrammeAdminFields>;
 };
@@ -128,9 +135,6 @@ describe('DeliveryProgrammeAdminFormFields', () => {
     };
 
     const { form, result } = await renderComponent();
-    await waitFor(() =>
-      expect(result.queryByRole('progressbar')).not.toBeInTheDocument(),
-    );
 
     expect(result.baseElement).toMatchSnapshot('Empty');
 

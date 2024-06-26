@@ -24,6 +24,9 @@ describe('adpPlugin', () => {
               entraIdGroups: {
                 apiBaseUrl: 'https://api.com/entra',
               },
+              adoProject: {
+                apiBaseUrl: 'https://api.com/ado',
+              },
             },
             rbac: {
               platformAdminsGroup: 'platform-admins',
