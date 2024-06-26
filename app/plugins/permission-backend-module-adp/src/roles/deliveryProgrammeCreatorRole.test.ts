@@ -1,12 +1,9 @@
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import type { PortalUserIdentity } from '../types';
-import { deliveryProgrammeAdminRole } from './deliveryProgrammeAdminRole';
-import {
-  deliveryProgrammeCreatePermission,
-  deliveryProgrammeUpdatePermission,
-} from '@internal/plugin-adp-common';
+import { deliveryProgrammeCreatorRole } from './deliveryProgrammeCreatorRole';
+import { deliveryProgrammeCreatePermission } from '@internal/plugin-adp-common';
 
-describe('deliveryProgrammeAdminRole', () => {
+describe('deliveryProgrammeCreatorRole', () => {
   const portalUser: PortalUserIdentity = {
     userIdentity: {
       userEntityRef: 'user:default/test@test.com',
@@ -42,34 +39,19 @@ describe('deliveryProgrammeAdminRole', () => {
       user: programmeAdminUser,
     },
     {
-      permission: deliveryProgrammeUpdatePermission,
-      expected: AuthorizeResult.ALLOW,
-      user: programmeAdminUser,
-    },
-    {
       permission: deliveryProgrammeCreatePermission,
       expected: AuthorizeResult.DENY,
       user: portalUser,
     },
     {
-      permission: deliveryProgrammeUpdatePermission,
-      expected: AuthorizeResult.DENY,
-      user: portalUser,
-    },
-    {
       permission: deliveryProgrammeCreatePermission,
-      expected: AuthorizeResult.DENY,
-      user: emptyUser,
-    },
-    {
-      permission: deliveryProgrammeUpdatePermission,
       expected: AuthorizeResult.DENY,
       user: emptyUser,
     },
   ])(
     'should return the expected decision for the permission $permission.name',
     ({ permission, expected, user }) => {
-      const result = deliveryProgrammeAdminRole(permission, user);
+      const result = deliveryProgrammeCreatorRole(permission, user);
       expect(result.result).toBe(expected);
     },
   );

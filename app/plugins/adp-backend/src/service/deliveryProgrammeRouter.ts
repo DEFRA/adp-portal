@@ -5,6 +5,7 @@ import { InputError } from '@backstage/errors';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import {
+  type DeliveryProgramme,
   deliveryProgrammeCreatePermission,
   deliveryProgrammeUpdatePermission,
   type CreateDeliveryProgrammeRequest,
@@ -90,6 +91,23 @@ const parseUpdateDeliveryProgrammeRequest =
     }),
   );
 
+export const getDeliveryProgramme = async (
+  deliveryProgrammeStore: IDeliveryProgrammeStore,
+  deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore,
+  deliveryProgrammeId: string,
+): Promise<DeliveryProgramme> => {
+  const deliveryProgramme =
+    await deliveryProgrammeStore.get(deliveryProgrammeId);
+  const deliveryProgrammeAdmins =
+    await deliveryProgrammeAdminStore.getByDeliveryProgramme(
+      deliveryProgrammeId,
+    );
+
+  deliveryProgramme.delivery_programme_admins = deliveryProgrammeAdmins ?? [];
+
+  return deliveryProgramme;
+};
+
 export function createProgrammeRouter(
   options: ProgrammeRouterOptions,
 ): express.Router {
@@ -137,17 +155,12 @@ export function createProgrammeRouter(
 
   router.get('/:id', async (_req, res) => {
     try {
-      const deliveryProgramme = await deliveryProgrammeStore.get(
+      const deliveryProgramme = await getDeliveryProgramme(
+        deliveryProgrammeStore,
+        deliveryProgrammeAdminStore,
         _req.params.id,
       );
-      const programmeManager =
-        await deliveryProgrammeAdminStore.getByDeliveryProgramme(
-          _req.params.id,
-        );
-      if (programmeManager && deliveryProgramme !== null) {
-        deliveryProgramme.programme_managers = programmeManager;
-        res.json(deliveryProgramme);
-      }
+      res.json(deliveryProgramme);
     } catch (error) {
       const deliveryProgramError = error as Error;
       logger.error(

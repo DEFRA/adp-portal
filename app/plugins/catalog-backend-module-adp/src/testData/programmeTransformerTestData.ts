@@ -3,14 +3,16 @@ import {
   ANNOTATION_ORIGIN_LOCATION,
 } from '@backstage/catalog-model';
 import { DELIVERY_PROGRAMME_ID_ANNOTATION } from '../transformers';
-import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type {
+  DeliveryProgramme,
+  DeliveryProgrammeAdmin,
+} from '@internal/plugin-adp-common';
 
-export const deliveryProgramme = {
-  programme_managers: [],
+export const deliveryProgramme: DeliveryProgramme = {
+  delivery_programme_admins: [],
   title: 'Test title 1',
   alias: 'Test Alias',
   description: 'Test description',
-  finance_code: 'Test finance_code',
   arms_length_body_id: '05aa36b6-c7a2-4c35-820e-c31d20011f47',
   delivery_programme_code: 'Test delivery_programme_code',
   url: 'https://www.example.uk/',

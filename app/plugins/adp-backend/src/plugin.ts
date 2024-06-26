@@ -32,12 +32,15 @@ import { initializeAdpDatabase } from './database';
 import { credentialsContextMiddlewareRef } from '@internal/plugin-credentials-context-backend';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import {
+  DELIVERY_PROGRAMME_RESOURCE_TYPE,
   DELIVERY_PROJECT_RESOURCE_TYPE,
   deliveryProgrammeAdminPermissions,
+  deliveryProgrammeUpdatePermission,
   deliveryProjectUserPermissions,
 } from '@internal/plugin-adp-common';
 import { getDeliveryProject } from './service/deliveryProjectRouter';
-import { deliveryProjectRules } from './permissions';
+import { deliveryProgrammeRules, deliveryProjectRules } from './permissions';
+import { getDeliveryProgramme } from './service/deliveryProgrammeRouter';
 
 export const adpPlugin = createBackendPlugin({
   pluginId: 'adp',
@@ -107,12 +110,16 @@ export const adpPlugin = createBackendPlugin({
 
         const deliveryProjectPermissionRules =
           Object.values(deliveryProjectRules);
+        const deliveryProgrammePermissionRules = Object.values(
+          deliveryProgrammeRules,
+        );
 
         const combinedRouter = Router();
         const permissionIntegrationRouter = createPermissionIntegrationRouter({
           permissions: [
             ...deliveryProgrammeAdminPermissions,
             ...deliveryProjectUserPermissions,
+            deliveryProgrammeUpdatePermission,
           ],
           resources: [
             {
@@ -124,6 +131,21 @@ export const adpPlugin = createBackendPlugin({
                     return await getDeliveryProject(
                       deliveryProjectStore,
                       deliveryProjectUserStore,
+                      deliveryProgrammeAdminStore,
+                      ref,
+                    );
+                  }),
+                );
+              },
+            },
+            {
+              resourceType: DELIVERY_PROGRAMME_RESOURCE_TYPE,
+              rules: deliveryProgrammePermissionRules,
+              getResources: async (resourceRefs: string[]) => {
+                return await Promise.all(
+                  resourceRefs.map(async (ref: string) => {
+                    return await getDeliveryProgramme(
+                      deliveryProgrammeStore,
                       deliveryProgrammeAdminStore,
                       ref,
                     );
