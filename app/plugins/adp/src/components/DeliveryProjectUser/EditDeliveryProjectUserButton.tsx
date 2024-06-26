@@ -16,10 +16,12 @@ import type { SubmitResult } from '../../utils';
 import {
   DialogForm,
   TitleWithHelp,
+  ValidationError,
   populate,
   readValidationError,
 } from '../../utils';
 import { usePermission } from '@backstage/plugin-permission-react';
+import { checkUsernameIsReserved } from '../../utils/reservedUsernames';
 
 export type EditDeliveryProjectUserButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -50,12 +52,25 @@ export function EditDeliveryProjectUserButton({
     fields: DeliveryProjectUserFields,
   ): Promise<SubmitResult<DeliveryProjectUserFields>> {
     try {
+      if (checkUsernameIsReserved(fields.github_username.trim())) {
+        throw new ValidationError([
+          {
+            path: 'github_username',
+            error: {
+              message:
+                'Please enter a valid GitHub handle. This Github handle is reserved.',
+            },
+          },
+        ]);
+      }
+
       await client.update({
         ...deliveryProjectUser,
         ...fields,
         aad_user_principal_name:
           deliveryProjectUser.aad_user_principal_name ?? '',
         user_catalog_name: fields.user_catalog_name.value,
+        github_username: fields.github_username.trim(),
       });
     } catch (e: any) {
       return readValidationError(e);
