@@ -2,6 +2,7 @@ import type { Config } from '@backstage/config';
 import type { DeliveryProject } from '@internal/plugin-adp-common';
 import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
+import type { TokenProvider } from '@internal/plugin-credentials-context-backend';
 
 export type FluxConfig = {
   key: string;
@@ -29,25 +30,33 @@ export type FluxTeamConfig = {
 };
 
 export type IFluxConfigApi = { [P in keyof FluxConfigApi]: FluxConfigApi[P] };
+export type FluxConfigApiOptions = {
+  config: Config;
+  deliveryProgrammeStore: IDeliveryProgrammeStore;
+  fetchApi: FetchApi;
+  tokens: TokenProvider;
+};
+
 export class FluxConfigApi {
   readonly #apiBaseUrl: string;
   readonly #deliveryProgrammeStore: IDeliveryProgrammeStore;
   readonly #config: Config;
   readonly #fetchApi: FetchApi;
+  readonly #tokens: TokenProvider;
 
-  constructor(
-    config: Config,
-    deliveryProgrammeStore: IDeliveryProgrammeStore,
-    fetchApi: FetchApi,
-  ) {
-    this.#apiBaseUrl = config.getString('adp.fluxOnboarding.apiBaseUrl');
-    this.#deliveryProgrammeStore = deliveryProgrammeStore;
-    this.#config = config;
-    this.#fetchApi = fetchApi;
+  constructor(options: FluxConfigApiOptions) {
+    this.#apiBaseUrl = options.config.getString(
+      'adp.fluxOnboarding.apiBaseUrl',
+    );
+    this.#deliveryProgrammeStore = options.deliveryProgrammeStore;
+    this.#config = options.config;
+    this.#fetchApi = options.fetchApi;
+    this.#tokens = options.tokens;
   }
 
   async createFluxConfig(deliveryProject: DeliveryProject) {
     const endpoint = `${this.#apiBaseUrl}/${deliveryProject.name}`;
+    const { token } = await this.#tokens.getLimitedUserToken();
 
     const deliveryProgramme = await this.#deliveryProgrammeStore.get(
       deliveryProject.delivery_programme_id,
@@ -75,6 +84,7 @@ export class FluxConfigApi {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(teamConfig),
     });
@@ -88,10 +98,14 @@ export class FluxConfigApi {
 
   async getFluxConfig(teamName: string): Promise<FluxTeamConfig | null> {
     const endpoint = `${this.#apiBaseUrl}/${teamName}`;
+    const { token } = await this.#tokens.getLimitedUserToken();
     const statusCodeNotFound = 404;
 
     const response = await this.#fetchApi.fetch(endpoint, {
       method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (response.status === statusCodeNotFound) {

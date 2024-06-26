@@ -5,11 +5,10 @@ import {
   coreServices,
   createServiceFactory,
   createServiceRef,
-  type AuthService,
 } from '@backstage/backend-plugin-api';
 import {
-  credentialsProviderRef,
-  type CredentialsProvider,
+  tokenProviderRef,
+  type TokenProvider,
 } from '@internal/plugin-credentials-context-backend';
 
 export type SetTeamRequest = {
@@ -26,24 +25,20 @@ export type IGitHubTeamsApi = {
 export class GitHubTeamsApi {
   readonly #fetchApi: FetchApi;
   readonly #config: Config;
-  readonly #credentials: CredentialsProvider;
-  readonly #auth: AuthService;
+  readonly #tokens: TokenProvider;
 
   constructor({
     config,
     fetchApi,
-    auth,
-    credentials,
+    tokens,
   }: {
     config: Config;
     fetchApi: FetchApi;
-    auth: AuthService;
-    credentials: CredentialsProvider;
+    tokens: TokenProvider;
   }) {
     this.#config = config;
     this.#fetchApi = fetchApi;
-    this.#auth = auth;
-    this.#credentials = credentials;
+    this.#tokens = tokens;
   }
 
   public async createTeam(request: SetTeamRequest): Promise<GithubTeamDetails> {
@@ -63,7 +58,7 @@ export class GitHubTeamsApi {
   ): Promise<GithubTeamDetails> {
     const baseUrl = this.#config.getString('adp.githubTeams.apiBaseUrl');
     const endpoint = teamId === null ? baseUrl : `${baseUrl}/${teamId}`;
-    const { token } = await this.#getToken();
+    const { token } = await this.#tokens.getLimitedUserToken();
     const response = await this.#fetchApi.fetch(endpoint, {
       method: 'PUT',
       headers: {
@@ -79,13 +74,6 @@ export class GitHubTeamsApi {
       `Failed to set the team info - ${response.status} ${response.statusText}`,
     );
   }
-
-  async #getToken() {
-    const caller = this.#credentials.current;
-    if (!this.#auth.isPrincipal(caller, 'user'))
-      throw new Error('No user credentials available');
-    return await this.#auth.getLimitedUserToken(caller);
-  }
 }
 
 export const githubTeamsApiRef = createServiceRef<IGitHubTeamsApi>({
@@ -98,8 +86,7 @@ export const githubTeamsApiRef = createServiceRef<IGitHubTeamsApi>({
         deps: {
           config: coreServices.rootConfig,
           fetchApi: fetchApiRef,
-          auth: coreServices.auth,
-          credentials: credentialsProviderRef,
+          tokens: tokenProviderRef,
         },
         factory(deps) {
           return new GitHubTeamsApi(deps);

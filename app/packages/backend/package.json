@@ -54,7 +54,6 @@
     "@opentelemetry/instrumentation-express": "0.39.0",
     "@opentelemetry/resources": "1.24.1",
     "@opentelemetry/semantic-conventions": "1.24.1",
-    "@roadiehq/scaffolder-backend-module-http-request": "^4.3.2",
     "app": "workspace:^",
     "dockerode": "^3.3.1",
     "express": "^4.17.1",

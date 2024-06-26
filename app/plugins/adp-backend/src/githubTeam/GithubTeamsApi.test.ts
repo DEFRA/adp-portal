@@ -2,7 +2,8 @@ import type { Config } from '@backstage/config';
 import { GitHubTeamsApi } from './GithubTeamsApi';
 import type { GithubTeamDetails } from '@internal/plugin-adp-common';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
-import { mockCredentials, mockServices } from '@backstage/backend-test-utils';
+import type { TokenProvider } from '@internal/plugin-credentials-context-backend';
+import { randomUUID } from 'node:crypto';
 
 describe('GitHubTeamsApi', () => {
   function setup() {
@@ -28,20 +29,24 @@ describe('GitHubTeamsApi', () => {
     const fetchApi: jest.Mocked<FetchApi> = {
       fetch: jest.fn(),
     };
+    const tokens: jest.Mocked<TokenProvider> = {
+      getLimitedUserToken: jest.fn(),
+      getPluginRequestToken: jest.fn(),
+    };
     const sut = new GitHubTeamsApi({
       config,
       fetchApi,
-      auth: mockServices.auth(),
-      credentials: { current: mockCredentials.user() },
+      tokens,
     });
 
-    return { sut, fetchApi, config };
+    return { sut, fetchApi, config, tokens };
   }
 
   describe('#createTeam', () => {
     it('Should return the response when the API call is successful', async () => {
       // arrange
-      const { sut, config, fetchApi } = setup();
+      const { sut, config, fetchApi, tokens } = setup();
+      const token = randomUUID();
       const expected: GithubTeamDetails = {
         description: 'description',
         id: 123,
@@ -58,6 +63,10 @@ describe('GitHubTeamsApi', () => {
         return 'https://localhost/api';
       });
       fetchApi.fetch.mockResolvedValueOnce(response);
+      tokens.getLimitedUserToken.mockResolvedValueOnce({
+        token,
+        expiresAt: new Date(),
+      });
 
       // act
       const actual = await sut.createTeam({
@@ -80,6 +89,7 @@ describe('GitHubTeamsApi', () => {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
             },
             body: '{"name":"name","description":"description","isPublic":true,"maintainers":["abc"],"members":["def"]}',
           },
@@ -88,7 +98,8 @@ describe('GitHubTeamsApi', () => {
     });
     it('Should throw an error when the API call is not successful', async () => {
       // arrange
-      const { sut, config, fetchApi } = setup();
+      const { sut, config, fetchApi, tokens } = setup();
+      const token = randomUUID();
       const response = new Response(undefined, { status: 400 });
 
       config.getString.mockImplementationOnce(x => {
@@ -96,6 +107,10 @@ describe('GitHubTeamsApi', () => {
         return 'https://localhost/api';
       });
       fetchApi.fetch.mockResolvedValueOnce(response);
+      tokens.getLimitedUserToken.mockResolvedValueOnce({
+        token,
+        expiresAt: new Date(),
+      });
 
       // act
       await expectException(() =>
@@ -119,6 +134,7 @@ describe('GitHubTeamsApi', () => {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
             },
             body: '{"name":"name","description":"description","isPublic":true,"maintainers":["abc"],"members":["def"]}',
           },
@@ -129,7 +145,8 @@ describe('GitHubTeamsApi', () => {
   describe('#setTeam', () => {
     it('Should return the response when the API call is successful', async () => {
       // arrange
-      const { sut, config, fetchApi } = setup();
+      const { sut, config, fetchApi, tokens } = setup();
+      const token = randomUUID();
       const teamId = Math.random();
       const expected: GithubTeamDetails = {
         description: 'description',
@@ -147,6 +164,10 @@ describe('GitHubTeamsApi', () => {
         return 'http://localhost/api';
       });
       fetchApi.fetch.mockResolvedValueOnce(response);
+      tokens.getLimitedUserToken.mockResolvedValueOnce({
+        token,
+        expiresAt: new Date(),
+      });
 
       // act
       const actual = await sut.setTeam(teamId, {
@@ -169,6 +190,7 @@ describe('GitHubTeamsApi', () => {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
             },
             body: '{"name":"name","description":"description","isPublic":true,"maintainers":["abc"],"members":["def"]}',
           },
@@ -177,7 +199,8 @@ describe('GitHubTeamsApi', () => {
     });
     it('Should throw an error when the API call is not successful', async () => {
       // arrange
-      const { sut, config, fetchApi } = setup();
+      const { sut, config, fetchApi, tokens } = setup();
+      const token = randomUUID();
       const teamId = Math.random();
       const response = new Response(undefined, { status: 400 });
 
@@ -186,6 +209,10 @@ describe('GitHubTeamsApi', () => {
         return 'http://localhost/api';
       });
       fetchApi.fetch.mockResolvedValueOnce(response);
+      tokens.getLimitedUserToken.mockResolvedValueOnce({
+        token,
+        expiresAt: new Date(),
+      });
 
       // act
       await expectException(() =>
@@ -209,6 +236,7 @@ describe('GitHubTeamsApi', () => {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
             },
             body: '{"name":"name","description":"description","isPublic":true,"maintainers":["abc"],"members":["def"]}',
           },

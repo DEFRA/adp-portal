@@ -4,6 +4,10 @@ import fetchApiFactory, {
   fetchApiHeadersMiddleware,
 } from '@internal/plugin-fetch-api-backend';
 
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 const backend = createBackend();
 
 // Request middleware
@@ -52,15 +56,6 @@ backend.add(import('@internal/plugin-scaffolder-backend-module-adp'));
 backend.add(import('@internal/plugin-techdocs-backend-module-adp'));
 backend.add(import('@internal/plugin-catalog-backend-module-adp'));
 
-// 3rd Party
-backend.add(
-  import('@roadiehq/scaffolder-backend-module-http-request/new-backend'),
-);
-
 backend.start().catch(error => {
   console.error('Uncaught error in backend startup', error);
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });

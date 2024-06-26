@@ -1,9 +1,11 @@
 import { ConfigReader } from '@backstage/config';
-import { FluxConfigApi } from './fluxConfigApi';
+import { FluxConfigApi, type FluxConfigApiOptions } from './fluxConfigApi';
 import { expectedProgrammeDataWithManager } from '../testData/programmeTestData';
 import { DeliveryProgrammeStore } from '../deliveryProgramme/deliveryProgrammeStore';
 import type { DeliveryProject } from '@internal/plugin-adp-common';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
+import type { TokenProvider } from '@internal/plugin-credentials-context-backend';
+import { randomUUID } from 'node:crypto';
 
 let mockProgrammeGetAll: jest.Mock;
 let mockProgrammeGet: jest.Mock;
@@ -37,10 +39,6 @@ jest.mock('../deliveryProgramme/deliveryProgrammeStore', () => {
 });
 
 describe('FluxConfigApi', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   const mockConfig = new ConfigReader({
     adp: {
       fluxOnboarding: {
@@ -53,13 +51,32 @@ describe('FluxConfigApi', () => {
     fetch: jest.fn(),
   };
 
+  const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
+  const mockTokens: jest.Mocked<TokenProvider> = {
+    getLimitedUserToken: jest.fn(),
+    getPluginRequestToken: jest.fn(),
+  };
+
+  function sut(options?: Partial<FluxConfigApiOptions>) {
+    return new FluxConfigApi({
+      config: mockConfig,
+      deliveryProgrammeStore: mockDeliveryProgrammeStore,
+      fetchApi: mockFetchApi,
+      tokens: mockTokens,
+      ...options,
+    });
+  }
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockTokens.getLimitedUserToken.mockResolvedValue({
+      token: randomUUID(),
+      expiresAt: new Date(),
+    });
+  });
+
   it('initializes correctly from required parameters', () => {
-    const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
-    const fluxConfigApi = new FluxConfigApi(
-      mockConfig,
-      mockDeliveryProgrammeStore,
-      mockFetchApi,
-    );
+    const fluxConfigApi = sut();
 
     expect(fluxConfigApi).toBeDefined();
   });
@@ -119,12 +136,7 @@ describe('FluxConfigApi', () => {
       status: 200,
     } as unknown as Response);
 
-    const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
-    const fluxConfigApi = new FluxConfigApi(
-      mockConfig,
-      mockDeliveryProgrammeStore,
-      mockFetchApi,
-    );
+    const fluxConfigApi = sut();
     const fluxTeamConfig = await fluxConfigApi.getFluxConfig('test-team');
 
     expect(fluxTeamConfig).toBeDefined();
@@ -137,12 +149,7 @@ describe('FluxConfigApi', () => {
       status: 404,
     } as unknown as Response);
 
-    const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
-    const fluxConfigApi = new FluxConfigApi(
-      mockConfig,
-      mockDeliveryProgrammeStore,
-      mockFetchApi,
-    );
+    const fluxConfigApi = sut();
     const fluxTeamConfig = await fluxConfigApi.getFluxConfig('test-team');
 
     expect(fluxTeamConfig).toBeNull();
@@ -155,12 +162,7 @@ describe('FluxConfigApi', () => {
       statusText: 'Something went wrong',
     } as unknown as Response);
 
-    const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
-    const fluxConfigApi = new FluxConfigApi(
-      mockConfig,
-      mockDeliveryProgrammeStore,
-      mockFetchApi,
-    );
+    const fluxConfigApi = sut();
 
     await expect(fluxConfigApi.getFluxConfig('test-team')).rejects.toThrow(
       /Unexpected response from FluxConfig API/,
@@ -191,12 +193,7 @@ describe('FluxConfigApi', () => {
       delivery_programme_admins: [],
     };
 
-    const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
-    const fluxConfigApi = new FluxConfigApi(
-      mockConfig,
-      mockDeliveryProgrammeStore,
-      mockFetchApi,
-    );
+    const fluxConfigApi = sut();
     await fluxConfigApi.createFluxConfig(deliveryProject);
 
     expect(mockFetchApi.fetch).toHaveBeenCalled();
@@ -226,9 +223,8 @@ describe('FluxConfigApi', () => {
       delivery_programme_admins: [],
     };
 
-    const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
-    const fluxConfigApi = new FluxConfigApi(
-      new ConfigReader({
+    const fluxConfigApi = sut({
+      config: new ConfigReader({
         adp: {
           fluxOnboarding: {
             apiBaseUrl: 'https://portal-api/FluxOnboarding',
@@ -241,9 +237,7 @@ describe('FluxConfigApi', () => {
           },
         },
       }),
-      mockDeliveryProgrammeStore,
-      mockFetchApi,
-    );
+    });
     await fluxConfigApi.createFluxConfig(deliveryProject);
 
     expect(mockFetchApi.fetch).toHaveBeenCalled();
@@ -274,12 +268,7 @@ describe('FluxConfigApi', () => {
       delivery_programme_admins: [],
     };
 
-    const mockDeliveryProgrammeStore = new DeliveryProgrammeStore(null!);
-    const fluxConfigApi = new FluxConfigApi(
-      mockConfig,
-      mockDeliveryProgrammeStore,
-      mockFetchApi,
-    );
+    const fluxConfigApi = sut();
 
     await expect(
       fluxConfigApi.createFluxConfig(deliveryProject),
