@@ -1243,6 +1243,175 @@ exports[`[kind: component] [type: backend] tabs Should render tabs when there is
 ]
 `;
 
+exports[`[kind: component] [type: backend] tabs Should render tabs when there is kubernetes: tabs 2`] = `
+[
+  [
+    <a
+      aria-disabled="false"
+      aria-selected="true"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTab-selected BackstageHeaderTabs-selected MuiTypography-colorPrimary"
+      data-testid="header-tab-0"
+      href="/"
+      role="tab"
+      tabindex="0"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Overview
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </a>,
+    <a
+      aria-disabled="false"
+      aria-selected="false"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
+      data-testid="header-tab-1"
+      href="/ci-cd"
+      role="tab"
+      tabindex="-1"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        CI/CD
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </a>,
+    <a
+      aria-disabled="false"
+      aria-selected="false"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
+      data-testid="header-tab-2"
+      href="/pull-requests"
+      role="tab"
+      tabindex="-1"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Pull Requests
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </a>,
+    <a
+      aria-disabled="false"
+      aria-selected="false"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
+      data-testid="header-tab-3"
+      href="/grafana"
+      role="tab"
+      tabindex="-1"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Grafana
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </a>,
+    <a
+      aria-disabled="false"
+      aria-selected="false"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
+      data-testid="header-tab-4"
+      href="/api"
+      role="tab"
+      tabindex="-1"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        API
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </a>,
+    <a
+      aria-disabled="false"
+      aria-selected="false"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
+      data-testid="header-tab-5"
+      href="/dependencies"
+      role="tab"
+      tabindex="-1"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Dependencies
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </a>,
+    <a
+      aria-disabled="false"
+      aria-selected="false"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
+      data-testid="header-tab-6"
+      href="/docs"
+      role="tab"
+      tabindex="-1"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Docs
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </a>,
+    <a
+      aria-disabled="false"
+      aria-selected="false"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
+      data-testid="header-tab-7"
+      href="/releases"
+      role="tab"
+      tabindex="-1"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Deployments
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </a>,
+    <a
+      aria-disabled="false"
+      aria-selected="false"
+      class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiTab-root BackstageHeaderTabs-tabRoot MuiTab-textColorInherit BackstageHeaderTabs-defaultTab MuiTypography-colorPrimary"
+      data-testid="header-tab-8"
+      href="/kubernetes"
+      role="tab"
+      tabindex="-1"
+    >
+      <span
+        class="MuiTab-wrapper"
+      >
+        Kubernetes
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </a>,
+  ],
+]
+`;
+
 exports[`[kind: component] [type: backend] tabs Should render tabs when there is no kubernetes: tabs 1`] = `
 [
   [
@@ -2053,6 +2222,27 @@ exports[`[kind: component] [type: helm] /pull-requests Should render correctly: 
 `;
 
 exports[`[kind: component] [type: helm] /releases Should render correctly: content 1`] = `
+[
+  [
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-helm-releases-card />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-md-12"
+      >
+        <mocked-entity-flux-kustomizations-card />
+      </div>
+    </div>,
+  ],
+]
+`;
+
+exports[`[kind: component] [type: helm] /releases Should render correctly: content 2`] = `
 [
   [
     <div
