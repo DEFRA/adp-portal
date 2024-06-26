@@ -97,7 +97,8 @@ describe('deliveryProjectClient', () => {
         created_at: new Date(),
         updated_at: new Date(),
       };
-      fetchApi.fetch.mockResolvedValue(
+
+      fetchApi.fetch.mockResolvedValueOnce(
         new Response(JSON.stringify(mockData), { status: 200 }),
       );
 
@@ -141,6 +142,72 @@ describe('deliveryProjectClient', () => {
           },
           body: JSON.stringify(updateData),
         },
+      );
+    });
+
+    it('updates a delivery project successfully if ado project is updated', async () => {
+      const mockData = {
+        name: 'Updated Body',
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: true,
+      };
+
+      fetchApi.fetch
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockData), { status: 200 }),
+        );
+
+      const updateData: UpdateDeliveryProjectRequest = {
+        title: 'New Name',
+        ado_project: 'new ADO Project',
+        id: randomUUID(),
+      };
+      const result = await client.updateDeliveryProject(updateData);
+      expect(result).toEqual(mockData);
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects',
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
+    });
+
+    it('throws an error when new ADO project not exists on update', async () => {
+      const mockData = {
+        name: 'Updated Body',
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+
+      fetchApi.fetch
+        .mockRejectedValueOnce('Project not found')
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockData), { status: 200 }),
+        );
+
+      const updateData: UpdateDeliveryProjectRequest = {
+        title: 'New Name',
+        ado_project: 'new ADO Project',
+        id: randomUUID(),
+      };
+
+      await expect(client.updateDeliveryProject(updateData)).rejects.toThrow(
+        'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/adoProject/new ADO Project',
       );
     });
   });
