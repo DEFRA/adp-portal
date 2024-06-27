@@ -74,6 +74,7 @@ export function createBackendApiAction<
               Authorization: `Bearer ${token}`,
             },
             signal: timeout,
+            body: JSON.stringify(ctx.input.body),
           },
         );
 
@@ -103,10 +104,8 @@ function abortAfter(timeoutMs: number) {
     timeoutMs,
   );
   return Object.assign(Object.create(controller.signal), {
-    [Symbol.dispose]: {
-      value: () => {
-        clearTimeout(timeoutId);
-      },
+    [Symbol.dispose]() {
+      clearTimeout(timeoutId);
     },
   });
 }
