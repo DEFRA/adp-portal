@@ -22,12 +22,13 @@ import type {
   LoggerService,
   AuthService,
   HttpAuthService,
-  PermissionsService
+  PermissionsService,
 } from '@backstage/backend-plugin-api';
 import { getUserEntityFromCatalog } from './catalog';
 import { stringifyEntityRef } from '@backstage/catalog-model';
 import { checkPermissions, createParser, respond } from './util';
 import { z } from 'zod';
+import type { UUID } from 'node:crypto';
 
 export interface ProgrammeRouterOptions {
   logger: LoggerService;
@@ -195,7 +196,6 @@ export function createProgrammeRouter(
     );
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProgrammeStore.add(body, creator);
-    respond(body, res, result, errorMapping, { ok: 201 });
 
     const { token } = await auth.getPluginRequestToken({
       onBehalfOf: credentials,
@@ -210,7 +210,6 @@ export function createProgrammeRouter(
     );
 
     if (result.success && catalogUser.success) {
-      console.log(result.value);
       const addUser: AddDeliveryProgrammeAdmin = {
         name: catalogUser.value.spec.profile!.displayName!,
         email: catalogUser.value.metadata.annotations!['microsoft.com/email'],
@@ -218,8 +217,7 @@ export function createProgrammeRouter(
           catalogUser.value.metadata.annotations![
             'graph.microsoft.com/user-id'
           ],
-        delivery_programme_id: result.value
-          .id as `${string}-${string}-${string}-${string}-${string}`,
+        delivery_programme_id: result.value.id as UUID,
         user_entity_ref: stringifyEntityRef({
           kind: 'user',
           namespace: 'default',
@@ -228,6 +226,7 @@ export function createProgrammeRouter(
       };
       await deliveryProgrammeAdminStore.add(addUser);
     }
+    respond(body, res, result, errorMapping, { ok: 201 });
   });
 
   router.patch('/', async (req, res) => {
