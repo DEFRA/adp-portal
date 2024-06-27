@@ -604,5 +604,5 @@ const reservedUsernames = [
 ];
 
 export function checkUsernameIsReserved(username: string): boolean {
-  return reservedUsernames.includes(username);
+  return reservedUsernames.includes(username.toLowerCase());
 }
