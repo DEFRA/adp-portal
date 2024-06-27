@@ -26,9 +26,9 @@ export interface BackendApiActionDependencies {
 }
 
 export function createBackendApiAction<
-  TBodySchema extends SchemaLike,
-  TParametersSchema extends SchemaLike,
-  TResponseSchema extends SchemaLike,
+  TBodySchema extends SchemaLike = z.ZodAny,
+  TParametersSchema extends SchemaLike = z.ZodAny,
+  TResponseSchema extends SchemaLike = z.ZodAny,
 >(
   options: CreateBackendApiActionOptions<
     TBodySchema,
@@ -49,8 +49,9 @@ export function createBackendApiAction<
       id: options.id,
       schema: {
         input: z.object({
-          body: options.bodySchema ?? z.any(),
-          parameters: options.parametersSchema ?? z.any(),
+          body: (options.bodySchema ?? z.any()) as TBodySchema,
+          parameters: (options.parametersSchema ??
+            z.any()) as TParametersSchema,
           checkStatus: z.boolean().optional(),
           timeout: z.number().optional(),
         }),
@@ -86,7 +87,7 @@ export function createBackendApiAction<
 
         if (ctx.input.checkStatus !== false && !response.ok) {
           throw new Error(
-            `There was an error with your request. Status code ${response.status} ResponseBody: ${JSON.stringify(body)}`,
+            `There was an error with your request.\nStatus code ${response.status}\nResponseBody: ${JSON.stringify(body)}`,
           );
         }
 
