@@ -145,8 +145,17 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
+    - allow: [Component, API, Resource]
+      locations:
+        - type: url
+          pattern: 'https://github.com/${GITHUB_ORGANIZATION}/**/catalog-info.yaml'
+
     - allow:
-        [Component, System, API, Resource, Location, Template, Domain, Group]
+        [Component, API, Resource, System, Location, Template, Domain, Group]
+      locations:
+        - type: url
+          pattern: 'https://github.com/DEFRA/adp-software-templates/**'
+
   processingInterval: { minutes: 60 }
 
   # Providers configured to scan repos in the specified organizations for components to add to the catalog.
