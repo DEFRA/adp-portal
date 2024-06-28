@@ -147,7 +147,7 @@ export function createDeliveryProgrammeAdminRouter(
       ],
       permissions,
     );
-    
+
     const catalogUser = await getUserEntityFromCatalog(
       body.user_catalog_name,
       catalog,
