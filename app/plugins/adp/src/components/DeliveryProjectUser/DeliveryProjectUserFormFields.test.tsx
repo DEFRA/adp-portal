@@ -15,6 +15,13 @@ import { catalogApiRef } from '@backstage/plugin-catalog-react';
 import userEvent from '@testing-library/user-event';
 import { SnapshotFriendlyStylesProvider } from '../../utils';
 
+jest.mock('@material-ui/core', () => ({
+  ...jest.requireActual('@material-ui/core'),
+  CircularProgress() {
+    return <></>;
+  },
+}));
+
 type Context = {
   form?: UseFormReturn<DeliveryProjectUserFields>;
 };
@@ -101,7 +108,7 @@ describe('DeliveryProjectUserFormFields', () => {
     const { renderComponent } = setup();
 
     const fields: DeliveryProjectUserFields = {
-      user_catalog_name: 'user-1234',
+      user_catalog_name: { label: 'user-1234', value: 'user-1234' },
       github_username: 'user-1234',
       is_admin: false,
       is_technical: true,
@@ -138,7 +145,7 @@ describe('DeliveryProjectUserFormFields', () => {
     });
 
     const fields: DeliveryProjectUserFields = {
-      user_catalog_name: 'test-user-1',
+      user_catalog_name: { label: 'Test User 1', value: 'test-user-1' },
       github_username: 'test-user-1',
       is_admin: false,
       is_technical: false,
@@ -157,7 +164,7 @@ describe('DeliveryProjectUserFormFields', () => {
     );
     expect(result.baseElement).toMatchSnapshot('User selected');
 
-    await setTextField(result, 'GitHub Handle', fields.github_username);
+    setTextField(result, 'GitHub Handle', fields.github_username);
     expect(result.baseElement).toMatchSnapshot('GitHub Handle set');
 
     expect(form.getValues()).toMatchObject(fields);

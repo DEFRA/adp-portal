@@ -14,6 +14,10 @@ export interface DeliveryProgrammeAdminApi {
   create(
     deliveryProgrammeId: string,
     userCatalogName: string,
+    groupEntityRef: string,
   ): Promise<DeliveryProgrammeAdmin>;
-  delete(aadEntityRefId: string, deliveryProgrammeId: string): void;
+  delete(
+    deliveryProgrammeAdminId: string,
+    groupEntityRef: string,
+  ): Promise<void>;
 }

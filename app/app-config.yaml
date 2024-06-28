@@ -35,6 +35,9 @@ backend:
   auth:
     keys:
       - secret: ${BACKEND_PLUGINS_SECRET}
+  fetchApi:
+    forwardAuth:
+      - ${ADP_PORTAL_API_ENDPOINT}
 
 proxy:
   endpoints:
@@ -42,10 +45,6 @@ proxy:
       target: ${GRAFANA_ENDPOINT}
       headers:
         Authorization: Bearer ${GRAFANA_TOKEN}
-    '/adp-portal-api':
-      target: ${ADP_PORTAL_API_ENDPOINT}
-      changeOrigin: true
-      secure: false
 
 grafana:
   domain: ${GRAFANA_ENDPOINT}
@@ -119,6 +118,9 @@ auth:
         clientId: ${AUTH_MICROSOFT_CLIENT_ID}
         clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
         tenantId: ${AUTH_MICROSOFT_TENANT_ID}
+        signIn:
+          resolvers:
+            - resolver: emailMatchingUserEntityProfileEmail
 
     github:
       sandpit:
@@ -145,6 +147,7 @@ catalog:
   rules:
     - allow:
         [Component, System, API, Resource, Location, Template, Domain, Group]
+  processingInterval: { minutes: 60 }
 
   # Providers configured to scan repos in the specified organizations for components to add to the catalog.
   # Assumes a catalog-info.yml file is present in the root of the repo.
@@ -153,8 +156,7 @@ catalog:
       defra:
         organization: 'defra-adp-sandpit'
         catalogPath: '/catalog-info.yaml'
-        filters:
-          repository: '^(adp-portal-.+|techdocs-.+)'
+        validateLocationsExist: true
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 5 }
@@ -185,6 +187,7 @@ techRadar:
   data: https://raw.githubusercontent.com/defra/adp-software-templates/${ADP_PORTAL_TEMPLATE_VERSION}/tech-radars/development-tech-radar.json
 
 adp:
+  apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}
   fluxOnboarding:
     apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/FluxTeamConfig
     defaultConfigVariables:
@@ -194,5 +197,13 @@ adp:
         value: 3000Mi
       - key: TEAM_PODS_QUOTA
         value: '20'
+      - key: CONTAINER_MAX_CPU
+        value: '500m'
+      - key: CONTAINER_MAX_MEMORY
+        value: '1000Mi'
   githubTeams:
     apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/github/teams
+  entraIdGroups:
+    apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/AadGroup
+  adoProject:
+    apiBaseUrl: ${ADP_PORTAL_API_ENDPOINT}/AdoProject

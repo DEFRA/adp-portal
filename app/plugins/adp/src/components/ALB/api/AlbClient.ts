@@ -19,7 +19,7 @@ export class ArmsLengthBodyClient implements ArmsLengthBodyApi {
   }
 
   private async getApiUrl(): Promise<string> {
-    return `${await this.discoveryApi.getBaseUrl('adp')}/armsLengthBody`;
+    return `${await this.discoveryApi.getBaseUrl('adp')}/armsLengthBodies`;
   }
 
   async getArmsLengthBodies(): Promise<ArmsLengthBody[]> {
@@ -81,7 +81,7 @@ export class ArmsLengthBodyClient implements ArmsLengthBodyApi {
     try {
       const albNamesUrl = `${await this.discoveryApi.getBaseUrl(
         'adp',
-      )}/armslengthbodynames`;
+      )}/armslengthbodies/names`;
 
       const response = await this.fetchApi.fetch(albNamesUrl);
       if (!response.ok) {

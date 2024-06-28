@@ -1,15 +1,18 @@
 import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 import type { DisabledFields } from '../../utils';
-import { FormSelectField, formRules } from '../../utils';
-import { useCatalogUsersList } from '../../hooks';
+import { formRules, FormMultiSelectAutoCompleteField } from '../../utils';
+import { useCatalogUsersLiveSearch } from '../../hooks';
 
 export type DeliveryProgrammeAdminFields = {
-  user_catalog_name: string;
+  user_catalog_name: Array<{
+    label: string;
+    value: string;
+  }>;
 };
 
 export const emptyForm = Object.freeze<DeliveryProgrammeAdminFields>({
-  user_catalog_name: '',
+  user_catalog_name: [],
 });
 
 export type DeliveryProgrammeAdminFormFieldsProps = Readonly<
@@ -23,22 +26,21 @@ export function DeliveryProgrammeAdminFormFields({
   formState: { errors },
   disabled,
 }: DeliveryProgrammeAdminFormFieldsProps) {
-  const catalogUserOptions = useCatalogUsersList();
-
+  const getOptions = useCatalogUsersLiveSearch();
   let i = 0;
   return (
-    <FormSelectField
+    <FormMultiSelectAutoCompleteField
       control={control}
       errors={errors}
       index={i++}
-      label="Select User"
-      helperText="Select a user to assign Admin permissions for this delivery programme"
+      label="Select Users"
+      helperText="Select users to assign Admin permissions for this delivery programme (Type to search for users)"
       name="user_catalog_name"
-      options={catalogUserOptions}
       disabled={disabled}
       rules={{
         ...formRules.required,
       }}
+      getOptions={getOptions}
     />
   );
 }

@@ -10,7 +10,7 @@ import { CatalogImportPage } from '@backstage/plugin-catalog-import';
 import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
 import { orgPlugin } from '@backstage/plugin-org';
 import { SearchPage } from '@backstage/plugin-search';
-import { TechRadarPage } from '@backstage/plugin-tech-radar';
+import { TechRadarPage } from '@backstage-community/plugin-tech-radar';
 import {
   DefaultTechDocsHome,
   TechDocsIndexPage,
@@ -39,134 +39,25 @@ import {
   catalogLocationCreatePermission,
 } from '@backstage/plugin-catalog-common/alpha';
 
-import type { IconComponent } from '@backstage/core-plugin-api';
 import { microsoftAuthApiRef } from '@backstage/core-plugin-api';
 
-import LightIcon from '@material-ui/icons/WbSunnyRounded';
-import NightIcon from '@material-ui/icons/Brightness2Rounded';
 import LinearScaleIcon from '@material-ui/icons/LinearScale';
 import PolicyIcon from '@material-ui/icons/Policy';
 import WebIcon from '@material-ui/icons/Web';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import CloudIcon from '@material-ui/icons/Cloud';
 
-import {
-  UnifiedThemeProvider,
-  createUnifiedTheme,
-  palettes,
-  genPageTheme,
-} from '@backstage/theme';
-
 import { FluxRuntimePage } from '@weaveworksoss/backstage-plugin-flux';
+import { themes } from '@internal/plugin-adp-theme-react';
 
-import styles from 'style-loader!css-loader?{"modules": {"auto": true}}!sass-loader?{"sassOptions": {"quietDeps": true}}!./style.module.scss';
 import {
   AdpPage,
   AlbViewPageComponent,
   DeliveryProgrammeViewPageComponent,
   DeliveryProjectViewPageComponent,
 } from '@internal/plugin-adp';
+import { grafanaPlugin } from '@k-phoen/backstage-plugin-grafana';
 import { AdpAiChatbotPage } from '@internal/plugin-adp-ai-chatbot';
-
-const lightTheme = createUnifiedTheme({
-  palette: {
-    ...palettes.light,
-    navigation: {
-      background: styles.lightThemeNav,
-      indicator: styles.primaryColour,
-      color: styles.unselectedNavText,
-      selectedColor: styles.white,
-      navItem: {
-        hoverBackground: styles.navHoverBackground,
-      },
-    },
-    primary: {
-      main: styles.primaryColour,
-    },
-    secondary: {
-      main: styles.warningColour,
-    },
-    link: styles.linkColour,
-    linkHover: styles.linkHoverColour,
-    errorText: styles.errorColour,
-    contrastThreshold: 4.5,
-  },
-  defaultPageTheme: 'home',
-  pageTheme: {
-    home: genPageTheme({ colors: [`${styles.lightThemeNav}`], shape: 'none' }),
-  },
-  fontFamily: "'GDS Transport',arial, sans-serif",
-  components: {
-    BackstageHeader: {
-      styleOverrides: {
-        header: {
-          borderBottom: `4px solid ${styles.primaryColour}`,
-        },
-      },
-    },
-    MuiFormHelperText: {
-      styleOverrides: {
-        root: {
-          color: styles.secondaryTextColour,
-          '&$error': {
-            color: styles.secondaryTextColour,
-          },
-        },
-      },
-    },
-    MuiInputLabel: {
-      styleOverrides: {
-        root: {
-          color: styles.secondaryTextColour,
-        },
-      },
-    },
-    MuiTypography: {
-      styleOverrides: {
-        caption: {
-          color: ` ${styles.secondaryTextColour} !important`,
-        },
-      },
-    },
-  },
-});
-
-const darkTheme = createUnifiedTheme({
-  palette: {
-    ...palettes.dark,
-    background: {
-      default: styles.darkBackground,
-      paper: styles.darkPaper,
-    },
-    navigation: {
-      background: styles.darkThemeNav,
-      indicator: styles.primaryColour,
-      color: styles.unselectedNavText,
-      selectedColor: styles.white,
-      navItem: {
-        hoverBackground: styles.navHoverBackground,
-      },
-    },
-    link: styles.linkColour,
-    linkHover: styles.linkHoverColour,
-    errorText: styles.errorColour,
-    contrastThreshold: 4.5,
-  },
-  defaultPageTheme: 'home',
-  pageTheme: {
-    home: genPageTheme({ colors: [`${styles.darkThemeNav}`], shape: 'none' }),
-  },
-  fontFamily: "'GDS Transport',arial, sans-serif",
-  components: {
-    MuiTypography: {
-      styleOverrides: {
-        h2: {
-          color: `${styles.lightGrey} !important`,
-        },
-      },
-    },
-  },
-});
 
 const app = createApp({
   components: {
@@ -184,30 +75,8 @@ const app = createApp({
     ),
   },
   apis,
-  themes: [
-    {
-      id: 'default-light',
-      title: 'Default Light',
-      variant: 'light',
-      icon: <LightIcon />,
-      Provider: ({ children }) => (
-        <UnifiedThemeProvider theme={lightTheme}>
-          {children}
-        </UnifiedThemeProvider>
-      ),
-    },
-    {
-      id: 'default-dark',
-      title: 'Default Dark',
-      variant: 'dark',
-      icon: <NightIcon />,
-      Provider: ({ children }) => (
-        <UnifiedThemeProvider theme={darkTheme}>
-          {children}
-        </UnifiedThemeProvider>
-      ),
-    },
-  ],
+  themes,
+  plugins: [grafanaPlugin],
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
       createComponent: scaffolderPlugin.routes.root,
@@ -223,11 +92,11 @@ const app = createApp({
     });
   },
   icons: {
-    pipeline: LinearScaleIcon as IconComponent,
-    policy: PolicyIcon as IconComponent,
-    project: WebIcon as IconComponent,
-    check: CheckCircleOutlineIcon as IconComponent,
-    cloud: CloudIcon as IconComponent,
+    pipeline: LinearScaleIcon,
+    policy: PolicyIcon,
+    project: WebIcon,
+    check: CheckCircleOutlineIcon,
+    cloud: CloudIcon,
   },
 });
 

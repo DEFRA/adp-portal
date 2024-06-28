@@ -1,5 +1,6 @@
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import {
+  deliveryProjectUserUpdatePermission,
   normalizeUsername,
   type DeliveryProjectUser,
 } from '@internal/plugin-adp-common';
@@ -12,7 +13,15 @@ import {
   emptyForm,
 } from './DeliveryProjectUserFormFields';
 import type { SubmitResult } from '../../utils';
-import { DialogForm, populate, readValidationError } from '../../utils';
+import {
+  DialogForm,
+  TitleWithHelp,
+  ValidationError,
+  populate,
+  readValidationError,
+} from '../../utils';
+import { usePermission } from '@backstage/plugin-permission-react';
+import { checkUsernameIsReserved } from '../../utils/reservedUsernames';
 
 export type EditDeliveryProjectUserButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -30,6 +39,12 @@ export function EditDeliveryProjectUserButton({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
   const client = useApi(deliveryProjectUserApiRef);
+  const { allowed: canEditProjectUser } = usePermission({
+    permission: deliveryProjectUserUpdatePermission,
+    resourceRef: deliveryProjectUser.delivery_project_id,
+  });
+
+  if (!canEditProjectUser) return null;
 
   const userEntityRef = normalizeUsername(deliveryProjectUser.email);
 
@@ -37,9 +52,25 @@ export function EditDeliveryProjectUserButton({
     fields: DeliveryProjectUserFields,
   ): Promise<SubmitResult<DeliveryProjectUserFields>> {
     try {
+      if (checkUsernameIsReserved(fields.github_username.trim())) {
+        throw new ValidationError([
+          {
+            path: 'github_username',
+            error: {
+              message:
+                'Please enter a valid GitHub handle. This Github handle is reserved.',
+            },
+          },
+        ]);
+      }
+
       await client.update({
         ...deliveryProjectUser,
         ...fields,
+        aad_user_principal_name:
+          deliveryProjectUser.aad_user_principal_name ?? '',
+        user_catalog_name: fields.user_catalog_name.value,
+        github_username: fields.github_username.trim(),
       });
     } catch (e: any) {
       return readValidationError(e);
@@ -65,14 +96,21 @@ export function EditDeliveryProjectUserButton({
         <DialogForm
           defaultValues={populate(emptyForm, {
             ...deliveryProjectUser,
-            user_catalog_name: userEntityRef,
+            user_catalog_name: {
+              label: deliveryProjectUser.name,
+              value: userEntityRef,
+            },
           })}
           renderFields={DeliveryProjectUserFormFields}
           completed={success => {
             setIsModalOpen(false);
             if (success) onEdited?.();
           }}
-          title={`Edit team member ${deliveryProjectUser.name}`}
+          title={
+            <TitleWithHelp href="https://defra.github.io/adp-documentation/Getting-Started/onboarding-a-user/">
+              {`Edit team member ${deliveryProjectUser.name}`}
+            </TitleWithHelp>
+          }
           confirm="Update"
           submit={handleSubmit}
           disabled={{

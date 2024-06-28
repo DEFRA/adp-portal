@@ -9,8 +9,8 @@ import {
 import { usePermission } from '@backstage/plugin-permission-react';
 import type { DeliveryProject } from '@internal/plugin-adp-common';
 import {
-  adpProjectCreatePermission,
   deliveryProjectDisplayName,
+  deliveryProjectUpdatePermission,
 } from '@internal/plugin-adp-common';
 import type { SubmitResult } from '../../utils';
 import {
@@ -39,7 +39,8 @@ export function EditDeliveryProjectButton({
   const client = useApi(deliveryProjectApiRef);
 
   const { allowed: allowedToEditDeliveryProject } = usePermission({
-    permission: adpProjectCreatePermission,
+    permission: deliveryProjectUpdatePermission,
+    resourceRef: deliveryProject.id,
   });
 
   if (!allowedToEditDeliveryProject) return null;

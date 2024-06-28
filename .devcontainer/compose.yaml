@@ -1,0 +1,16 @@
+version: "3.5"
+
+include:
+  - ../compose.dev.yaml
+
+services:
+  editor:
+    build: editor
+    init: true
+    env_file:
+      - ../.env
+    volumes:
+      - azurecli:/home/node/.azure
+
+volumes:
+  azurecli:

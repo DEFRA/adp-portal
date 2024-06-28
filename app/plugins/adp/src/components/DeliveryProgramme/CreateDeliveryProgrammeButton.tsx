@@ -7,7 +7,7 @@ import {
   emptyForm,
 } from './DeliveryProgrammeFormFields';
 import { usePermission } from '@backstage/plugin-permission-react';
-import { adpProgrammmeCreatePermission } from '@internal/plugin-adp-common';
+import { deliveryProgrammeCreatePermission } from '@internal/plugin-adp-common';
 import type { SubmitResult } from '../../utils';
 import { DialogForm, TitleWithHelp, readValidationError } from '../../utils';
 import { deliveryProgrammeApiRef } from './api';
@@ -28,7 +28,7 @@ export function CreateDeliveryProgrammeButton({
   const client = useApi(deliveryProgrammeApiRef);
 
   const { allowed: allowedToCreateDeliveryProgramme } = usePermission({
-    permission: adpProgrammmeCreatePermission,
+    permission: deliveryProgrammeCreatePermission,
   });
   if (!allowedToCreateDeliveryProgramme) return null;
 

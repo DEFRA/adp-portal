@@ -15,4 +15,5 @@ export * from './types/delivery-project';
 export * from './types/delivery-programme';
 export * from './types/delivery-programme-admin';
 export * from './types/delivery-project-user';
+export * from './types/ado-project';
 export * from './util';

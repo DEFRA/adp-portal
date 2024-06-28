@@ -2,11 +2,17 @@ import {
   coreServices,
   createBackendModule,
 } from '@backstage/backend-plugin-api';
-import { loggerToWinstonLogger } from '@backstage/backend-common';
-import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
+import {
+  catalogPermissionExtensionPoint,
+  catalogProcessingExtensionPoint,
+} from '@backstage/plugin-catalog-node/alpha';
 import { AdpDatabaseEntityProvider } from './providers';
+import { fetchApiRef } from '@internal/plugin-fetch-api-backend';
+import { isGroupMemberRule } from './permissions';
+import { microsoftGraphOrgEntityProviderTransformExtensionPoint } from '@backstage/plugin-catalog-backend-module-msgraph/alpha';
+import { defraUserNameTransformer } from './transformers/defraUserNameTransformer';
 
-export const catalogModuleAdpEntityProvider = createBackendModule({
+export const adpCatalogModule = createBackendModule({
   pluginId: 'catalog',
   moduleId: 'adp-entity-provider',
   register(reg) {
@@ -15,15 +21,36 @@ export const catalogModuleAdpEntityProvider = createBackendModule({
         logger: coreServices.logger,
         discovery: coreServices.discovery,
         scheduler: coreServices.scheduler,
-        catalog: catalogProcessingExtensionPoint,
+        catalogProcessing: catalogProcessingExtensionPoint,
+        catalogPermissions: catalogPermissionExtensionPoint,
+        microsoftGraphTransformers:
+          microsoftGraphOrgEntityProviderTransformExtensionPoint,
+        auth: coreServices.auth,
+        fetchApi: fetchApiRef,
       },
-      async init({ logger, catalog, discovery, scheduler }) {
-        catalog.addEntityProvider(
-          AdpDatabaseEntityProvider.create(discovery, {
-            logger: loggerToWinstonLogger(logger),
+      async init({
+        logger,
+        catalogProcessing,
+        catalogPermissions,
+        microsoftGraphTransformers,
+        discovery,
+        scheduler,
+        auth,
+        fetchApi,
+      }) {
+        catalogProcessing.addEntityProvider(
+          AdpDatabaseEntityProvider.create({
+            discovery,
+            logger: logger,
             scheduler: scheduler,
+            fetchApi,
+            auth,
           }),
         );
+
+        catalogPermissions.addPermissionRules([isGroupMemberRule]);
+
+        microsoftGraphTransformers.setUserTransformer(defraUserNameTransformer);
       },
     });
   },

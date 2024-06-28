@@ -9,6 +9,8 @@ import type { SafeResult } from '../service/util';
 import { assertUUID, checkMany, isUUID } from '../service/util';
 import type { delivery_programme } from '../deliveryProgramme/delivery_programme';
 import { delivery_programme_name } from '../deliveryProgramme/delivery_programme';
+import { NotFoundError } from '@backstage/errors';
+import { type UUID } from 'node:crypto';
 
 export type IDeliveryProgrammeAdminStore = {
   [P in keyof DeliveryProgrammeAdminStore]: DeliveryProgrammeAdminStore[P];
@@ -21,6 +23,7 @@ const allColumns = [
   'email',
   'name',
   'updated_at',
+  'user_entity_ref',
 ] as const satisfies ReadonlyArray<keyof delivery_programme_admin>;
 
 export class DeliveryProgrammeAdminStore {
@@ -97,8 +100,13 @@ export class DeliveryProgrammeAdminStore {
       'duplicateUser' | 'unknownDeliveryProgramme'
     >
   > {
-    const { aad_entity_ref_id, delivery_programme_id, email, name } =
-      deliveryProgrammeAdmin;
+    const {
+      aad_entity_ref_id,
+      delivery_programme_id,
+      email,
+      name,
+      user_entity_ref,
+    } = deliveryProgrammeAdmin;
 
     const valid = await checkMany({
       duplicateUser: this.#deliveryProgrammeAdminExists(
@@ -121,6 +129,7 @@ export class DeliveryProgrammeAdminStore {
         aad_entity_ref_id: aad_entity_ref_id,
         email: email,
         name: name,
+        user_entity_ref: user_entity_ref,
       },
       allColumns,
     );
@@ -137,13 +146,13 @@ export class DeliveryProgrammeAdminStore {
 
   /**
    * Deletes a Delivery Programme Admin from the database.
-   * @param deliveryProgrammeAdminId the ID of the Delivery Programme Admin to delete.
+   * @param id the ID of the Delivery Programme Admin to delete.
    * @returns the number of records deleted.
    */
-  async delete(deliveryProgrammeAdminId: string): Promise<number> {
-    const deleteResult = await this.#table
-      .where('id', deliveryProgrammeAdminId)
-      .del();
+  async delete(id: string): Promise<number> {
+    if (!isUUID(id) || !(await this.#exists(id))) throw notFound();
+
+    const deleteResult = await this.#table.where('id', id).del();
 
     return deleteResult;
   }
@@ -181,8 +190,20 @@ export class DeliveryProgrammeAdminStore {
       .count('*', { as: 'count' });
     return Number(count) > 0;
   }
+
+  async #exists(id: UUID) {
+    const [{ count }] = await this.#table
+      .where('id', id)
+      .limit(1)
+      .count('*', { as: 'count' });
+    return Number(count) > 0;
+  }
 }
 
 async function not(value: Promise<boolean>) {
   return !(await value);
+}
+
+function notFound() {
+  return new NotFoundError('Unknown Arms Length Body');
 }

@@ -21,7 +21,7 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
     deliveryProgrammeId: string,
   ): Promise<DeliveryProgrammeAdmin[]> {
     const baseUrl = await this.getBaseUrl();
-    const url = `${baseUrl}/deliveryProgrammeAdmins/${deliveryProgrammeId}`;
+    const url = `${baseUrl}/${deliveryProgrammeId}`;
 
     const response = await this.fetchApi.fetch(url);
 
@@ -36,8 +36,7 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
   }
 
   async getAll(): Promise<DeliveryProgrammeAdmin[]> {
-    const baseUrl = await this.getBaseUrl();
-    const url = `${baseUrl}/deliveryProgrammeAdmins/`;
+    const url = await this.getBaseUrl();
 
     const response = await this.fetchApi.fetch(url);
 
@@ -54,13 +53,14 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
   async create(
     deliveryProgrammeId: string,
     userCatalogName: string,
+    groupEntityRef: string,
   ): Promise<DeliveryProgrammeAdmin> {
-    const baseUrl = await this.getBaseUrl();
-    const url = `${baseUrl}/deliveryProgrammeAdmin`;
+    const url = await this.getBaseUrl();
 
     const body: CreateDeliveryProgrammeAdminRequest = {
       user_catalog_name: userCatalogName,
       delivery_programme_id: deliveryProgrammeId,
+      group_entity_ref: groupEntityRef,
     };
 
     const response = await this.fetchApi.fetch(url, {
@@ -84,13 +84,15 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
     return deliveryProgrammeAdmin;
   }
 
-  async delete(aadEntityRefId: string, deliveryProgrammeId: string) {
-    const baseUrl = await this.getBaseUrl();
-    const url = `${baseUrl}/deliveryProgrammeAdmin`;
+  async delete(
+    deliveryProgrammeAdminId: string,
+    groupEntityRef: string,
+  ): Promise<void> {
+    const url = await this.getBaseUrl();
 
     const body: DeleteDeliveryProgrammeAdminRequest = {
-      aadEntityRefId: aadEntityRefId,
-      deliveryProgrammeId: deliveryProgrammeId,
+      delivery_programme_admin_id: deliveryProgrammeAdminId,
+      group_entity_ref: groupEntityRef,
     };
 
     const response = await this.fetchApi.fetch(url, {
@@ -107,6 +109,6 @@ export class DeliveryProgrammeAdminClient implements DeliveryProgrammeAdminApi {
   }
 
   private async getBaseUrl(): Promise<string> {
-    return `${await this.discoveryApi.getBaseUrl('adp')}`;
+    return `${await this.discoveryApi.getBaseUrl('adp')}/deliveryProgrammeAdmins`;
   }
 }

@@ -1,9 +1,9 @@
 import React from 'react';
-import { renderWithEffects } from '@backstage/test-utils';
+import { render, waitFor } from '@testing-library/react';
 import App from './App';
 
 describe('App', () => {
-  it('should render', async () => {
+  it('should render sign in page', async () => {
     process.env = {
       NODE_ENV: 'test',
       APP_CONFIG: [
@@ -20,7 +20,9 @@ describe('App', () => {
       ] as any,
     };
 
-    const rendered = await renderWithEffects(<App />);
-    expect(rendered.baseElement).toBeInTheDocument();
+    const rendered = render(<App />);
+    await waitFor(() => {
+      expect(rendered.baseElement).toMatchSnapshot();
+    });
   });
 });

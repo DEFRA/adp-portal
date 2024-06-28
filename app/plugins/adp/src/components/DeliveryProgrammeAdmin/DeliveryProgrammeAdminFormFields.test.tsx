@@ -14,6 +14,13 @@ import { catalogApiRef } from '@backstage/plugin-catalog-react';
 import { TestApiProvider } from '@backstage/test-utils';
 import userEvent from '@testing-library/user-event';
 
+jest.mock('@material-ui/core', () => ({
+  ...jest.requireActual('@material-ui/core'),
+  CircularProgress() {
+    return <></>;
+  },
+}));
+
 type Context = {
   form?: UseFormReturn<DeliveryProgrammeAdminFields>;
 };
@@ -90,7 +97,7 @@ describe('DeliveryProgrammeAdminFormFields', () => {
     const { renderComponent } = setup();
 
     const fields: DeliveryProgrammeAdminFields = {
-      user_catalog_name: 'user-1234',
+      user_catalog_name: [{ label: 'user-1234', value: 'user-1234' }],
     };
 
     const { result } = await renderComponent(fields);
@@ -124,7 +131,7 @@ describe('DeliveryProgrammeAdminFormFields', () => {
     });
 
     const fields: DeliveryProgrammeAdminFields = {
-      user_catalog_name: 'test-user-1',
+      user_catalog_name: [{ label: 'Test User 1', value: 'test-user-1' }],
     };
 
     const { form, result } = await renderComponent();
@@ -134,7 +141,7 @@ describe('DeliveryProgrammeAdminFormFields', () => {
     await setSelectField(
       result,
       form,
-      'Select User',
+      'Select Users',
       'Test User 1',
       'user_catalog_name',
     );

@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`csharp Should format "123 xyz" as identifier 1`] = `"_123_xyz"`;
+
+exports[`csharp Should format "123 xyz" as namespace 1`] = `"_123.Xyz"`;
+
+exports[`csharp Should format "123 xyz" as value 1`] = `""123 xyz""`;
+
+exports[`csharp Should format "My Cool Project" as identifier 1`] = `"My_Cool_Project"`;
+
+exports[`csharp Should format "My Cool Project" as namespace 1`] = `"My.Cool.Project"`;
+
+exports[`csharp Should format "My Cool Project" as value 1`] = `""My Cool Project""`;
+
+exports[`csharp Should format "My-Cool-Project" as identifier 1`] = `"My_Cool_Project"`;
+
+exports[`csharp Should format "My-Cool-Project" as namespace 1`] = `"My.Cool.Project"`;
+
+exports[`csharp Should format "My-Cool-Project" as value 1`] = `""My-Cool-Project""`;
+
+exports[`csharp Should format "my_cool_project" as identifier 1`] = `"My_cool_project"`;
+
+exports[`csharp Should format "my_cool_project" as namespace 1`] = `"My_cool_project"`;
+
+exports[`csharp Should format "my_cool_project" as value 1`] = `""my_cool_project""`;
+
+exports[`csharp Should format "test@email.com" as identifier 1`] = `"Test_email_com"`;
+
+exports[`csharp Should format "test@email.com" as namespace 1`] = `"Test_email.Com"`;
+
+exports[`csharp Should format "test@email.com" as value 1`] = `""test@email.com""`;
+
+exports[`csharp Should format {"some":{"cool":"object"}} as identifier 1`] = `"__object_Object_"`;
+
+exports[`csharp Should format {"some":{"cool":"object"}} as namespace 1`] = `"__object.Object_"`;
+
+exports[`csharp Should format {"some":{"cool":"object"}} as value 1`] = `
+"new 
+{
+  some = new 
+{
+  cool = "object"
+}
+}"
+`;
+
+exports[`csharp Should format 123.456 as identifier 1`] = `"_123_456"`;
+
+exports[`csharp Should format 123.456 as namespace 1`] = `"_123._456"`;
+
+exports[`csharp Should format 123.456 as value 1`] = `"123.456"`;
+
+exports[`csharp Should format false as identifier 1`] = `"False"`;
+
+exports[`csharp Should format false as namespace 1`] = `"False"`;
+
+exports[`csharp Should format false as value 1`] = `"false"`;
+
+exports[`csharp Should format null as identifier 1`] = `"Null"`;
+
+exports[`csharp Should format null as namespace 1`] = `"Null"`;
+
+exports[`csharp Should format null as value 1`] = `"null"`;
+
+exports[`csharp Should format true as identifier 1`] = `"True"`;
+
+exports[`csharp Should format true as namespace 1`] = `"True"`;
+
+exports[`csharp Should format true as value 1`] = `"true"`;

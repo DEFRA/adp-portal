@@ -1,27 +1,36 @@
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
-import type { Logger } from 'winston';
 import { InputError } from '@backstage/errors';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
-import type {
-  CreateDeliveryProgrammeRequest,
-  UpdateDeliveryProgrammeRequest,
-  ValidationErrorMapping,
+import {
+  type DeliveryProgramme,
+  deliveryProgrammeCreatePermission,
+  deliveryProgrammeUpdatePermission,
+  type CreateDeliveryProgrammeRequest,
+  type UpdateDeliveryProgrammeRequest,
+  type ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
 import { getCurrentUsername } from '../utils/index';
 import type { IDeliveryProjectStore } from '../deliveryProject';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
-import { createParser, respond } from './util';
+import { checkPermissions, createParser, respond } from './util';
 import { z } from 'zod';
+import type {
+  HttpAuthService,
+  LoggerService,
+  PermissionsService,
+} from '@backstage/backend-plugin-api';
 
 export interface ProgrammeRouterOptions {
-  logger: Logger;
+  logger: LoggerService;
   identity: IdentityApi;
   deliveryProgrammeStore: IDeliveryProgrammeStore;
   deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
   deliveryProjectStore: IDeliveryProjectStore;
+  permissions: PermissionsService;
+  httpAuth: HttpAuthService;
 }
 
 const errorMapping = {
@@ -82,6 +91,23 @@ const parseUpdateDeliveryProgrammeRequest =
     }),
   );
 
+export const getDeliveryProgramme = async (
+  deliveryProgrammeStore: IDeliveryProgrammeStore,
+  deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore,
+  deliveryProgrammeId: string,
+): Promise<DeliveryProgramme> => {
+  const deliveryProgramme =
+    await deliveryProgrammeStore.get(deliveryProgrammeId);
+  const deliveryProgrammeAdmins =
+    await deliveryProgrammeAdminStore.getByDeliveryProgramme(
+      deliveryProgrammeId,
+    );
+
+  deliveryProgramme.delivery_programme_admins = deliveryProgrammeAdmins ?? [];
+
+  return deliveryProgramme;
+};
+
 export function createProgrammeRouter(
   options: ProgrammeRouterOptions,
 ): express.Router {
@@ -91,17 +117,19 @@ export function createProgrammeRouter(
     deliveryProgrammeStore,
     deliveryProjectStore,
     deliveryProgrammeAdminStore,
+    httpAuth,
+    permissions,
   } = options;
 
   const router = Router();
   router.use(express.json());
 
-  router.get('/deliveryProgramme/health', (_, response) => {
+  router.get('/health', (_, response) => {
     logger.info('PONG!');
     response.json({ status: 'ok' });
   });
 
-  router.get('/deliveryProgramme', async (_req, res) => {
+  router.get('/', async (_req, res) => {
     try {
       const programmeData = await deliveryProgrammeStore.getAll();
       const projectData = await deliveryProjectStore.getAll();
@@ -125,19 +153,14 @@ export function createProgrammeRouter(
     }
   });
 
-  router.get('/deliveryProgramme/:id', async (_req, res) => {
+  router.get('/:id', async (_req, res) => {
     try {
-      const deliveryProgramme = await deliveryProgrammeStore.get(
+      const deliveryProgramme = await getDeliveryProgramme(
+        deliveryProgrammeStore,
+        deliveryProgrammeAdminStore,
         _req.params.id,
       );
-      const programmeManager =
-        await deliveryProgrammeAdminStore.getByDeliveryProgramme(
-          _req.params.id,
-        );
-      if (programmeManager && deliveryProgramme !== null) {
-        deliveryProgramme.programme_managers = programmeManager;
-        res.json(deliveryProgramme);
-      }
+      res.json(deliveryProgramme);
     } catch (error) {
       const deliveryProgramError = error as Error;
       logger.error(
@@ -148,15 +171,36 @@ export function createProgrammeRouter(
     }
   });
 
-  router.post('/deliveryProgramme', async (req, res) => {
+  router.post('/', async (req, res) => {
     const body = parseCreateDeliveryProgrammeRequest(req.body);
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProgrammeCreatePermission,
+        },
+      ],
+      permissions,
+    );
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProgrammeStore.add(body, creator);
     respond(body, res, result, errorMapping, { ok: 201 });
   });
 
-  router.patch('/deliveryProgramme', async (req, res) => {
+  router.patch('/', async (req, res) => {
     const body = parseUpdateDeliveryProgrammeRequest(req.body);
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProgrammeUpdatePermission,
+          resourceRef: body.id,
+        },
+      ],
+      permissions,
+    );
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProgrammeStore.update(body, creator);
     respond(body, res, result, errorMapping);

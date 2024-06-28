@@ -1,0 +1,3169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "camel" 1`] = `
+{
+  "camel": "tHIS_IS_SCREAMING_SNAKE_CASE",
+  "dot": "t.h.i.s_.i.s_.s.c.r.e.a.m.i.n.g_.s.n.a.k.e_.c.a.s.e",
+  "kebab": "t-h-i-s_-i-s_-s-c-r-e-a-m-i-n-g_-s-n-a-k-e_-c-a-s-e",
+  "pascal": "THIS_IS_SCREAMING_SNAKE_CASE",
+  "sentence": "t h i s_ i s_ s c r e a m i n g_ s n a k e_ c a s e",
+  "snake": "t_h_i_s__i_s__s_c_r_e_a_m_i_n_g__s_n_a_k_e__c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "camel" 2`] = `
+{
+  "camel": "tHIS_IS_SCREAMING_SNAKE_CASE",
+  "dot": "t.h.i.s_.i.s_.s.c.r.e.a.m.i.n.g_.s.n.a.k.e_.c.a.s.e",
+  "kebab": "t-h-i-s_-i-s_-s-c-r-e-a-m-i-n-g_-s-n-a-k-e_-c-a-s-e",
+  "pascal": "THIS_IS_SCREAMING_SNAKE_CASE",
+  "sentence": "t h i s_ i s_ s c r e a m i n g_ s n a k e_ c a s e",
+  "snake": "t_h_i_s__i_s__s_c_r_e_a_m_i_n_g__s_n_a_k_e__c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "camel" 3`] = `
+{
+  "camel": "tHIS_IS_SCREAMING_SNAKE_CASE",
+  "dot": "t.h.i.s_.i.s_.s.c.r.e.a.m.i.n.g_.s.n.a.k.e_.c.a.s.e",
+  "kebab": "t-h-i-s_-i-s_-s-c-r-e-a-m-i-n-g_-s-n-a-k-e_-c-a-s-e",
+  "pascal": "THIS_IS_SCREAMING_SNAKE_CASE",
+  "sentence": "t h i s_ i s_ s c r e a m i n g_ s n a k e_ c a s e",
+  "snake": "t_h_i_s__i_s__s_c_r_e_a_m_i_n_g__s_n_a_k_e__c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "camel" 4`] = `
+{
+  "camel": "tHIS_IS_SCREAMING_SNAKE_CASE",
+  "dot": "t.h.i.s_.i.s_.s.c.r.e.a.m.i.n.g_.s.n.a.k.e_.c.a.s.e",
+  "kebab": "t-h-i-s_-i-s_-s-c-r-e-a-m-i-n-g_-s-n-a-k-e_-c-a-s-e",
+  "pascal": "THIS_IS_SCREAMING_SNAKE_CASE",
+  "sentence": "t h i s_ i s_ s c r e a m i n g_ s n a k e_ c a s e",
+  "snake": "t_h_i_s__i_s__s_c_r_e_a_m_i_n_g__s_n_a_k_e__c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "camel" 5`] = `
+{
+  "camel": "tHIS_IS_SCREAMING_SNAKE_CASE",
+  "dot": "t.h.i.s_.i.s_.s.c.r.e.a.m.i.n.g_.s.n.a.k.e_.c.a.s.e",
+  "kebab": "t-h-i-s_-i-s_-s-c-r-e-a-m-i-n-g_-s-n-a-k-e_-c-a-s-e",
+  "pascal": "THIS_IS_SCREAMING_SNAKE_CASE",
+  "sentence": "t h i s_ i s_ s c r e a m i n g_ s n a k e_ c a s e",
+  "snake": "t_h_i_s__i_s__s_c_r_e_a_m_i_n_g__s_n_a_k_e__c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "camel" 6`] = `
+{
+  "camel": "tHIS_IS_SCREAMING_SNAKE_CASE",
+  "dot": "t.h.i.s_.i.s_.s.c.r.e.a.m.i.n.g_.s.n.a.k.e_.c.a.s.e",
+  "kebab": "t-h-i-s_-i-s_-s-c-r-e-a-m-i-n-g_-s-n-a-k-e_-c-a-s-e",
+  "pascal": "THIS_IS_SCREAMING_SNAKE_CASE",
+  "sentence": "t h i s_ i s_ s c r e a m i n g_ s n a k e_ c a s e",
+  "snake": "t_h_i_s__i_s__s_c_r_e_a_m_i_n_g__s_n_a_k_e__c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "dot" 1`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "dot" 2`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "dot" 3`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "dot" 4`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "dot" 5`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "dot" 6`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "kebab" 1`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "kebab" 2`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "kebab" 3`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "kebab" 4`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "kebab" 5`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "kebab" 6`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "pascal" 1`] = `
+{
+  "camel": "tHIS_IS_SCREAMING_SNAKE_CASE",
+  "dot": "t.h.i.s_.i.s_.s.c.r.e.a.m.i.n.g_.s.n.a.k.e_.c.a.s.e",
+  "kebab": "t-h-i-s_-i-s_-s-c-r-e-a-m-i-n-g_-s-n-a-k-e_-c-a-s-e",
+  "pascal": "THIS_IS_SCREAMING_SNAKE_CASE",
+  "sentence": "t h i s_ i s_ s c r e a m i n g_ s n a k e_ c a s e",
+  "snake": "t_h_i_s__i_s__s_c_r_e_a_m_i_n_g__s_n_a_k_e__c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "pascal" 2`] = `
+{
+  "camel": "tHIS_IS_SCREAMING_SNAKE_CASE",
+  "dot": "t.h.i.s_.i.s_.s.c.r.e.a.m.i.n.g_.s.n.a.k.e_.c.a.s.e",
+  "kebab": "t-h-i-s_-i-s_-s-c-r-e-a-m-i-n-g_-s-n-a-k-e_-c-a-s-e",
+  "pascal": "THIS_IS_SCREAMING_SNAKE_CASE",
+  "sentence": "t h i s_ i s_ s c r e a m i n g_ s n a k e_ c a s e",
+  "snake": "t_h_i_s__i_s__s_c_r_e_a_m_i_n_g__s_n_a_k_e__c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "pascal" 3`] = `
+{
+  "camel": "tHIS_IS_SCREAMING_SNAKE_CASE",
+  "dot": "t.h.i.s_.i.s_.s.c.r.e.a.m.i.n.g_.s.n.a.k.e_.c.a.s.e",
+  "kebab": "t-h-i-s_-i-s_-s-c-r-e-a-m-i-n-g_-s-n-a-k-e_-c-a-s-e",
+  "pascal": "THIS_IS_SCREAMING_SNAKE_CASE",
+  "sentence": "t h i s_ i s_ s c r e a m i n g_ s n a k e_ c a s e",
+  "snake": "t_h_i_s__i_s__s_c_r_e_a_m_i_n_g__s_n_a_k_e__c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "pascal" 4`] = `
+{
+  "camel": "tHIS_IS_SCREAMING_SNAKE_CASE",
+  "dot": "t.h.i.s_.i.s_.s.c.r.e.a.m.i.n.g_.s.n.a.k.e_.c.a.s.e",
+  "kebab": "t-h-i-s_-i-s_-s-c-r-e-a-m-i-n-g_-s-n-a-k-e_-c-a-s-e",
+  "pascal": "THIS_IS_SCREAMING_SNAKE_CASE",
+  "sentence": "t h i s_ i s_ s c r e a m i n g_ s n a k e_ c a s e",
+  "snake": "t_h_i_s__i_s__s_c_r_e_a_m_i_n_g__s_n_a_k_e__c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "pascal" 5`] = `
+{
+  "camel": "tHIS_IS_SCREAMING_SNAKE_CASE",
+  "dot": "t.h.i.s_.i.s_.s.c.r.e.a.m.i.n.g_.s.n.a.k.e_.c.a.s.e",
+  "kebab": "t-h-i-s_-i-s_-s-c-r-e-a-m-i-n-g_-s-n-a-k-e_-c-a-s-e",
+  "pascal": "THIS_IS_SCREAMING_SNAKE_CASE",
+  "sentence": "t h i s_ i s_ s c r e a m i n g_ s n a k e_ c a s e",
+  "snake": "t_h_i_s__i_s__s_c_r_e_a_m_i_n_g__s_n_a_k_e__c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "pascal" 6`] = `
+{
+  "camel": "tHIS_IS_SCREAMING_SNAKE_CASE",
+  "dot": "t.h.i.s_.i.s_.s.c.r.e.a.m.i.n.g_.s.n.a.k.e_.c.a.s.e",
+  "kebab": "t-h-i-s_-i-s_-s-c-r-e-a-m-i-n-g_-s-n-a-k-e_-c-a-s-e",
+  "pascal": "THIS_IS_SCREAMING_SNAKE_CASE",
+  "sentence": "t h i s_ i s_ s c r e a m i n g_ s n a k e_ c a s e",
+  "snake": "t_h_i_s__i_s__s_c_r_e_a_m_i_n_g__s_n_a_k_e__c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "sentence" 1`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "sentence" 2`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "sentence" 3`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "sentence" 4`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "sentence" 5`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "sentence" 6`] = `
+{
+  "camel": "this_is_screaming_snake_case",
+  "dot": "this_is_screaming_snake_case",
+  "kebab": "this_is_screaming_snake_case",
+  "pascal": "This_is_screaming_snake_case",
+  "sentence": "this_is_screaming_snake_case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "snake" 1`] = `
+{
+  "camel": "thisIsScreamingSnakeCase",
+  "dot": "this.is.screaming.snake.case",
+  "kebab": "this-is-screaming-snake-case",
+  "pascal": "ThisIsScreamingSnakeCase",
+  "sentence": "this is screaming snake case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "snake" 2`] = `
+{
+  "camel": "thisIsScreamingSnakeCase",
+  "dot": "this.is.screaming.snake.case",
+  "kebab": "this-is-screaming-snake-case",
+  "pascal": "ThisIsScreamingSnakeCase",
+  "sentence": "this is screaming snake case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "snake" 3`] = `
+{
+  "camel": "thisIsScreamingSnakeCase",
+  "dot": "this.is.screaming.snake.case",
+  "kebab": "this-is-screaming-snake-case",
+  "pascal": "ThisIsScreamingSnakeCase",
+  "sentence": "this is screaming snake case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "snake" 4`] = `
+{
+  "camel": "thisIsScreamingSnakeCase",
+  "dot": "this.is.screaming.snake.case",
+  "kebab": "this-is-screaming-snake-case",
+  "pascal": "ThisIsScreamingSnakeCase",
+  "sentence": "this is screaming snake case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "snake" 5`] = `
+{
+  "camel": "thisIsScreamingSnakeCase",
+  "dot": "this.is.screaming.snake.case",
+  "kebab": "this-is-screaming-snake-case",
+  "pascal": "ThisIsScreamingSnakeCase",
+  "sentence": "this is screaming snake case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS_IS_SCREAMING_SNAKE_CASE" from "snake" 6`] = `
+{
+  "camel": "thisIsScreamingSnakeCase",
+  "dot": "this.is.screaming.snake.case",
+  "kebab": "this-is-screaming-snake-case",
+  "pascal": "ThisIsScreamingSnakeCase",
+  "sentence": "this is screaming snake case",
+  "snake": "this_is_screaming_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "camel" 1`] = `
+{
+  "camel": "tHIS-IS-SCREAMING-KEBAB-CASE",
+  "dot": "t.h.i.s-.i.s-.s.c.r.e.a.m.i.n.g-.k.e.b.a.b-.c.a.s.e",
+  "kebab": "t-h-i-s--i-s--s-c-r-e-a-m-i-n-g--k-e-b-a-b--c-a-s-e",
+  "pascal": "THIS-IS-SCREAMING-KEBAB-CASE",
+  "sentence": "t h i s- i s- s c r e a m i n g- k e b a b- c a s e",
+  "snake": "t_h_i_s-_i_s-_s_c_r_e_a_m_i_n_g-_k_e_b_a_b-_c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "camel" 2`] = `
+{
+  "camel": "tHIS-IS-SCREAMING-KEBAB-CASE",
+  "dot": "t.h.i.s-.i.s-.s.c.r.e.a.m.i.n.g-.k.e.b.a.b-.c.a.s.e",
+  "kebab": "t-h-i-s--i-s--s-c-r-e-a-m-i-n-g--k-e-b-a-b--c-a-s-e",
+  "pascal": "THIS-IS-SCREAMING-KEBAB-CASE",
+  "sentence": "t h i s- i s- s c r e a m i n g- k e b a b- c a s e",
+  "snake": "t_h_i_s-_i_s-_s_c_r_e_a_m_i_n_g-_k_e_b_a_b-_c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "camel" 3`] = `
+{
+  "camel": "tHIS-IS-SCREAMING-KEBAB-CASE",
+  "dot": "t.h.i.s-.i.s-.s.c.r.e.a.m.i.n.g-.k.e.b.a.b-.c.a.s.e",
+  "kebab": "t-h-i-s--i-s--s-c-r-e-a-m-i-n-g--k-e-b-a-b--c-a-s-e",
+  "pascal": "THIS-IS-SCREAMING-KEBAB-CASE",
+  "sentence": "t h i s- i s- s c r e a m i n g- k e b a b- c a s e",
+  "snake": "t_h_i_s-_i_s-_s_c_r_e_a_m_i_n_g-_k_e_b_a_b-_c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "camel" 4`] = `
+{
+  "camel": "tHIS-IS-SCREAMING-KEBAB-CASE",
+  "dot": "t.h.i.s-.i.s-.s.c.r.e.a.m.i.n.g-.k.e.b.a.b-.c.a.s.e",
+  "kebab": "t-h-i-s--i-s--s-c-r-e-a-m-i-n-g--k-e-b-a-b--c-a-s-e",
+  "pascal": "THIS-IS-SCREAMING-KEBAB-CASE",
+  "sentence": "t h i s- i s- s c r e a m i n g- k e b a b- c a s e",
+  "snake": "t_h_i_s-_i_s-_s_c_r_e_a_m_i_n_g-_k_e_b_a_b-_c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "camel" 5`] = `
+{
+  "camel": "tHIS-IS-SCREAMING-KEBAB-CASE",
+  "dot": "t.h.i.s-.i.s-.s.c.r.e.a.m.i.n.g-.k.e.b.a.b-.c.a.s.e",
+  "kebab": "t-h-i-s--i-s--s-c-r-e-a-m-i-n-g--k-e-b-a-b--c-a-s-e",
+  "pascal": "THIS-IS-SCREAMING-KEBAB-CASE",
+  "sentence": "t h i s- i s- s c r e a m i n g- k e b a b- c a s e",
+  "snake": "t_h_i_s-_i_s-_s_c_r_e_a_m_i_n_g-_k_e_b_a_b-_c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "camel" 6`] = `
+{
+  "camel": "tHIS-IS-SCREAMING-KEBAB-CASE",
+  "dot": "t.h.i.s-.i.s-.s.c.r.e.a.m.i.n.g-.k.e.b.a.b-.c.a.s.e",
+  "kebab": "t-h-i-s--i-s--s-c-r-e-a-m-i-n-g--k-e-b-a-b--c-a-s-e",
+  "pascal": "THIS-IS-SCREAMING-KEBAB-CASE",
+  "sentence": "t h i s- i s- s c r e a m i n g- k e b a b- c a s e",
+  "snake": "t_h_i_s-_i_s-_s_c_r_e_a_m_i_n_g-_k_e_b_a_b-_c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "dot" 1`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "dot" 2`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "dot" 3`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "dot" 4`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "dot" 5`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "dot" 6`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "kebab" 1`] = `
+{
+  "camel": "thisIsScreamingKebabCase",
+  "dot": "this.is.screaming.kebab.case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "ThisIsScreamingKebabCase",
+  "sentence": "this is screaming kebab case",
+  "snake": "this_is_screaming_kebab_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "kebab" 2`] = `
+{
+  "camel": "thisIsScreamingKebabCase",
+  "dot": "this.is.screaming.kebab.case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "ThisIsScreamingKebabCase",
+  "sentence": "this is screaming kebab case",
+  "snake": "this_is_screaming_kebab_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "kebab" 3`] = `
+{
+  "camel": "thisIsScreamingKebabCase",
+  "dot": "this.is.screaming.kebab.case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "ThisIsScreamingKebabCase",
+  "sentence": "this is screaming kebab case",
+  "snake": "this_is_screaming_kebab_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "kebab" 4`] = `
+{
+  "camel": "thisIsScreamingKebabCase",
+  "dot": "this.is.screaming.kebab.case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "ThisIsScreamingKebabCase",
+  "sentence": "this is screaming kebab case",
+  "snake": "this_is_screaming_kebab_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "kebab" 5`] = `
+{
+  "camel": "thisIsScreamingKebabCase",
+  "dot": "this.is.screaming.kebab.case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "ThisIsScreamingKebabCase",
+  "sentence": "this is screaming kebab case",
+  "snake": "this_is_screaming_kebab_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "kebab" 6`] = `
+{
+  "camel": "thisIsScreamingKebabCase",
+  "dot": "this.is.screaming.kebab.case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "ThisIsScreamingKebabCase",
+  "sentence": "this is screaming kebab case",
+  "snake": "this_is_screaming_kebab_case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "pascal" 1`] = `
+{
+  "camel": "tHIS-IS-SCREAMING-KEBAB-CASE",
+  "dot": "t.h.i.s-.i.s-.s.c.r.e.a.m.i.n.g-.k.e.b.a.b-.c.a.s.e",
+  "kebab": "t-h-i-s--i-s--s-c-r-e-a-m-i-n-g--k-e-b-a-b--c-a-s-e",
+  "pascal": "THIS-IS-SCREAMING-KEBAB-CASE",
+  "sentence": "t h i s- i s- s c r e a m i n g- k e b a b- c a s e",
+  "snake": "t_h_i_s-_i_s-_s_c_r_e_a_m_i_n_g-_k_e_b_a_b-_c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "pascal" 2`] = `
+{
+  "camel": "tHIS-IS-SCREAMING-KEBAB-CASE",
+  "dot": "t.h.i.s-.i.s-.s.c.r.e.a.m.i.n.g-.k.e.b.a.b-.c.a.s.e",
+  "kebab": "t-h-i-s--i-s--s-c-r-e-a-m-i-n-g--k-e-b-a-b--c-a-s-e",
+  "pascal": "THIS-IS-SCREAMING-KEBAB-CASE",
+  "sentence": "t h i s- i s- s c r e a m i n g- k e b a b- c a s e",
+  "snake": "t_h_i_s-_i_s-_s_c_r_e_a_m_i_n_g-_k_e_b_a_b-_c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "pascal" 3`] = `
+{
+  "camel": "tHIS-IS-SCREAMING-KEBAB-CASE",
+  "dot": "t.h.i.s-.i.s-.s.c.r.e.a.m.i.n.g-.k.e.b.a.b-.c.a.s.e",
+  "kebab": "t-h-i-s--i-s--s-c-r-e-a-m-i-n-g--k-e-b-a-b--c-a-s-e",
+  "pascal": "THIS-IS-SCREAMING-KEBAB-CASE",
+  "sentence": "t h i s- i s- s c r e a m i n g- k e b a b- c a s e",
+  "snake": "t_h_i_s-_i_s-_s_c_r_e_a_m_i_n_g-_k_e_b_a_b-_c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "pascal" 4`] = `
+{
+  "camel": "tHIS-IS-SCREAMING-KEBAB-CASE",
+  "dot": "t.h.i.s-.i.s-.s.c.r.e.a.m.i.n.g-.k.e.b.a.b-.c.a.s.e",
+  "kebab": "t-h-i-s--i-s--s-c-r-e-a-m-i-n-g--k-e-b-a-b--c-a-s-e",
+  "pascal": "THIS-IS-SCREAMING-KEBAB-CASE",
+  "sentence": "t h i s- i s- s c r e a m i n g- k e b a b- c a s e",
+  "snake": "t_h_i_s-_i_s-_s_c_r_e_a_m_i_n_g-_k_e_b_a_b-_c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "pascal" 5`] = `
+{
+  "camel": "tHIS-IS-SCREAMING-KEBAB-CASE",
+  "dot": "t.h.i.s-.i.s-.s.c.r.e.a.m.i.n.g-.k.e.b.a.b-.c.a.s.e",
+  "kebab": "t-h-i-s--i-s--s-c-r-e-a-m-i-n-g--k-e-b-a-b--c-a-s-e",
+  "pascal": "THIS-IS-SCREAMING-KEBAB-CASE",
+  "sentence": "t h i s- i s- s c r e a m i n g- k e b a b- c a s e",
+  "snake": "t_h_i_s-_i_s-_s_c_r_e_a_m_i_n_g-_k_e_b_a_b-_c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "pascal" 6`] = `
+{
+  "camel": "tHIS-IS-SCREAMING-KEBAB-CASE",
+  "dot": "t.h.i.s-.i.s-.s.c.r.e.a.m.i.n.g-.k.e.b.a.b-.c.a.s.e",
+  "kebab": "t-h-i-s--i-s--s-c-r-e-a-m-i-n-g--k-e-b-a-b--c-a-s-e",
+  "pascal": "THIS-IS-SCREAMING-KEBAB-CASE",
+  "sentence": "t h i s- i s- s c r e a m i n g- k e b a b- c a s e",
+  "snake": "t_h_i_s-_i_s-_s_c_r_e_a_m_i_n_g-_k_e_b_a_b-_c_a_s_e",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "sentence" 1`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "sentence" 2`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "sentence" 3`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "sentence" 4`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "sentence" 5`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "sentence" 6`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "snake" 1`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "snake" 2`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "snake" 3`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "snake" 4`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "snake" 5`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "THIS-IS-SCREAMING-KEBAB-CASE" from "snake" 6`] = `
+{
+  "camel": "this-is-screaming-kebab-case",
+  "dot": "this-is-screaming-kebab-case",
+  "kebab": "this-is-screaming-kebab-case",
+  "pascal": "This-is-screaming-kebab-case",
+  "sentence": "this-is-screaming-kebab-case",
+  "snake": "this-is-screaming-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "camel" 1`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "camel" 2`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "camel" 3`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "camel" 4`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "camel" 5`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "camel" 6`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "dot" 1`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "dot" 2`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "dot" 3`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "dot" 4`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "dot" 5`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "dot" 6`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "kebab" 1`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "kebab" 2`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "kebab" 3`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "kebab" 4`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "kebab" 5`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "kebab" 6`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "pascal" 1`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "pascal" 2`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "pascal" 3`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "pascal" 4`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "pascal" 5`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "pascal" 6`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "sentence" 1`] = `
+{
+  "camel": "thisIsTitleCase",
+  "dot": "this.is.title.case",
+  "kebab": "this-is-title-case",
+  "pascal": "ThisIsTitleCase",
+  "sentence": "this is title case",
+  "snake": "this_is_title_case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "sentence" 2`] = `
+{
+  "camel": "thisIsTitleCase",
+  "dot": "this.is.title.case",
+  "kebab": "this-is-title-case",
+  "pascal": "ThisIsTitleCase",
+  "sentence": "this is title case",
+  "snake": "this_is_title_case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "sentence" 3`] = `
+{
+  "camel": "thisIsTitleCase",
+  "dot": "this.is.title.case",
+  "kebab": "this-is-title-case",
+  "pascal": "ThisIsTitleCase",
+  "sentence": "this is title case",
+  "snake": "this_is_title_case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "sentence" 4`] = `
+{
+  "camel": "thisIsTitleCase",
+  "dot": "this.is.title.case",
+  "kebab": "this-is-title-case",
+  "pascal": "ThisIsTitleCase",
+  "sentence": "this is title case",
+  "snake": "this_is_title_case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "sentence" 5`] = `
+{
+  "camel": "thisIsTitleCase",
+  "dot": "this.is.title.case",
+  "kebab": "this-is-title-case",
+  "pascal": "ThisIsTitleCase",
+  "sentence": "this is title case",
+  "snake": "this_is_title_case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "sentence" 6`] = `
+{
+  "camel": "thisIsTitleCase",
+  "dot": "this.is.title.case",
+  "kebab": "this-is-title-case",
+  "pascal": "ThisIsTitleCase",
+  "sentence": "this is title case",
+  "snake": "this_is_title_case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "snake" 1`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "snake" 2`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "snake" 3`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "snake" 4`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "snake" 5`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "This is title case" from "snake" 6`] = `
+{
+  "camel": "this is title case",
+  "dot": "this is title case",
+  "kebab": "this is title case",
+  "pascal": "This is title case",
+  "sentence": "this is title case",
+  "snake": "this is title case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "camel" 1`] = `
+{
+  "camel": "thisIsPascalCase",
+  "dot": "this.is.pascal.case",
+  "kebab": "this-is-pascal-case",
+  "pascal": "ThisIsPascalCase",
+  "sentence": "this is pascal case",
+  "snake": "this_is_pascal_case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "camel" 2`] = `
+{
+  "camel": "thisIsPascalCase",
+  "dot": "this.is.pascal.case",
+  "kebab": "this-is-pascal-case",
+  "pascal": "ThisIsPascalCase",
+  "sentence": "this is pascal case",
+  "snake": "this_is_pascal_case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "camel" 3`] = `
+{
+  "camel": "thisIsPascalCase",
+  "dot": "this.is.pascal.case",
+  "kebab": "this-is-pascal-case",
+  "pascal": "ThisIsPascalCase",
+  "sentence": "this is pascal case",
+  "snake": "this_is_pascal_case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "camel" 4`] = `
+{
+  "camel": "thisIsPascalCase",
+  "dot": "this.is.pascal.case",
+  "kebab": "this-is-pascal-case",
+  "pascal": "ThisIsPascalCase",
+  "sentence": "this is pascal case",
+  "snake": "this_is_pascal_case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "camel" 5`] = `
+{
+  "camel": "thisIsPascalCase",
+  "dot": "this.is.pascal.case",
+  "kebab": "this-is-pascal-case",
+  "pascal": "ThisIsPascalCase",
+  "sentence": "this is pascal case",
+  "snake": "this_is_pascal_case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "camel" 6`] = `
+{
+  "camel": "thisIsPascalCase",
+  "dot": "this.is.pascal.case",
+  "kebab": "this-is-pascal-case",
+  "pascal": "ThisIsPascalCase",
+  "sentence": "this is pascal case",
+  "snake": "this_is_pascal_case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "dot" 1`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "dot" 2`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "dot" 3`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "dot" 4`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "dot" 5`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "dot" 6`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "kebab" 1`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "kebab" 2`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "kebab" 3`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "kebab" 4`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "kebab" 5`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "kebab" 6`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "pascal" 1`] = `
+{
+  "camel": "thisIsPascalCase",
+  "dot": "this.is.pascal.case",
+  "kebab": "this-is-pascal-case",
+  "pascal": "ThisIsPascalCase",
+  "sentence": "this is pascal case",
+  "snake": "this_is_pascal_case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "pascal" 2`] = `
+{
+  "camel": "thisIsPascalCase",
+  "dot": "this.is.pascal.case",
+  "kebab": "this-is-pascal-case",
+  "pascal": "ThisIsPascalCase",
+  "sentence": "this is pascal case",
+  "snake": "this_is_pascal_case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "pascal" 3`] = `
+{
+  "camel": "thisIsPascalCase",
+  "dot": "this.is.pascal.case",
+  "kebab": "this-is-pascal-case",
+  "pascal": "ThisIsPascalCase",
+  "sentence": "this is pascal case",
+  "snake": "this_is_pascal_case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "pascal" 4`] = `
+{
+  "camel": "thisIsPascalCase",
+  "dot": "this.is.pascal.case",
+  "kebab": "this-is-pascal-case",
+  "pascal": "ThisIsPascalCase",
+  "sentence": "this is pascal case",
+  "snake": "this_is_pascal_case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "pascal" 5`] = `
+{
+  "camel": "thisIsPascalCase",
+  "dot": "this.is.pascal.case",
+  "kebab": "this-is-pascal-case",
+  "pascal": "ThisIsPascalCase",
+  "sentence": "this is pascal case",
+  "snake": "this_is_pascal_case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "pascal" 6`] = `
+{
+  "camel": "thisIsPascalCase",
+  "dot": "this.is.pascal.case",
+  "kebab": "this-is-pascal-case",
+  "pascal": "ThisIsPascalCase",
+  "sentence": "this is pascal case",
+  "snake": "this_is_pascal_case",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "sentence" 1`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "sentence" 2`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "sentence" 3`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "sentence" 4`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "sentence" 5`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "sentence" 6`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "snake" 1`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "snake" 2`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "snake" 3`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "snake" 4`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "snake" 5`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "ThisIsPascalCase" from "snake" 6`] = `
+{
+  "camel": "thisispascalcase",
+  "dot": "thisispascalcase",
+  "kebab": "thisispascalcase",
+  "pascal": "Thisispascalcase",
+  "sentence": "thisispascalcase",
+  "snake": "thisispascalcase",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "camel" 1`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "camel" 2`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "camel" 3`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "camel" 4`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "camel" 5`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "camel" 6`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "dot" 1`] = `
+{
+  "camel": "thisIsDotCase",
+  "dot": "this.is.dot.case",
+  "kebab": "this-is-dot-case",
+  "pascal": "ThisIsDotCase",
+  "sentence": "this is dot case",
+  "snake": "this_is_dot_case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "dot" 2`] = `
+{
+  "camel": "thisIsDotCase",
+  "dot": "this.is.dot.case",
+  "kebab": "this-is-dot-case",
+  "pascal": "ThisIsDotCase",
+  "sentence": "this is dot case",
+  "snake": "this_is_dot_case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "dot" 3`] = `
+{
+  "camel": "thisIsDotCase",
+  "dot": "this.is.dot.case",
+  "kebab": "this-is-dot-case",
+  "pascal": "ThisIsDotCase",
+  "sentence": "this is dot case",
+  "snake": "this_is_dot_case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "dot" 4`] = `
+{
+  "camel": "thisIsDotCase",
+  "dot": "this.is.dot.case",
+  "kebab": "this-is-dot-case",
+  "pascal": "ThisIsDotCase",
+  "sentence": "this is dot case",
+  "snake": "this_is_dot_case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "dot" 5`] = `
+{
+  "camel": "thisIsDotCase",
+  "dot": "this.is.dot.case",
+  "kebab": "this-is-dot-case",
+  "pascal": "ThisIsDotCase",
+  "sentence": "this is dot case",
+  "snake": "this_is_dot_case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "dot" 6`] = `
+{
+  "camel": "thisIsDotCase",
+  "dot": "this.is.dot.case",
+  "kebab": "this-is-dot-case",
+  "pascal": "ThisIsDotCase",
+  "sentence": "this is dot case",
+  "snake": "this_is_dot_case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "kebab" 1`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "kebab" 2`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "kebab" 3`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "kebab" 4`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "kebab" 5`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "kebab" 6`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "pascal" 1`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "pascal" 2`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "pascal" 3`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "pascal" 4`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "pascal" 5`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "pascal" 6`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "sentence" 1`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "sentence" 2`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "sentence" 3`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "sentence" 4`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "sentence" 5`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "sentence" 6`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "snake" 1`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "snake" 2`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "snake" 3`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "snake" 4`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "snake" 5`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this.is.dot.case" from "snake" 6`] = `
+{
+  "camel": "this.is.dot.case",
+  "dot": "this.is.dot.case",
+  "kebab": "this.is.dot.case",
+  "pascal": "This.is.dot.case",
+  "sentence": "this.is.dot.case",
+  "snake": "this.is.dot.case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "camel" 1`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "camel" 2`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "camel" 3`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "camel" 4`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "camel" 5`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "camel" 6`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "dot" 1`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "dot" 2`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "dot" 3`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "dot" 4`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "dot" 5`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "dot" 6`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "kebab" 1`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "kebab" 2`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "kebab" 3`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "kebab" 4`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "kebab" 5`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "kebab" 6`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "pascal" 1`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "pascal" 2`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "pascal" 3`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "pascal" 4`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "pascal" 5`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "pascal" 6`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "sentence" 1`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "sentence" 2`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "sentence" 3`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "sentence" 4`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "sentence" 5`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "sentence" 6`] = `
+{
+  "camel": "this_is_snake_case",
+  "dot": "this_is_snake_case",
+  "kebab": "this_is_snake_case",
+  "pascal": "This_is_snake_case",
+  "sentence": "this_is_snake_case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "snake" 1`] = `
+{
+  "camel": "thisIsSnakeCase",
+  "dot": "this.is.snake.case",
+  "kebab": "this-is-snake-case",
+  "pascal": "ThisIsSnakeCase",
+  "sentence": "this is snake case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "snake" 2`] = `
+{
+  "camel": "thisIsSnakeCase",
+  "dot": "this.is.snake.case",
+  "kebab": "this-is-snake-case",
+  "pascal": "ThisIsSnakeCase",
+  "sentence": "this is snake case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "snake" 3`] = `
+{
+  "camel": "thisIsSnakeCase",
+  "dot": "this.is.snake.case",
+  "kebab": "this-is-snake-case",
+  "pascal": "ThisIsSnakeCase",
+  "sentence": "this is snake case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "snake" 4`] = `
+{
+  "camel": "thisIsSnakeCase",
+  "dot": "this.is.snake.case",
+  "kebab": "this-is-snake-case",
+  "pascal": "ThisIsSnakeCase",
+  "sentence": "this is snake case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "snake" 5`] = `
+{
+  "camel": "thisIsSnakeCase",
+  "dot": "this.is.snake.case",
+  "kebab": "this-is-snake-case",
+  "pascal": "ThisIsSnakeCase",
+  "sentence": "this is snake case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this_is_snake_case" from "snake" 6`] = `
+{
+  "camel": "thisIsSnakeCase",
+  "dot": "this.is.snake.case",
+  "kebab": "this-is-snake-case",
+  "pascal": "ThisIsSnakeCase",
+  "sentence": "this is snake case",
+  "snake": "this_is_snake_case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "camel" 1`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "camel" 2`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "camel" 3`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "camel" 4`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "camel" 5`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "camel" 6`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "dot" 1`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "dot" 2`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "dot" 3`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "dot" 4`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "dot" 5`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "dot" 6`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "kebab" 1`] = `
+{
+  "camel": "thisIsKebabCase",
+  "dot": "this.is.kebab.case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "ThisIsKebabCase",
+  "sentence": "this is kebab case",
+  "snake": "this_is_kebab_case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "kebab" 2`] = `
+{
+  "camel": "thisIsKebabCase",
+  "dot": "this.is.kebab.case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "ThisIsKebabCase",
+  "sentence": "this is kebab case",
+  "snake": "this_is_kebab_case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "kebab" 3`] = `
+{
+  "camel": "thisIsKebabCase",
+  "dot": "this.is.kebab.case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "ThisIsKebabCase",
+  "sentence": "this is kebab case",
+  "snake": "this_is_kebab_case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "kebab" 4`] = `
+{
+  "camel": "thisIsKebabCase",
+  "dot": "this.is.kebab.case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "ThisIsKebabCase",
+  "sentence": "this is kebab case",
+  "snake": "this_is_kebab_case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "kebab" 5`] = `
+{
+  "camel": "thisIsKebabCase",
+  "dot": "this.is.kebab.case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "ThisIsKebabCase",
+  "sentence": "this is kebab case",
+  "snake": "this_is_kebab_case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "kebab" 6`] = `
+{
+  "camel": "thisIsKebabCase",
+  "dot": "this.is.kebab.case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "ThisIsKebabCase",
+  "sentence": "this is kebab case",
+  "snake": "this_is_kebab_case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "pascal" 1`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "pascal" 2`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "pascal" 3`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "pascal" 4`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "pascal" 5`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "pascal" 6`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "sentence" 1`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "sentence" 2`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "sentence" 3`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "sentence" 4`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "sentence" 5`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "sentence" 6`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "snake" 1`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "snake" 2`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "snake" 3`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "snake" 4`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "snake" 5`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "this-is-kebab-case" from "snake" 6`] = `
+{
+  "camel": "this-is-kebab-case",
+  "dot": "this-is-kebab-case",
+  "kebab": "this-is-kebab-case",
+  "pascal": "This-is-kebab-case",
+  "sentence": "this-is-kebab-case",
+  "snake": "this-is-kebab-case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "camel" 1`] = `
+{
+  "camel": "thisIsCamelCase",
+  "dot": "this.is.camel.case",
+  "kebab": "this-is-camel-case",
+  "pascal": "ThisIsCamelCase",
+  "sentence": "this is camel case",
+  "snake": "this_is_camel_case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "camel" 2`] = `
+{
+  "camel": "thisIsCamelCase",
+  "dot": "this.is.camel.case",
+  "kebab": "this-is-camel-case",
+  "pascal": "ThisIsCamelCase",
+  "sentence": "this is camel case",
+  "snake": "this_is_camel_case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "camel" 3`] = `
+{
+  "camel": "thisIsCamelCase",
+  "dot": "this.is.camel.case",
+  "kebab": "this-is-camel-case",
+  "pascal": "ThisIsCamelCase",
+  "sentence": "this is camel case",
+  "snake": "this_is_camel_case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "camel" 4`] = `
+{
+  "camel": "thisIsCamelCase",
+  "dot": "this.is.camel.case",
+  "kebab": "this-is-camel-case",
+  "pascal": "ThisIsCamelCase",
+  "sentence": "this is camel case",
+  "snake": "this_is_camel_case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "camel" 5`] = `
+{
+  "camel": "thisIsCamelCase",
+  "dot": "this.is.camel.case",
+  "kebab": "this-is-camel-case",
+  "pascal": "ThisIsCamelCase",
+  "sentence": "this is camel case",
+  "snake": "this_is_camel_case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "camel" 6`] = `
+{
+  "camel": "thisIsCamelCase",
+  "dot": "this.is.camel.case",
+  "kebab": "this-is-camel-case",
+  "pascal": "ThisIsCamelCase",
+  "sentence": "this is camel case",
+  "snake": "this_is_camel_case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "dot" 1`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "dot" 2`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "dot" 3`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "dot" 4`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "dot" 5`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "dot" 6`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "kebab" 1`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "kebab" 2`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "kebab" 3`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "kebab" 4`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "kebab" 5`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "kebab" 6`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "pascal" 1`] = `
+{
+  "camel": "thisIsCamelCase",
+  "dot": "this.is.camel.case",
+  "kebab": "this-is-camel-case",
+  "pascal": "ThisIsCamelCase",
+  "sentence": "this is camel case",
+  "snake": "this_is_camel_case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "pascal" 2`] = `
+{
+  "camel": "thisIsCamelCase",
+  "dot": "this.is.camel.case",
+  "kebab": "this-is-camel-case",
+  "pascal": "ThisIsCamelCase",
+  "sentence": "this is camel case",
+  "snake": "this_is_camel_case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "pascal" 3`] = `
+{
+  "camel": "thisIsCamelCase",
+  "dot": "this.is.camel.case",
+  "kebab": "this-is-camel-case",
+  "pascal": "ThisIsCamelCase",
+  "sentence": "this is camel case",
+  "snake": "this_is_camel_case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "pascal" 4`] = `
+{
+  "camel": "thisIsCamelCase",
+  "dot": "this.is.camel.case",
+  "kebab": "this-is-camel-case",
+  "pascal": "ThisIsCamelCase",
+  "sentence": "this is camel case",
+  "snake": "this_is_camel_case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "pascal" 5`] = `
+{
+  "camel": "thisIsCamelCase",
+  "dot": "this.is.camel.case",
+  "kebab": "this-is-camel-case",
+  "pascal": "ThisIsCamelCase",
+  "sentence": "this is camel case",
+  "snake": "this_is_camel_case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "pascal" 6`] = `
+{
+  "camel": "thisIsCamelCase",
+  "dot": "this.is.camel.case",
+  "kebab": "this-is-camel-case",
+  "pascal": "ThisIsCamelCase",
+  "sentence": "this is camel case",
+  "snake": "this_is_camel_case",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "sentence" 1`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "sentence" 2`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "sentence" 3`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "sentence" 4`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "sentence" 5`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "sentence" 6`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "snake" 1`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "snake" 2`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "snake" 3`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "snake" 4`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "snake" 5`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;
+
+exports[`changeCase Should convert "thisIsCamelCase" from "snake" 6`] = `
+{
+  "camel": "thisiscamelcase",
+  "dot": "thisiscamelcase",
+  "kebab": "thisiscamelcase",
+  "pascal": "Thisiscamelcase",
+  "sentence": "thisiscamelcase",
+  "snake": "thisiscamelcase",
+}
+`;

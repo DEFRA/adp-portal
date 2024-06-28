@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`json Should correctly handle "\\"This already looks like json but should be escaped\\"" 1`] = `""\\"This already looks like json but should be escaped\\"""`;
+
+exports[`json Should correctly handle "This input: contains special characters! \\"|'{}[],&*#?<>=%@/\\\\\\nAnd even a newline!" 1`] = `""This input: contains special characters! \\"|'{}[],&*#?<>=%@/\\\\\\nAnd even a newline!""`;
+
+exports[`json Should correctly handle "This is some multiline text\\nand this is line 2!" 1`] = `""This is some multiline text\\nand this is line 2!""`;
+
+exports[`json Should correctly handle "abc" 1`] = `""abc""`;
+
+exports[`json Should correctly handle {"some":{"object":{"with":["values"]}}} 1`] = `"{"some":{"object":{"with":["values"]}}}"`;
+
+exports[`json Should correctly handle 123 1`] = `"123"`;
+
+exports[`json Should correctly handle false 1`] = `"false"`;
+
+exports[`json Should correctly handle null 1`] = `"null"`;
+
+exports[`json Should correctly handle true 1`] = `"true"`;

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App should render sign in page 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiBox-root MuiBox-root-1"
+    />
+  </div>
+</body>
+`;

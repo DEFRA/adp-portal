@@ -1,30 +1,44 @@
-import type { DiscoveryService } from '@backstage/backend-plugin-api';
+import type {
+  BackstageCredentials,
+  DiscoveryService,
+} from '@backstage/backend-plugin-api';
 import { AdpClient } from './AdpClient';
-import type fetch from 'node-fetch';
-import { Response } from 'node-fetch';
 import { randomUUID } from 'node:crypto';
 import type { DeliveryProjectTeamsSyncResult } from '@internal/plugin-adp-common';
+import type { FetchApi } from '@internal/plugin-fetch-api-backend';
+import { mockCredentials, mockServices } from '@backstage/backend-test-utils';
 
 describe('AdpClient', () => {
-  function setup() {
+  async function setup() {
     const discoveryApi: jest.Mocked<DiscoveryService> = {
       getBaseUrl: jest.fn(),
       getExternalBaseUrl: jest.fn(),
     };
-    const fetchApi: jest.MockedFn<typeof fetch> = Object.assign(jest.fn(), {
-      isRedirect: jest.fn(),
-    });
-    const sut = new AdpClient({
+    const fetchApi: jest.Mocked<FetchApi> = {
+      fetch: jest.fn(),
+    };
+    let credentials: BackstageCredentials = mockCredentials.user();
+    return {
       discoveryApi,
       fetchApi,
-    });
-    return { sut, discoveryApi, fetchApi };
+      setCredentials(value: BackstageCredentials) {
+        credentials = value;
+      },
+      get sut() {
+        return new AdpClient({
+          discoveryApi,
+          fetchApi,
+          auth: mockServices.auth(),
+          credentials: { current: credentials },
+        });
+      },
+    };
   }
 
   describe('#syncDeliveryProjectWithGithubTeams', () => {
     it('Should return the team when the API call is successful', async () => {
       // arrange
-      const { sut, discoveryApi, fetchApi } = setup();
+      const { sut, discoveryApi, fetchApi } = await setup();
       const teamName = randomUUID();
       const expected: DeliveryProjectTeamsSyncResult = {
         admins: {
@@ -51,7 +65,7 @@ describe('AdpClient', () => {
       });
 
       discoveryApi.getBaseUrl.mockResolvedValueOnce('http://localhost/adp');
-      fetchApi.mockResolvedValueOnce(response);
+      fetchApi.fetch.mockResolvedValueOnce(response);
 
       // act
       const actual = await sut.syncDeliveryProjectWithGithubTeams(teamName);
@@ -59,25 +73,29 @@ describe('AdpClient', () => {
       // assert
       expect(actual).toMatchObject(expected);
       expect(discoveryApi.getBaseUrl.mock.calls).toMatchObject([['adp']]);
-      expect(fetchApi.mock.calls).toMatchObject([
+      expect(fetchApi.fetch.mock.calls).toMatchObject([
         [
-          `http://localhost/adp/deliveryProject/${teamName}/github/teams/sync`,
+          `http://localhost/adp/deliveryProjects/${teamName}/github/teams/sync`,
           {
             method: 'PUT',
+            headers: {
+              Authorization:
+                'Bearer mock-service-token:{"obo":"user:default/mock","target":"adp"}',
+            },
           },
         ],
       ]);
     });
     it('Should throw when the API call fails', async () => {
       // arrange
-      const { sut, discoveryApi, fetchApi } = setup();
+      const { sut, discoveryApi, fetchApi } = await setup();
       const teamName = randomUUID();
       const response = new Response(undefined, {
         status: 400,
       });
 
       discoveryApi.getBaseUrl.mockResolvedValueOnce('http://localhost/adp');
-      fetchApi.mockResolvedValueOnce(response);
+      fetchApi.fetch.mockResolvedValueOnce(response);
 
       // act
       await expectException(() =>
@@ -86,11 +104,15 @@ describe('AdpClient', () => {
 
       // assert
       expect(discoveryApi.getBaseUrl.mock.calls).toMatchObject([['adp']]);
-      expect(fetchApi.mock.calls).toMatchObject([
+      expect(fetchApi.fetch.mock.calls).toMatchObject([
         [
-          `http://localhost/adp/deliveryProject/${teamName}/github/teams/sync`,
+          `http://localhost/adp/deliveryProjects/${teamName}/github/teams/sync`,
           {
             method: 'PUT',
+            headers: {
+              Authorization:
+                'Bearer mock-service-token:{"obo":"user:default/mock","target":"adp"}',
+            },
           },
         ],
       ]);

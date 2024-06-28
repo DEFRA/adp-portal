@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`publishZipAction Should zip the source directory 1`] = `
+[
+  "dataUri",
+  "data:application/zip;base64,UEsDBBQACAAIALypxlgAAAAAAAAAAAAAAAAIAAAAdGVzdC50eHQFwcENgDAMA8A/U5idWCBqHRKpqFVjmJ+7K7KQBYNYgucgFCYoiGrmPkfnxpN3CGEfsfbsb2M/jx9QSwcI0eA/qjkAAAA9AAAAUEsBAi0DFAAIAAgAvKnGWNHgP6o5AAAAPQAAAAgAAAAAAAAAAAAgAKSBAAAAAHRlc3QudHh0UEsFBgAAAAABAAEANgAAAG8AAAAAAA==",
+]
+`;

@@ -16,6 +16,7 @@ import type { AddDeliveryProjectUser } from '../utils';
 import type { delivery_project } from '../deliveryProject/delivery_project';
 import { delivery_project_name } from '../deliveryProject/delivery_project';
 import { NotFoundError } from '@backstage/errors';
+import { type UUID } from 'node:crypto';
 
 export type IDeliveryProjectUserStore = {
   [P in keyof DeliveryProjectUserStore]: DeliveryProjectUserStore[P];
@@ -27,10 +28,12 @@ const allColumns = [
   'is_technical',
   'is_admin',
   'aad_entity_ref_id',
+  'aad_user_principal_name',
   'name',
   'email',
   'github_username',
   'updated_at',
+  'user_entity_ref',
 ] as const satisfies ReadonlyArray<keyof delivery_project_user>;
 
 export class DeliveryProjectUserStore {
@@ -87,6 +90,8 @@ export class DeliveryProjectUserStore {
       is_technical,
       name,
       github_username,
+      aad_user_principal_name,
+      user_entity_ref,
     } = projectUser;
 
     const valid = await checkMany({
@@ -112,6 +117,8 @@ export class DeliveryProjectUserStore {
         name,
         email,
         github_username,
+        aad_user_principal_name,
+        user_entity_ref,
       },
       allColumns,
     );
@@ -136,8 +143,10 @@ export class DeliveryProjectUserStore {
       github_username,
       delivery_project_id,
       aad_entity_ref_id,
+      aad_user_principal_name,
       email,
       name,
+      user_entity_ref,
     } = request;
 
     if (!containsAnyValue(request))
@@ -162,8 +171,11 @@ export class DeliveryProjectUserStore {
         github_username,
         delivery_project_id,
         aad_entity_ref_id,
+        aad_user_principal_name,
         email,
         name,
+        updated_at: new Date(),
+        user_entity_ref,
       },
       allColumns,
     );
@@ -176,6 +188,14 @@ export class DeliveryProjectUserStore {
         ...result[0],
       }),
     };
+  }
+
+  async delete(id: string): Promise<number> {
+    if (!isUUID(id) || !(await this.#exists(id))) throw notFound();
+
+    const deleteResult = await this.#table.where('id', id).del();
+
+    return deleteResult;
   }
 
   #normalize(row: delivery_project_user): DeliveryProjectUser {
@@ -196,6 +216,14 @@ export class DeliveryProjectUserStore {
     const [{ count }] = await this.#client<delivery_project>(
       delivery_project_name,
     )
+      .where('id', id)
+      .limit(1)
+      .count('*', { as: 'count' });
+    return Number(count) > 0;
+  }
+
+  async #exists(id: UUID) {
+    const [{ count }] = await this.#table
       .where('id', id)
       .limit(1)
       .count('*', { as: 'count' });

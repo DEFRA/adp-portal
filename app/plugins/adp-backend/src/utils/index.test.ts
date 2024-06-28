@@ -58,6 +58,7 @@ describe('createGithubTeamNames', () => {
         delivery_project_code: '',
         delivery_programme_code: '',
         delivery_project_users: [],
+        delivery_programme_admins: [],
         description: '',
         finance_code: '',
         github_team_visibility: 'public',

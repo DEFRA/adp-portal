@@ -6,7 +6,7 @@ import {
   normalizeUsername,
   type DeliveryProgrammeAdmin,
 } from '@internal/plugin-adp-common';
-import { Button, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { useApi } from '@backstage/core-plugin-api';
 import { deliveryProgrammeAdminApiRef } from './api';
 import { useEntity } from '@backstage/plugin-catalog-react';
@@ -18,6 +18,8 @@ import {
 import { DefaultTable } from '../../utils';
 import { AddProgrammeAdminButton } from './AddProgrammeAdminButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import { stringifyEntityRef } from '@backstage/catalog-model';
+import { RemoveDeliveryProgrammeAdminButton } from './RemoveDeliveryProgrammeAdminButton';
 
 type DeliveryProgrammeAdminWithActions = DeliveryProgrammeAdmin & {
   actions: ReactNode;
@@ -60,17 +62,20 @@ export const DeliveryProgrammeAdminViewPage = () => {
           nameLink: <Link to={target}>{d.name}</Link>,
           role: 'Delivery Programme Admin',
           actions: (
-            <Button
+            <RemoveDeliveryProgrammeAdminButton
               variant="contained"
               color="secondary"
-              data-testid={`programme-admin-edit-button-${d.id}`}
+              data-testid={`delivery-programme-admin-remove-button-${d.id}`}
+              deliveryProgrammeAdmin={d}
+              entityRef={stringifyEntityRef(entity)}
+              onRemoved={refresh}
             >
               Remove
-            </Button>
+            </RemoveDeliveryProgrammeAdminButton>
           ),
         };
       }),
-    [data, entityRoute],
+    [data, entityRoute, refresh, entity],
   );
 
   const columns: TableColumn<DeliveryProgrammeAdminWithActions>[] = [
@@ -115,6 +120,8 @@ export const DeliveryProgrammeAdminViewPage = () => {
             color="primary"
             startIcon={<AddBoxIcon />}
             onCreated={refresh}
+            data-testid="delivery-programme-admin-add-button"
+            entityRef={stringifyEntityRef(entity)}
           >
             Add Delivery Programme Admin
           </AddProgrammeAdminButton>

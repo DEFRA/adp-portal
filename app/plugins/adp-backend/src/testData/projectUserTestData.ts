@@ -52,5 +52,9 @@ export function createDeliveryProjectUser(
     name: faker.person.fullName({ firstName: firstName, lastName: lastName }),
     id: entityId,
     updated_at: faker.date.past(),
+    aad_user_principal_name: faker.internet.email({
+      firstName: firstName,
+      lastName: lastName,
+    }),
   };
 }

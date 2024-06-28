@@ -95,6 +95,7 @@ describe('DeliveryProgrammeAdminClient', () => {
     it('should create new Delivery Programme Admins', async () => {
       const deliveryProgrammeId = faker.string.uuid();
       const userRef = faker.internet.userName();
+      const groupEntityRef = faker.string.uuid();
 
       const expectedDeliveryProgrammeAdmin = {
         id: faker.string.uuid(),
@@ -110,7 +111,11 @@ describe('DeliveryProgrammeAdminClient', () => {
         json: jest.fn().mockResolvedValue(expectedDeliveryProgrammeAdmin),
       });
 
-      const result = await sut.create(deliveryProgrammeId, userRef);
+      const result = await sut.create(
+        deliveryProgrammeId,
+        userRef,
+        groupEntityRef,
+      );
 
       expect(result).toEqual(expectedDeliveryProgrammeAdmin);
     });
@@ -118,6 +123,7 @@ describe('DeliveryProgrammeAdminClient', () => {
     it('throws when Fetch fails', async () => {
       const deliveryProgrammeId = faker.string.uuid();
       const userRef = faker.internet.userName();
+      const groupEntityRef = faker.string.uuid();
 
       fetchApi.fetch.mockResolvedValue({
         ok: false,
@@ -126,28 +132,28 @@ describe('DeliveryProgrammeAdminClient', () => {
         json: jest.fn().mockResolvedValue({ error: 'Not found' }),
       });
 
-      await expect(sut.create(deliveryProgrammeId, userRef)).rejects.toThrow(
-        'Validation failed',
-      );
+      await expect(
+        sut.create(deliveryProgrammeId, userRef, groupEntityRef),
+      ).rejects.toThrow('Validation failed');
     });
   });
 
   describe('delete', () => {
     it('should delete a delivery programme admin', async () => {
-      const deliveryProgrammeId = faker.string.uuid();
+      const groupEntityRef = 'test-group';
       const deliveryProgrammeAdminId = faker.string.uuid();
 
       fetchApi.fetch.mockResolvedValue({
         ok: true,
       });
 
-      await sut.delete(deliveryProgrammeAdminId, deliveryProgrammeId);
+      await sut.delete(deliveryProgrammeAdminId, groupEntityRef);
 
       expect(fetchApi.fetch).toHaveBeenCalled();
     });
 
     it('throws when Fetch fails', async () => {
-      const deliveryProgrammeId = faker.string.uuid();
+      const groupEntityRef = 'test-group';
       const deliveryProgrammeAdminId = faker.string.uuid();
 
       fetchApi.fetch.mockResolvedValue({
@@ -158,7 +164,7 @@ describe('DeliveryProgrammeAdminClient', () => {
       });
 
       await expect(
-        sut.delete(deliveryProgrammeAdminId, deliveryProgrammeId),
+        sut.delete(deliveryProgrammeAdminId, groupEntityRef),
       ).rejects.toThrow(/^Request failed with 400/);
     });
   });

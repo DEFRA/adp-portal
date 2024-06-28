@@ -1,6 +1,15 @@
 import type { Config } from '@backstage/config';
+import { fetchApiRef, type FetchApi } from '@internal/plugin-fetch-api-backend';
 import type { GithubTeamDetails } from '@internal/plugin-adp-common';
-import fetch from 'node-fetch';
+import {
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
+import {
+  tokenProviderRef,
+  type TokenProvider,
+} from '@internal/plugin-credentials-context-backend';
 
 export type SetTeamRequest = {
   name?: string;
@@ -14,12 +23,22 @@ export type IGitHubTeamsApi = {
   [P in keyof GitHubTeamsApi]: GitHubTeamsApi[P];
 };
 export class GitHubTeamsApi {
-  readonly #fetch: typeof fetch;
+  readonly #fetchApi: FetchApi;
   readonly #config: Config;
+  readonly #tokens: TokenProvider;
 
-  constructor(config: Config, fetchApi = fetch) {
+  constructor({
+    config,
+    fetchApi,
+    tokens,
+  }: {
+    config: Config;
+    fetchApi: FetchApi;
+    tokens: TokenProvider;
+  }) {
     this.#config = config;
-    this.#fetch = fetchApi;
+    this.#fetchApi = fetchApi;
+    this.#tokens = tokens;
   }
 
   public async createTeam(request: SetTeamRequest): Promise<GithubTeamDetails> {
@@ -39,10 +58,12 @@ export class GitHubTeamsApi {
   ): Promise<GithubTeamDetails> {
     const baseUrl = this.#config.getString('adp.githubTeams.apiBaseUrl');
     const endpoint = teamId === null ? baseUrl : `${baseUrl}/${teamId}`;
-    const response = await this.#fetch(endpoint, {
+    const { token } = await this.#tokens.getLimitedUserToken();
+    const response = await this.#fetchApi.fetch(endpoint, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(request),
     });
@@ -54,3 +75,23 @@ export class GitHubTeamsApi {
     );
   }
 }
+
+export const githubTeamsApiRef = createServiceRef<IGitHubTeamsApi>({
+  id: 'adp.github-teams-api',
+  scope: 'plugin',
+  defaultFactory(service) {
+    return Promise.resolve(
+      createServiceFactory({
+        service,
+        deps: {
+          config: coreServices.rootConfig,
+          fetchApi: fetchApiRef,
+          tokens: tokenProviderRef,
+        },
+        factory(deps) {
+          return new GitHubTeamsApi(deps);
+        },
+      }),
+    );
+  },
+});

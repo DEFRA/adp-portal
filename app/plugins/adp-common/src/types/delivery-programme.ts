@@ -4,7 +4,7 @@ export type DeliveryProgramme = {
   id: string;
   created_at: Date;
   updated_at: Date;
-  programme_managers: DeliveryProgrammeAdmin[];
+  delivery_programme_admins: DeliveryProgrammeAdmin[];
   title: string;
   readonly name: string;
   alias?: string;

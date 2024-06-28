@@ -1,4 +1,3 @@
-import { getVoidLogger } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
 import type { ProgrammeRouterOptions } from './deliveryProgrammeRouter';
@@ -17,6 +16,8 @@ import type {
   CreateDeliveryProgrammeRequest,
   UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
+import { mockServices } from '@backstage/backend-test-utils';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
 
 const managerByProgrammeId = programmeManagerList.filter(
   managers => managers.delivery_programme_id === '123',
@@ -54,12 +55,16 @@ describe('createRouter', () => {
       delete: jest.fn(),
     };
 
+  const mockPermissionsService = mockServices.permissions.mock();
+
   const mockOptions: ProgrammeRouterOptions = {
-    logger: getVoidLogger(),
+    logger: mockServices.logger.mock(),
     identity: mockIdentityApi,
     deliveryProjectStore: mockDeliveryProjectStore,
     deliveryProgrammeStore: mockDeliveryProgrammeStore,
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
+    permissions: mockPermissionsService,
+    httpAuth: mockServices.httpAuth(),
   };
 
   beforeAll(async () => {
@@ -95,17 +100,15 @@ describe('createRouter', () => {
     );
   });
 
-  describe('GET /deliveryProgramme/health', () => {
+  describe('GET /health', () => {
     it('returns ok', async () => {
-      const response = await request(programmeApp).get(
-        '/deliveryProgramme/health',
-      );
+      const response = await request(programmeApp).get('/health');
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({ status: 'ok' });
     });
   });
 
-  describe('GET /deliveryProgramme', () => {
+  describe('GET /', () => {
     it('returns ok', async () => {
       mockDeliveryProjectStore.getAll.mockResolvedValue([
         expectedProjectDataWithName,
@@ -113,7 +116,7 @@ describe('createRouter', () => {
       mockDeliveryProgrammeStore.getAll.mockResolvedValueOnce([
         expectedProgrammeDataWithManager,
       ]);
-      const response = await request(programmeApp).get('/deliveryProgramme');
+      const response = await request(programmeApp).get('/');
       expect(response.status).toEqual(200);
     });
 
@@ -121,12 +124,12 @@ describe('createRouter', () => {
       mockDeliveryProgrammeStore.getAll.mockRejectedValueOnce(
         new InputError('error'),
       );
-      const response = await request(programmeApp).get('/deliveryProgramme');
+      const response = await request(programmeApp).get('/');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('GET /deliveryProgramme/:id', () => {
+  describe('GET /:id', () => {
     it('returns ok', async () => {
       mockDeliveryProgrammeStore.get.mockResolvedValueOnce(
         expectedProgrammeDataWithManager,
@@ -134,9 +137,7 @@ describe('createRouter', () => {
       mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
         programmeManagerList,
       );
-      const response = await request(programmeApp).get(
-        '/deliveryProgramme/1234',
-      );
+      const response = await request(programmeApp).get('/1234');
       expect(response.status).toEqual(200);
     });
 
@@ -144,24 +145,25 @@ describe('createRouter', () => {
       mockDeliveryProgrammeStore.get.mockRejectedValueOnce(
         new InputError('error'),
       );
-      const response = await request(programmeApp).get(
-        '/deliveryProgramme/4321',
-      );
+      const response = await request(programmeApp).get('/4321');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('POST /deliveryProgramme', () => {
+  describe('POST /', () => {
     it('returns created', async () => {
       // arrange
       mockDeliveryProgrammeStore.add.mockResolvedValue({
         success: true,
         value: expectedProgrammeDataWithName,
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(programmeApp)
-        .post('/deliveryProgramme')
+        .post('/')
         .send({
           title: 'def',
           arms_length_body_id: '123',
@@ -176,6 +178,23 @@ describe('createRouter', () => {
       );
     });
 
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const response = await request(programmeApp)
+        .post('/')
+        .send({
+          title: 'def',
+          arms_length_body_id: '123',
+          description: 'My description',
+          delivery_programme_code: 'abc',
+        } satisfies CreateDeliveryProgrammeRequest);
+
+      expect(response.status).toEqual(403);
+    });
+
     it('return 400 with errors', async () => {
       // arrange
       mockDeliveryProgrammeStore.add.mockResolvedValue({
@@ -188,10 +207,13 @@ describe('createRouter', () => {
           'unknownArmsLengthBody',
         ],
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(programmeApp)
-        .post('/deliveryProgramme')
+        .post('/')
         .send({
           title: 'def',
           arms_length_body_id: '123',
@@ -242,7 +264,7 @@ describe('createRouter', () => {
 
     it('return 400 if if the request is bad', async () => {
       const response = await request(programmeApp)
-        .post('/deliveryProgramme')
+        .post('/')
         .send({ notATitle: 'abc' });
       expect(response.status).toEqual(400);
     });
@@ -250,7 +272,7 @@ describe('createRouter', () => {
     it('returns internal server error', async () => {
       mockDeliveryProgrammeStore.add.mockRejectedValueOnce(new Error('error'));
       const response = await request(programmeApp)
-        .post('/deliveryProgramme')
+        .post('/')
         .send({
           title: 'def',
           arms_length_body_id: '123',
@@ -261,17 +283,20 @@ describe('createRouter', () => {
     });
   });
 
-  describe('PATCH /deliveryProgramme', () => {
+  describe('PATCH /', () => {
     it('returns ok', async () => {
       // arrange
       mockDeliveryProgrammeStore.update.mockResolvedValue({
         success: true,
         value: expectedProgrammeDataWithName,
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(programmeApp)
-        .patch('/deliveryProgramme')
+        .patch('/')
         .send({ id: '123' } satisfies UpdateDeliveryProgrammeRequest);
 
       // assert
@@ -279,6 +304,18 @@ describe('createRouter', () => {
       expect(response.body).toMatchObject(
         JSON.parse(JSON.stringify(expectedProgrammeDataWithName)),
       );
+    });
+
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const response = await request(programmeApp)
+        .patch('/')
+        .send({ id: '123' } satisfies UpdateDeliveryProgrammeRequest);
+
+      expect(response.status).toEqual(403);
     });
 
     it('return 400 with errors', async () => {
@@ -292,10 +329,13 @@ describe('createRouter', () => {
           'unknownArmsLengthBody',
         ],
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(programmeApp)
-        .patch('/deliveryProgramme')
+        .patch('/')
         .send({
           id: '123',
           arms_length_body_id: 'abc',
@@ -338,7 +378,7 @@ describe('createRouter', () => {
 
     it('return 400 if if the request is bad', async () => {
       const response = await request(programmeApp)
-        .patch('/deliveryProgramme')
+        .patch('/')
         .send({ notAnId: 'abc' });
       expect(response.status).toEqual(400);
     });
@@ -348,7 +388,7 @@ describe('createRouter', () => {
         new Error('error'),
       );
       const response = await request(programmeApp)
-        .patch('/deliveryProgramme')
+        .patch('/')
         .send({ id: '123' } satisfies UpdateDeliveryProgrammeRequest);
       expect(response.status).toEqual(500);
     });

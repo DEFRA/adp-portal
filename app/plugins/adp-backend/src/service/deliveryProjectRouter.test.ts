@@ -1,15 +1,15 @@
-import type { PluginDatabaseManager } from '@backstage/backend-common';
-import { DatabaseManager, getVoidLogger } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
+import type { ProjectRouterOptions } from './deliveryProjectRouter';
 import { createProjectRouter } from './deliveryProjectRouter';
-import { ConfigReader } from '@backstage/config';
 import { expectedProjectDataWithName } from '../testData/projectTestData';
 import { InputError } from '@backstage/errors';
-import { expectedProgrammeDataWithName } from '../testData/programmeTestData';
-import type { IDeliveryProjectStore } from '../deliveryProject';
-import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
-import { initializeAdpDatabase } from '../database/initializeAdpDatabase';
+import {
+  type IFluxConfigApi,
+  type IDeliveryProjectStore,
+  type IAdoProjectApi,
+} from '../deliveryProject';
+import { type IEntraIdApi } from '../entraId';
 import { randomUUID } from 'node:crypto';
 import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
 import type {
@@ -17,9 +17,15 @@ import type {
   UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
 import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
+import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import { mockServices } from '@backstage/backend-test-utils';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
 
 let mockCreateFluxConfig: jest.Mock;
 let mockGetFluxConfig: jest.Mock;
+let mockCheckIfAdoProjectExists: jest.Mock;
+let mockCreateEntraIdGroupsForProject: jest.Mock;
+let mockSetProjectGroupMembers: jest.Mock;
 
 jest.mock('../deliveryProject/fluxConfigApi', () => {
   return {
@@ -32,6 +38,25 @@ jest.mock('../deliveryProject/fluxConfigApi', () => {
         getFluxConfig: mockGetFluxConfig,
       };
     }),
+    AdoProjectApi: jest.fn().mockImplementation(() => {
+      mockCheckIfAdoProjectExists = jest.fn().mockResolvedValue(true);
+      return {
+        checkAdoProjectExists: mockCheckIfAdoProjectExists,
+      };
+    }),
+  };
+});
+
+jest.mock('../entraId', () => {
+  return {
+    EntraIdApi: jest.fn().mockImplementation(() => {
+      mockCreateEntraIdGroupsForProject = jest.fn();
+      mockSetProjectGroupMembers = jest.fn();
+      return {
+        createEntraIdGroupsForProject: mockCreateEntraIdGroupsForProject,
+        setProjectGroupMembers: mockSetProjectGroupMembers,
+      };
+    }),
   };
 });
 
@@ -42,17 +67,6 @@ describe('createRouter', () => {
       identity: { userEntityRef: 'user:default/johndoe' },
     }),
   };
-
-  const mockConfig = new ConfigReader({
-    rbac: {
-      programmeAdminGroup: 'test',
-    },
-    adp: {
-      fluxOnboarding: {
-        apiBaseUrl: 'https://portal-api/FluxOnboarding',
-      },
-    },
-  });
 
   const mockSyncronizer: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> = {
     syncronizeByName: jest.fn(),
@@ -67,47 +81,55 @@ describe('createRouter', () => {
     update: jest.fn(),
   };
 
-  const mockDeliveryProgrammeStore: jest.Mocked<IDeliveryProgrammeStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-  };
-
   const mockDeliveryProjectUserStore: jest.Mocked<IDeliveryProjectUserStore> = {
     add: jest.fn(),
     getByDeliveryProject: jest.fn(),
     getAll: jest.fn(),
     get: jest.fn(),
     update: jest.fn(),
+    delete: jest.fn(),
   };
 
-  const mockOptions = {
-    logger: getVoidLogger(),
+  const mockFluxConfigApi: jest.Mocked<IFluxConfigApi> = {
+    createFluxConfig: jest.fn(),
+    getFluxConfig: jest.fn(),
+  };
+
+  const mockAdoProjectApi: jest.Mocked<IAdoProjectApi> = {
+    checkIfAdoProjectExists: jest.fn(),
+  };
+
+  const mockEntraIdApi: jest.Mocked<IEntraIdApi> = {
+    createEntraIdGroupsForProject: jest.fn(),
+    setProjectGroupMembers: jest.fn(),
+  };
+
+  const mockDeliveryProgrammeAdminStore: jest.Mocked<IDeliveryProgrammeAdminStore> =
+    {
+      add: jest.fn(),
+      getByAADEntityRef: jest.fn(),
+      getByDeliveryProgramme: jest.fn(),
+      getAll: jest.fn(),
+      delete: jest.fn(),
+    };
+
+  const mockPermissionsService = mockServices.permissions.mock();
+
+  const mockOptions: ProjectRouterOptions = {
+    logger: mockServices.logger.mock(),
     identity: mockIdentityApi,
-    database: createTestDatabase(),
-    config: mockConfig,
     teamSyncronizer: mockSyncronizer,
     deliveryProjectStore: mockDeliveryProjectStore,
-    deliveryProgrammeStore: mockDeliveryProgrammeStore,
     deliveryProjectUserStore: mockDeliveryProjectUserStore,
+    fluxConfigApi: mockFluxConfigApi,
+    deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
+    entraIdApi: mockEntraIdApi,
+    adoProjectApi: mockAdoProjectApi,
+    httpAuth: mockServices.httpAuth(),
+    permissions: mockPermissionsService,
   };
 
-  function createTestDatabase(): PluginDatabaseManager {
-    return DatabaseManager.fromConfig(
-      new ConfigReader({
-        backend: {
-          database: {
-            client: 'better-sqlite3',
-            connection: ':memory:',
-          },
-        },
-      }),
-    ).forPlugin('adp');
-  }
-
-  beforeAll(async () => {
-    await initializeAdpDatabase(mockOptions.database);
+  beforeAll(() => {
     const projectRouter = createProjectRouter(mockOptions);
     projectApp = express().use(projectRouter);
   });
@@ -126,28 +148,22 @@ describe('createRouter', () => {
       success: true,
       value: expectedProjectDataWithName,
     });
-    mockDeliveryProgrammeStore.add.mockResolvedValue({
-      success: true,
-      value: expectedProgrammeDataWithName,
-    });
-    mockDeliveryProgrammeStore.get.mockResolvedValue(
-      expectedProgrammeDataWithName,
-    );
-    mockDeliveryProgrammeStore.getAll.mockResolvedValue([
-      expectedProgrammeDataWithName,
-    ]);
-    mockDeliveryProgrammeStore.update.mockResolvedValue({
-      success: true,
-      value: expectedProgrammeDataWithName,
+  });
+
+  describe('GET /health', () => {
+    it('returns ok', async () => {
+      const response = await request(projectApp).get('/health');
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual({ status: 'ok' });
     });
   });
 
-  describe('GET /deliveryProject', () => {
+  describe('GET /', () => {
     it('returns ok', async () => {
       mockDeliveryProjectStore.getAll.mockResolvedValueOnce([
         expectedProjectDataWithName,
       ]);
-      const response = await request(projectApp).get('/deliveryProject');
+      const response = await request(projectApp).get('/');
       expect(response.status).toEqual(200);
     });
 
@@ -155,12 +171,12 @@ describe('createRouter', () => {
       mockDeliveryProjectStore.getAll.mockRejectedValueOnce(
         new InputError('error'),
       );
-      const response = await request(projectApp).get('/deliveryProject');
+      const response = await request(projectApp).get('/');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('GET /deliveryProject/:id', () => {
+  describe('GET /:id', () => {
     it('returns ok', async () => {
       mockDeliveryProjectStore.get.mockResolvedValueOnce(
         expectedProjectDataWithName,
@@ -178,7 +194,7 @@ describe('createRouter', () => {
           updated_at: new Date(),
         },
       ]);
-      const response = await request(projectApp).get('/deliveryProject/1234');
+      const response = await request(projectApp).get('/1234');
       expect(response.status).toEqual(200);
     });
 
@@ -186,22 +202,25 @@ describe('createRouter', () => {
       mockDeliveryProjectStore.get.mockRejectedValueOnce(
         new InputError('error'),
       );
-      const response = await request(projectApp).get('/deliveryProject/4321');
+      const response = await request(projectApp).get('/4321');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('POST /deliveryProject', () => {
+  describe('POST /', () => {
     it('returns created', async () => {
       // arrange
       mockDeliveryProjectStore.add.mockResolvedValue({
         success: true,
         value: expectedProjectDataWithName,
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(projectApp)
-        .post('/deliveryProject')
+        .post('/')
         .send({
           delivery_project_code: 'abc',
           title: 'def',
@@ -220,6 +239,27 @@ describe('createRouter', () => {
       );
     });
 
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const response = await request(projectApp)
+        .post('/')
+        .send({
+          delivery_project_code: 'abc',
+          title: 'def',
+          ado_project: 'my project',
+          delivery_programme_id: '123',
+          description: 'My description',
+          github_team_visibility: 'public',
+          service_owner: 'test@email.com',
+          team_type: 'delivery',
+        } satisfies CreateDeliveryProjectRequest);
+
+      expect(response.status).toEqual(403);
+    });
+
     it('return 400 with errors', async () => {
       // arrange
       mockDeliveryProjectStore.add.mockResolvedValue({
@@ -231,10 +271,13 @@ describe('createRouter', () => {
           'unknownDeliveryProgramme',
         ],
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(projectApp)
-        .post('/deliveryProject')
+        .post('/')
         .send({
           delivery_project_code: 'abc',
           title: 'def',
@@ -282,7 +325,7 @@ describe('createRouter', () => {
 
     it('return 400 if if the request is bad', async () => {
       const response = await request(projectApp)
-        .post('/deliveryProject')
+        .post('/')
         .send({ notATitle: 'abc' });
       expect(response.status).toEqual(400);
     });
@@ -290,7 +333,7 @@ describe('createRouter', () => {
     it('returns internal server error', async () => {
       mockDeliveryProjectStore.add.mockRejectedValueOnce(new Error('error'));
       const response = await request(projectApp)
-        .post('/deliveryProject')
+        .post('/')
         .send({
           delivery_project_code: 'abc',
           title: 'def',
@@ -305,17 +348,20 @@ describe('createRouter', () => {
     });
   });
 
-  describe('PATCH /deliveryProject', () => {
+  describe('PATCH /', () => {
     it('returns ok', async () => {
       // arrange
       mockDeliveryProjectStore.update.mockResolvedValue({
         success: true,
         value: expectedProjectDataWithName,
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(projectApp)
-        .patch('/deliveryProject')
+        .patch('/')
         .send({ id: '123' } satisfies UpdateDeliveryProjectRequest);
 
       // assert
@@ -325,16 +371,31 @@ describe('createRouter', () => {
       );
     });
 
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const response = await request(projectApp)
+        .patch('/')
+        .send({ id: '123' } satisfies UpdateDeliveryProjectRequest);
+
+      expect(response.status).toEqual(403);
+    });
+
     it('return 400 with errors', async () => {
       // arrange
       mockDeliveryProjectStore.update.mockResolvedValue({
         success: false,
         errors: ['duplicateTitle', 'unknown', 'unknownDeliveryProgramme'],
       });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       // act
       const response = await request(projectApp)
-        .patch('/deliveryProject')
+        .patch('/')
         .send({
           id: '123',
           delivery_project_code: 'abc',
@@ -370,7 +431,7 @@ describe('createRouter', () => {
 
     it('return 400 if if the request is bad', async () => {
       const response = await request(projectApp)
-        .patch('/deliveryProject')
+        .patch('/')
         .send({ notAnId: 'abc' });
       expect(response.status).toEqual(400);
     });
@@ -378,20 +439,20 @@ describe('createRouter', () => {
     it('returns internal server error', async () => {
       mockDeliveryProjectStore.update.mockRejectedValueOnce(new Error('error'));
       const response = await request(projectApp)
-        .patch('/deliveryProject')
+        .patch('/')
         .send({ id: '123' } satisfies UpdateDeliveryProjectRequest);
       expect(response.status).toEqual(500);
     });
   });
 
-  describe('PUT /deliveryProject/:projectName/github/teams/sync', () => {
+  describe('PUT /:projectName/github/teams/sync', () => {
     it('Should call the syncronizer', async () => {
       // arrange
       const projectName = randomUUID();
 
       // act
       const response = await request(projectApp).put(
-        `/deliveryProject/${projectName}/github/teams/sync`,
+        `/${projectName}/github/teams/sync`,
       );
 
       // assert
@@ -399,6 +460,68 @@ describe('createRouter', () => {
       expect(mockSyncronizer.syncronizeByName.mock.calls).toMatchObject([
         [projectName],
       ]);
+    });
+  });
+
+  describe('POST /:projectName/createEntraIdGroups', () => {
+    it('Should call the entraIdApi', async () => {
+      // arrange
+      const projectName = 'ADP-DMO';
+      const body: Array<any> = [];
+
+      // act
+      const response = await request(projectApp)
+        .post(`/${projectName}/createEntraIdGroups`)
+        .send(body);
+
+      // assert
+      expect(response.status).toBe(204);
+    });
+
+    it('Should throw error when entraIdApi throws error', async () => {
+      // arrange
+      const projectName = 'ADP-DMO';
+      const body: Array<any> = [];
+      mockEntraIdApi.createEntraIdGroupsForProject.mockRejectedValueOnce(
+        'error',
+      );
+
+      // act
+      const response = await request(projectApp)
+        .post(`/${projectName}/createEntraIdGroups`)
+        .send(body);
+
+      // assert
+      expect(response.status).toBe(400);
+    });
+  });
+
+  describe('GET /adoProject/:projectName', () => {
+    it('Should call the adoProjectApi', async () => {
+      // arrange
+      const projectName = 'ADP-DMO';
+
+      // act
+      const response = await request(projectApp).get(
+        `/adoProject/${projectName}`,
+      );
+
+      // assert
+      expect(response.status).toBe(200);
+    });
+
+    it('Should throw error when adoProjectApi throws error', async () => {
+      // arrange
+      const projectName = 'ADP-DMO';
+      mockAdoProjectApi.checkIfAdoProjectExists.mockRejectedValueOnce('error');
+
+      // act
+      const response = await request(projectApp).get(
+        `/adoProject/${projectName}`,
+      );
+
+      // assert
+      expect(response.status).toBe(400);
     });
   });
 });

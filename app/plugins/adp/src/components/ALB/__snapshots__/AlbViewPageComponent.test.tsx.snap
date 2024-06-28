@@ -235,7 +235,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -270,7 +270,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -305,7 +305,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -340,7 +340,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -375,7 +375,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -410,7 +410,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -496,24 +496,37 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="[object Object]"
                           >
-                            <div>
-                              {"id":"0","name":"project-0","title":"Project 0","created_at":"1970-01-01T00:00:00.000Z","creator":"me","description":"My cool arms length body","owner":"not me","updated_at":"1970-01-01T00:00:00.000Z","alias":"ALB 0","children":[],"updated_by":"Me","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="alb-edit-button-0"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="alb-edit-button-0"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  armsLengthBody: {
+    id: '0',
+    name: 'project-0',
+    title: 'Project 0',
+    created_at: 1970-01-01T00:00:00.000Z,
+    creator: 'me',
+    description: 'My cool arms length body',
+    owner: 'not me',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'ALB 0',
+    children: [],
+    updated_by: 'Me',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -991,7 +1004,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1026,7 +1039,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1061,7 +1074,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1096,7 +1109,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1131,7 +1144,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1166,7 +1179,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1668,7 +1681,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1703,7 +1716,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1738,7 +1751,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1773,7 +1786,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1808,7 +1821,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1843,7 +1856,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1929,24 +1942,37 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="[object Object]"
                           >
-                            <div>
-                              {"id":"0","name":"project-0","title":"Project 0","created_at":"1970-01-01T00:00:00.000Z","creator":"me","description":"My cool arms length body","owner":"not me","updated_at":"1970-01-01T00:00:00.000Z","alias":"ALB 0","children":[],"updated_by":"Me","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="alb-edit-button-0"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="alb-edit-button-0"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  armsLengthBody: {
+    id: '0',
+    name: 'project-0',
+    title: 'Project 0',
+    created_at: 1970-01-01T00:00:00.000Z,
+    creator: 'me',
+    description: 'My cool arms length body',
+    owner: 'not me',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'ALB 0',
+    children: [],
+    updated_by: 'Me',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -2000,24 +2026,37 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="[object Object]"
                           >
-                            <div>
-                              {"id":"1","name":"project-1","title":"Project 1","created_at":"1970-01-01T00:00:00.000Z","creator":"me","description":"My cool arms length body","owner":"not me","updated_at":"1970-01-01T00:00:00.000Z","alias":"ALB 1","children":[],"updated_by":"Me","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="alb-edit-button-1"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="alb-edit-button-1"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  armsLengthBody: {
+    id: '1',
+    name: 'project-1',
+    title: 'Project 1',
+    created_at: 1970-01-01T00:00:00.000Z,
+    creator: 'me',
+    description: 'My cool arms length body',
+    owner: 'not me',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'ALB 1',
+    children: [],
+    updated_by: 'Me',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -2491,7 +2530,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2526,7 +2565,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2561,7 +2600,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2596,7 +2635,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2631,7 +2670,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2666,7 +2705,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2752,24 +2791,37 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="[object Object]"
                           >
-                            <div>
-                              {"id":"0","name":"project-0","title":"Project 0","created_at":"1970-01-01T00:00:00.000Z","creator":"me","description":"My cool arms length body","owner":"not me","updated_at":"1970-01-01T00:00:00.000Z","alias":"ALB 0","children":[],"updated_by":"Me","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="alb-edit-button-0"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="alb-edit-button-0"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  armsLengthBody: {
+    id: '0',
+    name: 'project-0',
+    title: 'Project 0',
+    created_at: 1970-01-01T00:00:00.000Z,
+    creator: 'me',
+    description: 'My cool arms length body',
+    owner: 'not me',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'ALB 0',
+    children: [],
+    updated_by: 'Me',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -3247,7 +3299,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3282,7 +3334,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3317,7 +3369,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3352,7 +3404,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3387,7 +3439,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3422,7 +3474,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3924,7 +3976,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3959,7 +4011,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3994,7 +4046,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4029,7 +4081,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4064,7 +4116,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4099,7 +4151,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4185,24 +4237,37 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="[object Object]"
                           >
-                            <div>
-                              {"id":"0","name":"project-0","title":"Project 0","created_at":"1970-01-01T00:00:00.000Z","creator":"me","description":"My cool arms length body","owner":"not me","updated_at":"1970-01-01T00:00:00.000Z","alias":"ALB 0","children":[],"updated_by":"Me","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="alb-edit-button-0"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="alb-edit-button-0"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  armsLengthBody: {
+    id: '0',
+    name: 'project-0',
+    title: 'Project 0',
+    created_at: 1970-01-01T00:00:00.000Z,
+    creator: 'me',
+    description: 'My cool arms length body',
+    owner: 'not me',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'ALB 0',
+    children: [],
+    updated_by: 'Me',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -4256,24 +4321,37 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="[object Object]"
                           >
-                            <div>
-                              {"id":"1","name":"project-1","title":"Project 1","created_at":"1970-01-01T00:00:00.000Z","creator":"me","description":"My cool arms length body","owner":"not me","updated_at":"1970-01-01T00:00:00.000Z","alias":"ALB 1","children":[],"updated_by":"Me","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="alb-edit-button-1"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="alb-edit-button-1"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  armsLengthBody: {
+    id: '1',
+    name: 'project-1',
+    title: 'Project 1',
+    created_at: 1970-01-01T00:00:00.000Z,
+    creator: 'me',
+    description: 'My cool arms length body',
+    owner: 'not me',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'ALB 1',
+    children: [],
+    updated_by: 'Me',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -4327,24 +4405,37 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="[object Object]"
                           >
-                            <div>
-                              {"id":"2","name":"project-2","title":"Project 2","created_at":"1970-01-01T00:00:00.000Z","creator":"me","description":"My cool arms length body","owner":"not me","updated_at":"1970-01-01T00:00:00.000Z","alias":"ALB 2","children":[],"updated_by":"Me","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="alb-edit-button-2"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="alb-edit-button-2"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  armsLengthBody: {
+    id: '2',
+    name: 'project-2',
+    title: 'Project 2',
+    created_at: 1970-01-01T00:00:00.000Z,
+    creator: 'me',
+    description: 'My cool arms length body',
+    owner: 'not me',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'ALB 2',
+    children: [],
+    updated_by: 'Me',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -4398,24 +4489,37 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="[object Object]"
                           >
-                            <div>
-                              {"id":"3","name":"project-3","title":"Project 3","created_at":"1970-01-01T00:00:00.000Z","creator":"me","description":"My cool arms length body","owner":"not me","updated_at":"1970-01-01T00:00:00.000Z","alias":"ALB 3","children":[],"updated_by":"Me","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="alb-edit-button-3"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="alb-edit-button-3"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  armsLengthBody: {
+    id: '3',
+    name: 'project-3',
+    title: 'Project 3',
+    created_at: 1970-01-01T00:00:00.000Z,
+    creator: 'me',
+    description: 'My cool arms length body',
+    owner: 'not me',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'ALB 3',
+    children: [],
+    updated_by: 'Me',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                         <tr
@@ -4469,24 +4573,37 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="[object Object]"
                           >
-                            <div>
-                              {"id":"4","name":"project-4","title":"Project 4","created_at":"1970-01-01T00:00:00.000Z","creator":"me","description":"My cool arms length body","owner":"not me","updated_at":"1970-01-01T00:00:00.000Z","alias":"ALB 4","children":[],"updated_by":"Me","url":"https://test.com"}
-                              <button
-                                class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                                data-testid="alb-edit-button-4"
-                                tabindex="0"
-                                type="button"
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                              data-testid="alb-edit-button-4"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiButton-label"
                               >
-                                <span
-                                  class="MuiButton-label"
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  class="MuiTouchRipple-root"
-                                />
-                              </button>
-                            </div>
+                                Edit
+                                {
+  armsLengthBody: {
+    id: '4',
+    name: 'project-4',
+    title: 'Project 4',
+    created_at: 1970-01-01T00:00:00.000Z,
+    creator: 'me',
+    description: 'My cool arms length body',
+    owner: 'not me',
+    updated_at: 1970-01-01T00:00:00.000Z,
+    alias: 'ALB 4',
+    children: [],
+    updated_by: 'Me',
+    url: 'https://test.com'
+  }
+}
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
                           </td>
                         </tr>
                       </tbody>
@@ -4948,7 +5065,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4983,7 +5100,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5018,7 +5135,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5053,7 +5170,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5088,7 +5205,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; box-sizing: border-box;"
+                            style="box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5123,7 +5240,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="text-transform: uppercase; color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"

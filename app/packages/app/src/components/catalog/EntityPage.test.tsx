@@ -3,8 +3,8 @@ import type * as PluginOrg from '@backstage/plugin-org';
 import type * as PluginCatalog from '@backstage/plugin-catalog';
 import type * as PluginApiDocs from '@backstage/plugin-api-docs';
 import type * as PluginGithubPullRequests from '@roadiehq/backstage-plugin-github-pull-requests';
-import type * as PluginAzureDevops from '@backstage/plugin-azure-devops';
-import type * as PluginGithubActions from '@backstage/plugin-github-actions';
+import type * as PluginAzureDevops from '@backstage-community/plugin-azure-devops';
+import type * as PluginGithubActions from '@backstage-community/plugin-github-actions';
 import type * as PluginGrafana from '@k-phoen/backstage-plugin-grafana';
 import type * as PluginTechdocs from '@backstage/plugin-techdocs';
 import type * as PluginTechdocsReact from '@backstage/plugin-techdocs-react';
@@ -12,7 +12,7 @@ import type * as PluginTechdocsModuleAddonsContrib from '@backstage/plugin-techd
 import type * as PluginFlux from '@weaveworksoss/backstage-plugin-flux';
 import type * as PluginKubernetes from '@backstage/plugin-kubernetes';
 import type * as PluginAdp from '@internal/plugin-adp';
-import type * as PluginGithubPullRequestsBoard from '@backstage/plugin-github-pull-requests-board';
+import type * as PluginGithubPullRequestsBoard from '@backstage-community/plugin-github-pull-requests-board';
 import type * as PluginCatalogGraph from '@backstage/plugin-catalog-graph';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
 import { entityPage } from './EntityPage';
@@ -38,14 +38,13 @@ import { permissionApiRef } from '@backstage/plugin-permission-react';
 import type { Observable } from '@backstage/types';
 import { catalogGraphPlugin } from '@backstage/plugin-catalog-graph';
 import { SnapshotFriendlyStylesProvider } from '@internal/plugin-adp';
-import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 import type { RenderResult } from '@testing-library/react';
 import { randomUUID } from 'node:crypto';
 
-async function itShouldRenderTabs(when: string, entity: Entity): Promise<void>;
-async function itShouldRenderTabs(entity: Entity): Promise<void>;
-async function itShouldRenderTabs(...args: [string, Entity] | [Entity]) {
+function itShouldRenderTabs(when: string, entity: Entity): void;
+function itShouldRenderTabs(entity: Entity): void;
+function itShouldRenderTabs(...args: [string, Entity] | [Entity]) {
   const [when, entity] = args.length === 1 ? ['', ...args] : args;
   // eslint-disable-next-line jest/valid-title
   it(`Should render tabs ${when}`.trim(), async () => {
@@ -55,16 +54,13 @@ async function itShouldRenderTabs(...args: [string, Entity] | [Entity]) {
   });
 }
 
-async function itShouldRenderEntityHome(
+function itShouldRenderEntityHome(
   when: string,
   tabName: string,
   entity: Entity,
-): Promise<void>;
-async function itShouldRenderEntityHome(
-  tabName: string,
-  entity: Entity,
-): Promise<void>;
-async function itShouldRenderEntityHome(
+): void;
+function itShouldRenderEntityHome(tabName: string, entity: Entity): void;
+function itShouldRenderEntityHome(
   ...args: [string, string, Entity] | [string, Entity]
 ) {
   const [when, tabName, entity] = args.length === 2 ? ['', ...args] : args;
@@ -85,16 +81,13 @@ async function itShouldRenderEntityHome(
   });
 }
 
-async function itShouldRenderEntityPage(
+function itShouldRenderEntityPage(
   when: string,
   tabName: string,
   entity: Entity,
-): Promise<void>;
-async function itShouldRenderEntityPage(
-  tabName: string,
-  entity: Entity,
-): Promise<void>;
-async function itShouldRenderEntityPage(
+): void;
+function itShouldRenderEntityPage(tabName: string, entity: Entity): void;
+function itShouldRenderEntityPage(
   ...args: [string, string, Entity] | [string, Entity]
 ) {
   const [when, tabName, entity] = args.length === 2 ? ['', ...args] : args;
@@ -467,9 +460,9 @@ describe('[kind: ???]', () => {
 });
 
 async function navigateToTab(result: RenderResult, tabText: string) {
-  await act(async () => {
+  await React.act(async () => {
     const tabs = [
-      ...result.baseElement.querySelectorAll(`.MuiTabs-flexContainer > button`),
+      ...result.baseElement.querySelectorAll(`.MuiTabs-flexContainer > a`),
     ];
     expect(tabs).not.toBeNull();
     expect(tabs.map(x => x.textContent)).toContain(tabText);
@@ -658,16 +651,19 @@ jest.mock('@backstage/plugin-api-docs', () =>
 const mockPluginAzureDevops = {
   ...mockComponent('EntityAzurePipelinesContent'),
 } satisfies Partial<jest.Mocked<typeof PluginAzureDevops>>;
-jest.mock('@backstage/plugin-azure-devops', () =>
-  proxyModule('@backstage/plugin-azure-devops', () => mockPluginAzureDevops),
+jest.mock('@backstage-community/plugin-azure-devops', () =>
+  proxyModule(
+    '@backstage-community/plugin-azure-devops',
+    () => mockPluginAzureDevops,
+  ),
 );
 
 const mockPluginGithubActions = {
   ...mockComponent('EntityGithubActionsContent'),
 } satisfies Partial<jest.Mocked<typeof PluginGithubActions>>;
-jest.mock('@backstage/plugin-github-actions', () =>
+jest.mock('@backstage-community/plugin-github-actions', () =>
   proxyModule(
-    '@backstage/plugin-github-actions',
+    '@backstage-community/plugin-github-actions',
     () => mockPluginGithubActions,
   ),
 );
@@ -745,9 +741,9 @@ const mockPluginGithubPullRequestsBoard = {
   ...mockComponent('EntityTeamPullRequestsCard'),
   ...mockComponent('EntityTeamPullRequestsContent'),
 } satisfies Partial<jest.Mocked<typeof PluginGithubPullRequestsBoard>>;
-jest.mock('@backstage/plugin-github-pull-requests-board', () =>
+jest.mock('@backstage-community/plugin-github-pull-requests-board', () =>
   proxyModule(
-    '@backstage/plugin-github-pull-requests-board',
+    '@backstage-community/plugin-github-pull-requests-board',
     () => mockPluginGithubPullRequestsBoard,
   ),
 );

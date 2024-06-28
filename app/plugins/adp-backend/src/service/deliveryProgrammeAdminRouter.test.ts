@@ -1,16 +1,23 @@
 import express from 'express';
 import request from 'supertest';
 import { programmeManagerList } from '../testData/programmeTestData';
-import { getVoidLogger } from '@backstage/backend-common';
 import type { DeliveryProgrammeAdminRouterOptions } from './deliveryProgrammeAdminRouter';
 import { createDeliveryProgrammeAdminRouter } from './deliveryProgrammeAdminRouter';
 import { InputError } from '@backstage/errors';
 import { catalogTestData } from '../testData/catalogEntityTestData';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import type { CatalogApi } from '@backstage/catalog-client';
-import type { CreateDeliveryProgrammeAdminRequest } from '@internal/plugin-adp-common';
+import type {
+  CreateDeliveryProgrammeAdminRequest,
+  DeleteDeliveryProgrammeAdminRequest,
+} from '@internal/plugin-adp-common';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
+import { mockServices } from '@backstage/backend-test-utils';
+import { faker } from '@faker-js/faker';
 
-const programmeManagerByAADEntityRef = programmeManagerList[0];
+jest.mock('@backstage/plugin-auth-node', () => ({
+  getBearerTokenFromAuthorizationHeader: () => 'token',
+}));
 
 describe('createRouter', () => {
   let deliveryProgrammeAdminApp: express.Express;
@@ -46,16 +53,21 @@ describe('createRouter', () => {
     validateEntity: jest.fn(),
   };
 
+  const mockPermissionsService = mockServices.permissions.mock();
+
   const mockOptions: DeliveryProgrammeAdminRouterOptions = {
-    logger: getVoidLogger(),
+    logger: mockServices.logger.mock(),
     identity: mockIdentityApi,
     catalog: mockCatalogClient,
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
+    permissions: mockPermissionsService,
+    httpAuth: mockServices.httpAuth(),
+    auth: mockServices.auth(),
   };
 
-  beforeAll(async () => {
+  beforeAll(() => {
     const deliveryProgrammeAdminRouter =
-      await createDeliveryProgrammeAdminRouter(mockOptions);
+      createDeliveryProgrammeAdminRouter(mockOptions);
     deliveryProgrammeAdminApp = express().use(deliveryProgrammeAdminRouter);
   });
 
@@ -68,24 +80,20 @@ describe('createRouter', () => {
     mockCatalogClient.getEntities.mockClear();
   });
 
-  describe('GET /deliveryProgrammeAdmins/health', () => {
+  describe('GET /health', () => {
     it('returns ok', async () => {
-      const response = await request(deliveryProgrammeAdminApp).get(
-        '/deliveryProgrammeAdmins/health',
-      );
+      const response = await request(deliveryProgrammeAdminApp).get('/health');
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({ status: 'ok' });
     });
   });
 
-  describe('GET /deliveryProgrammeAdmins', () => {
+  describe('GET /', () => {
     it('returns ok', async () => {
       mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
         programmeManagerList,
       );
-      const response = await request(deliveryProgrammeAdminApp).get(
-        '/deliveryProgrammeAdmins',
-      );
+      const response = await request(deliveryProgrammeAdminApp).get('/');
       expect(response.status).toEqual(200);
     });
 
@@ -94,21 +102,17 @@ describe('createRouter', () => {
         new InputError('error'),
       );
 
-      const response = await request(deliveryProgrammeAdminApp).get(
-        '/deliveryProgrammeAdmins',
-      );
+      const response = await request(deliveryProgrammeAdminApp).get('/');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('GET /deliveryProgrammeAdmins/:deliveryProgrammeId', () => {
+  describe('GET /:deliveryProgrammeId', () => {
     it('returns ok', async () => {
       mockDeliveryProgrammeAdminStore.getByDeliveryProgramme.mockResolvedValueOnce(
         programmeManagerList,
       );
-      const response = await request(deliveryProgrammeAdminApp).get(
-        '/deliveryProgrammeAdmins/123',
-      );
+      const response = await request(deliveryProgrammeAdminApp).get('/123');
       expect(response.status).toEqual(200);
     });
 
@@ -117,14 +121,12 @@ describe('createRouter', () => {
         new InputError('error'),
       );
 
-      const response = await request(deliveryProgrammeAdminApp).get(
-        '/deliveryProgrammeAdmins/123q',
-      );
+      const response = await request(deliveryProgrammeAdminApp).get('/123q');
       expect(response.status).toEqual(400);
     });
   });
 
-  describe('POST /deliveryProgrammeAdmin/', () => {
+  describe('POST /', () => {
     it('returns a 201 response when programme managers are created', async () => {
       mockDeliveryProgrammeAdminStore.add.mockResolvedValueOnce({
         value: {
@@ -138,31 +140,71 @@ describe('createRouter', () => {
         success: true,
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const requestBody: CreateDeliveryProgrammeAdminRequest = {
         delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
         user_catalog_name: 'test@test.com',
+        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
-        .post('/deliveryProgrammeAdmin')
+        .post('/')
         .send(requestBody);
       expect(response.status).toEqual(201);
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        {
+          token:
+            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+        },
+      );
+    });
+
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
+
+      const requestBody: CreateDeliveryProgrammeAdminRequest = {
+        delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
+        user_catalog_name: 'test@test.com',
+        group_entity_ref: 'group-123',
+      };
+
+      const response = await request(deliveryProgrammeAdminApp)
+        .post('/')
+        .send(requestBody);
+
+      expect(response.status).toEqual(403);
     });
 
     it('returns a 400 response if catalog user cannot be found', async () => {
       mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const requestBody: CreateDeliveryProgrammeAdminRequest = {
         delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
         user_catalog_name: 'test@test.com',
+        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
-        .post('/deliveryProgrammeAdmin')
+        .post('/')
         .send(requestBody);
 
       expect(response.status).toEqual(400);
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        {
+          token:
+            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+        },
+      );
     });
 
     it('returns a 400 response with errors', async () => {
@@ -171,14 +213,18 @@ describe('createRouter', () => {
         errors: ['duplicateUser', 'unknown', 'unknownDeliveryProgramme'],
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
       const requestBody: CreateDeliveryProgrammeAdminRequest = {
         delivery_programme_id: '24f437a1-4bf9-42b1-9cff-bf9ed2b03a46',
         user_catalog_name: 'test@test.com',
+        group_entity_ref: 'group-123',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
-        .post('/deliveryProgrammeAdmin')
+        .post('/')
         .send(requestBody);
 
       expect(response.status).toEqual(400);
@@ -204,62 +250,64 @@ describe('createRouter', () => {
           },
         ],
       });
+      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
+        expect.any(Object),
+        {
+          token:
+            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+        },
+      );
     });
   });
 
-  describe('DELETE /deliveryProgrammeAdmin/', () => {
+  describe('DELETE /', () => {
     it('returns a 204 response when a delivery programme admin is deleted', async () => {
-      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(
-        programmeManagerByAADEntityRef,
-      );
-
-      const deliveryProgrammeAdmin = programmeManagerByAADEntityRef;
-      const requestBody = {
-        aadEntityRefId: deliveryProgrammeAdmin.aad_entity_ref_id,
-        deliveryProgrammeId: deliveryProgrammeAdmin.delivery_programme_id,
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
+      const body: DeleteDeliveryProgrammeAdminRequest = {
+        delivery_programme_admin_id: faker.string.uuid(),
+        group_entity_ref: 'test-group',
       };
-
       const response = await request(deliveryProgrammeAdminApp)
-        .del('/deliveryProgrammeAdmin')
-        .send(requestBody);
+        .del('/')
+        .send(body);
       expect(response.status).toEqual(204);
     });
 
     it('returns a 400 bad request response if an error occurs', async () => {
-      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(
-        programmeManagerByAADEntityRef,
-      );
       mockDeliveryProgrammeAdminStore.delete.mockRejectedValueOnce(
         new InputError('error'),
       );
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
 
-      const deliveryProgrammeAdmin = programmeManagerByAADEntityRef;
-      const requestBody = {
-        aadEntityRefId: deliveryProgrammeAdmin.aad_entity_ref_id,
-        deliveryProgrammeId: deliveryProgrammeAdmin.delivery_programme_id,
+      const body: DeleteDeliveryProgrammeAdminRequest = {
+        delivery_programme_admin_id: faker.string.uuid(),
+        group_entity_ref: 'test-group',
       };
-
       const response = await request(deliveryProgrammeAdminApp)
-        .del(`/deliveryProgrammeAdmin`)
-        .send(requestBody);
+        .del(`/`)
+        .send(body);
       expect(response.status).toEqual(400);
     });
 
-    it('returns 404 not found if the delivery programme admin cannot be found', async () => {
-      mockDeliveryProgrammeAdminStore.getByAADEntityRef.mockResolvedValueOnce(
-        undefined,
-      );
+    it('returns a 403 response if the user is not authorized', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.DENY },
+      ]);
 
-      const deliveryProgrammeAdmin = programmeManagerByAADEntityRef;
-      const requestBody = {
-        aadEntityRefId: deliveryProgrammeAdmin.aad_entity_ref_id,
-        deliveryProgrammeId: deliveryProgrammeAdmin.delivery_programme_id,
+      const body: DeleteDeliveryProgrammeAdminRequest = {
+        delivery_programme_admin_id: faker.string.uuid(),
+        group_entity_ref: 'test-group',
       };
 
       const response = await request(deliveryProgrammeAdminApp)
-        .del(`/deliveryProgrammeAdmin`)
-        .send(requestBody);
-      expect(response.status).toEqual(404);
+        .del('/')
+        .send(body);
+
+      expect(response.status).toEqual(403);
     });
   });
 });

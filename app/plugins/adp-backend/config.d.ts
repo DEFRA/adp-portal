@@ -20,5 +20,25 @@ export interface Config {
         value: string;
       }>;
     };
+
+    /**
+     * Confguration relating to Entra ID groups
+     */
+    entraIdGroups: {
+      /**
+       * Base URL for the Entra ID Groups API
+       */
+      apiBaseUrl: string;
+    };
+
+    /**
+     * Confguration relating to ADO Project
+     */
+    adoProject: {
+      /**
+       * Base URL for the ADO Project API
+       */
+      apiBaseUrl: string;
+    };
   };
 }

@@ -2,6 +2,7 @@ import type {
   DeliveryProjectUser,
   CreateDeliveryProjectUserRequest,
   UpdateDeliveryProjectUserRequest,
+  DeleteDeliveryProjectUserRequest,
 } from '@internal/plugin-adp-common';
 import type { DeliveryProjectUserApi } from './DeliveryProjectUserApi';
 import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
@@ -9,26 +10,27 @@ import { ResponseError } from '@backstage/errors';
 import { ValidationError } from '../../../utils/ValidationError';
 
 export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
-  private discoveryApi: DiscoveryApi;
-  private fetchApi: FetchApi;
+  readonly #discoveryApi: DiscoveryApi;
+  readonly #fetchApi: FetchApi;
 
   constructor(discoveryApi: DiscoveryApi, fetchApi: FetchApi) {
-    this.discoveryApi = discoveryApi;
-    this.fetchApi = fetchApi;
+    this.#discoveryApi = discoveryApi;
+    this.#fetchApi = fetchApi;
   }
 
   async getAll(): Promise<DeliveryProjectUser[]> {
-    const baseUrl = await this.#getBaseUrl();
-    const url = `${baseUrl}/deliveryProjectUsers/`;
+    const url = await this.#getBaseUrl();
 
-    const response = await this.fetchApi.fetch(url);
+    const response = await this.#fetchApi.fetch(url);
 
     if (!response.ok) {
       throw await ResponseError.fromResponse(response);
     }
 
-    const deliveryProjectUsers =
-      (await response.json()) as DeliveryProjectUser[];
+    const deliveryProjectUsers = asProjectUsers(await response.json());
+
+    for (const item of deliveryProjectUsers)
+      item.updated_at = new Date(item.updated_at);
 
     return deliveryProjectUsers;
   }
@@ -37,16 +39,14 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
     deliveryProjectId: string,
   ): Promise<DeliveryProjectUser[]> {
     const baseUrl = await this.#getBaseUrl();
-    const url = `${baseUrl}/deliveryProjectUsers/${deliveryProjectId}`;
-
-    const response = await this.fetchApi.fetch(url);
+    const url = `${baseUrl}/${deliveryProjectId}`;
+    const response = await this.#fetchApi.fetch(url);
 
     if (!response.ok) {
       throw await ResponseError.fromResponse(response);
     }
 
-    const deliveryProgrammeAdmins =
-      (await response.json()) as DeliveryProjectUser[];
+    const deliveryProgrammeAdmins = asProjectUsers(await response.json());
 
     return deliveryProgrammeAdmins;
   }
@@ -54,10 +54,9 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
   async create(
     data: CreateDeliveryProjectUserRequest,
   ): Promise<DeliveryProjectUser> {
-    const baseUrl = await this.#getBaseUrl();
-    const url = `${baseUrl}/deliveryProjectUser`;
+    const url = await this.#getBaseUrl();
 
-    const response = await this.fetchApi.fetch(url, {
+    const response = await this.#fetchApi.fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,10 +70,9 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
   async update(
     data: UpdateDeliveryProjectUserRequest,
   ): Promise<DeliveryProjectUser> {
-    const baseUrl = await this.#getBaseUrl();
-    const url = `${baseUrl}/deliveryProjectUser`;
+    const url = await this.#getBaseUrl();
 
-    const response = await this.fetchApi.fetch(url, {
+    const response = await this.#fetchApi.fetch(url, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -86,7 +84,7 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
   }
 
   async #getBaseUrl(): Promise<string> {
-    return `${await this.discoveryApi.getBaseUrl('adp')}`;
+    return `${await this.#discoveryApi.getBaseUrl('adp')}/deliveryProjectUsers`;
   }
 
   async #handleCreateUpdateResponse(
@@ -99,6 +97,39 @@ export class DeliveryProjectUserClient implements DeliveryProjectUserApi {
       throw await ResponseError.fromResponse(response);
     }
 
-    return await response.json();
+    return asProjectUser(await response.json());
   }
+
+  async delete(
+    deliveryProjectUserId: string,
+    deliveryProjectId: string,
+  ): Promise<void> {
+    const url = await this.#getBaseUrl();
+
+    const body: DeleteDeliveryProjectUserRequest = {
+      delivery_project_user_id: deliveryProjectUserId,
+      delivery_project_id: deliveryProjectId,
+    };
+
+    const response = await this.#fetchApi.fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw await ResponseError.fromResponse(response);
+    }
+  }
+}
+
+function asProjectUsers(result: DeliveryProjectUser[]) {
+  return result.map(asProjectUser);
+}
+
+function asProjectUser(result: DeliveryProjectUser) {
+  result.updated_at = new Date(result.updated_at);
+  return result;
 }

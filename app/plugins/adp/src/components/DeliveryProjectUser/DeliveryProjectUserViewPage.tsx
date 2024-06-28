@@ -14,11 +14,13 @@ import { deliveryProjectUserApiRef } from './api';
 import { useApi } from '@backstage/core-plugin-api';
 import type { TableColumn } from '@backstage/core-components';
 import { Content, ContentHeader, Link, Page } from '@backstage/core-components';
-import { Button, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { DefaultTable } from '../../utils';
 import { AddProjectUserButton } from './AddProjectUserButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { EditDeliveryProjectUserButton } from './EditDeliveryProjectUserButton';
+import { stringifyEntityRef } from '@backstage/catalog-model';
+import { RemoveDeliveryProjectUserButton } from './RemoveDeliveryProjectUserButton';
 
 type DeliveryProjectUserWithActions = DeliveryProjectUser & {
   actions: ReactNode;
@@ -63,19 +65,25 @@ export const DeliveryProjectUserViewPage = () => {
         if (!d.is_admin && !d.is_technical) roles.push('Team Member');
         return {
           ...d,
-          emailLink: <Link to={`mailto:${d.email}`}> {d.email}</Link>,
+          emailLink: <Link to={`mailto:${d.email}`}>{d.email}</Link>,
           nameLink: <Link to={target}>{d.name}</Link>,
           role: roles.join(', '),
-          githubHandle: <Link to={githubTarget}>{d.github_username}</Link>,
+          githubHandle: d.github_username ? (
+            <Link to={githubTarget}>{d.github_username}</Link>
+          ) : (
+            <></>
+          ),
           actions: (
             <>
-              <Button
+              <RemoveDeliveryProjectUserButton
                 variant="contained"
                 color="secondary"
-                data-testid={`project-user-remove-button-${d.id}`}
+                data-testid={`delivery-project-user-remove-button-${d.id}`}
+                deliveryProjectUser={d}
+                onRemoved={refresh}
               >
                 Remove
-              </Button>
+              </RemoveDeliveryProjectUserButton>
               &nbsp;
               <EditDeliveryProjectUserButton
                 variant="contained"
@@ -135,6 +143,7 @@ export const DeliveryProjectUserViewPage = () => {
         <ContentHeader title="Delivery Project Users">
           <AddProjectUserButton
             deliveryProjectId={deliveryProjectId!}
+            entityRef={stringifyEntityRef(entity)}
             variant="contained"
             size="large"
             color="primary"

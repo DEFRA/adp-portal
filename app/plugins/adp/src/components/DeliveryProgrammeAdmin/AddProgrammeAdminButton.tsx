@@ -9,29 +9,43 @@ import {
 } from './DeliveryProgrammeAdminFormFields';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import { deliveryProgrammeAdminApiRef } from './api';
+import { usePermission } from '@backstage/plugin-permission-react';
+import { deliveryProgrammeAdminCreatePermission } from '@internal/plugin-adp-common';
 
 export type AddProgrammeAdminButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
     onCreated?: () => void;
     deliveryProgrammeId: string;
+    entityRef: string;
   }
 >;
 
 export function AddProgrammeAdminButton({
   onCreated,
   deliveryProgrammeId,
+  entityRef,
   children,
   ...buttonProps
 }: AddProgrammeAdminButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
   const client = useApi(deliveryProgrammeAdminApiRef);
+  const { allowed: canCreateProgrammeAdmin } = usePermission({
+    permission: deliveryProgrammeAdminCreatePermission,
+    resourceRef: entityRef,
+  });
+
+  if (!canCreateProgrammeAdmin) return null;
 
   async function handleSubmit(
     fields: DeliveryProgrammeAdminFields,
   ): Promise<SubmitResult<DeliveryProgrammeAdminFields>> {
+    const userCatalogNameValue = fields.user_catalog_name.map(x => x.value);
     try {
-      await client.create(deliveryProgrammeId, fields.user_catalog_name);
+      const promises = userCatalogNameValue.map(async value => {
+        await client.create(deliveryProgrammeId, value, entityRef);
+      });
+      await Promise.all(promises);
     } catch (e: any) {
       return readValidationError(e);
     }
@@ -52,6 +66,7 @@ export function AddProgrammeAdminButton({
       >
         {children}
       </Button>
+
       {isModalOpen && (
         <DialogForm
           defaultValues={emptyForm}

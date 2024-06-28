@@ -2,7 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
   "name": "ADP Portal Web",
-  "dockerComposeFile": "docker-compose.yaml",
+  "dockerComposeFile": "compose.yaml",
   "service": "editor",
   "postStartCommand": "cd app && yarn",
   "workspaceFolder": "/workspaces/adp-portal",

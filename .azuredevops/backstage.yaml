@@ -49,6 +49,9 @@ properties:
       - name: postgres-password
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/POSTGRES-PASSWORD
         identity: {{userAssignedIdentity}}
+      - name: github-organization
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-ORGANIZATION
+        identity: {{userAssignedIdentity}}
       - name: github-private-key
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/GITHUB-PRIVATE-KEY
         identity: {{userAssignedIdentity}}
@@ -106,6 +109,12 @@ properties:
       - name: snd3-cluster-api-server-address
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SND3-CLUSTER-API-SERVER-ADDRESS
         identity: {{userAssignedIdentity}}
+      - name: snd4-cluster-name
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SND4-CLUSTER-NAME
+        identity: {{userAssignedIdentity}}
+      - name: snd4-cluster-api-server-address
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SND4-CLUSTER-API-SERVER-ADDRESS
+        identity: {{userAssignedIdentity}}        
       - name: dev1-cluster-name
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/DEV1-CLUSTER-NAME
         identity: {{userAssignedIdentity}}
@@ -139,24 +148,18 @@ properties:
       - name: adp-portal-api-endpoint
         keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-API-ENDPOINT
         identity: {{userAssignedIdentity}}
-      - name: cluster1-env
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER1-ENV
+      - name: app-insights-connectionstring
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/SHARED-APPINSIGHTS-CONNECTIONSTRING
         identity: {{userAssignedIdentity}}
-      - name: cluster2-env
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER2-ENV
+      - name: adp-portal-mi-client-id
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-MI-CLIENT-ID
         identity: {{userAssignedIdentity}}
-      - name: cluster3-env
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER3-ENV
+      - name: backstage-environment
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/BACKSTAGE-ENVIRONMENT
         identity: {{userAssignedIdentity}}
-      - name: cluster4-env
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER4-ENV
-        identity: {{userAssignedIdentity}}
-      - name: cluster5-env
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER5-ENV
-        identity: {{userAssignedIdentity}}
-      - name: cluster6-env
-        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/CLUSTER6-ENV
-        identity: {{userAssignedIdentity}}
+      - name: adp-portal-appinsights-cloudrole
+        keyVaultUrl: https://{{appKeyVaultName}}.vault.azure.net/secrets/ADP-PORTAL-APPINSIGHTS-CLOUDROLE
+        identity: {{userAssignedIdentity}}        
   template:
     containers:
       - image: {{acrName}}.azurecr.io/image/{{imageRepoName}}:{{appVersion}}
@@ -213,6 +216,8 @@ properties:
             secretRef: postgres-password
           - name: GITHUB_PRIVATE_KEY
             secretRef: github-private-key
+          - name: GITHUB_ORGANIZATION
+            secretRef: github-organization
           - name: ADO_PAT
             secretRef: ado-pat
           - name: ADO_ORGANIZATION
@@ -234,9 +239,13 @@ properties:
           - name: SND2_CLUSTER_API_SERVER_ADDRESS
             secretRef: snd2-cluster-api-server-address
           - name: SND3_CLUSTER_NAME
-            secretRef: snd3-cluster-name
+            secretRef: snd3-cluster-name        
           - name: SND3_CLUSTER_API_SERVER_ADDRESS
             secretRef: snd3-cluster-api-server-address
+          - name: SND4_CLUSTER_NAME
+            secretRef: snd4-cluster-name
+          - name: SND4_CLUSTER_API_SERVER_ADDRESS
+            secretRef: snd4-cluster-api-server-address            
           - name: DEV1_CLUSTER_NAME
             secretRef: dev1-cluster-name
           - name: DEV1_CLUSTER_API_SERVER_ADDRESS
@@ -257,21 +266,16 @@ properties:
             secretRef: prd1-cluster-name
           - name: PRD1_CLUSTER_API_SERVER_ADDRESS
             secretRef: prd1-cluster-api-server-address
-          - name: CLUSTER1_ENV
-            secretRef: cluster1-env
-          - name: CLUSTER2_ENV
-            secretRef: cluster2-env
-          - name: CLUSTER3_ENV
-            secretRef: cluster3-env
-          - name: CLUSTER4_ENV
-            secretRef: cluster4-env
-          - name: CLUSTER5_ENV
-            secretRef: cluster5-env
-          - name: CLUSTER6_ENV
-            secretRef: cluster6-env
-
           - name: ADP_PORTAL_TEMPLATE_VERSION
-            value: '1.1.0'
+            value: '1.1.15'
+          - name: APPINSIGHTS_CLOUDROLE
+            secretRef: adp-portal-appinsights-cloudrole
+          - name: SHARED_APPINSIGHT_CONNECTIONSTRING
+            secretRef: app-insights-connectionstring
+          - name: ADP_PORTAL_MI_CLIENT_ID
+            secretRef: adp-portal-mi-client-id
+          - name: BACKSTAGE_ENVIRONMENT
+            secretRef: backstage-environment
 
         resources:
           cpu: 0.5

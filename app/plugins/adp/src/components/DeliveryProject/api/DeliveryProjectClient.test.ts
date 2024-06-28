@@ -1,14 +1,16 @@
 import type {
+  CheckAdoProjectExistsResponse,
   CreateDeliveryProjectRequest,
   UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
 import { DeliveryProjectClient } from './DeliveryProjectClient';
 import { randomUUID } from 'node:crypto';
+import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 
 describe('deliveryProjectClient', () => {
   let client: DeliveryProjectClient;
-  let discoveryApi: { getBaseUrl: any };
-  let fetchApi: { fetch: any };
+  let discoveryApi: jest.Mocked<DiscoveryApi>;
+  let fetchApi: jest.Mocked<FetchApi>;
 
   beforeEach(() => {
     discoveryApi = { getBaseUrl: jest.fn() };
@@ -27,29 +29,41 @@ describe('deliveryProjectClient', () => {
           name: 'Project 1',
           title: 'Project 1',
           delivery_programme_id: '1',
+          created_at: new Date(),
+          updated_at: new Date(),
         },
         {
           id: '2',
           name: 'Project 1',
           title: 'Project 2',
           delivery_programme_id: '2',
+          created_at: new Date(),
+          updated_at: new Date(),
         },
       ];
 
       const mockDeliveryProgrammes = [
-        { id: '1', title: 'Programme 1' },
-        { id: '2', title: 'Programme 2' },
+        {
+          id: '1',
+          title: 'Programme 1',
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          id: '2',
+          title: 'Programme 2',
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
       ];
 
       fetchApi.fetch
-        .mockResolvedValueOnce({
-          ok: true,
-          json: jest.fn().mockResolvedValue(mockDeliveryProjects),
-        })
-        .mockResolvedValueOnce({
-          ok: true,
-          json: jest.fn().mockResolvedValue(mockDeliveryProgrammes),
-        });
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockDeliveryProjects), { status: 200 }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockDeliveryProgrammes), { status: 200 }),
+        );
 
       const result = await client.getDeliveryProjects();
       const expected = [
@@ -61,17 +75,14 @@ describe('deliveryProjectClient', () => {
       expect(discoveryApi.getBaseUrl).toHaveBeenCalledWith('adp');
       expect(fetchApi.fetch).toHaveBeenNthCalledWith(
         1,
-        'http://localhost/deliveryProject',
+        'http://localhost/deliveryProjects',
       );
     });
 
     it('throws an error when the fetch fails', async () => {
-      fetchApi.fetch.mockResolvedValue({
-        ok: false,
-        status: 400,
-        statusText: 'BadRequest',
-        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
-      });
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ error: 'Not found' }), { status: 400 }),
+      );
 
       await expect(client.getDeliveryProjects()).rejects.toThrow(
         'Failed to fetch Delivery Project',
@@ -81,11 +92,15 @@ describe('deliveryProjectClient', () => {
 
   describe('update delivery projects', () => {
     it('updates a delivery project successfully', async () => {
-      const mockData = [{ name: 'Updated Body' }];
-      fetchApi.fetch.mockResolvedValue({
-        ok: true,
-        json: jest.fn().mockResolvedValue(mockData),
-      });
+      const mockData = {
+        name: 'Updated Body',
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+
+      fetchApi.fetch.mockResolvedValueOnce(
+        new Response(JSON.stringify(mockData), { status: 200 }),
+      );
 
       const updateData: UpdateDeliveryProjectRequest = {
         title: 'New Name',
@@ -93,16 +108,23 @@ describe('deliveryProjectClient', () => {
       };
       const result = await client.updateDeliveryProject(updateData);
       expect(result).toEqual(mockData);
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects',
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
     });
 
     it('throws an error when the update fails', async () => {
       const errorMessage = 'Failed to update';
-      fetchApi.fetch.mockResolvedValue({
-        ok: false,
-        status: 400,
-        statusText: 'Bad Request',
-        json: jest.fn().mockResolvedValue({ error: errorMessage }),
-      });
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ error: errorMessage }), { status: 400 }),
+      );
 
       const updateData: UpdateDeliveryProjectRequest = {
         title: 'New Name',
@@ -110,6 +132,82 @@ describe('deliveryProjectClient', () => {
       };
       await expect(client.updateDeliveryProject(updateData)).rejects.toThrow(
         'Validation failed',
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects',
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
+    });
+
+    it('updates a delivery project successfully if ado project is updated', async () => {
+      const mockData = {
+        name: 'Updated Body',
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: true,
+      };
+
+      fetchApi.fetch
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockData), { status: 200 }),
+        );
+
+      const updateData: UpdateDeliveryProjectRequest = {
+        title: 'New Name',
+        ado_project: 'new ADO Project',
+        id: randomUUID(),
+      };
+      const result = await client.updateDeliveryProject(updateData);
+      expect(result).toEqual(mockData);
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects',
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
+    });
+
+    it('throws an error when new ADO project not exists on update', async () => {
+      const mockData = {
+        name: 'Updated Body',
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+
+      fetchApi.fetch
+        .mockRejectedValueOnce('Project not found')
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockData), { status: 200 }),
+        );
+
+      const updateData: UpdateDeliveryProjectRequest = {
+        title: 'New Name',
+        ado_project: 'new ADO Project',
+        id: randomUUID(),
+      };
+
+      await expect(client.updateDeliveryProject(updateData)).rejects.toThrow(
+        'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/adoProject/new ADO Project',
       );
     });
   });
@@ -130,29 +228,51 @@ describe('deliveryProjectClient', () => {
         id: 1,
         name: 'New Body',
         namespace: 'adp-dmo',
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: true,
       };
 
       fetchApi.fetch
-        .mockResolvedValueOnce({
-          ok: true,
-        })
-        .mockResolvedValueOnce({
-          ok: true,
-          json: jest.fn().mockResolvedValueOnce(mockCreateProjectResponse),
-        })
-        .mockResolvedValueOnce({
-          ok: true,
-        });
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCreateProjectResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(new Response(undefined, { status: 200 }));
 
       const result = await client.createDeliveryProject(newData);
       expect(result).toEqual(mockCreateProjectResponse);
-      expect(fetchApi.fetch).toHaveBeenCalledWith(expect.any(String), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/adoProject/ADO Project',
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newData),
         },
-        body: JSON.stringify(newData),
-      });
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/ADP-DMO/createEntraIdGroups',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: '[]',
+        },
+      );
     });
 
     it('throws an error when ado project doesnt exists', async () => {
@@ -166,11 +286,19 @@ describe('deliveryProjectClient', () => {
         service_owner: 'test@email.com',
         team_type: 'delivery',
       };
-      fetchApi.fetch.mockResolvedValueOnce({
-        ok: false,
-      });
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: false,
+      };
+      fetchApi.fetch.mockResolvedValueOnce(
+        new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+          status: 404,
+        }),
+      );
       await expect(client.createDeliveryProject(newData)).rejects.toThrow(
         'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/adoProject/ADO Project',
       );
     });
 
@@ -185,10 +313,14 @@ describe('deliveryProjectClient', () => {
         service_owner: 'test@email.com',
         team_type: 'delivery',
       };
-      const errorMessage = 'Failed to fetch ADO Project details';
+      const errorMessage =
+        'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name';
       fetchApi.fetch.mockRejectedValue('Unknown error');
       await expect(client.createDeliveryProject(newData)).rejects.toThrow(
         errorMessage,
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/adoProject/ADO Project',
       );
     });
 
@@ -210,20 +342,50 @@ describe('deliveryProjectClient', () => {
         namespace: 'adp-dmo',
       };
 
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: true,
+      };
+
       fetchApi.fetch
-        .mockResolvedValueOnce({
-          ok: true,
-        })
-        .mockResolvedValueOnce({
-          ok: true,
-          json: jest.fn().mockResolvedValueOnce(mockCreateProjectResponse),
-        })
-        .mockResolvedValueOnce({
-          ok: false,
-        });
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCreateProjectResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify({ error: 'Error' }), { status: 404 }),
+        );
 
       await expect(client.createDeliveryProject(newData)).rejects.toThrow(
-        'Failed to create Entra ID Groups for Project',
+        /Failed to create Entra ID groups for project/,
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/adoProject/ADO Project',
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newData),
+        },
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/ADP-DMO/createEntraIdGroups',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: '[]',
+        },
       );
     });
 
@@ -238,37 +400,71 @@ describe('deliveryProjectClient', () => {
         service_owner: 'test@email.com',
         team_type: 'delivery',
       };
-      const errorMessage = 'Failed to fetch ADO Project details';
+      const mockCreateProjectResponse = {
+        id: 1,
+        name: 'New Body',
+        namespace: 'adp-dmo',
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: true,
+      };
+
+      fetchApi.fetch
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCreateProjectResponse), {
+            status: 200,
+          }),
+        )
+        .mockRejectedValueOnce('Unknown error');
       fetchApi.fetch.mockRejectedValue('Unknown error');
       await expect(client.createDeliveryProject(newData)).rejects.toThrow(
-        errorMessage,
+        /Failed to create Entra ID groups for project/,
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/ADP-DMO/createEntraIdGroups',
+        {
+          body: '[]',
+          headers: { 'Content-Type': 'application/json' },
+          method: 'POST',
+        },
       );
     });
   });
+
   describe('getDeliveryProjectById', () => {
     it('fetches a delivery project by ID successfully', async () => {
-      const mockProject = { id: '1', name: 'Test Project' };
-      fetchApi.fetch.mockResolvedValue({
-        ok: true,
-        json: jest.fn().mockResolvedValue(mockProject),
-      });
+      const mockProject = {
+        id: '1',
+        name: 'Test Project',
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify(mockProject), { status: 200 }),
+      );
 
       const result = await client.getDeliveryProjectById('1');
       expect(result).toEqual(mockProject);
       expect(discoveryApi.getBaseUrl).toHaveBeenCalledWith('adp');
 
       expect(fetchApi.fetch).toHaveBeenCalledWith(
-        'http://localhost/deliveryProject/1',
+        'http://localhost/deliveryProjects/1',
       );
     });
 
     it('throws an error when fetching a delivery project by ID fails', async () => {
-      fetchApi.fetch.mockResolvedValue({
-        ok: false,
-        status: 404,
-        statusText: 'Not Found',
-        json: jest.fn().mockResolvedValue({ error: 'Project not found' }),
-      });
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ error: 'Project not found' }), {
+          status: 404,
+        }),
+      );
 
       await expect(
         client.getDeliveryProjectById('nonexistent-id'),
