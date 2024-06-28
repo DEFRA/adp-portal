@@ -46,7 +46,7 @@ describe('DeliveryProjectFormFields', () => {
         delivery_programme_code: 'XYZ',
         description: '',
         name: '',
-        programme_managers: [],
+        delivery_programme_admins: [],
         updated_at: new Date(0),
       },
     ]);
@@ -81,7 +81,7 @@ describe('DeliveryProjectFormFields', () => {
         delivery_programme_code: 'XYZ',
         description: '',
         name: '',
-        programme_managers: [],
+        delivery_programme_admins: [],
         updated_at: new Date(0),
       },
     ]);
@@ -138,7 +138,7 @@ describe('DeliveryProjectFormFields', () => {
         delivery_programme_code: 'XYZ',
         description: '',
         name: '',
-        programme_managers: [],
+        delivery_programme_admins: [],
         updated_at: new Date(0),
       },
     ]);
@@ -187,7 +187,7 @@ describe('DeliveryProjectFormFields', () => {
         delivery_programme_code: 'XYZ',
         description: '',
         name: '',
-        programme_managers: [],
+        delivery_programme_admins: [],
         updated_at: new Date(0),
       },
     ]);

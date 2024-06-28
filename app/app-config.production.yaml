@@ -85,11 +85,6 @@ proxy:
       headers:
         Authorization: Bearer ${GRAFANA_TOKEN}
 
-    '/adp-portal-api':
-      target: '${ADP_PORTAL_API_ENDPOINT}'
-      changeOrigin: true
-      secure: true
-
 grafana:
   domain: ${GRAFANA_ENDPOINT}
 

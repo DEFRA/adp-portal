@@ -3882,7 +3882,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/core-app-api@npm:^1.12.4, @backstage/core-app-api@npm:^1.12.5":
+"@backstage/core-app-api@npm:^1.12.5":
   version: 1.12.5
   resolution: "@backstage/core-app-api@npm:1.12.5"
   dependencies:
@@ -5279,7 +5279,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/plugin-scaffolder-backend@npm:^1.22.5, @backstage/plugin-scaffolder-backend@npm:^1.22.7":
+"@backstage/plugin-scaffolder-backend@npm:^1.22.7":
   version: 1.22.7
   resolution: "@backstage/plugin-scaffolder-backend@npm:1.22.7"
   dependencies:
@@ -5360,7 +5360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/plugin-scaffolder-node@npm:^0.4.3, @backstage/plugin-scaffolder-node@npm:^0.4.4":
+"@backstage/plugin-scaffolder-node@npm:^0.4.4":
   version: 0.4.4
   resolution: "@backstage/plugin-scaffolder-node@npm:0.4.4"
   dependencies:
@@ -7301,6 +7301,7 @@ __metadata:
     octokit: "npm:^3.1.2"
     typed-rest-client: "npm:^1.8.11"
     yaml: "npm:^2.4.3"
+    zod: "npm:^3.22.4"
   peerDependencies:
     "@types/jest": ^29.5.12
     express: "*"
@@ -10946,22 +10947,6 @@ __metadata:
     react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-router: 6.0.0-beta.0 || ^6.3.0
   checksum: 10c0/ccb929f0cc95565abb5ddd69caae70f1b8a8d33add74d3f503f3605eb99776efa5d307b37d4ac94d0aa44c70b17b359d303ce658b3276eb6f983707c9d14e806
-  languageName: node
-  linkType: hard
-
-"@roadiehq/scaffolder-backend-module-http-request@npm:^4.3.2":
-  version: 4.3.2
-  resolution: "@roadiehq/scaffolder-backend-module-http-request@npm:4.3.2"
-  dependencies:
-    "@backstage/backend-common": "npm:^0.21.7"
-    "@backstage/backend-plugin-api": "npm:^0.6.17"
-    "@backstage/core-app-api": "npm:^1.12.4"
-    "@backstage/core-plugin-api": "npm:^1.9.2"
-    "@backstage/plugin-scaffolder-backend": "npm:^1.22.5"
-    "@backstage/plugin-scaffolder-node": "npm:^0.4.3"
-    cross-fetch: "npm:^4.0.0"
-    winston: "npm:^3.2.1"
-  checksum: 10c0/371056391acbbc20acba4d196fecc9b51137328983fe095b5f8cfeb8240bd4e35cfd1ef430d63b16d28069748242201e4a4653a7ad6bff1a1e13428b00e130ac
   languageName: node
   linkType: hard
 
@@ -16699,7 +16684,6 @@ __metadata:
     "@opentelemetry/instrumentation-express": "npm:0.39.0"
     "@opentelemetry/resources": "npm:1.24.1"
     "@opentelemetry/semantic-conventions": "npm:1.24.1"
-    "@roadiehq/scaffolder-backend-module-http-request": "npm:^4.3.2"
     "@types/dockerode": "npm:^3.3.0"
     "@types/express": "npm:^4.17.6"
     "@types/express-serve-static-core": "npm:^4.17.5"

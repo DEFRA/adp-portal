@@ -7,10 +7,16 @@ import {
   emptyForm,
   type DeliveryProjectUserFields,
 } from './DeliveryProjectUserFormFields';
-import { DialogForm, TitleWithHelp, readValidationError } from '../../utils';
+import {
+  DialogForm,
+  TitleWithHelp,
+  ValidationError,
+  readValidationError,
+} from '../../utils';
 import type { SubmitResult } from '../../utils';
 import { usePermission } from '@backstage/plugin-permission-react';
 import { deliveryProjectUserCreatePermission } from '@internal/plugin-adp-common';
+import { checkUsernameIsReserved } from '../../utils/reservedUsernames';
 
 export type AddProjectUserButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -41,10 +47,23 @@ export function AddProjectUserButton({
     fields: DeliveryProjectUserFields,
   ): Promise<SubmitResult<DeliveryProjectUserFields>> {
     try {
+      if (checkUsernameIsReserved(fields.github_username.trim())) {
+        throw new ValidationError([
+          {
+            path: 'github_username',
+            error: {
+              message:
+                'Please enter a valid GitHub handle. This Github handle is reserved.',
+            },
+          },
+        ]);
+      }
+
       await client.create({
         delivery_project_id: deliveryProjectId,
         ...fields,
         user_catalog_name: fields.user_catalog_name.value,
+        github_username: fields.github_username.trim(),
       });
     } catch (e: any) {
       return readValidationError(e);

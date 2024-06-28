@@ -1,5 +1,6 @@
 import type { Config } from '@backstage/config';
 import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
+import type { TokenProvider } from '@internal/plugin-credentials-context-backend';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 
 export type IEntraIdApi = {
@@ -12,13 +13,21 @@ type GroupMembersRequest = {
   adminMembers: string[];
 };
 
+export type EntraIdApiOptions = {
+  config: Config;
+  fetchApi: FetchApi;
+  tokens: TokenProvider;
+};
+
 export class EntraIdApi {
   readonly #fetchApi: FetchApi;
   readonly #apiBaseUrl: string;
+  readonly #tokens: TokenProvider;
 
-  constructor(config: Config, fetchApi: FetchApi) {
-    this.#apiBaseUrl = config.getString('adp.entraIdGroups.apiBaseUrl');
-    this.#fetchApi = fetchApi;
+  constructor(options: EntraIdApiOptions) {
+    this.#apiBaseUrl = options.config.getString('adp.entraIdGroups.apiBaseUrl');
+    this.#fetchApi = options.fetchApi;
+    this.#tokens = options.tokens;
   }
 
   async createEntraIdGroupsForProject(
@@ -27,11 +36,13 @@ export class EntraIdApi {
   ): Promise<void> {
     const endpoint = `${this.#apiBaseUrl}/${projectName}/groups-config`;
     const body = this.#mapProjectUsers(members);
+    const { token } = await this.#tokens.getLimitedUserToken();
 
     const response = await this.#fetchApi.fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     });
@@ -49,11 +60,13 @@ export class EntraIdApi {
   ): Promise<void> {
     const endpoint = `${this.#apiBaseUrl}/${projectName}/members`;
     const body = this.#mapProjectUsers(members);
+    const { token } = await this.#tokens.getLimitedUserToken();
 
     const response = await this.#fetchApi.fetch(endpoint, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     });

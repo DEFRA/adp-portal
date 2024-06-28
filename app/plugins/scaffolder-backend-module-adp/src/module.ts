@@ -14,8 +14,11 @@ import { createGithubClient } from './util';
 import { type TemplateAction } from '@backstage/plugin-scaffolder-node';
 import {
   credentialsContextServiceRef,
+  tokenProviderRef,
   type ICredentialsContextService,
 } from '@internal/plugin-credentials-context-backend';
+import { fetchApiRef } from '@internal/plugin-fetch-api-backend';
+import * as backendActions from './actions/backend';
 
 export const adpScaffolderModule = createBackendModule({
   pluginId: 'scaffolder',
@@ -28,6 +31,8 @@ export const adpScaffolderModule = createBackendModule({
         config: coreServices.rootConfig,
         credentialsContext: credentialsContextServiceRef,
         adpClient: adpClientRef,
+        fetchApi: fetchApiRef,
+        tokens: tokenProviderRef,
       },
       async init({
         scaffolderActions,
@@ -35,6 +40,8 @@ export const adpScaffolderModule = createBackendModule({
         config,
         credentialsContext,
         adpClient,
+        fetchApi,
+        tokens,
       }) {
         const integrations = ScmIntegrations.fromConfig(config);
 
@@ -73,6 +80,13 @@ export const adpScaffolderModule = createBackendModule({
                 adpClient,
               }),
               actions.publishZipAction,
+              ...Object.values(backendActions).map(factory =>
+                factory({
+                  config,
+                  fetchApi,
+                  tokens,
+                }),
+              ),
             ],
           }),
         );

@@ -90,9 +90,13 @@ export function DeliveryProjectUserFormFields({
         name="github_username"
         disabled={disabled}
         rules={{
+          pattern: {
+            value: /^\s*[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}\s*$/i,
+            message: 'Please enter a valid GitHub handle',
+          },
           validate: (value, values) =>
             values.is_technical === false ||
-            (values.is_technical && value !== '') ||
+            (values.is_technical && value.trim() !== '') ||
             'A GitHub handle is required for technical users',
         }}
       />

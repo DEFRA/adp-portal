@@ -16,6 +16,7 @@ import { render, waitFor } from '@testing-library/react';
 import { TestApiProvider } from '@backstage/test-utils';
 import userEvent from '@testing-library/user-event';
 import { SnapshotFriendlyStylesProvider, ValidationError } from '../../utils';
+import { type checkUsernameIsReserved } from '../../utils/reservedUsernames';
 import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
 
 function setup() {
@@ -108,6 +109,15 @@ jest.mock(
       },
     }) satisfies typeof DialogFormModule,
 );
+
+const mockCheckUsernameIsReserved: jest.MockedFn<
+  typeof checkUsernameIsReserved
+> = jest.fn().mockReturnValue(false);
+jest.mock('../../utils/reservedUsernames', () => ({
+  get checkUsernameIsReserved() {
+    return mockCheckUsernameIsReserved;
+  },
+}));
 
 describe('EditDeliveryProjectUserButton', () => {
   afterEach(() => {
@@ -332,5 +342,39 @@ describe('EditDeliveryProjectUserButton', () => {
     expect(mockProjectUserApi.getByDeliveryProjectId).not.toHaveBeenCalled();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post).not.toHaveBeenCalled();
+  });
+
+  it('Should catch github handle validation error when submitting.', async () => {
+    const { renderComponent } = setup();
+    DialogForm.mockReturnValue(<span>This is a dialog!</span>);
+    usePermission.mockReturnValue({ allowed: true, loading: false });
+    mockCheckUsernameIsReserved.mockReturnValue(true);
+    const validationErrors: IValidationError[] = [
+      {
+        path: 'github_username',
+        error: {
+          message:
+            'Please enter a valid GitHub handle. This Github handle is reserved.',
+        },
+      },
+    ];
+
+    const { result } = await renderComponent({
+      content: 'My button',
+      deliveryProjectUser,
+    });
+    await userEvent.click(
+      result.getByTestId('edit-delivery-project-user-button'),
+    );
+
+    expect(result.baseElement).toMatchSnapshot();
+    expect(DialogForm.mock.calls).toHaveLength(1);
+    const formProps = DialogForm.mock.calls[0][0];
+
+    const submitResult = await formProps.submit(fields);
+    expect(submitResult).toMatchObject({
+      type: 'validationError',
+      errors: validationErrors,
+    });
   });
 });

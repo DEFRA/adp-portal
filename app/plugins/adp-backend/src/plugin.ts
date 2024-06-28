@@ -29,15 +29,21 @@ import {
 } from './service';
 import { Router } from 'express';
 import { initializeAdpDatabase } from './database';
-import { credentialsContextMiddlewareRef } from '@internal/plugin-credentials-context-backend';
+import {
+  credentialsContextMiddlewareRef,
+  tokenProviderRef,
+} from '@internal/plugin-credentials-context-backend';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import {
+  DELIVERY_PROGRAMME_RESOURCE_TYPE,
   DELIVERY_PROJECT_RESOURCE_TYPE,
   deliveryProgrammeAdminPermissions,
+  deliveryProgrammeUpdatePermission,
   deliveryProjectUserPermissions,
 } from '@internal/plugin-adp-common';
 import { getDeliveryProject } from './service/deliveryProjectRouter';
-import { deliveryProjectRules } from './permissions';
+import { deliveryProgrammeRules, deliveryProjectRules } from './permissions';
+import { getDeliveryProgramme } from './service/deliveryProgrammeRouter';
 
 export const adpPlugin = createBackendPlugin({
   pluginId: 'adp',
@@ -55,6 +61,7 @@ export const adpPlugin = createBackendPlugin({
         httpAuth: coreServices.httpAuth,
         credentialsContext: credentialsContextMiddlewareRef,
         githubTeamsApi: githubTeamsApiRef,
+        tokens: tokenProviderRef,
       },
       async init({
         logger,
@@ -68,6 +75,7 @@ export const adpPlugin = createBackendPlugin({
         httpAuth,
         credentialsContext,
         githubTeamsApi,
+        tokens,
       }) {
         await initializeAdpDatabase(database);
 
@@ -84,13 +92,14 @@ export const adpPlugin = createBackendPlugin({
           discovery,
           issuer: await discovery.getExternalBaseUrl('auth'),
         });
-        const fluxConfigApi = new FluxConfigApi(
+        const fluxConfigApi = new FluxConfigApi({
           config,
           deliveryProgrammeStore,
           fetchApi,
-        );
-        const adoProjectApi = new AdoProjectApi(config, fetchApi);
-        const entraIdApi = new EntraIdApi(config, fetchApi);
+          tokens,
+        });
+        const adoProjectApi = new AdoProjectApi({ config, fetchApi, tokens });
+        const entraIdApi = new EntraIdApi({ config, fetchApi, tokens });
         const catalog = new CatalogClient({ discoveryApi: discovery });
         const teamSyncronizer = new DeliveryProjectGithubTeamsSyncronizer(
           githubTeamsApi,
@@ -107,12 +116,16 @@ export const adpPlugin = createBackendPlugin({
 
         const deliveryProjectPermissionRules =
           Object.values(deliveryProjectRules);
+        const deliveryProgrammePermissionRules = Object.values(
+          deliveryProgrammeRules,
+        );
 
         const combinedRouter = Router();
         const permissionIntegrationRouter = createPermissionIntegrationRouter({
           permissions: [
             ...deliveryProgrammeAdminPermissions,
             ...deliveryProjectUserPermissions,
+            deliveryProgrammeUpdatePermission,
           ],
           resources: [
             {
@@ -124,6 +137,21 @@ export const adpPlugin = createBackendPlugin({
                     return await getDeliveryProject(
                       deliveryProjectStore,
                       deliveryProjectUserStore,
+                      deliveryProgrammeAdminStore,
+                      ref,
+                    );
+                  }),
+                );
+              },
+            },
+            {
+              resourceType: DELIVERY_PROGRAMME_RESOURCE_TYPE,
+              rules: deliveryProgrammePermissionRules,
+              getResources: async (resourceRefs: string[]) => {
+                return await Promise.all(
+                  resourceRefs.map(async (ref: string) => {
+                    return await getDeliveryProgramme(
+                      deliveryProgrammeStore,
                       deliveryProgrammeAdminStore,
                       ref,
                     );

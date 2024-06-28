@@ -3,6 +3,8 @@ import { EntraIdApi } from './EntraIdApi';
 import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
 import { faker } from '@faker-js/faker';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
+import type { TokenProvider } from '@internal/plugin-credentials-context-backend';
+import { randomUUID } from 'node:crypto';
 
 describe('EntraIdApi', () => {
   function setup() {
@@ -17,16 +19,21 @@ describe('EntraIdApi', () => {
     const fetchApi: jest.Mocked<FetchApi> = {
       fetch: jest.fn(),
     };
+    const tokens: jest.Mocked<TokenProvider> = {
+      getLimitedUserToken: jest.fn(),
+      getPluginRequestToken: jest.fn(),
+    };
 
-    const sut = new EntraIdApi(config, fetchApi);
+    const sut = new EntraIdApi({ config, fetchApi, tokens });
 
-    return { sut, fetchApi, config };
+    return { sut, fetchApi, config, tokens };
   }
 
   describe('createEntraIdGroupsForProject', () => {
     it('should call the API with the correct parameters', async () => {
       // Arrange
-      const { sut, fetchApi } = setup();
+      const { sut, fetchApi, tokens } = setup();
+      const token = randomUUID();
       const projectName = 'test-project';
       const expectedMembers: DeliveryProjectUser[] = [
         {
@@ -78,6 +85,10 @@ describe('EntraIdApi', () => {
       fetchApi.fetch.mockResolvedValue(
         new Response(undefined, { status: 204 }),
       );
+      tokens.getLimitedUserToken.mockResolvedValueOnce({
+        token,
+        expiresAt: new Date(),
+      });
 
       // Act
       await sut.createEntraIdGroupsForProject(expectedMembers, projectName);
@@ -90,6 +101,7 @@ describe('EntraIdApi', () => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
             },
             body: '{"techUserMembers":["adminTechUser@test.com","techUser@test.com"],"nonTechUserMembers":["adminNonTechUser@test.com","nonTechUser@test.com"],"adminMembers":["adminTechUser@test.com","adminNonTechUser@test.com"]}',
           },
@@ -99,7 +111,8 @@ describe('EntraIdApi', () => {
 
     it('should throw an error when the API call is not successful', async () => {
       // Arrange
-      const { sut, fetchApi } = setup();
+      const { sut, fetchApi, tokens } = setup();
+      const token = randomUUID();
       const projectName = 'test-project';
       const expectedMembers: DeliveryProjectUser[] = [
         {
@@ -149,6 +162,10 @@ describe('EntraIdApi', () => {
       fetchApi.fetch.mockResolvedValue(
         new Response(undefined, { status: 400 }),
       );
+      tokens.getLimitedUserToken.mockResolvedValueOnce({
+        token,
+        expiresAt: new Date(),
+      });
 
       // Act and assert
       await expect(
@@ -160,7 +177,8 @@ describe('EntraIdApi', () => {
   describe('setProjectGroupMembers', () => {
     it('should call the API with the correct parameters', async () => {
       // Arrange
-      const { sut, fetchApi } = setup();
+      const { sut, fetchApi, tokens } = setup();
+      const token = randomUUID();
       const projectName = 'test-project';
       const expectedMembers: DeliveryProjectUser[] = [
         {
@@ -212,6 +230,10 @@ describe('EntraIdApi', () => {
       fetchApi.fetch.mockResolvedValue(
         new Response(undefined, { status: 204 }),
       );
+      tokens.getLimitedUserToken.mockResolvedValueOnce({
+        token,
+        expiresAt: new Date(),
+      });
 
       // Act
       await sut.setProjectGroupMembers(expectedMembers, projectName);
@@ -224,6 +246,7 @@ describe('EntraIdApi', () => {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
             },
             body: '{"techUserMembers":["adminTechUser@test.com","techUser@test.com"],"nonTechUserMembers":["adminNonTechUser@test.com","nonTechUser@test.com"],"adminMembers":["adminTechUser@test.com","adminNonTechUser@test.com"]}',
           },
@@ -233,7 +256,8 @@ describe('EntraIdApi', () => {
 
     it('should throw an error when the API call is not successfull', async () => {
       // Arrange
-      const { sut, fetchApi } = setup();
+      const { sut, fetchApi, tokens } = setup();
+      const token = randomUUID();
       const projectName = 'test-project';
       const expectedMembers: DeliveryProjectUser[] = [
         {
@@ -283,6 +307,10 @@ describe('EntraIdApi', () => {
       fetchApi.fetch.mockResolvedValue(
         new Response(undefined, { status: 400 }),
       );
+      tokens.getLimitedUserToken.mockResolvedValueOnce({
+        token,
+        expiresAt: new Date(),
+      });
 
       // Act and assert
       await expect(

@@ -296,7 +296,7 @@ function createDeliveryProgrammes(count: number) {
     description: 'My description',
     id: i.toString(),
     name: `programme-${i}`,
-    programme_managers: [],
+    delivery_programme_admins: [],
     title: `Programme ${i}`,
     updated_at: new Date(0),
     alias: 'Cool',

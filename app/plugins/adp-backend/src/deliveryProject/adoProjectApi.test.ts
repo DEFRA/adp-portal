@@ -1,12 +1,10 @@
 import { ConfigReader } from '@backstage/config';
 import { AdoProjectApi } from './adoProjectApi';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
+import type { TokenProvider } from '@internal/plugin-credentials-context-backend';
+import { randomUUID } from 'node:crypto';
 
 describe('AdoProjectApi', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   const mockConfig = new ConfigReader({
     adp: {
       adoProject: {
@@ -19,8 +17,28 @@ describe('AdoProjectApi', () => {
     fetch: jest.fn(),
   };
 
+  const mockTokens: jest.Mocked<TokenProvider> = {
+    getLimitedUserToken: jest.fn(),
+    getPluginRequestToken: jest.fn(),
+  };
+
+  function sut() {
+    return new AdoProjectApi({
+      config: mockConfig,
+      fetchApi: mockFetchApi,
+      tokens: mockTokens,
+    });
+  }
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockTokens.getLimitedUserToken.mockResolvedValue({
+      token: randomUUID(),
+      expiresAt: new Date(),
+    });
+  });
+
   it('initializes correctly from required parameters', () => {
-    const adoProjectApi = new AdoProjectApi(mockConfig, mockFetchApi);
+    const adoProjectApi = sut();
     expect(adoProjectApi).toBeDefined();
   });
 
@@ -30,7 +48,7 @@ describe('AdoProjectApi', () => {
       status: 200,
       statusText: 'OK',
     } as unknown as Response);
-    const adoProjectApi = new AdoProjectApi(mockConfig, mockFetchApi);
+    const adoProjectApi = sut();
 
     const result = await adoProjectApi.checkIfAdoProjectExists('test-project');
 
@@ -43,7 +61,7 @@ describe('AdoProjectApi', () => {
       status: 404,
       statusText: 'NOT FOUND',
     } as unknown as Response);
-    const adoProjectApi = new AdoProjectApi(mockConfig, mockFetchApi);
+    const adoProjectApi = sut();
 
     await expect(
       adoProjectApi.checkIfAdoProjectExists('test-project'),
