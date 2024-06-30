@@ -19,10 +19,14 @@
     },
     {
       "label": "tsc: watch",
-      "type": "typescript",
-      "tsconfig": "app/tsconfig.json",
-      "option": "watch",
-      "problemMatcher": ["$tsc-watch"],
+      "type": "shell",
+      "command": "yarn tsc -w --noEmit --emitDeclarationOnly false",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
+      "problemMatcher": [
+        "$tsc-watch"
+      ],
       "group": {
         "isDefault": true,
         "kind": "build"

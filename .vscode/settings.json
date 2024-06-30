@@ -10,7 +10,10 @@
   ],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "jest.jestCommandLine": "yarn test",
+  "prettier.prettierPath": "app/node_modules/prettier/index.cjs",
+  "typescript.tsdk": "app/node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "jest.jestCommandLine": "yarn test --runInBand",
   "jest.rootPath": "app",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

@@ -5,12 +5,9 @@
       "name": "Backend",
       "type": "node",
       "request": "launch",
-      "args": [
-        "package",
-        "start"
-      ],
-      "cwd": "${workspaceFolder}/app/packages/backend",
-      "program": "${workspaceFolder}/app/node_modules/.bin/backstage-cli",
+      "args": "start-backend",
+      "cwd": "${workspaceFolder}/app",
+      "runtimeExecutable": "yarn",
       "skipFiles": [
         "<node_internals>/**"
       ],
@@ -25,15 +22,12 @@
       }
     },
     {
-      "name": "App",
+      "name": "Frontend",
       "type": "node",
       "request": "launch",
-      "args": [
-        "package",
-        "start"
-      ],
-      "cwd": "${workspaceFolder}/app/packages/app",
-      "program": "${workspaceFolder}/app/node_modules/.bin/backstage-cli",
+      "args": "start",
+      "cwd": "${workspaceFolder}/app",
+      "runtimeExecutable": "yarn",
       "skipFiles": [
         "<node_internals>/**"
       ],
@@ -61,14 +55,13 @@
       "name": "Jest",
       "request": "launch",
       "args": [
-        "repo",
         "test",
         "--runInBand",
         "--watchAll=false",
         "--testTimeout=999999999"
       ],
       "console": "integratedTerminal",
-      "program": "${workspaceFolder}/app/node_modules/.bin/backstage-cli",
+      "runtimeExecutable": "yarn",
       "cwd": "${workspaceFolder}/app",
       "skipFiles": [
         "<node_internals>/**"
@@ -84,14 +77,13 @@
       "name": "Jest: current file",
       "request": "launch",
       "args": [
-        "repo",
         "test",
         "${file}",
         "--runInBand",
         "--watchAll=false",
         "--testTimeout=99999999"
       ],
-      "program": "${workspaceFolder}/app/node_modules/.bin/backstage-cli",
+      "runtimeExecutable": "yarn",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/app",
       "skipFiles": [
@@ -106,9 +98,9 @@
   ],
   "compounds": [
     {
-      "name": "App + Backend",
+      "name": "Frontend + Backend",
       "configurations": [
-        "App",
+        "Frontend",
         "Backend"
       ],
       "stopAll": true,

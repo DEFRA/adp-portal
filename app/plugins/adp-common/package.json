@@ -25,13 +25,13 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
-    "@backstage/plugin-catalog-common": "^1.0.23",
-    "@backstage/plugin-permission-common": "^0.7.13",
+    "@backstage/plugin-catalog-common": "^1.0.24",
+    "@backstage/plugin-permission-common": "^0.7.14",
     "@types/jest": "^29.5.12",
     "url-slug": "^4.0.1"
   },
   "devDependencies": {
-    "@backstage/cli": "^0.26.6"
+    "@backstage/cli": "^0.26.10"
   },
   "files": [
     "dist"
