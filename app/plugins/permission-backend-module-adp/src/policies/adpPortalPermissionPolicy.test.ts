@@ -168,7 +168,7 @@ describe('adpPortalPermissionPolicy', () => {
       },
       {
         permission: deliveryProgrammeCreatePermission,
-        expected: AuthorizeResult.ALLOW,
+        expected: AuthorizeResult.DENY,
       },
       { permission: actionExecutePermission, expected: AuthorizeResult.ALLOW },
       {
