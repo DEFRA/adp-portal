@@ -1,4 +1,4 @@
-import { errorHandler } from '@backstage/backend-common';
+import type { MiddlewareFactory } from '@backstage/backend-defaults/dist/rootHttpRouter';
 import express from 'express';
 import Router from 'express-promise-router';
 import { InputError } from '@backstage/errors';
@@ -27,9 +27,10 @@ export interface AlbRouterOptions {
   identity: IdentityApi;
   armsLengthBodyStore: IArmsLengthBodyStore;
   deliveryProgrammeStore: IDeliveryProgrammeStore;
-  config: Config;
   permissions: PermissionsService;
   httpAuth: HttpAuthService;
+  middleware: MiddlewareFactory;
+  config: Config;
 }
 
 const errorMapping = {
@@ -82,9 +83,11 @@ export function createAlbRouter(options: AlbRouterOptions): express.Router {
     deliveryProgrammeStore,
     permissions,
     httpAuth,
+    config,
+    middleware,
   } = options;
 
-  const owner = getOwner(options);
+  const owner = getOwner(config);
 
   const router = Router();
   router.use(express.json());
@@ -176,6 +179,6 @@ export function createAlbRouter(options: AlbRouterOptions): express.Router {
     const result = await armsLengthBodyStore.update(body, creator);
     respond(body, res, result, errorMapping);
   });
-  router.use(errorHandler());
+  router.use(middleware.error());
   return router;
 }

@@ -49,7 +49,7 @@ describe('catalogModuleAdpEntityProvider', () => {
         ],
       ],
       features: [
-        adpCatalogModule(),
+        adpCatalogModule,
         discovery.factory,
         mockServices.logger.factory(),
         mockServices.scheduler.factory(),

@@ -1,3 +1,4 @@
+import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import express from 'express';
 import request from 'supertest';
 import { programmeManagerList } from '../testData/programmeTestData';
@@ -64,6 +65,10 @@ describe('createRouter', () => {
     permissions: mockPermissionsService,
     httpAuth: mockServices.httpAuth(),
     auth: mockServices.auth(),
+    middleware: MiddlewareFactory.create({
+      config: mockServices.rootConfig(),
+      logger: mockServices.logger.mock(),
+    }),
   };
 
   beforeAll(() => {

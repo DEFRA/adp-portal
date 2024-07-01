@@ -1,4 +1,4 @@
-import { errorHandler } from '@backstage/backend-common';
+import type { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import express from 'express';
 import Router from 'express-promise-router';
 import { InputError } from '@backstage/errors';
@@ -39,6 +39,7 @@ export interface ProjectRouterOptions {
   adoProjectApi: IAdoProjectApi;
   permissions: PermissionsService;
   httpAuth: HttpAuthService;
+  middleware: MiddlewareFactory;
 }
 
 const errorMapping = {
@@ -135,6 +136,7 @@ export function createProjectRouter(
     adoProjectApi,
     httpAuth,
     permissions,
+    middleware,
   } = options;
 
   const router = Router();
@@ -260,6 +262,6 @@ export function createProjectRouter(
     }
   });
 
-  router.use(errorHandler());
+  router.use(middleware.error());
   return router;
 }

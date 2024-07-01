@@ -15,7 +15,7 @@ describe('adpTechdocsModule', () => {
 
     await startTestBackend({
       extensionPoints: [[techdocsBuildsExtensionPoint, extensionPoint]],
-      features: [adpTechdocsModule()],
+      features: [adpTechdocsModule],
     });
 
     expect(configuredStrategy).toBeDefined();

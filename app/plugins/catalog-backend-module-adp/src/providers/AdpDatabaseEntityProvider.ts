@@ -1,4 +1,3 @@
-import type { TaskRunner, PluginTaskScheduler } from '@backstage/backend-tasks';
 import type {
   EntityProvider,
   EntityProviderConnection,
@@ -8,13 +7,15 @@ import type {
   AuthService,
   DiscoveryService,
   LoggerService,
+  SchedulerService,
+  SchedulerServiceTaskRunner,
 } from '@backstage/backend-plugin-api';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 import { AdpDatabaseEntityProviderConnection } from './AdpDatabaseEntityProviderConnection';
 
 export class AdpDatabaseEntityProvider implements EntityProvider {
   readonly #logger: LoggerService;
-  readonly #taskRunner: TaskRunner;
+  readonly #taskRunner: SchedulerServiceTaskRunner;
   readonly #discovery: DiscoveryService;
   readonly #fetchApi: FetchApi;
   readonly #auth: AuthService;
@@ -28,8 +29,8 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
     discovery: DiscoveryService;
     logger: LoggerService;
     fetchApi: FetchApi;
-    schedule?: TaskRunner;
-    scheduler?: PluginTaskScheduler;
+    schedule?: SchedulerServiceTaskRunner;
+    scheduler?: SchedulerService;
     auth: AuthService;
   }) {
     const defaultSchedule = {
@@ -57,7 +58,7 @@ export class AdpDatabaseEntityProvider implements EntityProvider {
   private constructor(
     logger: LoggerService,
     discovery: DiscoveryService,
-    taskRunner: TaskRunner,
+    taskRunner: SchedulerServiceTaskRunner,
     fetchApi: FetchApi,
     auth: AuthService,
   ) {

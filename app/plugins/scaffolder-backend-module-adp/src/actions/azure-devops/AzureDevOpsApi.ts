@@ -8,7 +8,7 @@ import {
 } from 'azure-devops-node-api';
 import type { IRequestOptions, IRestResponse } from 'typed-rest-client';
 import { RestClient } from 'typed-rest-client';
-import type { Logger } from 'winston';
+import type { LoggerService } from '@backstage/backend-plugin-api';
 import type {
   Build,
   Pipeline,
@@ -64,9 +64,9 @@ type RunPipelineRequest = {
 export class AzureDevOpsApi {
   private readonly restClient: RestClient;
   private readonly requestOptions: IRequestOptions;
-  private readonly logger: Logger;
+  private readonly logger: LoggerService;
 
-  private constructor(restClient: RestClient, logger: Logger) {
+  private constructor(restClient: RestClient, logger: LoggerService) {
     this.restClient = restClient;
     this.logger = logger;
     this.requestOptions = {
@@ -78,7 +78,7 @@ export class AzureDevOpsApi {
     scmIntegrations: ScmIntegrationRegistry,
     config: Config,
     azureDevOpsOptions: { server: string; organization: string },
-    options: { logger: Logger },
+    options: { logger: LoggerService },
   ): Promise<AzureDevOpsApi> {
     const encodedOrganization = encodeURIComponent(
       azureDevOpsOptions.organization,

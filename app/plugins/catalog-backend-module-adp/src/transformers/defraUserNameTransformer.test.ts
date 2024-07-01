@@ -1,6 +1,6 @@
 import { defraUserNameTransformer } from './defraUserNameTransformer';
-import { defaultUserTransformer } from '@backstage/plugin-catalog-backend-module-msgraph';
 import {
+  defaultUserTransformer,
   MICROSOFT_EMAIL_ANNOTATION,
   MICROSOFT_GRAPH_USER_ID_ANNOTATION,
 } from '@backstage/plugin-catalog-backend-module-msgraph';

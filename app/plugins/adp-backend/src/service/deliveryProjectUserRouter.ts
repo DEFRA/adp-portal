@@ -2,7 +2,7 @@ import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
 import type { CatalogApi } from '@backstage/catalog-client';
 import express from 'express';
 import Router from 'express-promise-router';
-import { errorHandler } from '@backstage/backend-common';
+import type { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import { assertUUID, checkPermissions, createParser, respond } from './util';
 import {
   type CreateDeliveryProjectUserRequest,
@@ -93,6 +93,7 @@ export interface DeliveryProjectUserRouterOptions {
   permissions: PermissionsService;
   httpAuth: HttpAuthService;
   auth: AuthService;
+  middleware: MiddlewareFactory;
 }
 
 export function createDeliveryProjectUserRouter(
@@ -106,6 +107,7 @@ export function createDeliveryProjectUserRouter(
     permissions,
     httpAuth,
     auth,
+    middleware,
   } = options;
 
   const router = Router();
@@ -272,6 +274,6 @@ export function createDeliveryProjectUserRouter(
     res.status(204).end();
   });
 
-  router.use(errorHandler());
+  router.use(middleware.error());
   return router;
 }

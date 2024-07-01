@@ -1,5 +1,5 @@
-import type { PluginDatabaseManager } from '@backstage/backend-common';
-import { resolvePackagePath } from '@backstage/backend-common';
+import type { DatabaseService } from '@backstage/backend-plugin-api';
+import { resolvePackagePath } from '@backstage/backend-plugin-api';
 
 const migrationsDir = resolvePackagePath(
   '@internal/plugin-adp-backend',
@@ -8,7 +8,7 @@ const migrationsDir = resolvePackagePath(
 
 const seedDir = resolvePackagePath('@internal/plugin-adp-backend', 'seedData');
 
-export async function initializeAdpDatabase(database: PluginDatabaseManager) {
+export async function initializeAdpDatabase(database: DatabaseService) {
   if (database.migrations?.skip) return;
 
   const client = await database.getClient();

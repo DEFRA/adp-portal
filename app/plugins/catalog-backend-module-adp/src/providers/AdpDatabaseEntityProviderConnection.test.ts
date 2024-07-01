@@ -1,5 +1,3 @@
-import { getVoidLogger } from '@backstage/backend-common';
-import type { TaskRunner } from '@backstage/backend-tasks';
 import { AdpDatabaseEntityProvider } from './AdpDatabaseEntityProvider';
 import type { EntityProviderConnection } from '@backstage/plugin-catalog-node';
 import type {
@@ -8,6 +6,7 @@ import type {
   BackstageServicePrincipal,
   DiscoveryService,
   SchedulerService,
+  SchedulerServiceTaskRunner,
 } from '@backstage/backend-plugin-api';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 import { AdpDatabaseEntityProviderConnection } from './AdpDatabaseEntityProviderConnection';
@@ -20,10 +19,11 @@ import {
   mockProgrammeTransformerData,
   mockProjectTransformerData,
 } from '../testData/entityProviderTestData';
+import { mockServices } from '@backstage/backend-test-utils';
 
 describe('AdpDatabaseEntityProviderConnection', () => {
   function setup() {
-    const logger = getVoidLogger();
+    const logger = mockServices.logger.mock();
     const fetchApi: jest.Mocked<FetchApi> = {
       fetch: jest.fn(),
     };
@@ -40,7 +40,7 @@ describe('AdpDatabaseEntityProviderConnection', () => {
       getBaseUrl: jest.fn().mockResolvedValue('http://localhost:123/api/adp'),
       getExternalBaseUrl: jest.fn(),
     };
-    const schedule: jest.Mocked<TaskRunner> = {
+    const schedule: jest.Mocked<SchedulerServiceTaskRunner> = {
       run: jest.fn(),
     };
     const scheduler: jest.Mocked<SchedulerService> = {

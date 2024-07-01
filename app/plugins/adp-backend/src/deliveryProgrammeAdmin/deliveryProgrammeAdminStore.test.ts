@@ -11,10 +11,7 @@ import { arms_length_body_name } from '../armsLengthBody/arms_length_body';
 import { albSeedData } from '../testData/albTestData';
 import type { Knex } from 'knex';
 import { deliveryProgrammeSeedData } from '../testData/programmeTestData';
-import {
-  createDeliveryProgrammeAdmin,
-  createDeliveryProgrammeAdminEntity,
-} from '../testData/programmeAdminTestData';
+import { createDeliveryProgrammeAdmin } from '../testData/programmeAdminTestData';
 import { faker } from '@faker-js/faker';
 import { assertUUID } from '../service/util';
 
@@ -46,7 +43,7 @@ describe('DeliveryProgrammeAdminStore', () => {
 
   async function seedProgrammeAdmin(knex: Knex) {
     const programmeId = await seedProgramme(knex);
-    const programmeAdmin = createDeliveryProgrammeAdminEntity(programmeId);
+    const programmeAdmin = createDeliveryProgrammeAdmin(programmeId);
     await knex<delivery_programme_admin>(delivery_programme_admin_name).insert(
       programmeAdmin,
     );
@@ -72,7 +69,7 @@ describe('DeliveryProgrammeAdminStore', () => {
         await createDatabase(databaseId);
       const programmeId = await seedProgramme(knex);
       const programmeAdmins = faker.helpers.multiple(
-        () => createDeliveryProgrammeAdminEntity(programmeId),
+        () => createDeliveryProgrammeAdmin(programmeId),
         { count: 4 },
       );
       await knex<delivery_programme_admin>(
@@ -92,7 +89,7 @@ describe('DeliveryProgrammeAdminStore', () => {
       const { deliveryProgrammeAdminStore, knex } =
         await createDatabase(databaseId);
       const programmeId = await seedProgramme(knex);
-      const programmeAdmin = createDeliveryProgrammeAdminEntity(programmeId);
+      const programmeAdmin = createDeliveryProgrammeAdmin(programmeId);
       await knex<delivery_programme_admin>(
         delivery_programme_admin_name,
       ).insert(programmeAdmin);

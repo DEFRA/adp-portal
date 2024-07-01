@@ -3,7 +3,7 @@ import { InputError } from '@backstage/errors';
 import type { ScmIntegrationRegistry } from '@backstage/integration';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import { BuildStatus } from './types';
-import type { Logger } from 'winston';
+import type { LoggerService } from '@backstage/backend-plugin-api';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
 
 export type RunPipelineActionInput = {
@@ -148,7 +148,7 @@ async function checkPipelineStatus(
   organization: string,
   project: string,
   runId: number,
-  logger: Logger,
+  logger: LoggerService,
   apiVersion?: string,
 ): Promise<boolean> {
   const build = await adoApi.getBuild(

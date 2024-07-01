@@ -1,3 +1,4 @@
+import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import express from 'express';
 import request from 'supertest';
 import type { AlbRouterOptions } from './armsLengthBodyRouter';
@@ -47,15 +48,19 @@ describe('createRouter', () => {
   const mockOptions: AlbRouterOptions = {
     logger: mockServices.logger.mock(),
     identity: mockIdentityApi,
-    config: mockConfig,
     armsLengthBodyStore: mockArmsLengthBodyStore,
     deliveryProgrammeStore: mockDeliveryProgrammeStore,
     httpAuth: mockServices.httpAuth(),
     permissions: mockPermissionsService,
+    config: mockConfig,
+    middleware: MiddlewareFactory.create({
+      config: mockConfig,
+      logger: mockServices.logger.mock(),
+    }),
   };
 
   beforeAll(async () => {
-    const router = await createAlbRouter(mockOptions);
+    const router = createAlbRouter(mockOptions);
     app = express().use(router);
   });
 

@@ -2,7 +2,7 @@ import { ConfigReader } from '@backstage/config';
 import { ScmIntegrations } from '@backstage/integration';
 import { RestClient } from 'typed-rest-client';
 import { AzureDevOpsApi } from './AzureDevOpsApi';
-import { getVoidLogger } from '@backstage/backend-common';
+import { mockServices } from '@backstage/backend-test-utils';
 import { BuildResult, BuildStatus } from './types';
 
 jest.mock('azure-devops-node-api', () => ({
@@ -50,7 +50,7 @@ describe('AzureDevOpsApi', () => {
         integrations,
         config,
         { server: 'test.azure.com', organization: 'another-test-org' },
-        { logger: getVoidLogger() },
+        { logger: mockServices.logger.mock() },
       ),
     ).rejects.toThrow(/No credentials provided/);
   });
@@ -60,7 +60,7 @@ describe('AzureDevOpsApi', () => {
       integrations,
       config,
       { server: 'dev.azure.com', organization: 'org' },
-      { logger: getVoidLogger() },
+      { logger: mockServices.logger.mock() },
     );
 
     expect(adoApi).toBeDefined();
@@ -79,7 +79,7 @@ describe('AzureDevOpsApi:getServiceConnections', () => {
         integrations,
         config,
         { server: 'dev.azure.com', organization: 'org' },
-        { logger: getVoidLogger() },
+        { logger: mockServices.logger.mock() },
       );
 
       await expect(
@@ -109,7 +109,7 @@ describe('AzureDevOpsApi:getServiceConnections', () => {
       integrations,
       config,
       { server: 'dev.azure.com', organization: 'org' },
-      { logger: getVoidLogger() },
+      { logger: mockServices.logger.mock() },
     );
 
     await adoApi.getServiceConnections(
@@ -150,7 +150,7 @@ describe('AzureDevOpsApi:getServiceConnections', () => {
       integrations,
       config,
       { server: 'dev.azure.com', organization: 'org' },
-      { logger: getVoidLogger() },
+      { logger: mockServices.logger.mock() },
     );
 
     const serviceConnections = await adoApi.getServiceConnections(
@@ -181,7 +181,7 @@ describe('AzureDevOpsApi:createPipeline', () => {
         integrations,
         config,
         { server: 'dev.azure.com', organization: 'org' },
-        { logger: getVoidLogger() },
+        { logger: mockServices.logger.mock() },
       );
 
       await expect(
@@ -218,7 +218,7 @@ describe('AzureDevOpsApi:createPipeline', () => {
       integrations,
       config,
       { server: 'dev.azure.com', organization: 'org' },
-      { logger: getVoidLogger() },
+      { logger: mockServices.logger.mock() },
     );
 
     await adoApi.createPipeline(
@@ -266,7 +266,7 @@ describe('AzureDevOpsApi:createPipeline', () => {
       integrations,
       config,
       { server: 'dev.azure.com', organization: 'org' },
-      { logger: getVoidLogger() },
+      { logger: mockServices.logger.mock() },
     );
 
     const pipeline = await adoApi.createPipeline(
@@ -299,7 +299,7 @@ describe('AzureDevOpsApi:permitPipeline', () => {
         integrations,
         config,
         { server: 'dev.azure.com', organization: 'org' },
-        { logger: getVoidLogger() },
+        { logger: mockServices.logger.mock() },
       );
 
       await expect(
@@ -328,7 +328,7 @@ describe('AzureDevOpsApi:permitPipeline', () => {
       integrations,
       config,
       { server: 'dev.azure.com', organization: 'org' },
-      { logger: getVoidLogger() },
+      { logger: mockServices.logger.mock() },
     );
 
     await adoApi.permitPipeline(
@@ -373,7 +373,7 @@ describe('AzureDevOpsApi:runPipeline', () => {
         integrations,
         config,
         { server: 'dev.azure.com', organization: 'org' },
-        { logger: getVoidLogger() },
+        { logger: mockServices.logger.mock() },
       );
 
       await expect(
@@ -401,7 +401,7 @@ describe('AzureDevOpsApi:runPipeline', () => {
       integrations,
       config,
       { server: 'dev.azure.com', organization: 'org' },
-      { logger: getVoidLogger() },
+      { logger: mockServices.logger.mock() },
     );
 
     await adoApi.runPipeline({ organization: 'org', project: 'project' }, 1234);
@@ -451,7 +451,7 @@ describe('AzureDevOpsApi:runPipeline', () => {
       integrations,
       config,
       { server: 'dev.azure.com', organization: 'org' },
-      { logger: getVoidLogger() },
+      { logger: mockServices.logger.mock() },
     );
 
     const pipeline = await adoApi.runPipeline(
@@ -480,7 +480,7 @@ describe('AzureDevOpsApi:getBuild', () => {
         integrations,
         config,
         { server: 'dev.azure.com', organization: 'org' },
-        { logger: getVoidLogger() },
+        { logger: mockServices.logger.mock() },
       );
 
       await expect(
@@ -506,7 +506,7 @@ describe('AzureDevOpsApi:getBuild', () => {
       integrations,
       config,
       { server: 'dev.azure.com', organization: 'org' },
-      { logger: getVoidLogger() },
+      { logger: mockServices.logger.mock() },
     );
 
     await adoApi.runPipeline({ organization: 'org', project: 'project' }, 1234);
@@ -543,7 +543,7 @@ describe('AzureDevOpsApi:getBuild', () => {
       integrations,
       config,
       { server: 'dev.azure.com', organization: 'org' },
-      { logger: getVoidLogger() },
+      { logger: mockServices.logger.mock() },
     );
 
     const pipeline = await adoApi.getBuild(

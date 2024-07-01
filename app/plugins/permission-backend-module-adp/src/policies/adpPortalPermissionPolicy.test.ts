@@ -1,6 +1,5 @@
 import { AdpPortalPermissionPolicy } from './adpPortalPermissionPolicy';
 import { RbacUtilities } from '../rbacUtilites';
-import { getVoidLogger } from '@backstage/backend-common';
 import type { RbacGroups } from '../types';
 import {
   catalogEntityReadPermission,
@@ -29,6 +28,7 @@ import {
   templateParameterReadPermission,
   templateStepReadPermission,
 } from '@backstage/plugin-scaffolder-common/alpha';
+import { mockServices } from '@backstage/backend-test-utils';
 
 describe('adpPortalPermissionPolicy', () => {
   function setup() {
@@ -37,9 +37,15 @@ describe('adpPortalPermissionPolicy', () => {
       programmeAdminGroup: 'Test-ProgrammeAdminGroup',
       adpPortalUsersGroup: 'Test-AdpPortalUsersGroup',
     };
-    const rbacUtilities = new RbacUtilities(getVoidLogger(), rbacGroups);
+    const rbacUtilities = new RbacUtilities(
+      mockServices.logger.mock(),
+      rbacGroups,
+    );
 
-    const sut = new AdpPortalPermissionPolicy(rbacUtilities, getVoidLogger());
+    const sut = new AdpPortalPermissionPolicy(
+      rbacUtilities,
+      mockServices.logger.mock(),
+    );
 
     return { sut, rbacGroups };
   }

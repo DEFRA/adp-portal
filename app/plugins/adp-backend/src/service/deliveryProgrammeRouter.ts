@@ -1,4 +1,4 @@
-import { errorHandler } from '@backstage/backend-common';
+import type { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import express from 'express';
 import Router from 'express-promise-router';
 import { InputError } from '@backstage/errors';
@@ -41,6 +41,7 @@ export interface ProgrammeRouterOptions {
   httpAuth: HttpAuthService;
   auth: AuthService;
   permissions: PermissionsService;
+  middleware: MiddlewareFactory;
 }
 
 const errorMapping = {
@@ -131,6 +132,7 @@ export function createProgrammeRouter(
     httpAuth,
     auth,
     permissions,
+    middleware,
   } = options;
 
   const router = Router();
@@ -248,6 +250,6 @@ export function createProgrammeRouter(
     respond(body, res, result, errorMapping);
   });
 
-  router.use(errorHandler());
+  router.use(middleware.error());
   return router;
 }

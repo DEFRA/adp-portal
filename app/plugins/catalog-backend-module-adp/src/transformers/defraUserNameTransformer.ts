@@ -7,7 +7,7 @@ import {
 } from '@backstage/plugin-catalog-backend-module-msgraph';
 
 function hasEmailOrUserPrincipalName(user: MicrosoftGraph.User) {
-  return user.mail || user.userPrincipalName;
+  return user.mail ? user.mail : user.userPrincipalName;
 }
 
 function createEntityFromOriginalUser(

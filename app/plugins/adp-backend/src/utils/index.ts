@@ -1,7 +1,7 @@
 import type { DeliveryProject } from '@internal/plugin-adp-common';
 import type { IdentityApi } from '@backstage/plugin-auth-node';
 import type express from 'express';
-import type { AlbRouterOptions } from '../service/armsLengthBodyRouter';
+import type { Config } from '@backstage/config';
 
 export * from './types';
 
@@ -13,8 +13,7 @@ export async function getCurrentUsername(
   return user?.identity.userEntityRef ?? 'unknown';
 }
 
-export function getOwner(options: AlbRouterOptions): string {
-  const { config } = options;
+export function getOwner(config: Config): string {
   const ownerGroup = config.getConfig('rbac');
   const owner = ownerGroup.getString('programmeAdminGroup');
   return owner;

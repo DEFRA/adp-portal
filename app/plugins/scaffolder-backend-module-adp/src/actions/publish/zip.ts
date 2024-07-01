@@ -4,7 +4,7 @@ import {
 } from '@backstage/plugin-scaffolder-node';
 import archiver, { type Archiver } from 'archiver';
 import type { Readable } from 'node:stream';
-import type { Logger } from 'winston';
+import type { LoggerService } from '@backstage/backend-plugin-api';
 
 export type PublishZipActionInput = {
   readonly sourcePath?: string;
@@ -62,7 +62,7 @@ export const publishZipAction = createTemplateAction<
 
 interface CreateArchiveOptions extends archiver.ArchiverOptions {
   readonly format?: archiver.Format;
-  readonly logger?: Logger;
+  readonly logger?: LoggerService;
 }
 
 async function createArchive(
@@ -70,11 +70,11 @@ async function createArchive(
   options: CreateArchiveOptions = {},
 ) {
   const archive = archiver(options.format ?? 'zip', options);
-  using _onWarning = usingListener(archive, 'warning', (err: unknown) =>
-    options.logger?.warn(err),
+  using _onWarning = usingListener(archive, 'warning', (err: Error) =>
+    options.logger?.warn('Create archive warning', err),
   );
-  using _onError = usingListener(archive, 'error', (err: unknown) =>
-    options.logger?.error(err),
+  using _onError = usingListener(archive, 'error', (err: Error) =>
+    options.logger?.error('Create archive error', err),
   );
   const result = getData(archive);
   populate(archive);

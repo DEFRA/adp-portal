@@ -1,3 +1,4 @@
+import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import {
   coreServices,
   createBackendPlugin,
@@ -78,6 +79,7 @@ export const adpPlugin = createBackendPlugin({
         tokens,
       }) {
         await initializeAdpDatabase(database);
+        const middleware = MiddlewareFactory.create({ config, logger });
 
         const dbClient = await database.getClient();
         const armsLengthBodyStore = new ArmsLengthBodyStore(dbClient);
@@ -174,6 +176,7 @@ export const adpPlugin = createBackendPlugin({
             config,
             httpAuth,
             permissions,
+            middleware,
           }),
         );
         combinedRouter.use(
@@ -188,6 +191,7 @@ export const adpPlugin = createBackendPlugin({
             permissions,
             auth,
             catalog,
+            middleware,
           }),
         );
         combinedRouter.use(
@@ -204,6 +208,7 @@ export const adpPlugin = createBackendPlugin({
             adoProjectApi,
             httpAuth,
             permissions,
+            middleware,
           }),
         );
         combinedRouter.use(
@@ -216,6 +221,7 @@ export const adpPlugin = createBackendPlugin({
             permissions,
             httpAuth,
             auth,
+            middleware,
           }),
         );
         combinedRouter.use(
@@ -229,6 +235,7 @@ export const adpPlugin = createBackendPlugin({
             permissions,
             auth,
             httpAuth,
+            middleware,
           }),
         );
 

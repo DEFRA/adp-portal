@@ -1,10 +1,10 @@
-import type { TaskRunner } from '@backstage/backend-tasks';
 import { AdpDatabaseEntityProvider } from './AdpDatabaseEntityProvider';
 import type { EntityProviderConnection } from '@backstage/plugin-catalog-node';
 import type {
   AuthService,
   DiscoveryService,
   SchedulerService,
+  SchedulerServiceTaskRunner,
 } from '@backstage/backend-plugin-api';
 import type { FetchApi } from '@internal/plugin-fetch-api-backend';
 import type * as AdpDatabaseEntityProviderConnection from './AdpDatabaseEntityProviderConnection';
@@ -60,7 +60,7 @@ describe('AdpDatabaseEntityProvider', () => {
       getBaseUrl: jest.fn().mockResolvedValue('http://localhost:123/api/adp'),
       getExternalBaseUrl: jest.fn(),
     };
-    const schedule: jest.Mocked<TaskRunner> = {
+    const schedule: jest.Mocked<SchedulerServiceTaskRunner> = {
       run: jest.fn(),
     };
     const scheduler: jest.Mocked<SchedulerService> = {

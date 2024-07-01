@@ -1,4 +1,4 @@
-import type { Logger } from 'winston';
+import type { LoggerService } from '@backstage/backend-plugin-api';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import type { Octokit } from 'octokit';
 import type { Config } from '@backstage/config';
@@ -69,7 +69,7 @@ export function addDeliveryProjectToRepo(options: {
   });
 
   async function addTeamsToRepository(
-    logger: Logger,
+    logger: LoggerService,
     organization: string,
     repoName: string,
     owner: string,

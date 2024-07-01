@@ -1,3 +1,4 @@
+import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import express from 'express';
 import request from 'supertest';
 import type { ProjectRouterOptions } from './deliveryProjectRouter';
@@ -127,6 +128,10 @@ describe('createRouter', () => {
     adoProjectApi: mockAdoProjectApi,
     httpAuth: mockServices.httpAuth(),
     permissions: mockPermissionsService,
+    middleware: MiddlewareFactory.create({
+      config: mockServices.rootConfig(),
+      logger: mockServices.logger.mock(),
+    }),
   };
 
   beforeAll(() => {

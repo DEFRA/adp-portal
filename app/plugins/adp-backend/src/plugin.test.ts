@@ -8,7 +8,7 @@ describe('adpPlugin', () => {
     const { server } = await startTestBackend({
       extensionPoints: [],
       features: [
-        adpPlugin(),
+        adpPlugin,
         mockServices.logger.factory(),
         mockServices.discovery.factory(),
         mockServices.database.factory(),

@@ -1,4 +1,4 @@
-import { errorHandler } from '@backstage/backend-common';
+import type { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import { type IdentityApi } from '@backstage/plugin-auth-node';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
 import express from 'express';
@@ -75,6 +75,7 @@ export interface DeliveryProgrammeAdminRouterOptions {
   permissions: PermissionsService;
   httpAuth: HttpAuthService;
   auth: AuthService;
+  middleware: MiddlewareFactory;
 }
 
 export function createDeliveryProgrammeAdminRouter(
@@ -87,6 +88,7 @@ export function createDeliveryProgrammeAdminRouter(
     permissions,
     httpAuth,
     auth,
+    middleware,
   } = options;
 
   const router = Router();
@@ -199,6 +201,6 @@ export function createDeliveryProgrammeAdminRouter(
     res.status(204).end();
   });
 
-  router.use(errorHandler());
+  router.use(middleware.error());
   return router;
 }
