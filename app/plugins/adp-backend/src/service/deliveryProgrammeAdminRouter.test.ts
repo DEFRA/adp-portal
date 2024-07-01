@@ -14,6 +14,7 @@ import type {
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { mockServices } from '@backstage/backend-test-utils';
 import { faker } from '@faker-js/faker';
+import { expectedProgrammeAdmin } from '../testData/programmeAdminTestData';
 
 jest.mock('@backstage/plugin-auth-node', () => ({
   getBearerTokenFromAuthorizationHeader: () => 'token',
@@ -129,14 +130,7 @@ describe('createRouter', () => {
   describe('POST /', () => {
     it('returns a 201 response when programme managers are created', async () => {
       mockDeliveryProgrammeAdminStore.add.mockResolvedValueOnce({
-        value: {
-          id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
-          delivery_programme_id: '123',
-          aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
-          email: 'test1.test@onmicrosoft.com',
-          name: 'test 1',
-          updated_at: new Date(),
-        },
+        value: expectedProgrammeAdmin,
         success: true,
       });
       mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);

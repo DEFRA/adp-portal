@@ -12,25 +12,35 @@ import {
   type UpdateDeliveryProgrammeRequest,
   type ValidationErrorMapping,
 } from '@internal/plugin-adp-common';
-import { getCurrentUsername } from '../utils/index';
+import type { CatalogApi } from '@backstage/catalog-client';
+import {
+  type AddDeliveryProgrammeAdmin,
+  getCurrentUsername,
+} from '../utils/index';
 import type { IDeliveryProjectStore } from '../deliveryProject';
 import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
-import { checkPermissions, createParser, respond } from './util';
-import { z } from 'zod';
 import type {
-  HttpAuthService,
   LoggerService,
+  AuthService,
+  HttpAuthService,
   PermissionsService,
 } from '@backstage/backend-plugin-api';
+import { getUserEntityFromCatalog } from './catalog';
+import { stringifyEntityRef } from '@backstage/catalog-model';
+import { checkPermissions, createParser, respond } from './util';
+import { z } from 'zod';
+import type { UUID } from 'node:crypto';
 
 export interface ProgrammeRouterOptions {
   logger: LoggerService;
   identity: IdentityApi;
+  catalog: CatalogApi;
   deliveryProgrammeStore: IDeliveryProgrammeStore;
   deliveryProgrammeAdminStore: IDeliveryProgrammeAdminStore;
   deliveryProjectStore: IDeliveryProjectStore;
-  permissions: PermissionsService;
   httpAuth: HttpAuthService;
+  auth: AuthService;
+  permissions: PermissionsService;
 }
 
 const errorMapping = {
@@ -114,10 +124,12 @@ export function createProgrammeRouter(
   const {
     logger,
     identity,
+    catalog,
     deliveryProgrammeStore,
     deliveryProjectStore,
     deliveryProgrammeAdminStore,
     httpAuth,
+    auth,
     permissions,
   } = options;
 
@@ -185,6 +197,36 @@ export function createProgrammeRouter(
     );
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProgrammeStore.add(body, creator);
+
+    const { token } = await auth.getPluginRequestToken({
+      onBehalfOf: credentials,
+      targetPluginId: 'catalog',
+    });
+    const creatorName = creator.replace(/user:default\//g, '');
+
+    const catalogUser = await getUserEntityFromCatalog(
+      creatorName,
+      catalog,
+      token,
+    );
+
+    if (result.success && catalogUser.success) {
+      const addUser: AddDeliveryProgrammeAdmin = {
+        name: catalogUser.value.spec.profile!.displayName!,
+        email: catalogUser.value.metadata.annotations!['microsoft.com/email'],
+        aad_entity_ref_id:
+          catalogUser.value.metadata.annotations![
+            'graph.microsoft.com/user-id'
+          ],
+        delivery_programme_id: result.value.id as UUID,
+        user_entity_ref: stringifyEntityRef({
+          kind: 'user',
+          namespace: 'default',
+          name: creator,
+        }),
+      };
+      await deliveryProgrammeAdminStore.add(addUser);
+    }
     respond(body, res, result, errorMapping, { ok: 201 });
   });
 
