@@ -10,7 +10,6 @@ import type { LoggerService } from '@backstage/backend-plugin-api';
 import {
   catalogUserRole,
   deliveryProgrammeAdminManagerRole,
-  deliveryProgrammeCreatorRole,
   deliveryProgrammeEditorRole,
   deliveryProjectEditorRole,
   deliveryProjectUserManagerRole,
