@@ -60,7 +60,6 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       deliveryProgrammeAdminManagerRole(request.permission, portalUserIdentity),
       deliveryProjectUserManagerRole(request.permission, portalUserIdentity),
       scaffolderUserRole(request.permission, portalUserIdentity),
-      deliveryProgrammeCreatorRole(request.permission, portalUserIdentity),
       deliveryProgrammeEditorRole(request.permission, portalUserIdentity),
       deliveryProjectEditorRole(request.permission, portalUserIdentity),
       catalogUserRole(request.permission),

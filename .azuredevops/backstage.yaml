@@ -267,7 +267,7 @@ properties:
           - name: PRD1_CLUSTER_API_SERVER_ADDRESS
             secretRef: prd1-cluster-api-server-address
           - name: ADP_PORTAL_TEMPLATE_VERSION
-            value: '1.1.15'
+            value: '1.1.16'
           - name: APPINSIGHTS_CLOUDROLE
             secretRef: adp-portal-appinsights-cloudrole
           - name: SHARED_APPINSIGHT_CONNECTIONSTRING
