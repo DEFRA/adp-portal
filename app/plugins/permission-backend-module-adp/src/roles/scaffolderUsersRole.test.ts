@@ -5,6 +5,9 @@ import {
   actionExecutePermission,
   templateParameterReadPermission,
   templateStepReadPermission,
+  taskCreatePermission,
+  taskReadPermission,
+  taskCancelPermission,
 } from '@backstage/plugin-scaffolder-common/alpha';
 import { scaffolderUserRole } from './scaffolderUsersRole';
 
@@ -57,6 +60,36 @@ describe('scaffolderUsersRole', () => {
       permission: templateStepReadPermission,
       expected: AuthorizeResult.ALLOW,
       user: programmeAdminUser,
+    },
+    {
+      permission: taskCancelPermission,
+      expected: AuthorizeResult.ALLOW,
+      user: programmeAdminUser,
+    },
+    {
+      permission: taskCreatePermission,
+      expected: AuthorizeResult.ALLOW,
+      user: programmeAdminUser,
+    },
+    {
+      permission: taskReadPermission,
+      expected: AuthorizeResult.ALLOW,
+      user: programmeAdminUser,
+    },
+    {
+      permission: taskCancelPermission,
+      expected: AuthorizeResult.ALLOW,
+      user: portalUser,
+    },
+    {
+      permission: taskCreatePermission,
+      expected: AuthorizeResult.ALLOW,
+      user: portalUser,
+    },
+    {
+      permission: taskReadPermission,
+      expected: AuthorizeResult.ALLOW,
+      user: portalUser,
     },
     {
       permission: catalogEntityCreatePermission,

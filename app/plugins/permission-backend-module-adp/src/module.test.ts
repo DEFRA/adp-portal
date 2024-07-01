@@ -24,7 +24,7 @@ describe('adpPermissionModule', () => {
     await startTestBackend({
       extensionPoints: [[policyExtensionPoint, extensionPoint]],
       features: [
-        adpPermissionModule(),
+        adpPermissionModule,
         mockServices.logger.factory(),
         mockServices.rootConfig.factory({ data: config }),
       ],
