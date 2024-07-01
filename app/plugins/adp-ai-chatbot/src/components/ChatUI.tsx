@@ -27,6 +27,11 @@ const ChatUI = () => {
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [responseFetched, setResponseFetched] = useState<boolean>(true);
 
+  const conversationId = "1239";
+  const userperson = "example-aimee";
+
+
+
   const handleSend = async () => {
     if (userInput.trim()) {
       const currentTime = new Date().toLocaleTimeString([], {
@@ -44,7 +49,10 @@ const ChatUI = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: userInput }),
+        body: JSON.stringify({
+          conversationId: conversationId,
+          user: userperson,
+          prompt: userInput }),
       });
       const data = await response.json();
       setChatHistory(prevHistory => [
