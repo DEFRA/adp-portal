@@ -1,5 +1,6 @@
 export * from './changeCase';
 export * from './csharp';
+export * from './githubRepoUrl';
 export * from './isOneOf';
 export * from './json';
 export * from './toDotnetProjectName';

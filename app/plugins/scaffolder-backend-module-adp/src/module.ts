@@ -20,6 +20,8 @@ import {
 import { fetchApiRef } from '@internal/plugin-fetch-api-backend';
 import * as backendActions from './actions/backend';
 
+const { createGithubRepoUrlFilter, ...allFilters } = filters;
+
 export const adpScaffolderModule = createBackendModule({
   pluginId: 'scaffolder',
   moduleId: 'adp',
@@ -91,7 +93,10 @@ export const adpScaffolderModule = createBackendModule({
           }),
         );
 
-        scaffolderTemplating.addTemplateFilters({ ...filters });
+        scaffolderTemplating.addTemplateFilters({
+          ...allFilters,
+          githubRepoUrl: createGithubRepoUrlFilter(config),
+        });
       },
     });
   },

@@ -1,8 +1,6 @@
-import type {
-  TemplateAction,
-  TemplateFilter,
-} from '@backstage/plugin-scaffolder-node';
 import {
+  type ScaffolderActionsExtensionPoint,
+  type ScaffolderTemplatingExtensionPoint,
   scaffolderActionsExtensionPoint,
   scaffolderTemplatingExtensionPoint,
 } from '@backstage/plugin-scaffolder-node/alpha';
@@ -14,23 +12,25 @@ import * as customFilters from './filters';
 
 describe('adpScaffolderModule', () => {
   it('should register actions with the scaffolder extension point', async () => {
-    let addedActions: TemplateAction<any, any>[] | undefined;
-    let addedFilters: Record<string, TemplateFilter> | undefined;
+    const { createGithubRepoUrlFilter, ...expectedFilters } = customFilters;
+    Object.assign(expectedFilters, { githubRepoUrl: expect.any(Function) });
 
-    const actionsExtensionPoint = {
-      addActions: (...actions: TemplateAction<any, any>[]) => {
-        addedActions = actions;
-      },
-    };
-    const templatingExtensionPoint = {
-      addTemplateFilters: (filters: Record<string, TemplateFilter>) => {
-        addedFilters = filters;
-      },
-    };
+    const actionsExtensionPoint: jest.Mocked<ScaffolderActionsExtensionPoint> =
+      {
+        addActions: jest.fn(),
+      };
+    const templatingExtensionPoint: jest.Mocked<ScaffolderTemplatingExtensionPoint> =
+      {
+        addTemplateFilters: jest.fn(),
+        addTemplateGlobals: jest.fn(),
+      };
 
     const config = {
       backend: {
         baseUrl: 'https://test.local',
+      },
+      github: {
+        organization: 'test',
       },
     };
 
@@ -40,14 +40,19 @@ describe('adpScaffolderModule', () => {
         [scaffolderTemplatingExtensionPoint, templatingExtensionPoint],
       ],
       features: [
-        adpScaffolderModule(),
+        adpScaffolderModule,
         mockServices.rootConfig.factory({ data: config }),
         mockServices.discovery.factory(),
         fetchApiFactory(),
       ],
     });
 
-    expect(addedActions?.length).toEqual(Object.keys(customActions).length);
-    expect(addedFilters).toMatchObject({ ...customFilters });
+    expect(actionsExtensionPoint.addActions).toHaveBeenCalledTimes(1);
+    expect(actionsExtensionPoint.addActions.mock.calls[0]).toHaveLength(
+      Object.keys(customActions).length,
+    );
+    expect(templatingExtensionPoint.addTemplateFilters).toHaveBeenCalledWith(
+      expectedFilters,
+    );
   });
 });
