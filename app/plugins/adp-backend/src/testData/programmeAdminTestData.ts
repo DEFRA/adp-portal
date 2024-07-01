@@ -42,3 +42,12 @@ export function createDeliveryProgrammeAdmin(
     updated_at: faker.date.past(),
   };
 }
+
+export const expectedProgrammeAdmin = {
+  id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
+  delivery_programme_id: '123',
+  aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
+  email: 'test1.test@onmicrosoft.com',
+  name: 'test 1',
+  updated_at: new Date(),
+};

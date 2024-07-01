@@ -18,6 +18,8 @@ import type {
 } from '@internal/plugin-adp-common';
 import { mockServices } from '@backstage/backend-test-utils';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
+import type { CatalogApi } from '@backstage/catalog-client';
+import { catalogTestData } from '../testData/catalogEntityTestData';
 
 const managerByProgrammeId = programmeManagerList.filter(
   managers => managers.delivery_programme_id === '123',
@@ -25,9 +27,10 @@ const managerByProgrammeId = programmeManagerList.filter(
 
 describe('createRouter', () => {
   let programmeApp: express.Express;
+
   const mockIdentityApi = {
     getIdentity: jest.fn().mockResolvedValue({
-      identity: { userEntityRef: 'user:default/johndoe' },
+      identity: { userEntityRef: 'test2.test.onmicrosoft.com' },
     }),
   };
 
@@ -57,6 +60,23 @@ describe('createRouter', () => {
 
   const mockPermissionsService = mockServices.permissions.mock();
 
+  const mockCatalogClient: jest.Mocked<CatalogApi> = {
+    addLocation: jest.fn(),
+    getEntities: jest.fn(),
+    getEntitiesByRefs: jest.fn(),
+    getEntityAncestors: jest.fn(),
+    getEntityByRef: jest.fn(),
+    getEntityFacets: jest.fn(),
+    getLocationByEntity: jest.fn(),
+    getLocationById: jest.fn(),
+    getLocationByRef: jest.fn(),
+    queryEntities: jest.fn(),
+    refreshEntity: jest.fn(),
+    removeEntityByUid: jest.fn(),
+    removeLocationById: jest.fn(),
+    validateEntity: jest.fn(),
+  };
+
   const mockOptions: ProgrammeRouterOptions = {
     logger: mockServices.logger.mock(),
     identity: mockIdentityApi,
@@ -65,6 +85,8 @@ describe('createRouter', () => {
     deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
     permissions: mockPermissionsService,
     httpAuth: mockServices.httpAuth(),
+    catalog: mockCatalogClient,
+    auth: mockServices.auth(),
   };
 
   beforeAll(async () => {
@@ -98,6 +120,8 @@ describe('createRouter', () => {
     mockDeliveryProgrammeAdminStore.getByDeliveryProgramme.mockResolvedValue(
       managerByProgrammeId,
     );
+    mockIdentityApi.getIdentity('test2.test.onmicrosoft.com');
+    mockCatalogClient.getEntities.mockResolvedValue(catalogTestData);
   });
 
   describe('GET /health', () => {
@@ -171,10 +195,20 @@ describe('createRouter', () => {
           delivery_programme_code: 'abc',
         } satisfies CreateDeliveryProgrammeRequest);
 
+      const adminData = {
+        aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
+        delivery_programme_id: '',
+        email: 'test1.test@onmicrosoft.com',
+        name: 'test1',
+        user_entity_ref: 'user:default/unknown',
+      };
       // assert
       expect(response.status).toEqual(201);
       expect(response.body).toMatchObject(
         JSON.parse(JSON.stringify(expectedProgrammeDataWithName)),
+      );
+      expect(mockDeliveryProgrammeAdminStore.add).toHaveBeenCalledWith(
+        adminData,
       );
     });
 
