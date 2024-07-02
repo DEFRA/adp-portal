@@ -6,8 +6,6 @@ import {
   DeliveryProjectFormFields,
   emptyForm,
 } from './DeliveryProjectFormFields';
-import { usePermission } from '@backstage/plugin-permission-react';
-import { deliveryProjectCreatePermission } from '@internal/plugin-adp-common';
 import type { SubmitResult } from '../../utils';
 import { DialogForm, TitleWithHelp, readValidationError } from '../../utils';
 import { deliveryProjectApiRef } from './api';
