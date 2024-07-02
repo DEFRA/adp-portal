@@ -15,6 +15,6 @@ describe('githubRepoUrl', () => {
     const actual = sut('my-repo');
 
     // assert
-    expect(actual).toBe('https://github.com/?owner=test&repo=my-repo');
+    expect(actual).toBe('github.com?owner=test&repo=my-repo');
   });
 });
