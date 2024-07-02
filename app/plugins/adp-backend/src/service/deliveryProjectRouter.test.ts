@@ -244,27 +244,6 @@ describe('createRouter', () => {
       );
     });
 
-    it('returns a 403 response if the user is not authorized', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.DENY },
-      ]);
-
-      const response = await request(projectApp)
-        .post('/')
-        .send({
-          delivery_project_code: 'abc',
-          title: 'def',
-          ado_project: 'my project',
-          delivery_programme_id: '123',
-          description: 'My description',
-          github_team_visibility: 'public',
-          service_owner: 'test@email.com',
-          team_type: 'delivery',
-        } satisfies CreateDeliveryProjectRequest);
-
-      expect(response.status).toEqual(403);
-    });
-
     it('return 400 with errors', async () => {
       // arrange
       mockDeliveryProjectStore.add.mockResolvedValue({

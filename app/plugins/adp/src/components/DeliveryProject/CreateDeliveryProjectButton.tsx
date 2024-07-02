@@ -27,12 +27,6 @@ export function CreateDeliveryProjectButton({
   const alertApi = useApi(alertApiRef);
   const client = useApi(deliveryProjectApiRef);
 
-  const { allowed: allowedToCreateDeliveryProject } = usePermission({
-    permission: deliveryProjectCreatePermission,
-  });
-
-  if (!allowedToCreateDeliveryProject) return null;
-
   async function handleSubmit(
     fields: DeliveryProjectFields,
   ): Promise<SubmitResult<DeliveryProjectFields>> {

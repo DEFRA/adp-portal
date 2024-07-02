@@ -42,20 +42,6 @@ beforeEach(() => {
 });
 
 describe('CreateDeliveryProjectButton', () => {
-  it('Should not render when the user is not allowed to create delivery projects', async () => {
-    const { mockAlertApi, mockProjectApi, render } = setup();
-    usePermission.mockReturnValue({ allowed: false, loading: false });
-
-    const { result } = await render({ content: 'My button' });
-
-    expect(result.baseElement).toMatchSnapshot();
-    expect(mockAlertApi.alert$).not.toHaveBeenCalled();
-    expect(mockAlertApi.post).not.toHaveBeenCalled();
-    expect(mockProjectApi.createDeliveryProject).not.toHaveBeenCalled();
-    expect(mockProjectApi.getDeliveryProjectById).not.toHaveBeenCalled();
-    expect(mockProjectApi.getDeliveryProjects).not.toHaveBeenCalled();
-    expect(mockProjectApi.updateDeliveryProject).not.toHaveBeenCalled();
-  });
   it('Should only render a button initially', async () => {
     const { mockAlertApi, mockProjectApi, render } = setup();
     usePermission.mockReturnValue({ allowed: true, loading: false });
