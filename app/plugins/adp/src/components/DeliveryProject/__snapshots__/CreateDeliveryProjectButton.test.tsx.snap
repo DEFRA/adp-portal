@@ -192,12 +192,6 @@ exports[`CreateDeliveryProjectButton Should close the form when the form is canc
 </body>
 `;
 
-exports[`CreateDeliveryProjectButton Should not render when the user is not allowed to create delivery projects 1`] = `
-<body>
-  <div />
-</body>
-`;
-
 exports[`CreateDeliveryProjectButton Should only render a button initially 1`] = `
 <body>
   <div>
