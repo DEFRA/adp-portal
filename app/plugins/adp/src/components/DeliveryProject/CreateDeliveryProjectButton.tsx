@@ -9,6 +9,8 @@ import {
 import type { SubmitResult } from '../../utils';
 import { DialogForm, TitleWithHelp, readValidationError } from '../../utils';
 import { deliveryProjectApiRef } from './api';
+import { usePermission } from '@backstage/plugin-permission-react';
+import { deliveryProjectCreatePermission } from '@internal/plugin-adp-common';
 
 export type CreateDeliveryProjectButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -24,6 +26,12 @@ export function CreateDeliveryProjectButton({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const alertApi = useApi(alertApiRef);
   const client = useApi(deliveryProjectApiRef);
+
+  const { allowed: allowedToCreateDeliveryProject } = usePermission({
+    permission: deliveryProjectCreatePermission,
+  });
+
+  if (!allowedToCreateDeliveryProject) return null;
 
   async function handleSubmit(
     fields: DeliveryProjectFields,
