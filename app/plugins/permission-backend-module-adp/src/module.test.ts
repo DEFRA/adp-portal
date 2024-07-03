@@ -21,12 +21,18 @@ describe('adpPermissionModule', () => {
       },
     };
 
+    const discovery = mockServices.discovery.mock({
+      getBaseUrl: jest.fn().mockResolvedValue('http://test.local'),
+    });
+
     await startTestBackend({
       extensionPoints: [[policyExtensionPoint, extensionPoint]],
       features: [
         adpPermissionModule,
         mockServices.logger.factory(),
         mockServices.rootConfig.factory({ data: config }),
+        mockServices.auth.factory(),
+        discovery.factory,
       ],
     });
 

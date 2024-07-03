@@ -6,12 +6,35 @@ import {
   mockRbacGroups,
 } from './mocks/rbacTestData';
 import { mockServices } from '@backstage/backend-test-utils';
+import type { CatalogApi } from '@backstage/catalog-client';
 
 describe('rbacUtilities', () => {
   function setup() {
-    const sut = new RbacUtilities(mockServices.logger.mock(), mockRbacGroups);
+    const mockCatalogClient: jest.Mocked<CatalogApi> = {
+      addLocation: jest.fn(),
+      getEntities: jest.fn(),
+      getEntitiesByRefs: jest.fn(),
+      getEntityAncestors: jest.fn(),
+      getEntityByRef: jest.fn(),
+      getEntityFacets: jest.fn(),
+      getLocationByEntity: jest.fn(),
+      getLocationById: jest.fn(),
+      getLocationByRef: jest.fn(),
+      queryEntities: jest.fn(),
+      refreshEntity: jest.fn(),
+      removeEntityByUid: jest.fn(),
+      removeLocationById: jest.fn(),
+      validateEntity: jest.fn(),
+    };
 
-    return { sut };
+    const sut = new RbacUtilities(
+      mockServices.logger.mock(),
+      mockRbacGroups,
+      mockServices.auth(),
+      mockCatalogClient,
+    );
+
+    return { sut, mockCatalogClient };
   }
 
   describe('isInPlatformAdminGroup', () => {
@@ -61,9 +84,27 @@ describe('rbacUtilities', () => {
       },
     ])(
       'should return $expected for AD group $group',
-      async ({ backstageIdentityResponse, expected }) => {
-        const { sut } = setup();
-        const actual = sut.isInProgrammeAdminGroup(backstageIdentityResponse);
+      async ({ backstageIdentityResponse, expected, group }) => {
+        const { sut, mockCatalogClient } = setup();
+
+        mockCatalogClient.getEntitiesByRefs.mockResolvedValueOnce({
+          items: [
+            {
+              apiVersion: 'test',
+              kind: 'group',
+              metadata: {
+                name: group,
+              },
+              spec: {
+                type: expected ? 'delivery-programme' : 'something-else',
+              },
+            },
+          ],
+        });
+
+        const actual = await sut.isInProgrammeAdminGroup(
+          backstageIdentityResponse,
+        );
 
         expect(actual).toBe(expected);
       },
