@@ -85,6 +85,6 @@ function voidify<This, Args extends unknown[]>(
   fn: (this: This, ...args: Args) => unknown,
 ): (this: This, ...args: Args) => void {
   return function voided(...args) {
-    void fn.call(this, ...args);
+    fn.call(this, ...args);
   };
 }

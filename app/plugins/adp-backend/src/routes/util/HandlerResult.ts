@@ -45,12 +45,16 @@ export class FluentHandlerResult implements HandlerResult {
   }
 
   json(body: unknown) {
-    this.#body.push(response => void response.json(body));
+    this.#body.push(response => {
+      response.json(body);
+    });
     return this;
   }
 
   text(body: string) {
-    this.#body.push(response => void response.write(body));
+    this.#body.push(response => {
+      response.write(body);
+    });
     return this;
   }
 }
