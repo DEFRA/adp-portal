@@ -6,8 +6,8 @@ import {
   type DeliveryProject,
   type UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
-import type { SafeResult } from '../utils';
 import {
+  type SafeResult,
   assertUUID,
   checkMany,
   containsAnyValue,

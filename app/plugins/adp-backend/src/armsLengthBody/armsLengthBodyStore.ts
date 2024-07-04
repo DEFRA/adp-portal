@@ -6,8 +6,13 @@ import {
   type UpdateArmsLengthBodyRequest,
 } from '@internal/plugin-adp-common';
 import { NotFoundError } from '@backstage/errors';
-import type { SafeResult } from '../utils';
-import { checkMany, containsAnyValue, emptyUUID, isUUID } from '../utils';
+import {
+  type SafeResult,
+  checkMany,
+  containsAnyValue,
+  emptyUUID,
+  isUUID,
+} from '../utils';
 import { type UUID } from 'node:crypto';
 import type { arms_length_body } from './arms_length_body';
 import { arms_length_body_name } from './arms_length_body';

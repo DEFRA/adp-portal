@@ -5,9 +5,14 @@ import type {
 } from '@internal/plugin-adp-common';
 import type { delivery_project_user } from './delivery_project_user';
 import { delivery_project_user_name } from './delivery_project_user';
-import type { SafeResult } from '../utils';
-import { assertUUID, checkMany, containsAnyValue, isUUID } from '../utils';
-import type { AddDeliveryProjectUser } from '../utils';
+import {
+  type SafeResult,
+  type AddDeliveryProjectUser,
+  assertUUID,
+  checkMany,
+  containsAnyValue,
+  isUUID,
+} from '../utils';
 import type { delivery_project } from '../deliveryProject/delivery_project';
 import { delivery_project_name } from '../deliveryProject/delivery_project';
 import { NotFoundError } from '@backstage/errors';

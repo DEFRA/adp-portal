@@ -7,8 +7,8 @@ import {
 import express from 'express';
 import { InputError } from '@backstage/errors';
 import type { CatalogApi } from '@backstage/catalog-client';
-import type { AddDeliveryProgrammeAdmin } from '../../utils';
 import {
+  type AddDeliveryProgrammeAdmin,
   assertUUID,
   checkPermissions,
   createParser,

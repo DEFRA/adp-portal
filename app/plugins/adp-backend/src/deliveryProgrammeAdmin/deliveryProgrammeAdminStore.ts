@@ -1,12 +1,16 @@
 import type { Knex } from 'knex';
 import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
-import type { AddDeliveryProgrammeAdmin } from '../utils';
+import {
+  type AddDeliveryProgrammeAdmin,
+  type SafeResult,
+  assertUUID,
+  checkMany,
+  isUUID,
+} from '../utils';
 import {
   delivery_programme_admin_name,
   type delivery_programme_admin,
 } from './delivery_programme_admin';
-import type { SafeResult } from '../utils';
-import { assertUUID, checkMany, isUUID } from '../utils';
 import type { delivery_programme } from '../deliveryProgramme/delivery_programme';
 import { delivery_programme_name } from '../deliveryProgramme/delivery_programme';
 import { NotFoundError } from '@backstage/errors';
