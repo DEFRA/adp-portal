@@ -1,6 +1,16 @@
-import type { IDeliveryProjectStore } from '../deliveryProject';
-import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
-import type { IEntraIdApi } from './EntraIdApi';
+import {
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
+import {
+  deliveryProjectStoreRef,
+  type IDeliveryProjectStore,
+} from '../deliveryProject';
+import {
+  deliveryProjectUserStoreRef,
+  type IDeliveryProjectUserStore,
+} from '../deliveryProjectUser';
+import { entraIdApiRef, type IEntraIdApi } from './EntraIdApi';
 
 export type IDeliveryProjectEntraIdGroupsSyncronizer = {
   [P in keyof DeliveryProjectEntraIdGroupsSyncronizer]: DeliveryProjectEntraIdGroupsSyncronizer[P];
@@ -36,3 +46,28 @@ export class DeliveryProjectEntraIdGroupsSyncronizer
     );
   }
 }
+
+export const deliveryProjectEntraIdGroupsSyncronizerRef =
+  createServiceRef<IDeliveryProjectEntraIdGroupsSyncronizer>({
+    id: 'adp.deliveryprojectentraidgroupssyncronizer',
+    scope: 'plugin',
+    defaultFactory(service) {
+      return Promise.resolve(
+        createServiceFactory({
+          service,
+          deps: {
+            entraId: entraIdApiRef,
+            deliveryProjects: deliveryProjectStoreRef,
+            deliveryProjectUsers: deliveryProjectUserStoreRef,
+          },
+          async factory({ entraId, deliveryProjects, deliveryProjectUsers }) {
+            return new DeliveryProjectEntraIdGroupsSyncronizer(
+              entraId,
+              deliveryProjects,
+              deliveryProjectUsers,
+            );
+          },
+        }),
+      );
+    },
+  });

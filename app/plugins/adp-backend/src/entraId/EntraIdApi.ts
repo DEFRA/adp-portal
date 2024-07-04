@@ -1,7 +1,15 @@
+import {
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
 import type { Config } from '@backstage/config';
 import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
-import type { TokenProvider } from '@internal/plugin-credentials-context-backend';
-import type { FetchApi } from '@internal/plugin-fetch-api-backend';
+import {
+  tokenProviderRef,
+  type TokenProvider,
+} from '@internal/plugin-credentials-context-backend';
+import { fetchApiRef, type FetchApi } from '@internal/plugin-fetch-api-backend';
 
 export type IEntraIdApi = {
   [P in keyof EntraIdApi]: EntraIdApi[P];
@@ -93,3 +101,23 @@ export class EntraIdApi {
     );
   }
 }
+
+export const entraIdApiRef = createServiceRef<IEntraIdApi>({
+  id: 'adp.entraidapi',
+  scope: 'plugin',
+  defaultFactory(service) {
+    return Promise.resolve(
+      createServiceFactory({
+        service,
+        deps: {
+          config: coreServices.rootConfig,
+          fetchApi: fetchApiRef,
+          tokens: tokenProviderRef,
+        },
+        factory(deps) {
+          return new EntraIdApi(deps);
+        },
+      }),
+    );
+  },
+});

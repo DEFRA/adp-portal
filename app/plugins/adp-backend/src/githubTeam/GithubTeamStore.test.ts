@@ -14,7 +14,7 @@ import type { TestDatabaseId } from '@backstage/backend-test-utils';
 import { TestDatabases } from '@backstage/backend-test-utils';
 import { DeliveryProgrammeStore } from '../deliveryProgramme';
 import { DeliveryProjectStore } from '../deliveryProject';
-import { assertUUID } from '../service/util';
+import { assertUUID } from '../utils';
 
 describe('GithubTeamStore', () => {
   const databases = TestDatabases.create();

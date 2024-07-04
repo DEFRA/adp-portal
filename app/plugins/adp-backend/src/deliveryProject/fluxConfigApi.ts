@@ -1,8 +1,19 @@
 import type { Config } from '@backstage/config';
 import type { DeliveryProject } from '@internal/plugin-adp-common';
-import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
-import type { FetchApi } from '@internal/plugin-fetch-api-backend';
-import type { TokenProvider } from '@internal/plugin-credentials-context-backend';
+import {
+  deliveryProgrammeStoreRef,
+  type IDeliveryProgrammeStore,
+} from '../deliveryProgramme';
+import { fetchApiRef, type FetchApi } from '@internal/plugin-fetch-api-backend';
+import {
+  tokenProviderRef,
+  type TokenProvider,
+} from '@internal/plugin-credentials-context-backend';
+import {
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
 
 export type FluxConfig = {
   key: string;
@@ -138,3 +149,24 @@ export class FluxConfigApi {
     return keyValues;
   }
 }
+
+export const fluxConfigApiRef = createServiceRef<IFluxConfigApi>({
+  id: 'adp.fluxconfigapi',
+  scope: 'plugin',
+  defaultFactory(service) {
+    return Promise.resolve(
+      createServiceFactory({
+        service,
+        deps: {
+          config: coreServices.rootConfig,
+          fetchApi: fetchApiRef,
+          tokens: tokenProviderRef,
+          deliveryProgrammeStore: deliveryProgrammeStoreRef,
+        },
+        factory(deps) {
+          return new FluxConfigApi(deps);
+        },
+      }),
+    );
+  },
+});

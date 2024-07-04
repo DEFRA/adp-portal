@@ -19,7 +19,7 @@ import {
   createDeliveryProjectUserEntity,
 } from '../testData/projectUserTestData';
 import { faker } from '@faker-js/faker';
-import { assertUUID } from '../service/util';
+import { assertUUID } from '../utils';
 import type { UpdateDeliveryProjectUserRequest } from '@internal/plugin-adp-common';
 import { NotFoundError } from '@backstage/errors';
 

@@ -1,30 +1,70 @@
-import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
-import express from 'express';
+import express, { type Router } from 'express';
 import request from 'supertest';
-import type { ProgrammeRouterOptions } from './deliveryProgrammeRouter';
-import { createProgrammeRouter } from './deliveryProgrammeRouter';
 import {
   expectedProgrammeDataWithManager,
   programmeManagerList,
   expectedProgrammeDataWithName,
-} from '../testData/programmeTestData';
+} from '../../testData/programmeTestData';
 import { InputError } from '@backstage/errors';
-import type { IDeliveryProjectStore } from '../deliveryProject';
-import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
-import { expectedProjectDataWithName } from '../testData/projectTestData';
-import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import {
+  deliveryProjectStoreRef,
+  type IDeliveryProjectStore,
+} from '../../deliveryProject';
+import {
+  deliveryProgrammeStoreRef,
+  type IDeliveryProgrammeStore,
+} from '../../deliveryProgramme';
+import { expectedProjectDataWithName } from '../../testData/projectTestData';
+import {
+  deliveryProgrammeAdminStoreRef,
+  type IDeliveryProgrammeAdminStore,
+} from '../../deliveryProgrammeAdmin';
 import type {
   CreateDeliveryProgrammeRequest,
   UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
-import { mockServices } from '@backstage/backend-test-utils';
+import {
+  ServiceFactoryTester,
+  mockServices,
+} from '@backstage/backend-test-utils';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import type { CatalogApi } from '@backstage/catalog-client';
-import { catalogTestData } from '../testData/catalogEntityTestData';
+import { catalogTestData } from '../../testData/catalogEntityTestData';
+import {
+  type ServiceFactory,
+  type ServiceRef,
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
+import deliveryProgrammes from '.';
+import { authIdentityRef, catalogApiRef } from '../../refs';
 
 const managerByProgrammeId = programmeManagerList.filter(
   managers => managers.delivery_programme_id === '123',
 );
+const getter = createServiceFactory({
+  service: createServiceRef<Router>({ id: '', scope: 'plugin' }),
+  deps: {
+    deliveryProgrammes,
+  },
+  factory(deps) {
+    return deps.deliveryProgrammes;
+  },
+});
+function makeFactory<T>(ref: ServiceRef<T>, instance: T) {
+  return createServiceFactory({
+    service: ref as ServiceRef<T, 'plugin'>,
+    deps: {},
+    factory: () => instance,
+  })();
+}
+async function getRouter(dependencies?: Array<ServiceFactory>) {
+  const provider = ServiceFactoryTester.from(getter, {
+    dependencies,
+  });
+  return await provider.get();
+}
 
 describe('createRouter', () => {
   let programmeApp: express.Express;
@@ -78,24 +118,18 @@ describe('createRouter', () => {
     validateEntity: jest.fn(),
   };
 
-  const mockOptions: ProgrammeRouterOptions = {
-    logger: mockServices.logger.mock(),
-    identity: mockIdentityApi,
-    deliveryProjectStore: mockDeliveryProjectStore,
-    deliveryProgrammeStore: mockDeliveryProgrammeStore,
-    deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
-    permissions: mockPermissionsService,
-    httpAuth: mockServices.httpAuth(),
-    catalog: mockCatalogClient,
-    auth: mockServices.auth(),
-    middleware: MiddlewareFactory.create({
-      config: mockServices.rootConfig(),
-      logger: mockServices.logger.mock(),
-    }),
-  };
-
   beforeAll(async () => {
-    const programmeRouter = createProgrammeRouter(mockOptions);
+    const programmeRouter = await getRouter([
+      makeFactory(authIdentityRef, mockIdentityApi),
+      makeFactory(deliveryProjectStoreRef, mockDeliveryProjectStore),
+      makeFactory(deliveryProgrammeStoreRef, mockDeliveryProgrammeStore),
+      makeFactory(
+        deliveryProgrammeAdminStoreRef,
+        mockDeliveryProgrammeAdminStore,
+      ),
+      makeFactory(coreServices.permissions, mockPermissionsService),
+      makeFactory(catalogApiRef, mockCatalogClient),
+    ]);
     programmeApp = express().use(programmeRouter);
   });
 

@@ -1,5 +1,12 @@
-import type { IDeliveryProjectStore } from '../deliveryProject/deliveryProjectStore';
-import type { IGitHubTeamsApi, SetTeamRequest } from './GithubTeamsApi';
+import {
+  deliveryProjectStoreRef,
+  type IDeliveryProjectStore,
+} from '../deliveryProject/deliveryProjectStore';
+import {
+  githubTeamsApiRef,
+  type IGitHubTeamsApi,
+  type SetTeamRequest,
+} from './GithubTeamsApi';
 import type {
   DeliveryProject,
   DeliveryProjectTeamsSyncResult,
@@ -7,8 +14,15 @@ import type {
   GithubTeamDetails,
 } from '@internal/plugin-adp-common';
 import { createGithubTeamDetails } from '../utils';
-import type { IGithubTeamStore } from './GithubTeamStore';
-import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
+import { githubTeamStoreRef, type IGithubTeamStore } from './GithubTeamStore';
+import {
+  deliveryProjectUserStoreRef,
+  type IDeliveryProjectUserStore,
+} from '../deliveryProjectUser';
+import {
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
 
 export type IDeliveryProjectGithubTeamsSyncronizer = {
   [P in keyof DeliveryProjectGithubTeamsSyncronizer]: DeliveryProjectGithubTeamsSyncronizer[P];
@@ -161,3 +175,35 @@ export class DeliveryProjectGithubTeamsSyncronizer
     };
   }
 }
+
+export const deliveryProjectGithubTeamsSyncronizerRef =
+  createServiceRef<IDeliveryProjectGithubTeamsSyncronizer>({
+    id: 'adp.deliveryprojectgithubteamssyncronizer',
+    scope: 'plugin',
+    defaultFactory(service) {
+      return Promise.resolve(
+        createServiceFactory({
+          service,
+          deps: {
+            githubTeamsApi: githubTeamsApiRef,
+            deliveryProjects: deliveryProjectStoreRef,
+            githubTeamsStore: githubTeamStoreRef,
+            deliveryProjectUsersStore: deliveryProjectUserStoreRef,
+          },
+          async factory({
+            githubTeamsApi,
+            deliveryProjects,
+            githubTeamsStore,
+            deliveryProjectUsersStore,
+          }) {
+            return new DeliveryProjectGithubTeamsSyncronizer(
+              githubTeamsApi,
+              deliveryProjects,
+              githubTeamsStore,
+              deliveryProjectUsersStore,
+            );
+          },
+        }),
+      );
+    },
+  });

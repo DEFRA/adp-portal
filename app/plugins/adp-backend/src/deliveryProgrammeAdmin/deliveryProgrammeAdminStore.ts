@@ -5,12 +5,17 @@ import {
   delivery_programme_admin_name,
   type delivery_programme_admin,
 } from './delivery_programme_admin';
-import type { SafeResult } from '../service/util';
-import { assertUUID, checkMany, isUUID } from '../service/util';
+import type { SafeResult } from '../utils';
+import { assertUUID, checkMany, isUUID } from '../utils';
 import type { delivery_programme } from '../deliveryProgramme/delivery_programme';
 import { delivery_programme_name } from '../deliveryProgramme/delivery_programme';
 import { NotFoundError } from '@backstage/errors';
 import { type UUID } from 'node:crypto';
+import {
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
 
 export type IDeliveryProgrammeAdminStore = {
   [P in keyof DeliveryProgrammeAdminStore]: DeliveryProgrammeAdminStore[P];
@@ -207,3 +212,22 @@ async function not(value: Promise<boolean>) {
 function notFound() {
   return new NotFoundError('Unknown Arms Length Body');
 }
+
+export const deliveryProgrammeAdminStoreRef =
+  createServiceRef<IDeliveryProgrammeAdminStore>({
+    id: 'adp.deliveryprogrammeadminstore',
+    scope: 'plugin',
+    defaultFactory(service) {
+      return Promise.resolve(
+        createServiceFactory({
+          service,
+          deps: {
+            database: coreServices.database,
+          },
+          async factory({ database }) {
+            return new DeliveryProgrammeAdminStore(await database.getClient());
+          },
+        }),
+      );
+    },
+  });

@@ -1,4 +1,1 @@
-export {
-  type IDeliveryProjectUserStore,
-  DeliveryProjectUserStore,
-} from './deliveryProjectUserStore';
+export * from './deliveryProjectUserStore';

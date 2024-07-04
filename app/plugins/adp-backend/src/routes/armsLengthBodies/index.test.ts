@@ -1,21 +1,55 @@
-import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
-import express from 'express';
+import express, { type Router } from 'express';
 import request from 'supertest';
-import type { AlbRouterOptions } from './armsLengthBodyRouter';
-import { createAlbRouter } from './armsLengthBodyRouter';
 import { ConfigReader } from '@backstage/config';
-import { expectedAlbWithName } from '../testData/albTestData';
+import { expectedAlbWithName } from '../../testData/albTestData';
 import { InputError } from '@backstage/errors';
-import type { IArmsLengthBodyStore } from '../armsLengthBody';
-import type { IDeliveryProgrammeStore } from '../deliveryProgramme';
+import type { IArmsLengthBodyStore } from '../../armsLengthBody';
+import type { IDeliveryProgrammeStore } from '../../deliveryProgramme';
 import type {
   CreateArmsLengthBodyRequest,
   UpdateArmsLengthBodyRequest,
 } from '@internal/plugin-adp-common';
-import { mockServices } from '@backstage/backend-test-utils';
+import {
+  ServiceFactoryTester,
+  mockServices,
+} from '@backstage/backend-test-utils';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
+import {
+  type ServiceFactory,
+  type ServiceRef,
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
+import armsLengthBodies from '.';
+import { deliveryProgrammeStoreRef } from '../../deliveryProgramme';
+import { authIdentityRef } from '../../refs';
+import { armsLengthBodyStoreRef } from '../../armsLengthBody';
 
-describe('createRouter', () => {
+const getter = createServiceFactory({
+  service: createServiceRef<Router>({ id: '', scope: 'plugin' }),
+  deps: {
+    armsLengthBodies,
+  },
+  factory(deps) {
+    return deps.armsLengthBodies;
+  },
+});
+function makeFactory<T>(ref: ServiceRef<T>, instance: T) {
+  return createServiceFactory({
+    service: ref as ServiceRef<T, 'plugin'>,
+    deps: {},
+    factory: () => instance,
+  })();
+}
+async function getRouter(dependencies?: Array<ServiceFactory>) {
+  const provider = ServiceFactoryTester.from(getter, {
+    dependencies,
+  });
+  return await provider.get();
+}
+
+describe('default', () => {
   let app: express.Express;
 
   const mockIdentityApi = {
@@ -45,22 +79,14 @@ describe('createRouter', () => {
 
   const mockPermissionsService = mockServices.permissions.mock();
 
-  const mockOptions: AlbRouterOptions = {
-    logger: mockServices.logger.mock(),
-    identity: mockIdentityApi,
-    armsLengthBodyStore: mockArmsLengthBodyStore,
-    deliveryProgrammeStore: mockDeliveryProgrammeStore,
-    httpAuth: mockServices.httpAuth(),
-    permissions: mockPermissionsService,
-    config: mockConfig,
-    middleware: MiddlewareFactory.create({
-      config: mockConfig,
-      logger: mockServices.logger.mock(),
-    }),
-  };
-
   beforeAll(async () => {
-    const router = createAlbRouter(mockOptions);
+    const router = await getRouter([
+      makeFactory(authIdentityRef, mockIdentityApi),
+      makeFactory(armsLengthBodyStoreRef, mockArmsLengthBodyStore),
+      makeFactory(deliveryProgrammeStoreRef, mockDeliveryProgrammeStore),
+      makeFactory(coreServices.permissions, mockPermissionsService),
+      makeFactory(coreServices.rootConfig, mockConfig),
+    ]);
     app = express().use(router);
   });
 

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import type { delivery_programme_admin } from '../deliveryProgrammeAdmin/delivery_programme_admin';
-import { assertUUID } from '../service/util';
+import { assertUUID } from '../utils';
 import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
 
 export function createDeliveryProgrammeAdmin(deliveryProgrammeId: string) {

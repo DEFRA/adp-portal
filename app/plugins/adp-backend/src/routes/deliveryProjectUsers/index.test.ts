@@ -1,27 +1,64 @@
-import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
-import express from 'express';
+import express, { type Router } from 'express';
 import request from 'supertest';
-import type { IDeliveryProjectUserStore } from '../deliveryProjectUser';
+import {
+  deliveryProjectUserStoreRef,
+  type IDeliveryProjectUserStore,
+} from '../../deliveryProjectUser';
 import type { CatalogApi } from '@backstage/catalog-client';
-import type { DeliveryProjectUserRouterOptions } from './deliveryProjectUserRouter';
-import { createDeliveryProjectUserRouter } from './deliveryProjectUserRouter';
 import { faker } from '@faker-js/faker';
-import { createDeliveryProjectUser } from '../testData/projectUserTestData';
-import { catalogTestData } from '../testData/catalogEntityTestData';
+import { createDeliveryProjectUser } from '../../testData/projectUserTestData';
+import { catalogTestData } from '../../testData/catalogEntityTestData';
 import type {
   CreateDeliveryProjectUserRequest,
   DeleteDeliveryProjectUserRequest,
   UpdateDeliveryProjectUserRequest,
 } from '@internal/plugin-adp-common';
-import type { IDeliveryProjectGithubTeamsSyncronizer } from '../githubTeam';
-import type { IDeliveryProjectEntraIdGroupsSyncronizer } from '../entraId';
+import {
+  deliveryProjectGithubTeamsSyncronizerRef,
+  type IDeliveryProjectGithubTeamsSyncronizer,
+} from '../../githubTeam';
+import {
+  deliveryProjectEntraIdGroupsSyncronizerRef,
+  type IDeliveryProjectEntraIdGroupsSyncronizer,
+} from '../../entraId';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
-import { mockServices } from '@backstage/backend-test-utils';
+import {
+  ServiceFactoryTester,
+  mockServices,
+} from '@backstage/backend-test-utils';
 import { InputError } from '@backstage/errors';
+import {
+  type ServiceFactory,
+  type ServiceRef,
+  createServiceFactory,
+  createServiceRef,
+  coreServices,
+} from '@backstage/backend-plugin-api';
+import deliveryProjectUsers from '.';
+import { catalogApiRef } from '../../refs';
 
-jest.mock('@backstage/plugin-auth-node', () => ({
-  getBearerTokenFromAuthorizationHeader: () => 'token',
-}));
+const getter = createServiceFactory({
+  service: createServiceRef<Router>({ id: '', scope: 'plugin' }),
+  deps: {
+    deliveryProjectUsers,
+  },
+  factory(deps) {
+    return deps.deliveryProjectUsers;
+  },
+});
+function makeFactory<T>(ref: ServiceRef<T>, instance: T) {
+  return createServiceFactory({
+    service: ref as ServiceRef<T, 'plugin'>,
+    deps: {},
+    factory: () => instance,
+  })();
+}
+async function getRouter(dependencies?: Array<ServiceFactory>) {
+  const provider = ServiceFactoryTester.from(getter, {
+    dependencies,
+  });
+  return await provider.get();
+}
 
 describe('createRouter', () => {
   let deliveryProjectUserApp: express.Express;
@@ -65,24 +102,20 @@ describe('createRouter', () => {
 
   const mockPermissionsService = mockServices.permissions.mock();
 
-  const mockOptions: DeliveryProjectUserRouterOptions = {
-    catalog: mockCatalogClient,
-    deliveryProjectUserStore: mockDeliveryProjectUserStore,
-    logger: mockServices.logger.mock(),
-    teamSyncronizer: mockGithubTeamSyncronizer,
-    entraIdGroupSyncronizer: mockEntraIdGroupSyncronizer,
-    permissions: mockPermissionsService,
-    httpAuth: mockServices.httpAuth(),
-    auth: mockServices.auth(),
-    middleware: MiddlewareFactory.create({
-      config: mockServices.rootConfig(),
-      logger: mockServices.logger.mock(),
-    }),
-  };
-
-  beforeAll(() => {
-    const deliveryProjectUserRouter =
-      createDeliveryProjectUserRouter(mockOptions);
+  beforeAll(async () => {
+    const deliveryProjectUserRouter = await getRouter([
+      makeFactory(catalogApiRef, mockCatalogClient),
+      makeFactory(deliveryProjectUserStoreRef, mockDeliveryProjectUserStore),
+      makeFactory(
+        deliveryProjectGithubTeamsSyncronizerRef,
+        mockGithubTeamSyncronizer,
+      ),
+      makeFactory(
+        deliveryProjectEntraIdGroupsSyncronizerRef,
+        mockEntraIdGroupSyncronizer,
+      ),
+      makeFactory(coreServices.permissions, mockPermissionsService),
+    ]);
     deliveryProjectUserApp = express().use(deliveryProjectUserRouter);
   });
 

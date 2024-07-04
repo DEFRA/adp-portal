@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { assertUUID } from '../service/util';
+import { assertUUID } from '../utils';
 import type { delivery_project_user } from '../deliveryProjectUser/delivery_project_user';
 import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
 

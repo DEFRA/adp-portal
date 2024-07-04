@@ -6,19 +6,24 @@ import {
   type DeliveryProject,
   type UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
-import type { SafeResult } from '../service/util';
+import type { SafeResult } from '../utils';
 import {
   assertUUID,
   checkMany,
   containsAnyValue,
   emptyUUID,
   isUUID,
-} from '../service/util';
+} from '../utils';
 import { type UUID } from 'node:crypto';
 import type { delivery_project } from './delivery_project';
 import { delivery_project_name } from './delivery_project';
 import type { delivery_programme } from '../deliveryProgramme/delivery_programme';
 import { delivery_programme_name } from '../deliveryProgramme/delivery_programme';
+import {
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
 
 const allColumns = addTableName(delivery_project_name, [
   'id',
@@ -323,3 +328,21 @@ function addTableName<T extends readonly string[]>(
   // Fake return as T because knex typing cant deal with the table name prefix
   return columns.map(c => `${tableName}.${c}`) as unknown as T;
 }
+
+export const deliveryProjectStoreRef = createServiceRef<IDeliveryProjectStore>({
+  id: 'adp.deliveryprojectstore',
+  scope: 'plugin',
+  defaultFactory(service) {
+    return Promise.resolve(
+      createServiceFactory({
+        service,
+        deps: {
+          database: coreServices.database,
+        },
+        async factory({ database }) {
+          return new DeliveryProjectStore(await database.getClient());
+        },
+      }),
+    );
+  },
+});

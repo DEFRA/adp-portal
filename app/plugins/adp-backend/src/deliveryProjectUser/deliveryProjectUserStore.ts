@@ -5,18 +5,18 @@ import type {
 } from '@internal/plugin-adp-common';
 import type { delivery_project_user } from './delivery_project_user';
 import { delivery_project_user_name } from './delivery_project_user';
-import type { SafeResult } from '../service/util';
-import {
-  assertUUID,
-  checkMany,
-  containsAnyValue,
-  isUUID,
-} from '../service/util';
+import type { SafeResult } from '../utils';
+import { assertUUID, checkMany, containsAnyValue, isUUID } from '../utils';
 import type { AddDeliveryProjectUser } from '../utils';
 import type { delivery_project } from '../deliveryProject/delivery_project';
 import { delivery_project_name } from '../deliveryProject/delivery_project';
 import { NotFoundError } from '@backstage/errors';
 import { type UUID } from 'node:crypto';
+import {
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
 
 export type IDeliveryProjectUserStore = {
   [P in keyof DeliveryProjectUserStore]: DeliveryProjectUserStore[P];
@@ -255,3 +255,22 @@ function notFound() {
 async function not(value: Promise<boolean>) {
   return !(await value);
 }
+
+export const deliveryProjectUserStoreRef =
+  createServiceRef<IDeliveryProjectUserStore>({
+    id: 'adp.deliveryprojectuserstore',
+    scope: 'plugin',
+    defaultFactory(service) {
+      return Promise.resolve(
+        createServiceFactory({
+          service,
+          deps: {
+            database: coreServices.database,
+          },
+          async factory({ database }) {
+            return new DeliveryProjectUserStore(await database.getClient());
+          },
+        }),
+      );
+    },
+  });

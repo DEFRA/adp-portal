@@ -7,19 +7,24 @@ import {
   type DeliveryProgrammeAdmin,
   type UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
-import type { SafeResult } from '../service/util';
+import type { SafeResult } from '../utils';
 import {
   assertUUID,
   checkMany,
   containsAnyValue,
   emptyUUID,
   isUUID,
-} from '../service/util';
+} from '../utils';
 import { type UUID } from 'node:crypto';
 import type { delivery_programme } from './delivery_programme';
 import { delivery_programme_name } from './delivery_programme';
 import type { arms_length_body } from '../armsLengthBody/arms_length_body';
 import { arms_length_body_name } from '../armsLengthBody/arms_length_body';
+import {
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
 
 export type PartialDeliveryProgramme = Partial<DeliveryProgramme>;
 export type IDeliveryProgrammeStore = {
@@ -247,3 +252,22 @@ function notFound() {
 async function not(value: Promise<boolean>) {
   return !(await value);
 }
+
+export const deliveryProgrammeStoreRef =
+  createServiceRef<IDeliveryProgrammeStore>({
+    id: 'adp.deliveryprogrammestore',
+    scope: 'plugin',
+    defaultFactory(service) {
+      return Promise.resolve(
+        createServiceFactory({
+          service,
+          deps: {
+            database: coreServices.database,
+          },
+          async factory({ database }) {
+            return new DeliveryProgrammeStore(await database.getClient());
+          },
+        }),
+      );
+    },
+  });

@@ -2,7 +2,12 @@ import type { Knex } from 'knex';
 import type { delivery_project_github_team } from './delivery_project_github_team';
 import { delivery_project_github_teams_name } from './delivery_project_github_team';
 import { type UUID } from 'node:crypto';
-import { assertUUID } from '../service/util';
+import { assertUUID } from '../utils';
+import {
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
 
 const columns = [
   'id',
@@ -89,3 +94,21 @@ function toRows(
     team_type: type,
   }));
 }
+
+export const githubTeamStoreRef = createServiceRef<IGithubTeamStore>({
+  id: 'adp.githubteamstore',
+  scope: 'plugin',
+  defaultFactory(service) {
+    return Promise.resolve(
+      createServiceFactory({
+        service,
+        deps: {
+          database: coreServices.database,
+        },
+        async factory({ database }) {
+          return new GithubTeamStore(await database.getClient());
+        },
+      }),
+    );
+  },
+});

@@ -1,4 +1,1 @@
-export {
-  DeliveryProgrammeAdminStore,
-  type IDeliveryProgrammeAdminStore,
-} from './deliveryProgrammeAdminStore';
+export * from './deliveryProgrammeAdminStore';

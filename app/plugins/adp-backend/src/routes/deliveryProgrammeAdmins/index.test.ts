@@ -1,25 +1,56 @@
-import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
-import express from 'express';
+import express, { type Router } from 'express';
 import request from 'supertest';
-import { programmeManagerList } from '../testData/programmeTestData';
-import type { DeliveryProgrammeAdminRouterOptions } from './deliveryProgrammeAdminRouter';
-import { createDeliveryProgrammeAdminRouter } from './deliveryProgrammeAdminRouter';
+import { programmeManagerList } from '../../testData/programmeTestData';
 import { InputError } from '@backstage/errors';
-import { catalogTestData } from '../testData/catalogEntityTestData';
-import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import { catalogTestData } from '../../testData/catalogEntityTestData';
+import {
+  deliveryProgrammeAdminStoreRef,
+  type IDeliveryProgrammeAdminStore,
+} from '../../deliveryProgrammeAdmin';
 import type { CatalogApi } from '@backstage/catalog-client';
 import type {
   CreateDeliveryProgrammeAdminRequest,
   DeleteDeliveryProgrammeAdminRequest,
 } from '@internal/plugin-adp-common';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
-import { mockServices } from '@backstage/backend-test-utils';
+import {
+  ServiceFactoryTester,
+  mockServices,
+} from '@backstage/backend-test-utils';
 import { faker } from '@faker-js/faker';
-import { expectedProgrammeAdmin } from '../testData/programmeAdminTestData';
+import { expectedProgrammeAdmin } from '../../testData/programmeAdminTestData';
+import {
+  type ServiceFactory,
+  type ServiceRef,
+  createServiceFactory,
+  createServiceRef,
+  coreServices,
+} from '@backstage/backend-plugin-api';
+import deliveryProgrammeAdmins from '.';
+import { authIdentityRef, catalogApiRef } from '../../refs';
 
-jest.mock('@backstage/plugin-auth-node', () => ({
-  getBearerTokenFromAuthorizationHeader: () => 'token',
-}));
+const getter = createServiceFactory({
+  service: createServiceRef<Router>({ id: '', scope: 'plugin' }),
+  deps: {
+    deliveryProgrammeAdmins,
+  },
+  factory(deps) {
+    return deps.deliveryProgrammeAdmins;
+  },
+});
+function makeFactory<T>(ref: ServiceRef<T>, instance: T) {
+  return createServiceFactory({
+    service: ref as ServiceRef<T, 'plugin'>,
+    deps: {},
+    factory: () => instance,
+  })();
+}
+async function getRouter(dependencies?: Array<ServiceFactory>) {
+  const provider = ServiceFactoryTester.from(getter, {
+    dependencies,
+  });
+  return await provider.get();
+}
 
 describe('createRouter', () => {
   let deliveryProgrammeAdminApp: express.Express;
@@ -57,23 +88,16 @@ describe('createRouter', () => {
 
   const mockPermissionsService = mockServices.permissions.mock();
 
-  const mockOptions: DeliveryProgrammeAdminRouterOptions = {
-    logger: mockServices.logger.mock(),
-    identity: mockIdentityApi,
-    catalog: mockCatalogClient,
-    deliveryProgrammeAdminStore: mockDeliveryProgrammeAdminStore,
-    permissions: mockPermissionsService,
-    httpAuth: mockServices.httpAuth(),
-    auth: mockServices.auth(),
-    middleware: MiddlewareFactory.create({
-      config: mockServices.rootConfig(),
-      logger: mockServices.logger.mock(),
-    }),
-  };
-
-  beforeAll(() => {
-    const deliveryProgrammeAdminRouter =
-      createDeliveryProgrammeAdminRouter(mockOptions);
+  beforeAll(async () => {
+    const deliveryProgrammeAdminRouter = await getRouter([
+      makeFactory(authIdentityRef, mockIdentityApi),
+      makeFactory(catalogApiRef, mockCatalogClient),
+      makeFactory(
+        deliveryProgrammeAdminStoreRef,
+        mockDeliveryProgrammeAdminStore,
+      ),
+      makeFactory(coreServices.permissions, mockPermissionsService),
+    ]);
     deliveryProgrammeAdminApp = express().use(deliveryProgrammeAdminRouter);
   });
 

@@ -13,7 +13,7 @@ import type { Knex } from 'knex';
 import { deliveryProgrammeSeedData } from '../testData/programmeTestData';
 import { createDeliveryProgrammeAdmin } from '../testData/programmeAdminTestData';
 import { faker } from '@faker-js/faker';
-import { assertUUID } from '../service/util';
+import { assertUUID } from '../utils';
 
 describe('DeliveryProgrammeAdminStore', () => {
   const databases = TestDatabases.create();

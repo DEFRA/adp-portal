@@ -1,4 +1,4 @@
-export * from './service';
+export * from './routes/deliveryProjectUsers';
 export * from './deliveryProgramme';
 export * from './deliveryProject';
 export * from './armsLengthBody';

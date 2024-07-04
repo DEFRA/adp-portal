@@ -1,6 +1,14 @@
+import {
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
 import type { Config } from '@backstage/config';
-import type { TokenProvider } from '@internal/plugin-credentials-context-backend';
-import type { FetchApi } from '@internal/plugin-fetch-api-backend';
+import {
+  tokenProviderRef,
+  type TokenProvider,
+} from '@internal/plugin-credentials-context-backend';
+import { fetchApiRef, type FetchApi } from '@internal/plugin-fetch-api-backend';
 
 export type IAdoProjectApi = { [P in keyof AdoProjectApi]: AdoProjectApi[P] };
 export type AdoProjectOptions = {
@@ -36,3 +44,23 @@ export class AdoProjectApi {
     return response.ok;
   }
 }
+
+export const adoProjectApiRef = createServiceRef<IAdoProjectApi>({
+  id: 'adp.adoprojectapi',
+  scope: 'plugin',
+  defaultFactory(service) {
+    return Promise.resolve(
+      createServiceFactory({
+        service,
+        deps: {
+          config: coreServices.rootConfig,
+          fetchApi: fetchApiRef,
+          tokens: tokenProviderRef,
+        },
+        factory(deps) {
+          return new AdoProjectApi(deps);
+        },
+      }),
+    );
+  },
+});

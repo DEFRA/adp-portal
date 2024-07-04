@@ -6,16 +6,16 @@ import {
   type UpdateArmsLengthBodyRequest,
 } from '@internal/plugin-adp-common';
 import { NotFoundError } from '@backstage/errors';
-import type { SafeResult } from '../service/util';
-import {
-  checkMany,
-  containsAnyValue,
-  emptyUUID,
-  isUUID,
-} from '../service/util';
+import type { SafeResult } from '../utils';
+import { checkMany, containsAnyValue, emptyUUID, isUUID } from '../utils';
 import { type UUID } from 'node:crypto';
 import type { arms_length_body } from './arms_length_body';
 import { arms_length_body_name } from './arms_length_body';
+import {
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
+} from '@backstage/backend-plugin-api';
 
 export type PartialArmsLengthBody = Partial<ArmsLengthBody>;
 
@@ -176,3 +176,21 @@ export class ArmsLengthBodyStore {
 function notFound() {
   return new NotFoundError('Unknown Arms Length Body');
 }
+
+export const armsLengthBodyStoreRef = createServiceRef<IArmsLengthBodyStore>({
+  id: 'adp.armslengthbodystore',
+  scope: 'plugin',
+  defaultFactory(service) {
+    return Promise.resolve(
+      createServiceFactory({
+        service,
+        deps: {
+          database: coreServices.database,
+        },
+        async factory({ database }) {
+          return new ArmsLengthBodyStore(await database.getClient());
+        },
+      }),
+    );
+  },
+});
