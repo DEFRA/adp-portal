@@ -14,8 +14,8 @@ export const deliveryProjectCreatorRole = (
   user: PortalUserIdentity,
 ): PolicyDecision => {
   if (
-    user.userIdentity !== undefined &&
     isPermission(permission, deliveryProjectCreatePermission) &&
+    user.userIdentity !== undefined &&
     user.isProgrammeAdmin
   ) {
     return { result: AuthorizeResult.ALLOW };

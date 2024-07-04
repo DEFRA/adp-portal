@@ -25,9 +25,9 @@ export const deliveryProgrammeAdminManagerRole = (
   user: PortalUserIdentity,
 ): PolicyDecision => {
   if (
-    user.userIdentity !== undefined &&
     (isPermission(permission, deliveryProgrammeAdminCreatePermission) ||
-      isPermission(permission, deliveryProgrammeAdminDeletePermission))
+      isPermission(permission, deliveryProgrammeAdminDeletePermission)) &&
+    user.userIdentity !== undefined
   ) {
     return createCatalogConditionalDecision(
       permission,

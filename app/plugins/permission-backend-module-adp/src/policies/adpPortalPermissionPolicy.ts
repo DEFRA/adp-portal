@@ -57,7 +57,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
     };
 
     const roles = [
-      // platformAdminRole(portalUserIdentity),
+      platformAdminRole(portalUserIdentity),
       deliveryProgrammeAdminManagerRole(request.permission, portalUserIdentity),
       deliveryProjectUserManagerRole(request.permission, portalUserIdentity),
       deliveryProgrammeCreatorRole(request.permission, portalUserIdentity),
