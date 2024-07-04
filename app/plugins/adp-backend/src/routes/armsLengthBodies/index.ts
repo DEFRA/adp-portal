@@ -35,9 +35,9 @@ export default createRouterRef({
 
     router.use(express.json());
     router.get('/health', deps.health);
-    router.get('/', deps.getAll);
     router.get('/names', deps.getNames);
     router.get('/:id', deps.get);
+    router.get('/', deps.getAll);
     router.post('/', canCreate, deps.create);
     router.patch('/', canEdit, deps.edit);
     router.use(deps.middleware.error());

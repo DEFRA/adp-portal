@@ -16,13 +16,9 @@ export default createEndpointRef({
       const programmeData = await deliveryProgrammeStore.getAll();
 
       for (const alb of albData) {
-        const albChildren = [];
-        for (const programme of programmeData) {
-          if (programme.arms_length_body_id === alb.id) {
-            albChildren.push(programme.name);
-            alb.children = albChildren;
-          }
-        }
+        alb.children = programmeData
+          .filter(p => p.arms_length_body_id === alb.id)
+          .map(p => p.id);
       }
 
       return ok().json(albData);

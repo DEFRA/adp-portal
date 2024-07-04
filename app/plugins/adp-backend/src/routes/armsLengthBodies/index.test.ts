@@ -1,353 +1,227 @@
-import express, { type Router } from 'express';
+import express from 'express';
+import { testHelpers } from '../../utils/testHelpers';
+import index from './index';
+import get from './get';
+import create from './create';
+import edit from './edit';
+import getAll from './getAll';
+import getNames from './getNames';
+import health from './health';
 import request from 'supertest';
-import { ConfigReader } from '@backstage/config';
-import { expectedAlbWithName } from '../../testData/albTestData';
-import { InputError } from '@backstage/errors';
-import type { IArmsLengthBodyStore } from '../../armsLengthBody';
-import type { IDeliveryProgrammeStore } from '../../deliveryProgramme';
-import type {
-  CreateArmsLengthBodyRequest,
-  UpdateArmsLengthBodyRequest,
+import checkAuth from '../checkAuth';
+import { NotAllowedError } from '@backstage/errors';
+import {
+  armsLengthBodyCreatePermission,
+  armsLengthBodyUpdatePermission,
 } from '@internal/plugin-adp-common';
-import {
-  ServiceFactoryTester,
-  mockServices,
-} from '@backstage/backend-test-utils';
-import { AuthorizeResult } from '@backstage/plugin-permission-common';
-import {
-  type ServiceFactory,
-  type ServiceRef,
-  coreServices,
-  createServiceFactory,
-  createServiceRef,
-} from '@backstage/backend-plugin-api';
-import armsLengthBodies from '.';
-import { deliveryProgrammeStoreRef } from '../../deliveryProgramme';
-import { authIdentityRef } from '../../refs';
-import { armsLengthBodyStoreRef } from '../../armsLengthBody';
-
-const getter = createServiceFactory({
-  service: createServiceRef<Router>({ id: '', scope: 'plugin' }),
-  deps: {
-    armsLengthBodies,
-  },
-  factory(deps) {
-    return deps.armsLengthBodies;
-  },
-});
-function makeFactory<T>(ref: ServiceRef<T>, instance: T) {
-  return createServiceFactory({
-    service: ref as ServiceRef<T, 'plugin'>,
-    deps: {},
-    factory: () => instance,
-  })();
-}
-async function getRouter(dependencies?: Array<ServiceFactory>) {
-  const provider = ServiceFactoryTester.from(getter, {
-    dependencies,
-  });
-  return await provider.get();
-}
 
 describe('default', () => {
-  let app: express.Express;
+  async function setup() {
+    function mockHandler<T extends (...args: never) => unknown>() {
+      return jest.fn(() => {
+        throw new Error('Unexpected call');
+      }) as unknown as jest.MockedFn<T>;
+    }
 
-  const mockIdentityApi = {
-    getIdentity: jest.fn().mockResolvedValue({
-      identity: { userEntityRef: 'user:default/johndoe' },
-    }),
-  };
-  const mockConfig = new ConfigReader({
-    rbac: {
-      programmeAdminGroup: 'test',
-    },
-  });
+    const mockCreate = mockHandler<(typeof create)['T']>();
+    const mockEdit = mockHandler<(typeof edit)['T']>();
+    const mockGet = mockHandler<(typeof get)['T']>();
+    const mockGetAll = mockHandler<(typeof getAll)['T']>();
+    const mockGetNames = mockHandler<(typeof getNames)['T']>();
+    const mockHealth = mockHandler<(typeof health)['T']>();
+    const mockCheckAuth = mockHandler<(typeof checkAuth)['T']>();
 
-  const mockArmsLengthBodyStore: jest.Mocked<IArmsLengthBodyStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-  };
-
-  const mockDeliveryProgrammeStore: jest.Mocked<IDeliveryProgrammeStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-  };
-
-  const mockPermissionsService = mockServices.permissions.mock();
-
-  beforeAll(async () => {
-    const router = await getRouter([
-      makeFactory(authIdentityRef, mockIdentityApi),
-      makeFactory(armsLengthBodyStoreRef, mockArmsLengthBodyStore),
-      makeFactory(deliveryProgrammeStoreRef, mockDeliveryProgrammeStore),
-      makeFactory(coreServices.permissions, mockPermissionsService),
-      makeFactory(coreServices.rootConfig, mockConfig),
+    const handler = await testHelpers.getAutoServiceRef(index, [
+      testHelpers.provideService(create, mockCreate),
+      testHelpers.provideService(edit, mockEdit),
+      testHelpers.provideService(get, mockGet),
+      testHelpers.provideService(getAll, mockGetAll),
+      testHelpers.provideService(getNames, mockGetNames),
+      testHelpers.provideService(health, mockHealth),
+      testHelpers.provideService(
+        checkAuth,
+        getRequests =>
+          (...args) =>
+            mockCheckAuth(getRequests)(...args),
+      ),
     ]);
-    app = express().use(router);
-  });
 
-  beforeEach(() => {
-    jest.resetAllMocks();
-  });
+    const app = express();
+    app.use(handler);
 
-  describe('GET /health', () => {
-    it('returns ok', async () => {
-      const response = await request(app).get('/health');
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({ status: 'ok' });
-    });
-  });
+    return {
+      handler,
+      app,
+      mockCreate,
+      mockEdit,
+      mockGet,
+      mockGetAll,
+      mockGetNames,
+      mockHealth,
+      mockCheckAuth,
+    };
+  }
 
   describe('GET /', () => {
-    it('returns ok', async () => {
-      mockArmsLengthBodyStore.getAll.mockResolvedValueOnce([
-        expectedAlbWithName,
-      ]);
-      mockDeliveryProgrammeStore.getAll.mockResolvedValueOnce([]);
-      const response = await request(app).get('/');
-      expect(response.status).toEqual(200);
-    });
-    it('returns bad request', async () => {
-      mockArmsLengthBodyStore.getAll.mockRejectedValueOnce(
-        new InputError('error'),
+    it('Should call getAll', async () => {
+      const { app, mockGetAll, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockGetAll.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
-      const response = await request(app).get('/');
-      expect(response.status).toEqual(400);
+
+      const { status, body } = await request(app).get('/');
+
+      expect(mockGetAll).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
     });
   });
-
-  describe('GET /:id', () => {
-    it('returns ok', async () => {
-      mockArmsLengthBodyStore.get.mockResolvedValueOnce(expectedAlbWithName);
-      const response = await request(app).get('/1234');
-      expect(response.status).toEqual(200);
-    });
-
-    it('returns bad request', async () => {
-      mockArmsLengthBodyStore.get.mockRejectedValueOnce(
-        new InputError('error'),
+  describe('GET /health', () => {
+    it('Should call health', async () => {
+      const { app, mockHealth, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockHealth.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
-      const response = await request(app).get('/4321');
-      expect(response.status).toEqual(400);
+
+      const { status, body } = await request(app).get('/health');
+
+      expect(mockHealth).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
     });
   });
-
   describe('GET /names', () => {
-    it('returns ok', async () => {
-      mockArmsLengthBodyStore.getAll.mockResolvedValueOnce([
-        expectedAlbWithName,
-      ]);
-      const response = await request(app).get('/names');
-      expect(response.status).toEqual(200);
-    });
-    it('returns bad request when internal error', async () => {
-      mockArmsLengthBodyStore.getAll.mockRejectedValueOnce([
-        expectedAlbWithName,
-      ]);
-      const response = await request(app).get('/names');
-      expect(response.status).toEqual(500);
+    it('Should call getNames', async () => {
+      const { app, mockGetNames, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockGetNames.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
+      );
+
+      const { status, body } = await request(app).get('/names');
+
+      expect(mockGetNames).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
     });
   });
+  describe('GET /:id', () => {
+    it('Should call get', async () => {
+      const { app, mockGet, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockGet.mockImplementationOnce((req, res) =>
+        res.status(200).json({ result: 'Success!', id: req.params.id }),
+      );
 
+      const { status, body } = await request(app).get('/123456');
+
+      expect(mockGet).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!', id: '123456' },
+      });
+    });
+  });
   describe('POST /', () => {
-    it('returns created', async () => {
-      // arrange
-      mockArmsLengthBodyStore.add.mockResolvedValue({
-        success: true,
-        value: expectedAlbWithName,
-      });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      // act
-      const response = await request(app)
-        .post('/')
-        .send({
-          title: 'def',
-          description: 'My description',
-        } satisfies CreateArmsLengthBodyRequest);
-
-      // assert
-      expect(response.status).toEqual(201);
-      expect(response.body).toMatchObject(
-        JSON.parse(JSON.stringify(expectedAlbWithName)),
+    it('Should call create if you have permission', async () => {
+      const { app, mockCreate, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockCreate.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
-    });
 
-    it('returns a 403 response if the user is not authorized', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.DENY },
-      ]);
+      const { status, body } = await request(app).post('/');
 
-      const response = await request(app)
-        .post('/')
-        .send({
-          title: 'def',
-          description: 'My description',
-        } satisfies CreateArmsLengthBodyRequest);
-
-      expect(response.status).toEqual(403);
-    });
-
-    it('return 400 with errors', async () => {
-      // arrange
-      mockArmsLengthBodyStore.add.mockResolvedValue({
-        success: false,
-        errors: ['duplicateName', 'duplicateTitle', 'unknown'],
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(mockCheckAuth.mock.calls[0][0](null!)).toMatchObject({
+        permission: armsLengthBodyCreatePermission,
       });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      // act
-      const response = await request(app)
-        .post('/')
-        .send({
-          title: 'def',
-          description: 'My description',
-        } satisfies CreateArmsLengthBodyRequest);
-
-      // assert
-      expect(response.status).toEqual(400);
-      expect(response.body).toMatchObject({
-        errors: [
-          {
-            path: 'title',
-            error: {
-              message:
-                "The name 'def' is already in use. Please choose a different name.",
-            },
-          },
-          {
-            path: 'title',
-            error: {
-              message:
-                "The name 'def' is already in use. Please choose a different name.",
-            },
-          },
-          {
-            path: 'root',
-            error: {
-              message: 'An unexpected error occurred.',
-            },
-          },
-        ],
+      expect(mockCreate).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
       });
     });
+    it('Should not call create if you dont have permission', async () => {
+      const { app, mockCreate, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) =>
+        next(new NotAllowedError('Unauthorized')),
+      );
 
-    it('return 400 if if the request is bad', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-      const response = await request(app).post('/').send({ notATitle: 'abc' });
-      expect(response.status).toEqual(400);
-    });
+      const { status, body } = await request(app).post('/');
 
-    it('returns internal server error', async () => {
-      mockArmsLengthBodyStore.add.mockRejectedValueOnce(new Error('error'));
-      const response = await request(app)
-        .post('/')
-        .send({
-          title: 'def',
-          description: 'My description',
-        } satisfies CreateArmsLengthBodyRequest);
-      expect(response.status).toEqual(500);
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(mockCheckAuth.mock.calls[0][0](null!)).toMatchObject({
+        permission: armsLengthBodyCreatePermission,
+      });
+      expect(mockCreate).toHaveBeenCalledTimes(0);
+      expect({ status, body }).toMatchObject({
+        status: 403,
+        body: {
+          error: {
+            message: 'Unauthorized',
+            name: 'NotAllowedError',
+          },
+        },
+      });
     });
   });
-
   describe('PATCH /', () => {
-    it('returns ok', async () => {
-      // arrange
-      mockArmsLengthBodyStore.update.mockResolvedValue({
-        success: true,
-        value: expectedAlbWithName,
-      });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      // act
-      const response = await request(app)
-        .patch('/')
-        .send({ id: '123' } satisfies UpdateArmsLengthBodyRequest);
-
-      // assert
-      expect(response.status).toEqual(200);
-      expect(response.body).toMatchObject(
-        JSON.parse(JSON.stringify(expectedAlbWithName)),
+    it('Should call create if you have permission', async () => {
+      const { app, mockEdit, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockEdit.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
-    });
 
-    it('returns a 403 response if the user is not authorized', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.DENY },
-      ]);
+      const { status, body } = await request(app).patch('/');
 
-      const response = await request(app)
-        .patch('/')
-        .send({ id: '123' } satisfies UpdateArmsLengthBodyRequest);
-
-      expect(response.status).toEqual(403);
-    });
-
-    it('return 400 with errors', async () => {
-      // arrange
-      mockArmsLengthBodyStore.update.mockResolvedValue({
-        success: false,
-        errors: ['duplicateTitle', 'unknown'],
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(
+        mockCheckAuth.mock.calls[0][0]({ body: { id: '123' } } as any),
+      ).toMatchObject({
+        permission: armsLengthBodyUpdatePermission,
+        resourceRef: '123',
       });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      // act
-      const response = await request(app)
-        .patch('/')
-        .send({
-          id: '123',
-          title: 'def',
-        } satisfies UpdateArmsLengthBodyRequest);
-
-      // assert
-      expect(response.status).toEqual(400);
-      expect(response.body).toMatchObject({
-        errors: [
-          {
-            path: 'title',
-            error: {
-              message:
-                "The name 'def' is already in use. Please choose a different name.",
-            },
-          },
-          {
-            path: 'root',
-            error: {
-              message: 'An unexpected error occurred.',
-            },
-          },
-        ],
+      expect(mockEdit).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
       });
     });
+    it('Should not call create if you dont have permission', async () => {
+      const { app, mockEdit, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) =>
+        next(new NotAllowedError('Unauthorized')),
+      );
 
-    it('return 400 if if the request is bad', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-      const response = await request(app).patch('/').send({ notAnId: 'abc' });
-      expect(response.status).toEqual(400);
-    });
+      const { status, body } = await request(app).patch('/');
 
-    it('returns internal server error', async () => {
-      mockArmsLengthBodyStore.update.mockRejectedValueOnce(new Error('error'));
-      const response = await request(app)
-        .patch('/')
-        .send({ id: '123' } satisfies UpdateArmsLengthBodyRequest);
-      expect(response.status).toEqual(500);
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(
+        mockCheckAuth.mock.calls[0][0]({ body: { id: '123' } } as any),
+      ).toMatchObject({
+        permission: armsLengthBodyUpdatePermission,
+        resourceRef: '123',
+      });
+      expect(mockEdit).toHaveBeenCalledTimes(0);
+      expect({ status, body }).toMatchObject({
+        status: 403,
+        body: {
+          error: {
+            message: 'Unauthorized',
+            name: 'NotAllowedError',
+          },
+        },
+      });
     });
   });
 });
