@@ -8,6 +8,7 @@ import { randomUUID } from 'node:crypto';
 import type { HandlerResult } from './HandlerResult';
 import type { ServiceRefsToInstances } from './ServiceRefsToInstances';
 import { routerResultsRef, type RouterResults } from './routerResultsRef';
+import type { ParsedQs } from 'qs';
 
 type Endpoint<
   P,
@@ -37,12 +38,15 @@ interface EndpointOptions<
 }
 
 export function createEndpointRef<
-  P,
-  ResBody,
-  ReqBody,
-  ReqQuery,
-  Locals extends Record<string, any>,
-  Dependencies extends Record<string, ServiceRef<unknown>>,
+  P = Record<string, string>,
+  ResBody = any,
+  ReqBody = any,
+  ReqQuery = ParsedQs,
+  Locals extends Record<string, any> = Record<string, any>,
+  Dependencies extends Record<string, ServiceRef<unknown>> = Record<
+    string,
+    ServiceRef<unknown>
+  >,
 >(
   options: EndpointOptions<Dependencies, P, ResBody, ReqBody, ReqQuery, Locals>,
 ) {

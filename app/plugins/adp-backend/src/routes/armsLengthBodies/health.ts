@@ -5,10 +5,10 @@ export default createEndpointRef({
   deps: {
     logger: coreServices.logger,
   },
-  factory({ responses, deps: { logger } }) {
+  factory({ deps: { logger }, responses: { ok } }) {
     return () => {
       logger.info('PONG!');
-      return responses.ok().json({ status: 'ok' });
+      return ok().json({ status: 'ok' });
     };
   },
 });

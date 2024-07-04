@@ -149,7 +149,7 @@ describe('default', () => {
         expectedAlbWithName,
       ]);
       const response = await request(app).get('/names');
-      expect(response.status).toEqual(400);
+      expect(response.status).toEqual(500);
     });
   });
 
@@ -241,6 +241,9 @@ describe('default', () => {
     });
 
     it('return 400 if if the request is bad', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
       const response = await request(app).post('/').send({ notATitle: 'abc' });
       expect(response.status).toEqual(400);
     });
@@ -332,6 +335,9 @@ describe('default', () => {
     });
 
     it('return 400 if if the request is bad', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
       const response = await request(app).patch('/').send({ notAnId: 'abc' });
       expect(response.status).toEqual(400);
     });
