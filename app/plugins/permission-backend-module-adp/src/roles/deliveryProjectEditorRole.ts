@@ -22,8 +22,8 @@ export const deliveryProjectEditorRole = (
   user: PortalUserIdentity,
 ): PolicyDecision => {
   if (
-    user.userIdentity !== undefined &&
-    isPermission(permission, deliveryProjectUpdatePermission)
+    isPermission(permission, deliveryProjectUpdatePermission) &&
+    user.userIdentity !== undefined
   ) {
     return createDeliveryProjectConditionalDecision(permission, {
       anyOf: [

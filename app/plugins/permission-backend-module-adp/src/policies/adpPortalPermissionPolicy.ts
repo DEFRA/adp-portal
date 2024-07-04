@@ -10,6 +10,7 @@ import type { LoggerService } from '@backstage/backend-plugin-api';
 import {
   catalogUserRole,
   deliveryProgrammeAdminManagerRole,
+  deliveryProgrammeCreatorRole,
   deliveryProgrammeEditorRole,
   deliveryProjectEditorRole,
   deliveryProjectUserManagerRole,
@@ -17,6 +18,7 @@ import {
   scaffolderUserRole,
 } from '../roles';
 import type { PortalUserIdentity } from '../types';
+import { deliveryProjectCreatorRole } from '../roles/deliveryProjectCreatorRole';
 
 export class AdpPortalPermissionPolicy implements PermissionPolicy {
   readonly #logger: LoggerService;
@@ -48,7 +50,7 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
           : false,
       isProgrammeAdmin:
         user !== undefined
-          ? this.#rbacUtilities.isInProgrammeAdminGroup(user)
+          ? await this.#rbacUtilities.isInProgrammeAdminGroup(user)
           : false,
       isPortalUser:
         user !== undefined ? this.#rbacUtilities.isInAdpUserGroup(user) : false,
@@ -58,9 +60,11 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
       platformAdminRole(portalUserIdentity),
       deliveryProgrammeAdminManagerRole(request.permission, portalUserIdentity),
       deliveryProjectUserManagerRole(request.permission, portalUserIdentity),
-      scaffolderUserRole(request.permission, portalUserIdentity),
+      deliveryProgrammeCreatorRole(request.permission, portalUserIdentity),
       deliveryProgrammeEditorRole(request.permission, portalUserIdentity),
+      deliveryProjectCreatorRole(request.permission, portalUserIdentity),
       deliveryProjectEditorRole(request.permission, portalUserIdentity),
+      scaffolderUserRole(request.permission, portalUserIdentity),
       catalogUserRole(request.permission),
     ];
 

@@ -24,8 +24,8 @@ export const deliveryProgrammeEditorRole = (
   user: PortalUserIdentity,
 ): PolicyDecision => {
   if (
-    user.userIdentity !== undefined &&
-    isPermission(permission, deliveryProgrammeUpdatePermission)
+    isPermission(permission, deliveryProgrammeUpdatePermission) &&
+    user.userIdentity !== undefined
   ) {
     return createDeliveryProgrammeConditionalDecision(permission, {
       anyOf: [

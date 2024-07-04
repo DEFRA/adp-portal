@@ -29,6 +29,7 @@ import {
   templateStepReadPermission,
 } from '@backstage/plugin-scaffolder-common/alpha';
 import { mockServices } from '@backstage/backend-test-utils';
+import type { CatalogApi } from '@backstage/catalog-client';
 
 describe('adpPortalPermissionPolicy', () => {
   function setup() {
@@ -37,9 +38,29 @@ describe('adpPortalPermissionPolicy', () => {
       programmeAdminGroup: 'Test-ProgrammeAdminGroup',
       adpPortalUsersGroup: 'Test-AdpPortalUsersGroup',
     };
+
+    const mockCatalogClient: jest.Mocked<CatalogApi> = {
+      addLocation: jest.fn(),
+      getEntities: jest.fn(),
+      getEntitiesByRefs: jest.fn(),
+      getEntityAncestors: jest.fn(),
+      getEntityByRef: jest.fn(),
+      getEntityFacets: jest.fn(),
+      getLocationByEntity: jest.fn(),
+      getLocationById: jest.fn(),
+      getLocationByRef: jest.fn(),
+      queryEntities: jest.fn(),
+      refreshEntity: jest.fn(),
+      removeEntityByUid: jest.fn(),
+      removeLocationById: jest.fn(),
+      validateEntity: jest.fn(),
+    };
+
     const rbacUtilities = new RbacUtilities(
       mockServices.logger.mock(),
       rbacGroups,
+      mockServices.auth(),
+      mockCatalogClient,
     );
 
     const sut = new AdpPortalPermissionPolicy(
@@ -47,7 +68,7 @@ describe('adpPortalPermissionPolicy', () => {
       mockServices.logger.mock(),
     );
 
-    return { sut, rbacGroups };
+    return { sut, rbacGroups, mockCatalogClient };
   }
 
   beforeEach(() => {
@@ -115,7 +136,23 @@ describe('adpPortalPermissionPolicy', () => {
     ])(
       'should allow access for permission $permission.name for the ADP Platform Admin Role',
       async ({ permission, expected }) => {
-        const { sut, rbacGroups } = setup();
+        const { sut, rbacGroups, mockCatalogClient } = setup();
+
+        mockCatalogClient.getEntitiesByRefs.mockResolvedValueOnce({
+          items: [
+            {
+              apiVersion: 'test',
+              kind: 'group',
+              metadata: {
+                name: rbacGroups.platformAdminsGroup,
+              },
+              spec: {
+                type: 'something-else',
+              },
+            },
+          ],
+        });
+
         const user: BackstageIdentityResponse = {
           identity: {
             userEntityRef: 'user:default/test@test.com',
@@ -168,7 +205,7 @@ describe('adpPortalPermissionPolicy', () => {
       },
       {
         permission: deliveryProgrammeCreatePermission,
-        expected: AuthorizeResult.DENY,
+        expected: AuthorizeResult.ALLOW,
       },
       { permission: actionExecutePermission, expected: AuthorizeResult.ALLOW },
       {
@@ -206,7 +243,7 @@ describe('adpPortalPermissionPolicy', () => {
     ])(
       'should allow access for permission $permission.name for the Programme Admin Role',
       async ({ permission, expected }) => {
-        const { sut, rbacGroups } = setup();
+        const { sut, rbacGroups, mockCatalogClient } = setup();
         const user: BackstageIdentityResponse = {
           identity: {
             userEntityRef: 'user:default/test@test.com',
@@ -217,6 +254,21 @@ describe('adpPortalPermissionPolicy', () => {
           },
           token: '12345',
         };
+
+        mockCatalogClient.getEntitiesByRefs.mockResolvedValueOnce({
+          items: [
+            {
+              apiVersion: 'test',
+              kind: 'group',
+              metadata: {
+                name: rbacGroups.programmeAdminGroup,
+              },
+              spec: {
+                type: 'delivery-programme',
+              },
+            },
+          ],
+        });
 
         const request: PolicyQuery = { permission: permission };
 
@@ -301,7 +353,7 @@ describe('adpPortalPermissionPolicy', () => {
     ])(
       'should allow access for permission $permission.name for the ADP Portal User Role',
       async ({ permission, expected }) => {
-        const { sut, rbacGroups } = setup();
+        const { sut, rbacGroups, mockCatalogClient } = setup();
         const user: BackstageIdentityResponse = {
           identity: {
             userEntityRef: 'user:default/test@test.com',
@@ -312,6 +364,21 @@ describe('adpPortalPermissionPolicy', () => {
           },
           token: '12345',
         };
+
+        mockCatalogClient.getEntitiesByRefs.mockResolvedValueOnce({
+          items: [
+            {
+              apiVersion: 'test',
+              kind: 'group',
+              metadata: {
+                name: rbacGroups.adpPortalUsersGroup,
+              },
+              spec: {
+                type: 'something-else',
+              },
+            },
+          ],
+        });
 
         const request: PolicyQuery = { permission: permission };
 

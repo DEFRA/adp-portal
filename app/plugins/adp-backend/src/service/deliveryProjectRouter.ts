@@ -11,6 +11,7 @@ import {
   type DeliveryProject,
   type CheckAdoProjectExistsResponse,
   deliveryProjectUpdatePermission,
+  deliveryProjectCreatePermission,
 } from '@internal/plugin-adp-common';
 import { getCurrentUsername } from '../utils/index';
 import type { IFluxConfigApi, IAdoProjectApi } from '../deliveryProject';
@@ -187,6 +188,16 @@ export function createProjectRouter(
 
   router.post('/', async (req, res) => {
     const body = parseCreateDeliveryProjectRequest(req.body);
+    const credentials = await httpAuth.credentials(req);
+    await checkPermissions(
+      credentials,
+      [
+        {
+          permission: deliveryProjectCreatePermission,
+        },
+      ],
+      permissions,
+    );
     const creator = await getCurrentUsername(identity, req);
     const result = await deliveryProjectStore.add(body, creator);
     if (result.success) {

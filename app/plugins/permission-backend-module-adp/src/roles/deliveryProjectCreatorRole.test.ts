@@ -1,9 +1,9 @@
-import { deliveryProjectUpdatePermission } from '@internal/plugin-adp-common';
+import { deliveryProjectCreatePermission } from '@internal/plugin-adp-common';
 import type { PortalUserIdentity } from '../types';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
-import { deliveryProjectEditorRole } from './deliveryProjectEditorRole';
+import { deliveryProjectCreatorRole } from './deliveryProjectCreatorRole';
 
-describe('deliveryProjectEditorRole', () => {
+describe('deliveryProjectCreatorRole', () => {
   const portalUser: PortalUserIdentity = {
     userIdentity: {
       userEntityRef: 'user:default/test@test.com',
@@ -34,24 +34,24 @@ describe('deliveryProjectEditorRole', () => {
 
   it.each([
     {
-      permission: deliveryProjectUpdatePermission,
-      expected: AuthorizeResult.CONDITIONAL,
-      user: portalUser,
-    },
-    {
-      permission: deliveryProjectUpdatePermission,
-      expected: AuthorizeResult.CONDITIONAL,
+      permission: deliveryProjectCreatePermission,
+      expected: AuthorizeResult.ALLOW,
       user: programmeAdminUser,
     },
     {
-      permission: deliveryProjectUpdatePermission,
+      permission: deliveryProjectCreatePermission,
+      expected: AuthorizeResult.DENY,
+      user: portalUser,
+    },
+    {
+      permission: deliveryProjectCreatePermission,
       expected: AuthorizeResult.DENY,
       user: emptyUser,
     },
   ])(
     'should return the expected decision for the permission $permission.name',
     ({ permission, expected, user }) => {
-      const result = deliveryProjectEditorRole(permission, user);
+      const result = deliveryProjectCreatorRole(permission, user);
       expect(result.result).toBe(expected);
     },
   );
