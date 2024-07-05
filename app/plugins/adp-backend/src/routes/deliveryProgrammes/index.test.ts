@@ -239,7 +239,7 @@ describe('createRouter', () => {
         delivery_programme_id: '',
         email: 'test1.test@onmicrosoft.com',
         name: 'test1',
-        user_entity_ref: 'user:default/unknown',
+        user_entity_ref: 'unknown',
       };
       // assert
       expect(response.status).toEqual(201);
