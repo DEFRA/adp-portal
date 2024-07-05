@@ -61,6 +61,9 @@ kind: Location
 metadata:
   name: arms-length-bodies
   description: All the arms length bodies available in the system
+  annotations:
+    backstage.io/edit-url: http://defra-adp:3000/onboarding/arms-length-bodies
+    backstage.io/view-url: http://defra-adp:3000/onboarding/arms-length-bodies
 spec:
   type: url
   targets:

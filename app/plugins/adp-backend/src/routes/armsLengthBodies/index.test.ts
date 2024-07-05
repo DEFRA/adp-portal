@@ -6,7 +6,6 @@ import create from './create';
 import edit from './edit';
 import getAll from './getAll';
 import getNames from './getNames';
-import health from './health';
 import request from 'supertest';
 import checkAuth from '../checkAuth';
 import { NotAllowedError } from '@backstage/errors';
@@ -14,6 +13,7 @@ import {
   armsLengthBodyCreatePermission,
   armsLengthBodyUpdatePermission,
 } from '@internal/plugin-adp-common';
+import healthCheck from '../util/healthCheck';
 
 describe('default', () => {
   async function setup() {
@@ -28,7 +28,7 @@ describe('default', () => {
     const mockGet = mockHandler<(typeof get)['T']>();
     const mockGetAll = mockHandler<(typeof getAll)['T']>();
     const mockGetNames = mockHandler<(typeof getNames)['T']>();
-    const mockHealth = mockHandler<(typeof health)['T']>();
+    const mockHealthCheck = mockHandler<(typeof healthCheck)['T']>();
     const mockCheckAuth = mockHandler<(typeof checkAuth)['T']>();
 
     const handler = await testHelpers.getAutoServiceRef(index, [
@@ -37,7 +37,7 @@ describe('default', () => {
       testHelpers.provideService(get, mockGet),
       testHelpers.provideService(getAll, mockGetAll),
       testHelpers.provideService(getNames, mockGetNames),
-      testHelpers.provideService(health, mockHealth),
+      testHelpers.provideService(healthCheck, mockHealthCheck),
       testHelpers.provideService(
         checkAuth,
         getRequests =>
@@ -57,7 +57,7 @@ describe('default', () => {
       mockGet,
       mockGetAll,
       mockGetNames,
-      mockHealth,
+      mockHealthCheck,
       mockCheckAuth,
     };
   }
@@ -80,14 +80,14 @@ describe('default', () => {
   });
   describe('GET /health', () => {
     it('Should call health', async () => {
-      const { app, mockHealth } = await setup();
-      mockHealth.mockImplementationOnce((_, res) =>
+      const { app, mockHealthCheck } = await setup();
+      mockHealthCheck.mockImplementationOnce((_, res) =>
         res.status(200).json({ result: 'Success!' }),
       );
 
       const { status, body } = await request(app).get('/health');
 
-      expect(mockHealth).toHaveBeenCalledTimes(1);
+      expect(mockHealthCheck).toHaveBeenCalledTimes(1);
       expect({ status, body }).toMatchObject({
         status: 200,
         body: { result: 'Success!' },

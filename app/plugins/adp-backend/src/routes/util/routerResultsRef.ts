@@ -10,6 +10,8 @@ export interface RouterResults {
   status(code: number): FluentHandlerResult;
   ok(): FluentHandlerResult;
   badRequest(): FluentHandlerResult;
+  notFound(): FluentHandlerResult;
+  noContent(): FluentHandlerResult;
   validationErrors<Error extends PropertyKey, Context>(
     errors: Error[],
     mapping: Record<Error, (context: Context) => ValidationError>,
@@ -31,6 +33,8 @@ export const routerResultsRef = createServiceRef<RouterResults>({
             ok: () => new FluentHandlerResult(200),
             badRequest: () => new FluentHandlerResult(400),
             created: () => new FluentHandlerResult(201),
+            notFound: () => new FluentHandlerResult(404),
+            noContent: () => new FluentHandlerResult(204),
             validationErrors: (errors, mapping, context) =>
               new FluentHandlerResult(400).json({
                 errors: errors.map(err => mapping[err](context)),

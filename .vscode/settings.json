@@ -15,6 +15,7 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "jest.jestCommandLine": "node_modules/.bin/backstage-cli repo test --config jest.config.js --runInBand",
   "jest.rootPath": "app",
+  "jest.runMode": "on-save",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

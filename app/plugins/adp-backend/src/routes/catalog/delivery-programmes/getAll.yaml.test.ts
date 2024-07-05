@@ -61,6 +61,9 @@ kind: Location
 metadata:
   name: delivery-programmes
   description: All the delivery programmes available in the system
+  annotations:
+    backstage.io/edit-url: http://defra-adp:3000/onboarding/delivery-programmes
+    backstage.io/view-url: http://defra-adp:3000/onboarding/delivery-programmes
 spec:
   type: url
   targets:

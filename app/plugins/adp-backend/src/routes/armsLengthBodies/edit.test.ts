@@ -10,12 +10,14 @@ import type {
   UpdateArmsLengthBodyRequest,
 } from '@internal/plugin-adp-common';
 import { randomUUID } from 'node:crypto';
-import type { IdentityApi } from '@backstage/plugin-auth-node';
-import { authIdentityRef } from '../../refs';
 import {
   type FireAndForgetCatalogRefresher,
   fireAndForgetCatalogRefresherRef,
 } from '../../services';
+import {
+  type IdentityProvider,
+  identityProviderRef,
+} from '@internal/plugin-credentials-context-backend';
 
 describe('default', () => {
   async function setup() {
@@ -30,13 +32,13 @@ describe('default', () => {
       getByName: jest.fn(),
     };
 
-    const identity: jest.Mocked<IdentityApi> = {
-      getIdentity: jest.fn(),
+    const identity: jest.Mocked<IdentityProvider> = {
+      getCurrentIdentity: jest.fn(),
     };
 
     const handler = await testHelpers.getAutoServiceRef(edit, [
       testHelpers.provideService(armsLengthBodyStoreRef, albs),
-      testHelpers.provideService(authIdentityRef, identity),
+      testHelpers.provideService(identityProviderRef, identity),
       testHelpers.provideService(fireAndForgetCatalogRefresherRef, catalog),
     ]);
 
@@ -70,18 +72,14 @@ describe('default', () => {
       url: randomUUID(),
     };
     albs.update.mockResolvedValueOnce({ success: true, value: expected });
-    identity.getIdentity.mockResolvedValue({
-      identity: {
-        userEntityRef: username,
-        ownershipEntityRefs: [],
-        type: 'user',
-      },
-      token: randomUUID(),
+    identity.getCurrentIdentity.mockResolvedValue({
+      userEntityRef: username,
+      ownershipEntityRefs: [],
     });
 
     const { status, body } = await request(app).patch(`/`).send(data);
 
-    expect(identity.getIdentity).toHaveBeenCalledTimes(1);
+    expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(1);
     expect(albs.update).toHaveBeenCalledTimes(1);
     expect(albs.update).toHaveBeenCalledWith(data, username);
     expect(catalog.refresh).toHaveBeenCalledTimes(1);
@@ -113,18 +111,14 @@ describe('default', () => {
       url: randomUUID(),
     };
     albs.update.mockResolvedValueOnce({ success: true, value: expected });
-    identity.getIdentity.mockResolvedValue({
-      identity: {
-        userEntityRef: username,
-        ownershipEntityRefs: [],
-        type: 'user',
-      },
-      token: randomUUID(),
+    identity.getCurrentIdentity.mockResolvedValue({
+      userEntityRef: username,
+      ownershipEntityRefs: [],
     });
 
     const { status, body } = await request(app).patch(`/`).send(data);
 
-    expect(identity.getIdentity).toHaveBeenCalledTimes(1);
+    expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(1);
     expect(albs.update).toHaveBeenCalledTimes(1);
     expect(albs.update).toHaveBeenCalledWith(data, username);
     expect(catalog.refresh).toHaveBeenCalledTimes(1);
@@ -147,7 +141,7 @@ describe('default', () => {
 
     const { status, body } = await request(app).patch(`/`).send(data);
 
-    expect(identity.getIdentity).toHaveBeenCalledTimes(0);
+    expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(0);
     expect(albs.update).toHaveBeenCalledTimes(0);
     expect(catalog.refresh).toHaveBeenCalledTimes(0);
     expect({ status, body }).toMatchObject({
@@ -223,18 +217,14 @@ describe('default', () => {
       success: false,
       errors: ['duplicateTitle', 'unknown'],
     });
-    identity.getIdentity.mockResolvedValue({
-      identity: {
-        userEntityRef: username,
-        ownershipEntityRefs: [],
-        type: 'user',
-      },
-      token: randomUUID(),
+    identity.getCurrentIdentity.mockResolvedValue({
+      userEntityRef: username,
+      ownershipEntityRefs: [],
     });
 
     const { status, body } = await request(app).patch(`/`).send(data);
 
-    expect(identity.getIdentity).toHaveBeenCalledTimes(1);
+    expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(1);
     expect(albs.update).toHaveBeenCalledTimes(1);
     expect(albs.update).toHaveBeenCalledWith(data, username);
     expect(catalog.refresh).toHaveBeenCalledTimes(0);
@@ -263,11 +253,11 @@ describe('default', () => {
       title: randomUUID(),
       url: randomUUID(),
     };
-    identity.getIdentity.mockRejectedValueOnce(new Error());
+    identity.getCurrentIdentity.mockRejectedValueOnce(new Error());
 
     const { status, body } = await request(app).patch(`/`).send(data);
 
-    expect(identity.getIdentity).toHaveBeenCalledTimes(1);
+    expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(1);
     expect(albs.update).toHaveBeenCalledTimes(0);
     expect(catalog.refresh).toHaveBeenCalledTimes(0);
     expect({ status, body }).toMatchObject({
@@ -287,18 +277,14 @@ describe('default', () => {
       url: randomUUID(),
     };
     albs.update.mockRejectedValueOnce(new Error());
-    identity.getIdentity.mockResolvedValue({
-      identity: {
-        userEntityRef: username,
-        ownershipEntityRefs: [],
-        type: 'user',
-      },
-      token: randomUUID(),
+    identity.getCurrentIdentity.mockResolvedValue({
+      userEntityRef: username,
+      ownershipEntityRefs: [],
     });
 
     const { status, body } = await request(app).patch(`/`).send(data);
 
-    expect(identity.getIdentity).toHaveBeenCalledTimes(1);
+    expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(1);
     expect(albs.update).toHaveBeenCalledTimes(1);
     expect(albs.update).toHaveBeenCalledWith(data, username);
     expect(catalog.refresh).toHaveBeenCalledTimes(0);

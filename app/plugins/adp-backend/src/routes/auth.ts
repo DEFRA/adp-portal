@@ -16,8 +16,8 @@ import { deliveryProjectStoreRef } from '../deliveryProject';
 import { deliveryProjectUserStoreRef } from '../deliveryProjectUser';
 import { deliveryProgrammeAdminStoreRef } from '../deliveryProgrammeAdmin';
 import type { Router } from 'express';
-import { getDeliveryProgramme } from './deliveryProgrammes';
-import { getDeliveryProject } from './deliveryProjects';
+import { getDeliveryProgramme } from './deliveryProgrammes/getDeliveryProgramme';
+import { getDeliveryProject } from './deliveryProjects/getDeliveryProject';
 
 export default createServiceRef<Router>({
   id: 'adp.router.auth',

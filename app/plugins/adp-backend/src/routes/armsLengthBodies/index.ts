@@ -1,11 +1,10 @@
-import { createRouterRef } from '../util';
+import { createRouterRef, healthCheck } from '../util';
 import { middlewareFactoryRef } from '../../refs';
 import express from 'express';
 import {
   armsLengthBodyCreatePermission,
   armsLengthBodyUpdatePermission,
 } from '@internal/plugin-adp-common';
-import health from './health';
 import getAll from './getAll';
 import getNames from './getNames';
 import get from './get';
@@ -16,7 +15,7 @@ import edit from './edit';
 export default createRouterRef({
   deps: {
     middleware: middlewareFactoryRef,
-    health,
+    healthCheck,
     get,
     getAll,
     getNames,
@@ -34,7 +33,7 @@ export default createRouterRef({
     }));
 
     router.use(express.json());
-    router.get('/health', deps.health);
+    router.get('/health', deps.healthCheck);
     router.get('/names', deps.getNames);
     router.get('/:id', deps.get);
     router.get('/', deps.getAll);

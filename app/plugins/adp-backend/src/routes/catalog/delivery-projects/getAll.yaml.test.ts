@@ -61,6 +61,9 @@ kind: Location
 metadata:
   name: delivery-projects
   description: All the delivery projects available in the system
+  annotations:
+    backstage.io/edit-url: http://defra-adp:3000/onboarding/delivery-projects
+    backstage.io/view-url: http://defra-adp:3000/onboarding/delivery-projects
 spec:
   type: url
   targets:

@@ -1,10 +1,10 @@
-import health from './health';
 import { testHelpers } from '../../utils/testHelpers';
 import request from 'supertest';
 import {
   type LoggerService,
   coreServices,
 } from '@backstage/backend-plugin-api';
+import healthCheck from './healthCheck';
 
 describe('default', () => {
   async function setup() {
@@ -16,7 +16,7 @@ describe('default', () => {
       warn: jest.fn(),
     };
 
-    const handler = await testHelpers.getAutoServiceRef(health, [
+    const handler = await testHelpers.getAutoServiceRef(healthCheck, [
       testHelpers.provideService(coreServices.logger, logger),
     ]);
 

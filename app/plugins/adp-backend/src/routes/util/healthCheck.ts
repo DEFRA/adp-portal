@@ -1,5 +1,5 @@
 import { coreServices } from '@backstage/backend-plugin-api';
-import { createEndpointRef } from '../util';
+import { createEndpointRef } from './createEndpointRef';
 
 export default createEndpointRef({
   deps: {

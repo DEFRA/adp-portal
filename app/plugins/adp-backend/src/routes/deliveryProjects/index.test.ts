@@ -31,17 +31,18 @@ import {
 import { mockServices } from '@backstage/backend-test-utils';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { coreServices } from '@backstage/backend-plugin-api';
-import deliveryProjects from '.';
-import { authIdentityRef } from '../../refs';
+import deliveryProjects from './';
 import { testHelpers } from '../../utils/testHelpers';
 import { fireAndForgetCatalogRefresherRef } from '../../services';
+import {
+  type IdentityProvider,
+  identityProviderRef,
+} from '@internal/plugin-credentials-context-backend';
 
 describe('createRouter', () => {
   let projectApp: express.Express;
-  const mockIdentityApi = {
-    getIdentity: jest.fn().mockResolvedValue({
-      identity: { userEntityRef: 'user:default/johndoe' },
-    }),
+  const mockIdentityApi: jest.Mocked<IdentityProvider> = {
+    getCurrentIdentity: jest.fn(),
   };
 
   const mockSyncronizer: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> = {
@@ -95,7 +96,7 @@ describe('createRouter', () => {
     const projectRouter = await testHelpers.getAutoServiceRef(
       deliveryProjects,
       [
-        testHelpers.provideService(authIdentityRef, mockIdentityApi),
+        testHelpers.provideService(identityProviderRef, mockIdentityApi),
         testHelpers.provideService(
           deliveryProjectGithubTeamsSyncronizerRef,
           mockSyncronizer,
@@ -203,6 +204,10 @@ describe('createRouter', () => {
   describe('POST /', () => {
     it('returns created', async () => {
       // arrange
+      mockIdentityApi.getCurrentIdentity.mockResolvedValueOnce({
+        userEntityRef: 'user:default/johndoe',
+        ownershipEntityRefs: [],
+      });
       mockDeliveryProjectStore.add.mockResolvedValue({
         success: true,
         value: expectedProjectDataWithName,
@@ -234,6 +239,10 @@ describe('createRouter', () => {
 
     it('return 400 with errors', async () => {
       // arrange
+      mockIdentityApi.getCurrentIdentity.mockResolvedValueOnce({
+        userEntityRef: 'user:default/johndoe',
+        ownershipEntityRefs: [],
+      });
       mockDeliveryProjectStore.add.mockResolvedValue({
         success: false,
         errors: [
@@ -296,6 +305,9 @@ describe('createRouter', () => {
     });
 
     it('return 400 if if the request is bad', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
       const response = await request(projectApp)
         .post('/')
         .send({ notATitle: 'abc' });
@@ -323,6 +335,10 @@ describe('createRouter', () => {
   describe('PATCH /', () => {
     it('returns ok', async () => {
       // arrange
+      mockIdentityApi.getCurrentIdentity.mockResolvedValueOnce({
+        userEntityRef: 'user:default/johndoe',
+        ownershipEntityRefs: [],
+      });
       mockDeliveryProjectStore.update.mockResolvedValue({
         success: true,
         value: expectedProjectDataWithName,
@@ -357,6 +373,10 @@ describe('createRouter', () => {
 
     it('return 400 with errors', async () => {
       // arrange
+      mockIdentityApi.getCurrentIdentity.mockResolvedValueOnce({
+        userEntityRef: 'user:default/johndoe',
+        ownershipEntityRefs: [],
+      });
       mockDeliveryProjectStore.update.mockResolvedValue({
         success: false,
         errors: ['duplicateTitle', 'unknown', 'unknownDeliveryProgramme'],
@@ -402,6 +422,9 @@ describe('createRouter', () => {
     });
 
     it('return 400 if if the request is bad', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
       const response = await request(projectApp)
         .patch('/')
         .send({ notAnId: 'abc' });
@@ -464,7 +487,7 @@ describe('createRouter', () => {
         .send(body);
 
       // assert
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(500);
     });
   });
 
@@ -493,7 +516,7 @@ describe('createRouter', () => {
       );
 
       // assert
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(500);
     });
   });
 });

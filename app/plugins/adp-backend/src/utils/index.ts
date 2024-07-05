@@ -67,7 +67,9 @@ export function respond<Request, Success, Error extends string>(
   }
 }
 
-export function createParser<T>(schema: z.ZodType<T>) {
+export function createParser<Output>(
+  schema: z.ZodType<Output, z.ZodTypeDef, unknown>,
+) {
   return (body: unknown) => {
     const result = schema.safeParse(body);
     if (result.success) return result.data;

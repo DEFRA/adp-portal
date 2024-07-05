@@ -29,9 +29,15 @@ import type { CatalogApi } from '@backstage/catalog-client';
 import { catalogTestData } from '../../testData/catalogEntityTestData';
 import { coreServices } from '@backstage/backend-plugin-api';
 import deliveryProgrammes from '.';
-import { authIdentityRef, catalogApiRef } from '../../refs';
+import { catalogApiRef } from '../../refs';
 import { testHelpers } from '../../utils/testHelpers';
 import { fireAndForgetCatalogRefresherRef } from '../../services';
+import {
+  type IdentityProvider,
+  type TokenProvider,
+  identityProviderRef,
+  tokenProviderRef,
+} from '@internal/plugin-credentials-context-backend';
 
 const managerByProgrammeId = programmeManagerList.filter(
   managers => managers.delivery_programme_id === '123',
@@ -40,10 +46,13 @@ const managerByProgrammeId = programmeManagerList.filter(
 describe('createRouter', () => {
   let programmeApp: express.Express;
 
-  const mockIdentityApi = {
-    getIdentity: jest.fn().mockResolvedValue({
-      identity: { userEntityRef: 'test2.test.onmicrosoft.com' },
-    }),
+  const mockIdentityProvider: jest.Mocked<IdentityProvider> = {
+    getCurrentIdentity: jest.fn(),
+  };
+
+  const mockTokenProvider: jest.Mocked<TokenProvider> = {
+    getPluginRequestToken: jest.fn(),
+    getLimitedUserToken: jest.fn(),
   };
 
   const mockDeliveryProjectStore: jest.Mocked<IDeliveryProjectStore> = {
@@ -94,7 +103,8 @@ describe('createRouter', () => {
     const programmeRouter = await testHelpers.getAutoServiceRef(
       deliveryProgrammes,
       [
-        testHelpers.provideService(authIdentityRef, mockIdentityApi),
+        testHelpers.provideService(identityProviderRef, mockIdentityProvider),
+        testHelpers.provideService(tokenProviderRef, mockTokenProvider),
         testHelpers.provideService(
           deliveryProjectStoreRef,
           mockDeliveryProjectStore,
@@ -146,7 +156,6 @@ describe('createRouter', () => {
     mockDeliveryProgrammeAdminStore.getByDeliveryProgramme.mockResolvedValue(
       managerByProgrammeId,
     );
-    mockIdentityApi.getIdentity('test2.test.onmicrosoft.com');
     mockCatalogClient.getEntities.mockResolvedValue(catalogTestData);
   });
 
@@ -203,6 +212,14 @@ describe('createRouter', () => {
   describe('POST /', () => {
     it('returns created', async () => {
       // arrange
+      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
+        token:
+          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      });
+      mockIdentityProvider.getCurrentIdentity.mockResolvedValue({
+        userEntityRef: 'test2.test.onmicrosoft.com',
+        ownershipEntityRefs: [],
+      });
       mockDeliveryProgrammeStore.add.mockResolvedValue({
         success: true,
         value: expectedProgrammeDataWithName,
@@ -226,7 +243,7 @@ describe('createRouter', () => {
         delivery_programme_id: '',
         email: 'test1.test@onmicrosoft.com',
         name: 'test1',
-        user_entity_ref: 'unknown',
+        user_entity_ref: 'test2.test.onmicrosoft.com',
       };
       // assert
       expect(response.status).toEqual(201);
@@ -257,6 +274,14 @@ describe('createRouter', () => {
 
     it('return 400 with errors', async () => {
       // arrange
+      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
+        token:
+          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      });
+      mockIdentityProvider.getCurrentIdentity.mockResolvedValue({
+        userEntityRef: 'test2.test.onmicrosoft.com',
+        ownershipEntityRefs: [],
+      });
       mockDeliveryProgrammeStore.add.mockResolvedValue({
         success: false,
         errors: [
@@ -323,6 +348,9 @@ describe('createRouter', () => {
     });
 
     it('return 400 if if the request is bad', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
       const response = await request(programmeApp)
         .post('/')
         .send({ notATitle: 'abc' });
@@ -346,6 +374,10 @@ describe('createRouter', () => {
   describe('PATCH /', () => {
     it('returns ok', async () => {
       // arrange
+      mockIdentityProvider.getCurrentIdentity.mockResolvedValue({
+        userEntityRef: 'test2.test.onmicrosoft.com',
+        ownershipEntityRefs: [],
+      });
       mockDeliveryProgrammeStore.update.mockResolvedValue({
         success: true,
         value: expectedProgrammeDataWithName,
@@ -367,6 +399,10 @@ describe('createRouter', () => {
     });
 
     it('returns a 403 response if the user is not authorized', async () => {
+      mockIdentityProvider.getCurrentIdentity.mockResolvedValue({
+        userEntityRef: 'test2.test.onmicrosoft.com',
+        ownershipEntityRefs: [],
+      });
       mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.DENY },
       ]);
@@ -380,6 +416,10 @@ describe('createRouter', () => {
 
     it('return 400 with errors', async () => {
       // arrange
+      mockIdentityProvider.getCurrentIdentity.mockResolvedValue({
+        userEntityRef: 'test2.test.onmicrosoft.com',
+        ownershipEntityRefs: [],
+      });
       mockDeliveryProgrammeStore.update.mockResolvedValue({
         success: false,
         errors: [
@@ -437,6 +477,9 @@ describe('createRouter', () => {
     });
 
     it('return 400 if if the request is bad', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
       const response = await request(programmeApp)
         .patch('/')
         .send({ notAnId: 'abc' });

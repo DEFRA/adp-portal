@@ -1,10 +1,10 @@
 import express from 'express';
 import { testHelpers } from '../../../utils/testHelpers';
 import index from './index';
-import health from './health';
 import request from 'supertest';
 import getAllYaml from './getAll.yaml';
 import getYaml from './get.yaml';
+import { healthCheck } from '../../util';
 
 describe('default', () => {
   async function setup() {
@@ -16,12 +16,12 @@ describe('default', () => {
 
     const mockGetAllYaml = mockHandler<(typeof getAllYaml)['T']>();
     const mockGetYaml = mockHandler<(typeof getYaml)['T']>();
-    const mockHealth = mockHandler<(typeof health)['T']>();
+    const mockHealthCheck = mockHandler<(typeof healthCheck)['T']>();
 
     const handler = await testHelpers.getAutoServiceRef(index, [
       testHelpers.provideService(getAllYaml, mockGetAllYaml),
       testHelpers.provideService(getYaml, mockGetYaml),
-      testHelpers.provideService(health, mockHealth),
+      testHelpers.provideService(healthCheck, mockHealthCheck),
     ]);
 
     const app = express();
@@ -32,7 +32,7 @@ describe('default', () => {
       app,
       mockGetAllYaml,
       mockGetYaml,
-      mockHealth,
+      mockHealthCheck,
     };
   }
 
@@ -72,14 +72,14 @@ describe('default', () => {
   });
   describe('GET /health', () => {
     it('Should call health', async () => {
-      const { app, mockHealth } = await setup();
-      mockHealth.mockImplementationOnce((_, res) =>
+      const { app, mockHealthCheck } = await setup();
+      mockHealthCheck.mockImplementationOnce((_, res) =>
         res.status(200).json({ result: 'Success!' }),
       );
 
       const { status, body } = await request(app).get('/health');
 
-      expect(mockHealth).toHaveBeenCalledTimes(1);
+      expect(mockHealthCheck).toHaveBeenCalledTimes(1);
       expect({ status, body }).toMatchObject({
         status: 200,
         body: { result: 'Success!' },

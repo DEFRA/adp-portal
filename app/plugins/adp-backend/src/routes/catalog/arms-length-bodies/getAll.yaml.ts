@@ -1,4 +1,8 @@
-import type { LocationEntity } from '@backstage/catalog-model';
+import {
+  ANNOTATION_EDIT_URL,
+  ANNOTATION_VIEW_URL,
+  type LocationEntity,
+} from '@backstage/catalog-model';
 import { createEndpointRef } from '../../util';
 import { coreServices } from '@backstage/backend-plugin-api';
 import { armsLengthBodyStoreRef } from '../../../armsLengthBody';
@@ -19,6 +23,10 @@ export default createEndpointRef({
         metadata: {
           name: 'arms-length-bodies',
           description: 'All the arms length bodies available in the system',
+          annotations: {
+            [ANNOTATION_EDIT_URL]: `${baseUrl}/arms-length-bodies`,
+            [ANNOTATION_VIEW_URL]: `${baseUrl}/arms-length-bodies`,
+          },
         },
         spec: {
           type: 'url',

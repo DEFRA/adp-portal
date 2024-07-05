@@ -29,6 +29,10 @@ import deliveryProjectUsers from '.';
 import { catalogApiRef } from '../../refs';
 import { testHelpers } from '../../utils/testHelpers';
 import { fireAndForgetCatalogRefresherRef } from '../../services';
+import {
+  type TokenProvider,
+  tokenProviderRef,
+} from '@internal/plugin-credentials-context-backend';
 
 describe('createRouter', () => {
   let deliveryProjectUserApp: express.Express;
@@ -70,12 +74,18 @@ describe('createRouter', () => {
       syncronizeById: jest.fn(),
     };
 
+  const mockTokenProvider: jest.Mocked<TokenProvider> = {
+    getPluginRequestToken: jest.fn(),
+    getLimitedUserToken: jest.fn(),
+  };
+
   const mockPermissionsService = mockServices.permissions.mock();
 
   beforeAll(async () => {
     const deliveryProjectUserRouter = await testHelpers.getAutoServiceRef(
       deliveryProjectUsers,
       [
+        testHelpers.provideService(tokenProviderRef, mockTokenProvider),
         testHelpers.provideService(catalogApiRef, mockCatalogClient),
         testHelpers.provideService(
           deliveryProjectUserStoreRef,
@@ -146,6 +156,10 @@ describe('createRouter', () => {
 
   describe('POST /', () => {
     it('returns a 201 response when project users are created', async () => {
+      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
+        token:
+          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      });
       const projectUser = createDeliveryProjectUser(faker.string.uuid());
       mockDeliveryProjectUserStore.add.mockResolvedValueOnce({
         success: true,
@@ -218,6 +232,10 @@ describe('createRouter', () => {
     });
 
     it('returns a 400 response if catalog user cannot be found', async () => {
+      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
+        token:
+          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      });
       mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
       mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
@@ -246,6 +264,10 @@ describe('createRouter', () => {
     });
 
     it('returns a 400 response with errors', async () => {
+      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
+        token:
+          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      });
       mockDeliveryProjectUserStore.add.mockResolvedValueOnce({
         success: false,
         errors: ['duplicateUser', 'unknown', 'unknownDeliveryProject'],
@@ -302,6 +324,10 @@ describe('createRouter', () => {
 
   describe('PATCH /', () => {
     it('returns ok', async () => {
+      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
+        token:
+          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      });
       const projectUser = createDeliveryProjectUser(faker.string.uuid());
       mockDeliveryProjectUserStore.update.mockResolvedValue({
         success: true,
@@ -370,6 +396,10 @@ describe('createRouter', () => {
     });
 
     it('return 400 with errors', async () => {
+      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
+        token:
+          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      });
       mockDeliveryProjectUserStore.update.mockResolvedValue({
         success: false,
         errors: ['unknown', 'unknownDeliveryProject'],
@@ -415,6 +445,10 @@ describe('createRouter', () => {
     });
 
     it('returns a 400 response if catalog user cannot be found', async () => {
+      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
+        token:
+          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      });
       mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
       mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
@@ -439,6 +473,9 @@ describe('createRouter', () => {
     });
 
     it('return 400 if if the request is bad', async () => {
+      mockPermissionsService.authorize.mockResolvedValueOnce([
+        { result: AuthorizeResult.ALLOW },
+      ]);
       const response = await request(deliveryProjectUserApp)
         .patch('/')
         .send({ notAnId: 'abc' });

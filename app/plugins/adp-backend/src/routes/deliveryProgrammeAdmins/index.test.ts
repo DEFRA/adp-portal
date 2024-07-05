@@ -21,6 +21,10 @@ import deliveryProgrammeAdmins from '.';
 import { authIdentityRef, catalogApiRef } from '../../refs';
 import { testHelpers } from '../../utils/testHelpers';
 import { fireAndForgetCatalogRefresherRef } from '../../services';
+import {
+  type TokenProvider,
+  tokenProviderRef,
+} from '@internal/plugin-credentials-context-backend';
 
 describe('createRouter', () => {
   let deliveryProgrammeAdminApp: express.Express;
@@ -56,6 +60,11 @@ describe('createRouter', () => {
     validateEntity: jest.fn(),
   };
 
+  const mockTokenProvider: jest.Mocked<TokenProvider> = {
+    getLimitedUserToken: jest.fn(),
+    getPluginRequestToken: jest.fn(),
+  };
+
   const mockPermissionsService = mockServices.permissions.mock();
 
   beforeAll(async () => {
@@ -75,6 +84,7 @@ describe('createRouter', () => {
         testHelpers.provideService(fireAndForgetCatalogRefresherRef, {
           refresh: jest.fn(),
         }),
+        testHelpers.provideService(tokenProviderRef, mockTokenProvider),
       ],
     );
     deliveryProgrammeAdminApp = express().use(deliveryProgrammeAdminRouter);
@@ -137,6 +147,10 @@ describe('createRouter', () => {
 
   describe('POST /', () => {
     it('returns a 201 response when programme managers are created', async () => {
+      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
+        token:
+          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      });
       mockDeliveryProgrammeAdminStore.add.mockResolvedValueOnce({
         value: expectedProgrammeAdmin,
         success: true,
@@ -184,6 +198,10 @@ describe('createRouter', () => {
     });
 
     it('returns a 400 response if catalog user cannot be found', async () => {
+      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
+        token:
+          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      });
       mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
       mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
@@ -210,6 +228,10 @@ describe('createRouter', () => {
     });
 
     it('returns a 400 response with errors', async () => {
+      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
+        token:
+          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      });
       mockDeliveryProgrammeAdminStore.add.mockResolvedValueOnce({
         success: false,
         errors: ['duplicateUser', 'unknown', 'unknownDeliveryProgramme'],
@@ -264,6 +286,10 @@ describe('createRouter', () => {
 
   describe('DELETE /', () => {
     it('returns a 204 response when a delivery programme admin is deleted', async () => {
+      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
+        token:
+          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      });
       mockPermissionsService.authorize.mockResolvedValueOnce([
         { result: AuthorizeResult.ALLOW },
       ]);
