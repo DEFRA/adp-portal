@@ -47,6 +47,9 @@ To sign commits using GPG from within the devcontainer, please follow [the steps
 The application requires the following environment variables to be set. We recommend creating a `.env` file in the root of your repo (this is ignored by Git) and pasting the variables in to this file. This file will be used whenever you run a script through `yarn` such as `yarn dev`.
 
 ```sh
+APP_BASE_URL=http://localhost:3000
+APP_BACKEND_BASE_URL=http://localhost:7007
+
 GITHUB_APP_ID=""
 GITHUB_CLIENT_ID=""
 GITHUB_CLIENT_SECRET=""
