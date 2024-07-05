@@ -6629,6 +6629,7 @@ __metadata:
     express-promise-router: "npm:^4.1.0"
     knex: "npm:^3.1.0"
     supertest: "npm:^6.2.4"
+    yaml: "npm:^2.4.3"
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft

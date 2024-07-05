@@ -64,8 +64,7 @@ describe('default', () => {
 
   describe('GET /', () => {
     it('Should call getAll', async () => {
-      const { app, mockGetAll, mockCheckAuth } = await setup();
-      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      const { app, mockGetAll } = await setup();
       mockGetAll.mockImplementationOnce((_, res) =>
         res.status(200).json({ result: 'Success!' }),
       );
@@ -81,8 +80,7 @@ describe('default', () => {
   });
   describe('GET /health', () => {
     it('Should call health', async () => {
-      const { app, mockHealth, mockCheckAuth } = await setup();
-      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      const { app, mockHealth } = await setup();
       mockHealth.mockImplementationOnce((_, res) =>
         res.status(200).json({ result: 'Success!' }),
       );
@@ -98,8 +96,7 @@ describe('default', () => {
   });
   describe('GET /names', () => {
     it('Should call getNames', async () => {
-      const { app, mockGetNames, mockCheckAuth } = await setup();
-      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      const { app, mockGetNames } = await setup();
       mockGetNames.mockImplementationOnce((_, res) =>
         res.status(200).json({ result: 'Success!' }),
       );
@@ -115,8 +112,7 @@ describe('default', () => {
   });
   describe('GET /:id', () => {
     it('Should call get', async () => {
-      const { app, mockGet, mockCheckAuth } = await setup();
-      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      const { app, mockGet } = await setup();
       mockGet.mockImplementationOnce((req, res) =>
         res.status(200).json({ result: 'Success!', id: req.params.id }),
       );

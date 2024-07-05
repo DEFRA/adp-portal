@@ -35,6 +35,7 @@ import {
 import { deliveryProjectStoreRef } from '../../deliveryProject';
 import type { UUID } from 'node:crypto';
 import { stringifyEntityRef } from '@backstage/catalog-model';
+import { fireAndForgetCatalogRefresherRef } from '../../services';
 
 export default createRouterRef({
   deps: {
@@ -48,6 +49,7 @@ export default createRouterRef({
     auth: coreServices.auth,
     permissions: coreServices.permissions,
     middleware: middlewareFactoryRef,
+    catalogRefresher: fireAndForgetCatalogRefresherRef,
   },
   factory({
     router,
@@ -62,6 +64,7 @@ export default createRouterRef({
       auth,
       permissions,
       middleware,
+      catalogRefresher,
     },
   }) {
     const {
@@ -162,6 +165,7 @@ export default createRouterRef({
         };
         await deliveryProgrammeAdminStore.add(addUser);
       }
+      await catalogRefresher.refresh(`location:default/delivery-programmes`);
       respond(body, res, result, errorMapping, { ok: 201 });
     });
 
@@ -180,6 +184,7 @@ export default createRouterRef({
       );
       const creator = await getCurrentUsername(identity, req);
       const result = await deliveryProgrammeStore.update(body, creator);
+      await catalogRefresher.refresh(`location:default/delivery-programmes`);
       respond(body, res, result, errorMapping);
     });
 

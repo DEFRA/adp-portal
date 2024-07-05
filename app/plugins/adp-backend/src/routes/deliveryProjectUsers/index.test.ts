@@ -1,4 +1,4 @@
-import express, { type Router } from 'express';
+import express from 'express';
 import request from 'supertest';
 import {
   deliveryProjectUserStoreRef,
@@ -22,43 +22,13 @@ import {
   type IDeliveryProjectEntraIdGroupsSyncronizer,
 } from '../../entraId';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
-import {
-  ServiceFactoryTester,
-  mockServices,
-} from '@backstage/backend-test-utils';
+import { mockServices } from '@backstage/backend-test-utils';
 import { InputError } from '@backstage/errors';
-import {
-  type ServiceFactory,
-  type ServiceRef,
-  createServiceFactory,
-  createServiceRef,
-  coreServices,
-} from '@backstage/backend-plugin-api';
+import { coreServices } from '@backstage/backend-plugin-api';
 import deliveryProjectUsers from '.';
 import { catalogApiRef } from '../../refs';
-
-const getter = createServiceFactory({
-  service: createServiceRef<Router>({ id: '', scope: 'plugin' }),
-  deps: {
-    deliveryProjectUsers,
-  },
-  factory(deps) {
-    return deps.deliveryProjectUsers;
-  },
-});
-function makeFactory<T>(ref: ServiceRef<T>, instance: T) {
-  return createServiceFactory({
-    service: ref as ServiceRef<T, 'plugin'>,
-    deps: {},
-    factory: () => instance,
-  })();
-}
-async function getRouter(dependencies?: Array<ServiceFactory>) {
-  const provider = ServiceFactoryTester.from(getter, {
-    dependencies,
-  });
-  return await provider.get();
-}
+import { testHelpers } from '../../utils/testHelpers';
+import { fireAndForgetCatalogRefresherRef } from '../../services';
 
 describe('createRouter', () => {
   let deliveryProjectUserApp: express.Express;
@@ -103,19 +73,31 @@ describe('createRouter', () => {
   const mockPermissionsService = mockServices.permissions.mock();
 
   beforeAll(async () => {
-    const deliveryProjectUserRouter = await getRouter([
-      makeFactory(catalogApiRef, mockCatalogClient),
-      makeFactory(deliveryProjectUserStoreRef, mockDeliveryProjectUserStore),
-      makeFactory(
-        deliveryProjectGithubTeamsSyncronizerRef,
-        mockGithubTeamSyncronizer,
-      ),
-      makeFactory(
-        deliveryProjectEntraIdGroupsSyncronizerRef,
-        mockEntraIdGroupSyncronizer,
-      ),
-      makeFactory(coreServices.permissions, mockPermissionsService),
-    ]);
+    const deliveryProjectUserRouter = await testHelpers.getAutoServiceRef(
+      deliveryProjectUsers,
+      [
+        testHelpers.provideService(catalogApiRef, mockCatalogClient),
+        testHelpers.provideService(
+          deliveryProjectUserStoreRef,
+          mockDeliveryProjectUserStore,
+        ),
+        testHelpers.provideService(
+          deliveryProjectGithubTeamsSyncronizerRef,
+          mockGithubTeamSyncronizer,
+        ),
+        testHelpers.provideService(
+          deliveryProjectEntraIdGroupsSyncronizerRef,
+          mockEntraIdGroupSyncronizer,
+        ),
+        testHelpers.provideService(
+          coreServices.permissions,
+          mockPermissionsService,
+        ),
+        testHelpers.provideService(fireAndForgetCatalogRefresherRef, {
+          refresh: jest.fn(),
+        }),
+      ],
+    );
     deliveryProjectUserApp = express().use(deliveryProjectUserRouter);
   });
 

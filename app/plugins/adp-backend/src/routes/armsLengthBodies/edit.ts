@@ -5,14 +5,16 @@ import type { UpdateArmsLengthBodyRequest } from '@internal/plugin-adp-common';
 import { z } from 'zod';
 import { authIdentityRef } from '../../refs';
 import errorMapping from './errorMapping';
+import { fireAndForgetCatalogRefresherRef } from '../../services';
 
 export default createEndpointRef({
   deps: {
     armsLengthBodyStore: armsLengthBodyStoreRef,
     identity: authIdentityRef,
+    catalogRefresher: fireAndForgetCatalogRefresherRef,
   },
   factory({
-    deps: { armsLengthBodyStore, identity },
+    deps: { armsLengthBodyStore, identity, catalogRefresher },
     responses: { ok, validationErrors },
   }) {
     const parseBody = createParser<UpdateArmsLengthBodyRequest>(
@@ -32,6 +34,7 @@ export default createEndpointRef({
       if (!result.success)
         return validationErrors(result.errors, errorMapping, body);
 
+      await catalogRefresher.refresh(`group:default/${result.value.name}`);
       return ok().json(result.value);
     };
   },

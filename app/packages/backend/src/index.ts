@@ -1,4 +1,8 @@
 import { createBackend } from '@backstage/backend-defaults';
+import {
+  adpOnboardingUrlReaderFactoryRef,
+  createUrlReaderFactory,
+} from '@internal/plugin-adp-backend';
 import fetchApiFactory, {
   fetchApiForPluginMiddleware,
   fetchApiHeadersMiddleware,
@@ -10,7 +14,8 @@ process.on('unhandledRejection', (reason, promise) => {
 
 const backend = createBackend();
 
-// Request middleware
+// Services
+backend.add(createUrlReaderFactory([adpOnboardingUrlReaderFactoryRef]));
 backend.add(
   fetchApiFactory({
     middleware: [

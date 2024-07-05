@@ -1,6 +1,6 @@
 app:
   title: ADP Portal
-  baseUrl: http://localhost:3000
+  baseUrl: ${APP_BASE_URL}
   support:
     url: https://github.com/defra/adp-portal/issues
     items:
@@ -17,13 +17,12 @@ permission:
   enabled: true
 
 backend:
-  baseUrl: http://localhost:7007
-  listen:
-    port: 7007
+  baseUrl: ${APP_BACKEND_BASE_URL}
+  listen: ':7007'
   csp:
     connect-src: ["'self'", 'http:', 'https:']
   cors:
-    origin: http://localhost:3000
+    origin: ${APP_BASE_URL}
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
   reading:
@@ -156,6 +155,22 @@ catalog:
         - type: url
           pattern: 'https://github.com/DEFRA/adp-software-templates/**'
 
+    - allow: [Location, Group]
+      locations:
+        - type: url
+          pattern: '${APP_BASE_URL}/onboarding/**'
+
+  # Locations configured to import static data into the catalog
+  locations:
+    - type: url
+      target: https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/catalog-model/all.yaml
+    - type: url
+      target: ${APP_BASE_URL}/onboarding/arms-length-bodies
+    - type: url
+      target: ${APP_BASE_URL}/onboarding/delivery-programmes
+    - type: url
+      target: ${APP_BASE_URL}/onboarding/delivery-projects
+
   processingInterval: { minutes: 60 }
 
   # Providers configured to scan repos in the specified organizations for components to add to the catalog.
@@ -185,12 +200,6 @@ catalog:
           frequency: { hours: 1 }
           timeout: { minutes: 50 }
           initialDelay: { seconds: 15 }
-
-  # 'all users'
-  # Locations configured to import static data into the catalog
-  locations:
-    - type: url
-      target: https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/catalog-model/all.yaml
 
 techRadar:
   data: https://raw.githubusercontent.com/defra/adp-software-templates/${ADP_PORTAL_TEMPLATE_VERSION}/tech-radars/development-tech-radar.json

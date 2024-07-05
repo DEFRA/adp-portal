@@ -56,9 +56,18 @@ export class DeliveryProgrammeStore {
     return this.#client<delivery_programme>(delivery_programme_name);
   }
 
-  async getAll(): Promise<DeliveryProgramme[]> {
+  async getAll(columns?: undefined): Promise<DeliveryProgramme[]>;
+  async getAll<Column extends keyof delivery_programme>(
+    columns: readonly Column[],
+  ): Promise<Pick<DeliveryProgramme, Column>[]>;
+  async getAll(
+    columns: readonly (keyof delivery_programme)[],
+  ): Promise<Partial<DeliveryProgramme>[]>;
+  async getAll(
+    columns?: readonly (keyof delivery_programme)[],
+  ): Promise<Partial<DeliveryProgramme>[]> {
     const result = await this.#table
-      .select(...allColumns)
+      .select(...(columns ?? allColumns))
       .orderBy('created_at');
 
     return result.map(r => this.#normalize(r));
@@ -68,6 +77,17 @@ export class DeliveryProgrammeStore {
     if (!isUUID(id)) throw notFound();
     const result = await this.#table
       .where('id', id)
+      .select(...allColumns)
+      .first();
+
+    if (result === undefined) throw notFound();
+
+    return this.#normalize(result);
+  }
+
+  async getByName(name: string): Promise<DeliveryProgramme> {
+    const result = await this.#table
+      .where('name', name)
       .select(...allColumns)
       .first();
 

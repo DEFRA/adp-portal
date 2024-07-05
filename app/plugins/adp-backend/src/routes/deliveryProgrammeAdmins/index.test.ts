@@ -1,4 +1,4 @@
-import express, { type Router } from 'express';
+import express from 'express';
 import request from 'supertest';
 import { programmeManagerList } from '../../testData/programmeTestData';
 import { InputError } from '@backstage/errors';
@@ -13,44 +13,14 @@ import type {
   DeleteDeliveryProgrammeAdminRequest,
 } from '@internal/plugin-adp-common';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
-import {
-  ServiceFactoryTester,
-  mockServices,
-} from '@backstage/backend-test-utils';
+import { mockServices } from '@backstage/backend-test-utils';
 import { faker } from '@faker-js/faker';
 import { expectedProgrammeAdmin } from '../../testData/programmeAdminTestData';
-import {
-  type ServiceFactory,
-  type ServiceRef,
-  createServiceFactory,
-  createServiceRef,
-  coreServices,
-} from '@backstage/backend-plugin-api';
+import { coreServices } from '@backstage/backend-plugin-api';
 import deliveryProgrammeAdmins from '.';
 import { authIdentityRef, catalogApiRef } from '../../refs';
-
-const getter = createServiceFactory({
-  service: createServiceRef<Router>({ id: '', scope: 'plugin' }),
-  deps: {
-    deliveryProgrammeAdmins,
-  },
-  factory(deps) {
-    return deps.deliveryProgrammeAdmins;
-  },
-});
-function makeFactory<T>(ref: ServiceRef<T>, instance: T) {
-  return createServiceFactory({
-    service: ref as ServiceRef<T, 'plugin'>,
-    deps: {},
-    factory: () => instance,
-  })();
-}
-async function getRouter(dependencies?: Array<ServiceFactory>) {
-  const provider = ServiceFactoryTester.from(getter, {
-    dependencies,
-  });
-  return await provider.get();
-}
+import { testHelpers } from '../../utils/testHelpers';
+import { fireAndForgetCatalogRefresherRef } from '../../services';
 
 describe('createRouter', () => {
   let deliveryProgrammeAdminApp: express.Express;
@@ -89,15 +59,24 @@ describe('createRouter', () => {
   const mockPermissionsService = mockServices.permissions.mock();
 
   beforeAll(async () => {
-    const deliveryProgrammeAdminRouter = await getRouter([
-      makeFactory(authIdentityRef, mockIdentityApi),
-      makeFactory(catalogApiRef, mockCatalogClient),
-      makeFactory(
-        deliveryProgrammeAdminStoreRef,
-        mockDeliveryProgrammeAdminStore,
-      ),
-      makeFactory(coreServices.permissions, mockPermissionsService),
-    ]);
+    const deliveryProgrammeAdminRouter = await testHelpers.getAutoServiceRef(
+      deliveryProgrammeAdmins,
+      [
+        testHelpers.provideService(authIdentityRef, mockIdentityApi),
+        testHelpers.provideService(catalogApiRef, mockCatalogClient),
+        testHelpers.provideService(
+          deliveryProgrammeAdminStoreRef,
+          mockDeliveryProgrammeAdminStore,
+        ),
+        testHelpers.provideService(
+          coreServices.permissions,
+          mockPermissionsService,
+        ),
+        testHelpers.provideService(fireAndForgetCatalogRefresherRef, {
+          refresh: jest.fn(),
+        }),
+      ],
+    );
     deliveryProgrammeAdminApp = express().use(deliveryProgrammeAdminRouter);
   });
 

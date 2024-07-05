@@ -14,6 +14,9 @@ describe('adpPlugin', () => {
         mockServices.database.factory(),
         mockServices.rootConfig.factory({
           data: {
+            app: {
+              baseUrl: 'https://test.com',
+            },
             backend: {
               baseUrl: 'https://test.com',
             },

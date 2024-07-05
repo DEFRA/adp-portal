@@ -52,9 +52,18 @@ export class ArmsLengthBodyStore {
     return this.#client<arms_length_body>(arms_length_body_name);
   }
 
-  async getAll(): Promise<ArmsLengthBody[]> {
+  async getAll(columns?: undefined): Promise<ArmsLengthBody[]>;
+  async getAll<Column extends keyof arms_length_body>(
+    columns: readonly Column[],
+  ): Promise<Pick<ArmsLengthBody, Column>[]>;
+  async getAll(
+    columns: readonly (keyof arms_length_body)[],
+  ): Promise<Partial<ArmsLengthBody>[]>;
+  async getAll(
+    columns?: readonly (keyof arms_length_body)[],
+  ): Promise<Partial<ArmsLengthBody>[]> {
     const result = await this.#table
-      .select(...allColumns)
+      .select(...(columns ?? allColumns))
       .orderBy('created_at');
 
     return result.map(row => this.#normalize(row));
@@ -64,6 +73,16 @@ export class ArmsLengthBodyStore {
     if (!isUUID(id)) throw notFound();
     const row = await this.#table
       .where('id', id)
+      .select(...allColumns)
+      .first();
+
+    if (row === undefined) throw notFound();
+
+    return this.#normalize(row);
+  }
+  async getByName(name: string): Promise<ArmsLengthBody> {
+    const row = await this.#table
+      .where('name', name)
       .select(...allColumns)
       .first();
 

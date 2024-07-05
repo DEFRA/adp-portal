@@ -6,6 +6,7 @@ import deliveryProgrammes from './deliveryProgrammes';
 import deliveryProjects from './deliveryProjects';
 import deliveryProgrammeAdmins from './deliveryProgrammeAdmins';
 import deliveryProjectUsers from './deliveryProjectUsers';
+import catalog from './catalog';
 
 export default createRouterRef({
   deps: {
@@ -16,10 +17,12 @@ export default createRouterRef({
     deliveryProjects,
     deliveryProgrammeAdmins,
     deliveryProjectUsers,
+    catalog,
   },
   factory({ router, deps }) {
     router.use(deps.auth);
     router.use(deps.credentialsContextMiddleware);
+    router.use('/catalog', deps.catalog);
     router.use('/armsLengthBodies', deps.armsLengthBodies);
     router.use('/deliveryProgrammes', deps.deliveryProgrammes);
     router.use('/deliveryProjects', deps.deliveryProjects);

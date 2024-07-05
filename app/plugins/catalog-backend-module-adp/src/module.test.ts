@@ -1,11 +1,7 @@
 import { mockServices, startTestBackend } from '@backstage/backend-test-utils';
-import type { AdpDatabaseEntityProvider } from './providers';
 import fetchApiFactory from '@internal/plugin-fetch-api-backend';
 import type { CatalogPermissionRuleInput } from '@backstage/plugin-catalog-node/alpha';
-import {
-  catalogPermissionExtensionPoint,
-  catalogProcessingExtensionPoint,
-} from '@backstage/plugin-catalog-node/alpha';
+import { catalogPermissionExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
 import { adpCatalogModule } from './module';
 import type { PermissionRuleParams } from '@backstage/plugin-permission-common';
 import type { UserTransformer } from '@backstage/plugin-catalog-backend-module-msgraph';
@@ -13,17 +9,11 @@ import { microsoftGraphOrgEntityProviderTransformExtensionPoint } from '@backsta
 
 describe('catalogModuleAdpEntityProvider', () => {
   it('should register the provider with the catalog extension point', async () => {
-    let addedProvider: AdpDatabaseEntityProvider | undefined;
     let addedPermissionRules:
       | CatalogPermissionRuleInput<PermissionRuleParams>[][]
       | undefined;
     let configuredTransformer: UserTransformer | undefined;
 
-    const processingExtensionPont = {
-      addEntityProvider: (providers: any) => {
-        addedProvider = providers;
-      },
-    };
     const permissionsExtensionPont = {
       addPermissionRules: (...rules: any) => {
         addedPermissionRules = rules;
@@ -41,7 +31,6 @@ describe('catalogModuleAdpEntityProvider', () => {
 
     await startTestBackend({
       extensionPoints: [
-        [catalogProcessingExtensionPoint, processingExtensionPont],
         [catalogPermissionExtensionPoint, permissionsExtensionPont],
         [
           microsoftGraphOrgEntityProviderTransformExtensionPoint,
@@ -56,11 +45,6 @@ describe('catalogModuleAdpEntityProvider', () => {
         fetchApiFactory(),
       ],
     });
-
-    expect(addedProvider).toBeDefined();
-    expect(addedProvider?.getProviderName()).toEqual(
-      'AdpDatabaseEntityProvider',
-    );
 
     expect(addedPermissionRules).toBeDefined();
     expect(addedPermissionRules?.pop()?.pop()?.name).toBe('IS_GROUP_MEMBER');

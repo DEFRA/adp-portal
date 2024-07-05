@@ -32,6 +32,7 @@ import {
 } from '@backstage/backend-plugin-api';
 import { createRouterRef } from '../util';
 import { catalogApiRef, middlewareFactoryRef } from '../../refs';
+import { fireAndForgetCatalogRefresherRef } from '../../services';
 
 export interface DeliveryProgrammeAdminRouterOptions {
   logger: LoggerService;
@@ -53,6 +54,7 @@ export default createRouterRef({
     auth: coreServices.auth,
     permissions: coreServices.permissions,
     middleware: middlewareFactoryRef,
+    catalogRefresher: fireAndForgetCatalogRefresherRef,
   },
   factory({
     router,
@@ -64,6 +66,7 @@ export default createRouterRef({
       httpAuth,
       auth,
       middleware,
+      catalogRefresher,
     },
   }) {
     const {
@@ -155,6 +158,7 @@ export default createRouterRef({
       };
 
       const addedUser = await deliveryProgrammeAdminStore.add(addUser);
+      await catalogRefresher.refresh(`location:default/delivery-programmes`);
       respond(body, res, addedUser, errorMapping, { ok: 201 });
     });
 
@@ -181,6 +185,7 @@ export default createRouterRef({
         `DELETE /: Deleted Delivery Programme Admin with ID ${body.delivery_programme_admin_id}`,
       );
 
+      await catalogRefresher.refresh(`location:default/delivery-programmes`);
       res.status(204).end();
     });
 

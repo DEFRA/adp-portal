@@ -15,6 +15,7 @@ describe('default', () => {
       get: jest.fn(),
       getAll: jest.fn(),
       update: jest.fn(),
+      getByName: jest.fn(),
     };
 
     const handler = await testHelpers.getAutoServiceRef(get, [

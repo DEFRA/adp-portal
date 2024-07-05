@@ -1,4 +1,4 @@
-import express, { type Router } from 'express';
+import express from 'express';
 import request from 'supertest';
 import {
   expectedProgrammeDataWithManager,
@@ -23,48 +23,19 @@ import type {
   CreateDeliveryProgrammeRequest,
   UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
-import {
-  ServiceFactoryTester,
-  mockServices,
-} from '@backstage/backend-test-utils';
+import { mockServices } from '@backstage/backend-test-utils';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import type { CatalogApi } from '@backstage/catalog-client';
 import { catalogTestData } from '../../testData/catalogEntityTestData';
-import {
-  type ServiceFactory,
-  type ServiceRef,
-  coreServices,
-  createServiceFactory,
-  createServiceRef,
-} from '@backstage/backend-plugin-api';
+import { coreServices } from '@backstage/backend-plugin-api';
 import deliveryProgrammes from '.';
 import { authIdentityRef, catalogApiRef } from '../../refs';
+import { testHelpers } from '../../utils/testHelpers';
+import { fireAndForgetCatalogRefresherRef } from '../../services';
 
 const managerByProgrammeId = programmeManagerList.filter(
   managers => managers.delivery_programme_id === '123',
 );
-const getter = createServiceFactory({
-  service: createServiceRef<Router>({ id: '', scope: 'plugin' }),
-  deps: {
-    deliveryProgrammes,
-  },
-  factory(deps) {
-    return deps.deliveryProgrammes;
-  },
-});
-function makeFactory<T>(ref: ServiceRef<T>, instance: T) {
-  return createServiceFactory({
-    service: ref as ServiceRef<T, 'plugin'>,
-    deps: {},
-    factory: () => instance,
-  })();
-}
-async function getRouter(dependencies?: Array<ServiceFactory>) {
-  const provider = ServiceFactoryTester.from(getter, {
-    dependencies,
-  });
-  return await provider.get();
-}
 
 describe('createRouter', () => {
   let programmeApp: express.Express;
@@ -88,6 +59,7 @@ describe('createRouter', () => {
     get: jest.fn(),
     getAll: jest.fn(),
     update: jest.fn(),
+    getByName: jest.fn(),
   };
 
   const mockDeliveryProgrammeAdminStore: jest.Mocked<IDeliveryProgrammeAdminStore> =
@@ -119,17 +91,32 @@ describe('createRouter', () => {
   };
 
   beforeAll(async () => {
-    const programmeRouter = await getRouter([
-      makeFactory(authIdentityRef, mockIdentityApi),
-      makeFactory(deliveryProjectStoreRef, mockDeliveryProjectStore),
-      makeFactory(deliveryProgrammeStoreRef, mockDeliveryProgrammeStore),
-      makeFactory(
-        deliveryProgrammeAdminStoreRef,
-        mockDeliveryProgrammeAdminStore,
-      ),
-      makeFactory(coreServices.permissions, mockPermissionsService),
-      makeFactory(catalogApiRef, mockCatalogClient),
-    ]);
+    const programmeRouter = await testHelpers.getAutoServiceRef(
+      deliveryProgrammes,
+      [
+        testHelpers.provideService(authIdentityRef, mockIdentityApi),
+        testHelpers.provideService(
+          deliveryProjectStoreRef,
+          mockDeliveryProjectStore,
+        ),
+        testHelpers.provideService(
+          deliveryProgrammeStoreRef,
+          mockDeliveryProgrammeStore,
+        ),
+        testHelpers.provideService(
+          deliveryProgrammeAdminStoreRef,
+          mockDeliveryProgrammeAdminStore,
+        ),
+        testHelpers.provideService(
+          coreServices.permissions,
+          mockPermissionsService,
+        ),
+        testHelpers.provideService(catalogApiRef, mockCatalogClient),
+        testHelpers.provideService(fireAndForgetCatalogRefresherRef, {
+          refresh: jest.fn(),
+        }),
+      ],
+    );
     programmeApp = express().use(programmeRouter);
   });
 

@@ -1,5 +1,6 @@
 import type { Response } from 'express';
 import type { Readable } from 'node:stream';
+import yaml from 'yaml';
 
 export interface HandlerResult {
   writeTo(response: Response): void | PromiseLike<void>;
@@ -50,6 +51,12 @@ export class FluentHandlerResult implements HandlerResult {
       response.json(body);
     });
     return this;
+  }
+
+  yaml(body: unknown) {
+    if (!this.#headers.has('content-type'))
+      this.#headers.set('content-type', 'application/yaml');
+    return this.text(yaml.stringify(body));
   }
 
   text(body: string) {

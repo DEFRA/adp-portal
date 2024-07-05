@@ -41,6 +41,7 @@ import {
 } from '@backstage/backend-plugin-api';
 import { createRouterRef } from '../util';
 import { catalogApiRef, middlewareFactoryRef } from '../../refs';
+import { fireAndForgetCatalogRefresherRef } from '../../services';
 
 export interface DeliveryProjectUserRouterOptions {
   logger: LoggerService;
@@ -64,6 +65,7 @@ export default createRouterRef({
     httpAuth: coreServices.httpAuth,
     auth: coreServices.auth,
     middleware: middlewareFactoryRef,
+    catalogRefresher: fireAndForgetCatalogRefresherRef,
   },
   factory({
     router,
@@ -76,6 +78,7 @@ export default createRouterRef({
       httpAuth,
       auth,
       middleware,
+      catalogRefresher,
     },
   }) {
     const {
@@ -162,6 +165,7 @@ export default createRouterRef({
         ]);
       }
 
+      await catalogRefresher.refresh(`location:default/delivery-programmes`);
       respond(body, res, addedUser, errorMapping, { ok: 201 });
     });
 
@@ -223,6 +227,8 @@ export default createRouterRef({
           ),
         ]);
       }
+
+      await catalogRefresher.refresh(`location:default/delivery-programmes`);
       respond(body, res, result, errorMapping);
     });
 
@@ -248,6 +254,7 @@ export default createRouterRef({
         entraIdGroupSyncronizer.syncronizeById(body.delivery_project_id),
       ]);
 
+      await catalogRefresher.refresh(`location:default/delivery-programmes`);
       res.status(204).end();
     });
 

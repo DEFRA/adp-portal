@@ -34,6 +34,7 @@ import {
   getCurrentUsername,
   respond,
 } from '../../utils';
+import { fireAndForgetCatalogRefresherRef } from '../../services';
 
 export default createRouterRef({
   deps: {
@@ -49,6 +50,7 @@ export default createRouterRef({
     httpAuth: coreServices.httpAuth,
     permissions: coreServices.permissions,
     middleware: middlewareFactoryRef,
+    catalogRefresher: fireAndForgetCatalogRefresherRef,
   },
   factory({
     router,
@@ -65,6 +67,7 @@ export default createRouterRef({
       httpAuth,
       permissions,
       middleware,
+      catalogRefresher,
     },
   }) {
     const {
@@ -128,6 +131,7 @@ export default createRouterRef({
           teamSyncronizer.syncronizeByName(result.value.name),
         ]);
       }
+      await catalogRefresher.refresh(`location:default/delivery-programmes`);
       respond(body, res, result, errorMapping, { ok: 201 });
     });
 
@@ -151,6 +155,7 @@ export default createRouterRef({
           teamSyncronizer.syncronizeByName(result.value.name),
         ]);
       }
+      await catalogRefresher.refresh(`location:default/delivery-programmes`);
       respond(body, res, result, errorMapping);
     });
 
