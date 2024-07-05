@@ -3368,7 +3368,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/cli@npm:^0.26.10":
+"@backstage/cli@npm:^0.26.10, @backstage/cli@npm:^0.26.6":
   version: 0.26.10
   resolution: "@backstage/cli@npm:0.26.10"
   dependencies:
@@ -3537,7 +3537,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/core-app-api@npm:^1.13.0":
+"@backstage/core-app-api@npm:^1.12.5, @backstage/core-app-api@npm:^1.13.0":
   version: 1.13.0
   resolution: "@backstage/core-app-api@npm:1.13.0"
   dependencies:
@@ -3644,7 +3644,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/dev-utils@npm:^1.0.34":
+"@backstage/dev-utils@npm:^1.0.32, @backstage/dev-utils@npm:^1.0.34":
   version: 1.0.34
   resolution: "@backstage/dev-utils@npm:1.0.34"
   dependencies:
@@ -5414,7 +5414,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/test-utils@npm:^1.5.7":
+"@backstage/test-utils@npm:^1.5.5, @backstage/test-utils@npm:^1.5.7":
   version: 1.5.7
   resolution: "@backstage/test-utils@npm:1.5.7"
   dependencies:
@@ -13447,17 +13447,6 @@ __metadata:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
   checksum: 10c0/fe455f805c5da13b89964c3d68060cebd43e73ec15001a68b34634604a78140e6fc202f3f61679b9d809dde6d7a7c2cb3ed51e0fd1462557911db09879b55114
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^17":
-  version: 17.0.80
-  resolution: "@types/react@npm:17.0.80"
-  dependencies:
-    "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:^0.16"
-    csstype: "npm:^3.0.2"
-  checksum: 10c0/c5d2862564212a41a327ea9c7e70b9d3996d9b0f67971d39519d42d1f3ae6ddf76b183457b7b0be9d7b5d6ff0aaeed5711448423406d20018f082077c984eec4
   languageName: node
   linkType: hard
 
@@ -32830,6 +32819,16 @@ __metadata:
   dependencies:
     safe-buffer: "npm:~5.1.0"
   checksum: 10c0/b4f89f3a92fd101b5653ca3c99550e07bdf9e13b35037e9e2a1c7b47cec4e55e06ff3fc468e314a0b5e80bfbaf65c1ca5a84978764884ae9413bec1fc6ca924e
+  languageName: node
+  linkType: hard
+
+"stringify-entities@npm:^4.0.0":
+  version: 4.0.4
+  resolution: "stringify-entities@npm:4.0.4"
+  dependencies:
+    character-entities-html4: "npm:^2.0.0"
+    character-entities-legacy: "npm:^3.0.0"
+  checksum: 10c0/537c7e656354192406bdd08157d759cd615724e9d0873602d2c9b2f6a5c0a8d0b1d73a0a08677848105c5eebac6db037b57c0b3a4ec86331117fa7319ed50448
   languageName: node
   linkType: hard
 

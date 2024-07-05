@@ -13,8 +13,10 @@ import {
   Paper,
 } from '@mui/material/';
 import SendIcon from '@mui/icons-material/Send';
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { Button, Grid } from '@material-ui/core';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface ChatMessage {
   sender: 'user' | 'adpBot';
@@ -26,11 +28,9 @@ const ChatUI = () => {
   const [userInput, setUserInput] = useState<string>('');
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [responseFetched, setResponseFetched] = useState<boolean>(true);
+  const [conversationId, setConversationId] = useState<string>('');
 
-  const conversationId = "1239";
-  const userperson = "example-aimee";
-
-
+  const userperson = 'example-roz';
 
   const handleSend = async () => {
     if (userInput.trim()) {
@@ -44,6 +44,7 @@ const ChatUI = () => {
       ]);
       setUserInput('');
       setResponseFetched(false);
+      setConversationId(crypto.randomUUID());
       const response = await fetch('http://localhost:5139/api/chat/prompt', {
         method: 'POST',
         headers: {
@@ -52,7 +53,8 @@ const ChatUI = () => {
         body: JSON.stringify({
           conversationId: conversationId,
           user: userperson,
-          prompt: userInput }),
+          prompt: userInput,
+        }),
       });
       const data = await response.json();
       setChatHistory(prevHistory => [
@@ -70,6 +72,22 @@ const ChatUI = () => {
     }
   };
 
+  const handleDelete = async () => {
+    // await fetch('http://localhost:5139/api/chat/messages', {
+    //   method: 'DELETE',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     conversationId: conversationId,
+    //   }),
+    // });
+    setConversationId(crypto.randomUUID());
+    setChatHistory([]);
+    setResponseFetched(true);
+  };
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
@@ -79,9 +97,24 @@ const ChatUI = () => {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        ADP Chatbot
-      </Typography>
+      <Box>
+        <Grid container spacing={0}>
+          <Grid xs={9}>
+            <Typography variant="h4" component="h1" gutterBottom>
+              ADP Chatbot
+            </Typography>
+          </Grid>
+          <Grid xs>
+            <Button
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+              onClick={handleDelete}
+            >
+              Delete Conversation
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
       <Paper
         sx={{
           p: 2,
@@ -102,7 +135,11 @@ const ChatUI = () => {
               }}
             >
               <ListItemText
-                primary={<ReactMarkdown remarkPlugins={[remarkGfm]}>{message.text}</ReactMarkdown >}
+                primary={
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {message.text}
+                  </ReactMarkdown>
+                }
                 secondary={`${message.sender === 'user' ? 'You' : 'ADP'} at ${
                   message.timestamp
                 }`}
