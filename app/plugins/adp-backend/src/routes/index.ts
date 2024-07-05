@@ -9,6 +9,7 @@ import deliveryProjectUsers from './deliveryProjectUsers';
 import catalog from './catalog';
 
 export default createRouterRef({
+  name: 'root',
   deps: {
     credentialsContextMiddleware: credentialsContextMiddlewareRef,
     auth,

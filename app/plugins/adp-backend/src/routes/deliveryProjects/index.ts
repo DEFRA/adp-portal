@@ -15,6 +15,7 @@ import createEntraGroups from './createEntraGroups';
 import checkAdoProject from './checkAdoProject';
 
 export default createRouterRef({
+  name: 'deliveryProjects',
   deps: {
     checkAuth,
     middleware: middlewareFactoryRef,

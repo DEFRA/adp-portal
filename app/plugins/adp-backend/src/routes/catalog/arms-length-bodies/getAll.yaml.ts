@@ -8,6 +8,7 @@ import { coreServices } from '@backstage/backend-plugin-api';
 import { armsLengthBodyStoreRef } from '../../../armsLengthBody';
 
 export default createEndpointRef({
+  name: 'getArmsLengthBodiesIndexYaml',
   deps: {
     armsLengthBodyStore: armsLengthBodyStoreRef,
     config: coreServices.rootConfig,

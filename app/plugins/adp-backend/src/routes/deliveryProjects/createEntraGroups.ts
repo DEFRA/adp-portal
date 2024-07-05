@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { createParser } from '../../utils';
 
 export default createEndpointRef({
+  name: 'createDeliveryProjectEntraGroups',
   deps: {
     entraIdApi: entraIdApiRef,
   },

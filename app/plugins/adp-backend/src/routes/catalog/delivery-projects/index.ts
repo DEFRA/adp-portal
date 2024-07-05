@@ -4,6 +4,7 @@ import getYaml from './get.yaml';
 import { middlewareFactoryRef } from '../../../refs';
 
 export default createRouterRef({
+  name: 'deliveryProjectEntities',
   deps: {
     middleware: middlewareFactoryRef,
     getAllYaml,

@@ -2,6 +2,7 @@ import { createEndpointRef } from '../util';
 import { deliveryProjectStoreRef } from '../../deliveryProject';
 
 export default createEndpointRef({
+  name: 'getAllDeliveryProjects',
   deps: {
     deliveryProjectStore: deliveryProjectStoreRef,
   },

@@ -6,6 +6,7 @@ import { type Request } from 'express';
 import { getDeliveryProject } from './getDeliveryProject';
 
 export default createEndpointRef({
+  name: 'getDeliveryProject',
   deps: {
     deliveryProjectStore: deliveryProjectStoreRef,
     deliveryProjectUserStore: deliveryProjectUserStoreRef,

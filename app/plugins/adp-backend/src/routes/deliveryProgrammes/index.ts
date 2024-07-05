@@ -12,6 +12,7 @@ import create from './create';
 import edit from './edit';
 
 export default createRouterRef({
+  name: 'deliveryProgrammes',
   deps: {
     checkAuth,
     middleware: middlewareFactoryRef,

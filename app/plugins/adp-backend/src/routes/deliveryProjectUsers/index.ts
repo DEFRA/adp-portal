@@ -14,6 +14,7 @@ import update from './update';
 import remove from './remove';
 
 export default createRouterRef({
+  name: 'deliveryProjectUsers',
   deps: {
     checkAuth,
     middleware: middlewareFactoryRef,

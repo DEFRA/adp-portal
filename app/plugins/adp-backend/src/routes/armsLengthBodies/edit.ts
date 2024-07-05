@@ -8,6 +8,7 @@ import { fireAndForgetCatalogRefresherRef } from '../../services';
 import { identityProviderRef } from '@internal/plugin-credentials-context-backend';
 
 export default createEndpointRef({
+  name: 'editArmsLengthBody',
   deps: {
     armsLengthBodyStore: armsLengthBodyStoreRef,
     identity: identityProviderRef,

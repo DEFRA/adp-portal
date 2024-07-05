@@ -1,6 +1,6 @@
 import { armsLengthBodyStoreRef } from '../../armsLengthBody';
 import { createEndpointRef } from '../util';
-import { createParser, getOwner } from '../../utils';
+import { createParser } from '../../utils';
 import type { CreateArmsLengthBodyRequest } from '@internal/plugin-adp-common';
 import { z } from 'zod';
 import { coreServices } from '@backstage/backend-plugin-api';
@@ -9,6 +9,7 @@ import { fireAndForgetCatalogRefresherRef } from '../../services';
 import { identityProviderRef } from '@internal/plugin-credentials-context-backend';
 
 export default createEndpointRef({
+  name: 'createArmsLengthBody',
   deps: {
     armsLengthBodyStore: armsLengthBodyStoreRef,
     identity: identityProviderRef,
@@ -19,7 +20,7 @@ export default createEndpointRef({
     deps: { armsLengthBodyStore, identity, config, catalogRefresher },
     responses: { created, validationErrors },
   }) {
-    const owner = getOwner(config);
+    const owner = config.getString('rbac.programmeAdminGroup');
     const parseBody = createParser<CreateArmsLengthBodyRequest>(
       z.object({
         title: z.string(),

@@ -2,6 +2,7 @@ import { deliveryProgrammeAdminStoreRef } from '../../deliveryProgrammeAdmin';
 import { createEndpointRef } from '../util';
 
 export default createEndpointRef({
+  name: 'getAllDeliveryProgrammeAdmins',
   deps: {
     deliveryProgrammeAdminStore: deliveryProgrammeAdminStoreRef,
   },

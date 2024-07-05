@@ -6,7 +6,7 @@ import { policyExtensionPoint } from '@backstage/plugin-permission-node/alpha';
 import type { RbacGroups } from './types';
 import { RbacUtilities } from './rbacUtilites';
 import { AdpPortalPermissionPolicy } from './policies';
-import { CatalogClient } from '@backstage/catalog-client';
+import { catalogApiRef } from '@internal/plugin-adp-backend';
 
 export const adpPermissionModule = createBackendModule({
   pluginId: 'permission',
@@ -18,16 +18,15 @@ export const adpPermissionModule = createBackendModule({
         logger: coreServices.logger,
         config: coreServices.rootConfig,
         auth: coreServices.auth,
-        discovery: coreServices.discovery,
+        catalog: catalogApiRef,
       },
-      async init({ policy, logger, config, discovery, auth }) {
+      async init({ policy, logger, config, auth, catalog }) {
         const rbacGroups: RbacGroups = {
           platformAdminsGroup: config.getString('rbac.platformAdminsGroup'),
           programmeAdminGroup: config.getString('rbac.programmeAdminGroup'),
           adpPortalUsersGroup: config.getString('rbac.adpPortalUsersGroup'),
         };
 
-        const catalog = new CatalogClient({ discoveryApi: discovery });
         const rbacUtilities = new RbacUtilities(
           logger,
           rbacGroups,

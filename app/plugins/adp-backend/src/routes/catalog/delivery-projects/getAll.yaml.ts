@@ -8,6 +8,7 @@ import { createEndpointRef } from '../../util';
 import { coreServices } from '@backstage/backend-plugin-api';
 
 export default createEndpointRef({
+  name: 'getDeliveryProjectsIndexYaml',
   deps: {
     deliveryProjectStore: deliveryProjectStoreRef,
     config: coreServices.rootConfig,

@@ -3,6 +3,7 @@ import { createEndpointRef } from '../util';
 import type { Request } from 'express';
 
 export default createEndpointRef({
+  name: 'getDeliveryProgrammeAdminsForDeliveryProgramme',
   deps: {
     deliveryProgrammeAdminStore: deliveryProgrammeAdminStoreRef,
   },

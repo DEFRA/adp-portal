@@ -3,6 +3,7 @@ import { deliveryProjectGithubTeamsSyncronizerRef } from '../../githubTeam';
 import { type Request } from 'express';
 
 export default createEndpointRef({
+  name: 'syncDeliveryProjectTeamsWithGithub',
   deps: {
     teamSyncronizer: deliveryProjectGithubTeamsSyncronizerRef,
   },

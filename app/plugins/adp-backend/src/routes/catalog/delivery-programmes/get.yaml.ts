@@ -11,6 +11,7 @@ import { normalizeUsername } from '@internal/plugin-adp-common';
 import { armsLengthBodyStoreRef } from '../../../armsLengthBody';
 
 export default createEndpointRef({
+  name: 'getDeliveryProgrammeEntityYaml',
   deps: {
     armsLengthBodyStore: armsLengthBodyStoreRef,
     deliveryProgrammeStore: deliveryProgrammeStoreRef,

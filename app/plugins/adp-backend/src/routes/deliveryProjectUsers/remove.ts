@@ -8,6 +8,7 @@ import { createEndpointRef } from '../util';
 import { fireAndForgetCatalogRefresherRef } from '../../services';
 
 export default createEndpointRef({
+  name: 'removeDeliveryProjectUser',
   deps: {
     deliveryProjectUserStore: deliveryProjectUserStoreRef,
     teamSyncronizer: deliveryProjectGithubTeamsSyncronizerRef,

@@ -3,6 +3,7 @@ import { deliveryProgrammeStoreRef } from '../../deliveryProgramme';
 import { createEndpointRef } from '../util';
 
 export default createEndpointRef({
+  name: 'getAllArmsLengthBodies',
   deps: {
     armsLengthBodyStore: armsLengthBodyStoreRef,
     deliveryProgrammeStore: deliveryProgrammeStoreRef,

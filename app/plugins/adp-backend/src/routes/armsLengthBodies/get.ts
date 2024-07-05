@@ -3,6 +3,7 @@ import { armsLengthBodyStoreRef } from '../../armsLengthBody';
 import { createEndpointRef } from '../util';
 
 export default createEndpointRef({
+  name: 'getArmsLengthBody',
   deps: {
     armsLengthBodyStore: armsLengthBodyStoreRef,
   },

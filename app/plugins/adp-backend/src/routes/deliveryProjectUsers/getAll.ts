@@ -2,6 +2,7 @@ import { deliveryProjectUserStoreRef } from '../../deliveryProjectUser';
 import { createEndpointRef } from '../util';
 
 export default createEndpointRef({
+  name: 'getAllDeliveryProjectUsers',
   deps: {
     deliveryProjectUserStore: deliveryProjectUserStoreRef,
   },

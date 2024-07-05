@@ -5,10 +5,6 @@ import {
   createServiceRef,
 } from '@backstage/backend-plugin-api';
 import { type CatalogApi, CatalogClient } from '@backstage/catalog-client';
-import {
-  DefaultIdentityClient,
-  type IdentityApi,
-} from '@backstage/plugin-auth-node';
 
 export const catalogApiRef = createServiceRef<CatalogApi>({
   id: 'backstage.catalog.client',
@@ -41,27 +37,6 @@ export const middlewareFactoryRef = createServiceRef<MiddlewareFactory>({
         },
         factory(deps) {
           return MiddlewareFactory.create(deps);
-        },
-      }),
-    );
-  },
-});
-
-export const authIdentityRef = createServiceRef<IdentityApi>({
-  id: 'backstage.identity.auth',
-  scope: 'plugin',
-  defaultFactory(service) {
-    return Promise.resolve(
-      createServiceFactory({
-        service,
-        deps: {
-          discovery: coreServices.discovery,
-        },
-        async factory({ discovery }) {
-          return DefaultIdentityClient.create({
-            discovery,
-            issuer: await discovery.getExternalBaseUrl('auth'),
-          });
         },
       }),
     );

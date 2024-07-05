@@ -8,6 +8,7 @@ import {
 import { armsLengthBodyStoreRef } from '../../../armsLengthBody';
 
 export default createEndpointRef({
+  name: 'getArmsLengthBodyEntityYaml',
   deps: {
     armsLengthBodyStore: armsLengthBodyStoreRef,
   },

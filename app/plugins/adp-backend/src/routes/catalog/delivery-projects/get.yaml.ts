@@ -14,6 +14,7 @@ import { deliveryProjectStoreRef } from '../../../deliveryProject';
 import { deliveryProjectUserStoreRef } from '../../../deliveryProjectUser';
 
 export default createEndpointRef({
+  name: 'getDeliveryProjectEntityYaml',
   deps: {
     deliveryProgrammeStore: deliveryProgrammeStoreRef,
     deliveryProjectStore: deliveryProjectStoreRef,

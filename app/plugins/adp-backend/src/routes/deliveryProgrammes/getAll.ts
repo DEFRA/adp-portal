@@ -3,6 +3,7 @@ import { deliveryProgrammeStoreRef } from '../../deliveryProgramme';
 import { deliveryProjectStoreRef } from '../../deliveryProject';
 
 export default createEndpointRef({
+  name: 'getAllDeliveryProgrammes',
   deps: {
     deliveryProgrammeStore: deliveryProgrammeStoreRef,
     deliveryProjectStore: deliveryProjectStoreRef,

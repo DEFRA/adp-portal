@@ -5,6 +5,7 @@ import { deliveryProgrammeAdminStoreRef } from '../../deliveryProgrammeAdmin';
 import { getDeliveryProgramme } from './getDeliveryProgramme';
 
 export default createEndpointRef({
+  name: 'getDeliveryProgramme',
   deps: {
     deliveryProgrammeStore: deliveryProgrammeStoreRef,
     deliveryProgrammeAdminStore: deliveryProgrammeAdminStoreRef,

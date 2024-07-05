@@ -18,7 +18,7 @@ import { faker } from '@faker-js/faker';
 import { expectedProgrammeAdmin } from '../../testData/programmeAdminTestData';
 import { coreServices } from '@backstage/backend-plugin-api';
 import deliveryProgrammeAdmins from '.';
-import { authIdentityRef, catalogApiRef } from '../../refs';
+import { catalogApiRef } from '../../refs';
 import { testHelpers } from '../../utils/testHelpers';
 import { fireAndForgetCatalogRefresherRef } from '../../services';
 import {
@@ -28,12 +28,6 @@ import {
 
 describe('createRouter', () => {
   let deliveryProgrammeAdminApp: express.Express;
-  const mockIdentityApi = {
-    getIdentity: jest.fn().mockResolvedValue({
-      identity: { userEntityRef: 'user:default/johndoe' },
-    }),
-  };
-
   const mockDeliveryProgrammeAdminStore: jest.Mocked<IDeliveryProgrammeAdminStore> =
     {
       add: jest.fn(),
@@ -71,7 +65,6 @@ describe('createRouter', () => {
     const deliveryProgrammeAdminRouter = await testHelpers.getAutoServiceRef(
       deliveryProgrammeAdmins,
       [
-        testHelpers.provideService(authIdentityRef, mockIdentityApi),
         testHelpers.provideService(catalogApiRef, mockCatalogClient),
         testHelpers.provideService(
           deliveryProgrammeAdminStoreRef,

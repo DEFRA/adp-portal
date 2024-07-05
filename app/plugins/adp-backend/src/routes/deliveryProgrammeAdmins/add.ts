@@ -14,6 +14,7 @@ import { z } from 'zod';
 import { errorMapping } from './errorMapping';
 
 export default createEndpointRef({
+  name: 'addDeliveryProgrammeAdmin',
   deps: {
     tokens: tokenProviderRef,
     catalog: catalogApiRef,

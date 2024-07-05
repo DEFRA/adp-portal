@@ -14,6 +14,7 @@ import {
 } from '@internal/plugin-credentials-context-backend';
 
 export default createEndpointRef({
+  name: 'createDeliveryProgramme',
   deps: {
     tokenProvider: tokenProviderRef,
     identity: identityProviderRef,

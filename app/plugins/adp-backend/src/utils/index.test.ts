@@ -1,32 +1,5 @@
 import type { DeliveryProject } from '@internal/plugin-adp-common';
-import { getCurrentUsername, createGithubTeamDetails } from './index';
-import express from 'express';
-
-describe('getCurrentUsername', () => {
-  const mockIdentityApi = {
-    getIdentity: jest.fn().mockResolvedValue({
-      identity: { userEntityRef: 'user:default/johndoe' },
-    }),
-  };
-
-  it('returns the username when identity is found', async () => {
-    mockIdentityApi.getIdentity.mockResolvedValue({
-      identity: { userEntityRef: 'user:default/johndoe' },
-    });
-
-    await expect(
-      getCurrentUsername(mockIdentityApi, express.request),
-    ).resolves.toBe('user:default/johndoe');
-  });
-
-  it('returns "unknown" when identity is not found', async () => {
-    mockIdentityApi.getIdentity.mockResolvedValue(null);
-
-    await expect(
-      getCurrentUsername(mockIdentityApi, express.request),
-    ).resolves.toBe('unknown');
-  });
-});
+import { createGithubTeamDetails } from './index';
 
 describe('createGithubTeamNames', () => {
   it.each<{

@@ -4,6 +4,7 @@ import getYaml from './get.yaml';
 import { middlewareFactoryRef } from '../../../refs';
 
 export default createRouterRef({
+  name: 'armsLengthBodyEntities',
   deps: {
     middleware: middlewareFactoryRef,
     getAllYaml,

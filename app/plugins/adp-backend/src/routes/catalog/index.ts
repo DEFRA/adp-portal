@@ -4,6 +4,7 @@ import deliveryProgrammes from './delivery-programmes';
 import deliveryProjects from './delivery-projects';
 
 export default createRouterRef({
+  name: 'catalog',
   deps: {
     armsLengthBodies,
     deliveryProgrammes,

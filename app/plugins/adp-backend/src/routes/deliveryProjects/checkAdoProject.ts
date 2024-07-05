@@ -3,6 +3,7 @@ import { adoProjectApiRef } from '../../deliveryProject';
 import { type Request } from 'express';
 
 export default createEndpointRef({
+  name: 'checkIfAdoProjectExists',
   deps: {
     adoProjectApi: adoProjectApiRef,
   },

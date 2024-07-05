@@ -12,6 +12,7 @@ import { errorMapping } from './errorMapping';
 import { tokenProviderRef } from '@internal/plugin-credentials-context-backend';
 
 export default createEndpointRef({
+  name: 'updateDeliveryProjectUser',
   deps: {
     tokenProvider: tokenProviderRef,
     catalog: catalogApiRef,

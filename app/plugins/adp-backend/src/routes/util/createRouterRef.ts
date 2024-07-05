@@ -4,14 +4,15 @@ import {
   createServiceRef,
 } from '@backstage/backend-plugin-api';
 import type { Router } from 'express';
-import { randomUUID } from 'node:crypto';
 import { routerFactoryRef } from './routerFactoryRef';
 import { type RouterResults, routerResultsRef } from './routerResultsRef';
 import type { ServiceRefsToInstances } from './ServiceRefsToInstances';
+import { groupRefs } from './groupRefs';
 
 interface RouterFactoryOptions<
   Dependencies extends Record<string, ServiceRef<unknown, 'plugin' | 'root'>>,
 > {
+  name: string;
   deps: Dependencies;
   factory(options: {
     router: Router;
@@ -20,42 +21,55 @@ interface RouterFactoryOptions<
   }): void | Promise<void>;
 }
 
+/**
+ * @example
+ * export default createRouterRef({
+ *   name: 'myRouter',
+ *   deps: {
+ *     getFoo: getFooEndpointRef
+ *   },
+ *   factory({ router, deps }) {
+ *     router.get('/foo', deps.getFoo);
+ *   }
+ * })
+ * @param options The options to pass to the default router factory
+ * @returns a service reference for a router
+ */
 export function createRouterRef<
   Dependencies extends Record<string, ServiceRef<unknown, 'plugin' | 'root'>>,
 >(options: RouterFactoryOptions<Dependencies>) {
   return createServiceRef<Router>({
-    id: `adp.router.${randomUUID()}`,
+    id: `adp.router.${options.name}`,
     scope: 'plugin',
     defaultFactory(service) {
       return Promise.resolve(createRouterFactory(service, options));
     },
   });
 }
+
 function createRouterFactory<
   Dependencies extends Record<string, ServiceRef<unknown, 'plugin' | 'root'>>,
 >(
   service: ServiceRef<Router, 'plugin'>,
   options: RouterFactoryOptions<Dependencies>,
 ) {
-  const routerFactoryKey = randomUUID() as 'routerFactory';
-  const routerResultsKey = randomUUID() as 'routerResults';
-  return createServiceFactory<Router, Router, any>({
-    service,
-    deps: {
-      ...options.deps,
-      [routerFactoryKey]: routerFactoryRef,
-      [routerResultsKey]: routerResultsRef,
+  const xdeps = groupRefs({
+    factory: options.deps,
+    extra: {
+      routerFactory: routerFactoryRef,
+      responses: routerResultsRef,
     },
-    async factory({
-      [routerFactoryKey]: routerFactory,
-      [routerResultsKey]: routerResults,
-      ...deps
-    }) {
-      const router = routerFactory();
+  });
+  return createServiceFactory({
+    service,
+    deps: xdeps.refs,
+    async factory(services) {
+      const deps = xdeps.read(services);
+      const router = deps.extra.routerFactory();
       await options.factory({
         router,
-        deps: deps as Dependencies,
-        responses: routerResults,
+        deps: deps.factory,
+        responses: deps.extra.responses,
       });
       return router;
     },

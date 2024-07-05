@@ -7,6 +7,7 @@ import { createEndpointRef } from '../util';
 import { z } from 'zod';
 
 export default createEndpointRef({
+  name: 'removeDeliveryProgrammeAdmin',
   deps: {
     logger: coreServices.logger,
     deliveryProgrammeAdminStore: deliveryProgrammeAdminStoreRef,

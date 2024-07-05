@@ -12,6 +12,7 @@ import remove from './remove';
 import getAll from './getAll';
 
 export default createRouterRef({
+  name: 'deliveryProgrammeAdmins',
   deps: {
     middleware: middlewareFactoryRef,
     checkAuth,

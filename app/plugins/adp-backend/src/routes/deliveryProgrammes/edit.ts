@@ -8,6 +8,7 @@ import { errorMapping } from './errorMapping';
 import { identityProviderRef } from '@internal/plugin-credentials-context-backend';
 
 export default createEndpointRef({
+  name: 'editDeliveryProgramme',
   deps: {
     identity: identityProviderRef,
     deliveryProgrammeStore: deliveryProgrammeStoreRef,

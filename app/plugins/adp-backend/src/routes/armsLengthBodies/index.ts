@@ -13,6 +13,7 @@ import create from './create';
 import edit from './edit';
 
 export default createRouterRef({
+  name: 'armsLengthBodies',
   deps: {
     middleware: middlewareFactoryRef,
     healthCheck,
