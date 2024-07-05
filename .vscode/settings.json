@@ -13,7 +13,7 @@
   "prettier.prettierPath": "app/node_modules/prettier/index.cjs",
   "typescript.tsdk": "app/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "jest.jestCommandLine": "yarn test --runInBand",
+  "jest.jestCommandLine": "node_modules/.bin/backstage-cli repo test --config jest.config.js --runInBand",
   "jest.rootPath": "app",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

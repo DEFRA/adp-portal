@@ -91,11 +91,6 @@ export class AdpOnboardingUrlReader implements UrlReaderService {
         `Request failed for ${url}, ${response.status} ${response.statusText}`,
       );
     }
-    if (response.headers.get('content-type') !== 'application/yaml') {
-      throw new Error(
-        `Request failed for ${url}, expected yaml, got Content-Type: ${response.headers.get('content-type')}`,
-      );
-    }
 
     const content = await response.text();
     const etag = createHash('md5').update(content).digest('hex');
