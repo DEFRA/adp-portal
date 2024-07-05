@@ -34,7 +34,6 @@ import {
 } from '../../deliveryProgrammeAdmin';
 import { deliveryProjectStoreRef } from '../../deliveryProject';
 import type { UUID } from 'node:crypto';
-import { stringifyEntityRef } from '@backstage/catalog-model';
 
 export default createRouterRef({
   deps: {
@@ -154,11 +153,7 @@ export default createRouterRef({
               'graph.microsoft.com/user-id'
             ],
           delivery_programme_id: result.value.id as UUID,
-          user_entity_ref: stringifyEntityRef({
-            kind: 'user',
-            namespace: 'default',
-            name: creator,
-          }),
+          user_entity_ref: creator,
         };
         await deliveryProgrammeAdminStore.add(addUser);
       }
