@@ -9,33 +9,6 @@ import {
 } from '../../../armsLengthBody';
 
 describe('default', () => {
-  async function setup() {
-    const config = mockServices.rootConfig({
-      data: {
-        app: {
-          baseUrl: 'http://defra-adp:3000',
-        },
-      },
-    });
-
-    const albs: jest.Mocked<IArmsLengthBodyStore> = {
-      add: jest.fn(),
-      get: jest.fn(),
-      getAll: jest.fn(),
-      update: jest.fn(),
-      getByName: jest.fn(),
-    };
-
-    const handler = await testHelpers.getAutoServiceRef(getAllYaml, [
-      testHelpers.provideService(armsLengthBodyStoreRef, albs),
-      testHelpers.provideService(coreServices.rootConfig, config),
-    ]);
-
-    const app = testHelpers.makeApp(x => x.get('/index.yaml', handler));
-
-    return { handler, app, albs };
-  }
-
   it('Should return ok with the data from the store', async () => {
     const { app, albs } = await setup();
     albs.getAll.mockResolvedValueOnce([
@@ -75,3 +48,30 @@ spec:
     });
   });
 });
+
+async function setup() {
+  const config = mockServices.rootConfig({
+    data: {
+      app: {
+        baseUrl: 'http://defra-adp:3000',
+      },
+    },
+  });
+
+  const albs: jest.Mocked<IArmsLengthBodyStore> = {
+    add: jest.fn(),
+    get: jest.fn(),
+    getAll: jest.fn(),
+    update: jest.fn(),
+    getByName: jest.fn(),
+  };
+
+  const handler = await testHelpers.getAutoServiceRef(getAllYaml, [
+    testHelpers.provideService(armsLengthBodyStoreRef, albs),
+    testHelpers.provideService(coreServices.rootConfig, config),
+  ]);
+
+  const app = testHelpers.makeApp(x => x.get('/index.yaml', handler));
+
+  return { handler, app, albs };
+}

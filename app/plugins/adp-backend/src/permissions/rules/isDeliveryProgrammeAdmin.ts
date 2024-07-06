@@ -11,7 +11,7 @@ export const isDeliveryProgrammeAdmin = createDeliveryProgrammePermissionRule({
     userId: z.string().describe('ID of the user to check'),
   }),
   apply(resource: DeliveryProgramme, { userId }) {
-    const programmeAdmin = resource.delivery_programme_admins.find(
+    const programmeAdmin = resource.delivery_programme_admins?.find(
       user => user.user_entity_ref === userId,
     );
 

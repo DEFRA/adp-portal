@@ -5,7 +5,6 @@ import type {
 import type { delivery_programme } from '../deliveryProgramme/delivery_programme';
 
 export const expectedProgrammeData = {
-  delivery_programme_admins: [],
   title: 'Test title expectedProgrammeData',
   alias: 'Test Alias',
   description: 'Test description',
@@ -65,7 +64,6 @@ export const expectedProgrammeDataWithName = {
   url: 'Test url',
   name: 'test-title-expectedprogrammedatawithname',
   id: '',
-  delivery_programme_admins: [],
   arms_length_body_id: '',
   created_at: new Date(),
   updated_at: new Date(),

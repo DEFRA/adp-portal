@@ -9,33 +9,6 @@ import { coreServices } from '@backstage/backend-plugin-api';
 import { mockServices } from '@backstage/backend-test-utils';
 
 describe('default', () => {
-  async function setup() {
-    const config = mockServices.rootConfig({
-      data: {
-        app: {
-          baseUrl: 'http://defra-adp:3000',
-        },
-      },
-    });
-
-    const programmes: jest.Mocked<IDeliveryProgrammeStore> = {
-      add: jest.fn(),
-      get: jest.fn(),
-      getAll: jest.fn(),
-      update: jest.fn(),
-      getByName: jest.fn(),
-    };
-
-    const handler = await testHelpers.getAutoServiceRef(getAllYaml, [
-      testHelpers.provideService(deliveryProgrammeStoreRef, programmes),
-      testHelpers.provideService(coreServices.rootConfig, config),
-    ]);
-
-    const app = testHelpers.makeApp(x => x.get('/index.yaml', handler));
-
-    return { handler, app, programmes };
-  }
-
   it('Should return ok with the data from the store', async () => {
     const { app, programmes } = await setup();
     programmes.getAll.mockResolvedValueOnce([
@@ -75,3 +48,30 @@ spec:
     });
   });
 });
+
+async function setup() {
+  const config = mockServices.rootConfig({
+    data: {
+      app: {
+        baseUrl: 'http://defra-adp:3000',
+      },
+    },
+  });
+
+  const programmes: jest.Mocked<IDeliveryProgrammeStore> = {
+    add: jest.fn(),
+    get: jest.fn(),
+    getAll: jest.fn(),
+    update: jest.fn(),
+    getByName: jest.fn(),
+  };
+
+  const handler = await testHelpers.getAutoServiceRef(getAllYaml, [
+    testHelpers.provideService(deliveryProgrammeStoreRef, programmes),
+    testHelpers.provideService(coreServices.rootConfig, config),
+  ]);
+
+  const app = testHelpers.makeApp(x => x.get('/index.yaml', handler));
+
+  return { handler, app, programmes };
+}

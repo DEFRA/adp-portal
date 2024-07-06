@@ -7,28 +7,6 @@ import deliveryProgrammes from './delivery-programmes';
 import deliveryProjects from './delivery-projects';
 
 describe('default', () => {
-  async function setup() {
-    const albs = Router();
-    const programmes = Router();
-    const projects = Router();
-
-    const handler = await testHelpers.getAutoServiceRef(index, [
-      testHelpers.provideService(armsLengthBodies, albs),
-      testHelpers.provideService(deliveryProgrammes, programmes),
-      testHelpers.provideService(deliveryProjects, projects),
-    ]);
-
-    const app = express();
-    app.use(handler);
-
-    return {
-      handler,
-      app,
-      albs,
-      programmes,
-      projects,
-    };
-  }
   describe('GET /arms-length-bodies', () => {
     it('Should call armsLengthBodies', async () => {
       const { app, albs } = await setup();
@@ -74,3 +52,26 @@ describe('default', () => {
     });
   });
 });
+
+async function setup() {
+  const albs = Router();
+  const programmes = Router();
+  const projects = Router();
+
+  const handler = await testHelpers.getAutoServiceRef(index, [
+    testHelpers.provideService(armsLengthBodies, albs),
+    testHelpers.provideService(deliveryProgrammes, programmes),
+    testHelpers.provideService(deliveryProjects, projects),
+  ]);
+
+  const app = express();
+  app.use(handler);
+
+  return {
+    handler,
+    app,
+    albs,
+    programmes,
+    projects,
+  };
+}

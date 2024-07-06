@@ -1,4 +1,4 @@
-import { deliveryProgrammeAdminServiceRef } from '../../services/DeliveryProgrammeAdminService';
+import { deliveryProgrammeAdminServiceRef } from '../../services';
 import { createEndpointRef } from '../util';
 import type { Request } from 'express';
 

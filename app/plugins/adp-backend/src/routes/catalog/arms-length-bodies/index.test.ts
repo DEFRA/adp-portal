@@ -7,29 +7,6 @@ import getYaml from './get.yaml';
 import { healthCheck } from '../../util';
 
 describe('default', () => {
-  async function setup() {
-    const mockGetAllYaml = testHelpers.strictFn<(typeof getAllYaml)['T']>();
-    const mockGetYaml = testHelpers.strictFn<(typeof getYaml)['T']>();
-    const mockHealthCheck = testHelpers.strictFn<(typeof healthCheck)['T']>();
-
-    const handler = await testHelpers.getAutoServiceRef(index, [
-      testHelpers.provideService(getAllYaml, mockGetAllYaml),
-      testHelpers.provideService(getYaml, mockGetYaml),
-      testHelpers.provideService(healthCheck, mockHealthCheck),
-    ]);
-
-    const app = express();
-    app.use(handler);
-
-    return {
-      handler,
-      app,
-      mockGetAllYaml,
-      mockGetYaml,
-      mockHealthCheck,
-    };
-  }
-
   describe('GET /entity.yaml', () => {
     it('Should call getAllYaml', async () => {
       const { app, mockGetAllYaml } = await setup();
@@ -81,3 +58,26 @@ describe('default', () => {
     });
   });
 });
+
+async function setup() {
+  const mockGetAllYaml = testHelpers.strictFn<(typeof getAllYaml)['T']>();
+  const mockGetYaml = testHelpers.strictFn<(typeof getYaml)['T']>();
+  const mockHealthCheck = testHelpers.strictFn<(typeof healthCheck)['T']>();
+
+  const handler = await testHelpers.getAutoServiceRef(index, [
+    testHelpers.provideService(getAllYaml, mockGetAllYaml),
+    testHelpers.provideService(getYaml, mockGetYaml),
+    testHelpers.provideService(healthCheck, mockHealthCheck),
+  ]);
+
+  const app = express();
+  app.use(handler);
+
+  return {
+    handler,
+    app,
+    mockGetAllYaml,
+    mockGetYaml,
+    mockHealthCheck,
+  };
+}

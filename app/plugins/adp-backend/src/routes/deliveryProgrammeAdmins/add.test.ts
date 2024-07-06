@@ -5,7 +5,7 @@ import type {
 import {
   deliveryProgrammeAdminServiceRef,
   type IDeliveryProgrammeAdminService,
-} from '../../services/DeliveryProgrammeAdminService';
+} from '../../services';
 import { testHelpers } from '../../utils/testHelpers';
 import add from './add';
 import request from 'supertest';

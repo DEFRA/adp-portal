@@ -1,23 +1,16 @@
 import { createEndpointRef } from '../util';
-import { deliveryProgrammeStoreRef } from '../../deliveryProgramme';
 import { createParser } from '../../utils';
 import { type UpdateDeliveryProgrammeRequest } from '@internal/plugin-adp-common';
 import { z } from 'zod';
-import { fireAndForgetCatalogRefresherRef } from '../../services';
 import { errorMapping } from './errorMapping';
-import { identityProviderRef } from '@internal/plugin-credentials-context-backend';
+import { deliveryProgrammeServiceRef } from '../../services';
 
 export default createEndpointRef({
   name: 'editDeliveryProgramme',
   deps: {
-    identity: identityProviderRef,
-    deliveryProgrammeStore: deliveryProgrammeStoreRef,
-    catalogRefresher: fireAndForgetCatalogRefresherRef,
+    service: deliveryProgrammeServiceRef,
   },
-  factory({
-    deps: { identity, deliveryProgrammeStore, catalogRefresher },
-    responses: { ok, validationErrors },
-  }) {
+  factory({ deps: { service }, responses: { ok, validationErrors } }) {
     const parseBody = createParser<UpdateDeliveryProgrammeRequest>(
       z.object({
         id: z.string(),
@@ -32,12 +25,10 @@ export default createEndpointRef({
 
     return async request => {
       const body = parseBody(request.body);
-      const { userEntityRef } = await identity.getCurrentIdentity();
-      const result = await deliveryProgrammeStore.update(body, userEntityRef);
+      const result = await service.edit(body);
       if (!result.success)
         return validationErrors(result.errors, errorMapping, body);
 
-      await catalogRefresher.refresh(`location:default/delivery-programmes`);
       return ok().json(result.value);
     };
   },

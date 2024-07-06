@@ -68,7 +68,6 @@ describe('isDeliveryProgrammeAdmin', () => {
       const deliveryProgramme: DeliveryProgramme = {
         arms_length_body_id: faker.string.uuid(),
         created_at: faker.date.recent(),
-        delivery_programme_admins: [],
         delivery_programme_code: 'ABC',
         description: 'Test programme',
         id: faker.string.uuid(),

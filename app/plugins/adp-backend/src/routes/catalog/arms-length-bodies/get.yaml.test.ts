@@ -8,24 +8,6 @@ import request from 'supertest';
 import { randomUUID } from 'node:crypto';
 
 describe('default', () => {
-  async function setup() {
-    const albs: jest.Mocked<IArmsLengthBodyStore> = {
-      add: jest.fn(),
-      get: jest.fn(),
-      getAll: jest.fn(),
-      update: jest.fn(),
-      getByName: jest.fn(),
-    };
-
-    const handler = await testHelpers.getAutoServiceRef(getYaml, [
-      testHelpers.provideService(armsLengthBodyStoreRef, albs),
-    ]);
-
-    const app = testHelpers.makeApp(x => x.get('/:name/entity.yaml', handler));
-
-    return { handler, app, albs };
-  }
-
   it('Should return ok with the data from the store', async () => {
     const { app, albs } = await setup();
     const albId = randomUUID();
@@ -71,3 +53,21 @@ spec:
     });
   });
 });
+
+async function setup() {
+  const albs: jest.Mocked<IArmsLengthBodyStore> = {
+    add: jest.fn(),
+    get: jest.fn(),
+    getAll: jest.fn(),
+    update: jest.fn(),
+    getByName: jest.fn(),
+  };
+
+  const handler = await testHelpers.getAutoServiceRef(getYaml, [
+    testHelpers.provideService(armsLengthBodyStoreRef, albs),
+  ]);
+
+  const app = testHelpers.makeApp(x => x.get('/:name/entity.yaml', handler));
+
+  return { handler, app, albs };
+}

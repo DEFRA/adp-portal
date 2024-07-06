@@ -4,7 +4,7 @@ export type DeliveryProgramme = {
   id: string;
   created_at: Date;
   updated_at: Date;
-  delivery_programme_admins: DeliveryProgrammeAdmin[];
+  delivery_programme_admins?: DeliveryProgrammeAdmin[];
   title: string;
   readonly name: string;
   alias?: string;
@@ -13,7 +13,6 @@ export type DeliveryProgramme = {
   delivery_programme_code: string;
   url?: string;
   updated_by?: string;
-  children?: string[];
 };
 
 export type CreateDeliveryProgrammeRequest = {

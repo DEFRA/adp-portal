@@ -1,499 +1,201 @@
 import express from 'express';
-import request from 'supertest';
-import {
-  expectedProgrammeDataWithManager,
-  programmeManagerList,
-  expectedProgrammeDataWithName,
-} from '../../testData/programmeTestData';
-import { InputError } from '@backstage/errors';
-import {
-  deliveryProjectStoreRef,
-  type IDeliveryProjectStore,
-} from '../../deliveryProject';
-import {
-  deliveryProgrammeStoreRef,
-  type IDeliveryProgrammeStore,
-} from '../../deliveryProgramme';
-import { expectedProjectDataWithName } from '../../testData/projectTestData';
-import {
-  deliveryProgrammeAdminStoreRef,
-  type IDeliveryProgrammeAdminStore,
-} from '../../deliveryProgrammeAdmin';
-import type {
-  CreateDeliveryProgrammeRequest,
-  UpdateDeliveryProgrammeRequest,
-} from '@internal/plugin-adp-common';
-import { mockServices } from '@backstage/backend-test-utils';
-import { AuthorizeResult } from '@backstage/plugin-permission-common';
-import type { CatalogApi } from '@backstage/catalog-client';
-import { catalogTestData } from '../../testData/catalogEntityTestData';
-import { coreServices } from '@backstage/backend-plugin-api';
-import deliveryProgrammes from '.';
-import { catalogApiRef } from '../../refs';
 import { testHelpers } from '../../utils/testHelpers';
-import { fireAndForgetCatalogRefresherRef } from '../../services';
+import index from './index';
+import get from './get';
+import create from './create';
+import edit from './edit';
+import getAll from './getAll';
+import request from 'supertest';
+import checkAuth from '../checkAuth';
+import { NotAllowedError } from '@backstage/errors';
 import {
-  type IdentityProvider,
-  type TokenProvider,
-  identityProviderRef,
-  tokenProviderRef,
-} from '@internal/plugin-credentials-context-backend';
+  deliveryProgrammeCreatePermission,
+  deliveryProgrammeUpdatePermission,
+} from '@internal/plugin-adp-common';
+import healthCheck from '../util/healthCheck';
 
-const managerByProgrammeId = programmeManagerList.filter(
-  managers => managers.delivery_programme_id === '123',
-);
-
-describe('createRouter', () => {
-  let programmeApp: express.Express;
-
-  const mockIdentityProvider: jest.Mocked<IdentityProvider> = {
-    getCurrentIdentity: jest.fn(),
-  };
-
-  const mockTokenProvider: jest.Mocked<TokenProvider> = {
-    getPluginRequestToken: jest.fn(),
-    getLimitedUserToken: jest.fn(),
-  };
-
-  const mockDeliveryProjectStore: jest.Mocked<IDeliveryProjectStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    getByName: jest.fn(),
-    update: jest.fn(),
-  };
-
-  const mockDeliveryProgrammeStore: jest.Mocked<IDeliveryProgrammeStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-    getByName: jest.fn(),
-  };
-
-  const mockDeliveryProgrammeAdminStore: jest.Mocked<IDeliveryProgrammeAdminStore> =
-    {
-      add: jest.fn(),
-      getByAADEntityRef: jest.fn(),
-      getByDeliveryProgramme: jest.fn(),
-      getAll: jest.fn(),
-      delete: jest.fn(),
-    };
-
-  const mockPermissionsService = mockServices.permissions.mock();
-
-  const mockCatalogClient: jest.Mocked<CatalogApi> = {
-    addLocation: jest.fn(),
-    getEntities: jest.fn(),
-    getEntitiesByRefs: jest.fn(),
-    getEntityAncestors: jest.fn(),
-    getEntityByRef: jest.fn(),
-    getEntityFacets: jest.fn(),
-    getLocationByEntity: jest.fn(),
-    getLocationById: jest.fn(),
-    getLocationByRef: jest.fn(),
-    queryEntities: jest.fn(),
-    refreshEntity: jest.fn(),
-    removeEntityByUid: jest.fn(),
-    removeLocationById: jest.fn(),
-    validateEntity: jest.fn(),
-  };
-
-  beforeAll(async () => {
-    const programmeRouter = await testHelpers.getAutoServiceRef(
-      deliveryProgrammes,
-      [
-        testHelpers.provideService(identityProviderRef, mockIdentityProvider),
-        testHelpers.provideService(tokenProviderRef, mockTokenProvider),
-        testHelpers.provideService(
-          deliveryProjectStoreRef,
-          mockDeliveryProjectStore,
-        ),
-        testHelpers.provideService(
-          deliveryProgrammeStoreRef,
-          mockDeliveryProgrammeStore,
-        ),
-        testHelpers.provideService(
-          deliveryProgrammeAdminStoreRef,
-          mockDeliveryProgrammeAdminStore,
-        ),
-        testHelpers.provideService(
-          coreServices.permissions,
-          mockPermissionsService,
-        ),
-        testHelpers.provideService(catalogApiRef, mockCatalogClient),
-        testHelpers.provideService(fireAndForgetCatalogRefresherRef, {
-          refresh: jest.fn(),
-        }),
-      ],
-    );
-    programmeApp = express().use(programmeRouter);
-  });
-
-  beforeEach(() => {
-    jest.resetAllMocks();
-    mockDeliveryProgrammeStore.add.mockResolvedValue({
-      success: true,
-      value: expectedProgrammeDataWithManager,
-    });
-    mockDeliveryProgrammeStore.get.mockResolvedValue(
-      expectedProgrammeDataWithManager,
-    );
-    mockDeliveryProgrammeStore.getAll.mockResolvedValue([
-      expectedProgrammeDataWithManager,
-    ]);
-    mockDeliveryProgrammeStore.update.mockResolvedValue({
-      success: true,
-      value: expectedProgrammeDataWithManager,
-    });
-    mockDeliveryProgrammeAdminStore.getAll.mockResolvedValue(
-      programmeManagerList,
-    );
-    mockDeliveryProgrammeAdminStore.add.mockResolvedValue({
-      value: programmeManagerList[0],
-      success: true,
-    });
-    mockDeliveryProgrammeAdminStore.getByDeliveryProgramme.mockResolvedValue(
-      managerByProgrammeId,
-    );
-    mockCatalogClient.getEntities.mockResolvedValue(catalogTestData);
-  });
-
-  describe('GET /health', () => {
-    it('returns ok', async () => {
-      const response = await request(programmeApp).get('/health');
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({ status: 'ok' });
-    });
-  });
-
+describe('default', () => {
   describe('GET /', () => {
-    it('returns ok', async () => {
-      mockDeliveryProjectStore.getAll.mockResolvedValue([
-        expectedProjectDataWithName,
-      ]);
-      mockDeliveryProgrammeStore.getAll.mockResolvedValueOnce([
-        expectedProgrammeDataWithManager,
-      ]);
-      const response = await request(programmeApp).get('/');
-      expect(response.status).toEqual(200);
-    });
-
-    it('returns bad request', async () => {
-      mockDeliveryProgrammeStore.getAll.mockRejectedValueOnce(
-        new InputError('error'),
+    it('Should call getAll', async () => {
+      const { app, mockGetAll } = await setup();
+      mockGetAll.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
-      const response = await request(programmeApp).get('/');
-      expect(response.status).toEqual(400);
+
+      const { status, body } = await request(app).get('/');
+
+      expect(mockGetAll).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
     });
   });
+  describe('GET /health', () => {
+    it('Should call health', async () => {
+      const { app, mockHealthCheck } = await setup();
+      mockHealthCheck.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
+      );
 
+      const { status, body } = await request(app).get('/health');
+
+      expect(mockHealthCheck).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
+    });
+  });
   describe('GET /:id', () => {
-    it('returns ok', async () => {
-      mockDeliveryProgrammeStore.get.mockResolvedValueOnce(
-        expectedProgrammeDataWithManager,
+    it('Should call get', async () => {
+      const { app, mockGet } = await setup();
+      mockGet.mockImplementationOnce((req, res) =>
+        res.status(200).json({ result: 'Success!', id: req.params.id }),
       );
-      mockDeliveryProgrammeAdminStore.getAll.mockResolvedValueOnce(
-        programmeManagerList,
-      );
-      const response = await request(programmeApp).get('/1234');
-      expect(response.status).toEqual(200);
-    });
 
-    it('returns bad request', async () => {
-      mockDeliveryProgrammeStore.get.mockRejectedValueOnce(
-        new InputError('error'),
-      );
-      const response = await request(programmeApp).get('/4321');
-      expect(response.status).toEqual(400);
+      const { status, body } = await request(app).get('/123456');
+
+      expect(mockGet).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!', id: '123456' },
+      });
     });
   });
-
   describe('POST /', () => {
-    it('returns created', async () => {
-      // arrange
-      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
-        token:
-          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
-      });
-      mockIdentityProvider.getCurrentIdentity.mockResolvedValue({
-        userEntityRef: 'test2.test.onmicrosoft.com',
-        ownershipEntityRefs: [],
-      });
-      mockDeliveryProgrammeStore.add.mockResolvedValue({
-        success: true,
-        value: expectedProgrammeDataWithName,
-      });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      // act
-      const response = await request(programmeApp)
-        .post('/')
-        .send({
-          title: 'def',
-          arms_length_body_id: '123',
-          description: 'My description',
-          delivery_programme_code: 'abc',
-        } satisfies CreateDeliveryProgrammeRequest);
-
-      const adminData = {
-        aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
-        delivery_programme_id: '',
-        email: 'test1.test@onmicrosoft.com',
-        name: 'test1',
-        user_entity_ref: 'test2.test.onmicrosoft.com',
-      };
-      // assert
-      expect(response.status).toEqual(201);
-      expect(response.body).toMatchObject(
-        JSON.parse(JSON.stringify(expectedProgrammeDataWithName)),
+    it('Should call create if you have permission', async () => {
+      const { app, mockCreate, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockCreate.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
-      expect(mockDeliveryProgrammeAdminStore.add).toHaveBeenCalledWith(
-        adminData,
+
+      const { status, body } = await request(app).post('/');
+
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(mockCheckAuth.mock.calls[0][0](null!)).toMatchObject({
+        permission: deliveryProgrammeCreatePermission,
+      });
+      expect(mockCreate).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
+    });
+    it('Should not call create if you dont have permission', async () => {
+      const { app, mockCreate, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) =>
+        next(new NotAllowedError('Unauthorized')),
       );
-    });
 
-    it('returns a 403 response if the user is not authorized', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.DENY },
-      ]);
+      const { status, body } = await request(app).post('/');
 
-      const response = await request(programmeApp)
-        .post('/')
-        .send({
-          title: 'def',
-          arms_length_body_id: '123',
-          description: 'My description',
-          delivery_programme_code: 'abc',
-        } satisfies CreateDeliveryProgrammeRequest);
-
-      expect(response.status).toEqual(403);
-    });
-
-    it('return 400 with errors', async () => {
-      // arrange
-      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
-        token:
-          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(mockCheckAuth.mock.calls[0][0](null!)).toMatchObject({
+        permission: deliveryProgrammeCreatePermission,
       });
-      mockIdentityProvider.getCurrentIdentity.mockResolvedValue({
-        userEntityRef: 'test2.test.onmicrosoft.com',
-        ownershipEntityRefs: [],
+      expect(mockCreate).toHaveBeenCalledTimes(0);
+      expect({ status, body }).toMatchObject({
+        status: 403,
+        body: {
+          error: {
+            message: 'Unauthorized',
+            name: 'NotAllowedError',
+          },
+        },
       });
-      mockDeliveryProgrammeStore.add.mockResolvedValue({
-        success: false,
-        errors: [
-          'duplicateName',
-          'duplicateProgrammeCode',
-          'duplicateTitle',
-          'unknown',
-          'unknownArmsLengthBody',
-        ],
-      });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      // act
-      const response = await request(programmeApp)
-        .post('/')
-        .send({
-          title: 'def',
-          arms_length_body_id: '123',
-          description: 'My description',
-          delivery_programme_code: 'abc',
-        } satisfies CreateDeliveryProgrammeRequest);
-
-      // assert
-      expect(response.status).toEqual(400);
-      expect(response.body).toMatchObject({
-        errors: [
-          {
-            path: 'title',
-            error: {
-              message:
-                "The name 'def' is already in use. Please choose a different name.",
-            },
-          },
-          {
-            path: 'delivery_programme_code',
-            error: {
-              message:
-                'The programme code is already in use by another delivery programme.',
-            },
-          },
-          {
-            path: 'title',
-            error: {
-              message:
-                "The name 'def' is already in use. Please choose a different name.",
-            },
-          },
-          {
-            path: 'root',
-            error: {
-              message: 'An unexpected error occurred.',
-            },
-          },
-          {
-            path: 'arms_length_body_id',
-            error: {
-              message: 'The arms length body does not exist.',
-            },
-          },
-        ],
-      });
-    });
-
-    it('return 400 if if the request is bad', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-      const response = await request(programmeApp)
-        .post('/')
-        .send({ notATitle: 'abc' });
-      expect(response.status).toEqual(400);
-    });
-
-    it('returns internal server error', async () => {
-      mockDeliveryProgrammeStore.add.mockRejectedValueOnce(new Error('error'));
-      const response = await request(programmeApp)
-        .post('/')
-        .send({
-          title: 'def',
-          arms_length_body_id: '123',
-          description: 'My description',
-          delivery_programme_code: 'abc',
-        } satisfies CreateDeliveryProgrammeRequest);
-      expect(response.status).toEqual(500);
     });
   });
-
   describe('PATCH /', () => {
-    it('returns ok', async () => {
-      // arrange
-      mockIdentityProvider.getCurrentIdentity.mockResolvedValue({
-        userEntityRef: 'test2.test.onmicrosoft.com',
-        ownershipEntityRefs: [],
-      });
-      mockDeliveryProgrammeStore.update.mockResolvedValue({
-        success: true,
-        value: expectedProgrammeDataWithName,
-      });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      // act
-      const response = await request(programmeApp)
-        .patch('/')
-        .send({ id: '123' } satisfies UpdateDeliveryProgrammeRequest);
-
-      // assert
-      expect(response.status).toEqual(200);
-      expect(response.body).toMatchObject(
-        JSON.parse(JSON.stringify(expectedProgrammeDataWithName)),
+    it('Should call create if you have permission', async () => {
+      const { app, mockEdit, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockEdit.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
-    });
 
-    it('returns a 403 response if the user is not authorized', async () => {
-      mockIdentityProvider.getCurrentIdentity.mockResolvedValue({
-        userEntityRef: 'test2.test.onmicrosoft.com',
-        ownershipEntityRefs: [],
+      const { status, body } = await request(app).patch('/');
+
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(
+        mockCheckAuth.mock.calls[0][0](
+          testHelpers.expressRequest({ body: { id: '123' } }),
+        ),
+      ).toMatchObject({
+        permission: deliveryProgrammeUpdatePermission,
+        resourceRef: '123',
       });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.DENY },
-      ]);
-
-      const response = await request(programmeApp)
-        .patch('/')
-        .send({ id: '123' } satisfies UpdateDeliveryProgrammeRequest);
-
-      expect(response.status).toEqual(403);
-    });
-
-    it('return 400 with errors', async () => {
-      // arrange
-      mockIdentityProvider.getCurrentIdentity.mockResolvedValue({
-        userEntityRef: 'test2.test.onmicrosoft.com',
-        ownershipEntityRefs: [],
-      });
-      mockDeliveryProgrammeStore.update.mockResolvedValue({
-        success: false,
-        errors: [
-          'duplicateProgrammeCode',
-          'duplicateTitle',
-          'unknown',
-          'unknownArmsLengthBody',
-        ],
-      });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      // act
-      const response = await request(programmeApp)
-        .patch('/')
-        .send({
-          id: '123',
-          arms_length_body_id: 'abc',
-          title: 'def',
-        } satisfies UpdateDeliveryProgrammeRequest);
-
-      // assert
-      expect(response.status).toEqual(400);
-      expect(response.body).toMatchObject({
-        errors: [
-          {
-            path: 'delivery_programme_code',
-            error: {
-              message:
-                'The programme code is already in use by another delivery programme.',
-            },
-          },
-          {
-            path: 'title',
-            error: {
-              message:
-                "The name 'def' is already in use. Please choose a different name.",
-            },
-          },
-          {
-            path: 'root',
-            error: {
-              message: 'An unexpected error occurred.',
-            },
-          },
-          {
-            path: 'arms_length_body_id',
-            error: {
-              message: 'The arms length body does not exist.',
-            },
-          },
-        ],
+      expect(mockEdit).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
       });
     });
-
-    it('return 400 if if the request is bad', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-      const response = await request(programmeApp)
-        .patch('/')
-        .send({ notAnId: 'abc' });
-      expect(response.status).toEqual(400);
-    });
-
-    it('returns internal server error', async () => {
-      mockDeliveryProgrammeStore.update.mockRejectedValueOnce(
-        new Error('error'),
+    it('Should not call create if you dont have permission', async () => {
+      const { app, mockEdit, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) =>
+        next(new NotAllowedError('Unauthorized')),
       );
-      const response = await request(programmeApp)
-        .patch('/')
-        .send({ id: '123' } satisfies UpdateDeliveryProgrammeRequest);
-      expect(response.status).toEqual(500);
+
+      const { status, body } = await request(app).patch('/');
+
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(
+        mockCheckAuth.mock.calls[0][0](
+          testHelpers.expressRequest({ body: { id: '123' } }),
+        ),
+      ).toMatchObject({
+        permission: deliveryProgrammeUpdatePermission,
+        resourceRef: '123',
+      });
+      expect(mockEdit).toHaveBeenCalledTimes(0);
+      expect({ status, body }).toMatchObject({
+        status: 403,
+        body: {
+          error: {
+            message: 'Unauthorized',
+            name: 'NotAllowedError',
+          },
+        },
+      });
     });
   });
 });
+
+async function setup() {
+  const mockCreate = testHelpers.strictFn<(typeof create)['T']>();
+  const mockEdit = testHelpers.strictFn<(typeof edit)['T']>();
+  const mockGet = testHelpers.strictFn<(typeof get)['T']>();
+  const mockGetAll = testHelpers.strictFn<(typeof getAll)['T']>();
+  const mockHealthCheck = testHelpers.strictFn<(typeof healthCheck)['T']>();
+  const mockCheckAuth = testHelpers.strictFn<(typeof checkAuth)['T']>();
+
+  const handler = await testHelpers.getAutoServiceRef(index, [
+    testHelpers.provideService(create, mockCreate),
+    testHelpers.provideService(edit, mockEdit),
+    testHelpers.provideService(get, mockGet),
+    testHelpers.provideService(getAll, mockGetAll),
+    testHelpers.provideService(healthCheck, mockHealthCheck),
+    testHelpers.provideService(
+      checkAuth,
+      getRequests =>
+        (...args) =>
+          mockCheckAuth(getRequests)(...args),
+    ),
+  ]);
+
+  const app = express();
+  app.use(handler);
+
+  return {
+    handler,
+    app,
+    mockCreate,
+    mockEdit,
+    mockGet,
+    mockGetAll,
+    mockHealthCheck,
+    mockCheckAuth,
+  };
+}

@@ -33,13 +33,19 @@ export type IDeliveryProgrammeAdminService = {
 
 export class DeliveryProgrammeAdminService {
   readonly #store: IDeliveryProgrammeAdminStore;
-  #userEntities: ICatalogUserEntityProvider;
-  #catalogRefresher: FireAndForgetCatalogRefresher;
+  readonly #userEntities: ICatalogUserEntityProvider;
+  readonly #catalogRefresher: FireAndForgetCatalogRefresher;
 
   constructor(options: DeliveryProgrammeAdminServiceOptions) {
     this.#store = options.store;
     this.#userEntities = options.userEntities;
     this.#catalogRefresher = options.catalogRefresher;
+  }
+
+  async #refresh(name?: string) {
+    await this.#catalogRefresher.refresh(
+      name ? `group:default/${name}` : 'location:default/delivery-programmes',
+    );
   }
 
   async add(
@@ -64,21 +70,13 @@ export class DeliveryProgrammeAdminService {
       user_entity_ref: userRef,
     });
 
-    if (result.success) {
-      await this.#catalogRefresher.refresh(
-        `location:default/delivery-programmes`,
-      );
-    }
+    if (result.success) await this.#refresh();
 
     return result;
   }
 
   async remove(id: string) {
-    if (await this.#store.delete(id)) {
-      await this.#catalogRefresher.refresh(
-        `location:default/delivery-programmes`,
-      );
-    }
+    if (await this.#store.delete(id)) await this.#refresh();
   }
 
   async getAll() {

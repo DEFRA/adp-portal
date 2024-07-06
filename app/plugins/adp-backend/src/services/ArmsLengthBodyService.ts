@@ -50,6 +50,12 @@ export class ArmsLengthBodyService {
     return userEntityRef;
   }
 
+  async #refresh(name?: string) {
+    await this.#catalogRefresher.refresh(
+      name ? `group:default/${name}` : 'location:default/arms-length-bodies',
+    );
+  }
+
   async create(data: CreateArmsLengthBodyRequest) {
     const owner = this.#config.getString('rbac.programmeAdminGroup');
     const result = await this.#armsLengthBodyStore.add(
@@ -58,11 +64,7 @@ export class ArmsLengthBodyService {
       owner,
     );
 
-    if (result.success) {
-      await this.#catalogRefresher.refresh(
-        'location:default/arms-length-bodies',
-      );
-    }
+    if (result.success) await this.#refresh();
 
     return result;
   }
@@ -72,11 +74,7 @@ export class ArmsLengthBodyService {
       data,
       await this.#currentEntityRef(),
     );
-    if (result.success) {
-      await this.#catalogRefresher.refresh(
-        `group:default/${result.value.name}`,
-      );
-    }
+    if (result.success) await this.#refresh(result.value.name);
 
     return result;
   }

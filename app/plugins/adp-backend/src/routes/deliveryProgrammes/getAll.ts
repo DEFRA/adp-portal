@@ -1,26 +1,15 @@
 import { createEndpointRef } from '../util';
-import { deliveryProgrammeStoreRef } from '../../deliveryProgramme';
-import { deliveryProjectStoreRef } from '../../deliveryProject';
+import { deliveryProgrammeServiceRef } from '../../services';
 
 export default createEndpointRef({
   name: 'getAllDeliveryProgrammes',
   deps: {
-    deliveryProgrammeStore: deliveryProgrammeStoreRef,
-    deliveryProjectStore: deliveryProjectStoreRef,
+    service: deliveryProgrammeServiceRef,
   },
-  factory({
-    deps: { deliveryProgrammeStore, deliveryProjectStore },
-    responses: { ok },
-  }) {
+  factory({ deps: { service }, responses: { ok } }) {
     return async () => {
-      const programmeData = await deliveryProgrammeStore.getAll();
-      const projectData = await deliveryProjectStore.getAll();
-      for (const programme of programmeData) {
-        programme.children = projectData
-          .filter(p => p.delivery_programme_id === programme.id)
-          .map(p => p.name);
-      }
-      return ok().json(programmeData);
+      const data = await service.getAll();
+      return ok().json(data);
     };
   },
 });

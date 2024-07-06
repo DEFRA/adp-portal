@@ -2,7 +2,7 @@ import type { DeleteDeliveryProgrammeAdminRequest } from '@internal/plugin-adp-c
 import {
   deliveryProgrammeAdminServiceRef,
   type IDeliveryProgrammeAdminService,
-} from '../../services/DeliveryProgrammeAdminService';
+} from '../../services';
 import { testHelpers } from '../../utils/testHelpers';
 import remove from './remove';
 import request from 'supertest';

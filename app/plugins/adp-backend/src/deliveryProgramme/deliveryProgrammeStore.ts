@@ -4,7 +4,6 @@ import {
   createName,
   type CreateDeliveryProgrammeRequest,
   type DeliveryProgramme,
-  type DeliveryProgrammeAdmin,
   type UpdateDeliveryProgrammeRequest,
 } from '@internal/plugin-adp-common';
 import {
@@ -204,16 +203,12 @@ export class DeliveryProgrammeStore {
     return { success: true, value: this.#normalize(result[0]) };
   }
 
-  #normalize(
-    row: delivery_programme,
-    programmeManagers: DeliveryProgrammeAdmin[] = [],
-  ): DeliveryProgramme {
+  #normalize(row: delivery_programme): DeliveryProgramme {
     return {
       ...row,
       alias: row.alias ?? undefined,
       url: row.url ?? undefined,
       updated_by: row.updated_by ?? undefined,
-      delivery_programme_admins: programmeManagers,
       created_at: new Date(row.created_at),
       updated_at: new Date(row.updated_at ? row.updated_at : row.created_at),
     };

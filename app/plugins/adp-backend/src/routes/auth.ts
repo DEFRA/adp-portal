@@ -11,13 +11,12 @@ import {
   deliveryProjectUserPermissions,
 } from '@internal/plugin-adp-common';
 import { deliveryProgrammeRules, deliveryProjectRules } from '../permissions';
-import { deliveryProgrammeStoreRef } from '../deliveryProgramme';
 import { deliveryProjectStoreRef } from '../deliveryProject';
 import { deliveryProjectUserStoreRef } from '../deliveryProjectUser';
 import { deliveryProgrammeAdminStoreRef } from '../deliveryProgrammeAdmin';
 import type { Router } from 'express';
-import { getDeliveryProgramme } from './deliveryProgrammes/getDeliveryProgramme';
 import { getDeliveryProject } from './deliveryProjects/getDeliveryProject';
+import { deliveryProgrammeServiceRef } from '../services';
 
 export default createServiceRef<Router>({
   id: 'adp.router.auth',
@@ -29,7 +28,7 @@ export default createServiceRef<Router>({
         deps: {
           deliveryProjects: deliveryProjectStoreRef,
           deliveryProjectUsers: deliveryProjectUserStoreRef,
-          deliveryProgrammes: deliveryProgrammeStoreRef,
+          deliveryProgrammes: deliveryProgrammeServiceRef,
           deliveryProgrammeAdmins: deliveryProgrammeAdminStoreRef,
         },
         factory({
@@ -70,15 +69,9 @@ export default createServiceRef<Router>({
               {
                 resourceType: DELIVERY_PROGRAMME_RESOURCE_TYPE,
                 rules: deliveryProgrammePermissionRules,
-                getResources: async (resourceRefs: string[]) => {
+                async getResources(ids) {
                   return await Promise.all(
-                    resourceRefs.map(async (ref: string) => {
-                      return await getDeliveryProgramme(
-                        deliveryProgrammes,
-                        deliveryProgrammeAdmins,
-                        ref,
-                      );
-                    }),
+                    ids.map(id => deliveryProgrammes.getById(id)),
                   );
                 },
               },

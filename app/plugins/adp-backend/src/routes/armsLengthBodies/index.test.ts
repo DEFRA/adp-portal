@@ -16,46 +16,6 @@ import {
 import healthCheck from '../util/healthCheck';
 
 describe('default', () => {
-  async function setup() {
-    const mockCreate = testHelpers.strictFn<(typeof create)['T']>();
-    const mockEdit = testHelpers.strictFn<(typeof edit)['T']>();
-    const mockGet = testHelpers.strictFn<(typeof get)['T']>();
-    const mockGetAll = testHelpers.strictFn<(typeof getAll)['T']>();
-    const mockGetNames = testHelpers.strictFn<(typeof getNames)['T']>();
-    const mockHealthCheck = testHelpers.strictFn<(typeof healthCheck)['T']>();
-    const mockCheckAuth = testHelpers.strictFn<(typeof checkAuth)['T']>();
-
-    const handler = await testHelpers.getAutoServiceRef(index, [
-      testHelpers.provideService(create, mockCreate),
-      testHelpers.provideService(edit, mockEdit),
-      testHelpers.provideService(get, mockGet),
-      testHelpers.provideService(getAll, mockGetAll),
-      testHelpers.provideService(getNames, mockGetNames),
-      testHelpers.provideService(healthCheck, mockHealthCheck),
-      testHelpers.provideService(
-        checkAuth,
-        getRequests =>
-          (...args) =>
-            mockCheckAuth(getRequests)(...args),
-      ),
-    ]);
-
-    const app = express();
-    app.use(handler);
-
-    return {
-      handler,
-      app,
-      mockCreate,
-      mockEdit,
-      mockGet,
-      mockGetAll,
-      mockGetNames,
-      mockHealthCheck,
-      mockCheckAuth,
-    };
-  }
-
   describe('GET /', () => {
     it('Should call getAll', async () => {
       const { app, mockGetAll } = await setup();
@@ -219,3 +179,43 @@ describe('default', () => {
     });
   });
 });
+
+async function setup() {
+  const mockCreate = testHelpers.strictFn<(typeof create)['T']>();
+  const mockEdit = testHelpers.strictFn<(typeof edit)['T']>();
+  const mockGet = testHelpers.strictFn<(typeof get)['T']>();
+  const mockGetAll = testHelpers.strictFn<(typeof getAll)['T']>();
+  const mockGetNames = testHelpers.strictFn<(typeof getNames)['T']>();
+  const mockHealthCheck = testHelpers.strictFn<(typeof healthCheck)['T']>();
+  const mockCheckAuth = testHelpers.strictFn<(typeof checkAuth)['T']>();
+
+  const handler = await testHelpers.getAutoServiceRef(index, [
+    testHelpers.provideService(create, mockCreate),
+    testHelpers.provideService(edit, mockEdit),
+    testHelpers.provideService(get, mockGet),
+    testHelpers.provideService(getAll, mockGetAll),
+    testHelpers.provideService(getNames, mockGetNames),
+    testHelpers.provideService(healthCheck, mockHealthCheck),
+    testHelpers.provideService(
+      checkAuth,
+      getRequests =>
+        (...args) =>
+          mockCheckAuth(getRequests)(...args),
+    ),
+  ]);
+
+  const app = express();
+  app.use(handler);
+
+  return {
+    handler,
+    app,
+    mockCreate,
+    mockEdit,
+    mockGet,
+    mockGetAll,
+    mockGetNames,
+    mockHealthCheck,
+    mockCheckAuth,
+  };
+}

@@ -2,7 +2,7 @@ import { createParser } from '../../utils';
 import { type DeleteDeliveryProgrammeAdminRequest } from '@internal/plugin-adp-common';
 import { createEndpointRef } from '../util';
 import { z } from 'zod';
-import { deliveryProgrammeAdminServiceRef } from '../../services/DeliveryProgrammeAdminService';
+import { deliveryProgrammeAdminServiceRef } from '../../services';
 
 export default createEndpointRef({
   name: 'removeDeliveryProgrammeAdmin',

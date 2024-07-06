@@ -16,41 +16,6 @@ import request from 'supertest';
 import { randomUUID } from 'node:crypto';
 
 describe('default', () => {
-  async function setup() {
-    const programmes: jest.Mocked<IDeliveryProgrammeStore> = {
-      add: jest.fn(),
-      get: jest.fn(),
-      getAll: jest.fn(),
-      update: jest.fn(),
-      getByName: jest.fn(),
-    };
-    const projects: jest.Mocked<IDeliveryProjectStore> = {
-      add: jest.fn(),
-      getAll: jest.fn(),
-      get: jest.fn(),
-      getByName: jest.fn(),
-      update: jest.fn(),
-    };
-    const projectUsers: jest.Mocked<IDeliveryProjectUserStore> = {
-      add: jest.fn(),
-      delete: jest.fn(),
-      get: jest.fn(),
-      getAll: jest.fn(),
-      getByDeliveryProject: jest.fn(),
-      update: jest.fn(),
-    };
-
-    const handler = await testHelpers.getAutoServiceRef(getYaml, [
-      testHelpers.provideService(deliveryProgrammeStoreRef, programmes),
-      testHelpers.provideService(deliveryProjectStoreRef, projects),
-      testHelpers.provideService(deliveryProjectUserStoreRef, projectUsers),
-    ]);
-
-    const app = testHelpers.makeApp(x => x.get('/:name/entity.yaml', handler));
-
-    return { handler, app, programmes, projects, projectUsers };
-  }
-
   it('Should return ok with the data from the store', async () => {
     const { app, programmes, projects, projectUsers } = await setup();
     const programmeId = randomUUID();
@@ -78,7 +43,6 @@ describe('default', () => {
       created_at: new Date(),
       updated_at: new Date(),
       arms_length_body_id: randomUUID(),
-      delivery_programme_admins: [],
       delivery_programme_code: randomUUID(),
       description: randomUUID(),
       id: randomUUID(),
@@ -133,3 +97,38 @@ spec:
     });
   });
 });
+
+async function setup() {
+  const programmes: jest.Mocked<IDeliveryProgrammeStore> = {
+    add: jest.fn(),
+    get: jest.fn(),
+    getAll: jest.fn(),
+    update: jest.fn(),
+    getByName: jest.fn(),
+  };
+  const projects: jest.Mocked<IDeliveryProjectStore> = {
+    add: jest.fn(),
+    getAll: jest.fn(),
+    get: jest.fn(),
+    getByName: jest.fn(),
+    update: jest.fn(),
+  };
+  const projectUsers: jest.Mocked<IDeliveryProjectUserStore> = {
+    add: jest.fn(),
+    delete: jest.fn(),
+    get: jest.fn(),
+    getAll: jest.fn(),
+    getByDeliveryProject: jest.fn(),
+    update: jest.fn(),
+  };
+
+  const handler = await testHelpers.getAutoServiceRef(getYaml, [
+    testHelpers.provideService(deliveryProgrammeStoreRef, programmes),
+    testHelpers.provideService(deliveryProjectStoreRef, projects),
+    testHelpers.provideService(deliveryProjectUserStoreRef, projectUsers),
+  ]);
+
+  const app = testHelpers.makeApp(x => x.get('/:name/entity.yaml', handler));
+
+  return { handler, app, programmes, projects, projectUsers };
+}

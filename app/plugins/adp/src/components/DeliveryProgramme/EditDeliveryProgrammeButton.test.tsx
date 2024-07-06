@@ -30,11 +30,9 @@ const deliveryProgramme: DeliveryProgramme = {
   description: 'My programme',
   id: '00000000-0000-0000-0000-000000000002',
   name: 'my-cool-programme',
-  delivery_programme_admins: [],
   title: 'My cool Programme',
   updated_at: new Date(0),
   alias: 'best programme',
-  children: [],
   updated_by: 'Someone',
   url: 'https://test.com',
 };

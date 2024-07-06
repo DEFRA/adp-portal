@@ -3,7 +3,7 @@ import { type CreateDeliveryProgrammeAdminRequest } from '@internal/plugin-adp-c
 import { createEndpointRef } from '../util';
 import { z } from 'zod';
 import { errorMapping } from './errorMapping';
-import { deliveryProgrammeAdminServiceRef } from '../../services/DeliveryProgrammeAdminService';
+import { deliveryProgrammeAdminServiceRef } from '../../services';
 import { stringifyEntityRef } from '@backstage/catalog-model';
 
 export default createEndpointRef({

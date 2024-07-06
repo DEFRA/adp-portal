@@ -15,44 +15,6 @@ import getForProgramme from './getForProgramme';
 import remove from './remove';
 
 describe('default', () => {
-  async function setup() {
-    const mockAdd = testHelpers.strictFn<(typeof add)['T']>();
-    const mockGetAll = testHelpers.strictFn<(typeof getAll)['T']>();
-    const mockGetForProgramme =
-      testHelpers.strictFn<(typeof getForProgramme)['T']>();
-    const mockRemove = testHelpers.strictFn<(typeof remove)['T']>();
-    const mockHealthCheck = testHelpers.strictFn<(typeof healthCheck)['T']>();
-    const mockCheckAuth = testHelpers.strictFn<(typeof checkAuth)['T']>();
-
-    const handler = await testHelpers.getAutoServiceRef(index, [
-      testHelpers.provideService(add, mockAdd),
-      testHelpers.provideService(getAll, mockGetAll),
-      testHelpers.provideService(getForProgramme, mockGetForProgramme),
-      testHelpers.provideService(remove, mockRemove),
-      testHelpers.provideService(healthCheck, mockHealthCheck),
-      testHelpers.provideService(
-        checkAuth,
-        getRequests =>
-          (...args) =>
-            mockCheckAuth(getRequests)(...args),
-      ),
-    ]);
-
-    const app = express();
-    app.use(handler);
-
-    return {
-      handler,
-      app,
-      mockAdd,
-      mockGetAll,
-      mockGetForProgramme,
-      mockRemove,
-      mockHealthCheck,
-      mockCheckAuth,
-    };
-  }
-
   describe('GET /', () => {
     it('Should call getAll', async () => {
       const { app, mockGetAll } = await setup();
@@ -212,3 +174,41 @@ describe('default', () => {
     });
   });
 });
+
+async function setup() {
+  const mockAdd = testHelpers.strictFn<(typeof add)['T']>();
+  const mockGetAll = testHelpers.strictFn<(typeof getAll)['T']>();
+  const mockGetForProgramme =
+    testHelpers.strictFn<(typeof getForProgramme)['T']>();
+  const mockRemove = testHelpers.strictFn<(typeof remove)['T']>();
+  const mockHealthCheck = testHelpers.strictFn<(typeof healthCheck)['T']>();
+  const mockCheckAuth = testHelpers.strictFn<(typeof checkAuth)['T']>();
+
+  const handler = await testHelpers.getAutoServiceRef(index, [
+    testHelpers.provideService(add, mockAdd),
+    testHelpers.provideService(getAll, mockGetAll),
+    testHelpers.provideService(getForProgramme, mockGetForProgramme),
+    testHelpers.provideService(remove, mockRemove),
+    testHelpers.provideService(healthCheck, mockHealthCheck),
+    testHelpers.provideService(
+      checkAuth,
+      getRequests =>
+        (...args) =>
+          mockCheckAuth(getRequests)(...args),
+    ),
+  ]);
+
+  const app = express();
+  app.use(handler);
+
+  return {
+    handler,
+    app,
+    mockAdd,
+    mockGetAll,
+    mockGetForProgramme,
+    mockRemove,
+    mockHealthCheck,
+    mockCheckAuth,
+  };
+}

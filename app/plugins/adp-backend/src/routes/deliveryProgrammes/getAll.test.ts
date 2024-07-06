@@ -1,24 +1,28 @@
 import getAll from './getAll';
 import { testHelpers } from '../../utils/testHelpers';
 import request from 'supertest';
-import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import { type DeliveryProgramme } from '@internal/plugin-adp-common';
 import { randomUUID } from 'node:crypto';
 import {
-  deliveryProgrammeAdminServiceRef,
-  type IDeliveryProgrammeAdminService,
+  type IDeliveryProgrammeService,
+  deliveryProgrammeServiceRef,
 } from '../../services';
 
 describe('default', () => {
   it('Should return ok with the data from the store', async () => {
     const { app, service } = await setup();
-    const expected = [...new Array(10)].map<DeliveryProgrammeAdmin>(() => ({
-      aad_entity_ref_id: randomUUID(),
-      delivery_programme_id: randomUUID(),
-      email: randomUUID(),
+    const expected = [...new Array(10)].map<DeliveryProgramme>(() => ({
+      alias: randomUUID(),
+      arms_length_body_id: randomUUID(),
+      created_at: new Date(),
+      delivery_programme_code: randomUUID(),
+      description: randomUUID(),
       id: randomUUID(),
       name: randomUUID(),
+      title: randomUUID(),
       updated_at: new Date(),
-      user_entity_ref: randomUUID(),
+      updated_by: randomUUID(),
+      url: randomUUID(),
     }));
     service.getAll.mockResolvedValueOnce(
       expected.map(x => ({ ...x, children: undefined })),
@@ -48,15 +52,15 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IDeliveryProgrammeAdminService> = {
-    add: jest.fn(),
+  const service: jest.Mocked<IDeliveryProgrammeService> = {
+    create: jest.fn(),
     getAll: jest.fn(),
-    getByProgramme: jest.fn(),
-    remove: jest.fn(),
+    getById: jest.fn(),
+    edit: jest.fn(),
   };
 
   const handler = await testHelpers.getAutoServiceRef(getAll, [
-    testHelpers.provideService(deliveryProgrammeAdminServiceRef, service),
+    testHelpers.provideService(deliveryProgrammeServiceRef, service),
   ]);
 
   const app = testHelpers.makeApp(x => x.get('/', handler));

@@ -6,7 +6,7 @@ import { randomUUID } from 'node:crypto';
 import {
   deliveryProgrammeAdminServiceRef,
   type IDeliveryProgrammeAdminService,
-} from '../../services/DeliveryProgrammeAdminService';
+} from '../../services';
 
 describe('default', () => {
   it('Should return ok with the data from the store', async () => {
