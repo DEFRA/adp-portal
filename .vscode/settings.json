@@ -36,5 +36,8 @@
   },
   "files.exclude": {
     "**/.yarn/cache": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
