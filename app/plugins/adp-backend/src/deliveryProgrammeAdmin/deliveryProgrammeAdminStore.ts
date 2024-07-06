@@ -156,7 +156,7 @@ export class DeliveryProgrammeAdminStore {
   /**
    * Deletes a Delivery Programme Admin from the database.
    * @param id the ID of the Delivery Programme Admin to delete.
-   * @returns true id the record was deleted.
+   * @returns true if the record was deleted.
    */
   async delete(id: string): Promise<boolean> {
     if (!isUUID(id) || !(await this.#exists(id))) throw notFound();
