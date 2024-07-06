@@ -156,14 +156,14 @@ export class DeliveryProgrammeAdminStore {
   /**
    * Deletes a Delivery Programme Admin from the database.
    * @param id the ID of the Delivery Programme Admin to delete.
-   * @returns the number of records deleted.
+   * @returns true id the record was deleted.
    */
-  async delete(id: string): Promise<number> {
+  async delete(id: string): Promise<boolean> {
     if (!isUUID(id) || !(await this.#exists(id))) throw notFound();
 
     const deleteResult = await this.#table.where('id', id).del();
 
-    return deleteResult;
+    return deleteResult > 0;
   }
 
   #normalize(row: delivery_programme_admin): DeliveryProgrammeAdmin {

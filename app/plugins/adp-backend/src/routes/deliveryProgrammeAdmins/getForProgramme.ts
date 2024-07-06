@@ -1,15 +1,15 @@
-import { deliveryProgrammeAdminStoreRef } from '../../deliveryProgrammeAdmin';
+import { deliveryProgrammeAdminServiceRef } from '../../services/DeliveryProgrammeAdminService';
 import { createEndpointRef } from '../util';
 import type { Request } from 'express';
 
 export default createEndpointRef({
   name: 'getDeliveryProgrammeAdminsForDeliveryProgramme',
   deps: {
-    deliveryProgrammeAdminStore: deliveryProgrammeAdminStoreRef,
+    service: deliveryProgrammeAdminServiceRef,
   },
-  factory({ deps: { deliveryProgrammeAdminStore }, responses: { ok } }) {
+  factory({ deps: { service }, responses: { ok } }) {
     return async (request: Request<{ deliveryProgrammeId: string }>) => {
-      const result = await deliveryProgrammeAdminStore.getByDeliveryProgramme(
+      const result = await service.getByProgramme(
         request.params.deliveryProgrammeId,
       );
       return ok().json(result);

@@ -31,6 +31,7 @@
     "@backstage/config": "^1.2.0",
     "@backstage/errors": "^1.2.4",
     "@backstage/plugin-auth-node": "^0.4.16",
+    "@backstage/plugin-catalog-backend-module-msgraph": "^0.5.29",
     "@backstage/plugin-permission-common": "^0.7.14",
     "@backstage/plugin-permission-node": "^0.7.32",
     "@faker-js/faker": "^8.4.1",

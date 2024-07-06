@@ -1,14 +1,14 @@
-import { deliveryProgrammeAdminStoreRef } from '../../deliveryProgrammeAdmin';
+import { deliveryProgrammeAdminServiceRef } from '../../services/DeliveryProgrammeAdminService';
 import { createEndpointRef } from '../util';
 
 export default createEndpointRef({
   name: 'getAllDeliveryProgrammeAdmins',
   deps: {
-    deliveryProgrammeAdminStore: deliveryProgrammeAdminStoreRef,
+    service: deliveryProgrammeAdminServiceRef,
   },
-  factory({ deps: { deliveryProgrammeAdminStore }, responses: { ok } }) {
+  factory({ deps: { service }, responses: { ok } }) {
     return async () => {
-      const result = await deliveryProgrammeAdminStore.getAll();
+      const result = await service.getAll();
       return ok().json(result);
     };
   },

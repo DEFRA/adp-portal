@@ -45,7 +45,7 @@ export class ArmsLengthBodyService {
     this.#catalogRefresher = options.catalogRefresher;
   }
 
-  async #currentCreator() {
+  async #currentEntityRef() {
     const { userEntityRef } = await this.#identityProvider.getCurrentIdentity();
     return userEntityRef;
   }
@@ -54,7 +54,7 @@ export class ArmsLengthBodyService {
     const owner = this.#config.getString('rbac.programmeAdminGroup');
     const result = await this.#armsLengthBodyStore.add(
       data,
-      await this.#currentCreator(),
+      await this.#currentEntityRef(),
       owner,
     );
 
@@ -70,7 +70,7 @@ export class ArmsLengthBodyService {
   async update(data: UpdateArmsLengthBodyRequest) {
     const result = await this.#armsLengthBodyStore.update(
       data,
-      await this.#currentCreator(),
+      await this.#currentEntityRef(),
     );
     if (result.success) {
       await this.#catalogRefresher.refresh(

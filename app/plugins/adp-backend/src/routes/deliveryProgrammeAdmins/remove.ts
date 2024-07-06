@@ -1,22 +1,15 @@
-import { deliveryProgrammeAdminStoreRef } from '../../deliveryProgrammeAdmin';
 import { createParser } from '../../utils';
 import { type DeleteDeliveryProgrammeAdminRequest } from '@internal/plugin-adp-common';
-import { coreServices } from '@backstage/backend-plugin-api';
-import { fireAndForgetCatalogRefresherRef } from '../../services';
 import { createEndpointRef } from '../util';
 import { z } from 'zod';
+import { deliveryProgrammeAdminServiceRef } from '../../services/DeliveryProgrammeAdminService';
 
 export default createEndpointRef({
   name: 'removeDeliveryProgrammeAdmin',
   deps: {
-    logger: coreServices.logger,
-    deliveryProgrammeAdminStore: deliveryProgrammeAdminStoreRef,
-    catalogRefresher: fireAndForgetCatalogRefresherRef,
+    service: deliveryProgrammeAdminServiceRef,
   },
-  factory({
-    deps: { logger, deliveryProgrammeAdminStore, catalogRefresher },
-    responses: { noContent },
-  }) {
+  factory({ deps: { service }, responses: { noContent } }) {
     const parseBody = createParser<DeleteDeliveryProgrammeAdminRequest>(
       z.object({
         delivery_programme_admin_id: z.string(),
@@ -26,16 +19,7 @@ export default createEndpointRef({
 
     return async request => {
       const body = parseBody(request.body);
-      await deliveryProgrammeAdminStore.delete(
-        body.delivery_programme_admin_id,
-      );
-
-      logger.info(
-        `DELETE /: Deleted Delivery Programme Admin with ID ${body.delivery_programme_admin_id}`,
-      );
-
-      await catalogRefresher.refresh(`location:default/delivery-programmes`);
-
+      await service.remove(body.delivery_programme_admin_id);
       return noContent();
     };
   },

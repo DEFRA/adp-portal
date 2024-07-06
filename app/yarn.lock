@@ -6615,6 +6615,7 @@ __metadata:
     "@backstage/config": "npm:^1.2.0"
     "@backstage/errors": "npm:^1.2.4"
     "@backstage/plugin-auth-node": "npm:^0.4.16"
+    "@backstage/plugin-catalog-backend-module-msgraph": "npm:^0.5.29"
     "@backstage/plugin-permission-common": "npm:^0.7.14"
     "@backstage/plugin-permission-node": "npm:^0.7.32"
     "@faker-js/faker": "npm:^8.4.1"

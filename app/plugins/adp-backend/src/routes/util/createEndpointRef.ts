@@ -66,7 +66,7 @@ export function createEndpointRef<
   >,
 >(
   options: EndpointOptions<Dependencies, P, ResBody, ReqBody, ReqQuery, Locals>,
-) {
+): ServiceRef<RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>, 'plugin'> {
   type Handler = RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>;
   return createServiceRef<Handler>({
     id: `adp.router.endpoint.${options.name}`,
