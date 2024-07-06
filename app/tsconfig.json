@@ -10,9 +10,7 @@
     "plugins/*/config.d.ts",
     "setupTests.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     "outDir": "dist-types",
     "rootDir": "."
