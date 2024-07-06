@@ -5,7 +5,7 @@ import {
   createServiceRef,
 } from '@backstage/backend-plugin-api';
 import type { CatalogApi } from '@backstage/catalog-client';
-import type { UserEntity } from '@backstage/catalog-model';
+import { isUserEntity } from '@backstage/catalog-model';
 import { catalogApiRef } from '../refs';
 
 export interface CatalogUserEntityProviderOptions {
@@ -26,33 +26,19 @@ export class CatalogUserEntityProvider {
     this.#auth = options.auth;
   }
 
-  async getByUserName(name: string) {
+  async #getToken() {
     const { token } = await this.#auth.getPluginRequestToken({
       onBehalfOf: await this.#auth.getOwnServiceCredentials(),
       targetPluginId: 'catalog',
     });
+    return token;
+  }
 
-    // We should use getEntityByRef here.
-    const result = await this.#catalog.getEntities(
-      {
-        filter: [
-          {
-            kind: 'User',
-            'metadata.name': name,
-          },
-        ],
-        fields: [
-          'metadata.name',
-          'metadata.annotations.graph.microsoft.com/user-id',
-          'metadata.annotations.microsoft.com/email',
-          'metadata.annotations.graph.microsoft.com/user-principal-name',
-          'spec.profile.displayName',
-        ],
-      },
-      { token },
-    );
-
-    return result.items[0] as UserEntity | undefined;
+  async getByEntityRef(entityRef: string) {
+    const result = await this.#catalog.getEntityByRef(entityRef, {
+      token: await this.#getToken(),
+    });
+    return result && [result].find(isUserEntity);
   }
 }
 

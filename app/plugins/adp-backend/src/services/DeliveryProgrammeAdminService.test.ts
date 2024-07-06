@@ -15,18 +15,18 @@ describe('DeliveryProgrammeAdminService', () => {
       // arrange
       const { sut, catalogRefresher, store, userEntities } = setup();
       const programmeId = randomUUID();
-      const userName = randomUUID();
+      const userRef = randomUUID();
       const userId = randomUUID();
       const userEmail = randomUUID();
       const userDisplay = randomUUID();
       const expected = fakeAdmin();
 
       store.add.mockResolvedValueOnce({ success: true, value: expected });
-      userEntities.getByUserName.mockResolvedValueOnce({
+      userEntities.getByEntityRef.mockResolvedValueOnce({
         apiVersion: 'backstage.io/v1beta1',
         kind: 'User',
         metadata: {
-          name: userName,
+          name: randomUUID(),
           annotations: {
             [MICROSOFT_EMAIL_ANNOTATION]: userEmail,
             [MICROSOFT_GRAPH_USER_ID_ANNOTATION]: userId,
@@ -40,7 +40,7 @@ describe('DeliveryProgrammeAdminService', () => {
       });
 
       // act
-      const actual = await sut.add(programmeId, userName);
+      const actual = await sut.add(programmeId, userRef);
 
       // assert
       expect(store.add).toHaveBeenCalledTimes(1);
@@ -49,10 +49,10 @@ describe('DeliveryProgrammeAdminService', () => {
         email: userEmail,
         aad_entity_ref_id: userId,
         delivery_programme_id: programmeId,
-        user_entity_ref: `user:default/${userName}`,
+        user_entity_ref: userRef,
       });
-      expect(userEntities.getByUserName).toHaveBeenCalledTimes(1);
-      expect(userEntities.getByUserName).toHaveBeenCalledWith(userName);
+      expect(userEntities.getByEntityRef).toHaveBeenCalledTimes(1);
+      expect(userEntities.getByEntityRef).toHaveBeenCalledWith(userRef);
       expect(catalogRefresher.refresh).toHaveBeenCalledTimes(1);
       expect(catalogRefresher.refresh).toHaveBeenCalledWith(
         `location:default/delivery-programmes`,
@@ -66,17 +66,17 @@ describe('DeliveryProgrammeAdminService', () => {
       // arrange
       const { sut, catalogRefresher, store, userEntities } = setup();
       const programmeId = randomUUID();
-      const userName = randomUUID();
+      const userRef = randomUUID();
 
-      userEntities.getByUserName.mockResolvedValueOnce(undefined);
+      userEntities.getByEntityRef.mockResolvedValueOnce(undefined);
 
       // act
-      const actual = await sut.add(programmeId, userName);
+      const actual = await sut.add(programmeId, userRef);
 
       // assert
       expect(store.add).toHaveBeenCalledTimes(0);
-      expect(userEntities.getByUserName).toHaveBeenCalledTimes(1);
-      expect(userEntities.getByUserName).toHaveBeenCalledWith(userName);
+      expect(userEntities.getByEntityRef).toHaveBeenCalledTimes(1);
+      expect(userEntities.getByEntityRef).toHaveBeenCalledWith(userRef);
       expect(catalogRefresher.refresh).toHaveBeenCalledTimes(0);
       expect(actual).toEqual({
         success: false,
@@ -87,7 +87,7 @@ describe('DeliveryProgrammeAdminService', () => {
       // arrange
       const { sut, catalogRefresher, store, userEntities } = setup();
       const programmeId = randomUUID();
-      const userName = randomUUID();
+      const userRef = randomUUID();
       const userId = randomUUID();
       const userEmail = randomUUID();
       const userDisplay = randomUUID();
@@ -97,11 +97,11 @@ describe('DeliveryProgrammeAdminService', () => {
         success: false,
         errors: [...expected],
       });
-      userEntities.getByUserName.mockResolvedValueOnce({
+      userEntities.getByEntityRef.mockResolvedValueOnce({
         apiVersion: 'backstage.io/v1beta1',
         kind: 'User',
         metadata: {
-          name: userName,
+          name: randomUUID(),
           annotations: {
             [MICROSOFT_EMAIL_ANNOTATION]: userEmail,
             [MICROSOFT_GRAPH_USER_ID_ANNOTATION]: userId,
@@ -115,7 +115,7 @@ describe('DeliveryProgrammeAdminService', () => {
       });
 
       // act
-      const actual = await sut.add(programmeId, userName);
+      const actual = await sut.add(programmeId, userRef);
 
       // assert
       expect(store.add).toHaveBeenCalledTimes(1);
@@ -124,10 +124,10 @@ describe('DeliveryProgrammeAdminService', () => {
         email: userEmail,
         aad_entity_ref_id: userId,
         delivery_programme_id: programmeId,
-        user_entity_ref: `user:default/${userName}`,
+        user_entity_ref: userRef,
       });
-      expect(userEntities.getByUserName).toHaveBeenCalledTimes(1);
-      expect(userEntities.getByUserName).toHaveBeenCalledWith(userName);
+      expect(userEntities.getByEntityRef).toHaveBeenCalledTimes(1);
+      expect(userEntities.getByEntityRef).toHaveBeenCalledWith(userRef);
       expect(catalogRefresher.refresh).toHaveBeenCalledTimes(0);
       expect(actual).toEqual({
         success: false,
@@ -215,7 +215,7 @@ function setup() {
   };
 
   const userEntities: jest.Mocked<ICatalogUserEntityProvider> = {
-    getByUserName: jest.fn(),
+    getByEntityRef: jest.fn(),
   };
 
   const catalogRefresher: jest.Mocked<FireAndForgetCatalogRefresher> = {

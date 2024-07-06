@@ -4,6 +4,7 @@ import { createEndpointRef } from '../util';
 import { z } from 'zod';
 import { errorMapping } from './errorMapping';
 import { deliveryProgrammeAdminServiceRef } from '../../services/DeliveryProgrammeAdminService';
+import { stringifyEntityRef } from '@backstage/catalog-model';
 
 export default createEndpointRef({
   name: 'addDeliveryProgrammeAdmin',
@@ -21,10 +22,11 @@ export default createEndpointRef({
 
     return async request => {
       const body = parseBody(request.body);
-      const result = await service.add(
-        body.delivery_programme_id,
-        body.user_catalog_name,
-      );
+      const ref = stringifyEntityRef({
+        kind: 'user',
+        name: body.user_catalog_name,
+      });
+      const result = await service.add(body.delivery_programme_id, ref);
       if (!result.success)
         return validationErrors(result.errors, errorMapping, body);
 

@@ -11,7 +11,6 @@ import {
   fireAndForgetCatalogRefresherRef,
   type FireAndForgetCatalogRefresher,
 } from './fireAndForgetCatalogRefresher';
-import { stringifyEntityRef } from '@backstage/catalog-model';
 import { assertUUID, type SafeResult } from '../utils';
 import {
   createServiceFactory,
@@ -45,14 +44,14 @@ export class DeliveryProgrammeAdminService {
 
   async add(
     deliveryProgrammeId: string,
-    userName: string,
+    userRef: string,
   ): Promise<
     SafeResult<
       DeliveryProgrammeAdmin,
       'duplicateUser' | 'unknownCatalogUser' | 'unknownDeliveryProgramme'
     >
   > {
-    const user = await this.#userEntities.getByUserName(userName);
+    const user = await this.#userEntities.getByEntityRef(userRef);
     if (!user) return { success: false, errors: ['unknownCatalogUser'] };
 
     const annotations = user.metadata.annotations ?? {};
@@ -62,11 +61,7 @@ export class DeliveryProgrammeAdminService {
       email: annotations[MICROSOFT_EMAIL_ANNOTATION],
       aad_entity_ref_id: annotations[MICROSOFT_GRAPH_USER_ID_ANNOTATION],
       delivery_programme_id: deliveryProgrammeId,
-      user_entity_ref: stringifyEntityRef({
-        kind: 'user',
-        namespace: 'default',
-        name: userName,
-      }),
+      user_entity_ref: userRef,
     });
 
     if (result.success) {

@@ -35,7 +35,7 @@ describe('default', () => {
     expect(service.add).toHaveBeenCalledTimes(1);
     expect(service.add).toHaveBeenCalledWith(
       data.delivery_programme_id,
-      data.user_catalog_name,
+      `user:default/${data.user_catalog_name}`,
     );
     expect({ status, body }).toMatchObject({
       status: 201,
@@ -110,7 +110,7 @@ describe('default', () => {
     expect(service.add).toHaveBeenCalledTimes(1);
     expect(service.add).toHaveBeenCalledWith(
       data.delivery_programme_id,
-      data.user_catalog_name,
+      `user:default/${data.user_catalog_name}`,
     );
     console.log(JSON.stringify(body));
     expect({ status, body }).toMatchObject({
