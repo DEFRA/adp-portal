@@ -50,7 +50,7 @@ export function assertUUID(value: unknown): asserts value is UUID {
 export async function checkMany<
   T extends Record<string, boolean | Promise<boolean>>,
 >(checks: T): Promise<SafeResult<undefined, keyof T>> {
-  const results: Array<readonly [keyof T, boolean]> = await Promise.all(
+  const results = await Promise.all(
     Object.entries(checks).map(async e => [e[0], await e[1]] as const),
   );
   const failed = results.filter(x => x[1]);

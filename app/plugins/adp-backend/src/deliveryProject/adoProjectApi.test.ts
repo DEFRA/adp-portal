@@ -43,11 +43,12 @@ describe('AdoProjectApi', () => {
   });
 
   it('should return true if ADO project exists', async () => {
-    mockFetchApi.fetch.mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-    } as unknown as Response);
+    mockFetchApi.fetch.mockResolvedValue(
+      new Response(null, {
+        status: 200,
+        statusText: 'OK',
+      }),
+    );
     const adoProjectApi = sut();
 
     const result = await adoProjectApi.checkIfAdoProjectExists('test-project');
@@ -56,11 +57,12 @@ describe('AdoProjectApi', () => {
   });
 
   it('should return false if ADO project doesnt exists', async () => {
-    mockFetchApi.fetch.mockResolvedValue({
-      ok: false,
-      status: 404,
-      statusText: 'NOT FOUND',
-    } as unknown as Response);
+    mockFetchApi.fetch.mockResolvedValue(
+      new Response(null, {
+        status: 404,
+        statusText: 'NOT FOUND',
+      }),
+    );
     const adoProjectApi = sut();
 
     await expect(

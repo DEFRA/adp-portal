@@ -15,7 +15,7 @@ type Endpoint<
   ResBody,
   ReqBody,
   ReqQuery,
-  Locals extends Record<string, any>,
+  Locals extends Record<string, unknown>,
 > = (
   request: Request<P, ResBody, ReqBody, ReqQuery, Locals>,
 ) => HandlerResult | PromiseLike<HandlerResult>;
@@ -26,7 +26,7 @@ interface EndpointOptions<
   ResBody,
   ReqBody,
   ReqQuery,
-  Locals extends Record<string, any>,
+  Locals extends Record<string, unknown>,
 > {
   name: string;
   deps: Dependencies;
@@ -56,10 +56,10 @@ interface EndpointOptions<
  */
 export function createEndpointRef<
   P = Record<string, string>,
-  ResBody = any,
-  ReqBody = any,
+  ResBody = unknown,
+  ReqBody = unknown,
   ReqQuery = ParsedQs,
-  Locals extends Record<string, any> = Record<string, any>,
+  Locals extends Record<string, unknown> = Record<string, unknown>,
   Dependencies extends Record<string, ServiceRef<unknown>> = Record<
     string,
     ServiceRef<unknown>
@@ -110,7 +110,7 @@ function toHandler<
   ResBody,
   ReqBody,
   ReqQuery,
-  Locals extends Record<string, any>,
+  Locals extends Record<string, unknown>,
 >(
   impl: (
     request: Request<P, ResBody, ReqBody, ReqQuery, Locals>,

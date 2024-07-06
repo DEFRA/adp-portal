@@ -462,7 +462,7 @@ describe('createRouter', () => {
     it('Should call the entraIdApi', async () => {
       // arrange
       const projectName = 'ADP-DMO';
-      const body: Array<any> = [];
+      const body: [] = [];
 
       // act
       const response = await request(projectApp)
@@ -476,7 +476,7 @@ describe('createRouter', () => {
     it('Should throw error when entraIdApi throws error', async () => {
       // arrange
       const projectName = 'ADP-DMO';
-      const body: Array<any> = [];
+      const body: [] = [];
       mockEntraIdApi.createEntraIdGroupsForProject.mockRejectedValueOnce(
         'error',
       );

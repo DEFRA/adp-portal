@@ -17,7 +17,7 @@ export class FluentHandlerResult implements HandlerResult {
     this.status = status;
   }
 
-  async writeTo(response: Response<any, Record<string, any>>) {
+  async writeTo(response: Response<unknown, Record<string, unknown>>) {
     response.status(this.status);
     for (const header of this.#headers) response.header(header[0], header[1]);
     for (const body of this.#body) await body(response);

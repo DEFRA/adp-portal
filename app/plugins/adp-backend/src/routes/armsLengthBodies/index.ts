@@ -1,6 +1,6 @@
 import { createRouterRef, healthCheck } from '../util';
 import { middlewareFactoryRef } from '../../refs';
-import express from 'express';
+import express, { type Request } from 'express';
 import {
   armsLengthBodyCreatePermission,
   armsLengthBodyUpdatePermission,
@@ -28,10 +28,12 @@ export default createRouterRef({
     const canCreate = deps.checkAuth(() => ({
       permission: armsLengthBodyCreatePermission,
     }));
-    const canEdit = deps.checkAuth(req => ({
-      permission: armsLengthBodyUpdatePermission,
-      resourceRef: String(req.body?.id ?? 'missing-id'),
-    }));
+    const canEdit = deps.checkAuth(
+      (req: Request<unknown, unknown, { id?: unknown }>) => ({
+        permission: armsLengthBodyUpdatePermission,
+        resourceRef: String(req.body?.id ?? 'missing-id'),
+      }),
+    );
 
     router.use(express.json());
     router.get('/health', deps.healthCheck);

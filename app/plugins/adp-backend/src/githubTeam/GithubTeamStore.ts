@@ -32,7 +32,7 @@ export class GithubTeamStore {
     this.#connection = connection;
   }
 
-  #table(context?: <T extends {}>(name: string) => Knex.QueryBuilder<T>) {
+  #table(context?: <T extends {}>(name: string) => Knex.QueryBuilder<T, T[]>) {
     const query: Exclude<typeof context, undefined> =
       context ?? this.#connection;
     return query<delivery_project_github_team>(

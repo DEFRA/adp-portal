@@ -17,19 +17,13 @@ import healthCheck from '../util/healthCheck';
 
 describe('default', () => {
   async function setup() {
-    function mockHandler<T extends (...args: never) => unknown>() {
-      return jest.fn(() => {
-        throw new Error('Unexpected call');
-      }) as unknown as jest.MockedFn<T>;
-    }
-
-    const mockCreate = mockHandler<(typeof create)['T']>();
-    const mockEdit = mockHandler<(typeof edit)['T']>();
-    const mockGet = mockHandler<(typeof get)['T']>();
-    const mockGetAll = mockHandler<(typeof getAll)['T']>();
-    const mockGetNames = mockHandler<(typeof getNames)['T']>();
-    const mockHealthCheck = mockHandler<(typeof healthCheck)['T']>();
-    const mockCheckAuth = mockHandler<(typeof checkAuth)['T']>();
+    const mockCreate = testHelpers.strictFn<(typeof create)['T']>();
+    const mockEdit = testHelpers.strictFn<(typeof edit)['T']>();
+    const mockGet = testHelpers.strictFn<(typeof get)['T']>();
+    const mockGetAll = testHelpers.strictFn<(typeof getAll)['T']>();
+    const mockGetNames = testHelpers.strictFn<(typeof getNames)['T']>();
+    const mockHealthCheck = testHelpers.strictFn<(typeof healthCheck)['T']>();
+    const mockCheckAuth = testHelpers.strictFn<(typeof checkAuth)['T']>();
 
     const handler = await testHelpers.getAutoServiceRef(index, [
       testHelpers.provideService(create, mockCreate),
@@ -182,7 +176,9 @@ describe('default', () => {
 
       expect(mockCheckAuth).toHaveBeenCalledTimes(1);
       expect(
-        mockCheckAuth.mock.calls[0][0]({ body: { id: '123' } } as any),
+        mockCheckAuth.mock.calls[0][0](
+          testHelpers.expressRequest({ body: { id: '123' } }),
+        ),
       ).toMatchObject({
         permission: armsLengthBodyUpdatePermission,
         resourceRef: '123',
@@ -203,7 +199,9 @@ describe('default', () => {
 
       expect(mockCheckAuth).toHaveBeenCalledTimes(1);
       expect(
-        mockCheckAuth.mock.calls[0][0]({ body: { id: '123' } } as any),
+        mockCheckAuth.mock.calls[0][0](
+          testHelpers.expressRequest({ body: { id: '123' } }),
+        ),
       ).toMatchObject({
         permission: armsLengthBodyUpdatePermission,
         resourceRef: '123',

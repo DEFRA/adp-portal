@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { type Request } from 'express';
 import {
   deliveryProjectUserCreatePermission,
   deliveryProjectUserUpdatePermission,
@@ -26,18 +26,24 @@ export default createRouterRef({
     remove,
   },
   factory({ router, deps }) {
-    const canAdd = deps.checkAuth(req => ({
-      permission: deliveryProjectUserCreatePermission,
-      resourceRef: String(req.body?.delivery_project_id ?? 'missing-id'),
-    }));
-    const canUpdate = deps.checkAuth(req => ({
-      permission: deliveryProjectUserUpdatePermission,
-      resourceRef: String(req.body?.delivery_project_id ?? 'missing-id'),
-    }));
-    const canRemove = deps.checkAuth(req => ({
-      permission: deliveryProjectUserDeletePermission,
-      resourceRef: String(req.body?.delivery_project_id ?? 'missing-id'),
-    }));
+    const canAdd = deps.checkAuth(
+      (req: Request<unknown, unknown, { delivery_project_id?: unknown }>) => ({
+        permission: deliveryProjectUserCreatePermission,
+        resourceRef: String(req.body?.delivery_project_id ?? 'missing-id'),
+      }),
+    );
+    const canUpdate = deps.checkAuth(
+      (req: Request<unknown, unknown, { delivery_project_id?: unknown }>) => ({
+        permission: deliveryProjectUserUpdatePermission,
+        resourceRef: String(req.body?.delivery_project_id ?? 'missing-id'),
+      }),
+    );
+    const canRemove = deps.checkAuth(
+      (req: Request<unknown, unknown, { delivery_project_id?: unknown }>) => ({
+        permission: deliveryProjectUserDeletePermission,
+        resourceRef: String(req.body?.delivery_project_id ?? 'missing-id'),
+      }),
+    );
 
     router.use(express.json());
     router.get('/health', deps.healthCheck);

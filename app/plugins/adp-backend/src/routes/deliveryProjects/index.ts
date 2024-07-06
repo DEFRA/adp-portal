@@ -1,6 +1,6 @@
 import { createRouterRef, healthCheck } from '../util';
 import { middlewareFactoryRef } from '../../refs';
-import express from 'express';
+import express, { type Request } from 'express';
 import {
   deliveryProjectUpdatePermission,
   deliveryProjectCreatePermission,
@@ -32,10 +32,12 @@ export default createRouterRef({
     const canCreate = deps.checkAuth(() => ({
       permission: deliveryProjectCreatePermission,
     }));
-    const canEdit = deps.checkAuth(req => ({
-      permission: deliveryProjectUpdatePermission,
-      resourceRef: String(req.body?.id ?? 'missing-id'),
-    }));
+    const canEdit = deps.checkAuth(
+      (req: Request<unknown, unknown, { id?: unknown }>) => ({
+        permission: deliveryProjectUpdatePermission,
+        resourceRef: String(req.body?.id ?? 'missing-id'),
+      }),
+    );
 
     router.use(express.json());
     router.get('/health', deps.healthCheck);

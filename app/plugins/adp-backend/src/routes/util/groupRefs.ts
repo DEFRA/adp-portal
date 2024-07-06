@@ -62,7 +62,7 @@ export function groupRefs<
       ServiceRef<never>
     >,
     read(deps: Record<ExtendDepsBrand, never>) {
-      const results = {} as Record<string, Record<string, ServiceRef<unknown>>>;
+      const results: Record<string, Record<string, ServiceRef<unknown>>> = {};
       for (const { key, inner, outer } of keyMapping) {
         const impl = deps[key];
         results[outer] ??= {};

@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { type Request } from 'express';
 import {
   deliveryProgrammeAdminCreatePermission,
   deliveryProgrammeAdminDeletePermission,
@@ -23,14 +23,18 @@ export default createRouterRef({
     getAll,
   },
   factory({ router, deps }) {
-    const canAdd = deps.checkAuth(req => ({
-      permission: deliveryProgrammeAdminCreatePermission,
-      resourceRef: String(req.body?.group_entity_ref ?? 'missing-ref'),
-    }));
-    const canRemove = deps.checkAuth(req => ({
-      permission: deliveryProgrammeAdminDeletePermission,
-      resourceRef: String(req.body?.group_entity_ref ?? 'missing-ref'),
-    }));
+    const canAdd = deps.checkAuth(
+      (req: Request<unknown, unknown, { group_entity_ref?: unknown }>) => ({
+        permission: deliveryProgrammeAdminCreatePermission,
+        resourceRef: String(req.body?.group_entity_ref ?? 'missing-ref'),
+      }),
+    );
+    const canRemove = deps.checkAuth(
+      (req: Request<unknown, unknown, { group_entity_ref?: unknown }>) => ({
+        permission: deliveryProgrammeAdminDeletePermission,
+        resourceRef: String(req.body?.group_entity_ref ?? 'missing-ref'),
+      }),
+    );
 
     router.use(express.json());
     router.get('/health', deps.healthCheck);

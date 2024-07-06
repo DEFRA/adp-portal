@@ -215,8 +215,8 @@ describe('DeliveryProjectUserStore', () => {
       const projectUser = await seedProjectUser(knex);
       const updateUser: UpdateDeliveryProjectUserRequest = {
         ...projectUser,
-        is_admin: projectUser.is_admin as boolean,
-        is_technical: projectUser.is_technical as boolean,
+        is_admin: Boolean(projectUser.is_admin),
+        is_technical: Boolean(projectUser.is_technical),
         user_catalog_name: 'user@test.com',
       };
 

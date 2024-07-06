@@ -62,7 +62,7 @@ describe('AdpOnboardingUrlReader', () => {
       fetchApi.fetch.mockResolvedValueOnce(
         Object.create(new Response(null, { status: 200 }), {
           ok: { value: false },
-        }),
+        }) as Response,
       );
 
       const test = () => sut.readUrl('http://test.com/onboarding/something');

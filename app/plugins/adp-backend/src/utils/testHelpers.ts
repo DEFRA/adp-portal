@@ -11,10 +11,15 @@ import {
   ServiceFactoryTester,
   mockServices,
 } from '@backstage/backend-test-utils';
-import type { Express } from 'express';
+import type { Express, Request, Response } from 'express';
 import express from 'express';
 
 export const testHelpers = {
+  strictFn<T extends (...args: never) => unknown>() {
+    return jest.fn(() => {
+      throw new Error('Unexpected call');
+    }) as unknown as jest.MockedFn<T>;
+  },
   async getAutoServiceRef<T>(
     reference: ServiceRef<T>,
     dependencies?: Array<ServiceFactory>,
@@ -54,5 +59,21 @@ export const testHelpers = {
       }).error(),
     );
     return app;
+  },
+  expressRequest(values: Partial<Request>) {
+    return Object.create(
+      express.request,
+      Object.fromEntries(
+        Object.entries(values).map(e => [e[0], { value: e[1] }]),
+      ),
+    ) as Request;
+  },
+  expressResponse(values: Partial<Response>) {
+    return Object.create(
+      express.response,
+      Object.fromEntries(
+        Object.entries(values).map(e => [e[0], { value: e[1] }]),
+      ),
+    ) as Response;
   },
 };

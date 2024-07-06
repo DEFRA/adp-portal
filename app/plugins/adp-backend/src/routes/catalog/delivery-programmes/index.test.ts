@@ -8,15 +8,9 @@ import { healthCheck } from '../../util';
 
 describe('default', () => {
   async function setup() {
-    function mockHandler<T extends (...args: never) => unknown>() {
-      return jest.fn(() => {
-        throw new Error('Unexpected call');
-      }) as unknown as jest.MockedFn<T>;
-    }
-
-    const mockGetAllYaml = mockHandler<(typeof getAllYaml)['T']>();
-    const mockGetYaml = mockHandler<(typeof getYaml)['T']>();
-    const mockHealthCheck = mockHandler<(typeof healthCheck)['T']>();
+    const mockGetAllYaml = testHelpers.strictFn<(typeof getAllYaml)['T']>();
+    const mockGetYaml = testHelpers.strictFn<(typeof getYaml)['T']>();
+    const mockHealthCheck = testHelpers.strictFn<(typeof healthCheck)['T']>();
 
     const handler = await testHelpers.getAutoServiceRef(index, [
       testHelpers.provideService(getAllYaml, mockGetAllYaml),
