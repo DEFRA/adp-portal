@@ -1,34 +1,15 @@
-import {
-  type IArmsLengthBodyStore,
-  armsLengthBodyStoreRef,
-} from '../../armsLengthBody';
 import getNames from './getNames';
 import { testHelpers } from '../../utils/testHelpers';
 import request from 'supertest';
-import type { ArmsLengthBody } from '@internal/plugin-adp-common';
 import { randomUUID } from 'node:crypto';
+import {
+  type IArmsLengthBodyService,
+  armsLengthBodyServiceRef,
+} from '../../services';
 
 describe('default', () => {
-  async function setup() {
-    const albs: jest.Mocked<IArmsLengthBodyStore> = {
-      add: jest.fn(),
-      get: jest.fn(),
-      getAll: jest.fn(),
-      update: jest.fn(),
-      getByName: jest.fn(),
-    };
-
-    const handler = await testHelpers.getAutoServiceRef(getNames, [
-      testHelpers.provideService(armsLengthBodyStoreRef, albs),
-    ]);
-
-    const app = testHelpers.makeApp(x => x.get('/', handler));
-
-    return { handler, app, albs };
-  }
-
   it('Should return ok with the data from the store', async () => {
-    const { app, albs } = await setup();
+    const { app, service } = await setup();
     const expected = {
       [randomUUID()]: randomUUID(),
       [randomUUID()]: randomUUID(),
@@ -38,38 +19,45 @@ describe('default', () => {
       [randomUUID()]: randomUUID(),
       [randomUUID()]: randomUUID(),
     };
-    albs.getAll.mockResolvedValueOnce(
-      Object.entries(expected).map<ArmsLengthBody>(([id, title]) => ({
-        created_at: new Date(),
-        creator: randomUUID(),
-        description: randomUUID(),
-        id,
-        title,
-        name: randomUUID(),
-        owner: randomUUID(),
-        updated_at: new Date(),
-      })),
-    );
+    service.getIdNameMap.mockResolvedValueOnce(expected);
 
     const { status, body } = await request(app).get(`/`);
 
-    expect(albs.getAll).toHaveBeenCalledTimes(1);
+    expect(service.getIdNameMap).toHaveBeenCalledTimes(1);
     expect({ status, body }).toMatchObject({
       status: 200,
       body: JSON.parse(JSON.stringify(expected)),
     });
   });
 
-  it('Should return 500 on any errors', async () => {
-    const { app, albs } = await setup();
-    albs.getAll.mockRejectedValueOnce(new Error());
+  it('Should return 500 if an error is thrown', async () => {
+    const { app, service } = await setup();
+    service.getIdNameMap.mockRejectedValueOnce(new Error());
 
     const { status, body } = await request(app).get(`/`);
 
-    expect(albs.getAll).toHaveBeenCalledTimes(1);
+    expect(service.getIdNameMap).toHaveBeenCalledTimes(1);
     expect({ status, body }).toMatchObject({
       status: 500,
       body: { error: {} },
     });
   });
 });
+
+async function setup() {
+  const service: jest.Mocked<IArmsLengthBodyService> = {
+    create: jest.fn(),
+    getAll: jest.fn(),
+    getById: jest.fn(),
+    getIdNameMap: jest.fn(),
+    update: jest.fn(),
+  };
+
+  const handler = await testHelpers.getAutoServiceRef(getNames, [
+    testHelpers.provideService(armsLengthBodyServiceRef, service),
+  ]);
+
+  const app = testHelpers.makeApp(x => x.get('/', handler));
+
+  return { handler, app, service };
+}

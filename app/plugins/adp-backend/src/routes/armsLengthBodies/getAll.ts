@@ -1,28 +1,15 @@
-import { armsLengthBodyStoreRef } from '../../armsLengthBody';
-import { deliveryProgrammeStoreRef } from '../../deliveryProgramme';
+import { armsLengthBodyServiceRef } from '../../services';
 import { createEndpointRef } from '../util';
 
 export default createEndpointRef({
   name: 'getAllArmsLengthBodies',
   deps: {
-    armsLengthBodyStore: armsLengthBodyStoreRef,
-    deliveryProgrammeStore: deliveryProgrammeStoreRef,
+    service: armsLengthBodyServiceRef,
   },
-  factory({
-    deps: { armsLengthBodyStore, deliveryProgrammeStore },
-    responses: { ok },
-  }) {
+  factory({ deps: { service }, responses: { ok } }) {
     return async () => {
-      const albData = await armsLengthBodyStore.getAll();
-      const programmeData = await deliveryProgrammeStore.getAll();
-
-      for (const alb of albData) {
-        alb.children = programmeData
-          .filter(p => p.arms_length_body_id === alb.id)
-          .map(p => p.id);
-      }
-
-      return ok().json(albData);
+      const data = await service.getAll();
+      return ok().json(data);
     };
   },
 });

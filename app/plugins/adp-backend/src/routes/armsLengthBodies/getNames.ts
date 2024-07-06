@@ -1,19 +1,15 @@
-import { armsLengthBodyStoreRef } from '../../armsLengthBody';
+import { armsLengthBodyServiceRef } from '../../services';
 import { createEndpointRef } from '../util';
 
 export default createEndpointRef({
   name: 'getAllArmsLengthBodyNames',
   deps: {
-    armsLengthBodyStore: armsLengthBodyStoreRef,
+    service: armsLengthBodyServiceRef,
   },
-  factory({ deps: { armsLengthBodyStore }, responses: { ok } }) {
+  factory({ deps: { service }, responses: { ok } }) {
     return async () => {
-      const armsLengthBodies = await armsLengthBodyStore.getAll();
-      const armsLengthBodiesNames = Object.fromEntries(
-        armsLengthBodies.map(alb => [alb.id, alb.title]),
-      );
-
-      return ok().json(armsLengthBodiesNames);
+      const data = await service.getIdNameMap();
+      return ok().json(data);
     };
   },
 });

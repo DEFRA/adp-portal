@@ -1,7 +1,3 @@
-import {
-  type IArmsLengthBodyStore,
-  armsLengthBodyStoreRef,
-} from '../../armsLengthBody';
 import create from './create';
 import { testHelpers } from '../../utils/testHelpers';
 import request from 'supertest';
@@ -10,58 +6,14 @@ import type {
   CreateArmsLengthBodyRequest,
 } from '@internal/plugin-adp-common';
 import { randomUUID } from 'node:crypto';
-import { coreServices } from '@backstage/backend-plugin-api';
-import { mockServices } from '@backstage/backend-test-utils';
 import {
-  fireAndForgetCatalogRefresherRef,
-  type FireAndForgetCatalogRefresher,
+  armsLengthBodyServiceRef,
+  type IArmsLengthBodyService,
 } from '../../services';
-import {
-  type IdentityProvider,
-  identityProviderRef,
-} from '@internal/plugin-credentials-context-backend';
 
 describe('default', () => {
-  async function setup() {
-    const catalog: jest.Mocked<FireAndForgetCatalogRefresher> = {
-      refresh: jest.fn(),
-    };
-    const albs: jest.Mocked<IArmsLengthBodyStore> = {
-      add: jest.fn(),
-      get: jest.fn(),
-      getAll: jest.fn(),
-      update: jest.fn(),
-      getByName: jest.fn(),
-    };
-
-    const identity: jest.Mocked<IdentityProvider> = {
-      getCurrentIdentity: jest.fn(),
-    };
-
-    const handler = await testHelpers.getAutoServiceRef(create, [
-      testHelpers.provideService(armsLengthBodyStoreRef, albs),
-      testHelpers.provideService(identityProviderRef, identity),
-      testHelpers.provideService(fireAndForgetCatalogRefresherRef, catalog),
-      testHelpers.provideService(
-        coreServices.rootConfig,
-        mockServices.rootConfig({
-          data: {
-            rbac: {
-              programmeAdminGroup: 'test-admin-group',
-            },
-          },
-        }),
-      ),
-    ]);
-
-    const app = testHelpers.makeApp(x => x.post('/', handler));
-
-    return { handler, app, albs, identity, catalog };
-  }
-
-  it('Should return ok with the data from the store', async () => {
-    const { app, albs, identity, catalog } = await setup();
-    const username = randomUUID();
+  it('Should return ok with the data from the service', async () => {
+    const { app, service } = await setup();
     const data: CreateArmsLengthBodyRequest = {
       alias: randomUUID(),
       description: randomUUID(),
@@ -78,25 +30,15 @@ describe('default', () => {
       title: randomUUID(),
       updated_at: new Date(),
       alias: randomUUID(),
-      children: [],
       updated_by: randomUUID(),
       url: randomUUID(),
     };
-    albs.add.mockResolvedValueOnce({ success: true, value: expected });
-    identity.getCurrentIdentity.mockResolvedValue({
-      userEntityRef: username,
-      ownershipEntityRefs: [],
-    });
+    service.create.mockResolvedValueOnce({ success: true, value: expected });
 
     const { status, body } = await request(app).post(`/`).send(data);
 
-    expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(1);
-    expect(albs.add).toHaveBeenCalledTimes(1);
-    expect(albs.add).toHaveBeenCalledWith(data, username, 'test-admin-group');
-    expect(catalog.refresh).toHaveBeenCalledTimes(1);
-    expect(catalog.refresh).toHaveBeenCalledWith(
-      'location:default/arms-length-bodies',
-    );
+    expect(service.create).toHaveBeenCalledTimes(1);
+    expect(service.create).toHaveBeenCalledWith(data);
     expect({ status, body }).toMatchObject({
       status: 201,
       body: JSON.parse(JSON.stringify(expected)),
@@ -104,8 +46,7 @@ describe('default', () => {
   });
 
   it('Should accept all parameters as optional except title and description', async () => {
-    const { app, albs, identity, catalog } = await setup();
-    const username = randomUUID();
+    const { app, service } = await setup();
     const data: CreateArmsLengthBodyRequest = {
       title: randomUUID(),
       description: randomUUID(),
@@ -120,25 +61,15 @@ describe('default', () => {
       title: randomUUID(),
       updated_at: new Date(),
       alias: randomUUID(),
-      children: [],
       updated_by: randomUUID(),
       url: randomUUID(),
     };
-    albs.add.mockResolvedValueOnce({ success: true, value: expected });
-    identity.getCurrentIdentity.mockResolvedValue({
-      userEntityRef: username,
-      ownershipEntityRefs: [],
-    });
+    service.create.mockResolvedValueOnce({ success: true, value: expected });
 
     const { status, body } = await request(app).post(`/`).send(data);
 
-    expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(1);
-    expect(albs.add).toHaveBeenCalledTimes(1);
-    expect(albs.add).toHaveBeenCalledWith(data, username, 'test-admin-group');
-    expect(catalog.refresh).toHaveBeenCalledTimes(1);
-    expect(catalog.refresh).toHaveBeenCalledWith(
-      'location:default/arms-length-bodies',
-    );
+    expect(service.create).toHaveBeenCalledTimes(1);
+    expect(service.create).toHaveBeenCalledWith(data);
     expect({ status, body }).toMatchObject({
       status: 201,
       body: JSON.parse(JSON.stringify(expected)),
@@ -146,7 +77,7 @@ describe('default', () => {
   });
 
   it('Should return 400 if the request body is bad', async () => {
-    const { app, albs, identity, catalog } = await setup();
+    const { app, service } = await setup();
     const data = {
       alias: 0,
       description: 0,
@@ -156,9 +87,7 @@ describe('default', () => {
 
     const { status, body } = await request(app).post(`/`).send(data);
 
-    expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(0);
-    expect(albs.add).toHaveBeenCalledTimes(0);
-    expect(catalog.refresh).toHaveBeenCalledTimes(0);
+    expect(service.create).toHaveBeenCalledTimes(0);
     expect({ status, body }).toMatchObject({
       status: 400,
       body: {
@@ -210,29 +139,22 @@ describe('default', () => {
   });
 
   it('Should return 400 if the.add fails', async () => {
-    const { app, albs, identity, catalog } = await setup();
-    const username = randomUUID();
+    const { app, service } = await setup();
     const data: CreateArmsLengthBodyRequest = {
       alias: randomUUID(),
       description: randomUUID(),
       title: randomUUID(),
       url: randomUUID(),
     };
-    albs.add.mockResolvedValueOnce({
+    service.create.mockResolvedValueOnce({
       success: false,
       errors: ['duplicateTitle', 'duplicateName', 'unknown'],
-    });
-    identity.getCurrentIdentity.mockResolvedValue({
-      userEntityRef: username,
-      ownershipEntityRefs: [],
     });
 
     const { status, body } = await request(app).post(`/`).send(data);
 
-    expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(1);
-    expect(albs.add).toHaveBeenCalledTimes(1);
-    expect(albs.add).toHaveBeenCalledWith(data, username, 'test-admin-group');
-    expect(catalog.refresh).toHaveBeenCalledTimes(0);
+    expect(service.create).toHaveBeenCalledTimes(1);
+    expect(service.create).toHaveBeenCalledWith(data);
     expect({ status, body }).toMatchObject({
       status: 400,
       body: {
@@ -255,51 +177,41 @@ describe('default', () => {
     });
   });
 
-  it('Should return 500 if getIdentity fails', async () => {
-    const { app, albs, identity, catalog } = await setup();
+  it('Should return 500 if an error is thrown', async () => {
+    const { app, service } = await setup();
     const data: CreateArmsLengthBodyRequest = {
       alias: randomUUID(),
       description: randomUUID(),
       title: randomUUID(),
       url: randomUUID(),
     };
-    identity.getCurrentIdentity.mockRejectedValueOnce(new Error());
+    service.create.mockRejectedValueOnce(new Error());
 
     const { status, body } = await request(app).post(`/`).send(data);
 
-    expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(1);
-    expect(albs.add).toHaveBeenCalledTimes(0);
-    expect(catalog.refresh).toHaveBeenCalledTimes(0);
-    expect({ status, body }).toMatchObject({
-      status: 500,
-      body: { error: {} },
-    });
-  });
-
-  it('Should return 500 if.add fails', async () => {
-    const { app, albs, identity, catalog } = await setup();
-    const username = randomUUID();
-    const data: CreateArmsLengthBodyRequest = {
-      alias: randomUUID(),
-      description: randomUUID(),
-      title: randomUUID(),
-      url: randomUUID(),
-    };
-    albs.add.mockRejectedValueOnce(new Error());
-    identity.getCurrentIdentity.mockResolvedValue({
-      userEntityRef: username,
-      ownershipEntityRefs: [],
-    });
-
-    const { status, body } = await request(app).post(`/`).send(data);
-
-    expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(1);
-    expect(albs.add).toHaveBeenCalledTimes(1);
-    expect(albs.add).toHaveBeenCalledWith(data, username, 'test-admin-group');
-    expect(catalog.refresh).toHaveBeenCalledTimes(0);
+    expect(service.create).toHaveBeenCalledTimes(1);
+    expect(service.create).toHaveBeenCalledWith(data);
     expect({ status, body }).toMatchObject({
       status: 500,
       body: { error: {} },
     });
   });
 });
+
+async function setup() {
+  const service: jest.Mocked<IArmsLengthBodyService> = {
+    create: jest.fn(),
+    getAll: jest.fn(),
+    getById: jest.fn(),
+    getIdNameMap: jest.fn(),
+    update: jest.fn(),
+  };
+
+  const handler = await testHelpers.getAutoServiceRef(create, [
+    testHelpers.provideService(armsLengthBodyServiceRef, service),
+  ]);
+
+  const app = testHelpers.makeApp(x => x.post('/', handler));
+
+  return { handler, app, service };
+}

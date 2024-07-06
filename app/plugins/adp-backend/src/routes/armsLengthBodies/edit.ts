@@ -1,23 +1,16 @@
-import { armsLengthBodyStoreRef } from '../../armsLengthBody';
 import { createEndpointRef } from '../util';
 import { createParser } from '../../utils';
 import type { UpdateArmsLengthBodyRequest } from '@internal/plugin-adp-common';
 import { z } from 'zod';
 import errorMapping from './errorMapping';
-import { fireAndForgetCatalogRefresherRef } from '../../services';
-import { identityProviderRef } from '@internal/plugin-credentials-context-backend';
+import { armsLengthBodyServiceRef } from '../../services';
 
 export default createEndpointRef({
   name: 'editArmsLengthBody',
   deps: {
-    armsLengthBodyStore: armsLengthBodyStoreRef,
-    identity: identityProviderRef,
-    catalogRefresher: fireAndForgetCatalogRefresherRef,
+    service: armsLengthBodyServiceRef,
   },
-  factory({
-    deps: { armsLengthBodyStore, identity, catalogRefresher },
-    responses: { ok, validationErrors },
-  }) {
+  factory({ deps: { service }, responses: { ok, validationErrors } }) {
     const parseBody = createParser<UpdateArmsLengthBodyRequest>(
       z.object({
         id: z.string(),
@@ -30,12 +23,10 @@ export default createEndpointRef({
 
     return async request => {
       const body = parseBody(request.body);
-      const { userEntityRef } = await identity.getCurrentIdentity();
-      const result = await armsLengthBodyStore.update(body, userEntityRef);
+      const result = await service.update(body);
       if (!result.success)
         return validationErrors(result.errors, errorMapping, body);
 
-      await catalogRefresher.refresh(`group:default/${result.value.name}`);
       return ok().json(result.value);
     };
   },

@@ -1,15 +1,15 @@
 import type { Request } from 'express';
-import { armsLengthBodyStoreRef } from '../../armsLengthBody';
 import { createEndpointRef } from '../util';
+import { armsLengthBodyServiceRef } from '../../services';
 
 export default createEndpointRef({
   name: 'getArmsLengthBody',
   deps: {
-    armsLengthBodyStore: armsLengthBodyStoreRef,
+    service: armsLengthBodyServiceRef,
   },
-  factory({ deps: { armsLengthBodyStore }, responses: { ok } }) {
+  factory({ deps: { service }, responses: { ok } }) {
     return async (request: Request<{ id: string }>) => {
-      const data = await armsLengthBodyStore.get(request.params.id);
+      const data = await service.getById(request.params.id);
       return ok().json(data);
     };
   },
