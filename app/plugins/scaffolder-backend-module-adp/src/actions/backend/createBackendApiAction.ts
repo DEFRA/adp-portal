@@ -104,18 +104,9 @@ function abortAfter(timeoutMs: number) {
     () => controller.abort(new Error('Request timed out')),
     timeoutMs,
   );
-  return Object.assign(Object.create(controller.signal), {
+  return Object.assign(controller.signal, {
     [Symbol.dispose]() {
       clearTimeout(timeoutId);
     },
-  });
-}
-
-if (!Symbol.dispose) {
-  Object.defineProperty(Symbol, 'dispose', {
-    value: Symbol('Symbol.dispose'),
-    writable: false,
-    configurable: false,
-    enumerable: false,
   });
 }

@@ -105,11 +105,3 @@ function usingListener<TEvent, THandler>(
     },
   };
 }
-
-if (!Symbol.dispose) {
-  Object.defineProperty(Symbol, 'dispose', {
-    value: Symbol('Symbol.dispose'),
-    writable: false,
-    configurable: false,
-  });
-}
