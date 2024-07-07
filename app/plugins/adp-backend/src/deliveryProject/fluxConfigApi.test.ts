@@ -82,62 +82,59 @@ describe('FluxConfigApi', () => {
   });
 
   it('should get Flux team configuration', async () => {
-    mockFetchApi.fetch.mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          serviceCode: 'test',
-          programmeName: 'test',
-          teamName: 'test-team',
-          services: [
-            {
-              name: 'test-web',
-              type: 0,
-              environments: [
-                {
-                  name: 'ENV1',
-                  configVariables: [],
-                },
-                {
-                  name: 'ENV2',
-                  configVariables: [],
-                },
-              ],
-              configVariables: [
-                {
-                  key: 'CONFIG_1',
-                  value: 'ffc-demo-web',
-                },
-              ],
-            },
-          ],
-          configVariables: [
-            {
-              key: 'TEAM_CPU_QUOTA',
-              value: '2000',
-            },
-            {
-              key: 'TEAM_MEMORY_QUOTA',
-              value: '3000Mi',
-            },
-            {
-              key: 'TEAM_PODS_QUOTA',
-              value: '20',
-            },
-            {
-              key: 'CONTAINER_MAX_CPU',
-              value: '500m',
-            },
-            {
-              key: 'CONTAINER_MAX_MEMORY',
-              value: '1000Mi',
-            },
-          ],
-        }),
-        {
-          status: 200,
-        },
-      ),
-    );
+    mockFetchApi.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue({
+        serviceCode: 'test',
+        programmeName: 'test',
+        teamName: 'test-team',
+        services: [
+          {
+            name: 'test-web',
+            type: 0,
+            environments: [
+              {
+                name: 'ENV1',
+                configVariables: [],
+              },
+              {
+                name: 'ENV2',
+                configVariables: [],
+              },
+            ],
+            configVariables: [
+              {
+                key: 'CONFIG_1',
+                value: 'ffc-demo-web',
+              },
+            ],
+          },
+        ],
+        configVariables: [
+          {
+            key: 'TEAM_CPU_QUOTA',
+            value: '2000',
+          },
+          {
+            key: 'TEAM_MEMORY_QUOTA',
+            value: '3000Mi',
+          },
+          {
+            key: 'TEAM_PODS_QUOTA',
+            value: '20',
+          },
+          {
+            key: 'CONTAINER_MAX_CPU',
+            value: '500m',
+          },
+          {
+            key: 'CONTAINER_MAX_MEMORY',
+            value: '1000Mi',
+          },
+        ],
+      }),
+      ok: true,
+      status: 200,
+    } as unknown as Response);
 
     const fluxConfigApi = sut();
     const fluxTeamConfig = await fluxConfigApi.getFluxConfig('test-team');
@@ -147,11 +144,10 @@ describe('FluxConfigApi', () => {
   });
 
   it('should return null if Flux team configuration is not found', async () => {
-    mockFetchApi.fetch.mockResolvedValue(
-      new Response(null, {
-        status: 404,
-      }),
-    );
+    mockFetchApi.fetch.mockResolvedValue({
+      ok: true,
+      status: 404,
+    } as unknown as Response);
 
     const fluxConfigApi = sut();
     const fluxTeamConfig = await fluxConfigApi.getFluxConfig('test-team');
@@ -160,12 +156,11 @@ describe('FluxConfigApi', () => {
   });
 
   it('should throw if a non-success response is received when getting team configuration', async () => {
-    mockFetchApi.fetch.mockResolvedValue(
-      new Response(null, {
-        status: 500,
-        statusText: 'Something went wrong',
-      }),
-    );
+    mockFetchApi.fetch.mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: 'Something went wrong',
+    } as unknown as Response);
 
     const fluxConfigApi = sut();
 
@@ -175,11 +170,10 @@ describe('FluxConfigApi', () => {
   });
 
   it('should create Flux team configuration', async () => {
-    mockFetchApi.fetch.mockResolvedValue(
-      new Response(null, {
-        status: 204,
-      }),
-    );
+    mockFetchApi.fetch.mockResolvedValue({
+      ok: true,
+      status: 204,
+    } as unknown as Response);
 
     const deliveryProject: DeliveryProject = {
       name: 'test-project',
@@ -206,11 +200,10 @@ describe('FluxConfigApi', () => {
   });
 
   it('should create Flux team configuration with config variables', async () => {
-    mockFetchApi.fetch.mockResolvedValue(
-      new Response(null, {
-        status: 204,
-      }),
-    );
+    mockFetchApi.fetch.mockResolvedValue({
+      ok: true,
+      status: 204,
+    } as unknown as Response);
 
     const deliveryProject: DeliveryProject = {
       name: 'test-project',
@@ -251,12 +244,11 @@ describe('FluxConfigApi', () => {
   });
 
   it('should throw if a non-success response is received when creating team configuration', async () => {
-    mockFetchApi.fetch.mockResolvedValue(
-      new Response(null, {
-        status: 500,
-        statusText: 'Something went wrong',
-      }),
-    );
+    mockFetchApi.fetch.mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: 'Something went wrong',
+    } as unknown as Response);
 
     const deliveryProject: DeliveryProject = {
       name: 'test-project',

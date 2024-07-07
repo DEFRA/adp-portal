@@ -54,7 +54,7 @@ export type IDeliveryProjectStore = {
 };
 
 export class DeliveryProjectStore {
-  readonly #client: Knex;
+  readonly #client: Knex<any, any[]>;
 
   constructor(client: Knex) {
     this.#client = client;
