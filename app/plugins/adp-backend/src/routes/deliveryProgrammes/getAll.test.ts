@@ -4,7 +4,7 @@ import request from 'supertest';
 import { type DeliveryProgramme } from '@internal/plugin-adp-common';
 import { randomUUID } from 'node:crypto';
 import {
-  type IDeliveryProgrammeService,
+  DeliveryProgrammeService,
   deliveryProgrammeServiceRef,
 } from '../../services';
 
@@ -52,12 +52,7 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IDeliveryProgrammeService> = {
-    create: jest.fn(),
-    getAll: jest.fn(),
-    getById: jest.fn(),
-    edit: jest.fn(),
-  };
+  const service = mockInstance(DeliveryProgrammeService);
 
   const handler = await testHelpers.getAutoServiceRef(getAll, [
     testHelpers.provideService(deliveryProgrammeServiceRef, service),

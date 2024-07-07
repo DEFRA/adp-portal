@@ -2,8 +2,8 @@ import {
   MICROSOFT_EMAIL_ANNOTATION,
   MICROSOFT_GRAPH_USER_ID_ANNOTATION,
 } from '@backstage/plugin-catalog-backend-module-msgraph';
-import type { IDeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
-import type { ICatalogUserEntityProvider } from './CatalogUserEntityProvider';
+import { DeliveryProgrammeAdminStore } from '../deliveryProgrammeAdmin';
+import { CatalogUserEntityProvider } from './CatalogUserEntityProvider';
 import { DeliveryProgrammeAdminService } from './DeliveryProgrammeAdminService';
 import type { FireAndForgetCatalogRefresher } from './fireAndForgetCatalogRefresher';
 import { randomUUID } from 'node:crypto';
@@ -206,18 +206,8 @@ describe('DeliveryProgrammeAdminService', () => {
 });
 
 function setup() {
-  const store: jest.Mocked<IDeliveryProgrammeAdminStore> = {
-    add: jest.fn(),
-    delete: jest.fn(),
-    getAll: jest.fn(),
-    getByAADEntityRef: jest.fn(),
-    getByDeliveryProgramme: jest.fn(),
-  };
-
-  const userEntities: jest.Mocked<ICatalogUserEntityProvider> = {
-    getByEntityRef: jest.fn(),
-  };
-
+  const store = mockInstance(DeliveryProgrammeAdminStore);
+  const userEntities = mockInstance(CatalogUserEntityProvider);
   const catalogRefresher: jest.Mocked<FireAndForgetCatalogRefresher> = {
     refresh: jest.fn(),
   };

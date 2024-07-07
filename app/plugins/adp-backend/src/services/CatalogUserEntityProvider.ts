@@ -38,7 +38,7 @@ export class CatalogUserEntityProvider {
     const result = await this.#catalog.getEntityByRef(entityRef, {
       token: await this.#getToken(),
     });
-    return result && [result].find(isUserEntity);
+    return result && isUserEntity(result) ? result : undefined;
   }
 }
 

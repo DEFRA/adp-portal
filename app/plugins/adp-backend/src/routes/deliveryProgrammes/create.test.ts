@@ -7,8 +7,8 @@ import type {
 } from '@internal/plugin-adp-common';
 import { randomUUID } from 'node:crypto';
 import {
+  DeliveryProgrammeService,
   deliveryProgrammeServiceRef,
-  type IDeliveryProgrammeService,
 } from '../../services';
 
 describe('default', () => {
@@ -244,12 +244,7 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IDeliveryProgrammeService> = {
-    create: jest.fn(),
-    getAll: jest.fn(),
-    getById: jest.fn(),
-    edit: jest.fn(),
-  };
+  const service = mockInstance(DeliveryProgrammeService);
 
   const handler = await testHelpers.getAutoServiceRef(create, [
     testHelpers.provideService(deliveryProgrammeServiceRef, service),

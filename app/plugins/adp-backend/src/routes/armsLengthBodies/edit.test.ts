@@ -7,8 +7,8 @@ import type {
 } from '@internal/plugin-adp-common';
 import { randomUUID } from 'node:crypto';
 import {
+  ArmsLengthBodyService,
   armsLengthBodyServiceRef,
-  type IArmsLengthBodyService,
 } from '../../services';
 
 describe('default', () => {
@@ -205,13 +205,7 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IArmsLengthBodyService> = {
-    create: jest.fn(),
-    getAll: jest.fn(),
-    getById: jest.fn(),
-    getIdNameMap: jest.fn(),
-    update: jest.fn(),
-  };
+  const service = mockInstance(ArmsLengthBodyService);
 
   const handler = await testHelpers.getAutoServiceRef(edit, [
     testHelpers.provideService(armsLengthBodyServiceRef, service),

@@ -1,5 +1,5 @@
 import {
-  type IArmsLengthBodyStore,
+  ArmsLengthBodyStore,
   armsLengthBodyStoreRef,
 } from '../../../armsLengthBody';
 import getYaml from './get.yaml';
@@ -67,13 +67,7 @@ async function setup() {
     },
   });
 
-  const albs: jest.Mocked<IArmsLengthBodyStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-    getByName: jest.fn(),
-  };
+  const albs = mockInstance(ArmsLengthBodyStore);
 
   const handler = await testHelpers.getAutoServiceRef(getYaml, [
     testHelpers.provideService(armsLengthBodyStoreRef, albs),

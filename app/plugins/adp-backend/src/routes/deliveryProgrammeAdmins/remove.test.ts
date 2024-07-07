@@ -1,7 +1,7 @@
 import type { DeleteDeliveryProgrammeAdminRequest } from '@internal/plugin-adp-common';
 import {
+  DeliveryProgrammeAdminService,
   deliveryProgrammeAdminServiceRef,
-  type IDeliveryProgrammeAdminService,
 } from '../../services';
 import { testHelpers } from '../../utils/testHelpers';
 import remove from './remove';
@@ -68,12 +68,7 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IDeliveryProgrammeAdminService> = {
-    add: jest.fn(),
-    getAll: jest.fn(),
-    getByProgrammeId: jest.fn(),
-    remove: jest.fn(),
-  };
+  const service = mockInstance(DeliveryProgrammeAdminService);
 
   const handler = await testHelpers.getAutoServiceRef(remove, [
     testHelpers.provideService(deliveryProgrammeAdminServiceRef, service),

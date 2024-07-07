@@ -1,4 +1,4 @@
-import { adoProjectApiRef, type IAdoProjectApi } from '../../deliveryProject';
+import { AdoProjectApi, adoProjectApiRef } from '../../deliveryProject';
 import { testHelpers } from '../../utils/testHelpers';
 import checkAdoProject from './checkAdoProject';
 import request from 'supertest';
@@ -21,9 +21,7 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IAdoProjectApi> = {
-    checkIfAdoProjectExists: jest.fn(),
-  };
+  const service = mockInstance(AdoProjectApi);
 
   const handler = await testHelpers.getAutoServiceRef(checkAdoProject, [
     testHelpers.provideService(adoProjectApiRef, service),

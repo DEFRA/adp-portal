@@ -1,7 +1,7 @@
 import type { DeleteDeliveryProjectUserRequest } from '@internal/plugin-adp-common';
 import {
+  DeliveryProjectUserService,
   deliveryProjectUserServiceRef,
-  type IDeliveryProjectUserService,
 } from '../../services';
 import { testHelpers } from '../../utils/testHelpers';
 import remove from './remove';
@@ -66,13 +66,7 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IDeliveryProjectUserService> = {
-    add: jest.fn(),
-    getAll: jest.fn(),
-    getByProjectId: jest.fn(),
-    remove: jest.fn(),
-    edit: jest.fn(),
-  };
+  const service = mockInstance(DeliveryProjectUserService);
 
   const handler = await testHelpers.getAutoServiceRef(remove, [
     testHelpers.provideService(deliveryProjectUserServiceRef, service),

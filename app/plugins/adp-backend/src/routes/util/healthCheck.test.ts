@@ -1,20 +1,12 @@
 import { testHelpers } from '../../utils/testHelpers';
 import request from 'supertest';
-import {
-  type LoggerService,
-  coreServices,
-} from '@backstage/backend-plugin-api';
+import { coreServices } from '@backstage/backend-plugin-api';
 import healthCheck from './healthCheck';
+import { mockServices } from '@backstage/backend-test-utils';
 
 describe('default', () => {
   async function setup() {
-    const logger: jest.Mocked<LoggerService> = {
-      child: jest.fn(),
-      debug: jest.fn(),
-      error: jest.fn(),
-      info: jest.fn(),
-      warn: jest.fn(),
-    };
+    const logger = mockServices.logger.mock();
 
     const handler = await testHelpers.getAutoServiceRef(healthCheck, [
       testHelpers.provideService(coreServices.logger, logger),

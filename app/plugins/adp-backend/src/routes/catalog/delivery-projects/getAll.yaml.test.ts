@@ -4,7 +4,7 @@ import request from 'supertest';
 import { coreServices } from '@backstage/backend-plugin-api';
 import { mockServices } from '@backstage/backend-test-utils';
 import {
-  type IDeliveryProjectStore,
+  DeliveryProjectStore,
   deliveryProjectStoreRef,
 } from '../../../deliveryProject';
 import type { DeliveryProject } from '@internal/plugin-adp-common';
@@ -58,13 +58,7 @@ async function setup() {
     },
   });
 
-  const projects: jest.Mocked<IDeliveryProjectStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-    getByName: jest.fn(),
-  };
+  const projects = mockInstance(DeliveryProjectStore);
 
   const handler = await testHelpers.getAutoServiceRef(getAllYaml, [
     testHelpers.provideService(deliveryProjectStoreRef, projects),

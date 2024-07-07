@@ -4,8 +4,8 @@ import request from 'supertest';
 import { coreServices } from '@backstage/backend-plugin-api';
 import { mockServices } from '@backstage/backend-test-utils';
 import {
+  ArmsLengthBodyStore,
   armsLengthBodyStoreRef,
-  type IArmsLengthBodyStore,
 } from '../../../armsLengthBody';
 
 describe('default', () => {
@@ -58,13 +58,7 @@ async function setup() {
     },
   });
 
-  const albs: jest.Mocked<IArmsLengthBodyStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-    getByName: jest.fn(),
-  };
+  const albs = mockInstance(ArmsLengthBodyStore);
 
   const handler = await testHelpers.getAutoServiceRef(getAllYaml, [
     testHelpers.provideService(armsLengthBodyStoreRef, albs),

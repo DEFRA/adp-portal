@@ -1,5 +1,5 @@
 import {
-  type IDeliveryProgrammeStore,
+  DeliveryProgrammeStore,
   deliveryProgrammeStoreRef,
 } from '../../../deliveryProgramme';
 import getAllYaml from './getAll.yaml';
@@ -58,13 +58,7 @@ async function setup() {
     },
   });
 
-  const programmes: jest.Mocked<IDeliveryProgrammeStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-    getByName: jest.fn(),
-  };
+  const programmes = mockInstance(DeliveryProgrammeStore);
 
   const handler = await testHelpers.getAutoServiceRef(getAllYaml, [
     testHelpers.provideService(deliveryProgrammeStoreRef, programmes),

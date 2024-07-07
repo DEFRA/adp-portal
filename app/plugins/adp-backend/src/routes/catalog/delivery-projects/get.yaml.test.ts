@@ -1,13 +1,13 @@
 import {
-  type IDeliveryProgrammeStore,
+  DeliveryProgrammeStore,
   deliveryProgrammeStoreRef,
 } from '../../../deliveryProgramme';
 import {
-  type IDeliveryProjectStore,
+  DeliveryProjectStore,
   deliveryProjectStoreRef,
 } from '../../../deliveryProject';
 import {
-  type IDeliveryProjectUserStore,
+  DeliveryProjectUserStore,
   deliveryProjectUserStoreRef,
 } from '../../../deliveryProjectUser';
 import getYaml from './get.yaml';
@@ -111,28 +111,9 @@ async function setup() {
     },
   });
 
-  const programmes: jest.Mocked<IDeliveryProgrammeStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-    getByName: jest.fn(),
-  };
-  const projects: jest.Mocked<IDeliveryProjectStore> = {
-    add: jest.fn(),
-    getAll: jest.fn(),
-    get: jest.fn(),
-    getByName: jest.fn(),
-    update: jest.fn(),
-  };
-  const projectUsers: jest.Mocked<IDeliveryProjectUserStore> = {
-    add: jest.fn(),
-    delete: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    getByDeliveryProject: jest.fn(),
-    update: jest.fn(),
-  };
+  const programmes = mockInstance(DeliveryProgrammeStore);
+  const projects = mockInstance(DeliveryProjectStore);
+  const projectUsers = mockInstance(DeliveryProjectUserStore);
 
   const handler = await testHelpers.getAutoServiceRef(getYaml, [
     testHelpers.provideService(deliveryProgrammeStoreRef, programmes),

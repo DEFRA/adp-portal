@@ -1,7 +1,7 @@
 import type { DeliveryProjectTeamsSyncResult } from '@internal/plugin-adp-common';
 import {
+  DeliveryProjectGithubTeamsSyncronizer,
   deliveryProjectGithubTeamsSyncronizerRef,
-  type IDeliveryProjectGithubTeamsSyncronizer,
 } from '../../githubTeam';
 import { testHelpers } from '../../utils/testHelpers';
 import syncWithGithub from './syncWithGithub';
@@ -45,11 +45,7 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> = {
-    syncronize: jest.fn(),
-    syncronizeById: jest.fn(),
-    syncronizeByName: jest.fn(),
-  };
+  const service = mockInstance(DeliveryProjectGithubTeamsSyncronizer);
 
   const handler = await testHelpers.getAutoServiceRef(syncWithGithub, [
     testHelpers.provideService(

@@ -1,13 +1,13 @@
 import {
-  type IDeliveryProgrammeStore,
+  DeliveryProgrammeStore,
   deliveryProgrammeStoreRef,
 } from '../../../deliveryProgramme';
 import {
-  type IArmsLengthBodyStore,
+  ArmsLengthBodyStore,
   armsLengthBodyStoreRef,
 } from '../../../armsLengthBody';
 import {
-  type IDeliveryProgrammeAdminStore,
+  DeliveryProgrammeAdminStore,
   deliveryProgrammeAdminStoreRef,
 } from '../../../deliveryProgrammeAdmin';
 import getYaml from './get.yaml';
@@ -106,27 +106,9 @@ async function setup() {
     },
   });
 
-  const albs: jest.Mocked<IArmsLengthBodyStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-    getByName: jest.fn(),
-  };
-  const programmes: jest.Mocked<IDeliveryProgrammeStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-    getByName: jest.fn(),
-  };
-  const programmeAdmins: jest.Mocked<IDeliveryProgrammeAdminStore> = {
-    add: jest.fn(),
-    getAll: jest.fn(),
-    delete: jest.fn(),
-    getByAADEntityRef: jest.fn(),
-    getByDeliveryProgramme: jest.fn(),
-  };
+  const albs = mockInstance(ArmsLengthBodyStore);
+  const programmes = mockInstance(DeliveryProgrammeStore);
+  const programmeAdmins = mockInstance(DeliveryProgrammeAdminStore);
 
   const handler = await testHelpers.getAutoServiceRef(getYaml, [
     testHelpers.provideService(armsLengthBodyStoreRef, albs),

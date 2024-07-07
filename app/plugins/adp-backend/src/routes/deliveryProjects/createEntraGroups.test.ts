@@ -1,5 +1,5 @@
 import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
-import { entraIdApiRef, type IEntraIdApi } from '../../entraId';
+import { EntraIdApi, entraIdApiRef } from '../../entraId';
 import { testHelpers } from '../../utils/testHelpers';
 import createEntraGroups from './createEntraGroups';
 import { randomUUID } from 'node:crypto';
@@ -290,10 +290,7 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IEntraIdApi> = {
-    createEntraIdGroupsForProject: jest.fn(),
-    setProjectGroupMembers: jest.fn(),
-  };
+  const service = mockInstance(EntraIdApi);
 
   const handler = await testHelpers.getAutoServiceRef(createEntraGroups, [
     testHelpers.provideService(entraIdApiRef, service),

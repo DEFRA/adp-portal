@@ -1,5 +1,5 @@
 import { mockServices } from '@backstage/backend-test-utils';
-import type { IArmsLengthBodyStore } from '../armsLengthBody';
+import { ArmsLengthBodyStore } from '../armsLengthBody';
 import type { IdentityProvider } from '@internal/plugin-credentials-context-backend';
 import type { FireAndForgetCatalogRefresher } from './fireAndForgetCatalogRefresher';
 import { ArmsLengthBodyService } from './ArmsLengthBodyService';
@@ -215,13 +215,7 @@ describe('ArmsLengthBodyService', () => {
 });
 
 function setup() {
-  const store: jest.Mocked<IArmsLengthBodyStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    getByName: jest.fn(),
-    update: jest.fn(),
-  };
+  const store = mockInstance(ArmsLengthBodyStore);
 
   const config = mockServices.rootConfig({
     data: {
