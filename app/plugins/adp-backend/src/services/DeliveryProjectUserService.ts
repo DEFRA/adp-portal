@@ -129,7 +129,10 @@ export class DeliveryProjectUserService {
     return result;
   }
 
-  async edit(id: string, data: Omit<UpdateDeliveryProjectUserRequest, 'id'>) {
+  async edit(
+    id: string,
+    data: Omit<UpdateDeliveryProjectUserRequest, 'id' | 'delivery_project_id'>,
+  ) {
     assertUUID(id);
     const result = await this.#store.update({
       ...data,
@@ -143,11 +146,15 @@ export class DeliveryProjectUserService {
   }
 
   async remove(id: string) {
-    const data = await this.#store.get(id);
-    if (!data) return;
+    let delivery_project_id;
+    try {
+      ({ delivery_project_id } = await this.#store.get(id));
+    } catch {
+      return;
+    }
 
     await this.#store.delete(id);
-    await this.#syncronize(data.delivery_project_id);
+    await this.#syncronize(delivery_project_id);
   }
 
   async getAll() {

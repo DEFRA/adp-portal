@@ -24,7 +24,6 @@ export default createEndpointRef({
     return async request => {
       const body = parseBody(request.body);
       const result = await service.edit(body.id, {
-        delivery_project_id: body.delivery_project_id,
         github_username: body.github_username,
         is_admin: body.is_admin,
         is_technical: body.is_technical,
