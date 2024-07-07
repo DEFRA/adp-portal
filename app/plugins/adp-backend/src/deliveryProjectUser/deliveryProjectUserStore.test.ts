@@ -19,9 +19,9 @@ import {
   createDeliveryProjectUserEntity,
 } from '../testData/projectUserTestData';
 import { faker } from '@faker-js/faker';
-import { assertUUID } from '../utils';
-import type { UpdateDeliveryProjectUserRequest } from '@internal/plugin-adp-common';
+import { assertUUID, type UpdateDeliveryProjectUser } from '../utils';
 import { NotFoundError } from '@backstage/errors';
+import { type UUID } from 'node:crypto';
 
 describe('DeliveryProjectUserStore', () => {
   const databases = TestDatabases.create();
@@ -183,13 +183,11 @@ describe('DeliveryProjectUserStore', () => {
         await createDatabase(databaseId);
       const projectUser = await seedProjectUser(knex);
 
-      const expectedUpdate: UpdateDeliveryProjectUserRequest = {
+      const expectedUpdate: UpdateDeliveryProjectUser = {
         id: projectUser.id,
         is_admin: true,
         is_technical: true,
         github_username: 'test github username',
-        delivery_project_id: projectUser.delivery_project_id,
-        user_catalog_name: 'user@test.com',
       };
 
       const updateResult =
@@ -213,11 +211,10 @@ describe('DeliveryProjectUserStore', () => {
       const { knex, deliveryProjectUserStore } =
         await createDatabase(databaseId);
       const projectUser = await seedProjectUser(knex);
-      const updateUser: UpdateDeliveryProjectUserRequest = {
+      const updateUser: UpdateDeliveryProjectUser = {
         ...projectUser,
         is_admin: Boolean(projectUser.is_admin),
         is_technical: Boolean(projectUser.is_technical),
-        user_catalog_name: 'user@test.com',
       };
 
       const updateResult = await deliveryProjectUserStore.update(updateUser);
@@ -241,11 +238,11 @@ describe('DeliveryProjectUserStore', () => {
         await createDatabase(databaseId);
       await seedProjectUser(knex);
 
-      const expectedUpdate: UpdateDeliveryProjectUserRequest = {
-        id: '12345',
+      const expectedUpdate: UpdateDeliveryProjectUser = {
+        id: '12345' as UUID,
         github_username: 'test github user',
-        delivery_project_id: '12345',
-        user_catalog_name: 'user@test.com',
+        is_admin: Math.random() > 0.5,
+        is_technical: Math.random() > 0.5,
       };
 
       await expect(

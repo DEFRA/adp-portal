@@ -214,7 +214,6 @@ describe('DeliveryProjectUserClient', () => {
       const updateData: UpdateDeliveryProjectUserRequest = {
         is_admin: true,
         id: faker.string.uuid(),
-        user_catalog_name: faker.internet.email(),
         delivery_project_id: faker.string.uuid(),
       };
       const result = await sut.update(updateData);
