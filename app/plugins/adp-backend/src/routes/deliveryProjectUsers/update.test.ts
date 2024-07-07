@@ -39,7 +39,7 @@ describe('default', () => {
     const { status, body } = await request(app).patch(`/`).send(data);
 
     expect(service.edit).toHaveBeenCalledTimes(1);
-    const { id, ...editArgs } = data;
+    const { id, delivery_project_id, ...editArgs } = data;
     expect(service.edit).toHaveBeenCalledWith(id, editArgs);
     expect({ status, body }).toMatchObject({
       status: 200,
@@ -71,7 +71,7 @@ describe('default', () => {
     const { status, body } = await request(app).patch(`/`).send(data);
 
     expect(service.edit).toHaveBeenCalledTimes(1);
-    const { id, ...editArgs } = data;
+    const { id, delivery_project_id, ...editArgs } = data;
     expect(service.edit).toHaveBeenCalledWith(id, editArgs);
     expect({ status, body }).toMatchObject({
       status: 200,
@@ -168,7 +168,7 @@ describe('default', () => {
     const { status, body } = await request(app).patch(`/`).send(data);
 
     expect(service.edit).toHaveBeenCalledTimes(1);
-    const { id, ...editArgs } = data;
+    const { id, delivery_project_id, ...editArgs } = data;
     expect(service.edit).toHaveBeenCalledWith(id, editArgs);
     console.log(JSON.stringify(body));
     expect({ status, body }).toMatchObject({
@@ -195,7 +195,7 @@ describe('default', () => {
     const { status, body } = await request(app).patch(`/`).send(data);
 
     expect(service.edit).toHaveBeenCalledTimes(1);
-    const { id, ...editArgs } = data;
+    const { id, delivery_project_id, ...editArgs } = data;
     expect(service.edit).toHaveBeenCalledWith(id, editArgs);
     expect({ status, body }).toMatchObject({
       status: 500,
