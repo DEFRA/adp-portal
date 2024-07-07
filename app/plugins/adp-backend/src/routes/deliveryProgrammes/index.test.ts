@@ -6,7 +6,7 @@ import create from './create';
 import edit from './edit';
 import getAll from './getAll';
 import request from 'supertest';
-import checkAuth from '../checkAuth';
+import checkAuth, { type CheckAuthFactory } from '../checkAuth';
 import { NotAllowedError } from '@backstage/errors';
 import {
   deliveryProgrammeCreatePermission,
@@ -179,9 +179,7 @@ async function setup() {
     testHelpers.provideService(healthCheck, mockHealthCheck),
     testHelpers.provideService(
       checkAuth,
-      getRequests =>
-        (...args) =>
-          mockCheckAuth(getRequests)(...args),
+      testHelpers.deferFunctionFactory(mockCheckAuth as CheckAuthFactory),
     ),
   ]);
 

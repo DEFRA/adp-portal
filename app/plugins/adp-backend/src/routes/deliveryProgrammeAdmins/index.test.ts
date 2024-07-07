@@ -2,7 +2,7 @@ import express from 'express';
 import { testHelpers } from '../../utils/testHelpers';
 import index from './index';
 import request from 'supertest';
-import checkAuth from '../checkAuth';
+import checkAuth, { type CheckAuthFactory } from '../checkAuth';
 import { NotAllowedError } from '@backstage/errors';
 import {
   deliveryProgrammeAdminCreatePermission,
@@ -192,9 +192,7 @@ async function setup() {
     testHelpers.provideService(healthCheck, mockHealthCheck),
     testHelpers.provideService(
       checkAuth,
-      getRequests =>
-        (...args) =>
-          mockCheckAuth(getRequests)(...args),
+      testHelpers.deferFunctionFactory(mockCheckAuth as CheckAuthFactory),
     ),
   ]);
 
