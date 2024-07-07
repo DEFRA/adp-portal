@@ -55,7 +55,7 @@ interface EndpointOptions<
  * @returns a service reference for a request handler
  */
 export function createEndpointRef<
-  P = Record<string, string>,
+  P = {},
   ResBody = unknown,
   ReqBody = unknown,
   ReqQuery = ParsedQs,
