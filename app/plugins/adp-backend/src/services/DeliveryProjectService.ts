@@ -136,7 +136,7 @@ export class DeliveryProjectService {
     const result = await this.#store.get(id);
     const [admins, users] = await Promise.all([
       this.#admins.getByProgrammeId(result.delivery_programme_id),
-      this.#users.getByProjectId(result.id),
+      this.#users.getByProjectId(id),
     ]);
     result.delivery_programme_admins = admins;
     result.delivery_project_users = users;

@@ -27,7 +27,7 @@ describe('default', () => {
       title: randomUUID(),
       updated_at: new Date(),
       finance_code: randomUUID(),
-      github_team_visibility: Math.random() ? 'private' : 'public',
+      github_team_visibility: Math.random() > 0.5 ? 'private' : 'public',
       updated_by: randomUUID(),
     };
     service.getById.mockResolvedValueOnce(expected);

@@ -23,7 +23,7 @@ describe('default', () => {
       delivery_programme_id: randomUUID(),
       delivery_project_code: randomUUID(),
       finance_code: randomUUID(),
-      github_team_visibility: Math.random() ? 'private' : 'public',
+      github_team_visibility: Math.random() > 0.5 ? 'private' : 'public',
       service_owner: randomUUID(),
       team_type: randomUUID(),
     };
@@ -43,7 +43,7 @@ describe('default', () => {
       title: randomUUID(),
       updated_at: new Date(),
       finance_code: randomUUID(),
-      github_team_visibility: Math.random() ? 'private' : 'public',
+      github_team_visibility: Math.random() > 0.5 ? 'private' : 'public',
       updated_by: randomUUID(),
     };
     service.edit.mockResolvedValueOnce({ success: true, value: expected });
@@ -79,7 +79,7 @@ describe('default', () => {
       title: randomUUID(),
       updated_at: new Date(),
       finance_code: randomUUID(),
-      github_team_visibility: Math.random() ? 'private' : 'public',
+      github_team_visibility: Math.random() > 0.5 ? 'private' : 'public',
       updated_by: randomUUID(),
     };
     service.edit.mockResolvedValueOnce({ success: true, value: expected });
@@ -237,7 +237,7 @@ describe('default', () => {
       delivery_programme_id: randomUUID(),
       delivery_project_code: randomUUID(),
       finance_code: randomUUID(),
-      github_team_visibility: Math.random() ? 'private' : 'public',
+      github_team_visibility: Math.random() > 0.5 ? 'private' : 'public',
       service_owner: randomUUID(),
       team_type: randomUUID(),
     };
@@ -281,7 +281,7 @@ describe('default', () => {
       delivery_programme_id: randomUUID(),
       delivery_project_code: randomUUID(),
       finance_code: randomUUID(),
-      github_team_visibility: Math.random() ? 'private' : 'public',
+      github_team_visibility: Math.random() > 0.5 ? 'private' : 'public',
       service_owner: randomUUID(),
       team_type: randomUUID(),
     };
