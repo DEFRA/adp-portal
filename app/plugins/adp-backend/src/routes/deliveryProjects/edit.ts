@@ -1,25 +1,16 @@
 import { createEndpointRef } from '../util';
-import { deliveryProjectGithubTeamsSyncronizerRef } from '../../githubTeam';
-import { deliveryProjectStoreRef } from '../../deliveryProject';
 import { type UpdateDeliveryProjectRequest } from '@internal/plugin-adp-common';
 import { z } from 'zod';
 import { createParser } from '../../utils';
-import { fireAndForgetCatalogRefresherRef } from '../../services';
+import { deliveryProjectServiceRef } from '../../services';
 import { errorMapping } from './errorMapping';
-import { identityProviderRef } from '@internal/plugin-credentials-context-backend';
 
 export default createEndpointRef({
   name: 'updateDeliveryProject',
   deps: {
-    identity: identityProviderRef,
-    deliveryProjectStore: deliveryProjectStoreRef,
-    teamSyncronizer: deliveryProjectGithubTeamsSyncronizerRef,
-    catalogRefresher: fireAndForgetCatalogRefresherRef,
+    service: deliveryProjectServiceRef,
   },
-  factory({
-    deps: { identity, deliveryProjectStore, teamSyncronizer, catalogRefresher },
-    responses: { ok, validationErrors },
-  }) {
+  factory({ deps: { service }, responses: { ok, validationErrors } }) {
     const parseBody = createParser<UpdateDeliveryProjectRequest>(
       z.object({
         id: z.string(),
@@ -38,15 +29,9 @@ export default createEndpointRef({
 
     return async request => {
       const body = parseBody(request.body);
-      const { userEntityRef } = await identity.getCurrentIdentity();
-      const result = await deliveryProjectStore.update(body, userEntityRef);
+      const result = await service.edit(body);
       if (!result.success)
         return validationErrors(result.errors, errorMapping, body);
-
-      await Promise.allSettled([
-        teamSyncronizer.syncronizeByName(result.value.name),
-      ]);
-      await catalogRefresher.refresh(`location:default/delivery-programmes`);
       return ok().json(result.value);
     };
   },

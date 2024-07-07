@@ -2,6 +2,7 @@ import { createRouterRef, healthCheck } from '../util';
 import { middlewareFactoryRef } from '../../refs';
 import express, { type Request } from 'express';
 import {
+  type UpdateDeliveryProgrammeRequest,
   deliveryProgrammeCreatePermission,
   deliveryProgrammeUpdatePermission,
 } from '@internal/plugin-adp-common';
@@ -27,7 +28,7 @@ export default createRouterRef({
       permission: deliveryProgrammeCreatePermission,
     }));
     const canEdit = deps.checkAuth(
-      (req: Request<unknown, unknown, { id?: unknown }>) => ({
+      (req: Request<unknown, unknown, UpdateDeliveryProgrammeRequest>) => ({
         permission: deliveryProgrammeUpdatePermission,
         resourceRef: String(req.body.id ?? 'missing-id'),
       }),

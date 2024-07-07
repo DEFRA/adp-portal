@@ -1,10 +1,10 @@
 import type {
-  CreateDeliveryProgrammeAdminRequest,
-  DeliveryProgrammeAdmin,
+  CreateDeliveryProjectUserRequest,
+  DeliveryProjectUser,
 } from '@internal/plugin-adp-common';
 import {
-  deliveryProgrammeAdminServiceRef,
-  type IDeliveryProgrammeAdminService,
+  deliveryProjectUserServiceRef,
+  type IDeliveryProjectUserService,
 } from '../../services';
 import { testHelpers } from '../../utils/testHelpers';
 import add from './add';
@@ -14,18 +14,24 @@ import { randomUUID } from 'node:crypto';
 describe('default', () => {
   it('Should return ok with the data from the service', async () => {
     const { app, service } = await setup();
-    const data: CreateDeliveryProgrammeAdminRequest = {
-      delivery_programme_id: randomUUID(),
-      group_entity_ref: randomUUID(),
+    const data: CreateDeliveryProjectUserRequest = {
+      delivery_project_id: randomUUID(),
+      is_admin: Math.random() > 0.5,
+      is_technical: Math.random() > 0.5,
       user_catalog_name: randomUUID(),
+      github_username: randomUUID(),
     };
-    const expected: DeliveryProgrammeAdmin = {
+    const expected: DeliveryProjectUser = {
       aad_entity_ref_id: randomUUID(),
-      delivery_programme_id: randomUUID(),
+      delivery_project_id: randomUUID(),
       email: randomUUID(),
       id: randomUUID(),
+      is_admin: Math.random() > 0.5,
+      is_technical: Math.random() > 0.5,
       name: randomUUID(),
       updated_at: new Date(),
+      aad_user_principal_name: randomUUID(),
+      github_username: randomUUID(),
       user_entity_ref: randomUUID(),
     };
     service.add.mockResolvedValueOnce({ success: true, value: expected });
@@ -34,8 +40,13 @@ describe('default', () => {
 
     expect(service.add).toHaveBeenCalledTimes(1);
     expect(service.add).toHaveBeenCalledWith(
-      data.delivery_programme_id,
+      data.delivery_project_id,
       `user:default/${data.user_catalog_name}`,
+      {
+        is_admin: data.is_admin,
+        is_technical: data.is_technical,
+        github_username: data.github_username,
+      },
     );
     expect({ status, body }).toMatchObject({
       status: 201,
@@ -59,15 +70,6 @@ describe('default', () => {
     "expected": "string",
     "received": "undefined",
     "path": [
-      "delivery_programme_id"
-    ],
-    "message": "Required"
-  },
-  {
-    "code": "invalid_type",
-    "expected": "string",
-    "received": "undefined",
-    "path": [
       "user_catalog_name"
     ],
     "message": "Required"
@@ -77,7 +79,25 @@ describe('default', () => {
     "expected": "string",
     "received": "undefined",
     "path": [
-      "group_entity_ref"
+      "delivery_project_id"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "boolean",
+    "received": "undefined",
+    "path": [
+      "is_admin"
+    ],
+    "message": "Required"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "boolean",
+    "received": "undefined",
+    "path": [
+      "is_technical"
     ],
     "message": "Required"
   }
@@ -90,10 +110,12 @@ describe('default', () => {
   });
   it('Should return 400 if the add fails', async () => {
     const { app, service } = await setup();
-    const data: CreateDeliveryProgrammeAdminRequest = {
-      delivery_programme_id: randomUUID(),
-      group_entity_ref: randomUUID(),
+    const data: CreateDeliveryProjectUserRequest = {
+      delivery_project_id: randomUUID(),
+      is_admin: Math.random() > 0.5,
+      is_technical: Math.random() > 0.5,
       user_catalog_name: randomUUID(),
+      github_username: randomUUID(),
     };
     service.add.mockResolvedValueOnce({
       success: false,
@@ -101,7 +123,7 @@ describe('default', () => {
         'duplicateUser',
         'unknown',
         'unknownCatalogUser',
-        'unknownDeliveryProgramme',
+        'unknownDeliveryProject',
       ],
     });
 
@@ -109,8 +131,13 @@ describe('default', () => {
 
     expect(service.add).toHaveBeenCalledTimes(1);
     expect(service.add).toHaveBeenCalledWith(
-      data.delivery_programme_id,
+      data.delivery_project_id,
       `user:default/${data.user_catalog_name}`,
+      {
+        is_admin: data.is_admin,
+        is_technical: data.is_technical,
+        github_username: data.github_username,
+      },
     );
     expect({ status, body }).toMatchObject({
       status: 400,
@@ -119,7 +146,7 @@ describe('default', () => {
           {
             path: 'user_catalog_name',
             error: {
-              message: `The user ${data.user_catalog_name} has already been added to this delivery programme`,
+              message: `The user ${data.user_catalog_name} has already been added to this delivery project`,
             },
           },
           { path: 'root', error: { message: 'An unexpected error occurred.' } },
@@ -130,8 +157,8 @@ describe('default', () => {
             },
           },
           {
-            path: 'delivery_programme_id',
-            error: { message: 'The delivery programme does not exist.' },
+            path: 'delivery_project_id',
+            error: { message: 'The delivery project does not exist.' },
           },
         ],
       },
@@ -140,15 +167,16 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IDeliveryProgrammeAdminService> = {
+  const service: jest.Mocked<IDeliveryProjectUserService> = {
     add: jest.fn(),
     getAll: jest.fn(),
-    getByProgrammeId: jest.fn(),
+    getByProjectId: jest.fn(),
     remove: jest.fn(),
+    edit: jest.fn(),
   };
 
   const handler = await testHelpers.getAutoServiceRef(add, [
-    testHelpers.provideService(deliveryProgrammeAdminServiceRef, service),
+    testHelpers.provideService(deliveryProjectUserServiceRef, service),
   ]);
 
   const app = testHelpers.makeApp(x => x.post('/', handler));

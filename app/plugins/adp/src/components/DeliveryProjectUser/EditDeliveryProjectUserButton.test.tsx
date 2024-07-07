@@ -280,7 +280,7 @@ describe('EditDeliveryProjectUserButton', () => {
     const submitResult = await formProps.submit(fields);
     expect(submitResult).toMatchObject({ type: 'success' });
     expect(mockProjectUserApi.update.mock.calls).toMatchObject([
-      [{ ...fields, user_catalog_name: fields.user_catalog_name.value }],
+      [{ ...fields }],
     ]);
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();
@@ -335,7 +335,7 @@ describe('EditDeliveryProjectUserButton', () => {
       errors: validationErrors,
     });
     expect(mockProjectUserApi.update.mock.calls).toMatchObject([
-      [{ ...fields, user_catalog_name: fields.user_catalog_name.value }],
+      [{ ...fields }],
     ]);
     expect(mockProjectUserApi.create).not.toHaveBeenCalled();
     expect(mockProjectUserApi.getAll).not.toHaveBeenCalled();

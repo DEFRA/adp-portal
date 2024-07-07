@@ -23,7 +23,7 @@ export default createEndpointRef({
           name: z.string(),
           updated_at: z
             .string()
-            .date()
+            .datetime()
             .transform(value => new Date(value)),
           aad_user_principal_name: z.string().optional(),
           github_username: z.string().optional(),

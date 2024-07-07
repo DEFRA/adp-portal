@@ -116,7 +116,9 @@ describe('ArmsLengthBodyService', () => {
       expect(store.update).toHaveBeenCalledWith(data, 'test-user-1');
       expect(identity.getCurrentIdentity).toHaveBeenCalledTimes(1);
       expect(catalog.refresh).toHaveBeenCalledTimes(1);
-      expect(catalog.refresh).toHaveBeenCalledWith('group:default/my-cool-alb');
+      expect(catalog.refresh).toHaveBeenCalledWith(
+        'location:default/arms-length-bodies',
+      );
       expect(actual).toEqual({
         success: true,
         value: expected,

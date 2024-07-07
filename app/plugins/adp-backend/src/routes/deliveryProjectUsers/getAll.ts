@@ -1,14 +1,14 @@
-import { deliveryProjectUserStoreRef } from '../../deliveryProjectUser';
+import { deliveryProjectUserServiceRef } from '../../services';
 import { createEndpointRef } from '../util';
 
 export default createEndpointRef({
   name: 'getAllDeliveryProjectUsers',
   deps: {
-    deliveryProjectUserStore: deliveryProjectUserStoreRef,
+    service: deliveryProjectUserServiceRef,
   },
-  factory({ deps: { deliveryProjectUserStore }, responses: { ok } }) {
+  factory({ deps: { service }, responses: { ok } }) {
     return async () => {
-      const data = await deliveryProjectUserStore.getAll();
+      const data = await service.getAll();
       return ok().json(data);
     };
   },

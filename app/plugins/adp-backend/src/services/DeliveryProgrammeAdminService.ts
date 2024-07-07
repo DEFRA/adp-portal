@@ -42,9 +42,9 @@ export class DeliveryProgrammeAdminService {
     this.#catalogRefresher = options.catalogRefresher;
   }
 
-  async #refresh(name?: string) {
+  async #syncronize() {
     await this.#catalogRefresher.refresh(
-      name ? `group:default/${name}` : 'location:default/delivery-programmes',
+      'location:default/delivery-programmes',
     );
   }
 
@@ -70,20 +70,20 @@ export class DeliveryProgrammeAdminService {
       user_entity_ref: userRef,
     });
 
-    if (result.success) await this.#refresh();
+    if (result.success) await this.#syncronize();
 
     return result;
   }
 
   async remove(id: string) {
-    if (await this.#store.delete(id)) await this.#refresh();
+    if (await this.#store.delete(id)) await this.#syncronize();
   }
 
   async getAll() {
     return await this.#store.getAll();
   }
 
-  async getByProgramme(programmeId: string) {
+  async getByProgrammeId(programmeId: string) {
     return await this.#store.getByDeliveryProgramme(programmeId);
   }
 }

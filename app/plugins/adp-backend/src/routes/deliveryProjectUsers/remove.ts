@@ -1,29 +1,15 @@
-import { deliveryProjectUserStoreRef } from '../../deliveryProjectUser';
 import { createParser } from '../../utils';
 import { type DeleteDeliveryProjectUserRequest } from '@internal/plugin-adp-common';
 import { z } from 'zod';
-import { deliveryProjectGithubTeamsSyncronizerRef } from '../../githubTeam';
-import { deliveryProjectEntraIdGroupsSyncronizerRef } from '../../entraId';
 import { createEndpointRef } from '../util';
-import { fireAndForgetCatalogRefresherRef } from '../../services';
+import { deliveryProjectUserServiceRef } from '../../services';
 
 export default createEndpointRef({
   name: 'removeDeliveryProjectUser',
   deps: {
-    deliveryProjectUserStore: deliveryProjectUserStoreRef,
-    teamSyncronizer: deliveryProjectGithubTeamsSyncronizerRef,
-    catalogRefresher: fireAndForgetCatalogRefresherRef,
-    entraIdGroupSyncronizer: deliveryProjectEntraIdGroupsSyncronizerRef,
+    service: deliveryProjectUserServiceRef,
   },
-  factory({
-    deps: {
-      deliveryProjectUserStore,
-      teamSyncronizer,
-      catalogRefresher,
-      entraIdGroupSyncronizer,
-    },
-    responses: { noContent },
-  }) {
+  factory({ deps: { service }, responses: { noContent } }) {
     const parseBody = createParser<DeleteDeliveryProjectUserRequest>(
       z.object({
         delivery_project_user_id: z.string(),
@@ -33,15 +19,7 @@ export default createEndpointRef({
 
     return async request => {
       const body = parseBody(request.body);
-
-      await deliveryProjectUserStore.delete(body.delivery_project_user_id);
-
-      await Promise.allSettled([
-        teamSyncronizer.syncronizeById(body.delivery_project_id),
-        entraIdGroupSyncronizer.syncronizeById(body.delivery_project_id),
-      ]);
-
-      await catalogRefresher.refresh(`location:default/delivery-programmes`);
+      await service.remove(body.delivery_project_user_id);
       return noContent();
     };
   },

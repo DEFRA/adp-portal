@@ -1,522 +1,272 @@
 import express from 'express';
-import request from 'supertest';
-import { expectedProjectDataWithName } from '../../testData/projectTestData';
-import { InputError } from '@backstage/errors';
-import {
-  type IFluxConfigApi,
-  type IDeliveryProjectStore,
-  type IAdoProjectApi,
-  deliveryProjectStoreRef,
-  fluxConfigApiRef,
-  adoProjectApiRef,
-} from '../../deliveryProject';
-import { entraIdApiRef, type IEntraIdApi } from '../../entraId';
-import { randomUUID } from 'node:crypto';
-import {
-  deliveryProjectGithubTeamsSyncronizerRef,
-  type IDeliveryProjectGithubTeamsSyncronizer,
-} from '../../githubTeam';
-import type {
-  CreateDeliveryProjectRequest,
-  UpdateDeliveryProjectRequest,
-} from '@internal/plugin-adp-common';
-import {
-  deliveryProjectUserStoreRef,
-  type IDeliveryProjectUserStore,
-} from '../../deliveryProjectUser';
-import {
-  deliveryProgrammeAdminStoreRef,
-  type IDeliveryProgrammeAdminStore,
-} from '../../deliveryProgrammeAdmin';
-import { mockServices } from '@backstage/backend-test-utils';
-import { AuthorizeResult } from '@backstage/plugin-permission-common';
-import { coreServices } from '@backstage/backend-plugin-api';
-import deliveryProjects from './';
 import { testHelpers } from '../../utils/testHelpers';
-import { fireAndForgetCatalogRefresherRef } from '../../services';
+import index from './index';
+import get from './get';
+import create from './create';
+import edit from './edit';
+import getAll from './getAll';
+import request from 'supertest';
+import checkAuth from '../checkAuth';
+import { NotAllowedError } from '@backstage/errors';
 import {
-  type IdentityProvider,
-  identityProviderRef,
-} from '@internal/plugin-credentials-context-backend';
+  deliveryProjectCreatePermission,
+  deliveryProjectUpdatePermission,
+} from '@internal/plugin-adp-common';
+import healthCheck from '../util/healthCheck';
+import checkAdoProject from './checkAdoProject';
+import createEntraGroups from './createEntraGroups';
+import syncWithGithub from './syncWithGithub';
 
-describe('createRouter', () => {
-  let projectApp: express.Express;
-  const mockIdentityApi: jest.Mocked<IdentityProvider> = {
-    getCurrentIdentity: jest.fn(),
-  };
-
-  const mockSyncronizer: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> = {
-    syncronizeByName: jest.fn(),
-    syncronizeById: jest.fn(),
-  };
-
-  const mockDeliveryProjectStore: jest.Mocked<IDeliveryProjectStore> = {
-    add: jest.fn(),
-    get: jest.fn(),
-    getAll: jest.fn(),
-    getByName: jest.fn(),
-    update: jest.fn(),
-  };
-
-  const mockDeliveryProjectUserStore: jest.Mocked<IDeliveryProjectUserStore> = {
-    add: jest.fn(),
-    getByDeliveryProject: jest.fn(),
-    getAll: jest.fn(),
-    get: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-  };
-
-  const mockFluxConfigApi: jest.Mocked<IFluxConfigApi> = {
-    createFluxConfig: jest.fn(),
-    getFluxConfig: jest.fn(),
-  };
-
-  const mockAdoProjectApi: jest.Mocked<IAdoProjectApi> = {
-    checkIfAdoProjectExists: jest.fn(),
-  };
-
-  const mockEntraIdApi: jest.Mocked<IEntraIdApi> = {
-    createEntraIdGroupsForProject: jest.fn(),
-    setProjectGroupMembers: jest.fn(),
-  };
-
-  const mockDeliveryProgrammeAdminStore: jest.Mocked<IDeliveryProgrammeAdminStore> =
-    {
-      add: jest.fn(),
-      getByAADEntityRef: jest.fn(),
-      getByDeliveryProgramme: jest.fn(),
-      getAll: jest.fn(),
-      delete: jest.fn(),
-    };
-
-  const mockPermissionsService = mockServices.permissions.mock();
-
-  beforeAll(async () => {
-    const projectRouter = await testHelpers.getAutoServiceRef(
-      deliveryProjects,
-      [
-        testHelpers.provideService(identityProviderRef, mockIdentityApi),
-        testHelpers.provideService(
-          deliveryProjectGithubTeamsSyncronizerRef,
-          mockSyncronizer,
-        ),
-        testHelpers.provideService(
-          deliveryProjectStoreRef,
-          mockDeliveryProjectStore,
-        ),
-        testHelpers.provideService(
-          deliveryProjectUserStoreRef,
-          mockDeliveryProjectUserStore,
-        ),
-        testHelpers.provideService(fluxConfigApiRef, mockFluxConfigApi),
-        testHelpers.provideService(adoProjectApiRef, mockAdoProjectApi),
-        testHelpers.provideService(
-          deliveryProgrammeAdminStoreRef,
-          mockDeliveryProgrammeAdminStore,
-        ),
-        testHelpers.provideService(entraIdApiRef, mockEntraIdApi),
-        testHelpers.provideService(
-          coreServices.permissions,
-          mockPermissionsService,
-        ),
-        testHelpers.provideService(fireAndForgetCatalogRefresherRef, {
-          refresh: jest.fn(),
-        }),
-      ],
-    );
-    projectApp = express().use(projectRouter);
-  });
-
-  beforeEach(() => {
-    jest.resetAllMocks();
-    mockDeliveryProjectStore.add.mockResolvedValue({
-      success: true,
-      value: expectedProjectDataWithName,
-    });
-    mockDeliveryProjectStore.get.mockResolvedValue(expectedProjectDataWithName);
-    mockDeliveryProjectStore.getAll.mockResolvedValue([
-      expectedProjectDataWithName,
-    ]);
-    mockDeliveryProjectStore.update.mockResolvedValue({
-      success: true,
-      value: expectedProjectDataWithName,
-    });
-  });
-
-  describe('GET /health', () => {
-    it('returns ok', async () => {
-      const response = await request(projectApp).get('/health');
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({ status: 'ok' });
-    });
-  });
-
+describe('default', () => {
   describe('GET /', () => {
-    it('returns ok', async () => {
-      mockDeliveryProjectStore.getAll.mockResolvedValueOnce([
-        expectedProjectDataWithName,
-      ]);
-      const response = await request(projectApp).get('/');
-      expect(response.status).toEqual(200);
-    });
-
-    it('returns bad request', async () => {
-      mockDeliveryProjectStore.getAll.mockRejectedValueOnce(
-        new InputError('error'),
+    it('Should call getAll', async () => {
+      const { app, mockGetAll } = await setup();
+      mockGetAll.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
-      const response = await request(projectApp).get('/');
-      expect(response.status).toEqual(400);
+
+      const { status, body } = await request(app).get('/');
+
+      expect(mockGetAll).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
     });
   });
-
-  describe('GET /:id', () => {
-    it('returns ok', async () => {
-      mockDeliveryProjectStore.get.mockResolvedValueOnce(
-        expectedProjectDataWithName,
-      );
-      mockDeliveryProjectUserStore.getByDeliveryProject.mockResolvedValueOnce([
-        {
-          aad_entity_ref_id: '88c83c80-5bfd-4b04-9f5f-a50b559b22a5',
-          delivery_project_id: 'project-1',
-          email: 'user@test.com',
-          id: '775e0c95-4521-4a92-8f3c-7340b946688e',
-          is_admin: false,
-          is_technical: true,
-          name: 'Test user',
-          github_username: 'test-user',
-          updated_at: new Date(),
-        },
-      ]);
-      const response = await request(projectApp).get('/1234');
-      expect(response.status).toEqual(200);
-    });
-
-    it('returns bad request', async () => {
-      mockDeliveryProjectStore.get.mockRejectedValueOnce(
-        new InputError('error'),
-      );
-      const response = await request(projectApp).get('/4321');
-      expect(response.status).toEqual(400);
-    });
-  });
-
-  describe('POST /', () => {
-    it('returns created', async () => {
-      // arrange
-      mockIdentityApi.getCurrentIdentity.mockResolvedValueOnce({
-        userEntityRef: 'user:default/johndoe',
-        ownershipEntityRefs: [],
-      });
-      mockDeliveryProjectStore.add.mockResolvedValue({
-        success: true,
-        value: expectedProjectDataWithName,
-      });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      // act
-      const response = await request(projectApp)
-        .post('/')
-        .send({
-          delivery_project_code: 'abc',
-          title: 'def',
-          ado_project: 'my project',
-          delivery_programme_id: '123',
-          description: 'My description',
-          github_team_visibility: 'public',
-          service_owner: 'test@email.com',
-          team_type: 'delivery',
-        } satisfies CreateDeliveryProjectRequest);
-
-      // assert
-      expect(response.status).toEqual(201);
-      expect(response.body).toMatchObject(
-        JSON.parse(JSON.stringify(expectedProjectDataWithName)),
-      );
-    });
-
-    it('return 400 with errors', async () => {
-      // arrange
-      mockIdentityApi.getCurrentIdentity.mockResolvedValueOnce({
-        userEntityRef: 'user:default/johndoe',
-        ownershipEntityRefs: [],
-      });
-      mockDeliveryProjectStore.add.mockResolvedValue({
-        success: false,
-        errors: [
-          'duplicateName',
-          'duplicateTitle',
-          'unknown',
-          'unknownDeliveryProgramme',
-        ],
-      });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      // act
-      const response = await request(projectApp)
-        .post('/')
-        .send({
-          delivery_project_code: 'abc',
-          title: 'def',
-          ado_project: 'my project',
-          delivery_programme_id: '123',
-          description: 'My description',
-          github_team_visibility: 'public',
-          service_owner: 'test@email.com',
-          team_type: 'delivery',
-        } satisfies CreateDeliveryProjectRequest);
-
-      // assert
-      expect(response.status).toEqual(400);
-      expect(response.body).toMatchObject({
-        errors: [
-          {
-            path: 'title',
-            error: {
-              message:
-                "The name 'def' is already in use. Please choose a different name.",
-            },
-          },
-          {
-            path: 'title',
-            error: {
-              message:
-                "The name 'def' is already in use. Please choose a different name.",
-            },
-          },
-          {
-            path: 'root',
-            error: {
-              message: 'An unexpected error occurred.',
-            },
-          },
-          {
-            path: 'delivery_programme_id',
-            error: {
-              message: 'The delivery programme does not exist.',
-            },
-          },
-        ],
-      });
-    });
-
-    it('return 400 if if the request is bad', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-      const response = await request(projectApp)
-        .post('/')
-        .send({ notATitle: 'abc' });
-      expect(response.status).toEqual(400);
-    });
-
-    it('returns internal server error', async () => {
-      mockDeliveryProjectStore.add.mockRejectedValueOnce(new Error('error'));
-      const response = await request(projectApp)
-        .post('/')
-        .send({
-          delivery_project_code: 'abc',
-          title: 'def',
-          ado_project: 'my project',
-          delivery_programme_id: '123',
-          description: 'My description',
-          github_team_visibility: 'public',
-          service_owner: 'test@email.com',
-          team_type: 'delivery',
-        } satisfies CreateDeliveryProjectRequest);
-      expect(response.status).toEqual(500);
-    });
-  });
-
-  describe('PATCH /', () => {
-    it('returns ok', async () => {
-      // arrange
-      mockIdentityApi.getCurrentIdentity.mockResolvedValueOnce({
-        userEntityRef: 'user:default/johndoe',
-        ownershipEntityRefs: [],
-      });
-      mockDeliveryProjectStore.update.mockResolvedValue({
-        success: true,
-        value: expectedProjectDataWithName,
-      });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      // act
-      const response = await request(projectApp)
-        .patch('/')
-        .send({ id: '123' } satisfies UpdateDeliveryProjectRequest);
-
-      // assert
-      expect(response.status).toEqual(200);
-      expect(response.body).toMatchObject(
-        JSON.parse(JSON.stringify(expectedProjectDataWithName)),
-      );
-    });
-
-    it('returns a 403 response if the user is not authorized', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.DENY },
-      ]);
-
-      const response = await request(projectApp)
-        .patch('/')
-        .send({ id: '123' } satisfies UpdateDeliveryProjectRequest);
-
-      expect(response.status).toEqual(403);
-    });
-
-    it('return 400 with errors', async () => {
-      // arrange
-      mockIdentityApi.getCurrentIdentity.mockResolvedValueOnce({
-        userEntityRef: 'user:default/johndoe',
-        ownershipEntityRefs: [],
-      });
-      mockDeliveryProjectStore.update.mockResolvedValue({
-        success: false,
-        errors: ['duplicateTitle', 'unknown', 'unknownDeliveryProgramme'],
-      });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      // act
-      const response = await request(projectApp)
-        .patch('/')
-        .send({
-          id: '123',
-          delivery_project_code: 'abc',
-          title: 'def',
-        } satisfies UpdateDeliveryProjectRequest);
-
-      // assert
-      expect(response.status).toEqual(400);
-      expect(response.body).toMatchObject({
-        errors: [
-          {
-            path: 'title',
-            error: {
-              message:
-                "The name 'def' is already in use. Please choose a different name.",
-            },
-          },
-          {
-            path: 'root',
-            error: {
-              message: 'An unexpected error occurred.',
-            },
-          },
-          {
-            path: 'delivery_programme_id',
-            error: {
-              message: 'The delivery programme does not exist.',
-            },
-          },
-        ],
-      });
-    });
-
-    it('return 400 if if the request is bad', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-      const response = await request(projectApp)
-        .patch('/')
-        .send({ notAnId: 'abc' });
-      expect(response.status).toEqual(400);
-    });
-
-    it('returns internal server error', async () => {
-      mockDeliveryProjectStore.update.mockRejectedValueOnce(new Error('error'));
-      const response = await request(projectApp)
-        .patch('/')
-        .send({ id: '123' } satisfies UpdateDeliveryProjectRequest);
-      expect(response.status).toEqual(500);
-    });
-  });
-
   describe('PUT /:projectName/github/teams/sync', () => {
-    it('Should call the syncronizer', async () => {
-      // arrange
-      const projectName = randomUUID();
-
-      // act
-      const response = await request(projectApp).put(
-        `/${projectName}/github/teams/sync`,
+    it('Should call syncWithGithub', async () => {
+      const { app, mockSyncWithGithub } = await setup();
+      mockSyncWithGithub.mockImplementationOnce((req, res) =>
+        res
+          .status(200)
+          .json({ result: 'Success!', id: req.params.projectName }),
       );
 
-      // assert
-      expect(response.status).toBe(200);
-      expect(mockSyncronizer.syncronizeByName.mock.calls).toMatchObject([
-        [projectName],
-      ]);
+      const { status, body } = await request(app).put('/abc/github/teams/sync');
+
+      expect(mockSyncWithGithub).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!', id: 'abc' },
+      });
     });
   });
-
   describe('POST /:projectName/createEntraIdGroups', () => {
-    it('Should call the entraIdApi', async () => {
-      // arrange
-      const projectName = 'ADP-DMO';
-      const body: [] = [];
-
-      // act
-      const response = await request(projectApp)
-        .post(`/${projectName}/createEntraIdGroups`)
-        .send(body);
-
-      // assert
-      expect(response.status).toBe(204);
-    });
-
-    it('Should throw error when entraIdApi throws error', async () => {
-      // arrange
-      const projectName = 'ADP-DMO';
-      const body: [] = [];
-      mockEntraIdApi.createEntraIdGroupsForProject.mockRejectedValueOnce(
-        'error',
+    it('Should call syncWithGithub', async () => {
+      const { app, mockCreateEntraGroups } = await setup();
+      mockCreateEntraGroups.mockImplementationOnce((req, res) =>
+        res
+          .status(200)
+          .json({ result: 'Success!', id: req.params.projectName }),
       );
 
-      // act
-      const response = await request(projectApp)
-        .post(`/${projectName}/createEntraIdGroups`)
-        .send(body);
+      const { status, body } = await request(app).post(
+        '/abc/createEntraIdGroups',
+      );
 
-      // assert
-      expect(response.status).toBe(500);
+      expect(mockCreateEntraGroups).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!', id: 'abc' },
+      });
     });
   });
-
   describe('GET /adoProject/:projectName', () => {
-    it('Should call the adoProjectApi', async () => {
-      // arrange
-      const projectName = 'ADP-DMO';
-
-      // act
-      const response = await request(projectApp).get(
-        `/adoProject/${projectName}`,
+    it('Should call syncWithGithub', async () => {
+      const { app, mockCheckAdoProject } = await setup();
+      mockCheckAdoProject.mockImplementationOnce((req, res) =>
+        res
+          .status(200)
+          .json({ result: 'Success!', id: req.params.projectName }),
       );
 
-      // assert
-      expect(response.status).toBe(200);
+      const { status, body } = await request(app).get('/adoProject/abc');
+
+      expect(mockCheckAdoProject).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!', id: 'abc' },
+      });
     });
-
-    it('Should throw error when adoProjectApi throws error', async () => {
-      // arrange
-      const projectName = 'ADP-DMO';
-      mockAdoProjectApi.checkIfAdoProjectExists.mockRejectedValueOnce('error');
-
-      // act
-      const response = await request(projectApp).get(
-        `/adoProject/${projectName}`,
+  });
+  describe('GET /health', () => {
+    it('Should call health', async () => {
+      const { app, mockHealthCheck } = await setup();
+      mockHealthCheck.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
 
-      // assert
-      expect(response.status).toBe(500);
+      const { status, body } = await request(app).get('/health');
+
+      expect(mockHealthCheck).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
+    });
+  });
+  describe('GET /:id', () => {
+    it('Should call get', async () => {
+      const { app, mockGet } = await setup();
+      mockGet.mockImplementationOnce((req, res) =>
+        res.status(200).json({ result: 'Success!', id: req.params.id }),
+      );
+
+      const { status, body } = await request(app).get('/123456');
+
+      expect(mockGet).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!', id: '123456' },
+      });
+    });
+  });
+  describe('POST /', () => {
+    it('Should call create if you have permission', async () => {
+      const { app, mockCreate, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockCreate.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
+      );
+
+      const { status, body } = await request(app).post('/');
+
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(mockCheckAuth.mock.calls[0][0](null!)).toMatchObject({
+        permission: deliveryProjectCreatePermission,
+      });
+      expect(mockCreate).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
+    });
+    it('Should not call create if you dont have permission', async () => {
+      const { app, mockCreate, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) =>
+        next(new NotAllowedError('Unauthorized')),
+      );
+
+      const { status, body } = await request(app).post('/');
+
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(mockCheckAuth.mock.calls[0][0](null!)).toMatchObject({
+        permission: deliveryProjectCreatePermission,
+      });
+      expect(mockCreate).toHaveBeenCalledTimes(0);
+      expect({ status, body }).toMatchObject({
+        status: 403,
+        body: {
+          error: {
+            message: 'Unauthorized',
+            name: 'NotAllowedError',
+          },
+        },
+      });
+    });
+  });
+  describe('PATCH /', () => {
+    it('Should call create if you have permission', async () => {
+      const { app, mockEdit, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockEdit.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
+      );
+
+      const { status, body } = await request(app).patch('/');
+
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(
+        mockCheckAuth.mock.calls[0][0](
+          testHelpers.expressRequest({ body: { id: '123' } }),
+        ),
+      ).toMatchObject({
+        permission: deliveryProjectUpdatePermission,
+        resourceRef: '123',
+      });
+      expect(mockEdit).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
+    });
+    it('Should not call create if you dont have permission', async () => {
+      const { app, mockEdit, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) =>
+        next(new NotAllowedError('Unauthorized')),
+      );
+
+      const { status, body } = await request(app).patch('/');
+
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(
+        mockCheckAuth.mock.calls[0][0](
+          testHelpers.expressRequest({ body: { id: '123' } }),
+        ),
+      ).toMatchObject({
+        permission: deliveryProjectUpdatePermission,
+        resourceRef: '123',
+      });
+      expect(mockEdit).toHaveBeenCalledTimes(0);
+      expect({ status, body }).toMatchObject({
+        status: 403,
+        body: {
+          error: {
+            message: 'Unauthorized',
+            name: 'NotAllowedError',
+          },
+        },
+      });
     });
   });
 });
+
+async function setup() {
+  const mockCheckAdoProject =
+    testHelpers.strictFn<(typeof checkAdoProject)['T']>();
+  const mockCreateEntraGroups =
+    testHelpers.strictFn<(typeof createEntraGroups)['T']>();
+  const mockSyncWithGithub =
+    testHelpers.strictFn<(typeof syncWithGithub)['T']>();
+  const mockCreate = testHelpers.strictFn<(typeof create)['T']>();
+  const mockEdit = testHelpers.strictFn<(typeof edit)['T']>();
+  const mockGet = testHelpers.strictFn<(typeof get)['T']>();
+  const mockGetAll = testHelpers.strictFn<(typeof getAll)['T']>();
+  const mockHealthCheck = testHelpers.strictFn<(typeof healthCheck)['T']>();
+  const mockCheckAuth = testHelpers.strictFn<(typeof checkAuth)['T']>();
+
+  const handler = await testHelpers.getAutoServiceRef(index, [
+    testHelpers.provideService(checkAdoProject, mockCheckAdoProject),
+    testHelpers.provideService(createEntraGroups, mockCreateEntraGroups),
+    testHelpers.provideService(syncWithGithub, mockSyncWithGithub),
+    testHelpers.provideService(create, mockCreate),
+    testHelpers.provideService(edit, mockEdit),
+    testHelpers.provideService(get, mockGet),
+    testHelpers.provideService(getAll, mockGetAll),
+    testHelpers.provideService(healthCheck, mockHealthCheck),
+    testHelpers.provideService(
+      checkAuth,
+      getRequests =>
+        (...args) =>
+          mockCheckAuth(getRequests)(...args),
+    ),
+  ]);
+
+  const app = express();
+  app.use(handler);
+
+  return {
+    handler,
+    app,
+    mockCreate,
+    mockEdit,
+    mockGet,
+    mockGetAll,
+    mockHealthCheck,
+    mockCheckAuth,
+    mockCheckAdoProject,
+    mockCreateEntraGroups,
+    mockSyncWithGithub,
+  };
+}

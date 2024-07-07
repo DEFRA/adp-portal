@@ -1,5 +1,7 @@
 import express, { type Request } from 'express';
 import {
+  type CreateDeliveryProgrammeAdminRequest,
+  type DeleteDeliveryProgrammeAdminRequest,
   deliveryProgrammeAdminCreatePermission,
   deliveryProgrammeAdminDeletePermission,
 } from '@internal/plugin-adp-common';
@@ -24,13 +26,17 @@ export default createRouterRef({
   },
   factory({ router, deps }) {
     const canAdd = deps.checkAuth(
-      (req: Request<unknown, unknown, { group_entity_ref?: unknown }>) => ({
+      (
+        req: Request<unknown, unknown, CreateDeliveryProgrammeAdminRequest>,
+      ) => ({
         permission: deliveryProgrammeAdminCreatePermission,
         resourceRef: String(req.body?.group_entity_ref ?? 'missing-ref'),
       }),
     );
     const canRemove = deps.checkAuth(
-      (req: Request<unknown, unknown, { group_entity_ref?: unknown }>) => ({
+      (
+        req: Request<unknown, unknown, DeleteDeliveryProgrammeAdminRequest>,
+      ) => ({
         permission: deliveryProgrammeAdminDeletePermission,
         resourceRef: String(req.body?.group_entity_ref ?? 'missing-ref'),
       }),

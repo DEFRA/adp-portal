@@ -1,7 +1,7 @@
-import type { DeleteDeliveryProgrammeAdminRequest } from '@internal/plugin-adp-common';
+import type { DeleteDeliveryProjectUserRequest } from '@internal/plugin-adp-common';
 import {
-  deliveryProgrammeAdminServiceRef,
-  type IDeliveryProgrammeAdminService,
+  deliveryProjectUserServiceRef,
+  type IDeliveryProjectUserService,
 } from '../../services';
 import { testHelpers } from '../../utils/testHelpers';
 import remove from './remove';
@@ -11,18 +11,16 @@ import { randomUUID } from 'node:crypto';
 describe('default', () => {
   it('Should return ok with the data from the service', async () => {
     const { app, service } = await setup();
-    const data: DeleteDeliveryProgrammeAdminRequest = {
-      delivery_programme_admin_id: randomUUID(),
-      group_entity_ref: randomUUID(),
+    const data: DeleteDeliveryProjectUserRequest = {
+      delivery_project_user_id: randomUUID(),
+      delivery_project_id: randomUUID(),
     };
     service.remove.mockResolvedValueOnce();
 
     const { status, body } = await request(app).delete(`/`).send(data);
 
     expect(service.remove).toHaveBeenCalledTimes(1);
-    expect(service.remove).toHaveBeenCalledWith(
-      data.delivery_programme_admin_id,
-    );
+    expect(service.remove).toHaveBeenCalledWith(data.delivery_project_user_id);
     expect({ status, body }).toMatchObject({
       status: 204,
       body: {},
@@ -45,7 +43,7 @@ describe('default', () => {
     "expected": "string",
     "received": "undefined",
     "path": [
-      "delivery_programme_admin_id"
+      "delivery_project_user_id"
     ],
     "message": "Required"
   },
@@ -54,7 +52,7 @@ describe('default', () => {
     "expected": "string",
     "received": "undefined",
     "path": [
-      "group_entity_ref"
+      "delivery_project_id"
     ],
     "message": "Required"
   }
@@ -68,15 +66,16 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IDeliveryProgrammeAdminService> = {
+  const service: jest.Mocked<IDeliveryProjectUserService> = {
     add: jest.fn(),
     getAll: jest.fn(),
-    getByProgrammeId: jest.fn(),
+    getByProjectId: jest.fn(),
     remove: jest.fn(),
+    edit: jest.fn(),
   };
 
   const handler = await testHelpers.getAutoServiceRef(remove, [
-    testHelpers.provideService(deliveryProgrammeAdminServiceRef, service),
+    testHelpers.provideService(deliveryProjectUserServiceRef, service),
   ]);
 
   const app = testHelpers.makeApp(x => x.delete('/', handler));

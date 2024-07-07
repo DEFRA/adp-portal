@@ -4,6 +4,7 @@ import express, { type Request } from 'express';
 import {
   armsLengthBodyCreatePermission,
   armsLengthBodyUpdatePermission,
+  type UpdateArmsLengthBodyRequest,
 } from '@internal/plugin-adp-common';
 import getAll from './getAll';
 import getNames from './getNames';
@@ -29,7 +30,7 @@ export default createRouterRef({
       permission: armsLengthBodyCreatePermission,
     }));
     const canEdit = deps.checkAuth(
-      (req: Request<unknown, unknown, { id?: unknown }>) => ({
+      (req: Request<unknown, unknown, UpdateArmsLengthBodyRequest>) => ({
         permission: armsLengthBodyUpdatePermission,
         resourceRef: String(req.body?.id ?? 'missing-id'),
       }),

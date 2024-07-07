@@ -66,17 +66,17 @@ export class DeliveryProjectGithubTeamsSyncronizer
     projectId: string,
   ): Promise<DeliveryProjectTeamsSyncResult> {
     const deliveryProject = await this.#deliveryProjects.get(projectId);
-    return await this.#syncronize(deliveryProject);
+    return await this.syncronize(deliveryProject);
   }
 
   async syncronizeByName(
     projectName: string,
   ): Promise<DeliveryProjectTeamsSyncResult> {
     const deliveryProject = await this.#deliveryProjects.getByName(projectName);
-    return await this.#syncronize(deliveryProject);
+    return await this.syncronize(deliveryProject);
   }
 
-  async #syncronize(
+  async syncronize(
     deliveryProject: DeliveryProject,
   ): Promise<DeliveryProjectTeamsSyncResult> {
     const teamConfig =

@@ -1,23 +1,27 @@
 import getAll from './getAll';
 import { testHelpers } from '../../utils/testHelpers';
 import request from 'supertest';
-import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
 import { randomUUID } from 'node:crypto';
 import {
-  deliveryProgrammeAdminServiceRef,
-  type IDeliveryProgrammeAdminService,
+  deliveryProjectUserServiceRef,
+  type IDeliveryProjectUserService,
 } from '../../services';
 
 describe('default', () => {
   it('Should return ok with the data from the store', async () => {
     const { app, service } = await setup();
-    const expected = [...new Array(10)].map<DeliveryProgrammeAdmin>(() => ({
+    const expected = [...new Array(10)].map<DeliveryProjectUser>(() => ({
       aad_entity_ref_id: randomUUID(),
-      delivery_programme_id: randomUUID(),
+      delivery_project_id: randomUUID(),
       email: randomUUID(),
       id: randomUUID(),
+      is_admin: Math.random() > 0.5,
+      is_technical: Math.random() > 0.5,
       name: randomUUID(),
       updated_at: new Date(),
+      aad_user_principal_name: randomUUID(),
+      github_username: randomUUID(),
       user_entity_ref: randomUUID(),
     }));
     service.getAll.mockResolvedValueOnce(
@@ -48,15 +52,16 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IDeliveryProgrammeAdminService> = {
+  const service: jest.Mocked<IDeliveryProjectUserService> = {
     add: jest.fn(),
     getAll: jest.fn(),
-    getByProgrammeId: jest.fn(),
+    getByProjectId: jest.fn(),
     remove: jest.fn(),
+    edit: jest.fn(),
   };
 
   const handler = await testHelpers.getAutoServiceRef(getAll, [
-    testHelpers.provideService(deliveryProgrammeAdminServiceRef, service),
+    testHelpers.provideService(deliveryProjectUserServiceRef, service),
   ]);
 
   const app = testHelpers.makeApp(x => x.get('/', handler));

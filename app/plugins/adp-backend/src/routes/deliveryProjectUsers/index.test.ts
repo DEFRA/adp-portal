@@ -1,549 +1,273 @@
 import express from 'express';
-import request from 'supertest';
-import {
-  deliveryProjectUserStoreRef,
-  type IDeliveryProjectUserStore,
-} from '../../deliveryProjectUser';
-import type { CatalogApi } from '@backstage/catalog-client';
-import { faker } from '@faker-js/faker';
-import { createDeliveryProjectUser } from '../../testData/projectUserTestData';
-import { catalogTestData } from '../../testData/catalogEntityTestData';
-import type {
-  CreateDeliveryProjectUserRequest,
-  DeleteDeliveryProjectUserRequest,
-  UpdateDeliveryProjectUserRequest,
-} from '@internal/plugin-adp-common';
-import {
-  deliveryProjectGithubTeamsSyncronizerRef,
-  type IDeliveryProjectGithubTeamsSyncronizer,
-} from '../../githubTeam';
-import {
-  deliveryProjectEntraIdGroupsSyncronizerRef,
-  type IDeliveryProjectEntraIdGroupsSyncronizer,
-} from '../../entraId';
-import { AuthorizeResult } from '@backstage/plugin-permission-common';
-import { mockServices } from '@backstage/backend-test-utils';
-import { InputError } from '@backstage/errors';
-import { coreServices } from '@backstage/backend-plugin-api';
-import deliveryProjectUsers from '.';
-import { catalogApiRef } from '../../refs';
 import { testHelpers } from '../../utils/testHelpers';
-import { fireAndForgetCatalogRefresherRef } from '../../services';
+import index from './index';
+import request from 'supertest';
+import checkAuth from '../checkAuth';
+import { NotAllowedError } from '@backstage/errors';
 import {
-  type TokenProvider,
-  tokenProviderRef,
-} from '@internal/plugin-credentials-context-backend';
+  deliveryProjectUserCreatePermission,
+  deliveryProjectUserDeletePermission,
+  deliveryProjectUserUpdatePermission,
+} from '@internal/plugin-adp-common';
+import healthCheck from '../util/healthCheck';
+import add from './add';
+import getAll from './getAll';
+import getForProject from './getForProject';
+import remove from './remove';
+import update from './update';
 
-describe('createRouter', () => {
-  let deliveryProjectUserApp: express.Express;
-
-  const mockDeliveryProjectUserStore: jest.Mocked<IDeliveryProjectUserStore> = {
-    add: jest.fn(),
-    getAll: jest.fn(),
-    getByDeliveryProject: jest.fn(),
-    get: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-  };
-
-  const mockCatalogClient: jest.Mocked<CatalogApi> = {
-    addLocation: jest.fn(),
-    getEntities: jest.fn(),
-    getEntitiesByRefs: jest.fn(),
-    getEntityAncestors: jest.fn(),
-    getEntityByRef: jest.fn(),
-    getEntityFacets: jest.fn(),
-    getLocationByEntity: jest.fn(),
-    getLocationById: jest.fn(),
-    getLocationByRef: jest.fn(),
-    queryEntities: jest.fn(),
-    refreshEntity: jest.fn(),
-    removeEntityByUid: jest.fn(),
-    removeLocationById: jest.fn(),
-    validateEntity: jest.fn(),
-  };
-
-  const mockGithubTeamSyncronizer: jest.Mocked<IDeliveryProjectGithubTeamsSyncronizer> =
-    {
-      syncronizeByName: jest.fn(),
-      syncronizeById: jest.fn(),
-    };
-
-  const mockEntraIdGroupSyncronizer: jest.Mocked<IDeliveryProjectEntraIdGroupsSyncronizer> =
-    {
-      syncronizeById: jest.fn(),
-    };
-
-  const mockTokenProvider: jest.Mocked<TokenProvider> = {
-    getPluginRequestToken: jest.fn(),
-    getLimitedUserToken: jest.fn(),
-  };
-
-  const mockPermissionsService = mockServices.permissions.mock();
-
-  beforeAll(async () => {
-    const deliveryProjectUserRouter = await testHelpers.getAutoServiceRef(
-      deliveryProjectUsers,
-      [
-        testHelpers.provideService(tokenProviderRef, mockTokenProvider),
-        testHelpers.provideService(catalogApiRef, mockCatalogClient),
-        testHelpers.provideService(
-          deliveryProjectUserStoreRef,
-          mockDeliveryProjectUserStore,
-        ),
-        testHelpers.provideService(
-          deliveryProjectGithubTeamsSyncronizerRef,
-          mockGithubTeamSyncronizer,
-        ),
-        testHelpers.provideService(
-          deliveryProjectEntraIdGroupsSyncronizerRef,
-          mockEntraIdGroupSyncronizer,
-        ),
-        testHelpers.provideService(
-          coreServices.permissions,
-          mockPermissionsService,
-        ),
-        testHelpers.provideService(fireAndForgetCatalogRefresherRef, {
-          refresh: jest.fn(),
-        }),
-      ],
-    );
-    deliveryProjectUserApp = express().use(deliveryProjectUserRouter);
-  });
-
-  afterEach(() => {
-    mockCatalogClient.getEntities.mockClear();
-  });
-
-  describe('GET /health', () => {
-    it('returns ok', async () => {
-      const response = await request(deliveryProjectUserApp).get('/health');
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({ status: 'ok' });
-    });
-  });
-
+describe('default', () => {
   describe('GET /', () => {
-    it('returns ok', async () => {
-      const projectUsers = faker.helpers.multiple(
-        () => createDeliveryProjectUser(faker.string.uuid()),
-        { count: 5 },
+    it('Should call getAll', async () => {
+      const { app, mockGetAll } = await setup();
+      mockGetAll.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
-      mockDeliveryProjectUserStore.getAll.mockResolvedValueOnce(projectUsers);
 
-      const response = await request(deliveryProjectUserApp).get('/');
-      expect(response.status).toEqual(200);
+      const { status, body } = await request(app).get('/');
+
+      expect(mockGetAll).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
     });
   });
+  describe('GET /health', () => {
+    it('Should call health', async () => {
+      const { app, mockHealthCheck } = await setup();
+      mockHealthCheck.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
+      );
 
+      const { status, body } = await request(app).get('/health');
+
+      expect(mockHealthCheck).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
+    });
+  });
   describe('GET /:deliveryProjectId', () => {
-    it('returns ok', async () => {
-      const projectId = faker.string.uuid();
-      const projectUsers = faker.helpers.multiple(
-        () => createDeliveryProjectUser(projectId),
-        { count: 5 },
-      );
-      mockDeliveryProjectUserStore.getByDeliveryProject.mockResolvedValueOnce(
-        projectUsers,
+    it('Should call getForProject', async () => {
+      const { app, mockGetForProgramme } = await setup();
+      mockGetForProgramme.mockImplementationOnce((req, res) =>
+        res
+          .status(200)
+          .json({ result: 'Success!', id: req.params.deliveryProjectId }),
       );
 
-      const response = await request(deliveryProjectUserApp).get(
-        `/${projectId}`,
-      );
-      expect(response.status).toEqual(200);
+      const { status, body } = await request(app).get('/123456');
+
+      expect(mockGetForProgramme).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!', id: '123456' },
+      });
     });
   });
-
   describe('POST /', () => {
-    it('returns a 201 response when project users are created', async () => {
-      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
-        token:
-          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
-      });
-      const projectUser = createDeliveryProjectUser(faker.string.uuid());
-      mockDeliveryProjectUserStore.add.mockResolvedValueOnce({
-        success: true,
-        value: projectUser,
-      });
-      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      mockGithubTeamSyncronizer.syncronizeById.mockResolvedValue({
-        admins: {
-          id: faker.number.int(),
-          description: faker.lorem.sentence(),
-          isPublic: faker.datatype.boolean(),
-          maintainers: [],
-          members: [],
-          name: faker.company.name(),
-          slug: faker.company.name(),
-        },
-        contributors: {
-          id: faker.number.int(),
-          description: faker.lorem.sentence(),
-          isPublic: faker.datatype.boolean(),
-          maintainers: [],
-          members: [],
-          name: faker.company.name(),
-          slug: faker.company.name(),
-        },
-      });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      const requestBody: CreateDeliveryProjectUserRequest = {
-        delivery_project_id: projectUser.delivery_project_id,
-        is_admin: projectUser.is_admin,
-        is_technical: projectUser.is_technical,
-        user_catalog_name: 'test@test.com',
-        github_username: projectUser.github_username,
-      };
-
-      const response = await request(deliveryProjectUserApp)
-        .post('/')
-        .send(requestBody);
-      expect(response.status).toEqual(201);
-      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
-        expect.any(Object),
-        {
-          token:
-            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
-        },
+    it('Should call add if you have permission', async () => {
+      const { app, mockAdd, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockAdd.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
-    });
 
-    it('returns a 403 response if the user is not authorized', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.DENY },
-      ]);
+      const { status, body } = await request(app).post('/');
 
-      const requestBody: CreateDeliveryProjectUserRequest = {
-        delivery_project_id: faker.string.uuid(),
-        is_admin: faker.datatype.boolean(),
-        is_technical: faker.datatype.boolean(),
-        user_catalog_name: faker.internet.userName(),
-        github_username: faker.internet.userName(),
-      };
-
-      const response = await request(deliveryProjectUserApp)
-        .post('/')
-        .send(requestBody);
-
-      expect(response.status).toEqual(403);
-    });
-
-    it('returns a 400 response if catalog user cannot be found', async () => {
-      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
-        token:
-          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(
+        mockCheckAuth.mock.calls[0][0](
+          testHelpers.expressRequest({ body: { delivery_project_id: '123' } }),
+        ),
+      ).toMatchObject({
+        permission: deliveryProjectUserCreatePermission,
+        resourceRef: '123',
       });
-      mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      const requestBody: CreateDeliveryProjectUserRequest = {
-        delivery_project_id: faker.string.uuid(),
-        is_admin: faker.datatype.boolean(),
-        is_technical: faker.datatype.boolean(),
-        user_catalog_name: faker.internet.userName(),
-        github_username: faker.internet.userName(),
-      };
-
-      const response = await request(deliveryProjectUserApp)
-        .post('/')
-        .send(requestBody);
-
-      expect(response.status).toEqual(400);
-      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
-        expect.any(Object),
-        {
-          token:
-            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
-        },
+      expect(mockAdd).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
+    });
+    it('Should not call add if you dont have permission', async () => {
+      const { app, mockAdd, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) =>
+        next(new NotAllowedError('Unauthorized')),
       );
-    });
 
-    it('returns a 400 response with errors', async () => {
-      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
-        token:
-          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      const { status, body } = await request(app).post('/');
+
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(
+        mockCheckAuth.mock.calls[0][0](
+          testHelpers.expressRequest({ body: { delivery_project_id: '123' } }),
+        ),
+      ).toMatchObject({
+        permission: deliveryProjectUserCreatePermission,
+        resourceRef: '123',
       });
-      mockDeliveryProjectUserStore.add.mockResolvedValueOnce({
-        success: false,
-        errors: ['duplicateUser', 'unknown', 'unknownDeliveryProject'],
-      });
-      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      const requestBody: CreateDeliveryProjectUserRequest = {
-        delivery_project_id: faker.string.uuid(),
-        is_admin: faker.datatype.boolean(),
-        is_technical: faker.datatype.boolean(),
-        user_catalog_name: faker.internet.userName(),
-        github_username: faker.internet.userName(),
-      };
-
-      const response = await request(deliveryProjectUserApp)
-        .post('/')
-        .send(requestBody);
-
-      expect(response.status).toEqual(400);
-      expect(response.body).toMatchObject({
-        errors: [
-          {
-            path: 'user_catalog_name',
-            error: {
-              message: `The user ${requestBody.user_catalog_name} has already been added to this delivery project`,
-            },
+      expect(mockAdd).toHaveBeenCalledTimes(0);
+      expect({ status, body }).toMatchObject({
+        status: 403,
+        body: {
+          error: {
+            message: 'Unauthorized',
+            name: 'NotAllowedError',
           },
-          {
-            path: 'root',
-            error: {
-              message: 'An unexpected error occurred.',
-            },
-          },
-          {
-            path: 'delivery_project_id',
-            error: {
-              message: 'The delivery project does not exist.',
-            },
-          },
-        ],
-      });
-      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
-        expect.any(Object),
-        {
-          token:
-            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
         },
-      );
+      });
     });
   });
-
   describe('PATCH /', () => {
-    it('returns ok', async () => {
-      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
-        token:
-          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
-      });
-      const projectUser = createDeliveryProjectUser(faker.string.uuid());
-      mockDeliveryProjectUserStore.update.mockResolvedValue({
-        success: true,
-        value: projectUser,
-      });
-      mockGithubTeamSyncronizer.syncronizeById.mockResolvedValue({
-        admins: {
-          id: faker.number.int(),
-          description: faker.lorem.sentence(),
-          isPublic: faker.datatype.boolean(),
-          maintainers: [],
-          members: [],
-          name: faker.company.name(),
-          slug: faker.company.name(),
-        },
-        contributors: {
-          id: faker.number.int(),
-          description: faker.lorem.sentence(),
-          isPublic: faker.datatype.boolean(),
-          maintainers: [],
-          members: [],
-          name: faker.company.name(),
-          slug: faker.company.name(),
-        },
-      });
-      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      const response = await request(deliveryProjectUserApp)
-        .patch('/')
-        .send({
-          id: '123',
-          delivery_project_id: '123',
-          user_catalog_name: 'user@test.com',
-        } satisfies UpdateDeliveryProjectUserRequest);
-
-      expect(response.status).toEqual(200);
-      expect(response.body).toMatchObject(
-        JSON.parse(JSON.stringify(projectUser)),
+    it('Should call update if you have permission', async () => {
+      const { app, mockUpdate, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockUpdate.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
-      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
-        expect.any(Object),
-        {
-          token:
-            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
-        },
+
+      const { status, body } = await request(app).patch('/');
+
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(
+        mockCheckAuth.mock.calls[0][0](
+          testHelpers.expressRequest({ body: { delivery_project_id: '123' } }),
+        ),
+      ).toMatchObject({
+        permission: deliveryProjectUserUpdatePermission,
+        resourceRef: '123',
+      });
+      expect(mockUpdate).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
+    });
+    it('Should not call update if you dont have permission', async () => {
+      const { app, mockUpdate, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) =>
+        next(new NotAllowedError('Unauthorized')),
       );
-    });
 
-    it('returns a 403 response if the user is not authorized', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.DENY },
-      ]);
+      const { status, body } = await request(app).patch('/');
 
-      const response = await request(deliveryProjectUserApp)
-        .patch('/')
-        .send({
-          id: '123',
-          delivery_project_id: '123',
-          user_catalog_name: 'user@test.com',
-        } satisfies UpdateDeliveryProjectUserRequest);
-
-      expect(response.status).toEqual(403);
-    });
-
-    it('return 400 with errors', async () => {
-      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
-        token:
-          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(
+        mockCheckAuth.mock.calls[0][0](
+          testHelpers.expressRequest({ body: { delivery_project_id: '123' } }),
+        ),
+      ).toMatchObject({
+        permission: deliveryProjectUserUpdatePermission,
+        resourceRef: '123',
       });
-      mockDeliveryProjectUserStore.update.mockResolvedValue({
-        success: false,
-        errors: ['unknown', 'unknownDeliveryProject'],
-      });
-      mockCatalogClient.getEntities.mockResolvedValueOnce(catalogTestData);
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      const response = await request(deliveryProjectUserApp)
-        .patch('/')
-        .send({
-          id: '123',
-          delivery_project_id: 'abc',
-          user_catalog_name: 'user@test.com',
-        } satisfies UpdateDeliveryProjectUserRequest);
-
-      // assert
-      expect(response.status).toEqual(400);
-      expect(response.body).toMatchObject({
-        errors: [
-          {
-            path: 'root',
-            error: {
-              message: 'An unexpected error occurred.',
-            },
+      expect(mockUpdate).toHaveBeenCalledTimes(0);
+      expect({ status, body }).toMatchObject({
+        status: 403,
+        body: {
+          error: {
+            message: 'Unauthorized',
+            name: 'NotAllowedError',
           },
-          {
-            path: 'delivery_project_id',
-            error: {
-              message: 'The delivery project does not exist.',
-            },
-          },
-        ],
-      });
-      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
-        expect.any(Object),
-        {
-          token:
-            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
         },
-      );
-    });
-
-    it('returns a 400 response if catalog user cannot be found', async () => {
-      mockTokenProvider.getPluginRequestToken.mockResolvedValueOnce({
-        token:
-          'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
       });
-      mockCatalogClient.getEntities.mockResolvedValueOnce({ items: [] });
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-
-      const response = await request(deliveryProjectUserApp)
-        .patch('/')
-        .send({
-          id: '123',
-          delivery_project_id: 'abc',
-          user_catalog_name: 'user@test.com',
-        } satisfies UpdateDeliveryProjectUserRequest);
-
-      expect(response.status).toEqual(400);
-      expect(mockCatalogClient.getEntities).toHaveBeenCalledWith(
-        expect.any(Object),
-        {
-          token:
-            'mock-service-token:{"obo":"user:default/mock","target":"catalog"}',
-        },
-      );
-    });
-
-    it('return 400 if if the request is bad', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-      const response = await request(deliveryProjectUserApp)
-        .patch('/')
-        .send({ notAnId: 'abc' });
-      expect(response.status).toEqual(400);
-    });
-
-    it('returns internal server error', async () => {
-      mockDeliveryProjectUserStore.update.mockRejectedValueOnce(
-        new Error('error'),
-      );
-      const response = await request(deliveryProjectUserApp)
-        .patch('/')
-        .send({
-          id: '123',
-          delivery_project_id: '123',
-          user_catalog_name: 'user@test.com',
-        } satisfies UpdateDeliveryProjectUserRequest);
-      expect(response.status).toEqual(500);
     });
   });
-
   describe('DELETE /', () => {
-    it('returns a 204 response when a delivery project user is deleted', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
-      const body: DeleteDeliveryProjectUserRequest = {
-        delivery_project_id: faker.string.uuid(),
-        delivery_project_user_id: faker.string.uuid(),
-      };
-      const response = await request(deliveryProjectUserApp)
-        .del('/')
-        .send(body);
-      expect(response.status).toEqual(204);
-    });
-
-    it('returns a 400 bad request response if an error occurs', async () => {
-      mockDeliveryProjectUserStore.delete.mockRejectedValueOnce(
-        new InputError('error'),
+    it('Should call remove if you have permission', async () => {
+      const { app, mockRemove, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) => next());
+      mockRemove.mockImplementationOnce((_, res) =>
+        res.status(200).json({ result: 'Success!' }),
       );
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.ALLOW },
-      ]);
 
-      const body: DeleteDeliveryProjectUserRequest = {
-        delivery_project_id: faker.string.uuid(),
-        delivery_project_user_id: faker.string.uuid(),
-      };
-      const response = await request(deliveryProjectUserApp)
-        .del('/')
-        .send(body);
-      expect(response.status).toEqual(400);
+      const { status, body } = await request(app).delete('/');
+
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(
+        mockCheckAuth.mock.calls[0][0](
+          testHelpers.expressRequest({ body: { delivery_project_id: '123' } }),
+        ),
+      ).toMatchObject({
+        permission: deliveryProjectUserDeletePermission,
+        resourceRef: '123',
+      });
+      expect(mockRemove).toHaveBeenCalledTimes(1);
+      expect({ status, body }).toMatchObject({
+        status: 200,
+        body: { result: 'Success!' },
+      });
     });
+    it('Should not call remove if you dont have permission', async () => {
+      const { app, mockRemove, mockCheckAuth } = await setup();
+      mockCheckAuth.mockReturnValue((_req, _res, next) =>
+        next(new NotAllowedError('Unauthorized')),
+      );
 
-    it('returns a 403 response if the user is not authorized', async () => {
-      mockPermissionsService.authorize.mockResolvedValueOnce([
-        { result: AuthorizeResult.DENY },
-      ]);
+      const { status, body } = await request(app).delete('/');
 
-      const body: DeleteDeliveryProjectUserRequest = {
-        delivery_project_id: faker.string.uuid(),
-        delivery_project_user_id: faker.string.uuid(),
-      };
-      const response = await request(deliveryProjectUserApp)
-        .del('/')
-        .send(body);
-
-      expect(response.status).toEqual(403);
+      expect(mockCheckAuth).toHaveBeenCalledTimes(1);
+      expect(
+        mockCheckAuth.mock.calls[0][0](
+          testHelpers.expressRequest({ body: { delivery_project_id: '123' } }),
+        ),
+      ).toMatchObject({
+        permission: deliveryProjectUserDeletePermission,
+        resourceRef: '123',
+      });
+      expect(mockRemove).toHaveBeenCalledTimes(0);
+      expect({ status, body }).toMatchObject({
+        status: 403,
+        body: {
+          error: {
+            message: 'Unauthorized',
+            name: 'NotAllowedError',
+          },
+        },
+      });
     });
   });
 });
+
+async function setup() {
+  const mockAdd = testHelpers.strictFn<(typeof add)['T']>();
+  const mockGetAll = testHelpers.strictFn<(typeof getAll)['T']>();
+  const mockGetForProgramme =
+    testHelpers.strictFn<(typeof getForProject)['T']>();
+  const mockRemove = testHelpers.strictFn<(typeof remove)['T']>();
+  const mockUpdate = testHelpers.strictFn<(typeof update)['T']>();
+  const mockHealthCheck = testHelpers.strictFn<(typeof healthCheck)['T']>();
+  const mockCheckAuth = testHelpers.strictFn<(typeof checkAuth)['T']>();
+
+  const handler = await testHelpers.getAutoServiceRef(index, [
+    testHelpers.provideService(add, mockAdd),
+    testHelpers.provideService(getAll, mockGetAll),
+    testHelpers.provideService(getForProject, mockGetForProgramme),
+    testHelpers.provideService(update, mockUpdate),
+    testHelpers.provideService(remove, mockRemove),
+    testHelpers.provideService(healthCheck, mockHealthCheck),
+    testHelpers.provideService(
+      checkAuth,
+      getRequests =>
+        (...args) =>
+          mockCheckAuth(getRequests)(...args),
+    ),
+  ]);
+
+  const app = express();
+  app.use(handler);
+
+  return {
+    handler,
+    app,
+    mockAdd,
+    mockGetAll,
+    mockGetForProgramme,
+    mockUpdate,
+    mockRemove,
+    mockHealthCheck,
+    mockCheckAuth,
+  };
+}

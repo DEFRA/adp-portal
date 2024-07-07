@@ -180,7 +180,7 @@ describe('DeliveryProgrammeAdminService', () => {
       store.getByDeliveryProgramme.mockResolvedValueOnce(expected);
 
       // act
-      const actual = await sut.getByProgramme(id);
+      const actual = await sut.getByProgrammeId(id);
 
       // assert
       expect(store.getByDeliveryProgramme).toHaveBeenCalledTimes(1);

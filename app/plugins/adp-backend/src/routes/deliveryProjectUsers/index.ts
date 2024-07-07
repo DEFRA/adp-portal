@@ -3,6 +3,9 @@ import {
   deliveryProjectUserCreatePermission,
   deliveryProjectUserUpdatePermission,
   deliveryProjectUserDeletePermission,
+  type CreateDeliveryProjectUserRequest,
+  type UpdateDeliveryProjectUserRequest,
+  type DeleteDeliveryProjectUserRequest,
 } from '@internal/plugin-adp-common';
 import { createRouterRef, healthCheck } from '../util';
 import { middlewareFactoryRef } from '../../refs';
@@ -27,19 +30,19 @@ export default createRouterRef({
   },
   factory({ router, deps }) {
     const canAdd = deps.checkAuth(
-      (req: Request<unknown, unknown, { delivery_project_id?: unknown }>) => ({
+      (req: Request<unknown, unknown, CreateDeliveryProjectUserRequest>) => ({
         permission: deliveryProjectUserCreatePermission,
         resourceRef: String(req.body?.delivery_project_id ?? 'missing-id'),
       }),
     );
     const canUpdate = deps.checkAuth(
-      (req: Request<unknown, unknown, { delivery_project_id?: unknown }>) => ({
+      (req: Request<unknown, unknown, UpdateDeliveryProjectUserRequest>) => ({
         permission: deliveryProjectUserUpdatePermission,
         resourceRef: String(req.body?.delivery_project_id ?? 'missing-id'),
       }),
     );
     const canRemove = deps.checkAuth(
-      (req: Request<unknown, unknown, { delivery_project_id?: unknown }>) => ({
+      (req: Request<unknown, unknown, DeleteDeliveryProjectUserRequest>) => ({
         permission: deliveryProjectUserDeletePermission,
         resourceRef: String(req.body?.delivery_project_id ?? 'missing-id'),
       }),

@@ -125,7 +125,7 @@ describe('default', () => {
     });
   });
   describe('PATCH /', () => {
-    it('Should call create if you have permission', async () => {
+    it('Should call edit if you have permission', async () => {
       const { app, mockEdit, mockCheckAuth } = await setup();
       mockCheckAuth.mockReturnValue((_req, _res, next) => next());
       mockEdit.mockImplementationOnce((_, res) =>
@@ -149,7 +149,7 @@ describe('default', () => {
         body: { result: 'Success!' },
       });
     });
-    it('Should not call create if you dont have permission', async () => {
+    it('Should not call edit if you dont have permission', async () => {
       const { app, mockEdit, mockCheckAuth } = await setup();
       mockCheckAuth.mockReturnValue((_req, _res, next) =>
         next(new NotAllowedError('Unauthorized')),

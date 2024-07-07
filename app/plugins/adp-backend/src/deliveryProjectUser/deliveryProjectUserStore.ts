@@ -1,13 +1,11 @@
 import type { Knex } from 'knex';
-import type {
-  DeliveryProjectUser,
-  UpdateDeliveryProjectUserRequest,
-} from '@internal/plugin-adp-common';
+import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
 import type { delivery_project_user } from './delivery_project_user';
 import { delivery_project_user_name } from './delivery_project_user';
 import {
   type SafeResult,
   type AddDeliveryProjectUser,
+  type UpdateDeliveryProjectUser,
   assertUUID,
   checkMany,
   containsAnyValue,
@@ -139,48 +137,21 @@ export class DeliveryProjectUserStore {
   }
 
   async update(
-    request: UpdateDeliveryProjectUserRequest,
-  ): Promise<SafeResult<DeliveryProjectUser, 'unknownDeliveryProject'>> {
-    const {
-      id,
-      is_admin,
-      is_technical,
-      github_username,
-      delivery_project_id,
-      aad_entity_ref_id,
-      aad_user_principal_name,
-      email,
-      name,
-      user_entity_ref,
-    } = request;
+    request: UpdateDeliveryProjectUser,
+  ): Promise<SafeResult<DeliveryProjectUser, never>> {
+    const { id, is_admin, is_technical, github_username } = request;
 
     if (!containsAnyValue(request))
       return { success: true, value: await this.get(id) };
 
     if (!isUUID(id)) throw notFound();
 
-    const valid = await checkMany({
-      unknownDeliveryProject:
-        delivery_project_id !== undefined &&
-        not(this.#deliveryProjectExists(delivery_project_id)),
-    });
-
-    if (!valid.success) return valid;
-
-    if (delivery_project_id !== undefined) assertUUID(delivery_project_id);
-
     const result = await this.#table.where('id', id).update(
       {
         is_admin,
         is_technical,
         github_username,
-        delivery_project_id,
-        aad_entity_ref_id,
-        aad_user_principal_name,
-        email,
-        name,
         updated_at: new Date(),
-        user_entity_ref,
       },
       allColumns,
     );
@@ -195,12 +166,12 @@ export class DeliveryProjectUserStore {
     };
   }
 
-  async delete(id: string): Promise<number> {
+  async delete(id: string): Promise<boolean> {
     if (!isUUID(id) || !(await this.#exists(id))) throw notFound();
 
     const deleteResult = await this.#table.where('id', id).del();
 
-    return deleteResult;
+    return deleteResult > 0;
   }
 
   #normalize(row: delivery_project_user): DeliveryProjectUser {

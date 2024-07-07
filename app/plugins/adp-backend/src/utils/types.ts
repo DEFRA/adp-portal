@@ -10,3 +10,10 @@ export type AddDeliveryProjectUser = Omit<
   delivery_project_user,
   'id' | 'updated_at'
 >;
+
+export type UpdateDeliveryProjectUser = {
+  id: delivery_project_user['id'];
+  github_username?: string;
+  is_admin?: boolean;
+  is_technical?: boolean;
+};

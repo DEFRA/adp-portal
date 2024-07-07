@@ -45,26 +45,24 @@ export class ArmsLengthBodyService {
     this.#catalogRefresher = options.catalogRefresher;
   }
 
-  async #currentEntityRef() {
+  async #callerRef() {
     const { userEntityRef } = await this.#identityProvider.getCurrentIdentity();
     return userEntityRef;
   }
 
-  async #refresh(name?: string) {
-    await this.#catalogRefresher.refresh(
-      name ? `group:default/${name}` : 'location:default/arms-length-bodies',
-    );
+  async #syncronize() {
+    await this.#catalogRefresher.refresh('location:default/arms-length-bodies');
   }
 
   async create(data: CreateArmsLengthBodyRequest) {
     const owner = this.#config.getString('rbac.programmeAdminGroup');
     const result = await this.#armsLengthBodyStore.add(
       data,
-      await this.#currentEntityRef(),
+      await this.#callerRef(),
       owner,
     );
 
-    if (result.success) await this.#refresh();
+    if (result.success) await this.#syncronize();
 
     return result;
   }
@@ -72,9 +70,9 @@ export class ArmsLengthBodyService {
   async update(data: UpdateArmsLengthBodyRequest) {
     const result = await this.#armsLengthBodyStore.update(
       data,
-      await this.#currentEntityRef(),
+      await this.#callerRef(),
     );
-    if (result.success) await this.#refresh(result.value.name);
+    if (result.success) await this.#syncronize();
 
     return result;
   }

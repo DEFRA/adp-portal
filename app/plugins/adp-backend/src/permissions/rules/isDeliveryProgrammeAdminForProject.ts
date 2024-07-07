@@ -13,7 +13,7 @@ export const isDeliveryProgrammeAdminForProject =
       userId: z.string().describe('ID of the user to check'),
     }),
     apply(resource: DeliveryProject, { userId }) {
-      const projectUser = resource.delivery_programme_admins.find(
+      const projectUser = resource.delivery_programme_admins?.find(
         user => user.user_entity_ref === userId,
       );
 

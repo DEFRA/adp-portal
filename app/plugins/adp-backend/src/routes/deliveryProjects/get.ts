@@ -1,32 +1,15 @@
 import { createEndpointRef } from '../util';
-import { deliveryProjectUserStoreRef } from '../../deliveryProjectUser';
-import { deliveryProjectStoreRef } from '../../deliveryProject';
-import { deliveryProgrammeAdminStoreRef } from '../../deliveryProgrammeAdmin';
 import { type Request } from 'express';
-import { getDeliveryProject } from './getDeliveryProject';
+import { deliveryProjectServiceRef } from '../../services';
 
 export default createEndpointRef({
   name: 'getDeliveryProject',
   deps: {
-    deliveryProjectStore: deliveryProjectStoreRef,
-    deliveryProjectUserStore: deliveryProjectUserStoreRef,
-    deliveryProgrammeAdminStore: deliveryProgrammeAdminStoreRef,
+    service: deliveryProjectServiceRef,
   },
-  factory({
-    deps: {
-      deliveryProjectStore,
-      deliveryProjectUserStore,
-      deliveryProgrammeAdminStore,
-    },
-    responses: { ok },
-  }) {
+  factory({ deps: { service }, responses: { ok } }) {
     return async (request: Request<{ id: string }>) => {
-      const data = await getDeliveryProject(
-        deliveryProjectStore,
-        deliveryProjectUserStore,
-        deliveryProgrammeAdminStore,
-        request.params.id,
-      );
+      const data = await service.getById(request.params.id);
       return ok().json(data);
     };
   },

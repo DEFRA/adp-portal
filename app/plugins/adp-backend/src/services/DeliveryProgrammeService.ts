@@ -47,32 +47,32 @@ export class DeliveryProgrammeService {
     this.#identityProvider = options.identityProvider;
   }
 
-  async #currentUserRef() {
+  async #callerRef() {
     const { userEntityRef } = await this.#identityProvider.getCurrentIdentity();
     return userEntityRef;
   }
 
-  async #refresh(name?: string) {
+  async #syncronize() {
     await this.#catalogRefresher.refresh(
-      name ? `group:default/${name}` : 'location:default/delivery-programmes',
+      'location:default/delivery-programmes',
     );
   }
 
   async create(data: CreateDeliveryProgrammeRequest) {
-    const currentUser = await this.#currentUserRef();
-    const result = await this.#store.add(data, currentUser);
+    const caller = await this.#callerRef();
+    const result = await this.#store.add(data, caller);
     if (result.success) {
-      await this.#admins.add(result.value.id, currentUser);
-      await this.#refresh();
+      await this.#admins.add(result.value.id, caller);
+      await this.#syncronize();
     }
     return result;
   }
 
   async edit(data: UpdateDeliveryProgrammeRequest) {
-    const currentUser = await this.#currentUserRef();
+    const currentUser = await this.#callerRef();
     const result = await this.#store.update(data, currentUser);
 
-    if (result.success) await this.#refresh(result.value.name);
+    if (result.success) await this.#syncronize();
 
     return result;
   }
@@ -83,7 +83,7 @@ export class DeliveryProgrammeService {
 
   async getById(id: string) {
     const result = await this.#store.get(id);
-    result.delivery_programme_admins = await this.#admins.getByProgramme(id);
+    result.delivery_programme_admins = await this.#admins.getByProgrammeId(id);
     return result;
   }
 }

@@ -14,6 +14,8 @@ import getYaml from './get.yaml';
 import { testHelpers } from '../../../utils/testHelpers';
 import request from 'supertest';
 import { randomUUID } from 'node:crypto';
+import { mockServices } from '@backstage/backend-test-utils';
+import { coreServices } from '@backstage/backend-plugin-api';
 
 describe('default', () => {
   it('Should return ok with the data from the store', async () => {
@@ -86,6 +88,8 @@ metadata:
   links: []
   annotations:
     adp.defra.gov.uk/delivery-project-id: ${projectId}
+    backstage.io/edit-url: http://defra-adp:3000/onboarding/delivery-projects
+    backstage.io/view-url: http://defra-adp:3000/onboarding/delivery-projects
 spec:
   type: delivery-project
   parent: group:default/test-programme
@@ -99,6 +103,14 @@ spec:
 });
 
 async function setup() {
+  const config = mockServices.rootConfig({
+    data: {
+      app: {
+        baseUrl: 'http://defra-adp:3000',
+      },
+    },
+  });
+
   const programmes: jest.Mocked<IDeliveryProgrammeStore> = {
     add: jest.fn(),
     get: jest.fn(),
@@ -126,6 +138,7 @@ async function setup() {
     testHelpers.provideService(deliveryProgrammeStoreRef, programmes),
     testHelpers.provideService(deliveryProjectStoreRef, projects),
     testHelpers.provideService(deliveryProjectUserStoreRef, projectUsers),
+    testHelpers.provideService(coreServices.rootConfig, config),
   ]);
 
   const app = testHelpers.makeApp(x => x.get('/:name/entity.yaml', handler));

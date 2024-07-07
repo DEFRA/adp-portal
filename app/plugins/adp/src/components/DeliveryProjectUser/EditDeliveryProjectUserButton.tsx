@@ -67,9 +67,6 @@ export function EditDeliveryProjectUserButton({
       await client.update({
         ...deliveryProjectUser,
         ...fields,
-        aad_user_principal_name:
-          deliveryProjectUser.aad_user_principal_name ?? '',
-        user_catalog_name: fields.user_catalog_name.value,
         github_username: fields.github_username.trim(),
       });
     } catch (e: any) {

@@ -1,4 +1,8 @@
-import { type GroupEntity } from '@backstage/catalog-model';
+import {
+  ANNOTATION_EDIT_URL,
+  ANNOTATION_VIEW_URL,
+  type GroupEntity,
+} from '@backstage/catalog-model';
 import type { Request } from 'express';
 import { deliveryProgrammeStoreRef } from '../../../deliveryProgramme';
 import { createEndpointRef } from '../../util';
@@ -12,6 +16,7 @@ import {
 } from '@internal/plugin-adp-common';
 import { deliveryProjectStoreRef } from '../../../deliveryProject';
 import { deliveryProjectUserStoreRef } from '../../../deliveryProjectUser';
+import { coreServices } from '@backstage/backend-plugin-api';
 
 export default createEndpointRef({
   name: 'getDeliveryProjectEntityYaml',
@@ -19,15 +24,18 @@ export default createEndpointRef({
     deliveryProgrammeStore: deliveryProgrammeStoreRef,
     deliveryProjectStore: deliveryProjectStoreRef,
     deliveryProjectUserStore: deliveryProjectUserStoreRef,
+    config: coreServices.rootConfig,
   },
   factory({
     deps: {
       deliveryProgrammeStore,
       deliveryProjectStore,
       deliveryProjectUserStore,
+      config,
     },
     responses: { ok },
   }) {
+    const baseUrl = `${config.getString('app.baseUrl')}/onboarding`;
     return async (request: Request<{ name: string }>) => {
       const entity = await deliveryProjectStore.getByName(request.params.name);
       const parent = await deliveryProgrammeStore.get(
@@ -51,6 +59,8 @@ export default createEndpointRef({
           links: [],
           annotations: {
             [DELIVERY_PROJECT_ID_ANNOTATION]: entity.id,
+            [ANNOTATION_EDIT_URL]: `${baseUrl}/delivery-projects`,
+            [ANNOTATION_VIEW_URL]: `${baseUrl}/delivery-projects`,
           },
         },
         spec: {

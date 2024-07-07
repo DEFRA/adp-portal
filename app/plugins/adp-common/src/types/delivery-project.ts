@@ -11,8 +11,8 @@ export type DeliveryProject = {
   service_owner: string;
   finance_code?: string;
   delivery_programme_id: string;
-  delivery_project_users: DeliveryProjectUser[];
-  delivery_programme_admins: DeliveryProgrammeAdmin[];
+  delivery_project_users?: DeliveryProjectUser[];
+  delivery_programme_admins?: DeliveryProgrammeAdmin[];
   delivery_programme_code: string;
   delivery_project_code: string;
   namespace: string;
@@ -20,7 +20,6 @@ export type DeliveryProject = {
   created_at: Date;
   updated_at: Date;
   updated_by?: string;
-  children?: string[];
   github_team_visibility?: 'public' | 'private';
 };
 

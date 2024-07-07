@@ -1,41 +1,17 @@
-import { deliveryProjectUserStoreRef } from '../../deliveryProjectUser';
-import {
-  getUserEntityFromCatalog,
-  assertUUID,
-  createParser,
-} from '../../utils';
+import { createParser } from '../../utils';
 import { type CreateDeliveryProjectUserRequest } from '@internal/plugin-adp-common';
 import { z } from 'zod';
-import { deliveryProjectGithubTeamsSyncronizerRef } from '../../githubTeam';
-import { deliveryProjectEntraIdGroupsSyncronizerRef } from '../../entraId';
 import { stringifyEntityRef } from '@backstage/catalog-model';
 import { createEndpointRef } from '../util';
-import { catalogApiRef } from '../../refs';
-import { fireAndForgetCatalogRefresherRef } from '../../services';
+import { deliveryProjectUserServiceRef } from '../../services';
 import { errorMapping } from './errorMapping';
-import { tokenProviderRef } from '@internal/plugin-credentials-context-backend';
 
 export default createEndpointRef({
   name: 'addDeliveryProjectUser',
   deps: {
-    tokenProvider: tokenProviderRef,
-    catalog: catalogApiRef,
-    deliveryProjectUserStore: deliveryProjectUserStoreRef,
-    teamSyncronizer: deliveryProjectGithubTeamsSyncronizerRef,
-    catalogRefresher: fireAndForgetCatalogRefresherRef,
-    entraIdGroupSyncronizer: deliveryProjectEntraIdGroupsSyncronizerRef,
+    service: deliveryProjectUserServiceRef,
   },
-  factory({
-    deps: {
-      tokenProvider,
-      catalog,
-      deliveryProjectUserStore,
-      teamSyncronizer,
-      catalogRefresher,
-      entraIdGroupSyncronizer,
-    },
-    responses: { created, validationErrors },
-  }) {
+  factory({ deps: { service }, responses: { created, validationErrors } }) {
     const parseBody = createParser<CreateDeliveryProjectUserRequest>(
       z.object({
         user_catalog_name: z.string(),
@@ -48,49 +24,20 @@ export default createEndpointRef({
 
     return async request => {
       const body = parseBody(request.body);
-      assertUUID(body.delivery_project_id);
-
-      const { token } = await tokenProvider.getPluginRequestToken('catalog');
-      const catalogUser = await getUserEntityFromCatalog(
-        body.user_catalog_name,
-        catalog,
-        token,
-      );
-
-      if (!catalogUser.success)
-        return validationErrors(catalogUser.errors, errorMapping, body);
-
-      const addedUser = await deliveryProjectUserStore.add({
-        ...body,
-        name: catalogUser.value.spec.profile!.displayName!,
-        email: catalogUser.value.metadata.annotations!['microsoft.com/email'],
-        aad_entity_ref_id:
-          catalogUser.value.metadata.annotations![
-            'graph.microsoft.com/user-id'
-          ],
-        aad_user_principal_name:
-          catalogUser.value.metadata.annotations![
-            'graph.microsoft.com/user-principal-name'
-          ],
-        delivery_project_id: body.delivery_project_id,
-        user_entity_ref: stringifyEntityRef({
-          kind: 'user',
-          namespace: 'default',
-          name: body.user_catalog_name,
-        }),
+      const ref = stringifyEntityRef({
+        kind: 'user',
+        name: body.user_catalog_name,
       });
-      if (!addedUser.success)
-        return validationErrors(addedUser.errors, errorMapping, body);
+      const result = await service.add(body.delivery_project_id, ref, {
+        is_admin: body.is_admin,
+        is_technical: body.is_technical,
+        github_username: body.github_username,
+      });
 
-      await Promise.allSettled([
-        teamSyncronizer.syncronizeById(addedUser.value.delivery_project_id),
-        entraIdGroupSyncronizer.syncronizeById(
-          addedUser.value.delivery_project_id,
-        ),
-      ]);
+      if (!result.success)
+        return validationErrors(result.errors, errorMapping, body);
 
-      await catalogRefresher.refresh(`location:default/delivery-programmes`);
-      return created().json(addedUser.value);
+      return created().json(result.value);
     };
   },
 });

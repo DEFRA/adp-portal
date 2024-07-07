@@ -1,33 +1,37 @@
-import getForProgramme from './getForProgramme';
+import getForProject from './getForProject';
 import { testHelpers } from '../../utils/testHelpers';
 import request from 'supertest';
-import type { DeliveryProgrammeAdmin } from '@internal/plugin-adp-common';
+import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
 import { randomUUID } from 'node:crypto';
 import {
-  deliveryProgrammeAdminServiceRef,
-  type IDeliveryProgrammeAdminService,
+  deliveryProjectUserServiceRef,
+  type IDeliveryProjectUserService,
 } from '../../services';
 
 describe('default', () => {
   it('Should return ok with the data from the store', async () => {
     const { app, service } = await setup();
-    const expected = [...new Array(10)].map<DeliveryProgrammeAdmin>(() => ({
+    const expected = [...new Array(10)].map<DeliveryProjectUser>(() => ({
       aad_entity_ref_id: randomUUID(),
-      delivery_programme_id: randomUUID(),
+      delivery_project_id: randomUUID(),
       email: randomUUID(),
       id: randomUUID(),
+      is_admin: Math.random() > 0.5,
+      is_technical: Math.random() > 0.5,
       name: randomUUID(),
       updated_at: new Date(),
+      aad_user_principal_name: randomUUID(),
+      github_username: randomUUID(),
       user_entity_ref: randomUUID(),
     }));
-    service.getByProgrammeId.mockResolvedValueOnce(
+    service.getByProjectId.mockResolvedValueOnce(
       expected.map(x => ({ ...x, children: undefined })),
     );
 
     const { status, body } = await request(app).get(`/abc`);
 
-    expect(service.getByProgrammeId).toHaveBeenCalledTimes(1);
-    expect(service.getByProgrammeId).toHaveBeenCalledWith('abc');
+    expect(service.getByProjectId).toHaveBeenCalledTimes(1);
+    expect(service.getByProjectId).toHaveBeenCalledWith('abc');
     expect({ status, body }).toMatchObject({
       status: 200,
       body: JSON.parse(JSON.stringify(expected)),
@@ -36,12 +40,12 @@ describe('default', () => {
 
   it('Should return 500 if an error is thrown', async () => {
     const { app, service } = await setup();
-    service.getByProgrammeId.mockRejectedValueOnce(new Error());
+    service.getByProjectId.mockRejectedValueOnce(new Error());
 
     const { status, body } = await request(app).get(`/abc`);
 
-    expect(service.getByProgrammeId).toHaveBeenCalledTimes(1);
-    expect(service.getByProgrammeId).toHaveBeenCalledWith('abc');
+    expect(service.getByProjectId).toHaveBeenCalledTimes(1);
+    expect(service.getByProjectId).toHaveBeenCalledWith('abc');
     expect({ status, body }).toMatchObject({
       status: 500,
       body: { error: {} },
@@ -50,18 +54,19 @@ describe('default', () => {
 });
 
 async function setup() {
-  const service: jest.Mocked<IDeliveryProgrammeAdminService> = {
+  const service: jest.Mocked<IDeliveryProjectUserService> = {
     add: jest.fn(),
     getAll: jest.fn(),
-    getByProgrammeId: jest.fn(),
+    getByProjectId: jest.fn(),
     remove: jest.fn(),
+    edit: jest.fn(),
   };
 
-  const handler = await testHelpers.getAutoServiceRef(getForProgramme, [
-    testHelpers.provideService(deliveryProgrammeAdminServiceRef, service),
+  const handler = await testHelpers.getAutoServiceRef(getForProject, [
+    testHelpers.provideService(deliveryProjectUserServiceRef, service),
   ]);
 
-  const app = testHelpers.makeApp(x => x.get('/:deliveryProgrammeId', handler));
+  const app = testHelpers.makeApp(x => x.get('/:deliveryProjectId', handler));
 
   return { handler, app, service };
 }
