@@ -8,6 +8,19 @@ import type { GroupEntity } from '@backstage/catalog-model';
 import * as useDeliveryProjectsMod from './useDeliveryProjects';
 
 describe('DeliveryProjectPicker', () => {
+  it('Should render loading', async () => {
+    const { useDeliveryProjects, onChange, render } = setup();
+    useDeliveryProjects.mockReturnValue({
+      loading: true,
+      value: undefined,
+    });
+
+    const result = await render({ disabled: false });
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(useDeliveryProjects).toHaveBeenCalled();
+    expect(result.baseElement).toMatchSnapshot();
+  });
   it('Should render no options when there are no matches', async () => {
     const { useDeliveryProjects, onChange, render } = setup();
     const entities = makeEntities(0);
@@ -121,6 +134,51 @@ describe('DeliveryProjectPicker', () => {
 
     const result = await render({ disabled: false });
     fireEvent.change(result.getByRole('textbox'), { target: { value: '6' } });
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(useDeliveryProjects).toHaveBeenCalled();
+    expect(result.baseElement).toMatchSnapshot();
+  });
+  it('Should reset when cleared', async () => {
+    const { useDeliveryProjects, onChange, render } = setup();
+    const entities = makeEntities(10);
+    useDeliveryProjects.mockReturnValue({
+      loading: false,
+      value: {
+        catalogEntities: entities.map(e => e.data),
+        entityRefToPresentation: new Map(
+          entities.map(e => [e.ref, e.presentation]),
+        ),
+      },
+    });
+
+    const result = await render({
+      disabled: false,
+      formData: 'group:default/test-group-7',
+    });
+    act(() => result.getByTitle('Clear').click());
+
+    expect(onChange).toHaveBeenCalledWith(undefined);
+    expect(useDeliveryProjects).toHaveBeenCalled();
+    expect(result.baseElement).toMatchSnapshot();
+  });
+  it('Show when errored', async () => {
+    const { useDeliveryProjects, onChange, render } = setup();
+    const entities = makeEntities(10);
+    useDeliveryProjects.mockReturnValue({
+      loading: false,
+      value: {
+        catalogEntities: entities.map(e => e.data),
+        entityRefToPresentation: new Map(
+          entities.map(e => [e.ref, e.presentation]),
+        ),
+      },
+    });
+
+    const result = await render({
+      disabled: false,
+      rawErrors: ['My error'],
+    });
 
     expect(onChange).not.toHaveBeenCalled();
     expect(useDeliveryProjects).toHaveBeenCalled();
