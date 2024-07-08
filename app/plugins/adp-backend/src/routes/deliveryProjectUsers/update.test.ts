@@ -170,7 +170,6 @@ describe('default', () => {
     expect(service.edit).toHaveBeenCalledTimes(1);
     const { id, delivery_project_id, ...editArgs } = data;
     expect(service.edit).toHaveBeenCalledWith(id, editArgs);
-    console.log(JSON.stringify(body));
     expect({ status, body }).toMatchObject({
       status: 400,
       body: {

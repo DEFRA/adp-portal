@@ -1,0 +1,970 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeliveryProjectPicker Should filter the results 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiFormControl-marginNormal"
+    >
+      <div
+        aria-expanded="true"
+        aria-owns="mui-0-popup"
+        class="MuiAutocomplete-root MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon"
+        role="combobox"
+      >
+        <div
+          class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled MuiFormLabel-required MuiInputLabel-required"
+            data-shrink="true"
+            for="mui-0"
+            id="mui-0-label"
+          >
+            Delivery Project
+            <span
+              aria-hidden="true"
+              class="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+            >
+               
+              *
+            </span>
+          </label>
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiAutocomplete-inputRoot MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiOutlinedInput-adornedEnd MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="mui-0-popup"
+              aria-describedby="mui-0-helper-text"
+              aria-invalid="false"
+              autocapitalize="none"
+              autocomplete="off"
+              class="MuiInputBase-input MuiOutlinedInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedEnd MuiOutlinedInput-inputAdornedEnd MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+              id="mui-0"
+              required=""
+              spellcheck="false"
+              type="text"
+              value="6"
+            />
+            <div
+              class="MuiAutocomplete-endAdornment"
+            >
+              <button
+                aria-label="Clear"
+                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-clearIndicator"
+                tabindex="-1"
+                title="Clear"
+                type="button"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+              <button
+                aria-label="Close"
+                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator MuiAutocomplete-popupIndicatorOpen"
+                tabindex="-1"
+                title="Close"
+                type="button"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M7 10l5 5 5-5z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+            </div>
+            <fieldset
+              aria-hidden="true"
+              class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+              >
+                <span>
+                  Delivery Project
+                   *
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+          <p
+            class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-required MuiFormHelperText-marginDense"
+            id="mui-0-helper-text"
+            style="margin-left: 0px;"
+          >
+            The delivery project that will own the component.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="MuiAutocomplete-popper"
+    role="presentation"
+    style="position: absolute; top: 0px; left: 0px; width: 0px;"
+    x-placement="bottom"
+  >
+    <div
+      class="MuiPaper-root MuiAutocomplete-paper MuiPaper-elevation1 MuiPaper-rounded"
+    >
+      <div>
+        <div
+          style="position: relative; height: 36px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+        >
+          <div
+            style="height: 36px; width: 100%;"
+          >
+            <li
+              aria-disabled="false"
+              aria-selected="false"
+              class="MuiAutocomplete-option"
+              data-option-index="0"
+              id="mui-0-option-0"
+              role="option"
+              style="position: absolute; left: 0px; top: 0px; height: 36px; width: 100%;"
+              tabindex="-1"
+            >
+              <span
+                class="MuiBox-root MuiBox-root CatalogReactEntityDisplayName-root"
+                title="group:default/test-group-6 | delivery-project"
+              >
+                Test Group 6
+              </span>
+            </li>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`DeliveryProjectPicker Should fire change when a selection is made 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiFormControl-marginNormal"
+    >
+      <div
+        aria-expanded="false"
+        class="MuiAutocomplete-root MuiAutocomplete-focused MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon"
+        role="combobox"
+      >
+        <div
+          class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-filled MuiFormLabel-focused MuiInputLabel-focused MuiFormLabel-required MuiInputLabel-required"
+            data-shrink="true"
+            for="mui-0"
+            id="mui-0-label"
+          >
+            Delivery Project
+            <span
+              aria-hidden="true"
+              class="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+            >
+               
+              *
+            </span>
+          </label>
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiAutocomplete-inputRoot MuiInputBase-fullWidth MuiInputBase-focused MuiOutlinedInput-focused MuiInputBase-formControl MuiInputBase-adornedEnd MuiOutlinedInput-adornedEnd MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-describedby="mui-0-helper-text"
+              aria-invalid="false"
+              autocapitalize="none"
+              autocomplete="off"
+              class="MuiInputBase-input MuiOutlinedInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedEnd MuiOutlinedInput-inputAdornedEnd MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+              id="mui-0"
+              required=""
+              spellcheck="false"
+              type="text"
+              value="group:default/test-group-3"
+            />
+            <div
+              class="MuiAutocomplete-endAdornment"
+            >
+              <button
+                aria-label="Clear"
+                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-clearIndicator"
+                tabindex="-1"
+                title="Clear"
+                type="button"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+              <button
+                aria-label="Open"
+                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator"
+                tabindex="-1"
+                title="Open"
+                type="button"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M7 10l5 5 5-5z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+            </div>
+            <fieldset
+              aria-hidden="true"
+              class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+              >
+                <span>
+                  Delivery Project
+                   *
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+          <p
+            class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-filled MuiFormHelperText-focused MuiFormHelperText-required MuiFormHelperText-marginDense"
+            id="mui-0-helper-text"
+            style="margin-left: 0px;"
+          >
+            The delivery project that will own the component.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`DeliveryProjectPicker Should not select an option when there is more than 1 option 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiFormControl-marginNormal"
+    >
+      <div
+        aria-expanded="false"
+        class="MuiAutocomplete-root MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon"
+        role="combobox"
+      >
+        <div
+          class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-required MuiInputLabel-required"
+            data-shrink="false"
+            for="mui-0"
+            id="mui-0-label"
+          >
+            Delivery Project
+            <span
+              aria-hidden="true"
+              class="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+            >
+               
+              *
+            </span>
+          </label>
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiAutocomplete-inputRoot MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiOutlinedInput-adornedEnd MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-describedby="mui-0-helper-text"
+              aria-invalid="false"
+              autocapitalize="none"
+              autocomplete="off"
+              class="MuiInputBase-input MuiOutlinedInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedEnd MuiOutlinedInput-inputAdornedEnd MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+              id="mui-0"
+              required=""
+              spellcheck="false"
+              type="text"
+              value=""
+            />
+            <div
+              class="MuiAutocomplete-endAdornment"
+            >
+              <button
+                aria-label="Clear"
+                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-clearIndicator"
+                tabindex="-1"
+                title="Clear"
+                type="button"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+              <button
+                aria-label="Open"
+                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator"
+                tabindex="-1"
+                title="Open"
+                type="button"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M7 10l5 5 5-5z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+            </div>
+            <fieldset
+              aria-hidden="true"
+              class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="PrivateNotchedOutline-legendLabelled"
+              >
+                <span>
+                  Delivery Project
+                   *
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+          <p
+            class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-required MuiFormHelperText-marginDense"
+            id="mui-0-helper-text"
+            style="margin-left: 0px;"
+          >
+            The delivery project that will own the component.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`DeliveryProjectPicker Should render no options when there are no matches 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiFormControl-marginNormal"
+    >
+      <div
+        aria-expanded="false"
+        class="MuiAutocomplete-root MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon"
+        role="combobox"
+      >
+        <div
+          class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-required MuiInputLabel-required"
+            data-shrink="false"
+            for="mui-0"
+            id="mui-0-label"
+          >
+            Delivery Project
+            <span
+              aria-hidden="true"
+              class="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+            >
+               
+              *
+            </span>
+          </label>
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiAutocomplete-inputRoot MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiOutlinedInput-adornedEnd MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-describedby="mui-0-helper-text"
+              aria-invalid="false"
+              autocapitalize="none"
+              autocomplete="off"
+              class="MuiInputBase-input MuiOutlinedInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedEnd MuiOutlinedInput-inputAdornedEnd MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+              id="mui-0"
+              required=""
+              spellcheck="false"
+              type="text"
+              value=""
+            />
+            <div
+              class="MuiAutocomplete-endAdornment"
+            >
+              <button
+                aria-label="Clear"
+                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-clearIndicator"
+                tabindex="-1"
+                title="Clear"
+                type="button"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+              <button
+                aria-label="Open"
+                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator"
+                tabindex="-1"
+                title="Open"
+                type="button"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M7 10l5 5 5-5z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+            </div>
+            <fieldset
+              aria-hidden="true"
+              class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="PrivateNotchedOutline-legendLabelled"
+              >
+                <span>
+                  Delivery Project
+                   *
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+          <p
+            class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-required MuiFormHelperText-marginDense"
+            id="mui-0-helper-text"
+            style="margin-left: 0px;"
+          >
+            The delivery project that will own the component.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`DeliveryProjectPicker Should select the only option when there is 1 match 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiFormControl-marginNormal"
+    >
+      <div
+        aria-expanded="false"
+        class="MuiAutocomplete-root MuiAutocomplete-hasPopupIcon"
+        role="combobox"
+      >
+        <div
+          class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-disabled MuiInputLabel-disabled MuiFormLabel-required MuiInputLabel-required"
+            data-shrink="false"
+            for="mui-0"
+            id="mui-0-label"
+          >
+            Delivery Project
+            <span
+              aria-hidden="true"
+              class="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+            >
+               
+              *
+            </span>
+          </label>
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiAutocomplete-inputRoot MuiInputBase-disabled MuiOutlinedInput-disabled MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiOutlinedInput-adornedEnd MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-describedby="mui-0-helper-text"
+              aria-invalid="false"
+              autocapitalize="none"
+              autocomplete="off"
+              class="MuiInputBase-input MuiOutlinedInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-disabled MuiOutlinedInput-disabled MuiInputBase-inputAdornedEnd MuiOutlinedInput-inputAdornedEnd MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+              disabled=""
+              id="mui-0"
+              required=""
+              spellcheck="false"
+              type="text"
+              value=""
+            />
+            <div
+              class="MuiAutocomplete-endAdornment"
+            >
+              <button
+                aria-label="Open"
+                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator MuiIconButton-disabled MuiButtonBase-disabled"
+                disabled=""
+                tabindex="-1"
+                title="Open"
+                type="button"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M7 10l5 5 5-5z"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </div>
+            <fieldset
+              aria-hidden="true"
+              class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="PrivateNotchedOutline-legendLabelled"
+              >
+                <span>
+                  Delivery Project
+                   *
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+          <p
+            class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-disabled MuiFormHelperText-required MuiFormHelperText-marginDense"
+            id="mui-0-helper-text"
+            style="margin-left: 0px;"
+          >
+            The delivery project that will own the component.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`DeliveryProjectPicker Should show all the options in the drop down 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root MuiFormControl-marginNormal"
+    >
+      <div
+        aria-expanded="true"
+        aria-owns="mui-0-popup"
+        class="MuiAutocomplete-root MuiAutocomplete-focused MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon"
+        role="combobox"
+      >
+        <div
+          class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-focused MuiInputLabel-focused MuiFormLabel-required MuiInputLabel-required"
+            data-shrink="true"
+            for="mui-0"
+            id="mui-0-label"
+          >
+            Delivery Project
+            <span
+              aria-hidden="true"
+              class="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+            >
+               
+              *
+            </span>
+          </label>
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiAutocomplete-inputRoot MuiInputBase-fullWidth MuiInputBase-focused MuiOutlinedInput-focused MuiInputBase-formControl MuiInputBase-adornedEnd MuiOutlinedInput-adornedEnd MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="mui-0-popup"
+              aria-describedby="mui-0-helper-text"
+              aria-invalid="false"
+              autocapitalize="none"
+              autocomplete="off"
+              class="MuiInputBase-input MuiOutlinedInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedEnd MuiOutlinedInput-inputAdornedEnd MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+              id="mui-0"
+              required=""
+              spellcheck="false"
+              type="text"
+              value=""
+            />
+            <div
+              class="MuiAutocomplete-endAdornment"
+            >
+              <button
+                aria-label="Clear"
+                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-clearIndicator"
+                tabindex="-1"
+                title="Clear"
+                type="button"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+              <button
+                aria-label="Close"
+                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator MuiAutocomplete-popupIndicatorOpen"
+                tabindex="-1"
+                title="Close"
+                type="button"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M7 10l5 5 5-5z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+            </div>
+            <fieldset
+              aria-hidden="true"
+              class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
+              >
+                <span>
+                  Delivery Project
+                   *
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+          <p
+            class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-focused MuiFormHelperText-required MuiFormHelperText-marginDense"
+            id="mui-0-helper-text"
+            style="margin-left: 0px;"
+          >
+            The delivery project that will own the component.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="MuiAutocomplete-popper"
+    role="presentation"
+    style="position: absolute; top: 0px; left: 0px; width: 0px;"
+    x-placement="bottom"
+  >
+    <div
+      class="MuiPaper-root MuiAutocomplete-paper MuiPaper-elevation1 MuiPaper-rounded"
+    >
+      <div>
+        <div
+          style="position: relative; height: 342px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+        >
+          <div
+            style="height: 360px; width: 100%;"
+          >
+            <li
+              aria-disabled="false"
+              aria-selected="false"
+              class="MuiAutocomplete-option"
+              data-option-index="0"
+              id="mui-0-option-0"
+              role="option"
+              style="position: absolute; left: 0px; top: 0px; height: 36px; width: 100%;"
+              tabindex="-1"
+            >
+              <span
+                class="MuiBox-root MuiBox-root CatalogReactEntityDisplayName-root"
+                title="group:default/test-group-0 | delivery-project"
+              >
+                Test Group 0
+              </span>
+            </li>
+            <li
+              aria-disabled="false"
+              aria-selected="false"
+              class="MuiAutocomplete-option"
+              data-option-index="1"
+              id="mui-0-option-1"
+              role="option"
+              style="position: absolute; left: 0px; top: 36px; height: 36px; width: 100%;"
+              tabindex="-1"
+            >
+              <span
+                class="MuiBox-root MuiBox-root CatalogReactEntityDisplayName-root"
+                title="group:default/test-group-1 | delivery-project"
+              >
+                Test Group 1
+              </span>
+            </li>
+            <li
+              aria-disabled="false"
+              aria-selected="false"
+              class="MuiAutocomplete-option"
+              data-option-index="2"
+              id="mui-0-option-2"
+              role="option"
+              style="position: absolute; left: 0px; top: 72px; height: 36px; width: 100%;"
+              tabindex="-1"
+            >
+              <span
+                class="MuiBox-root MuiBox-root CatalogReactEntityDisplayName-root"
+                title="group:default/test-group-2 | delivery-project"
+              >
+                Test Group 2
+              </span>
+            </li>
+            <li
+              aria-disabled="false"
+              aria-selected="false"
+              class="MuiAutocomplete-option"
+              data-option-index="3"
+              id="mui-0-option-3"
+              role="option"
+              style="position: absolute; left: 0px; top: 108px; height: 36px; width: 100%;"
+              tabindex="-1"
+            >
+              <span
+                class="MuiBox-root MuiBox-root CatalogReactEntityDisplayName-root"
+                title="group:default/test-group-3 | delivery-project"
+              >
+                Test Group 3
+              </span>
+            </li>
+            <li
+              aria-disabled="false"
+              aria-selected="false"
+              class="MuiAutocomplete-option"
+              data-option-index="4"
+              id="mui-0-option-4"
+              role="option"
+              style="position: absolute; left: 0px; top: 144px; height: 36px; width: 100%;"
+              tabindex="-1"
+            >
+              <span
+                class="MuiBox-root MuiBox-root CatalogReactEntityDisplayName-root"
+                title="group:default/test-group-4 | delivery-project"
+              >
+                Test Group 4
+              </span>
+            </li>
+            <li
+              aria-disabled="false"
+              aria-selected="false"
+              class="MuiAutocomplete-option"
+              data-option-index="5"
+              id="mui-0-option-5"
+              role="option"
+              style="position: absolute; left: 0px; top: 180px; height: 36px; width: 100%;"
+              tabindex="-1"
+            >
+              <span
+                class="MuiBox-root MuiBox-root CatalogReactEntityDisplayName-root"
+                title="group:default/test-group-5 | delivery-project"
+              >
+                Test Group 5
+              </span>
+            </li>
+            <li
+              aria-disabled="false"
+              aria-selected="false"
+              class="MuiAutocomplete-option"
+              data-option-index="6"
+              id="mui-0-option-6"
+              role="option"
+              style="position: absolute; left: 0px; top: 216px; height: 36px; width: 100%;"
+              tabindex="-1"
+            >
+              <span
+                class="MuiBox-root MuiBox-root CatalogReactEntityDisplayName-root"
+                title="group:default/test-group-6 | delivery-project"
+              >
+                Test Group 6
+              </span>
+            </li>
+            <li
+              aria-disabled="false"
+              aria-selected="false"
+              class="MuiAutocomplete-option"
+              data-option-index="7"
+              id="mui-0-option-7"
+              role="option"
+              style="position: absolute; left: 0px; top: 252px; height: 36px; width: 100%;"
+              tabindex="-1"
+            >
+              <span
+                class="MuiBox-root MuiBox-root CatalogReactEntityDisplayName-root"
+                title="group:default/test-group-7 | delivery-project"
+              >
+                Test Group 7
+              </span>
+            </li>
+            <li
+              aria-disabled="false"
+              aria-selected="false"
+              class="MuiAutocomplete-option"
+              data-option-index="8"
+              id="mui-0-option-8"
+              role="option"
+              style="position: absolute; left: 0px; top: 288px; height: 36px; width: 100%;"
+              tabindex="-1"
+            >
+              <span
+                class="MuiBox-root MuiBox-root CatalogReactEntityDisplayName-root"
+                title="group:default/test-group-8 | delivery-project"
+              >
+                Test Group 8
+              </span>
+            </li>
+            <li
+              aria-disabled="false"
+              aria-selected="false"
+              class="MuiAutocomplete-option"
+              data-option-index="9"
+              id="mui-0-option-9"
+              role="option"
+              style="position: absolute; left: 0px; top: 324px; height: 36px; width: 100%;"
+              tabindex="-1"
+            >
+              <span
+                class="MuiBox-root MuiBox-root CatalogReactEntityDisplayName-root"
+                title="group:default/test-group-9 | delivery-project"
+              >
+                Test Group 9
+              </span>
+            </li>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

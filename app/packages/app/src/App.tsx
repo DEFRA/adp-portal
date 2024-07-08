@@ -8,6 +8,7 @@ import {
 } from '@backstage/plugin-catalog';
 import { CatalogImportPage } from '@backstage/plugin-catalog-import';
 import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
+import { ScaffolderFieldExtensions } from '@backstage/plugin-scaffolder-react';
 import { orgPlugin } from '@backstage/plugin-org';
 import { SearchPage } from '@backstage/plugin-search';
 import { TechRadarPage } from '@backstage-community/plugin-tech-radar';
@@ -49,6 +50,7 @@ import CloudIcon from '@material-ui/icons/Cloud';
 
 import { FluxRuntimePage } from '@weaveworksoss/backstage-plugin-flux';
 import { themes } from '@internal/plugin-adp-theme-react';
+import { DeliveryProjectPickerFieldExtension } from '@internal/backstage-plugin-scaffolder-adp-react';
 
 import {
   AdpPage,
@@ -119,7 +121,11 @@ const routes = (
               subtitle:
                 'Create a new platform service using standard templates in DEFRA',
             }}
-          />
+          >
+            <ScaffolderFieldExtensions>
+              <DeliveryProjectPickerFieldExtension />
+            </ScaffolderFieldExtensions>
+          </ScaffolderPage>
         </RequirePermission>
       }
     />
