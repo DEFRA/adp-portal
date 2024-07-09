@@ -75,9 +75,7 @@ exports[`DeliveryProjectUserViewPage should render the page when Delivery Progra
                   >
                     <h2
                       class="MuiTypography-root MuiTypography-h5"
-                    >
-                      View all
-                    </h2>
+                    />
                   </div>
                   <div
                     class="ForwardRef(MTableToolbarRef)-spacer"
@@ -680,9 +678,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                   >
                     <h2
                       class="MuiTypography-root MuiTypography-h5"
-                    >
-                      View all
-                    </h2>
+                    />
                   </div>
                   <div
                     class="ForwardRef(MTableToolbarRef)-spacer"
@@ -1913,9 +1909,7 @@ exports[`DeliveryProjectUserViewPage should render the page with no Delivery Pro
                   >
                     <h2
                       class="MuiTypography-root MuiTypography-h5"
-                    >
-                      View all
-                    </h2>
+                    />
                   </div>
                   <div
                     class="ForwardRef(MTableToolbarRef)-spacer"

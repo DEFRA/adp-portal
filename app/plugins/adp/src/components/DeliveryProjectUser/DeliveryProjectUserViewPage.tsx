@@ -165,7 +165,6 @@ export const DeliveryProjectUserViewPage = () => {
             <DefaultTable
               data={tableData}
               columns={columns}
-              title="View all"
               isCompact
               isLoading={loading}
             />

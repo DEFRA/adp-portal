@@ -132,9 +132,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
               >
                 <h2
                   class="MuiTypography-root MuiTypography-h5"
-                >
-                  View all
-                </h2>
+                />
               </div>
               <div
                 class="ForwardRef(MTableToolbarRef)-spacer"
@@ -904,9 +902,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
               >
                 <h2
                   class="MuiTypography-root MuiTypography-h5"
-                >
-                  View all
-                </h2>
+                />
               </div>
               <div
                 class="ForwardRef(MTableToolbarRef)-spacer"
@@ -1564,9 +1560,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
               >
                 <h2
                   class="MuiTypography-root MuiTypography-h5"
-                >
-                  View all
-                </h2>
+                />
               </div>
               <div
                 class="ForwardRef(MTableToolbarRef)-spacer"
@@ -2436,9 +2430,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
               >
                 <h2
                   class="MuiTypography-root MuiTypography-h5"
-                >
-                  View all
-                </h2>
+                />
               </div>
               <div
                 class="ForwardRef(MTableToolbarRef)-spacer"
@@ -3208,9 +3200,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
               >
                 <h2
                   class="MuiTypography-root MuiTypography-h5"
-                >
-                  View all
-                </h2>
+                />
               </div>
               <div
                 class="ForwardRef(MTableToolbarRef)-spacer"
@@ -3868,9 +3858,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
               >
                 <h2
                   class="MuiTypography-root MuiTypography-h5"
-                >
-                  View all
-                </h2>
+                />
               </div>
               <div
                 class="ForwardRef(MTableToolbarRef)-spacer"
@@ -5040,9 +5028,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
               >
                 <h2
                   class="MuiTypography-root MuiTypography-h5"
-                >
-                  View all
-                </h2>
+                />
               </div>
               <div
                 class="ForwardRef(MTableToolbarRef)-spacer"

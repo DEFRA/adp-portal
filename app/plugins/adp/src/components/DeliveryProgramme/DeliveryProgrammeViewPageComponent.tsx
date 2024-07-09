@@ -136,7 +136,6 @@ export const DeliveryProgrammeViewPageComponent = () => {
         <DefaultTable
           data={data ?? []}
           columns={columns}
-          title="View all"
           isCompact
           isLoading={loading}
         />

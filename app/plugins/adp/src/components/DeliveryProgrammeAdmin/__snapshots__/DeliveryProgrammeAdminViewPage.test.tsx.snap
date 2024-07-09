@@ -76,9 +76,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                   >
                     <h2
                       class="MuiTypography-root MuiTypography-h5"
-                    >
-                      View all
-                    </h2>
+                    />
                   </div>
                   <div
                     class="ForwardRef(MTableToolbarRef)-spacer"
@@ -743,9 +741,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                   >
                     <h2
                       class="MuiTypography-root MuiTypography-h5"
-                    >
-                      View all
-                    </h2>
+                    />
                   </div>
                   <div
                     class="ForwardRef(MTableToolbarRef)-spacer"
@@ -1314,9 +1310,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page when Delivery Pro
                   >
                     <h2
                       class="MuiTypography-root MuiTypography-h5"
-                    >
-                      View all
-                    </h2>
+                    />
                   </div>
                   <div
                     class="ForwardRef(MTableToolbarRef)-spacer"
@@ -1885,9 +1879,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                   >
                     <h2
                       class="MuiTypography-root MuiTypography-h5"
-                    >
-                      View all
-                    </h2>
+                    />
                   </div>
                   <div
                     class="ForwardRef(MTableToolbarRef)-spacer"
@@ -2884,9 +2876,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with no Delivery 
                   >
                     <h2
                       class="MuiTypography-root MuiTypography-h5"
-                    >
-                      View all
-                    </h2>
+                    />
                   </div>
                   <div
                     class="ForwardRef(MTableToolbarRef)-spacer"
