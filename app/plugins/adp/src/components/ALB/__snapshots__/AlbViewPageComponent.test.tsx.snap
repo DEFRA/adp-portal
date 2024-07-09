@@ -235,11 +235,11 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                              class="MuiButtonBase-root MuiTableSortLabel-root MuiTableSortLabel-active"
                               role="button"
                               tabindex="0"
                             >
@@ -253,7 +253,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                                 role="button"
                                 tabindex="0"
                               >
-                                Title
+                                Name
                               </div>
                               <svg
                                 aria-hidden="true"
@@ -270,7 +270,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -305,7 +305,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -340,7 +340,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -375,7 +375,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -410,35 +410,18 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
-                            <span
-                              aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                            <div
+                              aria-describedby="rbd-hidden-text-3-hidden-text-24"
+                              data-rbd-drag-handle-context-id="3"
+                              data-rbd-drag-handle-draggable-id="5"
+                              data-rbd-draggable-context-id="3"
+                              data-rbd-draggable-id="5"
+                              draggable="false"
                               role="button"
                               tabindex="0"
-                            >
-                              <div
-                                aria-describedby="rbd-hidden-text-3-hidden-text-24"
-                                data-rbd-drag-handle-context-id="3"
-                                data-rbd-drag-handle-draggable-id="5"
-                                data-rbd-draggable-context-id="3"
-                                data-rbd-draggable-id="5"
-                                draggable="false"
-                                role="button"
-                                tabindex="0"
-                              />
-                              <svg
-                                aria-hidden="true"
-                                class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
-                                focusable="false"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                />
-                              </svg>
-                            </span>
+                            />
                           </th>
                         </tr>
                       </thead>
@@ -456,7 +439,12 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="Project 0"
                           >
-                            Project 0
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+                              href="/catalog/default/group/project-0"
+                            >
+                              Project 0
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
@@ -480,12 +468,25 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                             style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
                             value="https://test.com"
                           >
-                            https://test.com
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
+                              href="https://test.com"
+                              rel="noopener"
+                              target="_blank"
+                              to="https://test.com"
+                            >
+                              https://test.com
+                              <span
+                                class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
+                              >
+                                , Opens in a new window
+                              </span>
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                             value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                           >
                             1/1/1970, 12:00:00 AM
@@ -493,8 +494,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                            value="[object Object]"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                           >
                             <button
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
@@ -1004,11 +1004,11 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                              class="MuiButtonBase-root MuiTableSortLabel-root MuiTableSortLabel-active"
                               role="button"
                               tabindex="0"
                             >
@@ -1022,7 +1022,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                                 role="button"
                                 tabindex="0"
                               >
-                                Title
+                                Name
                               </div>
                               <svg
                                 aria-hidden="true"
@@ -1039,7 +1039,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1074,7 +1074,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1109,7 +1109,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1144,7 +1144,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1179,35 +1179,18 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
-                            <span
-                              aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                            <div
+                              aria-describedby="rbd-hidden-text-3-hidden-text-24"
+                              data-rbd-drag-handle-context-id="3"
+                              data-rbd-drag-handle-draggable-id="5"
+                              data-rbd-draggable-context-id="3"
+                              data-rbd-draggable-id="5"
+                              draggable="false"
                               role="button"
                               tabindex="0"
-                            >
-                              <div
-                                aria-describedby="rbd-hidden-text-3-hidden-text-24"
-                                data-rbd-drag-handle-context-id="3"
-                                data-rbd-drag-handle-draggable-id="5"
-                                data-rbd-draggable-context-id="3"
-                                data-rbd-draggable-id="5"
-                                draggable="false"
-                                role="button"
-                                tabindex="0"
-                              />
-                              <svg
-                                aria-hidden="true"
-                                class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
-                                focusable="false"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                />
-                              </svg>
-                            </span>
+                            />
                           </th>
                         </tr>
                       </thead>
@@ -1681,11 +1664,11 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                              class="MuiButtonBase-root MuiTableSortLabel-root MuiTableSortLabel-active"
                               role="button"
                               tabindex="0"
                             >
@@ -1699,7 +1682,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                                 role="button"
                                 tabindex="0"
                               >
-                                Title
+                                Name
                               </div>
                               <svg
                                 aria-hidden="true"
@@ -1716,7 +1699,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1751,7 +1734,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1786,7 +1769,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1821,7 +1804,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -1856,35 +1839,18 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
-                            <span
-                              aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                            <div
+                              aria-describedby="rbd-hidden-text-4-hidden-text-32"
+                              data-rbd-drag-handle-context-id="4"
+                              data-rbd-drag-handle-draggable-id="5"
+                              data-rbd-draggable-context-id="4"
+                              data-rbd-draggable-id="5"
+                              draggable="false"
                               role="button"
                               tabindex="0"
-                            >
-                              <div
-                                aria-describedby="rbd-hidden-text-4-hidden-text-32"
-                                data-rbd-drag-handle-context-id="4"
-                                data-rbd-drag-handle-draggable-id="5"
-                                data-rbd-draggable-context-id="4"
-                                data-rbd-draggable-id="5"
-                                draggable="false"
-                                role="button"
-                                tabindex="0"
-                              />
-                              <svg
-                                aria-hidden="true"
-                                class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
-                                focusable="false"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                />
-                              </svg>
-                            </span>
+                            />
                           </th>
                         </tr>
                       </thead>
@@ -1902,7 +1868,12 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="Project 0"
                           >
-                            Project 0
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+                              href="/catalog/default/group/project-0"
+                            >
+                              Project 0
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
@@ -1926,12 +1897,25 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                             style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
                             value="https://test.com"
                           >
-                            https://test.com
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
+                              href="https://test.com"
+                              rel="noopener"
+                              target="_blank"
+                              to="https://test.com"
+                            >
+                              https://test.com
+                              <span
+                                class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
+                              >
+                                , Opens in a new window
+                              </span>
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                             value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                           >
                             1/1/1970, 12:00:00 AM
@@ -1939,8 +1923,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                            value="[object Object]"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                           >
                             <button
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
@@ -1986,7 +1969,12 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="Project 1"
                           >
-                            Project 1
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+                              href="/catalog/default/group/project-1"
+                            >
+                              Project 1
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
@@ -2010,12 +1998,25 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                             style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
                             value="https://test.com"
                           >
-                            https://test.com
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
+                              href="https://test.com"
+                              rel="noopener"
+                              target="_blank"
+                              to="https://test.com"
+                            >
+                              https://test.com
+                              <span
+                                class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
+                              >
+                                , Opens in a new window
+                              </span>
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                             value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                           >
                             1/1/1970, 12:00:00 AM
@@ -2023,8 +2024,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                            value="[object Object]"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                           >
                             <button
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
@@ -2530,11 +2530,11 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                              class="MuiButtonBase-root MuiTableSortLabel-root MuiTableSortLabel-active"
                               role="button"
                               tabindex="0"
                             >
@@ -2548,7 +2548,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                                 role="button"
                                 tabindex="0"
                               >
-                                Title
+                                Name
                               </div>
                               <svg
                                 aria-hidden="true"
@@ -2565,7 +2565,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2600,7 +2600,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2635,7 +2635,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2670,7 +2670,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -2705,35 +2705,18 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
-                            <span
-                              aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                            <div
+                              aria-describedby="rbd-hidden-text-4-hidden-text-32"
+                              data-rbd-drag-handle-context-id="4"
+                              data-rbd-drag-handle-draggable-id="5"
+                              data-rbd-draggable-context-id="4"
+                              data-rbd-draggable-id="5"
+                              draggable="false"
                               role="button"
                               tabindex="0"
-                            >
-                              <div
-                                aria-describedby="rbd-hidden-text-4-hidden-text-32"
-                                data-rbd-drag-handle-context-id="4"
-                                data-rbd-drag-handle-draggable-id="5"
-                                data-rbd-draggable-context-id="4"
-                                data-rbd-draggable-id="5"
-                                draggable="false"
-                                role="button"
-                                tabindex="0"
-                              />
-                              <svg
-                                aria-hidden="true"
-                                class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
-                                focusable="false"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                />
-                              </svg>
-                            </span>
+                            />
                           </th>
                         </tr>
                       </thead>
@@ -2751,7 +2734,12 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="Project 0"
                           >
-                            Project 0
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+                              href="/catalog/default/group/project-0"
+                            >
+                              Project 0
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
@@ -2775,12 +2763,25 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                             style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
                             value="https://test.com"
                           >
-                            https://test.com
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
+                              href="https://test.com"
+                              rel="noopener"
+                              target="_blank"
+                              to="https://test.com"
+                            >
+                              https://test.com
+                              <span
+                                class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
+                              >
+                                , Opens in a new window
+                              </span>
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                             value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                           >
                             1/1/1970, 12:00:00 AM
@@ -2788,8 +2789,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                            value="[object Object]"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                           >
                             <button
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
@@ -3299,11 +3299,11 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                              class="MuiButtonBase-root MuiTableSortLabel-root MuiTableSortLabel-active"
                               role="button"
                               tabindex="0"
                             >
@@ -3317,7 +3317,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                                 role="button"
                                 tabindex="0"
                               >
-                                Title
+                                Name
                               </div>
                               <svg
                                 aria-hidden="true"
@@ -3334,7 +3334,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3369,7 +3369,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3404,7 +3404,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3439,7 +3439,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -3474,35 +3474,18 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page when the project
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
-                            <span
-                              aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                            <div
+                              aria-describedby="rbd-hidden-text-2-hidden-text-16"
+                              data-rbd-drag-handle-context-id="2"
+                              data-rbd-drag-handle-draggable-id="5"
+                              data-rbd-draggable-context-id="2"
+                              data-rbd-draggable-id="5"
+                              draggable="false"
                               role="button"
                               tabindex="0"
-                            >
-                              <div
-                                aria-describedby="rbd-hidden-text-2-hidden-text-16"
-                                data-rbd-drag-handle-context-id="2"
-                                data-rbd-drag-handle-draggable-id="5"
-                                data-rbd-draggable-context-id="2"
-                                data-rbd-draggable-id="5"
-                                draggable="false"
-                                role="button"
-                                tabindex="0"
-                              />
-                              <svg
-                                aria-hidden="true"
-                                class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
-                                focusable="false"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                />
-                              </svg>
-                            </span>
+                            />
                           </th>
                         </tr>
                       </thead>
@@ -3976,11 +3959,11 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                              class="MuiButtonBase-root MuiTableSortLabel-root MuiTableSortLabel-active"
                               role="button"
                               tabindex="0"
                             >
@@ -3994,7 +3977,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                                 role="button"
                                 tabindex="0"
                               >
-                                Title
+                                Name
                               </div>
                               <svg
                                 aria-hidden="true"
@@ -4011,7 +3994,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4046,7 +4029,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4081,7 +4064,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4116,7 +4099,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -4151,35 +4134,18 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
-                            <span
-                              aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                            <div
+                              aria-describedby="rbd-hidden-text-0-hidden-text-0"
+                              data-rbd-drag-handle-context-id="0"
+                              data-rbd-drag-handle-draggable-id="5"
+                              data-rbd-draggable-context-id="0"
+                              data-rbd-draggable-id="5"
+                              draggable="false"
                               role="button"
                               tabindex="0"
-                            >
-                              <div
-                                aria-describedby="rbd-hidden-text-0-hidden-text-0"
-                                data-rbd-drag-handle-context-id="0"
-                                data-rbd-drag-handle-draggable-id="5"
-                                data-rbd-draggable-context-id="0"
-                                data-rbd-draggable-id="5"
-                                draggable="false"
-                                role="button"
-                                tabindex="0"
-                              />
-                              <svg
-                                aria-hidden="true"
-                                class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
-                                focusable="false"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                />
-                              </svg>
-                            </span>
+                            />
                           </th>
                         </tr>
                       </thead>
@@ -4197,7 +4163,12 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="Project 0"
                           >
-                            Project 0
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+                              href="/catalog/default/group/project-0"
+                            >
+                              Project 0
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
@@ -4221,12 +4192,25 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
                             value="https://test.com"
                           >
-                            https://test.com
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
+                              href="https://test.com"
+                              rel="noopener"
+                              target="_blank"
+                              to="https://test.com"
+                            >
+                              https://test.com
+                              <span
+                                class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
+                              >
+                                , Opens in a new window
+                              </span>
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                             value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                           >
                             1/1/1970, 12:00:00 AM
@@ -4234,8 +4218,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                            value="[object Object]"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                           >
                             <button
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
@@ -4281,7 +4264,12 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
                             value="Project 1"
                           >
-                            Project 1
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+                              href="/catalog/default/group/project-1"
+                            >
+                              Project 1
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
@@ -4305,12 +4293,25 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
                             value="https://test.com"
                           >
-                            https://test.com
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
+                              href="https://test.com"
+                              rel="noopener"
+                              target="_blank"
+                              to="https://test.com"
+                            >
+                              https://test.com
+                              <span
+                                class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
+                              >
+                                , Opens in a new window
+                              </span>
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                             value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                           >
                             1/1/1970, 12:00:00 AM
@@ -4318,8 +4319,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                            value="[object Object]"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                           >
                             <button
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
@@ -4363,17 +4363,22 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                            value="Project 2"
+                            value="Project 10"
                           >
-                            Project 2
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+                              href="/catalog/default/group/project-10"
+                            >
+                              Project 10
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
                             style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                            value="ALB 2"
+                            value="ALB 10"
                           >
-                            ALB 2
+                            ALB 10
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
@@ -4389,12 +4394,25 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
                             value="https://test.com"
                           >
-                            https://test.com
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
+                              href="https://test.com"
+                              rel="noopener"
+                              target="_blank"
+                              to="https://test.com"
+                            >
+                              https://test.com
+                              <span
+                                class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
+                              >
+                                , Opens in a new window
+                              </span>
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                             value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                           >
                             1/1/1970, 12:00:00 AM
@@ -4402,12 +4420,11 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                            value="[object Object]"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                           >
                             <button
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                              data-testid="alb-edit-button-2"
+                              data-testid="alb-edit-button-10"
                               tabindex="0"
                               type="button"
                             >
@@ -4417,15 +4434,15 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                                 Edit
                                 {
   armsLengthBody: {
-    id: '2',
-    name: 'project-2',
-    title: 'Project 2',
+    id: '10',
+    name: 'project-10',
+    title: 'Project 10',
     created_at: 1970-01-01T00:00:00.000Z,
     creator: 'me',
     description: 'My cool arms length body',
     owner: 'not me',
     updated_at: 1970-01-01T00:00:00.000Z,
-    alias: 'ALB 2',
+    alias: 'ALB 10',
     children: [],
     updated_by: 'Me',
     url: 'https://test.com'
@@ -4447,17 +4464,22 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                            value="Project 3"
+                            value="Project 11"
                           >
-                            Project 3
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+                              href="/catalog/default/group/project-11"
+                            >
+                              Project 11
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
                             style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                            value="ALB 3"
+                            value="ALB 11"
                           >
-                            ALB 3
+                            ALB 11
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
@@ -4473,12 +4495,25 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
                             value="https://test.com"
                           >
-                            https://test.com
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
+                              href="https://test.com"
+                              rel="noopener"
+                              target="_blank"
+                              to="https://test.com"
+                            >
+                              https://test.com
+                              <span
+                                class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
+                              >
+                                , Opens in a new window
+                              </span>
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                             value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                           >
                             1/1/1970, 12:00:00 AM
@@ -4486,12 +4521,11 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                            value="[object Object]"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                           >
                             <button
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                              data-testid="alb-edit-button-3"
+                              data-testid="alb-edit-button-11"
                               tabindex="0"
                               type="button"
                             >
@@ -4501,15 +4535,15 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                                 Edit
                                 {
   armsLengthBody: {
-    id: '3',
-    name: 'project-3',
-    title: 'Project 3',
+    id: '11',
+    name: 'project-11',
+    title: 'Project 11',
     created_at: 1970-01-01T00:00:00.000Z,
     creator: 'me',
     description: 'My cool arms length body',
     owner: 'not me',
     updated_at: 1970-01-01T00:00:00.000Z,
-    alias: 'ALB 3',
+    alias: 'ALB 11',
     children: [],
     updated_by: 'Me',
     url: 'https://test.com'
@@ -4531,17 +4565,22 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
                             style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                            value="Project 4"
+                            value="Project 12"
                           >
-                            Project 4
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+                              href="/catalog/default/group/project-12"
+                            >
+                              Project 12
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
                             style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                            value="ALB 4"
+                            value="ALB 12"
                           >
-                            ALB 4
+                            ALB 12
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
@@ -4557,12 +4596,25 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
                             value="https://test.com"
                           >
-                            https://test.com
+                            <a
+                              class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
+                              href="https://test.com"
+                              rel="noopener"
+                              target="_blank"
+                              to="https://test.com"
+                            >
+                              https://test.com
+                              <span
+                                class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
+                              >
+                                , Opens in a new window
+                              </span>
+                            </a>
                           </td>
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                             value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                           >
                             1/1/1970, 12:00:00 AM
@@ -4570,12 +4622,11 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                           <td
                             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             icons="[object Object]"
-                            style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                            value="[object Object]"
+                            style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                           >
                             <button
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
-                              data-testid="alb-edit-button-4"
+                              data-testid="alb-edit-button-12"
                               tabindex="0"
                               type="button"
                             >
@@ -4585,15 +4636,15 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                                 Edit
                                 {
   armsLengthBody: {
-    id: '4',
-    name: 'project-4',
-    title: 'Project 4',
+    id: '12',
+    name: 'project-12',
+    title: 'Project 12',
     created_at: 1970-01-01T00:00:00.000Z,
     creator: 'me',
     description: 'My cool arms length body',
     owner: 'not me',
     updated_at: 1970-01-01T00:00:00.000Z,
-    alias: 'ALB 4',
+    alias: 'ALB 12',
     children: [],
     updated_by: 'Me',
     url: 'https://test.com'
@@ -5065,11 +5116,11 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; color: rgb(0, 0, 0); box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                              class="MuiButtonBase-root MuiTableSortLabel-root MuiTableSortLabel-active"
                               role="button"
                               tabindex="0"
                             >
@@ -5083,7 +5134,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                                 role="button"
                                 tabindex="0"
                               >
-                                Title
+                                Name
                               </div>
                               <svg
                                 aria-hidden="true"
@@ -5100,7 +5151,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5135,7 +5186,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5170,7 +5221,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5205,7 +5256,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
                             <span
                               aria-disabled="false"
@@ -5240,35 +5291,18 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with no projects
                           <th
                             class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                             scope="col"
-                            style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                            style="white-space: nowrap; box-sizing: border-box;"
                           >
-                            <span
-                              aria-disabled="false"
-                              class="MuiButtonBase-root MuiTableSortLabel-root"
+                            <div
+                              aria-describedby="rbd-hidden-text-1-hidden-text-8"
+                              data-rbd-drag-handle-context-id="1"
+                              data-rbd-drag-handle-draggable-id="5"
+                              data-rbd-draggable-context-id="1"
+                              data-rbd-draggable-id="5"
+                              draggable="false"
                               role="button"
                               tabindex="0"
-                            >
-                              <div
-                                aria-describedby="rbd-hidden-text-1-hidden-text-8"
-                                data-rbd-drag-handle-context-id="1"
-                                data-rbd-drag-handle-draggable-id="5"
-                                data-rbd-draggable-context-id="1"
-                                data-rbd-draggable-id="5"
-                                draggable="false"
-                                role="button"
-                                tabindex="0"
-                              />
-                              <svg
-                                aria-hidden="true"
-                                class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
-                                focusable="false"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                />
-                              </svg>
-                            </span>
+                            />
                           </th>
                         </tr>
                       </thead>

@@ -3,7 +3,7 @@ import type { TableProps } from '@backstage/core-components';
 import { Table } from '@backstage/core-components';
 
 export type DefaultTableProps<T extends object> = Readonly<
-  Omit<TableProps<T>, 'options'> & {
+  TableProps<T> & {
     isCompact?: boolean;
   }
 >;
@@ -14,7 +14,11 @@ export function DefaultTable<T extends object>({
 }: DefaultTableProps<T>) {
   return (
     <Table
-      options={{ paging: true, padding: isCompact ? 'dense' : 'default' }}
+      options={{
+        paging: true,
+        padding: isCompact ? 'dense' : 'default',
+        ...props.options,
+      }}
       {...props}
     />
   );

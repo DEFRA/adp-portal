@@ -178,11 +178,11 @@ exports[`DeliveryProjectUserViewPage should render the page when Delivery Progra
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="white-space: nowrap; color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
-                                  class="MuiButtonBase-root MuiTableSortLabel-root"
+                                  class="MuiButtonBase-root MuiTableSortLabel-root MuiTableSortLabel-active"
                                   role="button"
                                   tabindex="0"
                                 >
@@ -213,7 +213,7 @@ exports[`DeliveryProjectUserViewPage should render the page when Delivery Progra
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -248,25 +248,42 @@ exports[`DeliveryProjectUserViewPage should render the page when Delivery Progra
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
-                                <div
-                                  aria-describedby="rbd-hidden-text-2-hidden-text-16"
-                                  data-rbd-drag-handle-context-id="2"
-                                  data-rbd-drag-handle-draggable-id="2"
-                                  data-rbd-draggable-context-id="2"
-                                  data-rbd-draggable-id="2"
-                                  draggable="false"
+                                <span
+                                  aria-disabled="false"
+                                  class="MuiButtonBase-root MuiTableSortLabel-root"
                                   role="button"
                                   tabindex="0"
                                 >
-                                  Role
-                                </div>
+                                  <div
+                                    aria-describedby="rbd-hidden-text-2-hidden-text-16"
+                                    data-rbd-drag-handle-context-id="2"
+                                    data-rbd-drag-handle-draggable-id="2"
+                                    data-rbd-draggable-context-id="2"
+                                    data-rbd-draggable-id="2"
+                                    draggable="false"
+                                    role="button"
+                                    tabindex="0"
+                                  >
+                                    Role
+                                  </div>
+                                  <svg
+                                    aria-hidden="true"
+                                    class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                    focusable="false"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                    />
+                                  </svg>
+                                </span>
                               </th>
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -301,7 +318,7 @@ exports[`DeliveryProjectUserViewPage should render the page when Delivery Progra
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -336,7 +353,7 @@ exports[`DeliveryProjectUserViewPage should render the page when Delivery Progra
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-2-hidden-text-16"
@@ -766,11 +783,11 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="white-space: nowrap; color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
-                                  class="MuiButtonBase-root MuiTableSortLabel-root"
+                                  class="MuiButtonBase-root MuiTableSortLabel-root MuiTableSortLabel-active"
                                   role="button"
                                   tabindex="0"
                                 >
@@ -801,7 +818,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -836,25 +853,42 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
-                                <div
-                                  aria-describedby="rbd-hidden-text-0-hidden-text-0"
-                                  data-rbd-drag-handle-context-id="0"
-                                  data-rbd-drag-handle-draggable-id="2"
-                                  data-rbd-draggable-context-id="0"
-                                  data-rbd-draggable-id="2"
-                                  draggable="false"
+                                <span
+                                  aria-disabled="false"
+                                  class="MuiButtonBase-root MuiTableSortLabel-root"
                                   role="button"
                                   tabindex="0"
                                 >
-                                  Role
-                                </div>
+                                  <div
+                                    aria-describedby="rbd-hidden-text-0-hidden-text-0"
+                                    data-rbd-drag-handle-context-id="0"
+                                    data-rbd-drag-handle-draggable-id="2"
+                                    data-rbd-draggable-context-id="0"
+                                    data-rbd-draggable-id="2"
+                                    draggable="false"
+                                    role="button"
+                                    tabindex="0"
+                                  >
+                                    Role
+                                  </div>
+                                  <svg
+                                    aria-hidden="true"
+                                    class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                    focusable="false"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                    />
+                                  </svg>
+                                </span>
                               </th>
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -889,7 +923,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -924,7 +958,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-0-hidden-text-0"
@@ -951,7 +985,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                                value="[object Object]"
+                                value="Delivery Project User 0"
                               >
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
@@ -964,7 +998,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                                value="[object Object]"
+                                value="test-0@test.com"
                               >
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
@@ -991,12 +1025,11 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                                value="[object Object]"
                               />
                               <td
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
-                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                                 value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                               >
                                 1/1/1970, 12:00:00 AM
@@ -1004,8 +1037,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               <td
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
-                                style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                                value="[object Object]"
+                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
@@ -1027,7 +1059,8 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
     updated_at: 1970-01-01T00:00:00.000Z,
     is_admin: false,
     is_technical: true,
-    github_username: undefined
+    github_username: undefined,
+    role: 'Technical Team Member'
   }
 }
                                   </span>
@@ -1056,7 +1089,8 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
     updated_at: 1970-01-01T00:00:00.000Z,
     is_admin: false,
     is_technical: true,
-    github_username: undefined
+    github_username: undefined,
+    role: 'Technical Team Member'
   }
 }
                                   </span>
@@ -1075,7 +1109,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                                value="[object Object]"
+                                value="Delivery Project User 1"
                               >
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
@@ -1088,7 +1122,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                                value="[object Object]"
+                                value="test-1@test.com"
                               >
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
@@ -1115,12 +1149,11 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                                value="[object Object]"
                               />
                               <td
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
-                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                                 value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                               >
                                 1/1/1970, 12:00:00 AM
@@ -1128,8 +1161,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               <td
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
-                                style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                                value="[object Object]"
+                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
@@ -1151,7 +1183,8 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
     updated_at: 1970-01-01T00:00:00.000Z,
     is_admin: false,
     is_technical: true,
-    github_username: undefined
+    github_username: undefined,
+    role: 'Technical Team Member'
   }
 }
                                   </span>
@@ -1180,7 +1213,8 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
     updated_at: 1970-01-01T00:00:00.000Z,
     is_admin: false,
     is_technical: true,
-    github_username: undefined
+    github_username: undefined,
+    role: 'Technical Team Member'
   }
 }
                                   </span>
@@ -1199,7 +1233,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                                value="[object Object]"
+                                value="Delivery Project User 2"
                               >
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
@@ -1212,7 +1246,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                                value="[object Object]"
+                                value="test-2@test.com"
                               >
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
@@ -1239,12 +1273,11 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                                value="[object Object]"
                               />
                               <td
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
-                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                                 value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                               >
                                 1/1/1970, 12:00:00 AM
@@ -1252,8 +1285,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               <td
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
-                                style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                                value="[object Object]"
+                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
@@ -1275,7 +1307,8 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
     updated_at: 1970-01-01T00:00:00.000Z,
     is_admin: false,
     is_technical: true,
-    github_username: undefined
+    github_username: undefined,
+    role: 'Technical Team Member'
   }
 }
                                   </span>
@@ -1304,7 +1337,8 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
     updated_at: 1970-01-01T00:00:00.000Z,
     is_admin: false,
     is_technical: true,
-    github_username: undefined
+    github_username: undefined,
+    role: 'Technical Team Member'
   }
 }
                                   </span>
@@ -1323,7 +1357,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                                value="[object Object]"
+                                value="Delivery Project User 3"
                               >
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
@@ -1336,7 +1370,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                                value="[object Object]"
+                                value="test-3@test.com"
                               >
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
@@ -1363,12 +1397,11 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                                value="[object Object]"
                               />
                               <td
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
-                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                                 value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                               >
                                 1/1/1970, 12:00:00 AM
@@ -1376,8 +1409,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               <td
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
-                                style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                                value="[object Object]"
+                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
@@ -1399,7 +1431,8 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
     updated_at: 1970-01-01T00:00:00.000Z,
     is_admin: false,
     is_technical: true,
-    github_username: undefined
+    github_username: undefined,
+    role: 'Technical Team Member'
   }
 }
                                   </span>
@@ -1428,7 +1461,8 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
     updated_at: 1970-01-01T00:00:00.000Z,
     is_admin: false,
     is_technical: true,
-    github_username: undefined
+    github_username: undefined,
+    role: 'Technical Team Member'
   }
 }
                                   </span>
@@ -1447,7 +1481,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                                value="[object Object]"
+                                value="Delivery Project User 4"
                               >
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
@@ -1460,7 +1494,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                                value="[object Object]"
+                                value="test-4@test.com"
                               >
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
@@ -1487,12 +1521,11 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
                                 style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
-                                value="[object Object]"
                               />
                               <td
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
-                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit;"
+                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                                 value="Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
                               >
                                 1/1/1970, 12:00:00 AM
@@ -1500,8 +1533,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                               <td
                                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 icons="[object Object]"
-                                style="box-sizing: border-box; font-family: inherit; font-weight: 700;"
-                                value="[object Object]"
+                                style="box-sizing: border-box; font-family: inherit; font-weight: inherit; white-space: nowrap;"
                               >
                                 <button
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
@@ -1523,7 +1555,8 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
     updated_at: 1970-01-01T00:00:00.000Z,
     is_admin: false,
     is_technical: true,
-    github_username: undefined
+    github_username: undefined,
+    role: 'Technical Team Member'
   }
 }
                                   </span>
@@ -1552,7 +1585,8 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
     updated_at: 1970-01-01T00:00:00.000Z,
     is_admin: false,
     is_technical: true,
-    github_username: undefined
+    github_username: undefined,
+    role: 'Technical Team Member'
   }
 }
                                   </span>
@@ -1962,11 +1996,11 @@ exports[`DeliveryProjectUserViewPage should render the page with no Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="white-space: nowrap; color: rgb(0, 0, 0); box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
-                                  class="MuiButtonBase-root MuiTableSortLabel-root"
+                                  class="MuiButtonBase-root MuiTableSortLabel-root MuiTableSortLabel-active"
                                   role="button"
                                   tabindex="0"
                                 >
@@ -1997,7 +2031,7 @@ exports[`DeliveryProjectUserViewPage should render the page with no Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -2032,25 +2066,42 @@ exports[`DeliveryProjectUserViewPage should render the page with no Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
-                                <div
-                                  aria-describedby="rbd-hidden-text-1-hidden-text-8"
-                                  data-rbd-drag-handle-context-id="1"
-                                  data-rbd-drag-handle-draggable-id="2"
-                                  data-rbd-draggable-context-id="1"
-                                  data-rbd-draggable-id="2"
-                                  draggable="false"
+                                <span
+                                  aria-disabled="false"
+                                  class="MuiButtonBase-root MuiTableSortLabel-root"
                                   role="button"
                                   tabindex="0"
                                 >
-                                  Role
-                                </div>
+                                  <div
+                                    aria-describedby="rbd-hidden-text-1-hidden-text-8"
+                                    data-rbd-drag-handle-context-id="1"
+                                    data-rbd-drag-handle-draggable-id="2"
+                                    data-rbd-draggable-context-id="1"
+                                    data-rbd-draggable-id="2"
+                                    draggable="false"
+                                    role="button"
+                                    tabindex="0"
+                                  >
+                                    Role
+                                  </div>
+                                  <svg
+                                    aria-hidden="true"
+                                    class="MuiSvgIcon-root MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc"
+                                    focusable="false"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                    />
+                                  </svg>
+                                </span>
                               </th>
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -2085,7 +2136,7 @@ exports[`DeliveryProjectUserViewPage should render the page with no Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
                                 <span
                                   aria-disabled="false"
@@ -2120,7 +2171,7 @@ exports[`DeliveryProjectUserViewPage should render the page with no Delivery Pro
                               <th
                                 class="MuiTableCell-root MuiTableCell-head ForwardRef(MTableHeaderRef)-header BackstageTableHeader-header MuiTableCell-alignLeft MuiTableCell-sizeSmall"
                                 scope="col"
-                                style="color: rgb(0, 0, 0); box-sizing: border-box;"
+                                style="white-space: nowrap; box-sizing: border-box;"
                               >
                                 <div
                                   aria-describedby="rbd-hidden-text-1-hidden-text-8"

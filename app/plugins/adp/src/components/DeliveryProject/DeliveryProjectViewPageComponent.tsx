@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { Typography } from '@material-ui/core';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import AddBoxIcon from '@material-ui/icons/AddBox';
@@ -26,10 +25,6 @@ import {
   useErrorCallback,
 } from '../../hooks';
 
-type DeliveryProjectWithActions = DeliveryProject & {
-  actions: ReactNode;
-};
-
 export const DeliveryProjectViewPageComponent = () => {
   const client = useApi(deliveryProjectApiRef);
   const entityRoute = useEntityRoute();
@@ -39,79 +34,72 @@ export const DeliveryProjectViewPageComponent = () => {
       name: 'Error while getting the list of delivery projects.',
     }),
   );
-  const tableData = useMemo(
-    () =>
-      data?.map<DeliveryProjectWithActions>(d => {
-        const target = entityRoute(d.name, 'group', 'default');
-        return {
-          ...d,
-          titleLink: <Link to={target}>{deliveryProjectDisplayName(d)}</Link>,
-          actions: (
-            <>
-              <LinkButton
-                to={`${target}/manage-delivery-project-users`}
-                variant="outlined"
-                color="default"
-                title="View Delivery Project team members"
-              >
-                <AccountBoxIcon />
-              </LinkButton>
-              &nbsp;
-              <EditDeliveryProjectButton
-                variant="contained"
-                color="default"
-                deliveryProject={d}
-                data-testid={`delivery-project-edit-button-${d.id}`}
-                onEdited={refresh}
-              >
-                Edit
-              </EditDeliveryProjectButton>
-            </>
-          ),
-        };
-      }),
-    [data, refresh, entityRoute],
-  );
 
-  const columns: TableColumn<DeliveryProjectWithActions>[] = [
+  const columns: TableColumn<DeliveryProject>[] = [
     {
-      title: 'Title',
+      title: 'Name',
+      field: 'title',
+      defaultSort: 'asc',
       highlight: true,
-      field: 'titleLink',
+      render(d) {
+        return (
+          <Link to={entityRoute(d.name, 'group')}>
+            {deliveryProjectDisplayName(d)}
+          </Link>
+        );
+      },
     },
     {
       title: 'Alias',
       field: 'alias',
-      highlight: false,
-      type: 'string',
     },
-
     {
       title: 'Delivery Programme',
       field: 'delivery_programme_name',
-      highlight: false,
-      type: 'string',
     },
-
     {
       title: 'Description',
       field: 'description',
-      highlight: false,
-      type: 'string',
     },
-
     {
       title: 'Updated At',
       field: 'updated_at',
-      highlight: false,
       type: 'datetime',
+      cellStyle: { whiteSpace: 'nowrap' },
     },
-
     {
-      highlight: true,
-      field: 'actions',
+      sorting: false,
+      cellStyle: { whiteSpace: 'nowrap' },
+      render(d) {
+        return (
+          <>
+            <LinkButton
+              to={`${entityRoute(d.name, 'group')}/manage-delivery-project-users`}
+              variant="outlined"
+              color="default"
+              title="View Delivery Project team members"
+            >
+              <AccountBoxIcon />
+            </LinkButton>
+            &nbsp;
+            <EditDeliveryProjectButton
+              variant="contained"
+              color="default"
+              deliveryProject={d}
+              data-testid={`delivery-project-edit-button-${d.id}`}
+              onEdited={refresh}
+            >
+              Edit
+            </EditDeliveryProjectButton>
+          </>
+        );
+      },
     },
   ];
+  columns.forEach(c => {
+    c.width ??= '';
+    c.headerStyle = { whiteSpace: 'nowrap' };
+  });
 
   return (
     <Page themeId="tool">
@@ -141,7 +129,7 @@ export const DeliveryProjectViewPageComponent = () => {
         </Typography>
 
         <DefaultTable
-          data={tableData ?? []}
+          data={data ?? []}
           columns={columns}
           title="View all"
           isCompact

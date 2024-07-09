@@ -134,7 +134,10 @@ describe('DeliveryProgrammeAdminViewPage', () => {
       }) => (
         <Button {...props} onClick={onRemoved}>
           {children}
-          {inspect({ deliveryProgrammeAdmin, entityRef })}
+          {inspect({
+            deliveryProgrammeAdmin: noTableData(deliveryProgrammeAdmin),
+            entityRef,
+          })}
         </Button>
       ),
     );
@@ -239,4 +242,10 @@ async function notLoading(rendered: RenderResult) {
       await rendered.findByTestId('loading-indicator'),
     ).not.toBeInTheDocument(),
   );
+}
+
+function noTableData(value: unknown) {
+  if (typeof value !== 'object' || value === null) return value;
+  const { tableData, ...result } = value as Record<string, unknown>;
+  return result;
 }

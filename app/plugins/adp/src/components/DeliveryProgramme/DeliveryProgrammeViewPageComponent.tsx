@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
@@ -25,11 +24,6 @@ import {
   useErrorCallback,
 } from '../../hooks';
 
-type DeliveryProgrammeWithActions = DeliveryProgramme & {
-  titleLink: ReactNode;
-  actions: ReactNode;
-};
-
 export const DeliveryProgrammeViewPageComponent = () => {
   const client = useApi(deliveryProgrammeApiRef);
   const entityRoute = useEntityRoute();
@@ -40,78 +34,69 @@ export const DeliveryProgrammeViewPageComponent = () => {
     }),
   );
 
-  const tableData = useMemo(
-    () =>
-      data?.map<DeliveryProgrammeWithActions>(d => {
-        const target = entityRoute(d.name, 'group', 'default');
-        return {
-          ...d,
-          titleLink: <Link to={target}>{d.title}</Link>,
-          actions: (
-            <>
-              <LinkButton
-                to={`${target}/manage-delivery-programme-admins`}
-                variant="outlined"
-                color="default"
-                title="View Delivery Programme Admins"
-              >
-                <AccountBoxIcon />
-              </LinkButton>
-              &nbsp;
-              <EditDeliveryProgrammeButton
-                variant="contained"
-                color="default"
-                deliveryProgramme={d}
-                data-testid={`delivery-programme-edit-button-${d.id}`}
-                onEdited={refresh}
-              >
-                Edit
-              </EditDeliveryProgrammeButton>
-            </>
-          ),
-        };
-      }),
-    [data, refresh, entityRoute],
-  );
-
-  const columns: TableColumn<DeliveryProgrammeWithActions>[] = [
+  const columns: TableColumn<DeliveryProgramme>[] = [
     {
-      title: 'Title',
-      field: 'titleLink',
+      title: 'Name',
+      field: 'title',
+      defaultSort: 'asc',
       highlight: true,
+      render(d) {
+        return <Link to={entityRoute(d.name, 'group')}>{d.title}</Link>;
+      },
     },
     {
       title: 'Alias',
       field: 'alias',
-      highlight: false,
-      type: 'string',
     },
 
     {
       title: 'Arms Length Body',
       field: 'arms_length_body_id_name',
-      highlight: false,
-      type: 'string',
     },
 
     {
       title: 'Description',
       field: 'description',
-      highlight: false,
-      type: 'string',
     },
 
     {
       title: 'Updated At',
       field: 'updated_at',
-      highlight: false,
       type: 'datetime',
+      cellStyle: { whiteSpace: 'nowrap' },
     },
     {
-      highlight: true,
-      field: 'actions',
+      sorting: false,
+      cellStyle: { whiteSpace: 'nowrap' },
+      render(d) {
+        return (
+          <>
+            <LinkButton
+              to={`${entityRoute(d.name, 'group')}/manage-delivery-programme-admins`}
+              variant="outlined"
+              color="default"
+              title="View Delivery Programme Admins"
+            >
+              <AccountBoxIcon />
+            </LinkButton>
+            <EditDeliveryProgrammeButton
+              variant="contained"
+              color="default"
+              deliveryProgramme={d}
+              data-testid={`delivery-programme-edit-button-${d.id}`}
+              onEdited={refresh}
+            >
+              Edit
+            </EditDeliveryProgrammeButton>
+          </>
+        );
+      },
     },
   ];
+  columns.forEach(c => {
+    c.width ??= '';
+    c.headerStyle = { whiteSpace: 'nowrap' };
+  });
 
   return (
     <Page themeId="tool">
@@ -141,7 +126,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
         </Typography>
 
         <DefaultTable
-          data={tableData ?? []}
+          data={data ?? []}
           columns={columns}
           title="View all"
           isCompact

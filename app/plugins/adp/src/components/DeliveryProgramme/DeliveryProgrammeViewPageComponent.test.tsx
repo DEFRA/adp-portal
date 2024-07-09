@@ -109,7 +109,9 @@ describe('DeliveryProgrammeViewPageComponent', () => {
     ).toMatchObject([[]]);
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
-    assertEditDeliveryProgrammeButtonCalls(programmes.slice(0, 5));
+    assertEditDeliveryProgrammeButtonCalls(
+      [...programmes].sort((a, b) => (a.title < b.title ? -1 : 1)).slice(0, 5),
+    );
   });
 
   it('Should render the page with no programmes correctly', async () => {

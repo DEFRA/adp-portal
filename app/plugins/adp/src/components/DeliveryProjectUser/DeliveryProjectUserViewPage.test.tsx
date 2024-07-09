@@ -145,7 +145,7 @@ describe('DeliveryProjectUserViewPage', () => {
       ({ onEdited, deliveryProjectUser, children, ...props }) => (
         <Button {...props} onClick={onEdited}>
           {children}
-          {inspect({ deliveryProjectUser })}
+          {inspect({ deliveryProjectUser: noTableData(deliveryProjectUser) })}
         </Button>
       ),
     );
@@ -154,7 +154,7 @@ describe('DeliveryProjectUserViewPage', () => {
       ({ onRemoved, deliveryProjectUser, children, ...props }) => (
         <Button {...props} onClick={onRemoved}>
           {children}
-          {inspect({ deliveryProjectUser })}
+          {inspect({ deliveryProjectUser: noTableData(deliveryProjectUser) })}
         </Button>
       ),
     );
@@ -221,3 +221,9 @@ describe('DeliveryProjectUserViewPage', () => {
     ]);
   });
 });
+
+function noTableData(value: unknown) {
+  if (typeof value !== 'object' || value === null) return value;
+  const { tableData, ...result } = value as Record<string, unknown>;
+  return result;
+}

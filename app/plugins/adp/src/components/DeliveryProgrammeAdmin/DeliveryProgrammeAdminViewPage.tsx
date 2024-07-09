@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import type { TableColumn } from '@backstage/core-components';
 import { Content, ContentHeader, Link, Page } from '@backstage/core-components';
 import {
@@ -20,13 +19,6 @@ import { AddProgrammeAdminButton } from './AddProgrammeAdminButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { stringifyEntityRef } from '@backstage/catalog-model';
 import { RemoveDeliveryProgrammeAdminButton } from './RemoveDeliveryProgrammeAdminButton';
-
-type DeliveryProgrammeAdminWithActions = DeliveryProgrammeAdmin & {
-  actions: ReactNode;
-  nameLink: ReactNode;
-  emailLink: ReactNode;
-  role: string;
-};
 
 export const DeliveryProgrammeAdminViewPage = () => {
   const { entity } = useEntity();
@@ -51,63 +43,57 @@ export const DeliveryProgrammeAdminViewPage = () => {
     }),
   });
 
-  const tableData = useMemo(
-    () =>
-      data?.map<DeliveryProgrammeAdminWithActions>(d => {
-        const username = normalizeUsername(d.email);
-        const target = entityRoute(username, 'user', 'default');
-        return {
-          ...d,
-          emailLink: <Link to={`mailto:${d.email}`}> {d.email}</Link>,
-          nameLink: <Link to={target}>{d.name}</Link>,
-          role: 'Delivery Programme Admin',
-          actions: (
-            <RemoveDeliveryProgrammeAdminButton
-              variant="contained"
-              color="secondary"
-              data-testid={`delivery-programme-admin-remove-button-${d.id}`}
-              deliveryProgrammeAdmin={d}
-              entityRef={stringifyEntityRef(entity)}
-              onRemoved={refresh}
-            >
-              Remove
-            </RemoveDeliveryProgrammeAdminButton>
-          ),
-        };
-      }),
-    [data, entityRoute, refresh, entity],
-  );
-
-  const columns: TableColumn<DeliveryProgrammeAdminWithActions>[] = [
+  const columns: TableColumn<DeliveryProgrammeAdmin>[] = [
     {
       title: 'Name',
-      field: 'nameLink',
+      field: 'name',
+      defaultSort: 'asc',
       highlight: true,
+      render(d) {
+        const username = normalizeUsername(d.email);
+        return <Link to={entityRoute(username, 'user')}>{d.name}</Link>;
+      },
     },
     {
       title: 'Contact',
-      field: 'emailLink',
-      highlight: false,
+      field: 'email',
+      render(d) {
+        return <Link to={`mailto:${d.email}`}> {d.email}</Link>;
+      },
     },
     {
       title: 'role',
-      field: 'role',
-      highlight: false,
-      type: 'string',
-      sorting: false,
+      emptyValue: 'Delivery Programme Admin',
     },
     {
       title: 'Updated At',
       field: 'updated_at',
-      highlight: false,
       type: 'datetime',
+      cellStyle: { whiteSpace: 'nowrap' },
     },
     {
-      highlight: true,
-      field: 'actions',
       sorting: false,
+      cellStyle: { whiteSpace: 'nowrap' },
+      render(d) {
+        return (
+          <RemoveDeliveryProgrammeAdminButton
+            variant="contained"
+            color="secondary"
+            data-testid={`delivery-programme-admin-remove-button-${d.id}`}
+            deliveryProgrammeAdmin={d}
+            entityRef={stringifyEntityRef(entity)}
+            onRemoved={refresh}
+          >
+            Remove
+          </RemoveDeliveryProgrammeAdminButton>
+        );
+      },
     },
   ];
+  columns.forEach(c => {
+    c.width ??= '';
+    c.headerStyle = { whiteSpace: 'nowrap' };
+  });
 
   return (
     <Page themeId="tool">
@@ -129,7 +115,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
         <Grid item>
           <div>
             <DefaultTable
-              data={tableData ?? []}
+              data={data ?? []}
               columns={columns}
               title="View all"
               isCompact

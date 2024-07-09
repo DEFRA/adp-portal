@@ -1,9 +1,5 @@
-import type { ReactNode } from 'react';
 import React, { useCallback, useMemo } from 'react';
-import {
-  normalizeUsername,
-  type DeliveryProjectUser,
-} from '@internal/plugin-adp-common';
+import { normalizeUsername } from '@internal/plugin-adp-common';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import {
   useAsyncDataSource,
@@ -21,14 +17,6 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import { EditDeliveryProjectUserButton } from './EditDeliveryProjectUserButton';
 import { stringifyEntityRef } from '@backstage/catalog-model';
 import { RemoveDeliveryProjectUserButton } from './RemoveDeliveryProjectUserButton';
-
-type DeliveryProjectUserWithActions = DeliveryProjectUser & {
-  actions: ReactNode;
-  nameLink: ReactNode;
-  emailLink: ReactNode;
-  role: string;
-  githubHandle?: ReactNode;
-};
 
 export const DeliveryProjectUserViewPage = () => {
   const { entity } = useEntity();
@@ -53,89 +41,89 @@ export const DeliveryProjectUserViewPage = () => {
 
   const tableData = useMemo(
     () =>
-      data?.map<DeliveryProjectUserWithActions>(d => {
-        const username = normalizeUsername(d.email);
-        const target = entityRoute(username, 'user', 'default');
-        const githubTarget = d.github_username
-          ? `https://github.com/${d.github_username}`
-          : '';
-        const roles = [];
-        if (d.is_admin) roles.push('Admin');
-        if (d.is_technical) roles.push('Technical Team Member');
-        if (!d.is_admin && !d.is_technical) roles.push('Team Member');
-        return {
-          ...d,
-          emailLink: <Link to={`mailto:${d.email}`}>{d.email}</Link>,
-          nameLink: <Link to={target}>{d.name}</Link>,
-          role: roles.join(', '),
-          githubHandle: d.github_username ? (
-            <Link to={githubTarget}>{d.github_username}</Link>
-          ) : (
-            <></>
-          ),
-          actions: (
-            <>
-              <RemoveDeliveryProjectUserButton
-                variant="contained"
-                color="secondary"
-                data-testid={`delivery-project-user-remove-button-${d.id}`}
-                deliveryProjectUser={d}
-                onRemoved={refresh}
-              >
-                Remove
-              </RemoveDeliveryProjectUserButton>
-              &nbsp;
-              <EditDeliveryProjectUserButton
-                variant="contained"
-                color="default"
-                deliveryProjectUser={d}
-                data-testid={`delivery-project-user-edit-button-${d.id}`}
-                onEdited={refresh}
-              >
-                Edit
-              </EditDeliveryProjectUserButton>
-            </>
-          ),
-        };
-      }),
-    [data, entityRoute, refresh],
+      data?.map(d => ({
+        ...d,
+        role:
+          [d.is_admin && 'Admin', d.is_technical && 'Technical Team Member']
+            .filter(Boolean)
+            .join(', ') || 'Team Member',
+      })) ?? [],
+    [data],
   );
 
-  const columns: TableColumn<DeliveryProjectUserWithActions>[] = [
+  const columns: TableColumn<(typeof tableData)[number]>[] = [
     {
       title: 'Name',
-      field: 'nameLink',
+      field: 'name',
+      defaultSort: 'asc',
       highlight: true,
+      render(d) {
+        const username = normalizeUsername(d.email);
+        return <Link to={entityRoute(username, 'user')}>{d.name}</Link>;
+      },
     },
     {
       title: 'Contact',
-      field: 'emailLink',
-      highlight: false,
+      field: 'email',
+      render(d) {
+        return <Link to={`mailto:${d.email}`}>{d.email}</Link>;
+      },
     },
     {
       title: 'Role',
       field: 'role',
-      highlight: false,
-      type: 'string',
-      sorting: false,
     },
     {
       title: 'GitHub Handle',
-      field: 'githubHandle',
-      highlight: false,
+      field: 'github_username',
+      render(d) {
+        return d.github_username ? (
+          <Link to={`https://github.com/${d.github_username}`}>
+            {d.github_username}
+          </Link>
+        ) : null;
+      },
     },
     {
       title: 'Updated At',
       field: 'updated_at',
-      highlight: false,
       type: 'datetime',
+      cellStyle: { whiteSpace: 'nowrap' },
     },
     {
-      highlight: true,
-      field: 'actions',
       sorting: false,
+      cellStyle: { whiteSpace: 'nowrap' },
+      render(d) {
+        return (
+          <>
+            <RemoveDeliveryProjectUserButton
+              variant="contained"
+              color="secondary"
+              data-testid={`delivery-project-user-remove-button-${d.id}`}
+              deliveryProjectUser={d}
+              onRemoved={refresh}
+            >
+              Remove
+            </RemoveDeliveryProjectUserButton>
+            &nbsp;
+            <EditDeliveryProjectUserButton
+              variant="contained"
+              color="default"
+              deliveryProjectUser={d}
+              data-testid={`delivery-project-user-edit-button-${d.id}`}
+              onEdited={refresh}
+            >
+              Edit
+            </EditDeliveryProjectUserButton>
+          </>
+        );
+      },
     },
   ];
+  columns.forEach(c => {
+    c.width ??= '';
+    c.headerStyle = { whiteSpace: 'nowrap' };
+  });
 
   return (
     <Page themeId="tool">
@@ -156,7 +144,7 @@ export const DeliveryProjectUserViewPage = () => {
         <Grid item>
           <div>
             <DefaultTable
-              data={tableData ?? []}
+              data={tableData}
               columns={columns}
               title="View all"
               isCompact

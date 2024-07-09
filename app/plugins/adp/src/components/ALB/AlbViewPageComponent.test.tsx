@@ -13,6 +13,7 @@ import type * as EditAlbButtonModule from './EditAlbButton';
 import type * as CreateAlbButtonModule from './CreateAlbButton';
 import { SnapshotFriendlyStylesProvider } from '../../utils';
 import { inspect } from 'node:util';
+import { entityRouteRef } from '@backstage/plugin-catalog-react';
 
 const EditAlbButton: jest.MockedFn<
   (typeof EditAlbButtonModule)['EditAlbButton']
@@ -70,6 +71,11 @@ describe('ArmsLengthBodyViewPageComponent', () => {
               <AlbViewPageComponent />
             </SnapshotFriendlyStylesProvider>
           </TestApiProvider>,
+          {
+            mountedRoutes: {
+              '/catalog/:namespace/:kind/:name/*': entityRouteRef,
+            },
+          },
         );
 
         await waitFor(() => {
@@ -86,9 +92,9 @@ describe('ArmsLengthBodyViewPageComponent', () => {
   it('Should render the page with many projects correctly', async () => {
     // arrange
     const { render, mockArmsLengthBodyApi, mockErrorApi } = setup();
-    const projects = createArmsLengthBodys(17);
+    const albs = createArmsLengthBodys(17);
 
-    mockArmsLengthBodyApi.getArmsLengthBodies.mockResolvedValueOnce(projects);
+    mockArmsLengthBodyApi.getArmsLengthBodies.mockResolvedValueOnce(albs);
 
     // act
     const rendered = await render();
@@ -100,7 +106,9 @@ describe('ArmsLengthBodyViewPageComponent', () => {
     ]);
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
-    assertEditArmsLengthBodyButtonCalls(projects.slice(0, 5));
+    assertEditArmsLengthBodyButtonCalls(
+      [...albs].sort((a, b) => (a.title < b.title ? -1 : 1)).slice(0, 5),
+    );
   });
 
   it('Should render the page with no projects correctly', async () => {
@@ -151,10 +159,10 @@ describe('ArmsLengthBodyViewPageComponent', () => {
   it('Should refresh when a project is created', async () => {
     // arrange
     const { render, mockArmsLengthBodyApi, mockErrorApi } = setup();
-    const projects = createArmsLengthBodys(1);
+    const albs = createArmsLengthBodys(1);
     mockArmsLengthBodyApi.getArmsLengthBodies
       .mockResolvedValueOnce([])
-      .mockResolvedValueOnce(projects);
+      .mockResolvedValueOnce(albs);
 
     // act
     const rendered = await render();
@@ -179,16 +187,16 @@ describe('ArmsLengthBodyViewPageComponent', () => {
     expect(rendered.baseElement).toMatchSnapshot('after create');
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
-    assertEditArmsLengthBodyButtonCalls(projects);
+    assertEditArmsLengthBodyButtonCalls(albs);
   });
 
   it('Should refresh when a project is edited', async () => {
     // arrange
     const { render, mockArmsLengthBodyApi, mockErrorApi } = setup();
-    const projects = createArmsLengthBodys(2);
+    const albs = createArmsLengthBodys(2);
     mockArmsLengthBodyApi.getArmsLengthBodies
-      .mockResolvedValueOnce(projects.slice(0, 1))
-      .mockResolvedValueOnce(projects);
+      .mockResolvedValueOnce(albs.slice(0, 1))
+      .mockResolvedValueOnce(albs);
 
     // act
     const rendered = await render();
@@ -199,7 +207,7 @@ describe('ArmsLengthBodyViewPageComponent', () => {
     ]);
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
-    assertEditArmsLengthBodyButtonCalls(projects.slice(0, 1));
+    assertEditArmsLengthBodyButtonCalls(albs.slice(0, 1));
 
     React.act(() => rendered.getByTestId('alb-edit-button-0').click());
 
@@ -213,7 +221,7 @@ describe('ArmsLengthBodyViewPageComponent', () => {
     expect(rendered.baseElement).toMatchSnapshot('after edit');
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
-    assertEditArmsLengthBodyButtonCalls([projects[0], ...projects]);
+    assertEditArmsLengthBodyButtonCalls([albs[0], ...albs]);
   });
 });
 

@@ -106,7 +106,9 @@ describe('DeliveryProjectViewPageComponent', () => {
     );
     expect(mockErrorApi.post.mock.calls).toMatchObject([]);
     expect(mockErrorApi.error$.mock.calls).toMatchObject([]);
-    assertEditDeliveryProjectButtonCalls(projects.slice(0, 5));
+    assertEditDeliveryProjectButtonCalls(
+      [...projects].sort((a, b) => (a.title < b.title ? -1 : 1)).slice(0, 5),
+    );
   });
 
   it('Should render the page with no projects correctly', async () => {
@@ -270,16 +272,18 @@ function assertEditDeliveryProjectButtonCalls(projects: DeliveryProject[]) {
       ])
       .slice(-projects.length),
   ).toMatchObject(
-    projects.map(p => [
-      {
-        children: 'Edit',
-        color: 'default',
-        'data-testid': `delivery-project-edit-button-${p.id}`,
-        variant: 'contained',
-        deliveryProject: p,
-      },
-      {},
-    ]),
+    [...projects]
+      .sort((a, b) => (a.title < b.title ? -1 : 1))
+      .map(p => [
+        {
+          children: 'Edit',
+          color: 'default',
+          'data-testid': `delivery-project-edit-button-${p.id}`,
+          variant: 'contained',
+          deliveryProject: p,
+        },
+        {},
+      ]),
   );
 }
 
