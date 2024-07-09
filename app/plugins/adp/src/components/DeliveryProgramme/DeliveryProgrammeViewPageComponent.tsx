@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import AccountBoxIcon from '@mui/icons-material/ManageAccounts';
 import type { TableColumn } from '@backstage/core-components';
 import {
   Header,
@@ -41,7 +41,14 @@ export const DeliveryProgrammeViewPageComponent = () => {
       defaultSort: 'asc',
       highlight: true,
       render(d) {
-        return <Link to={entityRoute(d.name, 'group')}>{d.title}</Link>;
+        return (
+          <Link
+            to={entityRoute(d.name, 'group')}
+            title={`View ${d.title} in the catalog`}
+          >
+            {d.title}
+          </Link>
+        );
       },
     },
     {
@@ -75,7 +82,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
               to={`${entityRoute(d.name, 'group')}/manage-delivery-programme-admins`}
               variant="outlined"
               color="default"
-              title="View Delivery Programme Admins"
+              title={`Manage members for ${d.title}. This will open in a new tab`}
             >
               <AccountBoxIcon />
             </LinkButton>
@@ -85,6 +92,7 @@ export const DeliveryProgrammeViewPageComponent = () => {
               deliveryProgramme={d}
               data-testid={`delivery-programme-edit-button-${d.id}`}
               onEdited={refresh}
+              title={`Edit ${d.title}`}
             >
               Edit
             </EditDeliveryProgrammeButton>

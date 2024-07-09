@@ -59,14 +59,28 @@ export const DeliveryProjectUserViewPage = () => {
       highlight: true,
       render(d) {
         const username = normalizeUsername(d.email);
-        return <Link to={entityRoute(username, 'user')}>{d.name}</Link>;
+        return (
+          <Link
+            to={entityRoute(username, 'user')}
+            title={`View ${d.name} in the catalog`}
+          >
+            {d.name}
+          </Link>
+        );
       },
     },
     {
       title: 'Contact',
       field: 'email',
       render(d) {
-        return <Link to={`mailto:${d.email}`}>{d.email}</Link>;
+        return (
+          <Link
+            to={`mailto:${d.email}`}
+            title={`Send an email to ${d.name}. This will open in your configured email client`}
+          >
+            {d.email}
+          </Link>
+        );
       },
     },
     {
@@ -78,7 +92,10 @@ export const DeliveryProjectUserViewPage = () => {
       field: 'github_username',
       render(d) {
         return d.github_username ? (
-          <Link to={`https://github.com/${d.github_username}`}>
+          <Link
+            to={`https://github.com/${d.github_username}`}
+            title={`View ${d.github_username} on github. This will open in a new tab`}
+          >
             {d.github_username}
           </Link>
         ) : null;
@@ -102,6 +119,7 @@ export const DeliveryProjectUserViewPage = () => {
               data-testid={`delivery-project-user-remove-button-${d.id}`}
               deliveryProjectUser={d}
               onRemoved={refresh}
+              title={`Edit ${d.name}`}
             >
               Remove
             </RemoveDeliveryProjectUserButton>
@@ -112,6 +130,7 @@ export const DeliveryProjectUserViewPage = () => {
               deliveryProjectUser={d}
               data-testid={`delivery-project-user-edit-button-${d.id}`}
               onEdited={refresh}
+              title={`Remove ${d.name}`}
             >
               Edit
             </EditDeliveryProjectUserButton>

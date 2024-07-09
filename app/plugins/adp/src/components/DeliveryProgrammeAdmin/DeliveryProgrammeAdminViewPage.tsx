@@ -51,14 +51,28 @@ export const DeliveryProgrammeAdminViewPage = () => {
       highlight: true,
       render(d) {
         const username = normalizeUsername(d.email);
-        return <Link to={entityRoute(username, 'user')}>{d.name}</Link>;
+        return (
+          <Link
+            to={entityRoute(username, 'user')}
+            title={`View ${d.name} in the catalog`}
+          >
+            {d.name}
+          </Link>
+        );
       },
     },
     {
       title: 'Contact',
       field: 'email',
       render(d) {
-        return <Link to={`mailto:${d.email}`}> {d.email}</Link>;
+        return (
+          <Link
+            to={`mailto:${d.email}`}
+            title={`Send an email to ${d.name}. This will open in your configured email client`}
+          >
+            {d.email}
+          </Link>
+        );
       },
     },
     {
@@ -83,6 +97,7 @@ export const DeliveryProgrammeAdminViewPage = () => {
             deliveryProgrammeAdmin={d}
             entityRef={stringifyEntityRef(entity)}
             onRemoved={refresh}
+            title={`Remove ${d.name}`}
           >
             Remove
           </RemoveDeliveryProgrammeAdminButton>

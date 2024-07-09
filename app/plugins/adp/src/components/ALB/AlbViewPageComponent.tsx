@@ -39,7 +39,14 @@ export const AlbViewPageComponent = () => {
       defaultSort: 'asc',
       highlight: true,
       render(d) {
-        return <Link to={entityRoute(d.name, 'group')}>{d.title}</Link>;
+        return (
+          <Link
+            to={entityRoute(d.name, 'group')}
+            title={`View ${d.title} in the catalog`}
+          >
+            {d.title}
+          </Link>
+        );
       },
     },
     {
@@ -54,7 +61,14 @@ export const AlbViewPageComponent = () => {
       title: 'Website',
       field: 'url',
       render(d) {
-        return d.url ? <Link to={d.url}>{d.url}</Link> : null;
+        return d.url ? (
+          <Link
+            to={d.url}
+            title={`Visit the website for ${d.title}. This will open in a new tab`}
+          >
+            {d.url}
+          </Link>
+        ) : null;
       },
     },
     {
@@ -74,6 +88,7 @@ export const AlbViewPageComponent = () => {
             data-testid={`alb-edit-button-${d.id}`}
             armsLengthBody={d}
             onEdited={refresh}
+            title={`Edit ${d.title}`}
           >
             Edit
           </EditAlbButton>

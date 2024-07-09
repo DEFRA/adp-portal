@@ -442,6 +442,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                             <a
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                               href="/catalog/default/group/project-0"
+                              title="View Project 0 in the catalog"
                             >
                               Project 0
                             </a>
@@ -473,6 +474,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                               href="https://test.com"
                               rel="noopener"
                               target="_blank"
+                              title="Visit the website for Project 0. This will open in a new tab"
                               to="https://test.com"
                             >
                               https://test.com
@@ -500,6 +502,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is create
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                               data-testid="alb-edit-button-0"
                               tabindex="0"
+                              title="Edit Project 0"
                               type="button"
                             >
                               <span
@@ -1871,6 +1874,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                             <a
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                               href="/catalog/default/group/project-0"
+                              title="View Project 0 in the catalog"
                             >
                               Project 0
                             </a>
@@ -1902,6 +1906,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                               href="https://test.com"
                               rel="noopener"
                               target="_blank"
+                              title="Visit the website for Project 0. This will open in a new tab"
                               to="https://test.com"
                             >
                               https://test.com
@@ -1929,6 +1934,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                               data-testid="alb-edit-button-0"
                               tabindex="0"
+                              title="Edit Project 0"
                               type="button"
                             >
                               <span
@@ -1972,6 +1978,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                             <a
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                               href="/catalog/default/group/project-1"
+                              title="View Project 1 in the catalog"
                             >
                               Project 1
                             </a>
@@ -2003,6 +2010,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                               href="https://test.com"
                               rel="noopener"
                               target="_blank"
+                              title="Visit the website for Project 1. This will open in a new tab"
                               to="https://test.com"
                             >
                               https://test.com
@@ -2030,6 +2038,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                               data-testid="alb-edit-button-1"
                               tabindex="0"
+                              title="Edit Project 1"
                               type="button"
                             >
                               <span
@@ -2737,6 +2746,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                             <a
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                               href="/catalog/default/group/project-0"
+                              title="View Project 0 in the catalog"
                             >
                               Project 0
                             </a>
@@ -2768,6 +2778,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                               href="https://test.com"
                               rel="noopener"
                               target="_blank"
+                              title="Visit the website for Project 0. This will open in a new tab"
                               to="https://test.com"
                             >
                               https://test.com
@@ -2795,6 +2806,7 @@ exports[`ArmsLengthBodyViewPageComponent Should refresh when a project is edited
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                               data-testid="alb-edit-button-0"
                               tabindex="0"
+                              title="Edit Project 0"
                               type="button"
                             >
                               <span
@@ -4166,6 +4178,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             <a
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                               href="/catalog/default/group/project-0"
+                              title="View Project 0 in the catalog"
                             >
                               Project 0
                             </a>
@@ -4197,6 +4210,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                               href="https://test.com"
                               rel="noopener"
                               target="_blank"
+                              title="Visit the website for Project 0. This will open in a new tab"
                               to="https://test.com"
                             >
                               https://test.com
@@ -4224,6 +4238,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                               data-testid="alb-edit-button-0"
                               tabindex="0"
+                              title="Edit Project 0"
                               type="button"
                             >
                               <span
@@ -4267,6 +4282,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             <a
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                               href="/catalog/default/group/project-1"
+                              title="View Project 1 in the catalog"
                             >
                               Project 1
                             </a>
@@ -4298,6 +4314,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                               href="https://test.com"
                               rel="noopener"
                               target="_blank"
+                              title="Visit the website for Project 1. This will open in a new tab"
                               to="https://test.com"
                             >
                               https://test.com
@@ -4325,6 +4342,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                               data-testid="alb-edit-button-1"
                               tabindex="0"
+                              title="Edit Project 1"
                               type="button"
                             >
                               <span
@@ -4368,6 +4386,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             <a
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                               href="/catalog/default/group/project-10"
+                              title="View Project 10 in the catalog"
                             >
                               Project 10
                             </a>
@@ -4399,6 +4418,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                               href="https://test.com"
                               rel="noopener"
                               target="_blank"
+                              title="Visit the website for Project 10. This will open in a new tab"
                               to="https://test.com"
                             >
                               https://test.com
@@ -4426,6 +4446,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                               data-testid="alb-edit-button-10"
                               tabindex="0"
+                              title="Edit Project 10"
                               type="button"
                             >
                               <span
@@ -4469,6 +4490,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             <a
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                               href="/catalog/default/group/project-11"
+                              title="View Project 11 in the catalog"
                             >
                               Project 11
                             </a>
@@ -4500,6 +4522,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                               href="https://test.com"
                               rel="noopener"
                               target="_blank"
+                              title="Visit the website for Project 11. This will open in a new tab"
                               to="https://test.com"
                             >
                               https://test.com
@@ -4527,6 +4550,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                               data-testid="alb-edit-button-11"
                               tabindex="0"
+                              title="Edit Project 11"
                               type="button"
                             >
                               <span
@@ -4570,6 +4594,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                             <a
                               class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                               href="/catalog/default/group/project-12"
+                              title="View Project 12 in the catalog"
                             >
                               Project 12
                             </a>
@@ -4601,6 +4626,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                               href="https://test.com"
                               rel="noopener"
                               target="_blank"
+                              title="Visit the website for Project 12. This will open in a new tab"
                               to="https://test.com"
                             >
                               https://test.com
@@ -4628,6 +4654,7 @@ exports[`ArmsLengthBodyViewPageComponent Should render the page with many projec
                               class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                               data-testid="alb-edit-button-12"
                               tabindex="0"
+                              title="Edit Project 12"
                               type="button"
                             >
                               <span

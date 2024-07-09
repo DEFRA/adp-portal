@@ -351,6 +351,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                                   href="/catalog/default/user/test-0_test.com"
+                                  title="View Delivery Programme Admin 0 in the catalog"
                                 >
                                   Delivery Programme Admin 0
                                 </a>
@@ -364,9 +365,9 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
                                   href="mailto:test-0@test.com"
+                                  title="Send an email to Delivery Programme Admin 0. This will open in your configured email client"
                                   to="mailto:test-0@test.com"
                                 >
-                                   
                                   test-0@test.com
                                   <span
                                     class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
@@ -399,6 +400,7 @@ exports[`DeliveryProgrammeAdminViewPage should refresh when a Delivery Programme
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-programme-admin-remove-button-0"
                                   tabindex="0"
+                                  title="Remove Delivery Programme Admin 0"
                                   type="button"
                                 >
                                   <span
@@ -2158,6 +2160,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                                   href="/catalog/default/user/test-0_test.com"
+                                  title="View Delivery Programme Admin 0 in the catalog"
                                 >
                                   Delivery Programme Admin 0
                                 </a>
@@ -2171,9 +2174,9 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
                                   href="mailto:test-0@test.com"
+                                  title="Send an email to Delivery Programme Admin 0. This will open in your configured email client"
                                   to="mailto:test-0@test.com"
                                 >
-                                   
                                   test-0@test.com
                                   <span
                                     class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
@@ -2206,6 +2209,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-programme-admin-remove-button-0"
                                   tabindex="0"
+                                  title="Remove Delivery Programme Admin 0"
                                   type="button"
                                 >
                                   <span
@@ -2244,6 +2248,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                                   href="/catalog/default/user/test-1_test.com"
+                                  title="View Delivery Programme Admin 1 in the catalog"
                                 >
                                   Delivery Programme Admin 1
                                 </a>
@@ -2257,9 +2262,9 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
                                   href="mailto:test-1@test.com"
+                                  title="Send an email to Delivery Programme Admin 1. This will open in your configured email client"
                                   to="mailto:test-1@test.com"
                                 >
-                                   
                                   test-1@test.com
                                   <span
                                     class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
@@ -2292,6 +2297,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-programme-admin-remove-button-1"
                                   tabindex="0"
+                                  title="Remove Delivery Programme Admin 1"
                                   type="button"
                                 >
                                   <span
@@ -2330,6 +2336,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                                   href="/catalog/default/user/test-2_test.com"
+                                  title="View Delivery Programme Admin 2 in the catalog"
                                 >
                                   Delivery Programme Admin 2
                                 </a>
@@ -2343,9 +2350,9 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
                                   href="mailto:test-2@test.com"
+                                  title="Send an email to Delivery Programme Admin 2. This will open in your configured email client"
                                   to="mailto:test-2@test.com"
                                 >
-                                   
                                   test-2@test.com
                                   <span
                                     class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
@@ -2378,6 +2385,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-programme-admin-remove-button-2"
                                   tabindex="0"
+                                  title="Remove Delivery Programme Admin 2"
                                   type="button"
                                 >
                                   <span
@@ -2416,6 +2424,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                                   href="/catalog/default/user/test-3_test.com"
+                                  title="View Delivery Programme Admin 3 in the catalog"
                                 >
                                   Delivery Programme Admin 3
                                 </a>
@@ -2429,9 +2438,9 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
                                   href="mailto:test-3@test.com"
+                                  title="Send an email to Delivery Programme Admin 3. This will open in your configured email client"
                                   to="mailto:test-3@test.com"
                                 >
-                                   
                                   test-3@test.com
                                   <span
                                     class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
@@ -2464,6 +2473,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-programme-admin-remove-button-3"
                                   tabindex="0"
+                                  title="Remove Delivery Programme Admin 3"
                                   type="button"
                                 >
                                   <span
@@ -2502,6 +2512,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                                   href="/catalog/default/user/test-4_test.com"
+                                  title="View Delivery Programme Admin 4 in the catalog"
                                 >
                                   Delivery Programme Admin 4
                                 </a>
@@ -2515,9 +2526,9 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
                                   href="mailto:test-4@test.com"
+                                  title="Send an email to Delivery Programme Admin 4. This will open in your configured email client"
                                   to="mailto:test-4@test.com"
                                 >
-                                   
                                   test-4@test.com
                                   <span
                                     class="MuiTypography-root Link-visuallyHidden MuiTypography-body1"
@@ -2550,6 +2561,7 @@ exports[`DeliveryProgrammeAdminViewPage should render the page with Delivery Pro
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-programme-admin-remove-button-4"
                                   tabindex="0"
+                                  title="Remove Delivery Programme Admin 4"
                                   type="button"
                                 >
                                   <span

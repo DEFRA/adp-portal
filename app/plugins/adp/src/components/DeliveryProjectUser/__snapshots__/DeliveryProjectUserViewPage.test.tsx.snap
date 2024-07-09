@@ -990,6 +990,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                                   href="/catalog/default/user/test-0_test.com"
+                                  title="View Delivery Project User 0 in the catalog"
                                 >
                                   Delivery Project User 0
                                 </a>
@@ -1003,6 +1004,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
                                   href="mailto:test-0@test.com"
+                                  title="Send an email to Delivery Project User 0. This will open in your configured email client"
                                   to="mailto:test-0@test.com"
                                 >
                                   test-0@test.com
@@ -1043,6 +1045,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-project-user-remove-button-0"
                                   tabindex="0"
+                                  title="Edit Delivery Project User 0"
                                   type="button"
                                 >
                                   <span
@@ -1073,6 +1076,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-0"
                                   tabindex="0"
+                                  title="Remove Delivery Project User 0"
                                   type="button"
                                 >
                                   <span
@@ -1114,6 +1118,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                                   href="/catalog/default/user/test-1_test.com"
+                                  title="View Delivery Project User 1 in the catalog"
                                 >
                                   Delivery Project User 1
                                 </a>
@@ -1127,6 +1132,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
                                   href="mailto:test-1@test.com"
+                                  title="Send an email to Delivery Project User 1. This will open in your configured email client"
                                   to="mailto:test-1@test.com"
                                 >
                                   test-1@test.com
@@ -1167,6 +1173,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-project-user-remove-button-1"
                                   tabindex="0"
+                                  title="Edit Delivery Project User 1"
                                   type="button"
                                 >
                                   <span
@@ -1197,6 +1204,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-1"
                                   tabindex="0"
+                                  title="Remove Delivery Project User 1"
                                   type="button"
                                 >
                                   <span
@@ -1238,6 +1246,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                                   href="/catalog/default/user/test-2_test.com"
+                                  title="View Delivery Project User 2 in the catalog"
                                 >
                                   Delivery Project User 2
                                 </a>
@@ -1251,6 +1260,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
                                   href="mailto:test-2@test.com"
+                                  title="Send an email to Delivery Project User 2. This will open in your configured email client"
                                   to="mailto:test-2@test.com"
                                 >
                                   test-2@test.com
@@ -1291,6 +1301,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-project-user-remove-button-2"
                                   tabindex="0"
+                                  title="Edit Delivery Project User 2"
                                   type="button"
                                 >
                                   <span
@@ -1321,6 +1332,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-2"
                                   tabindex="0"
+                                  title="Remove Delivery Project User 2"
                                   type="button"
                                 >
                                   <span
@@ -1362,6 +1374,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                                   href="/catalog/default/user/test-3_test.com"
+                                  title="View Delivery Project User 3 in the catalog"
                                 >
                                   Delivery Project User 3
                                 </a>
@@ -1375,6 +1388,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
                                   href="mailto:test-3@test.com"
+                                  title="Send an email to Delivery Project User 3. This will open in your configured email client"
                                   to="mailto:test-3@test.com"
                                 >
                                   test-3@test.com
@@ -1415,6 +1429,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-project-user-remove-button-3"
                                   tabindex="0"
+                                  title="Edit Delivery Project User 3"
                                   type="button"
                                 >
                                   <span
@@ -1445,6 +1460,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-3"
                                   tabindex="0"
+                                  title="Remove Delivery Project User 3"
                                   type="button"
                                 >
                                   <span
@@ -1486,6 +1502,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
                                   href="/catalog/default/user/test-4_test.com"
+                                  title="View Delivery Project User 4 in the catalog"
                                 >
                                   Delivery Project User 4
                                 </a>
@@ -1499,6 +1516,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                 <a
                                   class="MuiTypography-root MuiLink-root MuiLink-underlineHover Link-externalLink MuiTypography-colorPrimary"
                                   href="mailto:test-4@test.com"
+                                  title="Send an email to Delivery Project User 4. This will open in your configured email client"
                                   to="mailto:test-4@test.com"
                                 >
                                   test-4@test.com
@@ -1539,6 +1557,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-project-user-remove-button-4"
                                   tabindex="0"
+                                  title="Edit Delivery Project User 4"
                                   type="button"
                                 >
                                   <span
@@ -1569,6 +1588,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-4"
                                   tabindex="0"
+                                  title="Remove Delivery Project User 4"
                                   type="button"
                                 >
                                   <span

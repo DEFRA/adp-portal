@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Typography } from '@material-ui/core';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import AccountBoxIcon from '@mui/icons-material/ManageAccounts';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import type { TableColumn } from '@backstage/core-components';
 import {
@@ -43,7 +43,10 @@ export const DeliveryProjectViewPageComponent = () => {
       highlight: true,
       render(d) {
         return (
-          <Link to={entityRoute(d.name, 'group')}>
+          <Link
+            to={entityRoute(d.name, 'group')}
+            title={`View ${d.title} in the catalog`}
+          >
             {deliveryProjectDisplayName(d)}
           </Link>
         );
@@ -77,7 +80,7 @@ export const DeliveryProjectViewPageComponent = () => {
               to={`${entityRoute(d.name, 'group')}/manage-delivery-project-users`}
               variant="outlined"
               color="default"
-              title="View Delivery Project team members"
+              title={`Manage members for ${d.title}. This will open in a new tab`}
             >
               <AccountBoxIcon />
             </LinkButton>
@@ -88,6 +91,7 @@ export const DeliveryProjectViewPageComponent = () => {
               deliveryProject={d}
               data-testid={`delivery-project-edit-button-${d.id}`}
               onEdited={refresh}
+              title={`Edit ${d.title}`}
             >
               Edit
             </EditDeliveryProjectButton>
