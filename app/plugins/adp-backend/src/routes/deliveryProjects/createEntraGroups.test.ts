@@ -21,7 +21,7 @@ describe('default', () => {
       github_username: randomUUID(),
       user_entity_ref: randomUUID(),
     }));
-    service.createEntraIdGroupsForProject.mockResolvedValueOnce();
+    service.createEntraIdGroupsForProjectIfNotExists.mockResolvedValueOnce();
 
     const { status, body } = await request(app).post('/my-project').send(data);
 
