@@ -28,9 +28,9 @@ const ChatUI = () => {
   const [userInput, setUserInput] = useState<string>('');
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [responseFetched, setResponseFetched] = useState<boolean>(true);
-  const [conversationId, setConversationId] = useState<string>('');
+  const [conversationId, setConversationId] = useState<string>(crypto.randomUUID());
 
-  const userperson = 'example-roz';
+  const userperson = 'example-aimee';
 
   const handleSend = async () => {
     if (userInput.trim()) {
@@ -44,7 +44,6 @@ const ChatUI = () => {
       ]);
       setUserInput('');
       setResponseFetched(false);
-      setConversationId(crypto.randomUUID());
       const response = await fetch('http://localhost:5139/api/chat/prompt', {
         method: 'POST',
         headers: {
