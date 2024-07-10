@@ -11,6 +11,8 @@ describe('DeliveryProjectEntraIdGroupsSyncronizer', () => {
     const entraIdApi: jest.Mocked<IEntraIdApi> = {
       createEntraIdGroupsForProject: jest.fn(),
       setProjectGroupMembers: jest.fn(),
+      createEntraIdGroupsForProjectIfNotExists: jest.fn(),
+      getEntraIdGroups: jest.fn(),
     };
     const deliveryProjectStore: jest.Mocked<IDeliveryProjectStore> = {
       add: jest.fn(),

@@ -7,7 +7,7 @@ import type {
   UpdateDeliveryProjectRequest,
 } from '@internal/plugin-adp-common';
 import type { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
-import { ResponseError } from '@backstage/errors';
+import { ForwardedError, ResponseError } from '@backstage/errors';
 import { ValidationError } from '../../../utils';
 
 export class DeliveryProjectClient implements DeliveryProjectApi {
@@ -78,8 +78,9 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
       );
     } catch (error) {
       const err = error as Error;
-      throw new Error(
+      throw new ForwardedError(
         `Failed to create Entra ID groups for project ${result.namespace.toUpperCase()} - ${err.message}`,
+        err,
       );
     }
 
@@ -133,6 +134,27 @@ export class DeliveryProjectClient implements DeliveryProjectApi {
         'Project does not exist in the DEFRA organization ADO, please enter a valid ADO project name',
       );
     }
+    const result = await this.updateDeliveryProjectCore(data);
+
+    try {
+      await this.#createEntraIdGroupsForProject(
+        [],
+        result.namespace.toUpperCase(),
+      );
+    } catch (error) {
+      const err = error as Error;
+      throw new ForwardedError(
+        `Failed to create Entra ID groups for project ${result.namespace.toUpperCase()} - ${err.message}`,
+        err,
+      );
+    }
+
+    return result;
+  }
+
+  async updateDeliveryProjectCore(
+    data: UpdateDeliveryProjectRequest,
+  ): Promise<DeliveryProject> {
     const url = await this.getApiUrl();
     const response = await this.#sendJson('PATCH', url, data);
     return await this.#readResponse(response, asDeliveryProject);

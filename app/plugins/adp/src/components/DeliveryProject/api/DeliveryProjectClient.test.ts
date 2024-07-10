@@ -92,22 +92,41 @@ describe('deliveryProjectClient', () => {
 
   describe('update delivery projects', () => {
     it('updates a delivery project successfully', async () => {
-      const mockData = {
+      const updateData: UpdateDeliveryProjectRequest = {
+        title: 'Updated Body',
+        id: randomUUID(),
+        ado_project: 'ADO-PROJECT',
+      };
+      const mockUpdateProjectResponse = {
+        id: 1,
         name: 'Updated Body',
+        namespace: 'adp-demo',
         created_at: new Date(),
         updated_at: new Date(),
       };
-
-      fetchApi.fetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockData), { status: 200 }),
-      );
-
-      const updateData: UpdateDeliveryProjectRequest = {
-        title: 'New Name',
-        id: randomUUID(),
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: true,
       };
+
+      fetchApi.fetch
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockUpdateProjectResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(new Response(undefined, { status: 200 }));
+
       const result = await client.updateDeliveryProject(updateData);
-      expect(result).toEqual(mockData);
+
+      expect(result).toEqual(mockUpdateProjectResponse);
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/adoProject/ADO-PROJECT',
+      );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
         'http://localhost/deliveryProjects',
         {
@@ -116,6 +135,16 @@ describe('deliveryProjectClient', () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(updateData),
+        },
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/ADP-DEMO/createEntraIdGroups',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: '[]',
         },
       );
     });
@@ -146,8 +175,15 @@ describe('deliveryProjectClient', () => {
     });
 
     it('updates a delivery project successfully if ado project is updated', async () => {
-      const mockData = {
+      const updateData: UpdateDeliveryProjectRequest = {
+        title: 'Updated Body',
+        id: randomUUID(),
+        ado_project: 'NEW-ADO-PROJECT',
+      };
+      const mockUpdateProjectResponse = {
+        id: 1,
         name: 'Updated Body',
+        namespace: 'adp-demo',
         created_at: new Date(),
         updated_at: new Date(),
       };
@@ -162,16 +198,14 @@ describe('deliveryProjectClient', () => {
           }),
         )
         .mockResolvedValueOnce(
-          new Response(JSON.stringify(mockData), { status: 200 }),
-        );
+          new Response(JSON.stringify(mockUpdateProjectResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(new Response(undefined, { status: 200 }));
 
-      const updateData: UpdateDeliveryProjectRequest = {
-        title: 'New Name',
-        ado_project: 'new ADO Project',
-        id: randomUUID(),
-      };
       const result = await client.updateDeliveryProject(updateData);
-      expect(result).toEqual(mockData);
+      expect(result).toEqual(mockUpdateProjectResponse);
       expect(fetchApi.fetch).toHaveBeenCalledWith(
         'http://localhost/deliveryProjects',
         {
@@ -208,6 +242,69 @@ describe('deliveryProjectClient', () => {
       );
       expect(fetchApi.fetch).toHaveBeenCalledWith(
         'http://localhost/deliveryProjects/adoProject/new ADO Project',
+      );
+    });
+
+    it('throws an error if Entra ID groups are not created', async () => {
+      const updateData: UpdateDeliveryProjectRequest = {
+        title: 'Updated Body',
+        id: randomUUID(),
+        ado_project: 'NEW-ADO-PROJECT',
+      };
+      const mockUpdateProjectResponse = {
+        id: 1,
+        name: 'Updated Body',
+        namespace: 'adp-demo',
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+      const mockCheckAdoProjectExistsResponse: CheckAdoProjectExistsResponse = {
+        exists: true,
+      };
+
+      fetchApi.fetch
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockCheckAdoProjectExistsResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify(mockUpdateProjectResponse), {
+            status: 200,
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(undefined, {
+            status: 500,
+            statusText: 'Something went wrong',
+          }),
+        );
+
+      await expect(client.updateDeliveryProject(updateData)).rejects.toThrow(
+        /Failed to create Entra ID groups for project/,
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/adoProject/NEW-ADO-PROJECT',
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects',
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
+      expect(fetchApi.fetch).toHaveBeenCalledWith(
+        'http://localhost/deliveryProjects/ADP-DEMO/createEntraIdGroups',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: '[]',
+        },
       );
     });
   });

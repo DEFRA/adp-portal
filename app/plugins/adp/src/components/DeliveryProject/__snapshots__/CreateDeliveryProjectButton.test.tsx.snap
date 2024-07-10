@@ -251,3 +251,36 @@ exports[`CreateDeliveryProjectButton Should render the dialog when the button is
   </div>
 </body>
 `;
+
+exports[`CreateDeliveryProjectButton should display a warning if Entra ID groups could not be created 1`] = `
+<body>
+  <div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      content="My button"
+      data-testid="create-delivery-project-button"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      />
+      <span
+        class="MuiTouchRipple-root"
+      >
+        <span
+          class="MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+          style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+          />
+        </span>
+      </span>
+    </button>
+    <span>
+      This is a dialog!
+    </span>
+  </div>
+</body>
+`;

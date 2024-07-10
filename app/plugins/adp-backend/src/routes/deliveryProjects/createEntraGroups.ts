@@ -34,7 +34,7 @@ export default createEndpointRef({
 
     return async (request: Request<{ projectName: string }>) => {
       const body = parseBody(request.body);
-      await entraIdApi.createEntraIdGroupsForProject(
+      await entraIdApi.createEntraIdGroupsForProjectIfNotExists(
         body,
         request.params.projectName,
       );

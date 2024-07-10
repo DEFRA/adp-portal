@@ -21,6 +21,14 @@ type GroupMembersRequest = {
   adminMembers: string[];
 };
 
+export type EntraGroup = {
+  displayName: string;
+  type: number;
+  description?: string;
+  groupMemberships: string[];
+  members: string[];
+};
+
 export type EntraIdApiOptions = {
   config: Config;
   fetchApi: FetchApi;
@@ -36,6 +44,17 @@ export class EntraIdApi {
     this.#apiBaseUrl = options.config.getString('adp.entraIdGroups.apiBaseUrl');
     this.#fetchApi = options.fetchApi;
     this.#tokens = options.tokens;
+  }
+
+  async createEntraIdGroupsForProjectIfNotExists(
+    members: DeliveryProjectUser[],
+    projectName: string,
+  ): Promise<void> {
+    const existing = await this.getEntraIdGroups(projectName);
+
+    if (existing.length === 0) {
+      void this.createEntraIdGroupsForProject(members, projectName);
+    }
   }
 
   async createEntraIdGroupsForProject(
@@ -84,6 +103,29 @@ export class EntraIdApi {
         `Failed to set Entra ID group members for project ${projectName} - ${response.status} ${response.statusText}`,
       );
     }
+  }
+
+  async getEntraIdGroups(projectName: string): Promise<EntraGroup[]> {
+    const endpoint = `${this.#apiBaseUrl}/${projectName}/groups-config`;
+    const { token } = await this.#tokens.getLimitedUserToken();
+
+    const response = await this.#fetchApi.fetch(endpoint, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to get Entra ID group members for project ${projectName} - ${response.status} ${response.statusText}`,
+      );
+    }
+
+    const entraIdGroups = (await response.json()) as EntraGroup[];
+
+    return entraIdGroups;
   }
 
   #mapProjectUsers(projectUsers: DeliveryProjectUser[]) {

@@ -17,6 +17,7 @@ import type { ValidationError as IValidationError } from '@internal/plugin-adp-c
 import { SnapshotFriendlyStylesProvider, ValidationError } from '../../utils';
 import type * as PluginPermissionReactModule from '@backstage/plugin-permission-react';
 import type * as DialogFormModule from '../../utils/DialogForm';
+import { ForwardedError } from '@backstage/errors';
 
 const usePermission: jest.MockedFn<
   typeof PluginPermissionReactModule.usePermission
@@ -243,6 +244,49 @@ describe('CreateDeliveryProjectButton', () => {
     expect(mockProjectApi.updateDeliveryProject).not.toHaveBeenCalled();
     expect(mockAlertApi.alert$).not.toHaveBeenCalled();
     expect(mockAlertApi.post).not.toHaveBeenCalled();
+  });
+
+  it('should display a warning if Entra ID groups could not be created', async () => {
+    const { mockAlertApi, mockProjectApi, render } = setup();
+    usePermission.mockReturnValue({ allowed: true, loading: false });
+    DialogForm.mockReturnValue(<span>This is a dialog!</span>);
+    mockProjectApi.createDeliveryProject.mockRejectedValueOnce(
+      new ForwardedError(
+        'Failed to create groups',
+        new Error('Something broke'),
+      ),
+    );
+
+    const { result } = await render({ content: 'My button' });
+    await userEvent.click(result.getByTestId('create-delivery-project-button'));
+
+    expect(result.baseElement).toMatchSnapshot();
+    expect(DialogForm.mock.calls).toHaveLength(1);
+    const formProps = DialogForm.mock.calls[0][0];
+    expect(mockProjectApi.createDeliveryProject).not.toHaveBeenCalled();
+    expect(mockProjectApi.getDeliveryProjectById).not.toHaveBeenCalled();
+    expect(mockProjectApi.getDeliveryProjects).not.toHaveBeenCalled();
+    expect(mockProjectApi.updateDeliveryProject).not.toHaveBeenCalled();
+
+    const submitResult = await formProps.submit(fields);
+    expect(submitResult).toMatchObject({ type: 'success' });
+    expect(mockProjectApi.createDeliveryProject.mock.calls).toMatchObject([
+      [fields],
+    ]);
+    expect(mockProjectApi.getDeliveryProjectById).not.toHaveBeenCalled();
+    expect(mockProjectApi.getDeliveryProjects).not.toHaveBeenCalled();
+    expect(mockProjectApi.updateDeliveryProject).not.toHaveBeenCalled();
+    expect(mockAlertApi.alert$).not.toHaveBeenCalled();
+    expect(mockAlertApi.post.mock.calls).toMatchObject([
+      [
+        {
+          message:
+            'Delivery Project created successfully, however Entra ID groups associated with the project could not be created. Please edit the project and try again.',
+          severity: 'warning',
+          display: 'transient',
+        },
+      ],
+    ]);
   });
 });
 

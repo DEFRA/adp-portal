@@ -1,4 +1,5 @@
 import { ConfigReader } from '@backstage/config';
+import type { EntraGroup } from './EntraIdApi';
 import { EntraIdApi } from './EntraIdApi';
 import type { DeliveryProjectUser } from '@internal/plugin-adp-common';
 import { faker } from '@faker-js/faker';
@@ -316,6 +317,77 @@ describe('EntraIdApi', () => {
       await expect(
         sut.setProjectGroupMembers(expectedMembers, projectName),
       ).rejects.toThrow(/Failed to set Entra ID group members for project/);
+    });
+  });
+
+  describe('getEntraIdGroups', () => {
+    it('should call the API with the correct parameters', async () => {
+      // Arrange
+      const { sut, fetchApi, tokens } = setup();
+      const token = randomUUID();
+      const projectName = 'test-project';
+      const expectedGroups: EntraGroup[] = [
+        {
+          displayName: 'Group 1',
+          groupMemberships: ['Membership 1', 'Membership 2'],
+          members: ['Member 1', 'Member 2'],
+          type: 0,
+          description: 'Test group 1',
+        },
+        {
+          displayName: 'Group 2',
+          groupMemberships: ['Membership 3', 'Membership 4'],
+          members: ['Member 3', 'Member 4'],
+          type: 0,
+          description: 'Test group 2',
+        },
+      ];
+
+      fetchApi.fetch.mockResolvedValue(
+        new Response(JSON.stringify(expectedGroups), { status: 200 }),
+      );
+      tokens.getLimitedUserToken.mockResolvedValueOnce({
+        token,
+        expiresAt: new Date(),
+      });
+
+      // Act
+      const result = await sut.getEntraIdGroups(projectName);
+
+      // Assert
+      expect(fetchApi.fetch.mock.calls).toMatchObject([
+        [
+          `https://portal-api/aadGroups/${projectName}/groups-config`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        ],
+      ]);
+      expect(result).toEqual(expectedGroups);
+    });
+
+    it('should throw an error when the API call is not successfull', async () => {
+      // Arrange
+      const { sut, fetchApi, tokens } = setup();
+      const token = randomUUID();
+      const projectName = 'test-project';
+
+      fetchApi.fetch.mockResolvedValue(
+        new Response(undefined, { status: 400 }),
+      );
+      tokens.getLimitedUserToken.mockResolvedValueOnce({
+        token,
+        expiresAt: new Date(),
+      });
+
+      // Act and assert
+      await expect(sut.getEntraIdGroups(projectName)).rejects.toThrow(
+        /Failed to get Entra ID group members for project/,
+      );
     });
   });
 });

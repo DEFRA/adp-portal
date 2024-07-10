@@ -20,6 +20,7 @@ import {
   readValidationError,
 } from '../../utils';
 import { deliveryProjectApiRef } from './api';
+import { ForwardedError } from '@backstage/errors';
 
 export type EditDeliveryProjectButtonProps = Readonly<
   Omit<Parameters<typeof Button>[0], 'onClick'> & {
@@ -53,14 +54,25 @@ export function EditDeliveryProjectButton({
         ...deliveryProject,
         ...fields,
       });
-    } catch (e: any) {
-      return readValidationError(e);
+
+      alertApi.post({
+        message: 'Delivery Project updated successfully.',
+        severity: 'success',
+        display: 'transient',
+      });
+    } catch (e: unknown) {
+      if (e instanceof ForwardedError) {
+        alertApi.post({
+          message:
+            'Delivery Project updated successfully, however Entra ID groups associated with the project could not be created. Please edit the project and try again.',
+          severity: 'warning',
+          display: 'transient',
+        });
+      } else {
+        return readValidationError(e);
+      }
     }
-    alertApi.post({
-      message: 'Delivery Project updated successfully.',
-      severity: 'success',
-      display: 'transient',
-    });
+
     return { type: 'success' };
   }
 
