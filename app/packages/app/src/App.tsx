@@ -35,10 +35,7 @@ import { createApp } from '@backstage/app-defaults';
 import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
-import {
-  catalogEntityCreatePermission,
-  catalogLocationCreatePermission,
-} from '@backstage/plugin-catalog-common/alpha';
+import { catalogLocationCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 
 import { microsoftAuthApiRef } from '@backstage/core-plugin-api';
 
@@ -114,19 +111,17 @@ const routes = (
     <Route
       path="/create"
       element={
-        <RequirePermission permission={catalogEntityCreatePermission}>
-          <ScaffolderPage
-            headerOptions={{
-              title: 'Create a new platform service',
-              subtitle:
-                'Create a new platform service using standard templates in DEFRA',
-            }}
-          >
-            <ScaffolderFieldExtensions>
-              <DeliveryProjectPickerFieldExtension />
-            </ScaffolderFieldExtensions>
-          </ScaffolderPage>
-        </RequirePermission>
+        <ScaffolderPage
+          headerOptions={{
+            title: 'Create a new platform service',
+            subtitle:
+              'Create a new platform service using standard templates in DEFRA',
+          }}
+        >
+          <ScaffolderFieldExtensions>
+            <DeliveryProjectPickerFieldExtension />
+          </ScaffolderFieldExtensions>
+        </ScaffolderPage>
       }
     />
     <Route path="/api-docs" element={<ApiExplorerPage />} />
