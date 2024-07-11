@@ -6,12 +6,12 @@ import {
 import type { Request } from 'express';
 import { deliveryProgrammeStoreRef } from '../../../deliveryProgramme';
 import { createEndpointRef } from '../../util';
+import { createTransformerTitle } from '../util';
+import { deliveryProgrammeAdminStoreRef } from '../../../deliveryProgrammeAdmin';
 import {
   DELIVERY_PROGRAMME_ID_ANNOTATION,
-  createTransformerTitle,
-} from '../util';
-import { deliveryProgrammeAdminStoreRef } from '../../../deliveryProgrammeAdmin';
-import { normalizeUsername } from '@internal/plugin-adp-common';
+  normalizeUsername,
+} from '@internal/plugin-adp-common';
 import { armsLengthBodyStoreRef } from '../../../armsLengthBody';
 import { coreServices } from '@backstage/backend-plugin-api';
 

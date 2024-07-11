@@ -1,6 +1,12 @@
 import { startTestBackend } from '@backstage/backend-test-utils';
-import type { CatalogPermissionExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
-import { catalogPermissionExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
+import type {
+  CatalogPermissionExtensionPoint,
+  CatalogProcessingExtensionPoint,
+} from '@backstage/plugin-catalog-node/alpha';
+import {
+  catalogPermissionExtensionPoint,
+  catalogProcessingExtensionPoint,
+} from '@backstage/plugin-catalog-node/alpha';
 import { adpCatalogModule } from './module';
 import {
   type MicrosoftGraphOrgEntityProviderTransformsExtensionPoint,
@@ -8,9 +14,17 @@ import {
 } from '@backstage/plugin-catalog-backend-module-msgraph/alpha';
 import { isGroupMemberRule } from './permissions';
 import { defraUserNameTransformer } from './transformers/defraUserNameTransformer';
+import { DeliveryProjectProcessor } from './processors';
 
 describe('catalogModuleAdpEntityProvider', () => {
   it('should register the provider with the catalog extension point', async () => {
+    const processingExtensionPont: jest.Mocked<CatalogProcessingExtensionPoint> =
+      {
+        addEntityProvider: jest.fn(),
+        addPlaceholderResolver: jest.fn(),
+        addProcessor: jest.fn(),
+        setOnProcessingErrorHandler: jest.fn(),
+      };
     const permissionsExtensionPont: jest.Mocked<CatalogPermissionExtensionPoint> =
       {
         addPermissionRules: jest.fn(),
@@ -25,6 +39,7 @@ describe('catalogModuleAdpEntityProvider', () => {
 
     await startTestBackend({
       extensionPoints: [
+        [catalogProcessingExtensionPoint, processingExtensionPont],
         [catalogPermissionExtensionPoint, permissionsExtensionPont],
         [
           microsoftGraphOrgEntityProviderTransformExtensionPoint,
@@ -34,6 +49,9 @@ describe('catalogModuleAdpEntityProvider', () => {
       features: [adpCatalogModule],
     });
 
+    expect(processingExtensionPont.addProcessor).toHaveBeenCalledWith(
+      expect.any(DeliveryProjectProcessor),
+    );
     expect(permissionsExtensionPont.addPermissionRules).toHaveBeenCalledWith([
       isGroupMemberRule,
     ]);

@@ -1,8 +1,12 @@
 import { createBackendModule } from '@backstage/backend-plugin-api';
-import { catalogPermissionExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
+import {
+  catalogPermissionExtensionPoint,
+  catalogProcessingExtensionPoint,
+} from '@backstage/plugin-catalog-node/alpha';
 import { isGroupMemberRule } from './permissions';
 import { microsoftGraphOrgEntityProviderTransformExtensionPoint } from '@backstage/plugin-catalog-backend-module-msgraph/alpha';
 import { defraUserNameTransformer } from './transformers/defraUserNameTransformer';
+import { DeliveryProjectProcessor } from './processors';
 
 export const adpCatalogModule = createBackendModule({
   pluginId: 'catalog',
@@ -10,11 +14,18 @@ export const adpCatalogModule = createBackendModule({
   register(reg) {
     reg.registerInit({
       deps: {
+        catalogProcessing: catalogProcessingExtensionPoint,
         catalogPermissions: catalogPermissionExtensionPoint,
         microsoftGraphTransformers:
           microsoftGraphOrgEntityProviderTransformExtensionPoint,
       },
-      async init({ catalogPermissions, microsoftGraphTransformers }) {
+      async init({
+        catalogProcessing,
+        catalogPermissions,
+        microsoftGraphTransformers,
+      }) {
+        catalogProcessing.addProcessor(new DeliveryProjectProcessor());
+
         catalogPermissions.addPermissionRules([isGroupMemberRule]);
 
         microsoftGraphTransformers.setUserTransformer(defraUserNameTransformer);

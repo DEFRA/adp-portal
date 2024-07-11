@@ -7,3 +7,4 @@
 
 export { adpCatalogModule as default } from './module';
 export * from './permissions';
+export * from './processors';

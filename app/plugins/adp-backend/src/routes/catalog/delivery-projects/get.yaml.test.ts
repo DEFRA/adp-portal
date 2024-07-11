@@ -90,6 +90,8 @@ metadata:
     adp.defra.gov.uk/delivery-project-id: ${projectId}
     backstage.io/edit-url: http://defra-adp:3000/onboarding/delivery-projects
     backstage.io/view-url: http://defra-adp:3000/onboarding/delivery-projects
+    adp.defra.gov.uk/delivery-project-tech-members: '["admin.1_email.com","admin.2_email.com"]'
+    adp.defra.gov.uk/delivery-project-admin-members: '["admin.1_email.com","admin.2_email.com"]'
 spec:
   type: delivery-project
   parent: group:default/test-programme

@@ -65,6 +65,7 @@ export function DeliveryProjectPicker(props: DeliveryProjectPickerProps) {
         getOptionLabel={option =>
           entityRefToPresentation.get(stringifyEntityRef(option))?.entityRef!
         }
+        noOptionsText="You are not able to scaffold a service. Only technical team members for Delivery Projects can scaffold services for their Delivery Project"
         autoSelect
         renderInput={params => (
           <TextField

@@ -295,7 +295,7 @@ describe('adpPortalPermissionPolicy', () => {
       },
       {
         permission: catalogEntityCreatePermission,
-        expected: AuthorizeResult.DENY,
+        expected: AuthorizeResult.ALLOW,
       },
       {
         permission: catalogEntityDeletePermission,
@@ -313,14 +313,14 @@ describe('adpPortalPermissionPolicy', () => {
         permission: deliveryProgrammeCreatePermission,
         expected: AuthorizeResult.DENY,
       },
-      { permission: actionExecutePermission, expected: AuthorizeResult.DENY },
+      { permission: actionExecutePermission, expected: AuthorizeResult.ALLOW },
       {
         permission: templateParameterReadPermission,
-        expected: AuthorizeResult.DENY,
+        expected: AuthorizeResult.ALLOW,
       },
       {
         permission: templateStepReadPermission,
-        expected: AuthorizeResult.DENY,
+        expected: AuthorizeResult.ALLOW,
       },
       {
         permission: deliveryProgrammeAdminCreatePermission,

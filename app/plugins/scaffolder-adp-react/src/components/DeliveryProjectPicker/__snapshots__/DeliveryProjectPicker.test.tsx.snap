@@ -555,16 +555,17 @@ exports[`DeliveryProjectPicker Should render no options when there are no matche
       class="MuiFormControl-root MuiFormControl-marginNormal"
     >
       <div
-        aria-expanded="false"
-        class="MuiAutocomplete-root MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon"
+        aria-expanded="true"
+        aria-owns="mui-0-popup"
+        class="MuiAutocomplete-root MuiAutocomplete-focused MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon"
         role="combobox"
       >
         <div
           class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
         >
           <label
-            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-required MuiInputLabel-required"
-            data-shrink="false"
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined MuiFormLabel-focused MuiInputLabel-focused MuiFormLabel-required MuiInputLabel-required"
+            data-shrink="true"
             for="mui-0"
             id="mui-0-label"
           >
@@ -578,10 +579,11 @@ exports[`DeliveryProjectPicker Should render no options when there are no matche
             </span>
           </label>
           <div
-            class="MuiInputBase-root MuiOutlinedInput-root MuiAutocomplete-inputRoot MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiOutlinedInput-adornedEnd MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+            class="MuiInputBase-root MuiOutlinedInput-root MuiAutocomplete-inputRoot MuiInputBase-fullWidth MuiInputBase-focused MuiOutlinedInput-focused MuiInputBase-formControl MuiInputBase-adornedEnd MuiOutlinedInput-adornedEnd MuiInputBase-marginDense MuiOutlinedInput-marginDense"
           >
             <input
               aria-autocomplete="list"
+              aria-controls="mui-0-popup"
               aria-describedby="mui-0-helper-text"
               aria-invalid="false"
               autocapitalize="none"
@@ -622,10 +624,10 @@ exports[`DeliveryProjectPicker Should render no options when there are no matche
                 />
               </button>
               <button
-                aria-label="Open"
-                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator"
+                aria-label="Close"
+                class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator MuiAutocomplete-popupIndicatorOpen"
                 tabindex="-1"
-                title="Open"
+                title="Close"
                 type="button"
               >
                 <span
@@ -652,7 +654,7 @@ exports[`DeliveryProjectPicker Should render no options when there are no matche
               class="PrivateNotchedOutline-root MuiOutlinedInput-notchedOutline"
             >
               <legend
-                class="PrivateNotchedOutline-legendLabelled"
+                class="PrivateNotchedOutline-legendLabelled PrivateNotchedOutline-legendNotched"
               >
                 <span>
                   Delivery Project
@@ -662,13 +664,29 @@ exports[`DeliveryProjectPicker Should render no options when there are no matche
             </fieldset>
           </div>
           <p
-            class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-required MuiFormHelperText-marginDense"
+            class="MuiFormHelperText-root MuiFormHelperText-contained MuiFormHelperText-focused MuiFormHelperText-required MuiFormHelperText-marginDense"
             id="mui-0-helper-text"
             style="margin-left: 0px;"
           >
             The delivery project that will own the component.
           </p>
         </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="MuiAutocomplete-popper"
+    role="presentation"
+    style="position: absolute; top: 0px; left: 0px; width: 0px;"
+    x-placement="bottom"
+  >
+    <div
+      class="MuiPaper-root MuiAutocomplete-paper MuiPaper-elevation1 MuiPaper-rounded"
+    >
+      <div
+        class="MuiAutocomplete-noOptions"
+      >
+        You are not able to scaffold a service. Only technical team members for Delivery Projects can scaffold services for their Delivery Project
       </div>
     </div>
   </div>

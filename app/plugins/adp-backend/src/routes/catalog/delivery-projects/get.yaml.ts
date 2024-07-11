@@ -6,11 +6,11 @@ import {
 import type { Request } from 'express';
 import { deliveryProgrammeStoreRef } from '../../../deliveryProgramme';
 import { createEndpointRef } from '../../util';
+import { createTransformerTitle } from '../util';
 import {
+  DELIVERY_PROJECT_ADMIN_MEMBERS_ANNOTATION,
   DELIVERY_PROJECT_ID_ANNOTATION,
-  createTransformerTitle,
-} from '../util';
-import {
+  DELIVERY_PROJECT_TECH_MEMBERS_ANNOTATION,
   deliveryProjectDisplayName,
   normalizeUsername,
 } from '@internal/plugin-adp-common';
@@ -61,6 +61,16 @@ export default createEndpointRef({
             [DELIVERY_PROJECT_ID_ANNOTATION]: entity.id,
             [ANNOTATION_EDIT_URL]: `${baseUrl}/delivery-projects`,
             [ANNOTATION_VIEW_URL]: `${baseUrl}/delivery-projects`,
+            [DELIVERY_PROJECT_TECH_MEMBERS_ANNOTATION]: JSON.stringify(
+              children
+                .filter(c => c.is_technical)
+                .map(m => normalizeUsername(m.email)),
+            ),
+            [DELIVERY_PROJECT_ADMIN_MEMBERS_ANNOTATION]: JSON.stringify(
+              children
+                .filter(c => c.is_admin)
+                .map(m => normalizeUsername(m.email)),
+            ),
           },
         },
         spec: {
