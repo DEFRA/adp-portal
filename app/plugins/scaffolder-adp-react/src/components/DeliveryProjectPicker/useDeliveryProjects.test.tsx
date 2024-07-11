@@ -142,7 +142,7 @@ describe('useDeliveryProjects', () => {
       relations: [
         {
           type: 'memberOf',
-          targetRef: `group:default/${adminName}`,
+          targetRef: `group:default/${adminName}`.toLowerCase(),
         },
       ],
     };

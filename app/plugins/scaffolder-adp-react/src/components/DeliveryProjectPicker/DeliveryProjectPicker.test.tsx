@@ -35,7 +35,6 @@ describe('DeliveryProjectPicker', () => {
     });
 
     const result = await render({ disabled: false });
-    act(() => result.getByTitle('Open').click());
 
     expect(onChange).not.toHaveBeenCalled();
     expect(useDeliveryProjects).toHaveBeenCalled();

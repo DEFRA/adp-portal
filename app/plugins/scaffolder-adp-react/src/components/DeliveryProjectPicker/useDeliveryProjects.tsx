@@ -61,7 +61,8 @@ export function useDeliveryProjects() {
 }
 
 function isMemberOf(user: UserEntity, groupRef: string) {
+  const normalizedGroup = groupRef.toLowerCase();
   return user.relations?.some(
-    r => r.type === 'memberOf' && r.targetRef === groupRef,
+    r => r.type === 'memberOf' && r.targetRef === normalizedGroup,
   );
 }

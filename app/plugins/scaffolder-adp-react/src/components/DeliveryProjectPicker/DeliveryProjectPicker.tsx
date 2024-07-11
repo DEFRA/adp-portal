@@ -12,6 +12,8 @@ import { VirtualizedListbox } from '../VirtualizedListbox';
 import type { DeliveryProjectPickerProps } from './schema';
 import {} from '@backstage/plugin-scaffolder';
 import { useDeliveryProjects } from './useDeliveryProjects';
+import Alert from '@material-ui/lab/Alert';
+import FormLabel from '@material-ui/core/FormLabel';
 
 export { DeliveryProjectPickerSchema } from './schema';
 
@@ -49,6 +51,22 @@ export function DeliveryProjectPicker(props: DeliveryProjectPickerProps) {
     }
   }, [catalogEntities, onChange, selectedEntity]);
 
+  if (!loading && catalogEntities.length === 0) {
+    return (
+      <FormControl
+        margin="normal"
+        required={required}
+        error={rawErrors?.length > 0 && !formData}
+      >
+        <FormLabel>{title}</FormLabel>
+        <Alert severity="error">
+          You are not able to scaffold a service. Only technical team members
+          for Delivery Projects can scaffold services for their Delivery Project
+        </Alert>
+      </FormControl>
+    );
+  }
+
   return (
     <FormControl
       margin="normal"
@@ -65,7 +83,6 @@ export function DeliveryProjectPicker(props: DeliveryProjectPickerProps) {
         getOptionLabel={option =>
           entityRefToPresentation.get(stringifyEntityRef(option))?.entityRef!
         }
-        noOptionsText="You are not able to scaffold a service. Only technical team members for Delivery Projects can scaffold services for their Delivery Project"
         autoSelect
         renderInput={params => (
           <TextField
