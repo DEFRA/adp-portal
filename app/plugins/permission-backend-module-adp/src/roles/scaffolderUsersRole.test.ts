@@ -93,22 +93,22 @@ describe('scaffolderUsersRole', () => {
     },
     {
       permission: catalogEntityCreatePermission,
-      expected: AuthorizeResult.DENY,
+      expected: AuthorizeResult.ALLOW,
       user: portalUser,
     },
     {
       permission: actionExecutePermission,
-      expected: AuthorizeResult.DENY,
+      expected: AuthorizeResult.ALLOW,
       user: portalUser,
     },
     {
       permission: templateParameterReadPermission,
-      expected: AuthorizeResult.DENY,
+      expected: AuthorizeResult.ALLOW,
       user: portalUser,
     },
     {
       permission: templateStepReadPermission,
-      expected: AuthorizeResult.DENY,
+      expected: AuthorizeResult.ALLOW,
       user: portalUser,
     },
     {

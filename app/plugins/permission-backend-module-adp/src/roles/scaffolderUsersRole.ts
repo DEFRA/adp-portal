@@ -15,14 +15,11 @@ import {
 import type { PortalUserIdentity } from '../types';
 import { permissionIn } from '../permissionIn';
 
-const allowProgrammeAdmins = permissionIn([
-  catalogEntityCreatePermission,
+const allowEveryone = permissionIn([
   actionExecutePermission,
+  catalogEntityCreatePermission,
   templateParameterReadPermission,
   templateStepReadPermission,
-]);
-
-const allowEveryone = permissionIn([
   taskCreatePermission,
   taskReadPermission,
   taskCancelPermission,
@@ -40,8 +37,6 @@ export const scaffolderUserRole = (
 ): PolicyDecision => {
   if (user.userIdentity === undefined) return { result: AuthorizeResult.DENY };
   if (allowEveryone(permission)) return { result: AuthorizeResult.ALLOW };
-  if (user.isProgrammeAdmin && allowProgrammeAdmins(permission))
-    return { result: AuthorizeResult.ALLOW };
 
   return { result: AuthorizeResult.DENY };
 };

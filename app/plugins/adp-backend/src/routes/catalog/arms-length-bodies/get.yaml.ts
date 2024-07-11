@@ -5,12 +5,10 @@ import {
 } from '@backstage/catalog-model';
 import type { Request } from 'express';
 import { createEndpointRef } from '../../util';
-import {
-  ARMS_LENGTH_BODY_ID_ANNOTATION,
-  createTransformerTitle,
-} from '../util';
+import { createTransformerTitle } from '../util';
 import { armsLengthBodyStoreRef } from '../../../armsLengthBody';
 import { coreServices } from '@backstage/backend-plugin-api';
+import { ARMS_LENGTH_BODY_ID_ANNOTATION } from '@internal/plugin-adp-common';
 
 export default createEndpointRef({
   name: 'getArmsLengthBodyEntityYaml',

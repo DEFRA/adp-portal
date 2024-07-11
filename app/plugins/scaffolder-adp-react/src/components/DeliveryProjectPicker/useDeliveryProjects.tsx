@@ -14,6 +14,7 @@ import {
 } from '@backstage/plugin-catalog-react';
 import type { EntityFilterQuery } from '@backstage/catalog-client';
 import { useAsync } from 'react-use';
+import { DELIVERY_PROJECT_USER_IS_TECH_MEMBER } from '@internal/plugin-adp-common';
 
 export function useDeliveryProjects() {
   const identityApi = useApi(identityApiRef);
@@ -34,7 +35,8 @@ export function useDeliveryProjects() {
     };
 
     if (!isMemberOf(user, adminGroup))
-      filter['relations.adp-hasTechnicalMember'] = identity.userEntityRef;
+      filter[`relations.${DELIVERY_PROJECT_USER_IS_TECH_MEMBER}`] =
+        identity.userEntityRef;
 
     const { items } = await catalogApi.getEntities({
       filter,

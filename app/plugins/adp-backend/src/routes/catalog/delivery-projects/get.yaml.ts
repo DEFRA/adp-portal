@@ -1,19 +1,17 @@
 import {
   ANNOTATION_EDIT_URL,
   ANNOTATION_VIEW_URL,
-  stringifyEntityRef,
   type GroupEntity,
 } from '@backstage/catalog-model';
 import type { Request } from 'express';
 import { deliveryProgrammeStoreRef } from '../../../deliveryProgramme';
 import { createEndpointRef } from '../../util';
+import { createTransformerTitle } from '../util';
 import {
+  DELIVERY_PROJECT_ADMIN_MEMBERS_ANNOTATION,
   DELIVERY_PROJECT_ID_ANNOTATION,
-  createTransformerTitle,
-} from '../util';
-import {
+  DELIVERY_PROJECT_TECH_MEMBERS_ANNOTATION,
   deliveryProjectDisplayName,
-  type DeliveryProjectUser,
   normalizeUsername,
 } from '@internal/plugin-adp-common';
 import { deliveryProjectStoreRef } from '../../../deliveryProject';
@@ -63,9 +61,18 @@ export default createEndpointRef({
             [DELIVERY_PROJECT_ID_ANNOTATION]: entity.id,
             [ANNOTATION_EDIT_URL]: `${baseUrl}/delivery-projects`,
             [ANNOTATION_VIEW_URL]: `${baseUrl}/delivery-projects`,
+            [DELIVERY_PROJECT_TECH_MEMBERS_ANNOTATION]: JSON.stringify(
+              children
+                .filter(c => c.is_technical)
+                .map(m => normalizeUsername(m.email)),
+            ),
+            [DELIVERY_PROJECT_ADMIN_MEMBERS_ANNOTATION]: JSON.stringify(
+              children
+                .filter(c => c.is_admin)
+                .map(m => normalizeUsername(m.email)),
+            ),
           },
         },
-        relations: children.flatMap(c => [...getUserRelations(c)]),
         spec: {
           type: 'delivery-project',
           parent: `group:default/${parent.name}`,
@@ -76,12 +83,3 @@ export default createEndpointRef({
     };
   },
 });
-
-function* getUserRelations(user: DeliveryProjectUser) {
-  const targetRef = stringifyEntityRef({
-    name: normalizeUsername(user.email),
-    kind: 'user',
-  });
-  if (user.is_admin) yield { type: 'adp-hasAdminMember', targetRef };
-  if (user.is_technical) yield { type: 'adp-hasTechnicalMember', targetRef };
-}

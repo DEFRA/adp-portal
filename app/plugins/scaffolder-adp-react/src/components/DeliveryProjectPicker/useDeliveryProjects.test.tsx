@@ -18,6 +18,7 @@ import * as reactUseMod from 'react-use';
 import { useDeliveryProjects } from './useDeliveryProjects';
 import { randomUUID } from 'node:crypto';
 import type { GroupEntity, UserEntity } from '@backstage/catalog-model';
+import { DELIVERY_PROJECT_USER_IS_TECH_MEMBER } from '@internal/plugin-adp-common';
 
 describe('useDeliveryProjects', () => {
   it('Should call the catalog api with the correct values, and then call the presentation api when the user is not an admin', async () => {
@@ -104,7 +105,7 @@ describe('useDeliveryProjects', () => {
       filter: {
         kind: 'Group',
         'spec.type': 'delivery-project',
-        'relations.adp-hasTechnicalMember': userRef,
+        [`relations.${DELIVERY_PROJECT_USER_IS_TECH_MEMBER}`]: userRef,
       },
       fields: ['metadata.name', 'metadata.namespace', 'metadata.title', 'kind'],
     });
