@@ -4,10 +4,8 @@ import {
   type GroupEntity,
   isGroupEntity,
 } from '@backstage/catalog-model';
-import type { LocationSpec } from '@backstage/plugin-catalog-common';
 import {
   type CatalogProcessor,
-  type CatalogProcessorCache,
   type CatalogProcessorEmit,
   processingResult,
 } from '@backstage/plugin-catalog-node';
@@ -22,13 +20,12 @@ import {
 
 export class DeliveryProjectProcessor implements CatalogProcessor {
   getProcessorName(): string {
-    return 'DeliveryProjectEntityProcessor';
+    return 'DeliveryProjectProcessor';
   }
-  async postProcessEntity?(
+  async postProcessEntity(
     entity: Entity,
-    _location: LocationSpec,
+    _location: unknown,
     emit: CatalogProcessorEmit,
-    _cache: CatalogProcessorCache,
   ): Promise<Entity> {
     if (!isGroupEntity(entity) || entity.spec.type !== 'delivery-project')
       return entity;
