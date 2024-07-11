@@ -1,6 +1,7 @@
 import {
   ANNOTATION_EDIT_URL,
   ANNOTATION_VIEW_URL,
+  stringifyEntityRef,
   type GroupEntity,
 } from '@backstage/catalog-model';
 import type { Request } from 'express';
@@ -12,6 +13,7 @@ import {
 } from '../util';
 import {
   deliveryProjectDisplayName,
+  type DeliveryProjectUser,
   normalizeUsername,
 } from '@internal/plugin-adp-common';
 import { deliveryProjectStoreRef } from '../../../deliveryProject';
@@ -63,6 +65,7 @@ export default createEndpointRef({
             [ANNOTATION_VIEW_URL]: `${baseUrl}/delivery-projects`,
           },
         },
+        relations: children.flatMap(c => [...getUserRelations(c)]),
         spec: {
           type: 'delivery-project',
           parent: `group:default/${parent.name}`,
@@ -73,3 +76,12 @@ export default createEndpointRef({
     };
   },
 });
+
+function* getUserRelations(user: DeliveryProjectUser) {
+  const targetRef = stringifyEntityRef({
+    name: normalizeUsername(user.email),
+    kind: 'user',
+  });
+  if (user.is_admin) yield { type: 'adp-hasAdminMember', targetRef };
+  if (user.is_technical) yield { type: 'adp-hasTechnicalMember', targetRef };
+}
