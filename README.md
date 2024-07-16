@@ -1,6 +1,6 @@
 # Azure Developer Portal
 
-Welcome to the Azure Devoper Portal (ADP) repository. The portal is built using [Backstage](https://backstage.io/).
+Welcome to the Azure Developer Portal (ADP) repository. The portal is built using [Backstage](https://backstage.io/).
 
 ## Getting started
 
