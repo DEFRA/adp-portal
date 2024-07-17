@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CircularProgress,
   IconButton,
@@ -17,6 +17,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Button, Grid } from '@material-ui/core';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useApi, identityApiRef } from '@backstage/core-plugin-api';
 
 interface ChatMessage {
   sender: 'user' | 'adpBot';
@@ -27,12 +28,16 @@ interface ChatMessage {
 const ChatUI = () => {
   const [userInput, setUserInput] = useState<string>('');
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  // if chat history is empty, automatically call handleGetHistory and populate it and carry on using the same conversationId
   const [responseFetched, setResponseFetched] = useState<boolean>(true);
-  const [conversationId, setConversationId] = useState<string>(crypto.randomUUID());
+  const [conversationId, setConversationId] = useState<string>(
+    crypto.randomUUID(),
+  );
 
-  const userperson = 'example-aimee';
+  const identityApi = useApi(identityApiRef);
 
   const handleSend = async () => {
+    const userId = await identityApi.getBackstageIdentity();
     if (userInput.trim()) {
       const currentTime = new Date().toLocaleTimeString([], {
         hour: '2-digit',
@@ -51,7 +56,7 @@ const ChatUI = () => {
         },
         body: JSON.stringify({
           conversationId: conversationId,
-          user: userperson,
+          user: userId.userEntityRef,
           prompt: userInput,
         }),
       });
@@ -71,17 +76,29 @@ const ChatUI = () => {
     }
   };
 
-  const handleDelete = async () => {
-    // await fetch('http://localhost:5139/api/chat/messages', {
-    //   method: 'DELETE',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     conversationId: conversationId,
-    //   }),
-    // });
+  const handleGetHistory = async () => {
+    const userId = await identityApi.getBackstageIdentity();
+    const response = await fetch('http://localhost:5139/api/chat/history', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: userId.userEntityRef,
+      }),
+    });
+    const data = await response.json();
+    const messages = data.messages.map(
+      (message: { user: string; message: string; timestamp: string }) => ({
+        sender: message.user === userId.userEntityRef ? 'user' : 'adpBot',
+        text: message.message,
+        timestamp: message.timestamp,
+      }),
+    );
+    setChatHistory(messages);
+  };
+
+  const handleNew = async () => {
     setConversationId(crypto.randomUUID());
     setChatHistory([]);
     setResponseFetched(true);
@@ -107,9 +124,12 @@ const ChatUI = () => {
             <Button
               variant="outlined"
               startIcon={<DeleteIcon />}
-              onClick={handleDelete}
+              onClick={handleNew}
             >
-              Delete Conversation
+              New Conversation
+            </Button>
+            <Button variant="outlined" onClick={handleGetHistory}>
+              Get
             </Button>
           </Grid>
         </Grid>
