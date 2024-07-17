@@ -53,7 +53,7 @@ export class EntraIdApi {
     const existing = await this.getEntraIdGroups(projectName);
 
     if (existing.length === 0) {
-      void this.createEntraIdGroupsForProject(members, projectName);
+      await this.createEntraIdGroupsForProject(members, projectName);
     }
   }
 
