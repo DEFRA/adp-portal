@@ -5,15 +5,10 @@
       "name": "Backend",
       "type": "node",
       "request": "launch",
-      "args": [
-        "package",
-        "start"
-      ],
+      "args": ["package", "start"],
       "cwd": "${workspaceFolder}/app/packages/backend",
       "program": "${workspaceFolder}/app/node_modules/.bin/backstage-cli",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "envFile": "${workspaceFolder}/.env",
       "internalConsoleOptions": "openOnSessionStart",
       "killBehavior": "polite",
@@ -28,15 +23,10 @@
       "name": "Frontend",
       "type": "node",
       "request": "launch",
-      "args": [
-        "package",
-        "start"
-      ],
+      "args": ["package", "start"],
       "cwd": "${workspaceFolder}/app/packages/app",
       "program": "${workspaceFolder}/app/node_modules/.bin/backstage-cli",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "envFile": "${workspaceFolder}/.env",
       "internalConsoleOptions": "openOnSessionStart",
       "killBehavior": "polite",
@@ -51,9 +41,7 @@
       "name": "Attach",
       "port": 9229,
       "request": "attach",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "type": "node"
     },
     {
@@ -70,9 +58,7 @@
       "console": "integratedTerminal",
       "program": "${workspaceFolder}/app/node_modules/.bin/backstage-cli",
       "cwd": "${workspaceFolder}/app",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "presentation": {
         "hidden": false,
         "group": "testing",
@@ -94,9 +80,7 @@
       "program": "${workspaceFolder}/app/node_modules/.bin/backstage-cli",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/app",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "presentation": {
         "hidden": false,
         "group": "testing",
@@ -107,10 +91,7 @@
   "compounds": [
     {
       "name": "Frontend + Backend",
-      "configurations": [
-        "Frontend",
-        "Backend"
-      ],
+      "configurations": ["Frontend", "Backend"],
       "stopAll": true,
       "presentation": {
         "hidden": false,
