@@ -45,17 +45,7 @@ backend:
 catalog:
   providers:
     microsoftGraphOrg:
-      default:
-        tenantId: ${AUTH_MICROSOFT_TENANT_ID}
-        clientId: ${AUTH_MICROSOFT_CLIENT_ID}
-        clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
-        userGroupMember:
-          filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or startsWith(displayName, '${ADP_PORTAL_USERS_GROUP_PREFIX}')"
-        group:
-          filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or startsWith(displayName, '${ADP_PORTAL_USERS_GROUP_PREFIX}')"
-        schedule:
-          frequency: { hours: 0, minutes: 10 }
-          timeout: { minutes: 10 }
+      $include: ./config/msgraph.${BACKSTAGE_ENVIRONMENT}.configuration.yaml
 
     github:
       defra:

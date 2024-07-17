@@ -186,20 +186,7 @@ catalog:
           timeout: { minutes: 5 }
 
     microsoftGraphOrg:
-      default:
-        tenantId: ${AUTH_MICROSOFT_TENANT_ID}
-        queryMode: basic
-        user:
-          select:
-            ['id', 'mail', 'displayName', 'description', 'userPrincipalName']
-        userGroupMember:
-          filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or startsWith(displayName, '${ADP_PORTAL_USERS_GROUP_PREFIX}')"
-        group:
-          filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or startsWith(displayName, '${ADP_PORTAL_USERS_GROUP_PREFIX}')"
-        schedule:
-          frequency: { hours: 1 }
-          timeout: { minutes: 50 }
-          initialDelay: { seconds: 15 }
+      $include: ./config/msgraph.dev.configuration.yaml
 
 techRadar:
   data: https://raw.githubusercontent.com/defra/adp-software-templates/${ADP_PORTAL_TEMPLATE_VERSION}/tech-radars/development-tech-radar.json
