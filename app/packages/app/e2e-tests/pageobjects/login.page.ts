@@ -1,4 +1,4 @@
-import { $ } from '@wdio/globals';
+import { $, expect } from '@wdio/globals';
 import { Page } from './page.js';
 import MSAuthPopup from './msAuth.popup.js';
 
@@ -20,6 +20,10 @@ class LoginPage extends Page {
     } finally {
       await browser.switchToWindow(mainWindow);
     }
+  }
+
+  public async assert() {
+    await expect(await this.header.getText()).toEqual('ADP Portal');
   }
 }
 

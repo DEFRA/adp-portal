@@ -39,5 +39,7 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "cucumber.features": ["**/e2e-tests/features/**/*.feature"],
+  "cucumber.glue": ["**/e2e-tests/step-definitions/**/*.ts"]
 }
