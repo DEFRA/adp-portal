@@ -20,7 +20,7 @@
     "clean": "backstage-cli repo clean",
     "test": "backstage-cli repo test --config jest.config.js",
     "test:all": "backstage-cli repo test --coverage --config jest.config.js",
-    "test:e2e": "playwright test",
+    "test:e2e": "yarn workspace app test:e2e",
     "test:cobertura": "backstage-cli repo test --coverage --coverageReporters=lcov --coverageReporters=cobertura --config jest.config.js",
     "fix": "backstage-cli repo fix",
     "lint": "backstage-cli repo lint --since origin/main",
@@ -37,9 +37,7 @@
   },
   "devDependencies": {
     "@backstage/cli": "^0.26.10",
-    "@backstage/e2e-test-utils": "^0.1.1",
     "@jest/types": "^29.6.3",
-    "@playwright/test": "^1.32.3",
     "@spotify/prettier-config": "^12.0.0",
     "concurrently": "^8.0.0",
     "lerna": "^7.3.0",
