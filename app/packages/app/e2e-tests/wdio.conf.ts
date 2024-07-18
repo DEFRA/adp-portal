@@ -1,4 +1,9 @@
 import type { Options } from '@wdio/types';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const dir = path.dirname(fileURLToPath(import.meta.url));
+const workspaceDir = path.join(dir, '../../..');
 
 export const config: Options.Testrunner = {
   //
@@ -30,7 +35,7 @@ export const config: Options.Testrunner = {
   // The path of the spec files will be resolved relative from the directory of
   // of the config file unless it's absolute.
   //
-  specs: ['./specs/**/*.ts'],
+  specs: [`${dir}/features/**/*.feature`],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -111,14 +116,14 @@ export const config: Options.Testrunner = {
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
   // services: [],
-
+  //
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
   // see also: https://webdriver.io/docs/frameworks
   //
   // Make sure you have the wdio adapter package for the specific framework installed
   // before running any tests.
-  framework: 'mocha',
+  framework: 'cucumber',
 
   //
   // The number of times to retry the entire specfile when it fails as a whole
@@ -135,14 +140,38 @@ export const config: Options.Testrunner = {
   // see also: https://webdriver.io/docs/dot-reporter
   reporters: [
     'dot',
-    ['html-nice', { outputDir: '../../e2e-test-report/html-reports/' }],
+    [
+      'html-nice',
+      { outputDir: `${workspaceDir}/e2e-test-report/html-reports/` },
+    ],
   ],
 
-  // Options to be passed to Mocha.
-  // See the full list at http://mochajs.org/
-  mochaOpts: {
-    ui: 'bdd',
+  // If you are using Cucumber you need to specify the location of your step definitions.
+  cucumberOpts: {
+    // <string[]> (file/dir) require files before executing features
+    require: [`${dir}/step-definitions/steps.ts`],
+    // <boolean> show full backtrace for errors
+    backtrace: false,
+    // <string[]> ("extension:module") require files with the given EXTENSION after requiring MODULE (repeatable)
+    requireModule: [],
+    // <boolean> invoke formatters without executing steps
+    dryRun: false,
+    // <boolean> abort the run on first failure
+    failFast: false,
+    // <string[]> Only execute the scenarios with name matching the expression (repeatable).
+    name: [],
+    // <boolean> hide step definition snippets for pending steps
+    snippets: true,
+    // <boolean> hide source uris
+    source: true,
+    // <boolean> fail if there are any undefined or pending steps
+    strict: false,
+    // <string> (expression) only execute the features or scenarios with tags matching the expression
+    tagExpression: '',
+    // <number> timeout for step definitions
     timeout: 60000,
+    // <boolean> Enable this config to treat undefined definitions as warnings.
+    ignoreUndefinedDefinitions: false,
   },
 
   //
@@ -158,7 +187,7 @@ export const config: Options.Testrunner = {
    * @param config wdio configuration object
    * @param capabilities list of capabilities details
    */
-  // async onPrepare() {
+  // onPrepare(config, capabilities) {
   // },
   /**
    * Gets executed before a worker process is spawned and can be used to initialize specific service
@@ -207,47 +236,65 @@ export const config: Options.Testrunner = {
   // beforeCommand(commandName, args) {
   // },
   /**
-   * Hook that gets executed before the suite starts
-   * @param suite suite details
+   * Cucumber Hooks
+   *
+   * Runs before a Cucumber Feature.
+   * @param uri      path to feature file
+   * @param feature  Cucumber feature object
    */
-  // beforeSuite(suite) {
+  // beforeFeature(uri, feature) {
   // },
   /**
-   * Function to be executed before a test (in Mocha/Jasmine) starts.
+   *
+   * Runs before a Cucumber Scenario.
+   * @param world    world object containing information on pickle and test step
+   * @param context  Cucumber World object
    */
-  // beforeTest(test, context) {
+  // beforeScenario(world, context) {
   // },
   /**
-   * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
-   * beforeEach in Mocha)
+   *
+   * Runs before a Cucumber Step.
+   * @param step     step data
+   * @param scenario scenario pickle
+   * @param context  Cucumber World object
    */
-  // beforeHook(test, context, hookName) {
+  // beforeStep(step, scenario, context) {
   // },
   /**
-   * Hook that gets executed _after_ a hook within the suite starts (e.g. runs after calling
-   * afterEach in Mocha)
+   *
+   * Runs after a Cucumber Step.
+   * @param step             step data
+   * @param scenario         scenario pickle
+   * @param result           results object containing scenario results
+   * @param result.passed    true if scenario has passed
+   * @param result.error     error stack if scenario failed
+   * @param result.duration  duration of scenario in milliseconds
+   * @param context          Cucumber World object
    */
-  // afterHook(test, context, { error, result, duration, passed, retries }, hookName) {
+  // afterStep(step, scenario, result, context) {
   // },
   /**
-   * Function to be executed after a test (in Mocha/Jasmine only)
-   * @param test             test object
-   * @param context          scope object the test was executed with
-   * @param result.error     error object in case the test fails, otherwise `undefined`
-   * @param result.result    return object of test function
-   * @param result.duration  duration of test
-   * @param result.passed    true if test has passed, otherwise false
-   * @param result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
+   *
+   * Runs after a Cucumber Scenario.
+   * @param world            world object containing information on pickle and test step
+   * @param result           results object containing scenario results
+   * @param result.passed    true if scenario has passed
+   * @param result.error     error stack if scenario failed
+   * @param result.duration  duration of scenario in milliseconds
+   * @param context          Cucumber World object
    */
-  // afterTest(test, context, { error, result, duration, passed, retries }) {
+  // afterScenario(world, result, context) {
+  // },
+  /**
+   *
+   * Runs after a Cucumber Feature.
+   * @param uri      path to feature file
+   * @param feature  Cucumber feature object
+   */
+  // afterFeature(uri, feature) {
   // },
 
-  /**
-   * Hook that gets executed after the suite has ended
-   * @param suite suite details
-   */
-  // afterSuite(suite) {
-  // },
   /**
    * Runs after a WebdriverIO command gets executed
    * @param commandName hook command name
@@ -282,7 +329,7 @@ export const config: Options.Testrunner = {
    * @param capabilities list of capabilities details
    * @param results object containing test results
    */
-  // async onComplete() {
+  // onComplete(exitCode, config, capabilities, results) {
   // },
   /**
    * Gets executed when a refresh happens.
