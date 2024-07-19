@@ -8,5 +8,5 @@ default:
   group:
     filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or startsWith(displayName, '${ADP_PORTAL_USERS_GROUP_PREFIX}')"
   schedule:
-    frequency: { hours: 0, minutes: 10 }
+    frequency: { hours: 0, minutes: 35 }
     timeout: { minutes: 10 }
