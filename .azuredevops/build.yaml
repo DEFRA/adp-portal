@@ -49,6 +49,7 @@ extends:
       appFrameworkType: "nodejs"  
       projectPath: "./package.json"
       imageRepoName: "adp-portal"
+      appPath: "./"
       dockerfilePath: "./packages/backend/Dockerfile"
       snykPolicyFilePath: "./packages/backend/.snyk"
     appDeployConfig:
