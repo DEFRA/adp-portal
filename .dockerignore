@@ -1,0 +1,15 @@
+.git
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+!.yarn/cache
+node_modules
+packages/*/src
+packages/*/node_modules
+plugins
+*.local.yaml
+!packages/backend/src/opentelemetry.js
