@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import type { DisabledFields } from '../../utils';
 import {
   FormSelectField,
@@ -52,7 +52,8 @@ export function DeliveryProjectFormFields({
   disabled,
   watch,
 }: DeliveryProjectFormFieldsProps) {
-  const deliveryProgrammes = useDeliveryProgrammesList();
+  const selected = useMemo(() => watch('delivery_programme_id'), []);
+  const deliveryProgrammes = useDeliveryProgrammesList(selected);
 
   function* deliveryProgrammeOptions() {
     for (const { id, title } of deliveryProgrammes.values())

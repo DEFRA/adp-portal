@@ -16,27 +16,7 @@ import type { DeliveryProgrammeApi } from '../components/DeliveryProgramme/api';
 import { deliveryProgrammeApiRef } from '../components/DeliveryProgramme/api';
 
 it('fetches and formats data correctly', async () => {
-  const mockAlertApi: jest.Mocked<AlertApi> = {
-    alert$: jest.fn(),
-    post: jest.fn(),
-  };
-  const mockErrorApi: jest.Mocked<ErrorApi> = {
-    error$: jest.fn(),
-    post: jest.fn(),
-  };
-  const mockIdentityApi: jest.Mocked<IdentityApi> = {
-    getBackstageIdentity: jest.fn(),
-    getCredentials: jest.fn(),
-    getProfileInfo: jest.fn(),
-    signOut: jest.fn(),
-  };
-  const mockProgrammeApi: jest.Mocked<DeliveryProgrammeApi> = {
-    createDeliveryProgramme: jest.fn(),
-    getDeliveryProgrammeAdmins: jest.fn(),
-    getDeliveryProgrammeById: jest.fn(),
-    getDeliveryProgrammes: jest.fn(),
-    updateDeliveryProgramme: jest.fn(),
-  };
+  const { mockIdentityApi, mockProgrammeApi, wrapper } = setup();
 
   mockIdentityApi.getProfileInfo.mockResolvedValueOnce({
     email: 'x@y.com',
@@ -65,19 +45,6 @@ it('fetches and formats data correctly', async () => {
     },
   ]);
 
-  const wrapper = ({ children }: React.PropsWithChildren) => (
-    <TestApiProvider
-      apis={[
-        [alertApiRef, mockAlertApi],
-        [errorApiRef, mockErrorApi],
-        [identityApiRef, mockIdentityApi],
-        [deliveryProgrammeApiRef, mockProgrammeApi],
-      ]}
-    >
-      {children}
-    </TestApiProvider>
-  );
-
   const { result, waitForNextUpdate } = renderHook(
     () => useDeliveryProgrammesList(),
     { wrapper },
@@ -89,3 +56,90 @@ it('fetches and formats data correctly', async () => {
     new Map([['1', { id: '1', title: 'prg1' }]]),
   );
 });
+
+it('Includes the current programme even if the user is not an admin of it', async () => {
+  const { mockIdentityApi, mockProgrammeApi, wrapper } = setup();
+
+  mockIdentityApi.getProfileInfo.mockResolvedValueOnce({
+    email: 'x@y.com',
+  });
+  mockProgrammeApi.getDeliveryProgrammeAdmins.mockResolvedValueOnce([
+    {
+      id: '1',
+      delivery_programme_id: '2',
+      aad_entity_ref_id: 'a9dc2414-0626-43d2-993d-a53aac4d73421',
+      email: 'x@y.com',
+      name: 'manager1',
+      updated_at: new Date(0),
+    },
+  ]);
+  mockProgrammeApi.getDeliveryProgrammes.mockResolvedValueOnce([
+    {
+      id: '1',
+      title: 'prg1',
+      arms_length_body_id: '',
+      created_at: new Date(0),
+      delivery_programme_code: '',
+      description: '',
+      name: '',
+      delivery_programme_admins: [],
+      updated_at: new Date(0),
+    },
+  ]);
+
+  const { result, waitForNextUpdate } = renderHook(
+    () => useDeliveryProgrammesList('1'),
+    { wrapper },
+  );
+
+  await waitForNextUpdate();
+
+  expect(result.current).toMatchObject(
+    new Map([['1', { id: '1', title: 'prg1' }]]),
+  );
+});
+
+function setup() {
+  const mockAlertApi: jest.Mocked<AlertApi> = {
+    alert$: jest.fn(),
+    post: jest.fn(),
+  };
+  const mockErrorApi: jest.Mocked<ErrorApi> = {
+    error$: jest.fn(),
+    post: jest.fn(),
+  };
+  const mockIdentityApi: jest.Mocked<IdentityApi> = {
+    getBackstageIdentity: jest.fn(),
+    getCredentials: jest.fn(),
+    getProfileInfo: jest.fn(),
+    signOut: jest.fn(),
+  };
+  const mockProgrammeApi: jest.Mocked<DeliveryProgrammeApi> = {
+    createDeliveryProgramme: jest.fn(),
+    getDeliveryProgrammeAdmins: jest.fn(),
+    getDeliveryProgrammeById: jest.fn(),
+    getDeliveryProgrammes: jest.fn(),
+    updateDeliveryProgramme: jest.fn(),
+  };
+
+  return {
+    mockAlertApi,
+    mockErrorApi,
+    mockIdentityApi,
+    mockProgrammeApi,
+    wrapper({ children }: React.PropsWithChildren) {
+      return (
+        <TestApiProvider
+          apis={[
+            [alertApiRef, mockAlertApi],
+            [errorApiRef, mockErrorApi],
+            [identityApiRef, mockIdentityApi],
+            [deliveryProgrammeApiRef, mockProgrammeApi],
+          ]}
+        >
+          {children}
+        </TestApiProvider>
+      );
+    },
+  };
+}
