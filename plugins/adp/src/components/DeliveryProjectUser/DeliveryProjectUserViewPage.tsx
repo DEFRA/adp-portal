@@ -119,7 +119,7 @@ export const DeliveryProjectUserViewPage = () => {
               data-testid={`delivery-project-user-remove-button-${d.id}`}
               deliveryProjectUser={d}
               onRemoved={refresh}
-              title={`Edit ${d.name}`}
+              title={`Remove ${d.name}`}
             >
               Remove
             </RemoveDeliveryProjectUserButton>
@@ -130,7 +130,7 @@ export const DeliveryProjectUserViewPage = () => {
               deliveryProjectUser={d}
               data-testid={`delivery-project-user-edit-button-${d.id}`}
               onEdited={refresh}
-              title={`Remove ${d.name}`}
+              title={`Edit ${d.name}`}
             >
               Edit
             </EditDeliveryProjectUserButton>

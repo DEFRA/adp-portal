@@ -1041,7 +1041,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-project-user-remove-button-0"
                                   tabindex="0"
-                                  title="Edit Delivery Project User 0"
+                                  title="Remove Delivery Project User 0"
                                   type="button"
                                 >
                                   <span
@@ -1072,7 +1072,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-0"
                                   tabindex="0"
-                                  title="Remove Delivery Project User 0"
+                                  title="Edit Delivery Project User 0"
                                   type="button"
                                 >
                                   <span
@@ -1169,7 +1169,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-project-user-remove-button-1"
                                   tabindex="0"
-                                  title="Edit Delivery Project User 1"
+                                  title="Remove Delivery Project User 1"
                                   type="button"
                                 >
                                   <span
@@ -1200,7 +1200,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-1"
                                   tabindex="0"
-                                  title="Remove Delivery Project User 1"
+                                  title="Edit Delivery Project User 1"
                                   type="button"
                                 >
                                   <span
@@ -1297,7 +1297,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-project-user-remove-button-2"
                                   tabindex="0"
-                                  title="Edit Delivery Project User 2"
+                                  title="Remove Delivery Project User 2"
                                   type="button"
                                 >
                                   <span
@@ -1328,7 +1328,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-2"
                                   tabindex="0"
-                                  title="Remove Delivery Project User 2"
+                                  title="Edit Delivery Project User 2"
                                   type="button"
                                 >
                                   <span
@@ -1425,7 +1425,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-project-user-remove-button-3"
                                   tabindex="0"
-                                  title="Edit Delivery Project User 3"
+                                  title="Remove Delivery Project User 3"
                                   type="button"
                                 >
                                   <span
@@ -1456,7 +1456,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-3"
                                   tabindex="0"
-                                  title="Remove Delivery Project User 3"
+                                  title="Edit Delivery Project User 3"
                                   type="button"
                                 >
                                   <span
@@ -1553,7 +1553,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
                                   data-testid="delivery-project-user-remove-button-4"
                                   tabindex="0"
-                                  title="Edit Delivery Project User 4"
+                                  title="Remove Delivery Project User 4"
                                   type="button"
                                 >
                                   <span
@@ -1584,7 +1584,7 @@ exports[`DeliveryProjectUserViewPage should render the page with Delivery Projec
                                   class="MuiButtonBase-root MuiButton-root MuiButton-contained"
                                   data-testid="delivery-project-user-edit-button-4"
                                   tabindex="0"
-                                  title="Remove Delivery Project User 4"
+                                  title="Edit Delivery Project User 4"
                                   type="button"
                                 >
                                   <span
