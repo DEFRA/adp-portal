@@ -3,4 +3,5 @@ dist-types
 coverage
 .vscode
 .yarn
+.azuredevops
 e2e-test-report

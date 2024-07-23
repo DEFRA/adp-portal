@@ -109,7 +109,7 @@ For more info please refer : [Ref](./app/packages/backend/src/plugins/techdocs/T
 
 ### Running locally
 
-Run the following commands from the `/app` directory:
+Run the following commands from the root of the repository:
 
 ```sh
 yarn install
@@ -118,7 +118,7 @@ yarn dev
 
 ### Configuration
 
-If you want to override any settings in `./app/app-config.yaml`, create a local configuration file named `app-config.local.yaml` and define your overrides here.
+If you want to override any settings in `./app-config.yaml`, create a local configuration file named `app-config.local.yaml` and define your overrides here.
 
 ### Mac
 
