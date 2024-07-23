@@ -4,7 +4,7 @@
   "name": "ADP Portal Web",
   "dockerComposeFile": "compose.yaml",
   "service": "editor",
-  "postStartCommand": "cd app && yarn",
+  "postStartCommand": "yarn",
   "workspaceFolder": "/workspaces/adp-portal",
   "mounts": ["source=${localWorkspaceFolder},target=/workspaces/adp-portal"],
   "initializeCommand": [".devcontainer/initialize"],

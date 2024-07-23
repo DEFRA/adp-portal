@@ -1,7 +1,7 @@
 version: "3.5"
 
 include:
-  - ../app/compose.dev.yaml
+  - ../compose.dev.yaml
 
 services:
   editor:

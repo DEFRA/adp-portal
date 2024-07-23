@@ -10,11 +10,10 @@
   ],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "prettier.prettierPath": "app/node_modules/prettier/index.cjs",
-  "typescript.tsdk": "app/node_modules/typescript/lib",
+  "prettier.prettierPath": "node_modules/prettier/index.cjs",
+  "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "jest.jestCommandLine": "node_modules/.bin/backstage-cli repo test --config jest.config.js --runInBand",
-  "jest.rootPath": "app",
   "jest.runMode": "on-save",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

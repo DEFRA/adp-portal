@@ -1,4 +1,4 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 cp -n .env ../.env
-cp -n app-config.local.yaml ../app/app-config.local.yaml
+cp -n app-config.local.yaml ../app-config.local.yaml

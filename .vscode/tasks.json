@@ -13,7 +13,7 @@
         "color": "terminal.ansiGreen"
       },
       "options": {
-        "cwd": "${workspaceFolder}/app"
+        "cwd": "${workspaceFolder}"
       },
       "problemMatcher": []
     },
@@ -22,7 +22,7 @@
       "type": "shell",
       "command": "yarn tsc -w --noEmit --emitDeclarationOnly false",
       "options": {
-        "cwd": "${workspaceFolder}/app"
+        "cwd": "${workspaceFolder}"
       },
       "problemMatcher": [
         "$tsc-watch"

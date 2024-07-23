@@ -1,10 +1,10 @@
 parameters:
   - name: deployFromFeature
-    displayName: "Deploy from Feature Branch"
+    displayName: 'Deploy from Feature Branch'
     type: boolean
     default: false
   - name: deployConfigOnly
-    displayName: "Deploy App Config"
+    displayName: 'Deploy App Config'
     type: boolean
     default: false
 pr:
@@ -22,7 +22,7 @@ trigger:
   batch: true
   branches:
     include:
-      - "*"
+      - '*'
   paths:
     exclude:
       - test-output/*
@@ -41,17 +41,18 @@ extends:
   template: /pipelines/common-aca-app-build.yaml@DEFRA-ADPPipelineCommon
   parameters:
     deployFromFeature: ${{ parameters.deployFromFeature }}
-    programmeName: "adp"
+    programmeName: 'adp'
     appName: 'adp-portal-web'
     privateAgentName: ''
     deployConfigOnly: ${{ parameters.deployConfigOnly }}
     appBuildConfig:
-      appFrameworkType: "nodejs"  
-      projectPath: "./package.json"
-      imageRepoName: "adp-portal"
-      dockerfilePath: "./packages/backend/Dockerfile"
-      snykPolicyFilePath: "./packages/backend/.snyk"
+      appFrameworkType: 'nodejs'
+      projectPath: './package.json'
+      imageRepoName: 'adp-portal'
+      dockerfilePath: './packages/backend/Dockerfile'
+      snykPolicyFilePath: './packages/backend/.snyk'
+      appPath: ''
     appDeployConfig:
-      filepath: ".azuredevops/backstage.yaml"  
+      filepath: '.azuredevops/backstage.yaml'
       variableGroups:
         - adp-portal-web-<environment>
