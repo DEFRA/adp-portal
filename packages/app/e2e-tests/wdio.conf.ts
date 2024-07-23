@@ -1,9 +1,23 @@
 import type { Options } from '@wdio/types';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ReportAggregator } from 'wdio-html-nice-reporter';
+import video from 'wdio-video-reporter';
 
+let reportAggregator: ReportAggregator;
 const dir = path.dirname(fileURLToPath(import.meta.url));
 const workspaceDir = path.join(dir, '../../..');
+const appDir = path.join(dir, '..');
+const chromeArgs = process.env.CHROME_ARGS
+  ? process.env.CHROME_ARGS.split(' ')
+  : ['--ignore-certificate-errors'];
+
+const firefoxArgs = process.env.CHROME_ARGS
+  ? process.env.CHROME_ARGS.split(' ')
+  : [];
+const maxInstances = process.env.MAX_INSTANCES
+  ? Number(process.env.MAX_INSTANCES)
+  : 5;
 
 export const config: Options.Testrunner = {
   //
@@ -64,7 +78,19 @@ export const config: Options.Testrunner = {
   //
   capabilities: [
     {
+      maxInstances,
+      acceptInsecureCerts: true,
       browserName: 'chrome',
+      'goog:chromeOptions': {
+        args: chromeArgs,
+      },
+    },
+    {
+      maxInstances,
+      browserName: 'firefox',
+      'moz:firefoxOptions': {
+        args: firefoxArgs,
+      },
     },
   ],
 
@@ -100,6 +126,8 @@ export const config: Options.Testrunner = {
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
   // baseUrl: 'http://localhost:8080',
+  hostname: process.env.HOST_NAME,
+  port: maybeNumber(process.env.HOST_PORT),
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
@@ -141,8 +169,30 @@ export const config: Options.Testrunner = {
   reporters: [
     'dot',
     [
+      video,
+      {
+        saveAllVideos: false, // If true, also saves videos for successful test cases
+        videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
+        outputDir: path.relative(
+          appDir,
+          `${workspaceDir}/e2e-test-report/video-reports/`,
+        ),
+      },
+    ],
+    [
       'html-nice',
-      { outputDir: `${workspaceDir}/e2e-test-report/html-reports/` },
+      {
+        outputDir: path.relative(
+          appDir,
+          `${workspaceDir}/e2e-test-report/html-reports/`,
+        ),
+        linkScreenshots: true,
+        // to show the report in a browser when done
+        showInBrowser: true,
+        collapseTests: false,
+        // to turn on screenshots after every test
+        useOnAfterCommandForScreenshot: true,
+      },
     ],
   ],
 
@@ -187,8 +237,19 @@ export const config: Options.Testrunner = {
    * @param config wdio configuration object
    * @param capabilities list of capabilities details
    */
-  // onPrepare(config, capabilities) {
-  // },
+  onPrepare(_config, _capabilities) {
+    reportAggregator = new ReportAggregator({
+      outputDir: path.relative(
+        appDir,
+        `${workspaceDir}/e2e-test-report/html-reports/`,
+      ),
+      filename: 'master-report.html',
+      reportTitle: 'Master Report',
+      browserName: 'chrome',
+      collapseTests: true,
+    });
+    reportAggregator.clean();
+  },
   /**
    * Gets executed before a worker process is spawned and can be used to initialize specific service
    * for that worker as well as modify runtime environments in an async fashion.
@@ -329,8 +390,9 @@ export const config: Options.Testrunner = {
    * @param capabilities list of capabilities details
    * @param results object containing test results
    */
-  // onComplete(exitCode, config, capabilities, results) {
-  // },
+  async onComplete(_exitCode, _config, _capabilities, _results) {
+    await reportAggregator.createReport();
+  },
   /**
    * Gets executed when a refresh happens.
    * @param oldSessionId session ID of the old session
@@ -351,3 +413,7 @@ export const config: Options.Testrunner = {
   // afterAssertion(params) {
   // }
 };
+
+function maybeNumber(value?: string): number | undefined {
+  return value ? Number(value) : undefined;
+}

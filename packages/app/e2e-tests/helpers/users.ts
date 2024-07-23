@@ -1,8 +1,8 @@
 import { expect } from '@wdio/globals';
 import type { Cookie } from '@wdio/protocols';
-import Page from '../pageobjects/page.js';
-import LoginPage from '../pageobjects/login.page.js';
-import MSAuthPopup from '../pageobjects/msAuth.popup.js';
+import Page from '../pageobjects/Page.js';
+import LoginPage from '../pageobjects/Login.page.js';
+import MsAuthPopup from '../pageobjects/MsAuth.popup.js';
 
 const userCookies: Record<string, Promise<Cookie[]> | undefined> = {};
 
@@ -17,23 +17,10 @@ export function getCredentials(userId: string) {
 
 export async function loginAs(userId: string) {
   await LoginPage.open();
-  await browser.deleteAllCookies();
   const cookies = userCookies[userId];
 
-  if (cookies) {
-    await browser.setCookies(await cookies);
-    try {
-      await expect(Page.header.getText()).not.toBe('ADP Portal');
-      return;
-    } catch {
-      const currentCookies = userCookies[userId] ?? cookies;
-      if (currentCookies !== cookies) {
-        // another test is currently attempting to log in, use the results from that
-        await browser.setCookies(await currentCookies);
-        return;
-      }
-      // The cookies that were restored were invalid, attempt to log in again.
-    }
+  if (cookies && (await setCookies(cookies))) {
+    return;
   }
 
   const finalCookies = loadAuthCookieFor(userId);
@@ -41,10 +28,40 @@ export async function loginAs(userId: string) {
   await finalCookies;
 }
 
+async function setCookies(cookies: Promise<Cookie[]>) {
+  try {
+    await browser.reloadSession();
+    await MsAuthPopup.open();
+    await browser.setCookies(await cookies);
+    await Page.open();
+    await expect(Page.header.getText()).not.toBe('ADP Portal');
+    const mainWindow = await browser.getWindowHandle();
+    for (const window of await browser.getWindowHandles()) {
+      if (window !== mainWindow) {
+        try {
+          await browser.switchToWindow(window);
+        } catch {
+          // NO-OP
+        }
+        await browser.closeWindow();
+      }
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function loadAuthCookieFor(userId: string) {
+  await logOut();
   const { email, password } = getCredentials(userId);
+  await LoginPage.open();
   await expect(LoginPage.signInButton).toExist();
-  await MSAuthPopup.login(email, password);
+  await MsAuthPopup.login(email, password);
   await expect(Page.header.getText()).not.toBe('ADP Portal');
   return await browser.getAllCookies();
+}
+
+export async function logOut() {
+  await browser.reloadSession();
 }

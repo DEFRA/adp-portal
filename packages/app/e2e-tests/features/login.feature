@@ -8,7 +8,6 @@ Feature: Logging in to the site
 
   Scenario Outline: As a user, I am able to log into the application
 
-    Given I am not logged in
     When I log in as <user>
     Then I should see the catalog page
 

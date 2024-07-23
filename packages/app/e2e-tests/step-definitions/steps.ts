@@ -1,9 +1,9 @@
 /* eslint-disable new-cap */
 import { Given, When, Then } from '@wdio/cucumber-framework';
 
-import LoginPage from '../pageobjects/login.page.js';
-import CatalogPage from '../pageobjects/catalog.page.js';
-import { loginAs } from '../helpers/users.js';
+import LoginPage from '../pageobjects/Login.page.js';
+import CatalogPage from '../pageobjects/Catalog.page.js';
+import { loginAs, logOut } from '../helpers/users.js';
 
 type page = keyof typeof pages;
 const pages = {
@@ -17,7 +17,7 @@ Given(/^I am on the (\w+) page$/, async (page: page) => {
 });
 
 Given(/^I am not logged in$/, async () => {
-  await browser.deleteCookies();
+  await logOut();
 });
 
 Given(/^I am logged in as (\w+)$/, async (user: string) => {

@@ -1,0 +1,53 @@
+services:
+  wdio-cucumber:
+    build: .
+    image: wdio-cucumber
+    container_name: webdriver-cuke
+    depends_on:
+      - selenium-hub
+      - chrome
+      - firefox
+    command: bash -c "
+      cd portal/app &&
+      yarn &&
+      yarn test:e2e"
+    environment:
+      TEST_ENVIRONMENT_ROOT_URL: ${TEST_ENVIRONMENT_ROOT_URL-https://portal.snd1.adp.defra.gov.uk/}
+      TEST_TAGS: ${TEST_TAGS}
+      CHROME_ARGS: '--headless --ignore-certificate-errors'
+      HOST_NAME: 'selenium-hub'
+      HOST_PORT: '4444'
+      MAX_INSTANCES: 1
+    volumes:
+      - ../../../../:/home/node/portal
+
+  chrome:
+    image: selenium/node-chrome
+    tty: false
+    stdin_open: false
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=2
+
+  firefox:
+    image: selenium/node-firefox
+    tty: false
+    stdin_open: false
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+
+  selenium-hub:
+    image: selenium/hub
+    container_name: selenium-hub
+    ports:
+      - 4444:4444
