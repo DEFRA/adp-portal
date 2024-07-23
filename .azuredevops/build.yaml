@@ -51,7 +51,7 @@ extends:
       imageRepoName: 'adp-portal'
       dockerfilePath: './packages/backend/Dockerfile'
       snykPolicyFilePath: './packages/backend/.snyk'
-      appPath: 'fred'
+      appPath: '/'
     appDeployConfig:
       filepath: '.azuredevops/backstage.yaml'
       variableGroups:
