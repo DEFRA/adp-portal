@@ -26,13 +26,12 @@ resources:
         batch: true
         branches:
           include:
-            - "*"
+            - '*'
 
 extends:
   template: /pipelines/common-techdocs-publish.yaml@DEFRA-ADPPipelineCommon
   parameters:
-    WikiRepoName: "techdocs-wiki"
+    WikiRepoName: 'techdocs-wiki'
     EntityName: 'default/component/adp-portal'
     DocsPath: '' #docs in root folder
 
-    
