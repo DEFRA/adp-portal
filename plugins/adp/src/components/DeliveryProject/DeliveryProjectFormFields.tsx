@@ -52,7 +52,7 @@ export function DeliveryProjectFormFields({
   disabled,
   watch,
 }: DeliveryProjectFormFieldsProps) {
-  const selected = useMemo(() => watch('delivery_programme_id'), []);
+  const selected = useMemo(() => watch('delivery_programme_id'), [watch]);
   const deliveryProgrammes = useDeliveryProgrammesList(selected);
 
   function* deliveryProgrammeOptions() {
