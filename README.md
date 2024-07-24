@@ -38,7 +38,7 @@ If you are using VSCode, the steps are as follows:
 4. Once the dev container is ready, open the `.env` file at the root, and fill it out with the variables described below
 5. Open the command pallet and run the `Dev Containers: Rebuild Container` command
 6. Once the dev container is rebuilt, run `az login --tenant <YOUR_TENANT_ID>`
-7. To start the application, run `cd app && yarn dev`
+7. To start the application, run `yarn dev`
 
 To sign commits using GPG from within the devcontainer, please follow [the steps here](https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials#_sharing-gpg-keys)
 
@@ -105,7 +105,7 @@ awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' private-key.pem > rsaprivkey.txt
 A hybrid strategy is implemented for techdocs which means documentation can be generated on the fly by out of the box generator or using an external pipeline.
 All generated documentation are stored in Azure blob storage.
 
-For more info please refer : [Ref](./app/packages/backend/src/plugins/techdocs/Techdocs.md)
+For more info please refer : [Ref](./packages/backend/src/plugins/techdocs/Techdocs.md)
 
 ### Running locally
 
