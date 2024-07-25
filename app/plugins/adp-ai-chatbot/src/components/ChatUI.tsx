@@ -29,6 +29,10 @@ const ChatUI = () => {
   const [userInput, setUserInput] = useState<string>('');
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   // if chat history is empty, automatically call handleGetHistory and populate it and carry on using the same conversationId
+  // if chathistory empy
+  // const data = handlegethistory()
+  // setchathistory(data)
+
   const [responseFetched, setResponseFetched] = useState<boolean>(true);
   const [conversationId, setConversationId] = useState<string>(
     crypto.randomUUID(),
