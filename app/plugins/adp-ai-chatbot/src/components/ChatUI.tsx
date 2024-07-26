@@ -25,20 +25,49 @@ interface ChatMessage {
   timestamp: string;
 }
 
-const ChatUI = () => {
+const ChatUI: React.FC = () => {
   const [userInput, setUserInput] = useState<string>('');
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
-  // if chat history is empty, automatically call handleGetHistory and populate it and carry on using the same conversationId
-  // if chathistory empy
-  // const data = handlegethistory()
-  // setchathistory(data)
-
   const [responseFetched, setResponseFetched] = useState<boolean>(true);
-  const [conversationId, setConversationId] = useState<string>(
-    crypto.randomUUID(),
-  );
-
+  const [conversationId, setConversationId] = useState<string>('');
   const identityApi = useApi(identityApiRef);
+
+  const handleGetHistory = async () => {
+    const userId = await identityApi.getBackstageIdentity();
+    const response = await fetch('http://localhost:5139/api/chat/history', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: userId.userEntityRef,
+      }),
+    });
+
+    const data = await response.json();
+    const messages = data.messages.map(
+      (message: { user: string; message: string; timestamp: string }) => ({
+        sender: message.user === userId.userEntityRef ? 'user' : 'adpBot',
+        text: message.message,
+        timestamp: message.timestamp,
+      }),
+    );
+    setChatHistory(messages);
+
+    const existingConversationId = data.messages.find(
+      (message: { conversationId: string }) => message.conversationId,
+    )?.conversationId;
+
+    setConversationId(
+      messages.length > 0 ? existingConversationId : crypto.randomUUID(),
+    );
+
+    return messages;
+  };
+
+  useEffect(() => {
+    handleGetHistory();
+  }, []);
 
   const handleSend = async () => {
     const userId = await identityApi.getBackstageIdentity();
@@ -59,7 +88,7 @@ const ChatUI = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          conversationId: conversationId,
+          conversationId: conversationId ?? crypto.randomUUID(),
           user: userId.userEntityRef,
           prompt: userInput,
         }),
@@ -78,28 +107,6 @@ const ChatUI = () => {
       ]);
       setResponseFetched(true);
     }
-  };
-
-  const handleGetHistory = async () => {
-    const userId = await identityApi.getBackstageIdentity();
-    const response = await fetch('http://localhost:5139/api/chat/history', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user: userId.userEntityRef,
-      }),
-    });
-    const data = await response.json();
-    const messages = data.messages.map(
-      (message: { user: string; message: string; timestamp: string }) => ({
-        sender: message.user === userId.userEntityRef ? 'user' : 'adpBot',
-        text: message.message,
-        timestamp: message.timestamp,
-      }),
-    );
-    setChatHistory(messages);
   };
 
   const handleNew = async () => {
@@ -131,9 +138,6 @@ const ChatUI = () => {
               onClick={handleNew}
             >
               New Conversation
-            </Button>
-            <Button variant="outlined" onClick={handleGetHistory}>
-              Get
             </Button>
           </Grid>
         </Grid>
