@@ -32,6 +32,15 @@ const ChatUI: React.FC = () => {
   const [conversationId, setConversationId] = useState<string>('');
   const identityApi = useApi(identityApiRef);
 
+  const formatTimestamp = (timestamp: string): string => {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+
   const handleGetHistory = async () => {
     const userId = await identityApi.getBackstageIdentity();
     const response = await fetch('http://localhost:5139/api/chat/history', {
@@ -49,7 +58,7 @@ const ChatUI: React.FC = () => {
       (message: { user: string; message: string; timestamp: string }) => ({
         sender: message.user === userId.userEntityRef ? 'user' : 'adpBot',
         text: message.message,
-        timestamp: message.timestamp,
+        timestamp: formatTimestamp(message.timestamp),
       }),
     );
     setChatHistory(messages);
@@ -72,10 +81,7 @@ const ChatUI: React.FC = () => {
   const handleSend = async () => {
     const userId = await identityApi.getBackstageIdentity();
     if (userInput.trim()) {
-      const currentTime = new Date().toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-      });
+      const currentTime = formatTimestamp(new Date().toISOString());
       setChatHistory(prevHistory => [
         ...prevHistory,
         { sender: 'user', text: userInput, timestamp: currentTime },
