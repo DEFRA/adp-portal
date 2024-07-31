@@ -8,10 +8,23 @@ const dir = path.dirname(fileURLToPath(import.meta.url));
 const workspaceDir = '../..';
 const htmlReportsDir = `${workspaceDir}/e2e-test-report/html-reports/`;
 
-const commonArgs = [...(process.env.COMMON_ARGS?.split(' ') ?? ['--headless'])];
+function envArray(key: string) {
+  return envMap(key, v => (v ? v.split(' ').filter(x => x) : undefined));
+}
+function envMap<T>(key: string, map: (value: string) => T) {
+  const value = process.env[key];
+  if (value === undefined) return undefined;
+  return map(value);
+}
+function envNonEmpty(key: string) {
+  const value = process.env[key];
+  return !value ? undefined : value;
+}
+
+const commonArgs = [...(envArray('COMMON_ARGS') ?? ['--headless'])];
 const chromeArgs = [
   ...commonArgs,
-  ...(process.env.CHROME_ARGS?.split(' ') ?? [
+  ...(envArray('CHROME_ARGS') ?? [
     '--no-sandbox',
     '--disable-infobars',
     '--disable-gpu',
@@ -19,15 +32,13 @@ const chromeArgs = [
 ];
 const firefoxArgs = [
   ...commonArgs,
-  ...(process.env.FIREFOX_ARGS?.split(' ') ?? [
+  ...(envArray('FIREFOX_ARGS') ?? [
     '--no-sandbox',
     '--disable-infobars',
     '--disable-gpu',
   ]),
 ];
-const maxInstances = process.env.MAX_INSTANCES
-  ? Number(process.env.MAX_INSTANCES)
-  : 5;
+const maxInstances = envMap('MAX_INSTANCES', Number) ?? 5;
 let reportAggregator: ReportAggregator;
 
 export const config: Options.Testrunner = {
@@ -112,7 +123,8 @@ export const config: Options.Testrunner = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: (process.env.LOG_LEVEL as Options.Testrunner['logLevel']) ?? 'warn',
+  logLevel:
+    (envNonEmpty('LOG_LEVEL') as Options.Testrunner['logLevel']) ?? 'info',
   //
   // Set specific log levels per logger
   // loggers:
@@ -136,9 +148,9 @@ export const config: Options.Testrunner = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  baseUrl: process.env.TEST_ENVIRONMENT_ROOT_URL ?? 'http://localhost:3000',
-  hostname: process.env.HOST_NAME,
-  port: process.env.HOST_PORT ? Number(process.env.HOST_PORT) : undefined,
+  baseUrl: envNonEmpty('TEST_ENVIRONMENT_ROOT_URL') ?? 'http://localhost:3000',
+  hostname: envNonEmpty('HOST_NAME'),
+  port: envMap('HOST_PORT', Number),
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
@@ -214,7 +226,7 @@ export const config: Options.Testrunner = {
     // <boolean> fail if there are any undefined or pending steps
     strict: false,
     // <string> (expression) only execute the features or scenarios with tags matching the expression
-    tagExpression: '',
+    tagExpression: process.env.TEST_TAGS,
     // <number> timeout for step definitions
     timeout: 60000,
     // <boolean> Enable this config to treat undefined definitions as warnings.

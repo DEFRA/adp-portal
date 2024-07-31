@@ -1,0 +1,53 @@
+services:
+  e2e-test-runner:
+    image: node:18-bookworm-slim
+    depends_on:
+      - selenium-hub
+      - chrome
+      - firefox
+    command: bash -c "cd /app && yarn && yarn test:e2e"
+    environment:
+      TEST_ENVIRONMENT_ROOT_URL: ${TEST_ENVIRONMENT_ROOT_URL:?}
+      COMMON_ARGS: ${COMMON_ARGS-}
+      FIREFOX_ARGS: ${FIREFOX_ARGS-}
+      CHROME_ARGS: ${CHROME_ARGS-}
+      MAX_INSTANCES: ${MAX_INSTANCES-}
+      LOG_LEVEL: ${LOG_LEVEL-warn}
+      TEST_TAGS: ${LOG_LEVEL-}
+      HOST_NAME: 'selenium-hub'
+      HOST_PORT: 4444
+    volumes:
+      - ../../..:/app
+      - nodeModules:/app/node_modules/
+
+  chrome:
+    image: selenium/node-chrome
+    tty: false
+    stdin_open: false
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=2
+
+  firefox:
+    image: selenium/node-firefox #:4.1.3-20220405
+    tty: false
+    stdin_open: false
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+
+  selenium-hub:
+    image: selenium/hub
+    container_name: selenium-hub
+
+volumes:
+  nodeModules:
