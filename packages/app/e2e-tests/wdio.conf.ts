@@ -1,9 +1,34 @@
 import type { Options } from '@wdio/types';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ReportAggregator } from 'wdio-html-nice-reporter';
+import commands from '@rpii/wdio-commands';
 
 const dir = path.dirname(fileURLToPath(import.meta.url));
-const workspaceDir = path.join(dir, '../../..');
+const workspaceDir = '../..';
+const htmlReportsDir = `${workspaceDir}/e2e-test-report/html-reports/`;
+
+const commonArgs = [...(process.env.COMMON_ARGS?.split(' ') ?? ['--headless'])];
+const chromeArgs = [
+  ...commonArgs,
+  ...(process.env.CHROME_ARGS?.split(' ') ?? [
+    '--no-sandbox',
+    '--disable-infobars',
+    '--disable-gpu',
+  ]),
+];
+const firefoxArgs = [
+  ...commonArgs,
+  ...(process.env.FIREFOX_ARGS?.split(' ') ?? [
+    '--no-sandbox',
+    '--disable-infobars',
+    '--disable-gpu',
+  ]),
+];
+const maxInstances = process.env.MAX_INSTANCES
+  ? Number(process.env.MAX_INSTANCES)
+  : 5;
+let reportAggregator: ReportAggregator;
 
 export const config: Options.Testrunner = {
   //
@@ -56,7 +81,7 @@ export const config: Options.Testrunner = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 10,
+  maxInstances: 1,
   //
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -64,11 +89,20 @@ export const config: Options.Testrunner = {
   //
   capabilities: [
     {
+      maxInstances,
+      acceptInsecureCerts: true,
       browserName: 'chrome',
+      'goog:chromeOptions': {
+        args: chromeArgs,
+      },
     },
-    // {
-    //   browserName: 'firefox',
-    // },
+    {
+      maxInstances,
+      browserName: 'firefox',
+      'moz:firefoxOptions': {
+        args: firefoxArgs,
+      },
+    },
   ],
 
   //
@@ -78,7 +112,7 @@ export const config: Options.Testrunner = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: 'info',
+  logLevel: (process.env.LOG_LEVEL as Options.Testrunner['logLevel']) ?? 'warn',
   //
   // Set specific log levels per logger
   // loggers:
@@ -102,7 +136,9 @@ export const config: Options.Testrunner = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  // baseUrl: 'http://localhost:8080',
+  baseUrl: process.env.TEST_ENVIRONMENT_ROOT_URL ?? 'http://localhost:3000',
+  hostname: process.env.HOST_NAME,
+  port: process.env.HOST_PORT ? Number(process.env.HOST_PORT) : undefined,
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
@@ -142,10 +178,18 @@ export const config: Options.Testrunner = {
   // The only one supported by default is 'dot'
   // see also: https://webdriver.io/docs/dot-reporter
   reporters: [
-    'dot',
+    'spec',
     [
       'html-nice',
-      { outputDir: `${workspaceDir}/e2e-test-report/html-reports/` },
+      {
+        outputDir: htmlReportsDir,
+        filename: 'feature-report.html',
+        reportTitle: 'Feature Test Report',
+        collapseTests: true,
+        showInBrowser: false,
+        useOnAfterCommandForScreenshot: true,
+        linkScreenshots: true,
+      },
     ],
   ],
 
@@ -190,8 +234,19 @@ export const config: Options.Testrunner = {
    * @param config wdio configuration object
    * @param capabilities list of capabilities details
    */
-  // onPrepare(config, capabilities) {
-  // },
+  onPrepare() {
+    const timestamp = new Date().toISOString();
+
+    reportAggregator = new ReportAggregator({
+      outputDir: htmlReportsDir,
+      filename: `Test_Automation_Report_${timestamp}.html`,
+      reportTitle: 'Master Report',
+      browserName: 'chrome',
+      showInBrowser: true,
+      useOnAfterCommandForScreenshot: true,
+      linkScreenshots: true,
+    });
+  },
   /**
    * Gets executed before a worker process is spawned and can be used to initialize specific service
    * for that worker as well as modify runtime environments in an async fashion.
@@ -229,8 +284,9 @@ export const config: Options.Testrunner = {
    * @param specs        List of spec file paths that are to be run
    * @param browser      instance of created browser/device session
    */
-  // before(capabilities, specs) {
-  // },
+  before(_capabilities, _specs) {
+    commands.addCommands(driver);
+  },
   /**
    * Runs before a WebdriverIO command gets executed.
    * @param commandName hook command name
@@ -275,8 +331,10 @@ export const config: Options.Testrunner = {
    * @param result.duration  duration of scenario in milliseconds
    * @param context          Cucumber World object
    */
-  // afterStep(step, scenario, result, context) {
-  // },
+  afterStep(_step, _scenario, result, _context) {
+    if (result.passed) return;
+    void driver.logScreenshot(`Test Ended in ${String(result.error)}`);
+  },
   /**
    *
    * Runs after a Cucumber Scenario.
@@ -332,8 +390,9 @@ export const config: Options.Testrunner = {
    * @param capabilities list of capabilities details
    * @param results object containing test results
    */
-  // onComplete(exitCode, config, capabilities, results) {
-  // },
+  async onComplete() {
+    await reportAggregator.createReport();
+  },
   /**
    * Gets executed when a refresh happens.
    * @param oldSessionId session ID of the old session

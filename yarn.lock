@@ -10746,6 +10746,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rpii/wdio-commands@npm:^8.0.2":
+  version: 8.0.2
+  resolution: "@rpii/wdio-commands@npm:8.0.2"
+  dependencies:
+    concat: "npm:^1.0.3"
+    dayjs: "npm:^1.10.5"
+    fs-extra: "npm:^11.1.0"
+    rimraf: "npm:^3.0.2"
+    typescript-string-operations: "npm:^1.5.0"
+  checksum: 10c0/a62bbf189545a81e7d5edaa06c3a8b20d643959861ce3b374378a3d54a0989e0e0d48bb92204e4d44f4349cce62704dbc346ea853b5e96ae46770ce250d85745
+  languageName: node
+  linkType: hard
+
 "@rpii/wdio-report-events@npm:^8.0.2":
   version: 8.0.2
   resolution: "@rpii/wdio-report-events@npm:8.0.2"
@@ -14441,6 +14454,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@wdio/spec-reporter@npm:^8.39.0":
+  version: 8.39.0
+  resolution: "@wdio/spec-reporter@npm:8.39.0"
+  dependencies:
+    "@wdio/reporter": "npm:8.39.0"
+    "@wdio/types": "npm:8.39.0"
+    chalk: "npm:^5.1.2"
+    easy-table: "npm:^1.2.0"
+    pretty-ms: "npm:^7.0.0"
+  checksum: 10c0/fcba45c49afe93822d6edc492c269769e03ae3c6abd1ba279c1f370141d1c6876a5f60cfd74eb95abb3743e43e99dad03d89ebaa6be6bd680069d251730a112e
+  languageName: node
+  linkType: hard
+
 "@wdio/types@npm:8.39.0":
   version: 8.39.0
   resolution: "@wdio/types@npm:8.39.0"
@@ -15185,6 +15211,7 @@ __metadata:
     "@material-ui/core": "npm:^4.12.2"
     "@material-ui/icons": "npm:^4.9.1"
     "@roadiehq/backstage-plugin-github-pull-requests": "npm:^2.5.26"
+    "@rpii/wdio-commands": "npm:^8.0.2"
     "@testing-library/dom": "npm:^10.1.0"
     "@testing-library/jest-dom": "npm:^6.0.0"
     "@testing-library/react": "npm:^15.0.0"
@@ -15197,6 +15224,7 @@ __metadata:
     "@wdio/dot-reporter": "npm:^8.39.0"
     "@wdio/globals": "npm:^8.39.1"
     "@wdio/local-runner": "npm:^8.39.1"
+    "@wdio/spec-reporter": "npm:^8.39.0"
     "@weaveworksoss/backstage-plugin-flux": "npm:^0.8.5"
     canvas: "npm:^2.11.2"
     codemirror: "npm:^6.0.0"
@@ -17408,7 +17436,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^2.19.0, commander@npm:^2.20.0":
+"commander@npm:^2.19.0, commander@npm:^2.20.0, commander@npm:^2.9.0":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
   checksum: 10c0/74c781a5248c2402a0a3e966a0a2bba3c054aad144f5c023364be83265e796b20565aa9feff624132ff629aa64e16999fa40a743c10c12f7c61e96a794b99288
@@ -17609,6 +17637,17 @@ __metadata:
   dependencies:
     source-map: "npm:^0.6.1"
   checksum: 10c0/d30cec83a320d20d7e9482a4d011fa84319a0a8f9107acb632c48493d608be3a2b879608866d9edba2ce304ee52bc798138c26ad16eda6fbe7ec5e7bec99a683
+  languageName: node
+  linkType: hard
+
+"concat@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "concat@npm:1.0.3"
+  dependencies:
+    commander: "npm:^2.9.0"
+  bin:
+    concat: ./bin/concat
+  checksum: 10c0/69d6ea459357361c9ee1ddf4a157cae73e6094ede115f04f3ff0c1a408693bf02740f4b66c1b4d0b75e12f280dd1ca51d9a2aa288217917e843053b207def726
   languageName: node
   linkType: hard
 
@@ -18634,6 +18673,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dayjs@npm:^1.10.5":
+  version: 1.11.12
+  resolution: "dayjs@npm:1.11.12"
+  checksum: 10c0/9673d37f3f9ad8a91caaeae9b3fea9a0010c81c7f58599fb9d860bc3359b86632fbff8eb7dddc86c2acaab01c5e6860bc672952f17b58c9286140c52b077c8e4
+  languageName: node
+  linkType: hard
+
 "dayjs@npm:^1.11.10":
   version: 1.11.11
   resolution: "dayjs@npm:1.11.11"
@@ -19400,6 +19446,19 @@ __metadata:
   version: 0.2.0
   resolution: "eastasianwidth@npm:0.2.0"
   checksum: 10c0/26f364ebcdb6395f95124fda411f63137a4bfb5d3a06453f7f23dfe52502905bd84e0488172e0f9ec295fdc45f05c23d5d91baf16bd26f0fe9acd777a188dc39
+  languageName: node
+  linkType: hard
+
+"easy-table@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "easy-table@npm:1.2.0"
+  dependencies:
+    ansi-regex: "npm:^5.0.1"
+    wcwidth: "npm:^1.0.1"
+  dependenciesMeta:
+    wcwidth:
+      optional: true
+  checksum: 10c0/2d37937cd608586ba02e1ec479f90ccec581d366b3b0d1bb26b99ee6005f8d724e32a07a873759893461ca45b99e2d08c30326529d967ce9eedc1e9b68d4aa63
   languageName: node
   linkType: hard
 
@@ -28995,6 +29054,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"parse-ms@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "parse-ms@npm:2.1.0"
+  checksum: 10c0/9c5c0a95c6267c84085685556a6e102ee806c3147ec11cbb9b98e35998eb4a48a757bd6ea7bfd930062de65909a33d24985055b4394e70aa0b65ee40cef16911
+  languageName: node
+  linkType: hard
+
 "parse-path@npm:^7.0.0":
   version: 7.0.0
   resolution: "parse-path@npm:7.0.0"
@@ -30235,6 +30301,15 @@ __metadata:
     ansi-styles: "npm:^5.0.0"
     react-is: "npm:^18.0.0"
   checksum: 10c0/edc5ff89f51916f036c62ed433506b55446ff739358de77207e63e88a28ca2894caac6e73dcb68166a606e51c8087d32d400473e6a9fdd2dbe743f46c9c0276f
+  languageName: node
+  linkType: hard
+
+"pretty-ms@npm:^7.0.0":
+  version: 7.0.1
+  resolution: "pretty-ms@npm:7.0.1"
+  dependencies:
+    parse-ms: "npm:^2.1.0"
+  checksum: 10c0/069aec9d939e7903846b3db53b020bed92e3dc5909e0fef09ec8ab104a0b7f9a846605a1633c60af900d288582fb333f6f30469e59d6487a2330301fad35a89c
   languageName: node
   linkType: hard
 
