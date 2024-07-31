@@ -4,7 +4,7 @@ default:
   user:
     select: ['id', 'mail', 'displayName', 'description', 'userPrincipalName']
     loadPhotos: false
-    filter: not(startsWith(userPrincipalName, 'a-')) and (endsWith(mail, 'defra.gov.uk') or endsWith(mail, 'defra.onmicrosoft.com'))
+    filter: not(startsWith(userPrincipalName, 'a-')) and (endsWith(mail, '@defra.gov.uk') or endsWith(mail, '@defra.onmicrosoft.com'))
   group:
     filter: "displayName eq '${ADP_PORTAL_PLATFORM_ADMINS_GROUP}' or startsWith(displayName, '${ADP_PORTAL_USERS_GROUP_PREFIX}')"
   schedule:
