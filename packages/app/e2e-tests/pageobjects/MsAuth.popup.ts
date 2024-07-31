@@ -1,5 +1,5 @@
-import { $ } from '@wdio/globals';
-import { Page } from './page.js';
+import { $, expect } from '@wdio/globals';
+import { Page } from './Page.js';
 
 class MSAuthPopup extends Page {
   public get usernameField() {
@@ -18,33 +18,16 @@ class MSAuthPopup extends Page {
     throw new Error('Cannot open the ms auth popup directly');
   }
 
-  public async close() {
-    const mainWindow = await browser.getWindowHandle();
-    try {
-      await browser.switchWindow('login.microsoftonline.com');
-      await browser.closeWindow();
-    } finally {
-      await browser.switchToWindow(mainWindow);
-    }
-  }
-
-  public async login(username: string, password: string) {
-    const mainWindow = await browser.getWindowHandle();
-    try {
-      await browser.switchWindow('login.microsoftonline.com');
-      await this.enterUsername(username);
-      await this.enterPassword(password);
-    } finally {
-      await browser.switchToWindow(mainWindow);
-    }
-  }
-
   public async enterUsername(username: string) {
+    await expect(this.usernameField).toBeDisplayed();
+    await expect(this.submitButton).toBeDisplayed();
     await this.usernameField.setValue(username);
     await this.submitButton.click();
   }
 
   public async enterPassword(password: string) {
+    await expect(this.passwordField).toBeDisplayed();
+    await expect(this.submitButton).toBeDisplayed();
     await this.passwordField.setValue(password);
     await this.submitButton.click();
   }

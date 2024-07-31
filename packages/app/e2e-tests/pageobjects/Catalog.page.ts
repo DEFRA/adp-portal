@@ -1,5 +1,5 @@
 import { expect } from '@wdio/globals';
-import { Page } from './page.js';
+import { Page } from './Page.js';
 
 class CatalogPage extends Page {
   public open() {
@@ -7,9 +7,7 @@ class CatalogPage extends Page {
   }
 
   public async assert() {
-    await expect(await this.header.getText()).toEqual(
-      'Azure Development Platform: Catalog',
-    );
+    await expect(this.header).toHaveText('Azure Development Platform: Catalog');
   }
 }
 

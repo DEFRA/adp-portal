@@ -66,6 +66,9 @@ export const config: Options.Testrunner = {
     {
       browserName: 'chrome',
     },
+    // {
+    //   browserName: 'firefox',
+    // },
   ],
 
   //
