@@ -6,6 +6,8 @@
       "@wdio/globals/types",
       "expect-webdriverio",
       "@wdio/cucumber-framework"
-    ]
+    ],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
   }
 }
