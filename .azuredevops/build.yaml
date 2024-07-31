@@ -35,7 +35,8 @@ resources:
       name: DEFRA/adp-pipeline-common
       endpoint: DEFRA
       type: github
-      ref: main
+      #ref: main
+      ref: rv/400703
 
 extends:
   template: /pipelines/common-aca-app-build.yaml@DEFRA-ADPPipelineCommon
@@ -51,8 +52,20 @@ extends:
       imageRepoName: 'adp-portal'
       dockerfilePath: './packages/backend/Dockerfile'
       snykPolicyFilePath: './packages/backend/.snyk'
-      appPath: '/'
+      appPath: '/'      
     appDeployConfig:
       filepath: '.azuredevops/backstage.yaml'
       variableGroups:
         - adp-portal-web-<environment>
+    appTestConfig:
+      testEnvVariables: 
+        - E2E_TEST_ACCOUNTS_ADPTESTUSER1_EMAIL
+        - E2E_TEST_ACCOUNTS_ADPTESTUSER1_PASSWORD
+        - E2E_TEST_ACCOUNTS_ADPTESTUSER2_EMAIL
+        - E2E_TEST_ACCOUNTS_ADPTESTUSER2_PASSWORD
+        - E2E_TEST_ACCOUNTS_ADPTESTUSER3_EMAIL
+        - E2E_TEST_ACCOUNTS_ADPTESTUSER3_PASSWORD
+        - E2E_TEST_ACCOUNTS_ADPTESTUSER4_EMAIL
+        - E2E_TEST_ACCOUNTS_ADPTESTUSER4_PASSWORD
+        - E2E_TEST_ACCOUNTS_ADPTESTUSER5_EMAIL
+        - E2E_TEST_ACCOUNTS_ADPTESTUSER5_PASSWORD
