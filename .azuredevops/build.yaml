@@ -58,6 +58,11 @@ extends:
       variableGroups:
         - adp-portal-web-<environment>
     appTestConfig:
+      testEnvs:
+        acceptanceTests:
+          - env: ssv_dev
+            tags: '' # Defaults to all tests. Can be overridden by setting or separated list of tags e.g https://cucumber.io/docs/cucumber/api/?lang=java#tag-expressions
+
       testEnvKvSecrets:
         - E2E-TEST-ACCOUNTS-ADPTESTUSER1-EMAIL
         - E2E-TEST-ACCOUNTS-ADPTESTUSER1-PASSWORD
