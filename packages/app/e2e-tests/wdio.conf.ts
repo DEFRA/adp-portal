@@ -22,6 +22,8 @@ function envNonEmpty(key: string) {
 }
 
 const commonArgs = [...(envArray('COMMON_ARGS') ?? ['--headless'])];
+const enableChrome =
+  envMap('ENABLE_CHROME', x => x.toLowerCase() !== 'false') ?? true;
 const chromeArgs = [
   ...commonArgs,
   ...(envArray('CHROME_ARGS') ?? [
@@ -30,6 +32,8 @@ const chromeArgs = [
     '--disable-gpu',
   ]),
 ];
+const enableFirefox =
+  envMap('ENABLE_FIREFOX', x => x.toLowerCase() !== 'false') ?? true;
 const firefoxArgs = [
   ...commonArgs,
   ...(envArray('FIREFOX_ARGS') ?? [
@@ -99,23 +103,23 @@ export const config: Options.Testrunner = {
   // https://saucelabs.com/platform/platform-configurator
   //
   capabilities: [
-    {
+    enableChrome && {
       maxInstances,
-      acceptInsecureCerts: true,
+      acceptInsecureCerts: chromeArgs.includes('--ignore-certificate-errors'),
       browserName: 'chrome',
       'goog:chromeOptions': {
         args: chromeArgs,
       },
     },
-    {
+    enableFirefox && {
       maxInstances,
-      acceptInsecureCerts: true,
+      acceptInsecureCerts: firefoxArgs.includes('--ignore-certificate-errors'),
       browserName: 'firefox',
       'moz:firefoxOptions': {
         args: firefoxArgs,
       },
     },
-  ],
+  ].filter(x => typeof x === 'object'),
 
   //
   // ===================
