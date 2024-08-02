@@ -111,6 +111,7 @@ export const config: Options.Testrunner = {
     }] : []),
     ...(enableFirefox ? [{
       maxInstances,
+      acceptInsecureCerts: true,
       browserName: 'firefox',
       'moz:firefoxOptions': {
         args: firefoxArgs,
