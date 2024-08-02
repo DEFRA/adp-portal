@@ -62,7 +62,6 @@ extends:
         acceptanceTests:
           - env: ssv_dev
             tags: '' # Defaults to all tests. Can be overridden by setting or separated list of tags e.g https://cucumber.io/docs/cucumber/api/?lang=java#tag-expressions
-
       testEnvKvSecrets:
         - E2E-TEST-ACCOUNTS-ADPTESTUSER1-EMAIL
         - E2E-TEST-ACCOUNTS-ADPTESTUSER1-PASSWORD
@@ -74,15 +73,3 @@ extends:
         - E2E-TEST-ACCOUNTS-ADPTESTUSER4-PASSWORD
         - E2E-TEST-ACCOUNTS-ADPTESTUSER5-EMAIL
         - E2E-TEST-ACCOUNTS-ADPTESTUSER5-PASSWORD
-      testEnvVariables:
-        - E2E_TEST_ACCOUNTS_ADPTESTUSER1_EMAIL
-        - E2E_TEST_ACCOUNTS_ADPTESTUSER1_PASSWORD
-        - E2E_TEST_ACCOUNTS_ADPTESTUSER2_EMAIL
-        - E2E_TEST_ACCOUNTS_ADPTESTUSER2_PASSWORD
-        - E2E_TEST_ACCOUNTS_ADPTESTUSER3_EMAIL
-        - E2E_TEST_ACCOUNTS_ADPTESTUSER3_PASSWORD
-        - E2E_TEST_ACCOUNTS_ADPTESTUSER4_EMAIL
-        - E2E_TEST_ACCOUNTS_ADPTESTUSER4_PASSWORD
-        - E2E_TEST_ACCOUNTS_ADPTESTUSER5_EMAIL
-        - E2E_TEST_ACCOUNTS_ADPTESTUSER5_PASSWORD
-
