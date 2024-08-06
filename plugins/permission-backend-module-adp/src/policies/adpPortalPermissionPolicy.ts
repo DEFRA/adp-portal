@@ -102,13 +102,13 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
   async #getUserEntity(
     userRef: string | undefined,
   ): Promise<UserEntity | undefined> {
+    if (!userRef) return undefined;
     const { token } = await this.#auth.getPluginRequestToken({
       onBehalfOf: await this.#auth.getOwnServiceCredentials(),
       targetPluginId: 'catalog',
     });
-    const entity = userRef
-      ? await this.#catalogApi.getEntityByRef(userRef, { token })
-      : undefined;
-    return entity && isUserEntity(entity) ? entity : undefined;
+    const entity = await this.#catalogApi.getEntityByRef(userRef, { token });
+    if (!entity || !isUserEntity(entity)) return undefined;
+    return entity;
   }
 }
