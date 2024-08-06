@@ -17,12 +17,14 @@ describe('deliveryProjectUserManagerRole', () => {
     isPlatformAdmin: false,
     isPortalUser: true,
     isProgrammeAdmin: false,
+    techMemberFor: [],
   };
 
   const emptyUser: PortalUserIdentity = {
     isPlatformAdmin: false,
     isPortalUser: false,
     isProgrammeAdmin: false,
+    techMemberFor: [],
   };
 
   it.each([

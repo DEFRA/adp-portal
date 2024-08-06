@@ -13,6 +13,7 @@ describe('deliveryProgrammeCreatorRole', () => {
     isPlatformAdmin: false,
     isPortalUser: true,
     isProgrammeAdmin: false,
+    techMemberFor: [],
   };
 
   const programmeAdminUser: PortalUserIdentity = {
@@ -24,12 +25,14 @@ describe('deliveryProgrammeCreatorRole', () => {
     isPlatformAdmin: false,
     isPortalUser: true,
     isProgrammeAdmin: true,
+    techMemberFor: [],
   };
 
   const emptyUser: PortalUserIdentity = {
     isPlatformAdmin: false,
     isPortalUser: false,
     isProgrammeAdmin: false,
+    techMemberFor: [],
   };
 
   it.each([

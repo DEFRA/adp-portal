@@ -6,7 +6,7 @@ import type {
   PolicyQuery,
 } from '@backstage/plugin-permission-node';
 import type { RbacUtilities } from '../rbacUtilites';
-import type { LoggerService } from '@backstage/backend-plugin-api';
+import type { AuthService, LoggerService } from '@backstage/backend-plugin-api';
 import {
   catalogUserRole,
   deliveryProgrammeAdminManagerRole,
@@ -19,13 +19,25 @@ import {
 } from '../roles';
 import type { PortalUserIdentity } from '../types';
 import { deliveryProjectCreatorRole } from '../roles/deliveryProjectCreatorRole';
+import type { CatalogApi } from '@backstage/catalog-client';
+import { isUserEntity, type UserEntity } from '@backstage/catalog-model';
+import { USER_DELIVERY_PROJECT_IS_TECH_MEMBER } from '@internal/plugin-adp-common';
 
 export class AdpPortalPermissionPolicy implements PermissionPolicy {
   readonly #logger: LoggerService;
   readonly #rbacUtilities: RbacUtilities;
+  readonly #catalogApi: CatalogApi;
+  readonly #auth: AuthService;
 
-  constructor(rbacUtilites: RbacUtilities, logger: LoggerService) {
+  constructor(
+    rbacUtilites: RbacUtilities,
+    catalogApi: CatalogApi,
+    auth: AuthService,
+    logger: LoggerService,
+  ) {
     this.#rbacUtilities = rbacUtilites;
+    this.#catalogApi = catalogApi;
+    this.#auth = auth;
     this.#logger = logger;
   }
 
@@ -42,8 +54,11 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
 
     let decision: PolicyDecision = { result: AuthorizeResult.DENY };
 
+    const userEntity = await this.#getUserEntity(user?.identity.userEntityRef);
+
     const portalUserIdentity: PortalUserIdentity = {
       userIdentity: user?.identity,
+      userEntity,
       isPlatformAdmin:
         user !== undefined
           ? this.#rbacUtilities.isInPlatformAdminGroup(user)
@@ -54,6 +69,10 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
           : false,
       isPortalUser:
         user !== undefined ? this.#rbacUtilities.isInAdpUserGroup(user) : false,
+      techMemberFor:
+        userEntity?.relations
+          ?.filter(r => r.type === USER_DELIVERY_PROJECT_IS_TECH_MEMBER)
+          .map(r => r.targetRef) ?? [],
     };
 
     const roles = [
@@ -78,5 +97,18 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
     }
 
     return decision;
+  }
+
+  async #getUserEntity(
+    userRef: string | undefined,
+  ): Promise<UserEntity | undefined> {
+    const { token } = await this.#auth.getPluginRequestToken({
+      onBehalfOf: await this.#auth.getOwnServiceCredentials(),
+      targetPluginId: 'catalog',
+    });
+    const entity = userRef
+      ? await this.#catalogApi.getEntityByRef(userRef, { token })
+      : undefined;
+    return entity && isUserEntity(entity) ? entity : undefined;
   }
 }

@@ -34,7 +34,9 @@ export const adpPermissionModule = createBackendModule({
           catalog,
         );
 
-        policy.setPolicy(new AdpPortalPermissionPolicy(rbacUtilities, logger));
+        policy.setPolicy(
+          new AdpPortalPermissionPolicy(rbacUtilities, catalog, auth, logger),
+        );
       },
     });
   },
