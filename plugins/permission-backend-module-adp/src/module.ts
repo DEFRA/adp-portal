@@ -27,14 +27,11 @@ export const adpPermissionModule = createBackendModule({
           adpPortalUsersGroup: config.getString('rbac.adpPortalUsersGroup'),
         };
 
-        const rbacUtilities = new RbacUtilities(
-          logger,
-          rbacGroups,
-          auth,
-          catalog,
-        );
+        const rbacUtilities = new RbacUtilities(logger, rbacGroups);
 
-        policy.setPolicy(new AdpPortalPermissionPolicy(rbacUtilities, logger));
+        policy.setPolicy(
+          new AdpPortalPermissionPolicy(rbacUtilities, catalog, auth, logger),
+        );
       },
     });
   },

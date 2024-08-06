@@ -17,9 +17,12 @@ import { permissionIn } from '../permissionIn';
 
 const allowEveryone = permissionIn([
   actionExecutePermission,
-  catalogEntityCreatePermission,
   templateParameterReadPermission,
   templateStepReadPermission,
+]);
+
+const allowTechnical = permissionIn([
+  catalogEntityCreatePermission,
   taskCreatePermission,
   taskReadPermission,
   taskCancelPermission,
@@ -37,6 +40,8 @@ export const scaffolderUserRole = (
 ): PolicyDecision => {
   if (user.userIdentity === undefined) return { result: AuthorizeResult.DENY };
   if (allowEveryone(permission)) return { result: AuthorizeResult.ALLOW };
+  if (user.techMemberFor.length > 0 && allowTechnical(permission))
+    return { result: AuthorizeResult.ALLOW };
 
   return { result: AuthorizeResult.DENY };
 };

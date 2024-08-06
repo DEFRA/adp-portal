@@ -12,129 +12,178 @@ import {
 import { scaffolderUserRole } from './scaffolderUsersRole';
 
 describe('scaffolderUsersRole', () => {
-  const portalUser: PortalUserIdentity = {
-    userIdentity: {
-      userEntityRef: 'user:default/test@test.com',
-      ownershipEntityRefs: [`group:default/portal-users`],
-      type: 'user',
+  const users = {
+    basic: {
+      userIdentity: {
+        userEntityRef: 'user:default/test@test.com',
+        ownershipEntityRefs: [`group:default/portal-users`],
+        type: 'user',
+      },
+      isPlatformAdmin: false,
+      isPortalUser: true,
+      isProgrammeAdmin: false,
+      techMemberFor: [],
     },
-    isPlatformAdmin: false,
-    isPortalUser: true,
-    isProgrammeAdmin: false,
-  };
-
-  const programmeAdminUser: PortalUserIdentity = {
-    userIdentity: {
-      userEntityRef: 'user:default/test@test.com',
-      ownershipEntityRefs: [`group:default/portal-users`],
-      type: 'user',
+    technical: {
+      userIdentity: {
+        userEntityRef: 'user:default/test@test.com',
+        ownershipEntityRefs: [`group:default/portal-users`],
+        type: 'user',
+      },
+      isPlatformAdmin: false,
+      isPortalUser: true,
+      isProgrammeAdmin: false,
+      techMemberFor: ['group:default/some-project'],
     },
-    isPlatformAdmin: false,
-    isPortalUser: true,
-    isProgrammeAdmin: true,
-  };
-
-  const emptyUser: PortalUserIdentity = {
-    isPlatformAdmin: false,
-    isPortalUser: false,
-    isProgrammeAdmin: false,
-  };
+    programmeAdmin: {
+      userIdentity: {
+        userEntityRef: 'user:default/test@test.com',
+        ownershipEntityRefs: [`group:default/portal-users`],
+        type: 'user',
+      },
+      isPlatformAdmin: false,
+      isPortalUser: true,
+      isProgrammeAdmin: true,
+      techMemberFor: [],
+    },
+    guest: {
+      isPlatformAdmin: false,
+      isPortalUser: false,
+      isProgrammeAdmin: false,
+      techMemberFor: [],
+    },
+  } satisfies Record<string, PortalUserIdentity>;
 
   it.each([
     {
       permission: catalogEntityCreatePermission,
-      expected: AuthorizeResult.ALLOW,
-      user: programmeAdminUser,
+      expected: AuthorizeResult.DENY,
+      user: 'programmeAdmin',
     },
     {
       permission: actionExecutePermission,
       expected: AuthorizeResult.ALLOW,
-      user: programmeAdminUser,
+      user: 'programmeAdmin',
     },
     {
       permission: templateParameterReadPermission,
       expected: AuthorizeResult.ALLOW,
-      user: programmeAdminUser,
+      user: 'programmeAdmin',
     },
     {
       permission: templateStepReadPermission,
       expected: AuthorizeResult.ALLOW,
-      user: programmeAdminUser,
+      user: 'programmeAdmin',
     },
     {
       permission: taskCancelPermission,
-      expected: AuthorizeResult.ALLOW,
-      user: programmeAdminUser,
+      expected: AuthorizeResult.DENY,
+      user: 'programmeAdmin',
     },
     {
       permission: taskCreatePermission,
-      expected: AuthorizeResult.ALLOW,
-      user: programmeAdminUser,
+      expected: AuthorizeResult.DENY,
+      user: 'programmeAdmin',
     },
     {
       permission: taskReadPermission,
-      expected: AuthorizeResult.ALLOW,
-      user: programmeAdminUser,
+      expected: AuthorizeResult.DENY,
+      user: 'programmeAdmin',
     },
     {
       permission: taskCancelPermission,
-      expected: AuthorizeResult.ALLOW,
-      user: portalUser,
+      expected: AuthorizeResult.DENY,
+      user: 'basic',
     },
     {
       permission: taskCreatePermission,
-      expected: AuthorizeResult.ALLOW,
-      user: portalUser,
+      expected: AuthorizeResult.DENY,
+      user: 'basic',
     },
     {
       permission: taskReadPermission,
-      expected: AuthorizeResult.ALLOW,
-      user: portalUser,
-    },
-    {
-      permission: catalogEntityCreatePermission,
-      expected: AuthorizeResult.ALLOW,
-      user: portalUser,
-    },
-    {
-      permission: actionExecutePermission,
-      expected: AuthorizeResult.ALLOW,
-      user: portalUser,
-    },
-    {
-      permission: templateParameterReadPermission,
-      expected: AuthorizeResult.ALLOW,
-      user: portalUser,
-    },
-    {
-      permission: templateStepReadPermission,
-      expected: AuthorizeResult.ALLOW,
-      user: portalUser,
+      expected: AuthorizeResult.DENY,
+      user: 'basic',
     },
     {
       permission: catalogEntityCreatePermission,
       expected: AuthorizeResult.DENY,
-      user: emptyUser,
+      user: 'basic',
+    },
+    {
+      permission: actionExecutePermission,
+      expected: AuthorizeResult.ALLOW,
+      user: 'basic',
+    },
+    {
+      permission: templateParameterReadPermission,
+      expected: AuthorizeResult.ALLOW,
+      user: 'basic',
+    },
+    {
+      permission: templateStepReadPermission,
+      expected: AuthorizeResult.ALLOW,
+      user: 'basic',
+    },
+    {
+      permission: catalogEntityCreatePermission,
+      expected: AuthorizeResult.DENY,
+      user: 'guest',
     },
     {
       permission: actionExecutePermission,
       expected: AuthorizeResult.DENY,
-      user: emptyUser,
+      user: 'guest',
     },
     {
       permission: templateParameterReadPermission,
       expected: AuthorizeResult.DENY,
-      user: emptyUser,
+      user: 'guest',
     },
     {
       permission: templateStepReadPermission,
       expected: AuthorizeResult.DENY,
-      user: emptyUser,
+      user: 'guest',
     },
-  ])(
-    'should return the expected decision for the permission $permission.name',
+    {
+      permission: taskCancelPermission,
+      expected: AuthorizeResult.ALLOW,
+      user: 'technical',
+    },
+    {
+      permission: taskCreatePermission,
+      expected: AuthorizeResult.ALLOW,
+      user: 'technical',
+    },
+    {
+      permission: taskReadPermission,
+      expected: AuthorizeResult.ALLOW,
+      user: 'technical',
+    },
+    {
+      permission: catalogEntityCreatePermission,
+      expected: AuthorizeResult.ALLOW,
+      user: 'technical',
+    },
+    {
+      permission: actionExecutePermission,
+      expected: AuthorizeResult.ALLOW,
+      user: 'technical',
+    },
+    {
+      permission: templateParameterReadPermission,
+      expected: AuthorizeResult.ALLOW,
+      user: 'technical',
+    },
+    {
+      permission: templateStepReadPermission,
+      expected: AuthorizeResult.ALLOW,
+      user: 'technical',
+    },
+  ] as const)(
+    'should return the expected decision for the permission $permission.name for user $user',
     ({ permission, expected, user }) => {
-      const result = scaffolderUserRole(permission, user);
+      const result = scaffolderUserRole(permission, users[user]);
       expect(result.result).toBe(expected);
     },
   );

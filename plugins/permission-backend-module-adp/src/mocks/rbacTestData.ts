@@ -1,5 +1,6 @@
+import type { UserEntity } from '@backstage/catalog-model';
 import type { RbacGroups } from '../types';
-import type { BackstageIdentityResponse } from '@backstage/core-plugin-api';
+import { USER_DELIVERY_PROJECT_IS_ADMIN_MEMBER } from '@internal/plugin-adp-common';
 
 export const mockRbacGroups: RbacGroups = {
   platformAdminsGroup: 'Test-PlatformAdminsGroup',
@@ -7,38 +8,47 @@ export const mockRbacGroups: RbacGroups = {
   adpPortalUsersGroup: 'Test-AdpPortalUsersGroup',
 };
 
-export const mockPlatformAdminUserResponse: BackstageIdentityResponse = {
-  token: 'dummy-token',
-  expiresAt: undefined,
-  identity: {
-    type: 'user',
-    userEntityRef: 'user:default/platformadminuser',
-    ownershipEntityRefs: [
-      `group:default/${mockRbacGroups.platformAdminsGroup.toLowerCase()}`,
-    ],
+export const mockPlatformAdminUserResponse: UserEntity = {
+  apiVersion: 'backstage.io/v1beta1',
+  kind: 'User',
+  metadata: {
+    name: 'platformadminuser',
   },
+  relations: [
+    {
+      type: 'memberOf',
+      targetRef: `group:default/${mockRbacGroups.platformAdminsGroup.toLowerCase()}`,
+    },
+  ],
+  spec: {},
 };
 
-export const mockProgrammeAdminUserUserResponse: BackstageIdentityResponse = {
-  token: 'dummy-token',
-  expiresAt: undefined,
-  identity: {
-    type: 'user',
-    userEntityRef: 'user:default/programmeadminuser',
-    ownershipEntityRefs: [
-      `group:default/${mockRbacGroups.programmeAdminGroup.toLowerCase()}`,
-    ],
+export const mockProgrammeAdminUserUserResponse: UserEntity = {
+  apiVersion: 'backstage.io/v1beta1',
+  kind: 'User',
+  metadata: {
+    name: 'programmeadminuser',
   },
+  relations: [
+    {
+      type: USER_DELIVERY_PROJECT_IS_ADMIN_MEMBER,
+      targetRef: `group:default/${mockRbacGroups.programmeAdminGroup.toLowerCase()}`,
+    },
+  ],
+  spec: {},
 };
 
-export const mockAdpPortalUserResponse: BackstageIdentityResponse = {
-  token: 'dummy-token',
-  expiresAt: undefined,
-  identity: {
-    type: 'user',
-    userEntityRef: 'user:default/portaluser',
-    ownershipEntityRefs: [
-      `group:default/${mockRbacGroups.adpPortalUsersGroup.toLowerCase()}`,
-    ],
+export const mockAdpPortalUserResponse: UserEntity = {
+  apiVersion: 'backstage.io/v1beta1',
+  kind: 'User',
+  metadata: {
+    name: 'portaluser',
   },
+  relations: [
+    {
+      type: 'memberOf',
+      targetRef: `group:default/${mockRbacGroups.adpPortalUsersGroup.toLowerCase()}`,
+    },
+  ],
+  spec: {},
 };
