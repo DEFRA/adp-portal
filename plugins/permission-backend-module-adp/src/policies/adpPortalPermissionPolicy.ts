@@ -59,16 +59,9 @@ export class AdpPortalPermissionPolicy implements PermissionPolicy {
     const portalUserIdentity: PortalUserIdentity = {
       userIdentity: user?.identity,
       userEntity,
-      isPlatformAdmin:
-        user !== undefined
-          ? this.#rbacUtilities.isInPlatformAdminGroup(user)
-          : false,
-      isProgrammeAdmin:
-        user !== undefined
-          ? await this.#rbacUtilities.isInProgrammeAdminGroup(user)
-          : false,
-      isPortalUser:
-        user !== undefined ? this.#rbacUtilities.isInAdpUserGroup(user) : false,
+      isPlatformAdmin: this.#rbacUtilities.isInPlatformAdminGroup(userEntity),
+      isProgrammeAdmin: this.#rbacUtilities.isInProgrammeAdminGroup(userEntity),
+      isPortalUser: this.#rbacUtilities.isInAdpUserGroup(userEntity),
       techMemberFor:
         userEntity?.relations
           ?.filter(r => r.type === USER_DELIVERY_PROJECT_IS_TECH_MEMBER)

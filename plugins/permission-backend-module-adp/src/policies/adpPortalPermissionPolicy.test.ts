@@ -20,6 +20,7 @@ import {
   deliveryProjectUserCreatePermission,
   deliveryProjectUserDeletePermission,
   deliveryProjectUserUpdatePermission,
+  USER_DELIVERY_PROJECT_IS_ADMIN_MEMBER,
   USER_DELIVERY_PROJECT_IS_TECH_MEMBER,
 } from '@internal/plugin-adp-common';
 import type { PolicyQuery } from '@backstage/plugin-permission-node';
@@ -50,8 +51,6 @@ describe('adpPortalPermissionPolicy', () => {
     const rbacUtilities = new RbacUtilities(
       mockServices.logger.mock(),
       rbacGroups,
-      mockServices.auth(),
-      mockCatalogClient,
     );
 
     const sut = new AdpPortalPermissionPolicy(
@@ -143,20 +142,6 @@ describe('adpPortalPermissionPolicy', () => {
       async ({ permission, expected }) => {
         const { sut, rbacGroups, mockCatalogClient } = setup();
 
-        mockCatalogClient.getEntitiesByRefs.mockResolvedValueOnce({
-          items: [
-            {
-              apiVersion: 'test',
-              kind: 'group',
-              metadata: {
-                name: rbacGroups.platformAdminsGroup,
-              },
-              spec: {
-                type: 'something-else',
-              },
-            },
-          ],
-        });
         mockCatalogClient.getEntityByRef.mockResolvedValueOnce({
           apiVersion: 'backstage.io/v1beta1',
           kind: 'User',
@@ -164,15 +149,18 @@ describe('adpPortalPermissionPolicy', () => {
             name: 'test-user',
           },
           spec: {},
-          relations: [],
+          relations: [
+            {
+              type: 'memberOf',
+              targetRef: `group:default/${rbacGroups.platformAdminsGroup.toLowerCase()}`,
+            },
+          ],
         } satisfies UserEntity);
 
         const user: BackstageIdentityResponse = {
           identity: {
             userEntityRef: 'user:default/test@test.com',
-            ownershipEntityRefs: [
-              `group:default/${rbacGroups.platformAdminsGroup.toLowerCase()}`,
-            ],
+            ownershipEntityRefs: [],
             type: 'user',
           },
           token: '12345',
@@ -269,32 +257,16 @@ describe('adpPortalPermissionPolicy', () => {
     ])(
       'should allow access for permission $permission.name for the Programme Admin Role',
       async ({ permission, expected }) => {
-        const { sut, rbacGroups, mockCatalogClient } = setup();
+        const { sut, mockCatalogClient } = setup();
         const user: BackstageIdentityResponse = {
           identity: {
             userEntityRef: 'user:default/test@test.com',
-            ownershipEntityRefs: [
-              `group:default/${rbacGroups.programmeAdminGroup.toLowerCase()}`,
-            ],
+            ownershipEntityRefs: [],
             type: 'user',
           },
           token: '12345',
         };
 
-        mockCatalogClient.getEntitiesByRefs.mockResolvedValueOnce({
-          items: [
-            {
-              apiVersion: 'test',
-              kind: 'group',
-              metadata: {
-                name: rbacGroups.programmeAdminGroup,
-              },
-              spec: {
-                type: 'delivery-programme',
-              },
-            },
-          ],
-        });
         mockCatalogClient.getEntityByRef.mockResolvedValueOnce({
           apiVersion: 'backstage.io/v1beta1',
           kind: 'User',
@@ -302,7 +274,12 @@ describe('adpPortalPermissionPolicy', () => {
             name: 'test-user',
           },
           spec: {},
-          relations: [],
+          relations: [
+            {
+              type: USER_DELIVERY_PROJECT_IS_ADMIN_MEMBER,
+              targetRef: 'group:default/something',
+            },
+          ],
         } satisfies UserEntity);
 
         const request: PolicyQuery = { permission: permission };
@@ -400,32 +377,16 @@ describe('adpPortalPermissionPolicy', () => {
     ])(
       'should allow access for permission $permission.name for the ADP Portal User Role',
       async ({ permission, expected }) => {
-        const { sut, rbacGroups, mockCatalogClient } = setup();
+        const { sut, mockCatalogClient } = setup();
         const user: BackstageIdentityResponse = {
           identity: {
             userEntityRef: 'user:default/test@test.com',
-            ownershipEntityRefs: [
-              `group:default/${rbacGroups.adpPortalUsersGroup.toLowerCase()}`,
-            ],
+            ownershipEntityRefs: [],
             type: 'user',
           },
           token: '12345',
         };
 
-        mockCatalogClient.getEntitiesByRefs.mockResolvedValueOnce({
-          items: [
-            {
-              apiVersion: 'test',
-              kind: 'group',
-              metadata: {
-                name: rbacGroups.adpPortalUsersGroup,
-              },
-              spec: {
-                type: 'something-else',
-              },
-            },
-          ],
-        });
         mockCatalogClient.getEntityByRef.mockResolvedValueOnce({
           apiVersion: 'backstage.io/v1beta1',
           kind: 'User',
@@ -531,32 +492,16 @@ describe('adpPortalPermissionPolicy', () => {
     ])(
       'should allow access for permission $permission.name for the ADP Portal User Role',
       async ({ permission, expected }) => {
-        const { sut, rbacGroups, mockCatalogClient } = setup();
+        const { sut, mockCatalogClient } = setup();
         const user: BackstageIdentityResponse = {
           identity: {
             userEntityRef: 'user:default/test@test.com',
-            ownershipEntityRefs: [
-              `group:default/${rbacGroups.adpPortalUsersGroup.toLowerCase()}`,
-            ],
+            ownershipEntityRefs: [],
             type: 'user',
           },
           token: '12345',
         };
 
-        mockCatalogClient.getEntitiesByRefs.mockResolvedValueOnce({
-          items: [
-            {
-              apiVersion: 'test',
-              kind: 'group',
-              metadata: {
-                name: rbacGroups.adpPortalUsersGroup,
-              },
-              spec: {
-                type: 'something-else',
-              },
-            },
-          ],
-        });
         mockCatalogClient.getEntityByRef.mockResolvedValueOnce({
           apiVersion: 'backstage.io/v1beta1',
           kind: 'User',

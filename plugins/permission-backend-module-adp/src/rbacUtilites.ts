@@ -1,8 +1,7 @@
-import type { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
 import type { RbacGroups } from './types';
-import type { AuthService, LoggerService } from '@backstage/backend-plugin-api';
-import type { CatalogApi } from '@backstage/catalog-client';
-import type { GroupEntityV1alpha1 } from '@backstage/catalog-model';
+import type { LoggerService } from '@backstage/backend-plugin-api';
+import type { UserEntity } from '@backstage/catalog-model';
+import { USER_DELIVERY_PROJECT_IS_ADMIN_MEMBER } from '@internal/plugin-adp-common';
 
 /**
  * Utility function to determine if the user is in the ADP Platform Admin Group.
@@ -13,16 +12,12 @@ export class RbacUtilities {
   readonly #platformAdminsGroup: string;
   readonly #programmeAdminGroup: string;
   readonly #adpPortalUsersGroup: string;
-  readonly #auth: AuthService;
-  readonly #catalog: CatalogApi;
 
   private readonly groupPrefix: string = 'group:default/';
 
   constructor(
     private logger: LoggerService,
     rbacGroups: RbacGroups,
-    auth: AuthService,
-    catalog: CatalogApi,
   ) {
     this.#platformAdminsGroup = `${
       this.groupPrefix
@@ -34,53 +29,32 @@ export class RbacUtilities {
       this.groupPrefix
     }${rbacGroups.adpPortalUsersGroup.toLowerCase()}`;
 
-    this.#auth = auth;
-    this.#catalog = catalog;
-
     this.logger.debug(
       `platformAdminsGroup=${this.#platformAdminsGroup} | programmeAdminGroup=${this.#programmeAdminGroup} | adpPortalUsersGroup= ${this.#adpPortalUsersGroup}`,
     );
   }
 
-  public isInPlatformAdminGroup(user: BackstageIdentityResponse): boolean {
+  public isInPlatformAdminGroup(user: UserEntity | undefined): boolean {
     return [this.#platformAdminsGroup].some(group =>
-      user?.identity.ownershipEntityRefs.includes(group),
+      user?.relations?.some(
+        r => r.type === 'memberOf' && r.targetRef === group,
+      ),
     );
   }
 
-  public async isInProgrammeAdminGroup(
-    user: BackstageIdentityResponse,
-  ): Promise<boolean> {
-    const userGroups = user.identity.ownershipEntityRefs.filter(ref =>
-      ref.startsWith('group'),
-    );
-    const token = await this.#auth.getPluginRequestToken({
-      onBehalfOf: await this.#auth.getOwnServiceCredentials(),
-      targetPluginId: 'catalog',
-    });
-
-    const entities = await this.#catalog.getEntitiesByRefs(
-      {
-        entityRefs: userGroups,
-        filter: [
-          {
-            kind: 'Group',
-          },
-        ],
-        fields: ['spec.type'],
-      },
-      { token: token.token },
-    );
-
-    const groups = entities.items as GroupEntityV1alpha1[];
-    return groups.some(
-      group => group.spec.type.toLowerCase() === 'delivery-programme',
+  public isInProgrammeAdminGroup(user: UserEntity | undefined): boolean {
+    return (
+      user?.relations?.some(
+        r => r.type === USER_DELIVERY_PROJECT_IS_ADMIN_MEMBER,
+      ) ?? false
     );
   }
 
-  public isInAdpUserGroup(user: BackstageIdentityResponse): boolean {
+  public isInAdpUserGroup(user: UserEntity | undefined): boolean {
     return [this.#adpPortalUsersGroup].some(group =>
-      user?.identity.ownershipEntityRefs.includes(group),
+      user?.relations?.some(
+        r => r.type === 'memberOf' && r.targetRef === group,
+      ),
     );
   }
 }
