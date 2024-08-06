@@ -149,11 +149,34 @@ catalog:
         - type: url
           pattern: 'https://github.com/${GITHUB_ORGANIZATION}/**/catalog-info.yaml'
 
-    - allow:
-        [Component, API, Resource, System, Location, Template, Domain, Group]
+    - allow: [Template]
       locations:
         - type: url
-          pattern: 'https://github.com/DEFRA/adp-software-templates/**'
+          pattern: 'https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/templates/**'
+
+    - allow: [Location]
+      locations:
+        - type: url
+          pattern: 'https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/catalog-model/*.yaml'
+        - type: url
+          pattern: 'https://github.com/DEFRA/adp-software-templates/blob/main/systems/all.yaml'
+
+    - allow: [System]
+      locations:
+        - type: url
+          pattern: 'https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/catalog-model/systems/*.yaml'
+        - type: url
+          pattern: 'https://github.com/DEFRA/adp-software-templates/blob/main/systems/*.yaml'
+
+    - allow: [Resource]
+      locations:
+        - type: url
+          pattern: 'https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/catalog-model/resources/*.yaml'
+
+    - allow: [Domain]
+      locations:
+        - type: url
+          pattern: 'https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/catalog-model/domains/*.yaml'
 
     - allow: [Location, Group]
       locations:
@@ -164,6 +187,8 @@ catalog:
   locations:
     - type: url
       target: https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/catalog-model/all.yaml
+    - type: url
+      target: https://github.com/DEFRA/adp-software-templates/main/systems/all.yaml
     - type: url
       target: ${APP_BASE_URL}/onboarding/arms-length-bodies
     - type: url
