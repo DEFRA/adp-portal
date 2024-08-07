@@ -137,7 +137,11 @@ exports[`DeliveryProjectPicker Should filter the results 1`] = `
     >
       <div>
         <div
-          style="position: relative; height: 36px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+          aria-labelledby="mui-0-label"
+          class="MuiAutocomplete-listbox"
+          id="mui-0-popup"
+          role="listbox"
+          style="position: relative; height: 54px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
         >
           <div
             style="height: 36px; width: 100%;"
@@ -960,7 +964,11 @@ exports[`DeliveryProjectPicker Should show all the options in the drop down 1`] 
     >
       <div>
         <div
-          style="position: relative; height: 342px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+          aria-labelledby="mui-0-label"
+          class="MuiAutocomplete-listbox"
+          id="mui-0-popup"
+          role="listbox"
+          style="position: relative; height: 378px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
         >
           <div
             style="height: 360px; width: 100%;"
