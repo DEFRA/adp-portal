@@ -149,17 +149,21 @@ catalog:
         - type: url
           pattern: 'https://github.com/${GITHUB_ORGANIZATION}/**/catalog-info.yaml'
 
-    - allow: [Template]
-      locations:
-        - type: url
-          pattern: 'https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/templates/**'
-
-    - allow: [Location]
+    - allow:
+        [Component, API, Resource, System, Location, Template, Domain, Group]
       locations:
         - type: url
           pattern: 'https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/catalog-model/*.yaml'
+
+    - allow: [Location, System]
+      locations:
         - type: url
           pattern: 'https://github.com/DEFRA/adp-software-templates/blob/main/systems/all.yaml'
+
+    - allow: [Template]
+      locations:
+        - type: url
+          pattern: 'https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/templates/*/*.yaml'
 
     - allow: [System]
       locations:
@@ -188,7 +192,7 @@ catalog:
     - type: url
       target: https://github.com/DEFRA/adp-software-templates/blob/${ADP_PORTAL_TEMPLATE_VERSION}/catalog-model/all.yaml
     - type: url
-      target: https://github.com/DEFRA/adp-software-templates/main/systems/all.yaml
+      target: https://github.com/DEFRA/adp-software-templates/blob/main/systems/all.yaml
     - type: url
       target: ${APP_BASE_URL}/onboarding/arms-length-bodies
     - type: url
