@@ -14497,7 +14497,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@weaveworksoss/backstage-plugin-flux@npm:^0.8.5":
+"@weaveworksoss/backstage-plugin-flux@npm:0.8.5":
   version: 0.8.5
   resolution: "@weaveworksoss/backstage-plugin-flux@npm:0.8.5"
   dependencies:
@@ -14525,6 +14525,37 @@ __metadata:
   peerDependencies:
     react: ^16.13.1 || ^17.0.0
   checksum: 10c0/594cddf13c6a40d2a5a8c4a487eb3c47e4b3a8b4048befbf286643306d5296a26c3235883287a19f7b791adb606cdcc434c9f7b599ca5ab1b9df77a366ac4d72
+  languageName: node
+  linkType: hard
+
+"@weaveworksoss/backstage-plugin-flux@patch:@weaveworksoss/backstage-plugin-flux@npm%3A0.8.5#~/.yarn/patches/@weaveworksoss-backstage-plugin-flux-npm-0.8.5-f9cb08c19d.patch":
+  version: 0.8.5
+  resolution: "@weaveworksoss/backstage-plugin-flux@patch:@weaveworksoss/backstage-plugin-flux@npm%3A0.8.5#~/.yarn/patches/@weaveworksoss-backstage-plugin-flux-npm-0.8.5-f9cb08c19d.patch::version=0.8.5&hash=b87586"
+  dependencies:
+    "@backstage/catalog-model": "npm:^1.4.3"
+    "@backstage/core-components": "npm:^0.13.8"
+    "@backstage/core-plugin-api": "npm:^1.8.0"
+    "@backstage/plugin-catalog-react": "npm:^1.9.1"
+    "@backstage/plugin-kubernetes": "npm:^0.11.2"
+    "@backstage/plugin-kubernetes-common": "npm:^0.7.1"
+    "@backstage/theme": "npm:^0.4.4"
+    "@material-ui/core": "npm:^4.12.2"
+    "@material-ui/icons": "npm:^4.9.1"
+    "@material-ui/lab": "npm:4.0.0-alpha.61"
+    "@tanstack/query-sync-storage-persister": "npm:^4.36.1"
+    "@tanstack/react-query": "npm:^4.36.1"
+    "@tanstack/react-query-persist-client": "npm:^4.36.1"
+    classnames: "npm:^2.3.2"
+    compare-versions: "npm:^6.1.0"
+    lodash: "npm:^4.17.21"
+    luxon: "npm:^3.3.0"
+    react-use: "npm:^17.4.0"
+    styled-components: "npm:^6.1.1"
+    use-deep-compare: "npm:^1.1.0"
+    yaml: "npm:^2.3.1"
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0
+  checksum: 10c0/b75f9095b70dc4c9c25d5a5d880e361f7d2adb185cb187cebd8e7e15aa87ae7e9cb94200bf37c58f0dcc337286815a2984675b6fce14ad2950e58fa363494781
   languageName: node
   linkType: hard
 
@@ -15225,7 +15256,7 @@ __metadata:
     "@wdio/globals": "npm:^8.39.1"
     "@wdio/local-runner": "npm:^8.39.1"
     "@wdio/spec-reporter": "npm:^8.39.0"
-    "@weaveworksoss/backstage-plugin-flux": "npm:^0.8.5"
+    "@weaveworksoss/backstage-plugin-flux": "patch:@weaveworksoss/backstage-plugin-flux@npm%3A0.8.5#~/.yarn/patches/@weaveworksoss-backstage-plugin-flux-npm-0.8.5-f9cb08c19d.patch"
     canvas: "npm:^2.11.2"
     codemirror: "npm:^6.0.0"
     cross-env: "npm:^7.0.0"
