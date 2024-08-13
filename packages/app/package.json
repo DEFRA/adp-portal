@@ -50,7 +50,7 @@
     "@material-ui/core": "^4.12.2",
     "@material-ui/icons": "^4.9.1",
     "@roadiehq/backstage-plugin-github-pull-requests": "^2.5.26",
-    "@weaveworksoss/backstage-plugin-flux": "^0.8.5",
+    "@weaveworksoss/backstage-plugin-flux": "patch:@weaveworksoss/backstage-plugin-flux@npm%3A0.8.5#~/.yarn/patches/@weaveworksoss-backstage-plugin-flux-npm-0.8.5-f9cb08c19d.patch",
     "history": "^5.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

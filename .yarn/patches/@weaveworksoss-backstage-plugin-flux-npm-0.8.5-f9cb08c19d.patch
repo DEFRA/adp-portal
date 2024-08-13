@@ -1,0 +1,32 @@
+diff --git a/dist/esm/FluxDeploymentsTable-0219dc56.esm.js b/dist/esm/FluxDeploymentsTable-0219dc56.esm.js
+index 224840deee341de35887bb36169132e45b38167b..3595609f426520a95dc233cdb494bf5165776ceb 100644
+--- a/dist/esm/FluxDeploymentsTable-0219dc56.esm.js
++++ b/dist/esm/FluxDeploymentsTable-0219dc56.esm.js
+@@ -29,7 +29,8 @@ const FluxDeploymentsTable = ({
+       suspended,
+       sourceRef,
+       type,
+-      lastAppliedRevision
++      lastAppliedRevision,
++      lastAttemptedRevision
+     } = d;
+     if (d instanceof Kustomization) {
+       path = d.path;
+@@ -39,7 +40,7 @@ const FluxDeploymentsTable = ({
+         suspended,
+         name,
+         namespace,
+-        lastAppliedRevision,
++        lastAppliedRevision: lastAppliedRevision || lastAttemptedRevision,
+         clusterName,
+         sourceRef,
+         type,
+@@ -53,7 +54,7 @@ const FluxDeploymentsTable = ({
+         suspended,
+         name,
+         namespace,
+-        lastAppliedRevision,
++        lastAppliedRevision: lastAppliedRevision || lastAttemptedRevision,
+         clusterName,
+         sourceRef,
+         type,
