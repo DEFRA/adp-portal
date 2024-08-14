@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "1.9.15",
+  "version": "1.9.16",
   "private": true,
   "packageManager": "yarn@4.3.1",
   "engines": {
