@@ -56,6 +56,7 @@ import {
   DeliveryProjectViewPageComponent,
 } from '@internal/plugin-adp';
 import { grafanaPlugin } from '@k-phoen/backstage-plugin-grafana';
+import { settingsPage } from './components/User-Settings/SettingsPage';
 
 const app = createApp({
   components: {
@@ -149,7 +150,9 @@ const routes = (
     <Route path="/search" element={<SearchPage />}>
       {searchPage}
     </Route>
-    <Route path="/settings" element={<UserSettingsPage />} />
+    <Route path="/settings" element={<UserSettingsPage />}>
+      {settingsPage}
+    </Route>
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
     <Route path="/docs" element={<TechDocsIndexPage />}>
       <DefaultTechDocsHome />
