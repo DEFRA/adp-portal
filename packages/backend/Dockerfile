@@ -66,4 +66,4 @@ FROM base AS application
 COPY --from=skeleton --chown=node:node /app ./
 COPY --from=bundle --chown=node:node /app ./
 
-CMD ["node", "--require", "./opentelemetry.js", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
+CMD ["node", "--max-old-space-size=1024", "--require", "./opentelemetry.js", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
