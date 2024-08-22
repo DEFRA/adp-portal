@@ -49,7 +49,7 @@ The application requires the following environment variables to be set. We recom
 ```sh
 APP_BASE_URL=http://localhost:3000
 APP_BACKEND_BASE_URL=http://localhost:7007
-ADP_PORTAL_API_ENDPOINT=http://$(hostname).local:5096/api
+ADP_PORTAL_API_ENDPOINT="http://localhost:5096/api" #If developing in WSL and running the portal API on your host machine, use: http://$(hostname).local:5096/api
 ADP_PORTAL_TEMPLATE_VERSION=main
 
 GITHUB_APP_ID=""
