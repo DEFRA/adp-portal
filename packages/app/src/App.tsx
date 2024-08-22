@@ -10,7 +10,6 @@ import { CatalogImportPage } from '@backstage/plugin-catalog-import';
 import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
 import { ScaffolderFieldExtensions } from '@backstage/plugin-scaffolder-react';
 import { orgPlugin } from '@backstage/plugin-org';
-import { SearchPage } from '@backstage/plugin-search';
 import { TechRadarPage } from '@backstage-community/plugin-tech-radar';
 import {
   DefaultTechDocsHome,
@@ -23,7 +22,6 @@ import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
 import { UserSettingsPage } from '@backstage/plugin-user-settings';
 import { apis } from './apis';
 import { entityPage } from './components/catalog/EntityPage';
-import { searchPage } from './components/search/SearchPage';
 import { Root } from './components/Root';
 
 import {
@@ -147,9 +145,6 @@ const routes = (
         </RequirePermission>
       }
     />
-    <Route path="/search" element={<SearchPage />}>
-      {searchPage}
-    </Route>
     <Route path="/settings" element={<UserSettingsPage />}>
       {settingsPage}
     </Route>
