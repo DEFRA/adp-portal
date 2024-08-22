@@ -8,7 +8,6 @@ import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
 import BusinessIcon from '@material-ui/icons/Business';
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import LogoFull from './LogoFull';
 import LogoIcon from './LogoIcon';
 import {
@@ -27,7 +26,6 @@ import {
   useSidebarOpenState,
   Link,
 } from '@backstage/core-components';
-import { SidebarSearchModal } from '@backstage/plugin-search';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
@@ -61,12 +59,6 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
   <SidebarPage>
     <Sidebar>
       <SidebarLogo />
-      <SidebarGroup label="Search" icon={<SearchIcon />} to="/search">
-        <span id="search-modal-title" style={{ display: 'none' }}>
-          ADP Search
-        </span>
-        <SidebarSearchModal />
-      </SidebarGroup>
       <SidebarDivider />
       <SidebarGroup label="Menu" icon={<MenuIcon />}>
         {/* Global nav, not org-specific */}
