@@ -44,7 +44,7 @@ To sign commits using GPG from within the devcontainer, please follow [the steps
 
 ### Environment Variables
 
-The application requires the following environment variables to be set. We recommend creating a `.env` file in the root of your repo (this is ignored by Git) and pasting the variables in to this file. This file will be used whenever you run a script through `yarn` such as `yarn dev`.
+The application requires the following environment variables to be set. We recommend creating a `.env` file in the root of your repo (this is ignored by Git) and pasting the variables in to this file. This file will be used whenever you run a script through `yarn` such as `yarn dev`. All environment variables that are left blank can be found in the dev keyvault in azure
 
 ```sh
 APP_BASE_URL=http://localhost:3000
