@@ -49,6 +49,8 @@ The application requires the following environment variables to be set. We recom
 ```sh
 APP_BASE_URL=http://localhost:3000
 APP_BACKEND_BASE_URL=http://localhost:7007
+ADP_PORTAL_API_ENDPOINT=http://$(hostname).local:5096/api
+ADP_PORTAL_TEMPLATE_VERSION=main
 
 GITHUB_APP_ID=""
 GITHUB_CLIENT_ID=""
@@ -61,6 +63,7 @@ AUTH_MICROSOFT_CLIENT_SECRET=""
 AUTH_MICROSOFT_TENANT_ID=""
 
 BACKSTAGE_BACKEND_SECRET=""
+BACKEND_PLUGINS_SECRET=""
 
 ADO_PAT=""
 ADO_ORGANIZATION=""
@@ -84,6 +87,28 @@ SND3_CLUSTER_NAME=""
 SND3_CLUSTER_API_SERVER_ADDRESS=""
 
 TZ=utc
+
+# Optional env variables, you might not need these.
+NODE_ENV=development
+NODE_OPTIONS=--no-node-snapshot
+NODE_TLS_REJECT_UNAUTHORIZED=0
+```
+
+To run the end to end tests, you will need to additionally set the following variables in your .env file. These are not needed for normal development.
+
+```sh
+E2E_TEST_ACCOUNTS_ADPTESTUSER1_EMAIL=""
+E2E_TEST_ACCOUNTS_ADPTESTUSER1_PASSWORD=""
+E2E_TEST_ACCOUNTS_ADPTESTUSER2_EMAIL=""
+E2E_TEST_ACCOUNTS_ADPTESTUSER2_PASSWORD=""
+E2E_TEST_ACCOUNTS_ADPTESTUSER3_EMAIL=""
+E2E_TEST_ACCOUNTS_ADPTESTUSER3_PASSWORD=""
+E2E_TEST_ACCOUNTS_ADPTESTUSER4_EMAIL=""
+E2E_TEST_ACCOUNTS_ADPTESTUSER4_PASSWORD=""
+E2E_TEST_ACCOUNTS_ADPTESTUSER5_EMAIL=""
+E2E_TEST_ACCOUNTS_ADPTESTUSER5_PASSWORD=""
+
+TEST_ENVIRONMENT_ROOT_URL=https://portal.snd1.adp.defra.gov.uk/
 ```
 
 To convert a GitHub private key into a format that can be used in the `GITHUB_PRIVATE_KEY` environment variable use one of the following scripts:
